@@ -19,7 +19,7 @@ function themeFor(slug: string): Theme {
   if (/booking/.test(slug)) return { eyebrow: 'PRODUCT', c1: '#0891b2', c2: '#2563eb' };
   if (/(automation|build-automation)/.test(slug)) return { eyebrow: 'AUTOMATIONS', c1: '#d97706', c2: '#b45309' };
   if (/(white-label|one-platform|agency)/.test(slug)) return { eyebrow: 'AGENCY', c1: '#db2777', c2: '#7c3aed' };
-  return { eyebrow: 'SIMPLERDEVELOPMENT', c1: '#2563eb', c2: '#4f46e5' };
+  return { eyebrow: 'CRM AGENTS', c1: '#2563eb', c2: '#4f46e5' };
 }
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -61,7 +61,7 @@ function svg(title: string, slug: string): string {
   <rect x="72" y="120" width="56" height="6" rx="3" fill="#ffffff" opacity="0.9"/>
   <text x="72" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" letter-spacing="4" fill="#ffffff" opacity="0.85">${esc(eyebrow)}</text>
   ${titleTspans}
-  <text x="72" y="560" font-family="Inter, Segoe UI, system-ui, sans-serif" font-size="26" font-weight="700" fill="#ffffff" opacity="0.92">&lt;/&gt; Simpler Development</text>
+  <text x="72" y="560" font-family="Inter, Segoe UI, system-ui, sans-serif" font-size="26" font-weight="700" fill="#ffffff" opacity="0.92">&lt;/&gt; CRM AGENTS</text>
 </svg>
 `;
 }

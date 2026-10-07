@@ -14,7 +14,7 @@ sources: docs/agents/architecture-for-agents.md, FEATURE-INVENTORY-api-mcp.md, F
 
 ## Platform Overview
 
-SimplerDevelopment is a **multi-tenant agency SaaS platform** that consolidates website publishing, CRM, project management, AI knowledge management, e-commerce, email marketing, scheduling, and developer automation into a single system. Each tenant operates in full isolation: their data, sites, AI knowledge base, and credentials are scoped by an immutable `clientId` derived from the authenticated session.
+CRM AGENTS is a **multi-tenant agency SaaS platform** that consolidates website publishing, CRM, project management, AI knowledge management, e-commerce, email marketing, scheduling, and developer automation into a single system. Each tenant operates in full isolation: their data, sites, AI knowledge base, and credentials are scoped by an immutable `clientId` derived from the authenticated session.
 
 The platform is approximately 357,000 lines of TypeScript across application routes, library code, and component layers.
 

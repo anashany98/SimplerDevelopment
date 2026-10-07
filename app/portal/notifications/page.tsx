@@ -24,7 +24,7 @@ const kindIcon: Record<string, string> = {
   'comment.mention': 'alternate_email',
   'card.assignee_added': 'person_add',
   'card.due_date_changed': 'event',
-  'card.sprint_changed': 'sprint',
+  'card.sprint_changed': 'speed',
   'card.column_changed': 'swap_horiz',
   'card.dependency_added': 'block',
 };
@@ -43,12 +43,12 @@ function timeAgo(iso: string): string {
   const d = new Date(iso);
   const diff = Date.now() - d.getTime();
   const m = Math.floor(diff / 60000);
-  if (m < 1) return 'just now';
-  if (m < 60) return `${m}m ago`;
+  if (m < 1) return 'ahora mismo';
+  if (m < 60) return `hace ${m} min`;
   const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h ago`;
+  if (h < 24) return `hace ${h} h`;
   const days = Math.floor(h / 24);
-  if (days < 7) return `${days}d ago`;
+  if (days < 7) return `hace ${days} días`;
   return d.toLocaleDateString();
 }
 
@@ -97,19 +97,19 @@ export default function NotificationsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-4">
       <PortalPageHeader
-        eyebrow="Activity"
-        title="Inbox"
-        subtitle="Comments, mentions, assignments, and sprint updates from across your projects."
+        eyebrow="Actividad"
+        title="Bandeja de entrada"
+        subtitle="Comentarios, menciones, asignaciones y actualizaciones de sprint de todos tus proyectos."
         actions={
           <div className="flex items-center gap-2">
             <button
               onClick={() => setUnreadOnly(v => !v)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                unreadOnly ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                unreadOnly ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               <span className="material-icons text-sm">filter_list</span>
-              {unreadOnly ? 'Unread only' : 'All'}
+              {unreadOnly ? 'Solo no leídas' : 'Todas'}
             </button>
             {unread > 0 && (
               <button
@@ -117,7 +117,7 @@ export default function NotificationsPage() {
                 className={`${pBtnGhost} flex items-center gap-1.5 px-3 py-1.5 text-xs`}
               >
                 <span className="material-icons text-sm">done_all</span>
-                Mark all read
+                Marcar todas como leídas
               </button>
             )}
           </div>
@@ -131,11 +131,11 @@ export default function NotificationsPage() {
       ) : rows.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">inbox</span>
-          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">{unreadOnly ? 'No unread notifications' : 'Inbox is empty'}</h3>
+          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">{unreadOnly ? 'No hay notificaciones sin leer' : 'La bandeja está vacía'}</h3>
           <p className="mt-2 text-sm text-muted-foreground">
             {unreadOnly
-              ? 'You\'re all caught up.'
-              : 'You\'ll get a notification here when someone comments, mentions you, assigns you, or moves a card you\'re watching.'}
+              ? 'Estás al día.'
+              : 'Recibirás una notificación aquí cuando alguien comente, te mencione, te asigne o mueva una tarjeta que estás siguiendo.'}
           </p>
         </div>
       ) : (

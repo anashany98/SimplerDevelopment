@@ -46,9 +46,7 @@ export async function BrainAutomationsTile({ clientId }: Props) {
             href="/portal/brain/automations"
             className="text-xs text-primary hover:underline inline-flex items-center gap-0.5"
           >
-            <span className="material-icons text-sm">add</span>
-            New
-          </Link>
+            <span className="material-icons text-sm">add</span>Nuevo</Link>
         </div>
         {activeRules.length === 0 ? (
           <p className="text-xs text-muted-foreground">
@@ -83,9 +81,7 @@ export async function BrainAutomationsTile({ clientId }: Props) {
             <span className="material-icons text-base text-muted-foreground">history</span>
             Recent automation runs
           </h2>
-          <Link href="/portal/brain/automations" className="text-xs text-primary hover:underline">
-            View all
-          </Link>
+          <Link href="/portal/brain/automations" className="text-xs text-primary hover:underline">Ver todo</Link>
         </div>
         {logs.length === 0 ? (
           <p className="text-xs text-muted-foreground">

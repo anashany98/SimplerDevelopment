@@ -27,7 +27,7 @@ export async function POST(
     const { code, subtotal } = body;
 
     if (!code) {
-      return NextResponse.json({ success: false, message: 'Discount code is required' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Introduce un código de descuento.' }, { status: 400 });
     }
 
     const [discount] = await db.select().from(discountCodes)
@@ -40,27 +40,27 @@ export async function POST(
       .limit(1);
 
     if (!discount) {
-      return NextResponse.json({ success: false, message: 'Invalid discount code' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Código de descuento no válido.' }, { status: 400 });
     }
 
     const now = new Date();
 
     if (discount.startsAt && now < discount.startsAt) {
-      return NextResponse.json({ success: false, message: 'Discount code is not yet active' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'El código de descuento aún no está activo.' }, { status: 400 });
     }
 
     if (discount.expiresAt && now > discount.expiresAt) {
-      return NextResponse.json({ success: false, message: 'Discount code has expired' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'El código de descuento ha caducado.' }, { status: 400 });
     }
 
     if (discount.maxUses && discount.usedCount >= discount.maxUses) {
-      return NextResponse.json({ success: false, message: 'Discount code has been fully redeemed' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'El código de descuento ya se ha agotado.' }, { status: 400 });
     }
 
     if (discount.minOrderAmount && subtotal && subtotal < discount.minOrderAmount) {
       return NextResponse.json({
         success: false,
-        message: `Minimum order amount of ${discount.minOrderAmount} not met`,
+        message: `El pedido mínimo para este código es ${(discount.minOrderAmount / 100).toFixed(2)}.`,
       }, { status: 400 });
     }
 

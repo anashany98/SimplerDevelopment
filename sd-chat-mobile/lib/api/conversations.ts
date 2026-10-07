@@ -1,7 +1,7 @@
 /**
  * SD Chat — Tanstack Query hooks for AI conversations
  *
- * Backed by the SimplerDevelopment portal endpoints
+ * Backed by the CRM AGENTS portal endpoints
  *  - GET  /api/portal/ai/conversations          → AiConversation[]
  *  - GET  /api/portal/ai/conversations/[id]     → { conversation, messages }
  *

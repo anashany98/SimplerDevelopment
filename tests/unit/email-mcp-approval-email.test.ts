@@ -124,6 +124,11 @@ vi.mock('@/lib/email', () => ({
       send: (...args: unknown[]) => H.resendSendMock(...args),
     },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
+  getEmailPlatformConfig: async () => ({
+    resendApiKey: process.env.RESEND_API_KEY ?? null,
+    transport: process.env.EMAIL_TRANSPORT === 'mailpit' ? 'mailpit' : 'resend',
+  }),
 }));
 
 // BAR-003: mock the digest-preference gate. Default mode is 'instant' unless
@@ -258,11 +263,11 @@ describe('sendApprovalEmails — dispatch', () => {
 
     expect(H.resendSendMock).toHaveBeenCalledTimes(2);
     const firstPayload = H.resendSendMock.mock.calls[0][0];
-    expect(firstPayload.from).toBe('Simpler Development <portal@example.test>');
+    expect(firstPayload.from).toBe('CRM AGENTS <portal@example.test>');
     expect([firstPayload.to, H.resendSendMock.mock.calls[1][0].to]).toEqual(
       expect.arrayContaining(['alice@example.test', 'bob@example.test']),
     );
-    expect(firstPayload.subject).toBe('[Acme Inc] Review: Update homepage hero copy');
+    expect(firstPayload.subject).toBe('[Acme Inc] Revisión: Update homepage hero copy');
     expect(firstPayload.html).toContain('Acme Inc');
     expect(firstPayload.html).toContain('page');
     expect(firstPayload.html).toContain('update');
@@ -270,7 +275,7 @@ describe('sendApprovalEmails — dispatch', () => {
     expect(firstPayload.html).toContain('https://example.test/portal/approvals?id=555');
   });
 
-  it('falls back to "Client #<id>" when the clients row is missing', async () => {
+  it('falls back to "Cliente #<id>" when the clients row is missing', async () => {
     H.dbState.clientRow = [];
     H.dbState.recipientUsers = [
       { id: 10, email: 'alice@example.test', name: 'Alice' },
@@ -288,8 +293,8 @@ describe('sendApprovalEmails — dispatch', () => {
     });
 
     const payload = H.resendSendMock.mock.calls[0][0];
-    expect(payload.subject).toBe('[Client #42] Review: x');
-    expect(payload.html).toContain('Client #42');
+    expect(payload.subject).toBe('[Cliente #42] Revisión: x');
+    expect(payload.html).toContain('Cliente #42');
   });
 
   it('truncates the subject with an ellipsis when summary exceeds 80 chars', async () => {
@@ -310,7 +315,7 @@ describe('sendApprovalEmails — dispatch', () => {
 
     const payload = H.resendSendMock.mock.calls[0][0];
     expect(payload.subject.endsWith('…')).toBe(true);
-    expect(payload.subject).toContain('[Acme] Review: ');
+    expect(payload.subject).toContain('[Acme] Revisión: ');
     // 80 chars of x + ellipsis
     expect(payload.subject).toContain('x'.repeat(80) + '…');
   });
@@ -333,7 +338,7 @@ describe('sendApprovalEmails — dispatch', () => {
 
     const payload = H.resendSendMock.mock.calls[0][0];
     expect(payload.subject.endsWith('…')).toBe(false);
-    expect(payload.subject).toBe(`[Acme] Review: ${summary}`);
+    expect(payload.subject).toBe(`[Acme] Revisión: ${summary}`);
   });
 
   it('escapes html entities in summary/clientName/entityType/operation', async () => {
@@ -445,7 +450,7 @@ describe('sendApprovalEmails — dispatch', () => {
     });
 
     const payload = H.resendSendMock.mock.calls[0][0];
-    expect(payload.from).toBe('Simpler Development <portal@simplerdevelopment.com>');
+    expect(payload.from).toBe('CRM AGENTS <portal@simplerdevelopment.com>');
   });
 
   it('swallows per-recipient Resend errors via Promise.allSettled', async () => {
@@ -521,10 +526,10 @@ describe('sendApprovalEmails — dispatch', () => {
     });
 
     const payload = H.resendSendMock.mock.calls[0][0];
-    expect(payload.html).toContain('Review &amp; Approve');
+    expect(payload.html).toContain('Revisar y aprobar');
     expect(payload.html).toContain('href="https://example.test/portal/approvals?id=321"');
     expect(payload.html).toContain('MCP_APPROVAL_EMAILS_ENABLED=false');
-    expect(payload.html).toContain('Simpler Development');
+    expect(payload.html).toContain('CRM AGENTS');
   });
 });
 

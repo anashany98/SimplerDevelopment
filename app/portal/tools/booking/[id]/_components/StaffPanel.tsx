@@ -109,9 +109,7 @@ export function StaffPanel({
       {/* Booking type — individual vs group/class */}
       <div>
         <h3 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-          <span className="material-icons text-lg">event_seat</span>
-          Booking Type
-        </h3>
+          <span className="material-icons text-lg">event_seat</span>Tipo de reserva</h3>
         <p className="text-xs text-muted-foreground mb-3">
           Choose how this booking page handles capacity. Individual bookings give the
           slot to a single guest. Group / class bookings let multiple attendees share
@@ -180,9 +178,7 @@ export function StaffPanel({
               placeholder="e.g. 8"
               className="w-32 px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
-            <p className="text-xs text-muted-foreground mt-1">
-              Maximum number of attendees that can register for a single time slot.
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">Número máximo de asistentes que pueden registrarse para un horario.</p>
           </div>
         )}
       </div>
@@ -193,10 +189,8 @@ export function StaffPanel({
           <span className="material-icons text-lg">shuffle</span>
           Assignment Mode
         </h3>
-        <p className="text-xs text-muted-foreground mb-3">
-          Decide how bookings are distributed across staff. Customer-selected staff
-          (when enabled below) always overrides this auto-assignment.
-        </p>
+        <p className="text-xs text-muted-foreground mb-3">Decide cómo se distribuyen las reservas entre el personal. El personal elegido por el cliente
+            (cuando esté activado abajo) siempre anula esta automatización.</p>
         <select
           value={assignmentMode}
           onChange={(e) =>
@@ -204,20 +198,16 @@ export function StaffPanel({
           }
           className="w-full sm:w-auto px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
         >
-          <option value="fixed">Fixed (page owner / first member)</option>
-          <option value="round_robin">Round-robin (fewest in next 7 days)</option>
-          <option value="fewest_upcoming">Fewest upcoming (load-balance)</option>
+          <option value="fixed">Fijo (propietario de la página / primer miembro)</option>
+          <option value="round_robin">Rotativo (el menor número de reservas en los próximos 7 días)</option>
+          <option value="fewest_upcoming">Menos próximas (equilibrar carga)</option>
         </select>
 
         {assignmentMode === 'round_robin' && (
           <div className="mt-3">
-            <p className="text-xs font-medium text-muted-foreground mb-2">
-              Round-robin pool — staff eligible for auto-assignment
-            </p>
+            <p className="text-xs font-medium text-muted-foreground mb-2">Grupo rotativo — personal elegible para asignación automática</p>
             {pageMembers.length === 0 ? (
-              <p className="text-xs text-muted-foreground">
-                Add staff members below to populate the round-robin pool.
-              </p>
+              <p className="text-xs text-muted-foreground">Agrega miembros del personal abajo para poblar el grupo rotativo.</p>
             ) : (
               <div className="space-y-1">
                 {pageMembers.map((m) => (
@@ -236,9 +226,7 @@ export function StaffPanel({
                 ))}
               </div>
             )}
-            <p className="text-xs text-muted-foreground mt-2">
-              Leave empty to round-robin across all active members of this page.
-            </p>
+            <p className="text-xs text-muted-foreground mt-2">Déjalo vacío para rotar entre todos los miembros activos de esta página.</p>
           </div>
         )}
       </div>
@@ -248,10 +236,8 @@ export function StaffPanel({
         <div className="flex items-center justify-between">
           <div>
             <h3 id="allow-staff-selection-label" className="text-sm font-medium text-foreground">Allow Customer Staff Selection</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              When enabled, customers can choose a specific staff member when booking. When
-              disabled, bookings are auto-assigned using the mode above.
-            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">Cuando está activado, los clientes pueden elegir un miembro específico del personal al reservar. Cuando
+              está desactivado, las reservas se asignan automáticamente según el modo de arriba.</p>
           </div>
           <button
             type="button"
@@ -277,10 +263,8 @@ export function StaffPanel({
           <span className="material-icons text-lg">group</span>
           Assigned Staff Members
         </h3>
-        <p className="text-xs text-muted-foreground mb-4">
-          Add team members who handle bookings for this page. Each member can have a custom
-          display name, color, and availability.
-        </p>
+        <p className="text-xs text-muted-foreground mb-4">Agrega miembros del equipo que gestionen reservas para esta página. Cada miembro puede tener
+          un nombre para mostrar personalizado, color y disponibilidad.</p>
 
         {/* Add member form */}
         <div className="flex items-end gap-3 mb-4 p-3 bg-muted/50 rounded-lg">
@@ -298,7 +282,7 @@ export function StaffPanel({
               }}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <option value="">Select a team member...</option>
+              <option value="">Selecciona un miembro del equipo…</option>
               {teamMembers
                 .filter((tm) => !pageMembers.some((pm) => pm.userId === tm.userId))
                 .map((tm) => (
@@ -316,7 +300,7 @@ export function StaffPanel({
               type="text"
               value={addMemberName}
               onChange={(e) => setAddMemberName(e.target.value)}
-              placeholder="Optional"
+              placeholder="Opcional"
               className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
@@ -332,11 +316,9 @@ export function StaffPanel({
           <button
             onClick={addMember}
             disabled={!addMemberUserId}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 whitespace-nowrap"
+            className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50 whitespace-nowrap"
           >
-            <span className="material-icons text-lg align-middle mr-1">person_add</span>
-            Add
-          </button>
+            <span className="material-icons text-lg align-middle mr-1">person_add</span>Agregar</button>
         </div>
 
         {/* Members list */}
@@ -349,8 +331,8 @@ export function StaffPanel({
         ) : pageMembers.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             <span className="material-icons text-4xl mb-2 block opacity-50">group_off</span>
-            <p className="text-sm">No staff members assigned yet.</p>
-            <p className="text-xs mt-1">Add team members above to enable staff assignment.</p>
+            <p className="text-sm">Aún no hay miembros del personal asignados.</p>
+            <p className="text-xs mt-1">Añade miembros del equipo arriba para activar la asignación de personal.</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -403,7 +385,7 @@ export function StaffPanel({
         <div className="border-t border-border pt-5">
           <p className="text-xs text-muted-foreground flex items-center gap-1.5">
             <span className="material-icons text-sm">info</span>
-            Remember to click <strong>Save Changes</strong> above to persist the staff selection
+            Recuerda hacer clic en <strong>Guardar cambios</strong> arriba para conservar la selección de personal
             toggle. Staff member additions and removals are saved immediately.
           </p>
         </div>

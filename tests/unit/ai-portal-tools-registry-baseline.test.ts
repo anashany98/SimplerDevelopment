@@ -79,9 +79,10 @@ const EXPECTED_TOOL_REGISTRY: Record<string, { required: string[]; properties: s
   get_website_tags: { required: ['website_id'], properties: ['website_id'] },
   get_website_media: { required: ['website_id'], properties: ['website_id'] },
   get_my_hosted_sites: { required: [], properties: [] },
+  create_website: { required: ['name'], properties: ['name', 'description'] },
   create_website_page: {
     required: ['website_id', 'title', 'slug', 'post_type'],
-    properties: ['website_id', 'title', 'slug', 'post_type', 'excerpt', 'published', 'blocks'],
+    properties: ['website_id', 'title', 'slug', 'post_type', 'excerpt', 'blocks'],
   },
   publish_page: { required: ['post_id', 'published'], properties: ['post_id', 'published'] },
   create_website_category: {
@@ -164,6 +165,41 @@ const EXPECTED_TOOL_REGISTRY: Record<string, { required: string[]; properties: s
 
   // Navigation
   navigate_to: { required: ['path'], properties: ['path', 'section', 'message'] },
+
+  // Unified Inbox / WhatsApp / Social Channels
+  get_inbox_channels: { required: [], properties: [] },
+  get_inbox_conversations: {
+    required: [],
+    properties: ['status', 'channel', 'assignedUserId', 'aiMode', 'limit'],
+  },
+  get_inbox_conversation: {
+    required: ['conversationId'],
+    properties: ['conversationId', 'limit'],
+  },
+  send_inbox_message: {
+    required: ['conversationId', 'text'],
+    properties: ['conversationId', 'text', 'purpose'],
+  },
+  assign_inbox_conversation: {
+    required: ['conversationId', 'assignedUserId'],
+    properties: ['conversationId', 'assignedUserId'],
+  },
+  take_over_inbox_conversation: {
+    required: ['conversationId'],
+    properties: ['conversationId'],
+  },
+  pause_inbox_ai: {
+    required: ['conversationId'],
+    properties: ['conversationId'],
+  },
+  return_inbox_conversation_to_ai: {
+    required: ['conversationId'],
+    properties: ['conversationId'],
+  },
+  close_inbox_conversation: {
+    required: ['conversationId'],
+    properties: ['conversationId'],
+  },
 
   // CRM Contacts/Companies/Deals/Activities/Pipelines
   get_crm_contacts: { required: [], properties: ['search', 'status', 'limit'] },
@@ -251,13 +287,13 @@ describe('@/lib/ai/portal-tools — public API surface', () => {
   });
 
   it('PORTAL_TOOLS entries have unique tool names', () => {
-    const names = portalTools.PORTAL_TOOLS.map(t => t.name);
+    const names = portalTools.PORTAL_TOOLS.map((t) => t.name);
     const dedup = new Set(names);
     expect(dedup.size).toBe(names.length);
   });
 
   it('PORTAL_TOOLS exposes exactly the tool names locked in EXPECTED_TOOL_REGISTRY', () => {
-    const actualNames = portalTools.PORTAL_TOOLS.map(t => t.name).sort();
+    const actualNames = portalTools.PORTAL_TOOLS.map((t) => t.name).sort();
     const expectedNames = Object.keys(EXPECTED_TOOL_REGISTRY).sort();
     expect(actualNames).toEqual(expectedNames);
   });

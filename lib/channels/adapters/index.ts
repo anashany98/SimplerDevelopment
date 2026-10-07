@@ -7,10 +7,15 @@ import type {
   ChannelAdapter,
   ChannelAdapterKey,
   ChannelCapabilities,
+  LegacyChannelAdapter,
+  Channel,
   NormalizedMessage,
   OutboundMessageRequest,
 } from '../types';
 import { getCapabilities } from '../capabilities';
+import { EmailChannelAdapter } from './email';
+import { MetaChannelAdapter } from './meta';
+import { WebChatAdapter } from './webchat';
 
 export { getCapabilities, PROVIDER_CAPABILITIES } from '../capabilities';
 
@@ -49,3 +54,22 @@ export function createAdapterRegistry(adapters: ChannelAdapter[]): {
     get: (key) => map.get(key) ?? null,
   };
 }
+
+// Portal connection-management routes still use the provider asset contract.
+// Keep that adapter lookup alongside the newer gateway registry so both flows
+// share the provider implementations without conflating their message types.
+const portalAdapters = new Map<Channel, LegacyChannelAdapter>([
+  ['whatsapp', new MetaChannelAdapter('whatsapp')],
+  ['instagram', new MetaChannelAdapter('instagram')],
+  ['messenger', new MetaChannelAdapter('messenger')],
+  ['webchat', new WebChatAdapter()],
+  ['email', new EmailChannelAdapter()],
+]);
+
+export function getChannelAdapter(channel: Channel): LegacyChannelAdapter {
+  const adapter = portalAdapters.get(channel);
+  if (!adapter) throw new Error(`Unsupported channel: ${channel}`);
+  return adapter;
+}
+
+export { MetaChannelAdapter, WebChatAdapter, EmailChannelAdapter };

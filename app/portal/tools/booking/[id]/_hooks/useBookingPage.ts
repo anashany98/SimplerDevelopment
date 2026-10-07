@@ -201,10 +201,10 @@ export function useBookingPage(id: string): UseBookingPageResult {
         setBookingType((p.bookingType as 'individual' | 'group') || 'individual');
         setGroupCapacity(p.groupCapacity ?? null);
       } else {
-        setError('Booking page not found');
+        setError('Página de reservas no encontrada.');
       }
     } catch {
-      setError('Failed to load booking page');
+      setError('No se pudo cargar la página de reservas.');
     } finally {
       setLoading(false);
     }
@@ -288,10 +288,10 @@ export function useBookingPage(id: string): UseBookingPageResult {
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
       } else {
-        setError(data.message || 'Failed to save');
+        setError(data.message || 'No se pudo guardar.');
       }
     } catch {
-      setError('Failed to save changes');
+      setError('No se pudieron guardar los cambios.');
     } finally {
       setSaving(false);
     }
@@ -332,7 +332,7 @@ export function useBookingPage(id: string): UseBookingPageResult {
     try {
       const data = await api.deleteBookingPage(id);
       if (data.success) return true;
-      setError(data.message || 'Failed to delete');
+      setError(data.message || 'No se pudo eliminar.');
       return false;
     } catch {
       setError('Failed to delete booking page');

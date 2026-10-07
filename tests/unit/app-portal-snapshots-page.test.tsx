@@ -116,7 +116,7 @@ async function renderAndLoad() {
   const result = render(<PortalSnapshotsPage />);
   await waitFor(() => {
     // loading spinner disappears
-    expect(result.container.textContent).not.toContain('progress_activity');
+    expect(result.container.textContent).not.toContain('autorenew');
   });
   return result;
 }
@@ -128,7 +128,7 @@ describe('PortalSnapshotsPage', () => {
     it('shows loading spinner while fetching', () => {
       vi.stubGlobal('fetch', vi.fn(() => new Promise(() => { /* never resolves */ })));
       const { container } = render(<PortalSnapshotsPage />);
-      expect(container.textContent).toContain('Loading snapshots...');
+      expect(container.textContent).toContain('Cargando instantáneas...');
     });
   });
 
@@ -139,8 +139,8 @@ describe('PortalSnapshotsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('No snapshots yet');
-      expect(container.textContent).toContain('Create your first to clone a site');
+      expect(container.textContent).toContain('Aún no hay instantáneas.');
+      expect(container.textContent).toContain('Crea la primera para clonar una web.');
     });
   });
 
@@ -165,12 +165,12 @@ describe('PortalSnapshotsPage', () => {
 
     it('renders "Uploaded" when sourceSiteId is null', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Uploaded');
+      expect(container.textContent).toContain('Subida');
     });
 
     it('renders "Site #<id>" when sourceSiteId not found in websites list', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Site #11');
+      expect(container.textContent).toContain('Web #11');
     });
 
     it('renders a formatted createdAt date', async () => {
@@ -182,7 +182,7 @@ describe('PortalSnapshotsPage', () => {
     it('renders Download link for each snapshot', async () => {
       const { container } = await renderAndLoad();
       const links = Array.from(container.querySelectorAll('a')).filter(
-        (a) => a.textContent?.includes('Download'),
+        (a) => a.textContent?.includes('Descargar'),
       );
       expect(links.length).toBe(3);
     });
@@ -190,7 +190,7 @@ describe('PortalSnapshotsPage', () => {
     it('download link href points to correct endpoint', async () => {
       const { container } = await renderAndLoad();
       const link = Array.from(container.querySelectorAll('a')).find(
-        (a) => a.textContent?.includes('Download'),
+        (a) => a.textContent?.includes('Descargar'),
       )!;
       expect(link.getAttribute('href')).toBe('/api/portal/snapshots/1/download');
     });
@@ -198,7 +198,7 @@ describe('PortalSnapshotsPage', () => {
     it('renders Import button for each snapshot', async () => {
       const { container } = await renderAndLoad();
       const importBtns = Array.from(container.querySelectorAll('button')).filter(
-        (b) => b.textContent?.includes('Import'),
+        (b) => b.textContent?.includes('Importar'),
       );
       expect(importBtns.length).toBe(3);
     });
@@ -206,7 +206,7 @@ describe('PortalSnapshotsPage', () => {
     it('renders Delete button for each snapshot', async () => {
       const { container } = await renderAndLoad();
       const deleteBtns = Array.from(container.querySelectorAll('button')).filter(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       );
       expect(deleteBtns.length).toBe(3);
     });
@@ -215,7 +215,7 @@ describe('PortalSnapshotsPage', () => {
   describe('page header', () => {
     it('renders the page title', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Site snapshots');
+      expect(container.textContent).toContain('Instantáneas de webs');
     });
 
     it('renders the Create snapshot header button', async () => {
@@ -241,7 +241,7 @@ describe('PortalSnapshotsPage', () => {
   function getPanelSubmitBtn(container: HTMLElement) {
     const panel = container.querySelector('.rounded-2xl.border.border-border.bg-card.p-4') as HTMLElement;
     return Array.from(panel.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Create snapshot',
+      (b) => b.textContent?.trim() === 'Crear instantánea',
     ) as HTMLButtonElement;
   }
 
@@ -249,14 +249,14 @@ describe('PortalSnapshotsPage', () => {
     it('toggles the create form open', async () => {
       const { container } = await renderAndLoad();
       clickHeaderCreateBtn(container);
-      expect(container.textContent).toContain('Create snapshot from a site');
+      expect(container.textContent).toContain('Crear instantánea desde una web');
     });
 
     it('second click closes the form', async () => {
       const { container } = await renderAndLoad();
       clickHeaderCreateBtn(container);
       clickHeaderCreateBtn(container);
-      expect(container.textContent).not.toContain('Create snapshot from a site');
+      expect(container.textContent).not.toContain('Crear instantánea desde una web');
     });
 
     it('renders website options in source site select', async () => {
@@ -269,8 +269,8 @@ describe('PortalSnapshotsPage', () => {
     it('Cancel button closes the form', async () => {
       const { container } = await renderAndLoad();
       clickHeaderCreateBtn(container);
-      fireEvent.click(screen.getByText('Cancel'));
-      expect(container.textContent).not.toContain('Create snapshot from a site');
+      fireEvent.click(screen.getByText('Cancelar'));
+      expect(container.textContent).not.toContain('Crear instantánea desde una web');
     });
 
     it('panel submit button is disabled when no site selected', async () => {
@@ -291,7 +291,7 @@ describe('PortalSnapshotsPage', () => {
       const siteSelect = panel.querySelector('select') as HTMLSelectElement;
       fireEvent.change(siteSelect, { target: { value: '10' } });
       const nameInput = panel.querySelector(
-        'input[placeholder="e.g. Acme Marketing Site v1"]',
+        'input[placeholder="p. ej. Web de marketing de Acme v1"]',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'My Snap' } });
       await act(async () => { fireEvent.click(getPanelSubmitBtn(container)); });
@@ -335,7 +335,7 @@ describe('PortalSnapshotsPage', () => {
       fireEvent.change(siteSelect, { target: { value: '10' } });
       await act(async () => { fireEvent.click(getPanelSubmitBtn(container)); });
       await waitFor(() => {
-        expect(container.textContent).toContain('Export failed');
+        expect(container.textContent).toContain('Error al exportar');
       });
     });
   });
@@ -348,7 +348,7 @@ describe('PortalSnapshotsPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderAndLoad();
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       )!;
       await act(async () => { fireEvent.click(deleteBtn); });
       await waitFor(() => {
@@ -362,11 +362,11 @@ describe('PortalSnapshotsPage', () => {
     it('shows success flash after delete', async () => {
       const { container } = await renderAndLoad();
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       )!;
       await act(async () => { fireEvent.click(deleteBtn); });
       await waitFor(() => {
-        expect(container.textContent).toContain('Snapshot deleted');
+        expect(container.textContent).toContain('Instantánea eliminada');
       });
     });
 
@@ -378,7 +378,7 @@ describe('PortalSnapshotsPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderAndLoad();
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       )!;
       fireEvent.click(deleteBtn);
       const del = fetchSpy.mock.calls.find(
@@ -396,7 +396,7 @@ describe('PortalSnapshotsPage', () => {
       };
       const { container } = await renderAndLoad();
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       )!;
       await act(async () => { fireEvent.click(deleteBtn); });
       await waitFor(() => {
@@ -408,11 +408,11 @@ describe('PortalSnapshotsPage', () => {
   describe('import modal', () => {
     async function openImportModal(container: HTMLElement) {
       const importBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Import') && b.title === 'Import this snapshot',
+        (b) => b.textContent?.includes('Importar') && b.title === 'Importar esta instantánea',
       )!;
       fireEvent.click(importBtn);
       await waitFor(() => {
-        expect(container.textContent).toContain('Import snapshot');
+        expect(container.textContent).toContain('Importar instantánea');
       });
       return importBtn;
     }
@@ -420,7 +420,7 @@ describe('PortalSnapshotsPage', () => {
     it('opens the import modal when Import button is clicked', async () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
-      expect(screen.getByText('Import snapshot')).toBeTruthy();
+      expect(screen.getByText('Importar instantánea')).toBeTruthy();
     });
 
     it('shows the snapshot name in the modal', async () => {
@@ -450,7 +450,7 @@ describe('PortalSnapshotsPage', () => {
       await openImportModal(container);
       const targetSelect = container.querySelector('div.fixed select') as HTMLSelectElement;
       fireEvent.change(targetSelect, { target: { value: '20' } });
-      expect(container.textContent).toContain('Posts with conflicting slugs');
+      expect(container.textContent).toContain('Las publicaciones con slugs en conflicto');
     });
 
     it('hides new site name input when existing site is selected', async () => {
@@ -465,7 +465,7 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const cancelBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Cancel',
+        (b) => b.textContent === 'Cancelar',
       )!;
       fireEvent.click(cancelBtn);
       expect(container.querySelector('div.fixed')).toBeNull();
@@ -497,7 +497,7 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
@@ -507,7 +507,7 @@ describe('PortalSnapshotsPage', () => {
         expect(post).toBeTruthy();
       });
       await waitFor(() => {
-        expect(container.textContent).toContain('Imported');
+        expect(container.textContent).toContain('Se importaron');
       });
     });
 
@@ -521,11 +521,11 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
-        expect(container.textContent).toContain('2 slug conflicts resolved');
+        expect(container.textContent).toContain('2 conflictos de slug resueltos');
       });
     });
 
@@ -539,7 +539,7 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
@@ -557,11 +557,11 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
-        expect(container.textContent).toContain('Import failed');
+        expect(container.textContent).toContain('Error al importar');
       });
     });
 
@@ -569,7 +569,7 @@ describe('PortalSnapshotsPage', () => {
       const { container } = await renderAndLoad();
       await openImportModal(container);
       const importSubmitBtn = Array.from(container.querySelectorAll('div.fixed button')).find(
-        (b) => b.textContent === 'Import',
+        (b) => b.textContent === 'Importar',
       )!;
       await act(async () => { fireEvent.click(importSubmitBtn); });
       await waitFor(() => {
@@ -582,7 +582,7 @@ describe('PortalSnapshotsPage', () => {
     it('renders success flash with green styling', async () => {
       const { container } = await renderAndLoad();
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       )!;
       await act(async () => { fireEvent.click(deleteBtn); });
       await waitFor(() => {
@@ -600,7 +600,7 @@ describe('PortalSnapshotsPage', () => {
       };
       const { container } = await renderAndLoad();
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       )!;
       await act(async () => { fireEvent.click(deleteBtn); });
       await waitFor(() => {
@@ -615,10 +615,10 @@ describe('PortalSnapshotsPage', () => {
       vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('Network error'))));
       const { container } = render(<PortalSnapshotsPage />);
       await waitFor(() => {
-        expect(container.textContent).not.toContain('progress_activity');
+        expect(container.textContent).not.toContain('autorenew');
       });
       // Should show empty state without crashing
-      expect(container.textContent).toContain('No snapshots yet');
+      expect(container.textContent).toContain('Aún no hay instantáneas.');
     });
 
     it('handles snapshots returning success: false gracefully', async () => {
@@ -627,7 +627,7 @@ describe('PortalSnapshotsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('No snapshots yet');
+      expect(container.textContent).toContain('Aún no hay instantáneas.');
     });
 
     it('handles websites returning success: false gracefully', async () => {

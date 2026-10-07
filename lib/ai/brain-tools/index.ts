@@ -20,6 +20,12 @@ import { getDashboardSummary } from '@/lib/brain/dashboard';
 import { listTasks, createTask } from '@/lib/brain/tasks';
 import type { BrainTaskStatus } from '@/lib/db/schema';
 import { listInitiatives, type ListInitiativesOpts } from '@/lib/brain/initiatives';
+import { listGoals, getGoalById, type ListGoalsOpts } from '@/lib/brain/goals';
+import { listRelationships, getRelationship } from '@/lib/brain/relationships';
+import { getTopicTree } from '@/lib/brain/topics';
+import { listPlaybooks, getPlaybookById, type ListPlaybooksOpts } from '@/lib/brain/playbooks';
+import { listDocuments, getDocumentById, type ListDocumentsOpts } from '@/lib/brain/documents';
+import { getOrgUnitTree } from '@/lib/brain/org-units';
 import { sanitizeToolResult } from './sanitizer';
 
 // ─── Tool definitions ─────────────────────────────────────────────────────────
@@ -226,6 +232,144 @@ export const BRAIN_TOOLS: Anthropic.Tool[] = [
       required: ['title'],
     },
   },
+
+  {
+    name: 'brain_list_goals',
+    description: 'List Company Brain goals (OKRs) with their status, owner, and target dates. Optionally filter by status.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        status: {
+          type: 'string',
+          enum: ['active', 'at_risk', 'completed', 'paused', 'cancelled'],
+          description: 'Filter by goal status (omit for all)',
+        },
+        limit: { type: 'number', description: 'Maximum number of goals to return (default 50, max 100)' },
+      },
+      required: [],
+    },
+  },
+
+  {
+    name: 'brain_get_goal',
+    description: 'Read a specific Company Brain goal by its numeric ID, including its parent initiative reference.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        goal_id: { type: 'number', description: 'Numeric ID of the goal to retrieve' },
+      },
+      required: ['goal_id'],
+    },
+  },
+
+  {
+    name: 'brain_list_relationships',
+    description: 'List relationships tracked in the Company Brain (person-to-person and person-to-company overlays), optionally filtered by type.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        type: {
+          type: 'string',
+          description: 'Filter by relationship type (e.g. partner, vendor, investor, client)',
+        },
+        limit: { type: 'number', description: 'Maximum number of relationships to return (default 50, max 500)' },
+      },
+      required: [],
+    },
+  },
+
+  {
+    name: 'brain_get_relationship',
+    description: 'Read a specific Company Brain relationship overlay by its numeric ID, including both parties and notes.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        relationship_id: { type: 'number', description: 'Numeric ID of the relationship overlay to retrieve' },
+      },
+      required: ['relationship_id'],
+    },
+  },
+
+  {
+    name: 'brain_get_topic_tree',
+    description: 'Get the Company Brain topic tree (nested taxonomy of knowledge topics with entity counts). Use this to understand how company knowledge is organized.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {},
+      required: [],
+    },
+  },
+
+  {
+    name: 'brain_list_playbooks',
+    description: 'List Company Brain playbooks (repeatable processes with step-by-step workflows), optionally filtered by status or category.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        status: {
+          type: 'string',
+          enum: ['draft', 'active', 'archived'],
+          description: 'Filter by playbook status (omit for all)',
+        },
+        category: { type: 'string', description: 'Optional category filter' },
+        limit: { type: 'number', description: 'Maximum number of playbooks to return (default 25, max 100)' },
+      },
+      required: [],
+    },
+  },
+
+  {
+    name: 'brain_get_playbook',
+    description: 'Read a specific Company Brain playbook by its numeric ID, including its ordered steps and trigger kind.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        playbook_id: { type: 'number', description: 'Numeric ID of the playbook to retrieve' },
+      },
+      required: ['playbook_id'],
+    },
+  },
+
+  {
+    name: 'brain_list_documents',
+    description: 'List Company Brain documents (SOPs, policies, guides) with their category, status, version, and acknowledgment counts.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        status: {
+          type: 'string',
+          enum: ['draft', 'published', 'archived'],
+          description: 'Filter by document status (omit for all)',
+        },
+        category: { type: 'string', description: 'Optional category filter (e.g. policy, sop, guide)' },
+        search: { type: 'string', description: 'Optional substring search across titles' },
+        limit: { type: 'number', description: 'Maximum number of documents to return (default 50, max 100)' },
+      },
+      required: [],
+    },
+  },
+
+  {
+    name: 'brain_get_document',
+    description: 'Read a specific Company Brain document by its numeric ID, including its current published version content.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        document_id: { type: 'number', description: 'Numeric ID of the document to retrieve' },
+      },
+      required: ['document_id'],
+    },
+  },
+
+  {
+    name: 'brain_get_org_chart',
+    description: 'Get the Company Brain org chart: the org-unit tree with member counts and reporting structure.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {},
+      required: [],
+    },
+  },
 ];
 
 // ─── Handler type ─────────────────────────────────────────────────────────────
@@ -421,6 +565,125 @@ const handlers: Record<string, BrainHandler> = {
         needsReview: true,
         createdBy: userId,
       });
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_list_goals: async (input, clientId) => {
+    try {
+      const status = typeof input.status === 'string' ? input.status : undefined;
+      const limit = typeof input.limit === 'number' ? Math.min(input.limit, 100) : 50;
+      return await listGoals(clientId, {
+        status: status as ListGoalsOpts['status'],
+        limit,
+      });
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_get_goal: async (input, clientId) => {
+    try {
+      const goalId = Number(input.goal_id);
+      if (!Number.isFinite(goalId)) return { error: 'goal_id must be a number' };
+      const goal = await getGoalById(clientId, goalId);
+      if (!goal) return { error: `Goal ${goalId} not found` };
+      return goal;
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_list_relationships: async (input, clientId) => {
+    try {
+      const type = typeof input.type === 'string' ? input.type : undefined;
+      const limit = typeof input.limit === 'number' ? Math.min(input.limit, 500) : 50;
+      return await listRelationships(clientId, { type, limit });
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_get_relationship: async (input, clientId) => {
+    try {
+      const relationshipId = Number(input.relationship_id);
+      if (!Number.isFinite(relationshipId)) return { error: 'relationship_id must be a number' };
+      const rel = await getRelationship(clientId, relationshipId);
+      if (!rel) return { error: `Relationship ${relationshipId} not found` };
+      return rel;
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_get_topic_tree: async (_input, clientId) => {
+    try {
+      return await getTopicTree(clientId);
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_list_playbooks: async (input, clientId) => {
+    try {
+      const status = typeof input.status === 'string' ? input.status : undefined;
+      const category = typeof input.category === 'string' ? input.category : undefined;
+      const limit = typeof input.limit === 'number' ? Math.min(input.limit, 100) : 25;
+      return await listPlaybooks(clientId, {
+        status: status as ListPlaybooksOpts['status'],
+        category,
+        limit,
+      });
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_get_playbook: async (input, clientId) => {
+    try {
+      const playbookId = Number(input.playbook_id);
+      if (!Number.isFinite(playbookId)) return { error: 'playbook_id must be a number' };
+      const playbook = await getPlaybookById(clientId, playbookId);
+      if (!playbook) return { error: `Playbook ${playbookId} not found` };
+      return playbook;
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_list_documents: async (input, clientId) => {
+    try {
+      const status = typeof input.status === 'string' ? input.status : undefined;
+      const category = typeof input.category === 'string' ? input.category : undefined;
+      const search = typeof input.search === 'string' ? input.search : undefined;
+      const limit = typeof input.limit === 'number' ? Math.min(input.limit, 100) : 50;
+      return await listDocuments(clientId, {
+        status: status as ListDocumentsOpts['status'],
+        category: category as ListDocumentsOpts['category'],
+        search,
+        limit,
+      });
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_get_document: async (input, clientId) => {
+    try {
+      const documentId = Number(input.document_id);
+      if (!Number.isFinite(documentId)) return { error: 'document_id must be a number' };
+      const doc = await getDocumentById(clientId, documentId);
+      if (!doc) return { error: `Document ${documentId} not found` };
+      return doc;
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : String(err) };
+    }
+  },
+
+  brain_get_org_chart: async (_input, clientId) => {
+    try {
+      return await getOrgUnitTree(clientId);
     } catch (err) {
       return { error: err instanceof Error ? err.message : String(err) };
     }

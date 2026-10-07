@@ -82,7 +82,7 @@ describe('ProjectArtifactsTab — loading state', () => {
 
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    expect(screen.getByText(/Loading artifacts/i)).toBeTruthy();
+    expect(screen.getByText(/Cargando artefactos/i)).toBeTruthy();
 
     // Clean up
     act(() => { resolve({ ok: true, json: () => Promise.resolve({ success: true, data: [] }) }); });
@@ -92,7 +92,7 @@ describe('ProjectArtifactsTab — loading state', () => {
     setupFetch([]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.queryByText(/Loading artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByText(/Cargando artefactos/i)).toBeNull());
   });
 });
 
@@ -105,28 +105,28 @@ describe('ProjectArtifactsTab — empty state', () => {
     setupFetch([]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.getByText(/No artifacts linked yet/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Aún no hay artefactos vinculados/i)).toBeTruthy());
   });
 
   it('shows "Link your first artifact" button in empty state when canEdit=true', async () => {
     setupFetch([]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => expect(screen.getByText(/Link your first artifact/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Vincula tu primer artefacto/i)).toBeTruthy());
   });
 
   it('does not show "Link your first artifact" button when canEdit=false', async () => {
     setupFetch([]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.queryByText(/Link your first artifact/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByText(/Vincula tu primer artefacto/i)).toBeNull());
   });
 
   it('shows "Link artifact" header button when canEdit=true', async () => {
     setupFetch([]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => expect(screen.getByText(/Link artifact/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Vincular artefacto/i)).toBeTruthy());
   });
 
   it('does not show "Link artifact" header button when canEdit=false', async () => {
@@ -134,7 +134,7 @@ describe('ProjectArtifactsTab — empty state', () => {
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
     await waitFor(() => {
-      expect(screen.queryByText(/Link artifact/i)).toBeNull();
+      expect(screen.queryByText(/Vincular artefacto/i)).toBeNull();
     });
   });
 });
@@ -166,7 +166,7 @@ describe('ProjectArtifactsTab — artifact list', () => {
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
     await waitFor(() => {
-      const links = screen.getAllByTitle('Open artifact');
+      const links = screen.getAllByTitle('Abrir artefacto');
       expect(links[0].getAttribute('href')).toBe(`/portal/websites/${ARTIFACT_1.artifactId}`);
     });
   });
@@ -176,21 +176,21 @@ describe('ProjectArtifactsTab — artifact list', () => {
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
     await waitFor(() => {
-      const links = screen.getAllByTitle('Open artifact');
+      const links = screen.getAllByTitle('Abrir artefacto');
       expect(links[0].getAttribute('href')).toBe(`/portal/tools/pitch-decks/${ARTIFACT_2.artifactId}`);
     });
   });
 
   it('renders all known artifact type labels', async () => {
     const types = [
-      { type: 'website', label: 'Website' },
-      { type: 'email_campaign', label: 'Email Campaign' },
-      { type: 'proposal', label: 'Proposal' },
-      { type: 'booking', label: 'Booking' },
-      { type: 'survey', label: 'Survey' },
-      { type: 'post', label: 'Post' },
-      { type: 'brain_note', label: 'Brain Note' },
-      { type: 'path_chart', label: 'Path chart' },
+      { type: 'website', label: 'Sitio web' },
+      { type: 'email_campaign', label: 'Campaña de email' },
+      { type: 'proposal', label: 'Propuesta' },
+      { type: 'booking', label: 'Reserva' },
+      { type: 'survey', label: 'Encuesta' },
+      { type: 'post', label: 'Publicación' },
+      { type: 'brain_note', label: 'Nota de Brain' },
+      { type: 'path_chart', label: 'Gráfico de ruta' },
     ];
     for (const { type, label } of types) {
       cleanup();
@@ -229,21 +229,21 @@ describe('ProjectArtifactsTab — artifact list', () => {
     global.fetch = vi.fn(() => fetchOk({ success: false })) as unknown as typeof fetch;
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.getByText(/No artifacts linked yet/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Aún no hay artefactos vinculados/i)).toBeTruthy());
   });
 
   it('handles fetch returning non-ok response gracefully', async () => {
     global.fetch = vi.fn(() => fetchFail({})) as unknown as typeof fetch;
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.getByText(/No artifacts linked yet/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/Aún no hay artefactos vinculados/i)).toBeTruthy());
   });
 
   it('handles fetch network error gracefully', async () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('Network error'))) as unknown as typeof fetch;
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.queryByText(/Loading artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByText(/Cargando artefactos/i)).toBeNull());
   });
 });
 
@@ -256,50 +256,50 @@ describe('ProjectArtifactsTab — picker toggle', () => {
     setupFetch([], [AVAILABLE_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
-    await waitFor(() => expect(screen.getByPlaceholderText(/Search artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByPlaceholderText(/Buscar artefactos/i)).toBeTruthy());
   });
 
   it('button label changes to "Close" when picker is open', async () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
-    await waitFor(() => expect(screen.getByText('Close')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Cerrar')).toBeTruthy());
   });
 
   it('closes picker when button is clicked again', async () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
-    await waitFor(() => screen.getByText('Close'));
-    fireEvent.click(screen.getByText('Close'));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
+    await waitFor(() => screen.getByText('Cerrar'));
+    fireEvent.click(screen.getByText('Cerrar'));
 
-    await waitFor(() => expect(screen.queryByPlaceholderText(/Search artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByPlaceholderText(/Buscar artefactos/i)).toBeNull());
   });
 
   it('opens picker from empty state "Link your first artifact" button', async () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link your first artifact/i));
-    fireEvent.click(screen.getByText(/Link your first artifact/i));
+    await waitFor(() => screen.getByText(/Vincula tu primer artefacto/i));
+    fireEvent.click(screen.getByText(/Vincula tu primer artefacto/i));
 
-    await waitFor(() => expect(screen.getByPlaceholderText(/Search artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByPlaceholderText(/Buscar artefactos/i)).toBeTruthy());
   });
 
   it('fetches available artifacts when picker opens', async () => {
     setupFetch([], [AVAILABLE_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
@@ -312,8 +312,8 @@ describe('ProjectArtifactsTab — picker toggle', () => {
     setupFetch([], [AVAILABLE_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
     await waitFor(() => expect(screen.getByText('New Site')).toBeTruthy());
   });
@@ -322,10 +322,10 @@ describe('ProjectArtifactsTab — picker toggle', () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
-    await waitFor(() => expect(screen.getByText(/No available artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/No hay artefactos disponibles/i)).toBeTruthy());
   });
 });
 
@@ -338,11 +338,11 @@ describe('ProjectArtifactsTab — picker search and filters', () => {
     setupFetch([], [AVAILABLE_1, AVAILABLE_2]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
-    await waitFor(() => screen.getByPlaceholderText(/Search artifacts/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
+    await waitFor(() => screen.getByPlaceholderText(/Buscar artefactos/i));
 
-    fireEvent.change(screen.getByPlaceholderText(/Search artifacts/i), {
+    fireEvent.change(screen.getByPlaceholderText(/Buscar artefactos/i), {
       target: { value: 'New' },
     });
 
@@ -355,13 +355,13 @@ describe('ProjectArtifactsTab — picker search and filters', () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
     await waitFor(() => {
-      expect(screen.getByText('Website')).toBeTruthy();
-      expect(screen.getByText('Survey')).toBeTruthy();
-      expect(screen.getByText('Proposal')).toBeTruthy();
+      expect(screen.getByText('Sitio web')).toBeTruthy();
+      expect(screen.getByText('Encuesta')).toBeTruthy();
+      expect(screen.getByText('Propuesta')).toBeTruthy();
     });
   });
 
@@ -369,11 +369,11 @@ describe('ProjectArtifactsTab — picker search and filters', () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
-    await waitFor(() => screen.getByText('Website'));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
+    await waitFor(() => screen.getByText('Sitio web'));
 
-    fireEvent.click(screen.getByText('Website'));
+    fireEvent.click(screen.getByText('Sitio web'));
 
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
@@ -386,14 +386,14 @@ describe('ProjectArtifactsTab — picker search and filters', () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
-    await waitFor(() => screen.getByText('Website'));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
+    await waitFor(() => screen.getByText('Sitio web'));
 
     // Select a type then click All
-    fireEvent.click(screen.getByText('Website'));
-    await waitFor(() => screen.getByRole('button', { name: 'All' }));
-    fireEvent.click(screen.getByRole('button', { name: 'All' }));
+    fireEvent.click(screen.getByText('Sitio web'));
+    await waitFor(() => screen.getByRole('button', { name: 'Todos' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Todos' }));
 
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
@@ -409,10 +409,10 @@ describe('ProjectArtifactsTab — picker search and filters', () => {
     setupFetch([ARTIFACT_1], [alreadyLinked]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
-    await waitFor(() => expect(screen.getByText(/No available artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/No hay artefactos disponibles/i)).toBeTruthy());
   });
 });
 
@@ -432,8 +432,8 @@ describe('ProjectArtifactsTab — linking an artifact', () => {
     }) as unknown as typeof fetch;
 
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
 
     await waitFor(() => screen.getByText('New Site'));
     fireEvent.click(screen.getByText('New Site'));
@@ -458,15 +458,15 @@ describe('ProjectArtifactsTab — linking an artifact', () => {
     }) as unknown as typeof fetch;
 
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
     await waitFor(() => screen.getByText('New Site'));
 
     await act(async () => {
       fireEvent.click(screen.getByText('New Site'));
     });
 
-    await waitFor(() => expect(screen.queryByPlaceholderText(/Search artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByPlaceholderText(/Buscar artefactos/i)).toBeNull());
   });
 
   it('does not close picker when POST returns non-ok', async () => {
@@ -478,13 +478,13 @@ describe('ProjectArtifactsTab — linking an artifact', () => {
     }) as unknown as typeof fetch;
 
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
     await waitFor(() => screen.getByText('New Site'));
     fireEvent.click(screen.getByText('New Site'));
 
     // Picker stays open because linkArtifact returned early on !res.ok
-    await waitFor(() => expect(screen.getByPlaceholderText(/Search artifacts/i)).toBeTruthy());
+    await waitFor(() => expect(screen.getByPlaceholderText(/Buscar artefactos/i)).toBeTruthy());
   });
 });
 
@@ -497,15 +497,15 @@ describe('ProjectArtifactsTab — pin/unpin', () => {
     setupFetch([ARTIFACT_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => expect(screen.getByTitle('Pin')).toBeTruthy());
+    await waitFor(() => expect(screen.getByTitle('Anclar')).toBeTruthy());
   });
 
   it('clicking Pin calls PUT on artifacts endpoint', async () => {
     setupFetch([ARTIFACT_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByTitle('Pin'));
-    fireEvent.click(screen.getByTitle('Pin'));
+    await waitFor(() => screen.getByTitle('Anclar'));
+    fireEvent.click(screen.getByTitle('Anclar'));
 
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -528,12 +528,12 @@ describe('ProjectArtifactsTab — pin/unpin', () => {
     }) as unknown as typeof fetch;
 
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
-    await waitFor(() => screen.getByTitle('Pin'));
+    await waitFor(() => screen.getByTitle('Anclar'));
 
-    fireEvent.click(screen.getByTitle('Pin'));
+    fireEvent.click(screen.getByTitle('Anclar'));
 
     // Optimistic update: button title changes to 'Unpin' immediately
-    await waitFor(() => expect(screen.getByTitle('Unpin')).toBeTruthy());
+    await waitFor(() => expect(screen.getByTitle('Desanclar')).toBeTruthy());
 
     act(() => { resolvePut({ ok: true, json: () => Promise.resolve({ success: true }) }); });
   });
@@ -542,14 +542,14 @@ describe('ProjectArtifactsTab — pin/unpin', () => {
     setupFetch([ARTIFACT_2]); // ARTIFACT_2 is pinned
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => expect(screen.getByTitle('Unpin')).toBeTruthy());
+    await waitFor(() => expect(screen.getByTitle('Desanclar')).toBeTruthy());
   });
 
   it('does not show pin/unpin buttons when canEdit=false', async () => {
     setupFetch([ARTIFACT_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.queryByTitle('Pin')).toBeNull());
+    await waitFor(() => expect(screen.queryByTitle('Anclar')).toBeNull());
   });
 });
 
@@ -562,22 +562,22 @@ describe('ProjectArtifactsTab — unlink artifact', () => {
     setupFetch([ARTIFACT_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => expect(screen.getByTitle('Unlink')).toBeTruthy());
+    await waitFor(() => expect(screen.getByTitle('Desvincular')).toBeTruthy());
   });
 
   it('does not render Unlink button when canEdit=false', async () => {
     setupFetch([ARTIFACT_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={false} />);
 
-    await waitFor(() => expect(screen.queryByTitle('Unlink')).toBeNull());
+    await waitFor(() => expect(screen.queryByTitle('Desvincular')).toBeNull());
   });
 
   it('removes artifact from list optimistically on unlink', async () => {
     setupFetch([ARTIFACT_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByTitle('Unlink'));
-    fireEvent.click(screen.getByTitle('Unlink'));
+    await waitFor(() => screen.getByTitle('Desvincular'));
+    fireEvent.click(screen.getByTitle('Desvincular'));
 
     await waitFor(() => expect(screen.queryByText('My Website')).toBeNull());
   });
@@ -586,8 +586,8 @@ describe('ProjectArtifactsTab — unlink artifact', () => {
     setupFetch([ARTIFACT_1]);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByTitle('Unlink'));
-    fireEvent.click(screen.getByTitle('Unlink'));
+    await waitFor(() => screen.getByTitle('Desvincular'));
+    fireEvent.click(screen.getByTitle('Desvincular'));
 
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -609,8 +609,8 @@ describe('ProjectArtifactsTab — unlink artifact', () => {
     }) as unknown as typeof fetch;
 
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
-    await waitFor(() => screen.getByTitle('Unlink'));
-    fireEvent.click(screen.getByTitle('Unlink'));
+    await waitFor(() => screen.getByTitle('Desvincular'));
+    fireEvent.click(screen.getByTitle('Desvincular'));
 
     // After rollback the item should reappear
     await waitFor(() => expect(screen.getByText('My Website')).toBeTruthy());
@@ -625,8 +625,8 @@ describe('ProjectArtifactsTab — unlink artifact', () => {
     }) as unknown as typeof fetch;
 
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
-    await waitFor(() => screen.getByTitle('Unlink'));
-    fireEvent.click(screen.getByTitle('Unlink'));
+    await waitFor(() => screen.getByTitle('Desvincular'));
+    fireEvent.click(screen.getByTitle('Desvincular'));
 
     await waitFor(() => expect(screen.getByText('My Website')).toBeTruthy());
   });
@@ -641,14 +641,14 @@ describe('ProjectArtifactsTab — outside click closes picker', () => {
     setupFetch([], []);
     render(<ProjectArtifactsTab projectId={PROJECT_ID} canEdit={true} />);
 
-    await waitFor(() => screen.getByText(/Link artifact/i));
-    fireEvent.click(screen.getByText(/Link artifact/i));
-    await waitFor(() => screen.getByPlaceholderText(/Search artifacts/i));
+    await waitFor(() => screen.getByText(/Vincular artefacto/i));
+    fireEvent.click(screen.getByText(/Vincular artefacto/i));
+    await waitFor(() => screen.getByPlaceholderText(/Buscar artefactos/i));
 
     // Simulate a mousedown on the document body (outside the picker)
     fireEvent.mouseDown(document.body);
 
-    await waitFor(() => expect(screen.queryByPlaceholderText(/Search artifacts/i)).toBeNull());
+    await waitFor(() => expect(screen.queryByPlaceholderText(/Buscar artefactos/i)).toBeNull());
   });
 });
 
@@ -673,6 +673,6 @@ describe('ProjectArtifactsTab — unknown artifact type', () => {
 
     await waitFor(() => expect(screen.getByText('Mystery Item')).toBeTruthy());
     // No "Open artifact" link for unknown type
-    expect(screen.queryByTitle('Open artifact')).toBeNull();
+    expect(screen.queryByTitle('Abrir artefacto')).toBeNull();
   });
 });

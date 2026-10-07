@@ -1,0 +1,27 @@
+# Anthropic-protocol gateway for the local-AI deployment.
+#
+# Why: several AI surfaces (brain agent SSE, chat/stream, meeting extraction,
+# note classification, branding generators, pitch decks) instantiate the raw
+# @anthropic-ai/sdk client (models.ts lists them as deliberate carve-outs from
+# the provider-agnostic seam). LM Studio speaks OpenAI, not Anthropic, so those
+# call sites could not go local with env alone. This container translates
+# Anthropic /v1/messages (incl. streaming + tools) to LM Studio's OpenAI
+# server, and the app points at it via ANTHROPIC_BASE_URL. Zero code change.
+#
+# Every claude-* model id the repo passes to the SDK maps to the single local
+# chat model. Add real mappings here if heavier local models get deployed.
+
+model_list:
+  - model_name: "*" # catch-all: every claude-* id the repo sends lands here
+    litellm_params:
+      model: openai/qwen3-vl-8b-instruct
+      api_base: http://host.docker.internal:1234/v1
+      api_key: lmstudio-local
+
+litellm_settings:
+  # Anthropic clients send fields OpenAI doesn't know (e.g. cache_control on
+  # system blocks); drop rather than error.
+  drop_params: true
+
+general_settings:
+  master_key: local-anthropic-gateway

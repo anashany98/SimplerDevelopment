@@ -55,14 +55,14 @@ export default function ProjectDescription({ projectId, title, description, canE
       <p className="mt-1 text-muted-foreground">
         {value
           ? excerpt
-          : canEdit && <span className="italic">No description yet.</span>}
+          : canEdit && <span className="italic">Aún no hay descripción.</span>}
         {(needsTruncation || canEdit) && (
           <button
             type="button"
             onClick={() => { if (!value && canEdit) { setDraft(''); setEditing(true); } setOpen(true); }}
             className="ml-1 text-primary hover:underline font-medium inline-flex items-center gap-0.5"
           >
-            {needsTruncation ? 'Read more' : value ? 'View' : 'Add description'}
+            {needsTruncation ? 'Leer más' : value ? 'Ver' : 'Añadir descripción'}
             <span className="material-icons text-sm leading-none">chevron_right</span>
           </button>
         )}
@@ -74,7 +74,7 @@ export default function ProjectDescription({ projectId, title, description, canE
           <div className="relative bg-card border border-border rounded-xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
             <div className="flex items-start gap-3 p-5 border-b border-border shrink-0">
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Project description</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Descripción del proyecto</p>
                 <h2 className="text-xl font-bold text-foreground leading-tight">{title}</h2>
               </div>
               {canEdit && !editing && (
@@ -82,14 +82,13 @@ export default function ProjectDescription({ projectId, title, description, canE
                   onClick={() => { setDraft(value); setEditing(true); }}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-foreground hover:bg-accent transition-colors shrink-0"
                 >
-                  <span className="material-icons text-sm">edit</span>Edit
-                </button>
+                  <span className="material-icons text-sm">edit</span>Editar</button>
               )}
               <button
                 onClick={() => { if (!editing) setOpen(false); }}
                 disabled={editing}
                 className="p-1.5 rounded-lg hover:bg-accent transition-colors shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
-                aria-label="Close"
+                aria-label="Cerrar"
               >
                 <span className="material-icons text-xl text-muted-foreground">close</span>
               </button>
@@ -102,31 +101,29 @@ export default function ProjectDescription({ projectId, title, description, canE
                     value={draft}
                     onChange={e => setDraft(e.target.value)}
                     rows={16}
-                    placeholder="Supports Markdown — **bold**, # headings, - lists, `code`, [links](url)…"
+                    placeholder="Admite Markdown — **negrita**, # encabezados, - listas, `code`, [enlaces](url)…"
                     className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary resize-y"
                   />
                   <div className="flex items-center gap-2">
                     <button
                       onClick={save}
                       disabled={saving}
-                      className="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50"
+                      className="px-3 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50"
                     >
-                      {saving ? 'Saving…' : 'Save'}
+                      {saving ? 'Guardando…' : 'Guardar'}
                     </button>
                     <button
                       onClick={() => { setEditing(false); setDraft(value); }}
                       disabled={saving}
                       className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground"
-                    >
-                      Cancel
-                    </button>
-                    <span className="ml-auto text-xs text-muted-foreground">Markdown supported</span>
+                    >Cancelar</button>
+                    <span className="ml-auto text-xs text-muted-foreground">Markdown admitido</span>
                   </div>
                 </div>
               ) : value ? (
                 <MarkdownView className="text-sm text-foreground">{value}</MarkdownView>
               ) : (
-                <p className="text-sm text-muted-foreground italic">No description yet.</p>
+                <p className="text-sm text-muted-foreground italic">Aún no hay descripción.</p>
               )}
             </div>
           </div>

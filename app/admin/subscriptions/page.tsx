@@ -173,7 +173,7 @@ export default function AdminSubscriptionsPage() {
 
   async function submitCancel() {
     if (!activeAction) return;
-    if (!confirm(`Cancel the subscription for ${activeAction.sub.company ?? activeAction.sub.clientName}? It will end at the current period end (no immediate cut-off).`)) {
+    if (!confirm(`¿Cancelar la suscripción de ${activeAction.sub.company ?? activeAction.sub.clientName}? Finalizará al término del periodo actual (sin corte inmediato).`)) {
       return;
     }
     setSubmitting(true);
@@ -184,17 +184,17 @@ export default function AdminSubscriptionsPage() {
     });
     const data = await res.json();
     if (data.success) {
-      setToast({ kind: 'success', message: 'Cancellation scheduled. Stripe will sync the local state via webhook.' });
+      setToast({ kind: 'success', message: 'Cancelación programada. Stripe sincronizará el estado local mediante el webhook.' });
       closeAction();
     } else {
-      setToast({ kind: 'error', message: data.message ?? 'Cancel failed' });
+      setToast({ kind: 'error', message: data.message ?? 'No se pudo cancelar' });
       setSubmitting(false);
     }
   }
 
   async function submitChangePlan() {
     if (!activeAction) return;
-    if (!newPriceId) { setToast({ kind: 'error', message: 'Pick a target plan first.' }); return; }
+    if (!newPriceId) { setToast({ kind: 'error', message: 'Elige primero un plan de destino.' }); return; }
     setSubmitting(true);
     const res = await fetch(`/api/admin/portal/subscriptions/${activeAction.sub.id}/change-plan`, {
       method: 'POST',
@@ -203,17 +203,17 @@ export default function AdminSubscriptionsPage() {
     });
     const data = await res.json();
     if (data.success) {
-      setToast({ kind: 'success', message: 'Plan changed. Webhook will reconcile local state.' });
+      setToast({ kind: 'success', message: 'Plan cambiado. El webhook reconciliará el estado local.' });
       closeAction();
     } else {
-      setToast({ kind: 'error', message: data.message ?? 'Change plan failed' });
+      setToast({ kind: 'error', message: data.message ?? 'No se pudo cambiar el plan' });
       setSubmitting(false);
     }
   }
 
   async function submitRefund() {
     if (!activeAction) return;
-    if (!selectedInvoiceId) { setToast({ kind: 'error', message: 'Pick an invoice to refund.' }); return; }
+    if (!selectedInvoiceId) { setToast({ kind: 'error', message: 'Elige una factura para reembolsar.' }); return; }
     const inv = invoiceList.find(i => i.id === selectedInvoiceId);
     if (!inv) return;
     const dollarsStr = refundAmount.trim();
@@ -221,13 +221,13 @@ export default function AdminSubscriptionsPage() {
     if (dollarsStr) {
       const dollars = Number(dollarsStr);
       if (!Number.isFinite(dollars) || dollars <= 0) {
-        setToast({ kind: 'error', message: 'Refund amount must be a positive number.' });
+        setToast({ kind: 'error', message: 'El importe del reembolso debe ser un número positivo.' });
         return;
       }
       amountCents = Math.round(dollars * 100);
     }
-    const human = amountCents ? `${formatCents(amountCents)} from invoice ${inv.number}` : `the full ${formatCents(inv.total)} of invoice ${inv.number}`;
-    if (!confirm(`Refund ${human}? This is irreversible — Stripe will charge the refund immediately.`)) {
+    const human = amountCents ? `${formatCents(amountCents)} de la factura ${inv.number}` : `el total de ${formatCents(inv.total)} de la factura ${inv.number}`;
+    if (!confirm(`¿Reembolsar ${human}? Esto es irreversible — Stripe hará el reembolso inmediatamente.`)) {
       return;
     }
     setSubmitting(true);
@@ -242,10 +242,10 @@ export default function AdminSubscriptionsPage() {
     });
     const data = await res.json();
     if (data.success) {
-      setToast({ kind: 'success', message: `Refund issued (status: ${data.data?.status ?? 'unknown'}).` });
+      setToast({ kind: 'success', message: `Reembolso emitido (estado: ${data.data?.status ?? 'unknown'}).` });
       closeAction();
     } else {
-      setToast({ kind: 'error', message: data.message ?? 'Refund failed' });
+      setToast({ kind: 'error', message: data.message ?? 'No se pudo reembolsar' });
       setSubmitting(false);
     }
   }
@@ -268,14 +268,14 @@ export default function AdminSubscriptionsPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Subscriptions</h1>
-        <p className="text-muted-foreground mt-1">Manage client service subscriptions.</p>
+        <h1 className="text-2xl font-bold text-foreground">Suscripciones</h1>
+        <p className="text-muted-foreground mt-1">Gestiona las suscripciones de servicios de tus clientes.</p>
       </div>
 
       {/* Summary */}
       <div className="grid sm:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-xl p-5">
-          <p className="text-sm text-muted-foreground">Active Subscriptions</p>
+          <p className="text-sm text-muted-foreground">Suscripciones activas</p>
           <p className="text-2xl font-bold text-green-600 mt-1">{activeCount}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
@@ -283,11 +283,11 @@ export default function AdminSubscriptionsPage() {
           <p className="text-2xl font-bold text-foreground mt-1">{formatCents(mrr)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
-          <p className="text-sm text-muted-foreground">Annual Revenue</p>
+          <p className="text-sm text-muted-foreground">Ingresos anuales</p>
           <p className="text-2xl font-bold text-foreground mt-1">{formatCents(annualRevenue)}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5">
-          <p className="text-sm text-muted-foreground">Suspended</p>
+          <p className="text-sm text-muted-foreground">Suspendidas</p>
           <p className="text-2xl font-bold text-orange-600 mt-1">{suspendedCount}</p>
         </div>
       </div>
@@ -311,15 +311,15 @@ export default function AdminSubscriptionsPage() {
 
       {loading ? (
         <div className="text-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin text-3xl">progress_activity</span>
-          <p className="mt-2">Loading subscriptions...</p>
+          <span className="material-icons animate-spin text-3xl">autorenew</span>
+          <p className="mt-2">Cargando suscripciones...</p>
         </div>
       ) : filtered.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">subscriptions</span>
-          <h3 className="mt-4 font-semibold text-foreground">No subscriptions found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se encontraron suscripciones</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {statusFilter !== 'all' ? `No ${statusFilter} subscriptions.` : 'No client subscriptions yet.'}
+            {statusFilter !== 'all' ? `No hay suscripciones en estado ${statusFilter}.` : 'Aún no hay suscripciones de clientes.'}
           </p>
         </div>
       ) : (
@@ -327,14 +327,14 @@ export default function AdminSubscriptionsPage() {
           <table className="w-full text-sm">
             <thead className="bg-muted/50 border-b border-border">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Service</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Billing</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Renewal</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Servicio</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Categoría</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Precio</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Facturación</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Renovación</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -362,13 +362,13 @@ export default function AdminSubscriptionsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
-                    {sub.renewalDate ? new Date(sub.renewalDate).toLocaleDateString() : '--'}
+                    {sub.renewalDate ? new Date(sub.renewalDate).toLocaleDateString('es-ES') : '--'}
                   </td>
                   <td className="px-4 py-3 relative">
                     <button
                       onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === sub.id ? null : sub.id); }}
                       className="inline-flex items-center gap-1 px-2 py-1 rounded-md hover:bg-accent text-muted-foreground"
-                      aria-label="Actions"
+                      aria-label="Acciones"
                     >
                       <span className="material-icons text-base">more_horiz</span>
                     </button>
@@ -382,23 +382,19 @@ export default function AdminSubscriptionsPage() {
                           className="w-full text-left px-3 py-2 text-sm hover:bg-accent flex items-center gap-2 text-foreground"
                         >
                           <span className="material-icons text-base">swap_horiz</span>
-                          Change plan
+                          Cambiar plan
                         </button>
                         <button
                           onClick={() => openAction('refund', sub)}
                           className="w-full text-left px-3 py-2 text-sm hover:bg-accent flex items-center gap-2 text-foreground"
                         >
-                          <span className="material-icons text-base">undo</span>
-                          Refund
-                        </button>
+                          <span className="material-icons text-base">undo</span>Reembolso</button>
                         <button
                           onClick={() => openAction('cancel', sub)}
                           className="w-full text-left px-3 py-2 text-sm hover:bg-accent flex items-center gap-2 text-red-600"
                           disabled={sub.status === 'cancelled'}
                         >
-                          <span className="material-icons text-base">cancel</span>
-                          Cancel
-                        </button>
+                          <span className="material-icons text-base">cancel</span>Cancelar</button>
                       </div>
                     )}
                   </td>
@@ -416,9 +412,9 @@ export default function AdminSubscriptionsPage() {
             <div className="flex items-center justify-between p-4 border-b border-border">
               <div>
                 <h2 className="font-semibold text-foreground">
-                  {activeAction.kind === 'cancel' && 'Cancel subscription'}
-                  {activeAction.kind === 'change-plan' && 'Change plan'}
-                  {activeAction.kind === 'refund' && 'Issue refund'}
+                  {activeAction.kind === 'cancel' && 'Cancelar suscripción'}
+                  {activeAction.kind === 'change-plan' && 'Cambiar plan'}
+                  {activeAction.kind === 'refund' && 'Emitir reembolso'}
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {activeAction.sub.company ?? activeAction.sub.clientName} · {activeAction.sub.serviceName}
@@ -427,7 +423,7 @@ export default function AdminSubscriptionsPage() {
               <button
                 onClick={closeAction}
                 className="p-2 rounded-md hover:bg-accent text-muted-foreground"
-                aria-label="Close"
+                aria-label="Cerrar"
                 disabled={submitting}
               >
                 <span className="material-icons text-base">close</span>
@@ -438,23 +434,23 @@ export default function AdminSubscriptionsPage() {
               {activeAction.kind === 'cancel' && (
                 <div className="text-sm text-muted-foreground space-y-3">
                   <p>
-                    This schedules the Stripe subscription to end at the current period end. The customer keeps access
-                    until then. Local state will reconcile via the Stripe webhook.
+                    Esto programa la suscripción de Stripe para que finalice al término del periodo actual. El cliente
+                    conserva el acceso hasta entonces. El estado local se reconciliará con el webhook de Stripe.
                   </p>
-                  <p className="text-xs">No immediate cut-off — submit to confirm.</p>
+                  <p className="text-xs">Sin corte inmediato — envía para confirmar.</p>
                 </div>
               )}
 
               {activeAction.kind === 'change-plan' && (
                 <>
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">Target plan</label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">Plan de destino</label>
                     <select
                       value={newPriceId}
                       onChange={e => setNewPriceId(e.target.value)}
                       className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
                     >
-                      <option value="">— Pick a service from the catalog —</option>
+                      <option value="">— Elige un servicio del catálogo —</option>
                       {services.map(s => (
                         <option key={s.id} value={s.stripePriceId ?? ''}>
                           {s.name} ({formatCents(s.price)} / {s.billingCycle ?? 'once'})
@@ -462,18 +458,18 @@ export default function AdminSubscriptionsPage() {
                       ))}
                     </select>
                     {services.length === 0 && (
-                      <p className="text-xs text-muted-foreground mt-1">Loading catalog…</p>
+                      <p className="text-xs text-muted-foreground mt-1">Cargando catálogo…</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">Proration</label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">Prorrateo</label>
                     <select
                       value={proration}
                       onChange={e => setProration(e.target.value as 'create_prorations' | 'none')}
                       className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
                     >
-                      <option value="create_prorations">Prorate the change</option>
-                      <option value="none">No proration</option>
+                      <option value="create_prorations">Prorratear el cambio</option>
+                      <option value="none">Sin prorrateo</option>
                     </select>
                   </div>
                 </>
@@ -482,18 +478,18 @@ export default function AdminSubscriptionsPage() {
               {activeAction.kind === 'refund' && (
                 <>
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">Invoice</label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">Factura</label>
                     {invoicesLoading ? (
-                      <div className="text-xs text-muted-foreground">Loading invoices…</div>
+                      <div className="text-xs text-muted-foreground">Cargando facturas…</div>
                     ) : invoiceList.length === 0 ? (
-                      <div className="text-xs text-muted-foreground">No invoices found for this client.</div>
+                      <div className="text-xs text-muted-foreground">No se encontraron facturas para este cliente.</div>
                     ) : (
                       <select
                         value={selectedInvoiceId ?? ''}
                         onChange={e => setSelectedInvoiceId(e.target.value ? parseInt(e.target.value, 10) : null)}
                         className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
                       >
-                        <option value="">— Pick an invoice —</option>
+                        <option value="">— Elige una factura —</option>
                         {invoiceList.map(inv => (
                           <option
                             key={inv.id}
@@ -501,7 +497,7 @@ export default function AdminSubscriptionsPage() {
                             disabled={!inv.stripePaymentIntentId}
                           >
                             {inv.number} · {formatCents(inv.total)} · {inv.status}
-                            {!inv.stripePaymentIntentId ? ' (no payment intent)' : ''}
+                            {!inv.stripePaymentIntentId ? ' (sin intento de pago)' : ''}
                           </option>
                         ))}
                       </select>
@@ -509,29 +505,29 @@ export default function AdminSubscriptionsPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-muted-foreground mb-1">
-                      Amount (USD, optional)
+                      Importe (EUR, opcional)
                     </label>
                     <input
                       type="number"
                       step="0.01"
                       min="0"
-                      placeholder="Leave blank for full refund"
+                      placeholder="Déjalo en blanco para reembolso completo"
                       value={refundAmount}
                       onChange={e => setRefundAmount(e.target.value)}
                       className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">Reason (optional)</label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">Motivo (opcional)</label>
                     <select
                       value={refundReason}
                       onChange={e => setRefundReason(e.target.value as typeof refundReason)}
                       className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
                     >
-                      <option value="">— Unspecified —</option>
-                      <option value="duplicate">Duplicate charge</option>
-                      <option value="fraudulent">Fraudulent</option>
-                      <option value="requested_by_customer">Requested by customer</option>
+                      <option value="">— Sin especificar —</option>
+                      <option value="duplicate">Cargo duplicado</option>
+                      <option value="fraudulent">Fraudulento</option>
+                      <option value="requested_by_customer">Solicitado por el cliente</option>
                     </select>
                   </div>
                 </>
@@ -543,25 +539,23 @@ export default function AdminSubscriptionsPage() {
                 onClick={closeAction}
                 className="px-4 py-2 text-sm rounded-md hover:bg-accent text-muted-foreground"
                 disabled={submitting}
-              >
-                Close
-              </button>
+              >Cerrar</button>
               {activeAction.kind === 'cancel' && (
                 <button
                   onClick={submitCancel}
                   disabled={submitting}
                   className="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
                 >
-                  {submitting ? 'Cancelling…' : 'Cancel at period end'}
+                  {submitting ? 'Cancelando…' : 'Cancelar al final del periodo'}
                 </button>
               )}
               {activeAction.kind === 'change-plan' && (
                 <button
                   onClick={submitChangePlan}
                   disabled={submitting || !newPriceId}
-                  className="px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                  className="px-4 py-2 text-sm rounded-md bg-foreground text-background hover:opacity-90 disabled:opacity-50"
                 >
-                  {submitting ? 'Updating…' : 'Change plan'}
+                  {submitting ? 'Actualizando…' : 'Cambiar plan'}
                 </button>
               )}
               {activeAction.kind === 'refund' && (
@@ -570,7 +564,7 @@ export default function AdminSubscriptionsPage() {
                   disabled={submitting || !selectedInvoiceId}
                   className="px-4 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
                 >
-                  {submitting ? 'Refunding…' : 'Issue refund'}
+                  {submitting ? 'Reembolsando…' : 'Emitir reembolso'}
                 </button>
               )}
             </div>
@@ -589,7 +583,7 @@ export default function AdminSubscriptionsPage() {
             {toast.kind === 'success' ? 'check_circle' : 'error'}
           </span>
           <div className="flex-1">{toast.message}</div>
-          <button onClick={() => setToast(null)} aria-label="Dismiss" className="opacity-80 hover:opacity-100">
+          <button onClick={() => setToast(null)} aria-label="Descartar" className="opacity-80 hover:opacity-100">
             <span className="material-icons text-base">close</span>
           </button>
         </div>

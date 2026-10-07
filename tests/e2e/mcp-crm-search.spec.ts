@@ -36,7 +36,7 @@ test.describe('CRM search handlers survive Drizzle/DB column drift @mcp @crm', (
         const res = await mcp.callTool(tool, args);
 
         // If the handler still threw, the helper returns isError + a JSON
-        // body with pgMessage/drizzleMessage. Fail with that so the test
+        // body with error/pgCode/pgMessage. Fail with that so the test
         // output includes the root cause.
         if (res.isError) {
           throw new Error(

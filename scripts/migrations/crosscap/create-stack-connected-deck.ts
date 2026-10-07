@@ -24,7 +24,7 @@ const BRANDING_PROFILE_ID = 6; // Crossover Capital Brand (gold/navy, Cormorant 
 const DECK_SLUG = 'stack-connected';
 const DECK_TITLE = 'The System Comes to You';
 const DECK_DESC =
-  'Crossover Capital × SimplerDevelopment — a Phase 1 marketing and referral engine that runs itself, so Alex can focus on the work only he can do.';
+  'Crossover Capital × CRM AGENTS — a Phase 1 marketing and referral engine that runs itself, so Alex can focus on the work only he can do.';
 
 // CrossCap brand theme — gold accent on brand navy, Cormorant Garamond display /
 // Plus Jakarta Sans body. Matches branding profile 6.
@@ -373,7 +373,7 @@ export function buildSlides(): object[] {
               type: 'image',
               order: 1,
               url: '/api/media/proxy/media/5ff573f4-81d1-4e42-8c87-3a364da5f53e.png',
-              alt: 'Phase 1: the SimplerDevelopment engine runs on autopilot and surfaces only what\'s working up to Alex',
+              alt: 'Phase 1: the CRM AGENTS engine runs on autopilot and surfaces only what\'s working up to Alex',
               width: 'full',
               alignment: 'center',
             },

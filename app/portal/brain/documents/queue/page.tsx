@@ -59,7 +59,7 @@ export default function BrainDocumentsQueuePage() {
       const r = await fetch('/api/portal/brain/document-acks?status=all&limit=200');
       const json: QueueResponse = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load reading queue.');
+        setError(json.message || 'No se pudo cargar la cola de lectura.');
         return;
       }
       setItems(json.data?.items ?? []);
@@ -67,7 +67,7 @@ export default function BrainDocumentsQueuePage() {
       setPersonId(json.data?.personId ?? null);
       setHint(json.data?.hint ?? null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -98,7 +98,7 @@ export default function BrainDocumentsQueuePage() {
   const markRead = useCallback(async (row: RequiredReadForPersonRow) => {
     if (!personId) return;
     if (row.currentVersionToReadId === null) {
-      alert('This document has no published version yet — nothing to acknowledge.');
+      alert('Este documento aún no tiene una versión publicada, así que no hay nada que confirmar.');
       return;
     }
     setActingId(row.requiredReadId);
@@ -126,7 +126,7 @@ export default function BrainDocumentsQueuePage() {
             ? { ...it, acknowledged: false, acknowledgedAt: null }
             : it,
         ));
-        alert(json.message || 'Acknowledge failed.');
+        alert(json.message || 'No se pudo confirmar la lectura.');
         return;
       }
       load();
@@ -136,7 +136,7 @@ export default function BrainDocumentsQueuePage() {
           ? { ...it, acknowledged: false, acknowledgedAt: null }
           : it,
       ));
-      alert(err instanceof Error ? err.message : 'Network error');
+      alert(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setActingId(null);
     }
@@ -150,25 +150,25 @@ export default function BrainDocumentsQueuePage() {
           Documents
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
-        <span>My reading queue</span>
+        <span>Mi cola de lectura</span>
       </nav>
 
       <PortalPageHeader
-        eyebrow="Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">assignment_late</span>
-            My reading queue
+            Mi cola de lectura
           </span>
         }
-        subtitle="Documents you're required to read, plus your recent acknowledgments."
+        subtitle="Documentos que debes leer, además de tus confirmaciones recientes."
       />
 
       {hint && (
         <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 text-sm text-amber-900 dark:text-amber-200">
           <div className="font-medium inline-flex items-center gap-2 mb-1">
             <span className="material-icons text-base">info</span>
-            No brain-people record linked
+            Sin registro de persona de Brain vinculado
           </div>
           <p className="text-xs">{hint}</p>
         </div>
@@ -176,16 +176,14 @@ export default function BrainDocumentsQueuePage() {
 
       {loading && (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       )}
 
       {error && !loading && (
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load reading queue
+            No se pudo cargar la cola de lectura
           </div>
           <p>{error}</p>
         </div>
@@ -194,7 +192,7 @@ export default function BrainDocumentsQueuePage() {
       {!loading && !error && !hint && (
         <div className="space-y-5">
           <QueueSection
-            title="Overdue"
+            title="Atrasado"
             icon="warning"
             accent="red"
             rows={overdue}
@@ -203,7 +201,7 @@ export default function BrainDocumentsQueuePage() {
             disabled={personId === null}
           />
           <QueueSection
-            title="Due soon"
+            title="Próximas"
             icon="schedule"
             accent="amber"
             rows={dueSoon}
@@ -212,7 +210,7 @@ export default function BrainDocumentsQueuePage() {
             disabled={personId === null}
           />
           <QueueSection
-            title="Open"
+            title="Abiertos"
             icon="task"
             accent="default"
             rows={open}
@@ -224,10 +222,10 @@ export default function BrainDocumentsQueuePage() {
           <section>
             <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2 inline-flex items-center gap-1">
               <span className="material-icons text-[14px]">verified</span>
-              Recently acknowledged ({acks.length})
+              Confirmados recientemente ({acks.length})
             </h2>
             {acks.length === 0 ? (
-              <p className="text-xs text-muted-foreground italic">No acknowledgments yet.</p>
+              <p className="text-xs text-muted-foreground italic">Aún no hay confirmaciones.</p>
             ) : (
               <ul className="space-y-1.5">
                 {acks.map((a) => (
@@ -298,7 +296,7 @@ function QueueSection({
         {title} ({rows.length})
       </h2>
       {rows.length === 0 ? (
-        <p className="text-xs text-muted-foreground italic">Nothing here.</p>
+        <p className="text-xs text-muted-foreground italic">Nada aquí.</p>
       ) : (
         <ul className="space-y-1.5">
           {rows.map((r) => (
@@ -318,19 +316,19 @@ function QueueSection({
                   {r.pinnedVersionId !== null && (
                     <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] rounded bg-primary/15 text-primary border border-primary/30">
                       <span className="material-icons text-[11px]">push_pin</span>
-                      Pinned version
+                      Versión fijada
                     </span>
                   )}
                   {r.dueAt && (
                     <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] rounded bg-muted text-muted-foreground">
                       <span className="material-icons text-[11px]">schedule</span>
-                      Due {new Date(r.dueAt).toLocaleDateString()}
+                      Vence el {new Date(r.dueAt).toLocaleDateString()}
                     </span>
                   )}
                   {r.currentVersionToReadId === null && (
                     <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30">
                       <span className="material-icons text-[11px]">info</span>
-                      No published version yet
+                      Aún sin versión publicada
                     </span>
                   )}
                 </div>
@@ -342,9 +340,9 @@ function QueueSection({
                 className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-xl bg-foreground text-background hover:shadow-sm disabled:opacity-50 shrink-0"
               >
                 {actingId === r.requiredReadId
-                  ? <span className="material-icons text-sm animate-spin">progress_activity</span>
+                  ? <span className="material-icons text-sm animate-spin">autorenew</span>
                   : <span className="material-icons text-sm">check</span>}
-                Mark as read
+                Marcar como leído
               </button>
             </li>
           ))}

@@ -22,6 +22,9 @@ export type LlmProvider = 'anthropic' | 'huggingface' | 'openai';
 /** Every distinct "aspect" of AI use in the codebase. Add one per call site. */
 export type AiTask =
   | 'chat'                 // portal chat assistant
+  | 'ceoBackground'        // durable, read-only executive analysis
+  | 'agentBackground'      // durable, read-only delegated specialist analysis
+  | 'omnichannelReply'     // grounded unified-inbox decision/reply
   | 'brainAgentSimple'     // brain agent, simple intent (was Haiku)
   | 'brainAgentComplex'    // brain agent, complex intent (was Sonnet)
   | 'brainClassify'        // intent classifier
@@ -73,6 +76,9 @@ export interface ModelChoice {
  */
 export const MODELS: Record<AiTask, ModelChoice> = {
   chat:              { provider: 'anthropic', model: 'claude-sonnet-4-6' },
+  ceoBackground:     { provider: 'anthropic', model: 'claude-sonnet-4-6' },
+  agentBackground:   { provider: 'anthropic', model: 'claude-sonnet-4-6' },
+  omnichannelReply:  { provider: 'anthropic', model: 'claude-sonnet-4-6' },
   brainAgentSimple:  { provider: 'anthropic', model: 'claude-haiku-4-5-20251001' },
   brainAgentComplex: { provider: 'anthropic', model: 'claude-sonnet-4-6' },
   brainClassify:     { provider: 'anthropic', model: 'claude-haiku-4-5-20251001' },

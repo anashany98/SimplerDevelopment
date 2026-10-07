@@ -64,7 +64,11 @@ function parseDomains(value: unknown): PortalDomain[] {
   const allowed = new Set<string>(PORTAL_DOMAINS);
   const out: PortalDomain[] = [];
   for (const v of value) {
-    if (typeof v === 'string' && allowed.has(v) && !out.includes(v as PortalDomain)) {
+    if (
+      typeof v === 'string' &&
+      allowed.has(v) &&
+      !out.includes(v as PortalDomain)
+    ) {
       out.push(v as PortalDomain);
     }
   }
@@ -80,7 +84,7 @@ export async function classifyPortalRequest(
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 192,
       system:
-        'You classify requests sent to a client-portal AI assistant that manages projects, invoices/billing, support tickets, websites (cms), CRM, email campaigns, booking pages, pitch decks, surveys, automations, services, team/profile, and a dashboard overview. For each request decide (1) whether it is simple (a single lookup or one-line answer) or complex (multiple tool calls, a data-modifying action, or multi-step reasoning), and (2) which domain(s) its tools belong to.',
+        'You classify requests sent to a client-portal AI assistant that manages projects, invoices/billing, support tickets, websites (cms), CRM, omnichannel inbox conversations (WhatsApp, Instagram, Messenger, email and web chat), email campaigns, booking pages, pitch decks, surveys, automations, services, team/profile, and a dashboard overview. For each request decide (1) whether it is simple (a single lookup or one-line answer) or complex (multiple tool calls, a data-modifying action, or multi-step reasoning), and (2) which domain(s) its tools belong to.',
       messages: [{ role: 'user', content: message }],
       tools: [CLASSIFY_TOOL],
       tool_choice: { type: 'tool', name: 'classify' },

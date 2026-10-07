@@ -9,7 +9,7 @@ tags:
   - workflows
   - agency-workflow
   - tutorial
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 canonical: "https://example.com/blog/build-automation-rule-plain-language"
 ---

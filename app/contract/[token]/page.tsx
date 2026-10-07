@@ -51,7 +51,7 @@ interface ContractData {
 }
 
 function formatCents(cents: number): string {
-  return '$' + (cents / 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
 }
 
 export default function ContractSigningPage({ params }: { params: Promise<{ token: string }> }) {
@@ -84,10 +84,10 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
           if (res.data.signer.status === 'signed') setSigned(true);
           if (res.data.signer.status === 'declined') setDeclined(true);
         } else {
-          setError(res.message || 'Contract not found');
+          setError(res.message || 'No se encontró el contrato');
         }
       })
-      .catch(() => setError('Failed to load contract'))
+      .catch(() => setError('No se pudo cargar el contrato'))
       .finally(() => setLoading(false));
   }, [token]);
 
@@ -144,7 +144,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
     const requiredClauses = contract?.clauses.filter(c => c.required) || [];
     const allAccepted = requiredClauses.every(c => acceptedClauses.has(c.id));
     if (!allAccepted) {
-      alert('Please accept all required clauses before signing.');
+      alert('Acepta todas las cláusulas obligatorias antes de firmar.');
       return;
     }
 
@@ -199,7 +199,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Contract Not Found</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Contrato no encontrado</h1>
           <p className="text-gray-500">{error}</p>
         </div>
       </div>
@@ -224,17 +224,17 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
         {/* Status banners */}
         {signed && (
           <div className="mb-6 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 text-center font-medium">
-            You have signed this contract.
+            Has firmado este contrato.
           </div>
         )}
         {declined && (
           <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-center font-medium">
-            You have declined this contract.
+            Has rechazado este contrato.
           </div>
         )}
         {contract.status === 'fully_executed' && (
           <div className="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-center font-medium">
-            This contract is fully executed. All parties have signed.
+            Este contrato está totalmente formalizado. Todas las partes han firmado.
           </div>
         )}
 
@@ -251,7 +251,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
 
           {/* Signers status */}
           <div className="p-6 bg-gray-50 border-b border-gray-100">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Signers</h3>
+            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Firmantes</h3>
             <div className="space-y-2">
               {contract.allSigners.map(s => (
                 <div key={s.id} className="flex items-center justify-between">
@@ -265,7 +265,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
                     : s.status === 'viewed' ? 'bg-yellow-100 text-yellow-700'
                     : 'bg-gray-100 text-gray-500'
                   }`}>
-                    {s.status === 'signed' ? 'Signed' : s.status === 'declined' ? 'Declined' : s.status === 'viewed' ? 'Viewed' : 'Pending'}
+                    {s.status === 'signed' ? 'Firmado' : s.status === 'declined' ? 'Rechazado' : s.status === 'viewed' ? 'Visto' : 'Pendiente'}
                   </span>
                 </div>
               ))}
@@ -290,7 +290,7 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
                         className="w-4 h-4 rounded"
                         style={{ accentColor: accent }}
                       />
-                      <span className="text-sm text-gray-600">I accept this clause</span>
+                      <span className="text-sm text-gray-600">Acepto esta cláusula</span>
                     </label>
                   )}
                 </div>
@@ -301,13 +301,13 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
           {/* Pricing */}
           {contract.lineItems.length > 0 && (
             <div className="p-8 border-t border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Precios</h3>
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200 text-left">
-                    <th className="pb-2 font-medium text-gray-500">Item</th>
-                    <th className="pb-2 font-medium text-gray-500 text-right">Qty</th>
-                    <th className="pb-2 font-medium text-gray-500 text-right">Price</th>
+                    <th className="pb-2 font-medium text-gray-500">Artículo</th>
+                    <th className="pb-2 font-medium text-gray-500 text-right">Cant.</th>
+                    <th className="pb-2 font-medium text-gray-500 text-right">Precio</th>
                     <th className="pb-2 font-medium text-gray-500 text-right">Total</th>
                   </tr>
                 </thead>
@@ -342,20 +342,20 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
           {/* Signature section */}
           {canSign && (
             <div className="p-8 border-t border-gray-100 space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900">Sign Contract</h3>
+              <h3 className="text-lg font-semibold text-gray-900">Firmar contrato</h3>
 
               <div>
-                <label className="text-sm font-medium text-gray-700">Full Legal Name</label>
+                <label className="text-sm font-medium text-gray-700">Nombre legal completo</label>
                 <input
                   value={sigName}
                   onChange={e => setSigName(e.target.value)}
-                  placeholder="Enter your full name"
+                  placeholder="Introduce tu nombre completo"
                   className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                 />
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-700">Signature</label>
+                <label className="text-sm font-medium text-gray-700">Firma</label>
                 <div className="mt-1 border border-gray-300 rounded-lg overflow-hidden bg-white">
                   <canvas
                     ref={canvasRef}
@@ -372,12 +372,12 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
                   />
                 </div>
                 <div className="flex gap-3 mt-2">
-                  <button onClick={clearCanvas} className="text-xs text-gray-500 hover:text-gray-700">Clear</button>
+                  <button onClick={clearCanvas} className="text-xs text-gray-500 hover:text-gray-700">Limpiar</button>
                   <button onClick={saveSignature} className="text-xs font-medium" style={{ color: accent }}>
-                    Use This Signature
+                    Usar esta firma
                   </button>
                 </div>
-                {sigData && <p className="text-xs text-green-600 mt-1">Signature captured</p>}
+                {sigData && <p className="text-xs text-green-600 mt-1">Firma capturada</p>}
               </div>
 
               <div className="flex items-center gap-4">
@@ -387,19 +387,19 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
                   className="px-6 py-3 rounded-lg text-white font-medium text-sm disabled:opacity-50"
                   style={{ backgroundColor: accent }}
                 >
-                  {signing ? 'Signing...' : 'Sign Contract'}
+                  {signing ? 'Firmando...' : 'Firmar contrato'}
                 </button>
                 <button
                   onClick={() => setShowDecline(true)}
                   className="px-4 py-3 text-sm text-gray-500 hover:text-red-600"
                 >
-                  Decline
+                  Rechazar
                 </button>
               </div>
 
               <p className="text-xs text-gray-400">
-                By signing, you agree to be bound by the terms of this contract.
-                Your signature, name, IP address, and timestamp will be recorded.
+                Al firmar, aceptas quedar vinculado por los términos de este contrato.
+                Se registrarán tu firma, tu nombre, tu dirección IP y la fecha y hora.
               </p>
             </div>
           )}
@@ -416,19 +416,19 @@ export default function ContractSigningPage({ params }: { params: Promise<{ toke
         {showDecline && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl p-6 max-w-md w-full space-y-4">
-              <h3 className="text-lg font-semibold">Decline Contract</h3>
-              <p className="text-sm text-gray-600">Are you sure you want to decline this contract?</p>
+              <h3 className="text-lg font-semibold">Rechazar contrato</h3>
+              <p className="text-sm text-gray-600">¿Seguro que quieres rechazar este contrato?</p>
               <textarea
                 value={declineReason}
                 onChange={e => setDeclineReason(e.target.value)}
-                placeholder="Reason for declining (optional)"
+                placeholder="Motivo del rechazo (opcional)"
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-red-500/40"
               />
               <div className="flex gap-3 justify-end">
-                <button onClick={() => setShowDecline(false)} className="px-4 py-2 text-sm text-gray-500">Cancel</button>
+                <button onClick={() => setShowDecline(false)} className="px-4 py-2 text-sm text-gray-500">Cancelar</button>
                 <button onClick={handleDecline} className="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700">
-                  Decline Contract
+                  Rechazar contrato
                 </button>
               </div>
             </div>

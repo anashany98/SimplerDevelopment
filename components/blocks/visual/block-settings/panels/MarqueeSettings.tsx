@@ -16,8 +16,8 @@ export function MarqueeBlockSettings({ block, onChange }: { block: MarqueeBlock;
             onChange={(e) => onChange({ direction: e.target.value as MarqueeBlock['direction'] })}
             className={inputClass}
           >
-            <option value="left">Left</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="right">Derecha</option>
             <option value="up">Up</option>
             <option value="down">Down</option>
           </select>
@@ -125,7 +125,7 @@ export function MarqueeBlockSettings({ block, onChange }: { block: MarqueeBlock;
         </div>
       )}
       <div className="border-t border-border pt-4 space-y-2">
-        <label className="block text-sm font-medium text-foreground">Items</label>
+        <label className="block text-sm font-medium text-foreground">Elementos</label>
         {(block.items || []).map((item, i) => (
           <div key={item.id ?? i} className="space-y-1 p-2 rounded border border-border">
             <select
@@ -139,7 +139,7 @@ export function MarqueeBlockSettings({ block, onChange }: { block: MarqueeBlock;
             >
               <option value="text">Text</option>
               <option value="image">Image</option>
-              <option value="icon">Icon</option>
+              <option value="icon">Icono</option>
             </select>
             {item.type === 'image' ? (
               <>
@@ -194,9 +194,7 @@ export function MarqueeBlockSettings({ block, onChange }: { block: MarqueeBlock;
               type="button"
               onClick={() => onChange({ items: (block.items || []).filter((_, j) => j !== i) })}
               className="text-xs text-destructive hover:underline"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         ))}
         <button

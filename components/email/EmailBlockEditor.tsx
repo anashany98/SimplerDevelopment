@@ -18,17 +18,17 @@ const EMAIL_BLOCK_TYPE_LIST: Array<{
   description: string;
 }> = [
   // Basic
-  { type: 'heading', label: 'Heading', icon: 'title', category: 'Content', description: 'Add a title or heading' },
+  { type: 'heading', label: 'Encabezado', icon: 'title', category: 'Content', description: 'Añade un título o encabezado' },
   { type: 'text', label: 'Paragraph', icon: 'notes', category: 'Content', description: 'Add text content' },
-  { type: 'image', label: 'Image', icon: 'image', category: 'Content', description: 'Insert an image' },
-  { type: 'button', label: 'Button', icon: 'smart_button', category: 'Content', description: 'Add a call-to-action button' },
-  { type: 'quote', label: 'Quote', icon: 'format_quote', category: 'Content', description: 'Add a quotation' },
+  { type: 'image', label: 'Imagen', icon: 'image', category: 'Content', description: 'Inserta una imagen' },
+  { type: 'button', label: 'Botón', icon: 'smart_button', category: 'Content', description: 'Añade un botón de llamada a la acción' },
+  { type: 'quote', label: 'Cita', icon: 'format_quote', category: 'Content', description: 'Añade una cita' },
 
   // Layout
-  { type: 'spacer', label: 'Spacer', icon: 'height', category: 'Layout', description: 'Add vertical space' },
-  { type: 'divider', label: 'Divider', icon: 'horizontal_rule', category: 'Layout', description: 'Add a horizontal line' },
-  { type: 'columns', label: 'Columns', icon: 'view_column', category: 'Layout', description: '2-column layout' },
-  { type: 'section', label: 'Section', icon: 'crop_free', category: 'Layout', description: 'Background section wrapper' },
+  { type: 'spacer', label: 'Espaciador', icon: 'height', category: 'Layout', description: 'Añadir espacio vertical' },
+  { type: 'divider', label: 'Divisor', icon: 'horizontal_rule', category: 'Layout', description: 'Añade una línea horizontal' },
+  { type: 'columns', label: 'Columnas', icon: 'view_column', category: 'Layout', description: '2-column layout' },
+  { type: 'section', label: 'Sección', icon: 'crop_free', category: 'Layout', description: 'Background section wrapper' },
 
   // Email-specific
   { type: 'email-header', label: 'Email Header', icon: 'mark_email_read', category: 'Email', description: 'Logo and tagline' },

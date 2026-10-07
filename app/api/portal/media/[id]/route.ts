@@ -29,7 +29,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const authz = await authorizePortal({ action: 'write', scope: 'media:write' });
+  const authz = await authorizePortal({ action: 'write', scope: 'media:delete' });
   if (isAuthError(authz)) return authz.response;
   const { client } = authz;
 

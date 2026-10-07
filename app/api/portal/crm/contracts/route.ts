@@ -101,7 +101,7 @@ export async function POST(req: Request) {
     clauses: clauses || [],
     lineItems: lineItems || [],
     fees: fees || [],
-    currency: currency || 'USD',
+    currency: currency || 'EUR',
     validUntil: validUntil ? new Date(validUntil) : null,
     clientToken,
     accentColor: accentColor || '#2563eb',

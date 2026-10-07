@@ -173,7 +173,7 @@ describe('PortalPostForm — baseline', () => {
       />,
     );
     expect(screen.getByTestId('post-editor-layout')).toBeInTheDocument();
-    expect(screen.getByTestId('post-title-display')).toHaveTextContent('New Page');
+    expect(screen.getByTestId('post-title-display')).toHaveTextContent('Nueva página');
   });
 
   it('renders the visual editor (EditorWithPreview) when no siteUrl is provided', () => {
@@ -252,7 +252,7 @@ describe('PortalPostForm — baseline', () => {
 
     // The "Create Page" submit button lives in the inline form (visible
     // because we're in non-iframe mode).
-    const submit = await screen.findByRole('button', { name: /Create Page/i });
+    const submit = await screen.findByRole('button', { name: /Crear página/i });
     await user.click(submit);
 
     await waitFor(() => {
@@ -272,7 +272,7 @@ describe('PortalPostForm — baseline', () => {
         publicUrl={null}
       />,
     );
-    expect(screen.getByRole('button', { name: /Create Page/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Crear página/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Cancel/i })).toBeInTheDocument();
   });
 

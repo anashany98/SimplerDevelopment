@@ -37,7 +37,7 @@ export function ResendVerificationButton({ prefillEmail = '' }: Props) {
     return (
       <div className="flex items-center gap-1.5 text-green-700 dark:text-green-400 text-xs">
         <span className="material-icons text-sm">mark_email_read</span>
-        If that address has a pending verification, a new link is on its way.
+        Si esa dirección tiene una verificación pendiente, recibirás un nuevo enlace en breve.
       </div>
     );
   }
@@ -45,37 +45,37 @@ export function ResendVerificationButton({ prefillEmail = '' }: Props) {
   return (
     <div className="flex flex-col gap-1.5">
       <p className="text-xs opacity-80">
-        Need a new verification link? Enter your email and we&apos;ll resend it.
+        ¿Necesitas un nuevo enlace de verificación? Escribe tu email y te lo reenviaremos.
       </p>
       <div className="flex gap-2">
         <input
           type="email"
           value={inputEmail}
           onChange={(e) => setInputEmail(e.target.value)}
-          placeholder="you@company.com"
+          placeholder="tu@empresa.com"
           className="flex-1 min-w-0 px-2 py-1 rounded border border-current/30 bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
         />
         <button
           type="button"
           onClick={handleResend}
           disabled={status === 'sending' || !inputEmail.trim()}
-          className="shrink-0 px-3 py-1 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1"
+          className="shrink-0 px-3 py-1 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1"
         >
           {status === 'sending' ? (
             <>
               <span className="material-icons text-xs animate-spin">refresh</span>
-              Sending...
+              Enviando...
             </>
           ) : (
             <>
               <span className="material-icons text-xs">send</span>
-              Resend
+              Reenviar
             </>
           )}
         </button>
       </div>
       {status === 'error' && (
-        <p className="text-xs text-destructive">Something went wrong — try again.</p>
+        <p className="text-xs text-destructive">Algo salió mal — inténtalo de nuevo.</p>
       )}
     </div>
   );

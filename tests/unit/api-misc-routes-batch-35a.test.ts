@@ -290,6 +290,31 @@ describe('POST /api/public/chat/start', () => {
     expect(body.data.conversationId).toBe(100);
   });
 
+  it('accepts a non-enumerable widgetKey without a legacy widgetId', async () => {
+    selectQueue.push([{ id: 7, clientId: 5, enabled: true, greetingMessage: 'hi' }]);
+    selectQueue.push([]);
+    insertReturnQueue.push([{ id: 101, widgetId: 7, clientId: 5, visitorName: null, lastMessageAt: new Date() }]);
+
+    const res = await chatStartRoute.POST(
+      makeJsonReq('http://x/chat/start', 'POST', {
+        widgetKey: '0123456789abcdefghijklmn',
+        visitorId: 'v1',
+      }),
+    );
+
+    expect(res.status).toBe(200);
+    expect((await res.json()).data.conversationId).toBe(101);
+  });
+
+  it('rejects malformed widgetKey instead of falling back to an id', async () => {
+    const res = await chatStartRoute.POST(
+      makeJsonReq('http://x/chat/start', 'POST', { widgetKey: '../7', widgetId: 7, visitorId: 'v1' }),
+    );
+
+    expect(res.status).toBe(400);
+    expect((await res.json()).message).toBe('widgetKey is invalid');
+  });
+
   it('returns 400 when visitorId is missing/empty', async () => {
     const res = await chatStartRoute.POST(
       makeJsonReq('http://x/chat/start', 'POST', { widgetId: 1, visitorId: '   ' }),

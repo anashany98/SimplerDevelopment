@@ -52,9 +52,7 @@ export default function PlaybookRunsPage() {
 function ListFallback() {
   return (
     <div className="flex items-center justify-center py-16 text-muted-foreground">
-      <span className="material-icons animate-spin mr-2">progress_activity</span>
-      Loading…
-    </div>
+      <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
   );
 }
 
@@ -118,7 +116,7 @@ function PlaybookRunsContent() {
       const r = await fetch(`/api/portal/brain/playbook-runs?${params.toString()}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load runs');
+        setError(json.message || 'No se pudieron cargar las ejecuciones');
         setItems([]);
         setHasMore(false);
         return;
@@ -142,7 +140,7 @@ function PlaybookRunsContent() {
       setHasMore(all.length > PAGE_SIZE);
       setItems(all.slice(0, PAGE_SIZE));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -162,9 +160,9 @@ function PlaybookRunsContent() {
     <div className="space-y-4">
       <div className="sticky top-[var(--portal-header-height,3.5rem)] z-10 bg-background -mx-4 sm:mx-0 px-4 sm:px-0 pt-1 pb-3 border-b border-border">
         <PortalPageHeader
-          eyebrow="Brain"
-          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">playlist_play</span>Playbook runs</span>}
-          subtitle="In-flight and historical runs. Click a row to see its step-by-step state."
+          eyebrow="Cerebro de empresa"
+          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">playlist_play</span>Ejecuciones de playbook</span>}
+          subtitle="Ejecuciones en curso e históricas. Haz clic en una fila para ver su estado paso a paso."
           actions={
             <Link
               href="/portal/brain/playbooks"
@@ -180,7 +178,7 @@ function PlaybookRunsContent() {
         <div className="mt-3 flex items-center gap-1 overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           {STATUS_FILTERS.map((s) => {
             const active = status === s;
-            const label = s === 'all' ? 'All' : playbookRunStatusChip(s).label;
+            const label = s === 'all' ? 'Todos' : playbookRunStatusChip(s).label;
             return (
               <button
                 key={s}
@@ -200,19 +198,19 @@ function PlaybookRunsContent() {
 
         <div className="mt-2 flex items-center gap-2 flex-wrap text-xs">
           <select
-            aria-label="Filter by playbook"
+            aria-label="Filtrar por playbook"
             value={playbookIdParam ?? ''}
             onChange={(e) => setParam({ playbookId: e.target.value || null })}
             className="px-2 py-1 rounded-xl border border-border bg-card text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary"
           >
-            <option value="">Any playbook</option>
+            <option value="">Cualquier playbook</option>
             {playbooks.map((p) => (
               <option key={p.id} value={p.id}>{p.name}</option>
             ))}
           </select>
 
           <label className="inline-flex items-center gap-1.5 text-muted-foreground">
-            started after
+            iniciadas después de
             <input
               type="date"
               value={startedAfterParam}
@@ -222,7 +220,7 @@ function PlaybookRunsContent() {
           </label>
 
           <label className="inline-flex items-center gap-1.5 text-muted-foreground">
-            before
+            antes de
             <input
               type="date"
               value={startedBeforeParam}
@@ -243,9 +241,7 @@ function PlaybookRunsContent() {
               }
               className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 text-muted-foreground hover:text-foreground"
             >
-              <span className="material-icons text-sm">close</span>
-              Clear
-            </button>
+              <span className="material-icons text-sm">close</span>Limpiar</button>
           )}
         </div>
       </div>
@@ -264,9 +260,9 @@ function PlaybookRunsContent() {
           <span className="material-icons text-5xl text-muted-foreground mb-2 block">
             playlist_play
           </span>
-          <p className="text-foreground text-sm font-medium">No runs match these filters.</p>
+          <p className="text-foreground text-sm font-medium">No hay ejecuciones que coincidan con estos filtros.</p>
           <p className="text-muted-foreground text-xs mt-1 max-w-md mx-auto">
-            Start a run from any active playbook to see it appear here.
+            Inicia una ejecución desde cualquier playbook activo para verla aquí.
           </p>
         </div>
       ) : (
@@ -285,9 +281,7 @@ function PlaybookRunsContent() {
             onClick={() => setParam({ offset: String(Math.max(0, offset - PAGE_SIZE)) })}
             className={`${pBtnGhost} disabled:opacity-30 disabled:pointer-events-none`}
           >
-            <span className="material-icons text-base">chevron_left</span>
-            Previous
-          </button>
+            <span className="material-icons text-base">chevron_left</span>Anterior</button>
           <span className="text-xs text-muted-foreground">
             {offset + 1}–{offset + items.length}
           </span>
@@ -296,9 +290,7 @@ function PlaybookRunsContent() {
             disabled={!hasMore}
             onClick={() => setParam({ offset: String(offset + PAGE_SIZE) })}
             className={`${pBtnGhost} disabled:opacity-30 disabled:pointer-events-none`}
-          >
-            Next
-            <span className="material-icons text-base">chevron_right</span>
+          >Siguiente<span className="material-icons text-base">chevron_right</span>
           </button>
         </div>
       )}
@@ -345,13 +337,13 @@ function RunRow({
             {run.startedAt && (
               <span className="inline-flex items-center gap-1">
                 <span className="material-icons text-base">schedule</span>
-                started {relativeTime(run.startedAt, { signed: true })}
+                iniciada {relativeTime(run.startedAt, { signed: true })}
               </span>
             )}
             {duration && (
               <span className="inline-flex items-center gap-1">
                 <span className="material-icons text-base">timer</span>
-                ran for {duration}
+                duró {duration}
               </span>
             )}
           </div>
@@ -362,7 +354,7 @@ function RunRow({
         <div className="mt-3">
           <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-1">
             <span>
-              {completed} / {total} step{total === 1 ? '' : 's'}
+              {completed} / {total} paso{total === 1 ? '' : 's'}
             </span>
             <span>{pct}%</span>
           </div>

@@ -37,7 +37,7 @@ authoring-constraints: >
 
 ## Authoring note (omit from published post)
 
-This post makes a category-level argument — integrated platform vs. assembled point-tool stack — grounded in observable dynamics of stitched systems. It does not name, describe, or compare features of any specific product other than SimplerDevelopment. No competitor feature matrices. Any claim about the "point tool approach" describes general patterns observable in any assembled stack, not specific products.
+This post makes a category-level argument — integrated platform vs. assembled point-tool stack — grounded in observable dynamics of stitched systems. It does not name, describe, or compare features of any specific product other than CRM AGENTS. No competitor feature matrices. Any claim about the "point tool approach" describes general patterns observable in any assembled stack, not specific products.
 
 ---
 
@@ -103,7 +103,7 @@ Honest framing — both sides.
 
 ### H2: The Domains in One Place — What "Integrated" Means Here
 
-Factual summary of what SimplerDevelopment covers as a single tenant portal:
+Factual summary of what CRM AGENTS covers as a single tenant portal:
 
 - **Website + CMS**: 47-block visual editor, custom post types, taxonomies, media library, publishing calendar
 - **CRM**: contacts, companies, deal pipeline (kanban), proposals, DropboxSign e-signature, custom fields, lead scoring

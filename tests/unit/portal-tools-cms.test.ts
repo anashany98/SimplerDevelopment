@@ -11,7 +11,14 @@
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+const generateUniqueSubdomainMock = vi.hoisted(() => vi.fn());
+
+vi.mock('@/lib/subdomain', () => ({
+  generateUniqueSubdomain: generateUniqueSubdomainMock,
+}));
+
 interface MockState {
+  clients: Array<Record<string, unknown>>;
   clientWebsites: Array<Record<string, unknown>>;
   posts: Array<Record<string, unknown>>;
   postRevisions: Array<Record<string, unknown>>;
@@ -23,6 +30,7 @@ interface MockState {
 }
 
 const state: MockState = {
+  clients: [],
   clientWebsites: [],
   posts: [],
   postRevisions: [],
@@ -31,6 +39,7 @@ const state: MockState = {
   media: [],
   hostedSites: [],
   nextId: {
+    clients: 1,
     clientWebsites: 1,
     posts: 1,
     postRevisions: 1,
@@ -55,6 +64,7 @@ vi.mock('@/lib/db/schema', () => {
       },
     );
   return new Proxy({
+    clients: wrap('clients'),
     clientWebsites: wrap('clientWebsites'),
     posts: wrap('posts'),
     postRevisions: wrap('postRevisions'),
@@ -259,6 +269,7 @@ vi.mock('@/lib/db', () => {
 });
 
 beforeEach(() => {
+  state.clients.length = 0;
   state.clientWebsites.length = 0;
   state.posts.length = 0;
   state.postRevisions.length = 0;
@@ -267,6 +278,7 @@ beforeEach(() => {
   state.media.length = 0;
   state.hostedSites.length = 0;
   state.nextId = {
+    clients: 1,
     clientWebsites: 1,
     posts: 1,
     postRevisions: 1,
@@ -275,6 +287,8 @@ beforeEach(() => {
     media: 1,
     hostedSites: 1,
   };
+  generateUniqueSubdomainMock.mockReset();
+  generateUniqueSubdomainMock.mockResolvedValue('site-new-website');
 });
 
 async function importModule() {
@@ -282,6 +296,16 @@ async function importModule() {
 }
 
 // Helpers ------------------------------------------------------------------
+
+function seedClient(overrides: Partial<Record<string, unknown>> = {}): Record<string, unknown> {
+  const row = {
+    id: 10,
+    company: 'Acme Corp',
+    ...overrides,
+  };
+  state.clients.push(row);
+  return row;
+}
 
 function seedSite(overrides: Partial<Record<string, unknown>> = {}): Record<string, unknown> {
   const row = {
@@ -367,10 +391,11 @@ function seedHostedSite(overrides: Partial<Record<string, unknown>> = {}): Recor
 // ---------------------------------------------------------------------------
 
 describe('cmsTools schema', () => {
-  it('exposes 14 tools with stable names', async () => {
+  it('exposes 15 tools with stable names', async () => {
     const { cmsTools } = await importModule();
     const names = cmsTools.map((t) => t.name).sort();
     expect(names).toEqual([
+      'create_website',
       'create_website_category',
       'create_website_page',
       'create_website_tag',
@@ -403,6 +428,22 @@ describe('cmsTools schema', () => {
       expect(typeof cmsHandlers[t.name]).toBe('function');
       expect(cmsHandlers[t.name].length).toBe(3);
     }
+  });
+
+  it('exposes an LM Studio-compatible create_website schema and handler', async () => {
+    const { cmsTools, cmsHandlers } = await importModule();
+    const tool = cmsTools.find((candidate) => candidate.name === 'create_website');
+
+    expect(tool?.input_schema).toEqual({
+      type: 'object',
+      properties: {
+        name: { type: 'string', description: 'Website name' },
+        description: { type: 'string', description: 'Website description (optional)' },
+      },
+      required: ['name'],
+    });
+    expect(typeof cmsHandlers.create_website).toBe('function');
+    expect(cmsHandlers.create_website.length).toBe(3);
   });
 });
 
@@ -577,10 +618,126 @@ describe('get_my_hosted_sites', () => {
 });
 
 // ---------------------------------------------------------------------------
+// create_website
+// ---------------------------------------------------------------------------
+
+describe('create_website', () => {
+  it('creates a pending active website container and returns its ID and URL', async () => {
+    seedClient({ id: 10, company: 'Acme Corp' });
+    generateUniqueSubdomainMock.mockResolvedValue('acme-corp-launch-site');
+    const { cmsHandlers } = await importModule();
+
+    const res = (await cmsHandlers.create_website(
+      { name: '  Launch Site  ', description: '  New product launch  ' },
+      10,
+      1,
+    )) as Record<string, unknown>;
+
+    expect(generateUniqueSubdomainMock).toHaveBeenCalledWith('Acme Corp', 'Launch Site');
+    expect(res).toEqual({
+      websiteId: 1,
+      name: 'Launch Site',
+      subdomain: 'acme-corp-launch-site',
+      url: 'https://acme-corp-launch-site.simplerdevelopment.com',
+      deploymentStatus: 'pending',
+      created: true,
+    });
+    expect(state.clientWebsites[0]).toMatchObject({
+      clientId: 10,
+      name: 'Launch Site',
+      description: 'New product launch',
+      subdomain: 'acme-corp-launch-site',
+      vercelDomain: 'acme-corp-launch-site.simplerdevelopment.com',
+      deploymentStatus: 'pending',
+      active: true,
+    });
+  });
+
+  it('uses the API-safe site fallback when the client company is missing', async () => {
+    seedClient({ id: 10, company: null });
+    generateUniqueSubdomainMock.mockResolvedValue('site-main-site');
+    const { cmsHandlers } = await importModule();
+
+    await cmsHandlers.create_website({ name: 'Main Site' }, 10, 1);
+
+    expect(generateUniqueSubdomainMock).toHaveBeenCalledWith('site', 'Main Site');
+  });
+
+  it('returns the existing active website on a case-insensitive same-tenant retry', async () => {
+    seedSite({
+      id: 7,
+      clientId: 10,
+      name: 'Launch Site',
+      active: true,
+      subdomain: 'acme-launch',
+      vercelDomain: 'acme-launch.simplerdevelopment.com',
+      deploymentStatus: 'pending',
+    });
+    const { cmsHandlers } = await importModule();
+
+    const res = await cmsHandlers.create_website({ name: '  launch SITE ' }, 10, 1);
+
+    expect(res).toEqual({
+      websiteId: 7,
+      name: 'Launch Site',
+      subdomain: 'acme-launch',
+      url: 'https://acme-launch.simplerdevelopment.com',
+      deploymentStatus: 'pending',
+      created: false,
+    });
+    expect(state.clientWebsites).toHaveLength(1);
+    expect(generateUniqueSubdomainMock).not.toHaveBeenCalled();
+  });
+
+  it('does not let another tenant with the same website name block creation', async () => {
+    seedClient({ id: 10, company: 'Acme Corp' });
+    seedSite({ id: 8, clientId: 99, name: 'Launch Site', active: true });
+    generateUniqueSubdomainMock.mockResolvedValue('acme-corp-launch-site');
+    const { cmsHandlers } = await importModule();
+
+    const res = (await cmsHandlers.create_website({ name: 'Launch Site' }, 10, 1)) as Record<string, unknown>;
+
+    expect(res.created).toBe(true);
+    expect(state.clientWebsites).toHaveLength(2);
+    expect(state.clientWebsites[1]).toMatchObject({ clientId: 10, name: 'Launch Site' });
+  });
+
+  it.each([
+    [{}, 'Website name is required'],
+    [{ name: '' }, 'Website name is required'],
+    [{ name: '   ' }, 'Website name is required'],
+    [{ name: 123 }, 'Website name is required'],
+    [{ name: 'x'.repeat(256) }, 'Website name must be 255 characters or fewer'],
+  ])('rejects an invalid website name %#', async (input, expectedError) => {
+    const { cmsHandlers } = await importModule();
+
+    const res = (await cmsHandlers.create_website(input, 10, 1)) as { error: string };
+
+    expect(res.error).toContain(expectedError);
+    expect(state.clientWebsites).toHaveLength(0);
+    expect(generateUniqueSubdomainMock).not.toHaveBeenCalled();
+  });
+});
+
+// ---------------------------------------------------------------------------
 // create_website_page
 // ---------------------------------------------------------------------------
 
 describe('create_website_page', () => {
+  it.each([0, -1, 1.5])('rejects invalid website_id=%s with actionable guidance', async (websiteId) => {
+    const { cmsHandlers } = await importModule();
+
+    const res = (await cmsHandlers.create_website_page(
+      { website_id: websiteId, title: 'X', slug: 'x', post_type: 'page' },
+      10,
+      1,
+    )) as { error: string };
+
+    expect(res.error).toContain('positive integer website_id');
+    expect(res.error).toContain('get_my_websites');
+    expect(res.error).toContain('create_website');
+  });
+
   it('returns error when website not found', async () => {
     const { cmsHandlers } = await importModule();
     const res = await cmsHandlers.create_website_page(
@@ -610,9 +767,10 @@ describe('create_website_page', () => {
     expect(post.excerpt).toBeNull();
   });
 
-  it('publishes immediately when published=true and sets publishedAt', async () => {
+  it('keeps the page as draft even when a legacy payload sends published=true', async () => {
     seedSite({ id: 1, clientId: 10 });
-    const { cmsHandlers } = await importModule();
+    const { cmsHandlers, cmsTools } = await importModule();
+    const tool = cmsTools.find((candidate) => candidate.name === 'create_website_page');
     const res = (await cmsHandlers.create_website_page(
       {
         website_id: 1,
@@ -625,11 +783,13 @@ describe('create_website_page', () => {
       10,
       1,
     )) as Record<string, unknown>;
+
+    expect(tool?.input_schema.properties).not.toHaveProperty('published');
     expect(res.success).toBe(true);
-    expect((res.message as string).includes('and published')).toBe(true);
+    expect(res.message).toBe('Page "Hi" created as draft.');
     const post = state.posts.find((p) => p.id === res.postId)!;
-    expect(post.published).toBe(true);
-    expect(post.publishedAt).toBeInstanceOf(Date);
+    expect(post.published).toBe(false);
+    expect(post.publishedAt).toBeNull();
     expect(post.excerpt).toBe('sum');
     expect(post.postType).toBe('blog');
   });

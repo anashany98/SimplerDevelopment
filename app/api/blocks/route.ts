@@ -499,7 +499,7 @@ export async function GET() {
       type: 'product-detail',
       name: 'Product Detail',
       description: 'Display a single product with images, variants, pricing, and add-to-cart',
-      icon: 'package',
+      icon: 'inventory_2',
       category: 'ecommerce',
       inputs: [
         { name: 'productSlug', type: 'string', required: true, description: 'Product URL slug' },

@@ -305,7 +305,7 @@ describe('PortalCampaignDetailPage — loading', () => {
   it('shows loading indicator while data is fetching', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 });
 
@@ -319,7 +319,7 @@ describe('PortalCampaignDetailPage — not found', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Campaign not found');
+      expect(container.textContent).toContain('Campaña no encontrada.');
     });
   });
 });
@@ -339,7 +339,7 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
 
   it('renders status badge for draft', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('draft'));
+    await waitFor(() => expect(container.textContent).toContain('Borrador'));
   });
 
   it('renders back link to campaigns list', async () => {
@@ -371,7 +371,7 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send Now'),
+        (b) => b.textContent?.includes('Enviar ahora'),
       );
       expect(sendBtn).toBeTruthy();
     });
@@ -388,7 +388,7 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send Now'),
+        (b) => b.textContent?.includes('Enviar ahora'),
       );
       expect(sendBtn).toBeTruthy();
     });
@@ -406,9 +406,9 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('sent'));
+    await waitFor(() => expect(container.textContent).toContain('Enviada'));
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Send Now',
+      (b) => b.textContent?.trim() === 'Enviar ahora',
     );
     expect(sendBtn).toBeUndefined();
   });
@@ -424,7 +424,7 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const testBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send test'),
+        (b) => b.textContent?.includes('Enviar prueba'),
       );
       expect(testBtn).toBeTruthy();
     });
@@ -434,6 +434,14 @@ describe('PortalCampaignDetailPage — header (draft campaign)', () => {
 // ─── Status badge variants ────────────────────────────────────────────────────
 
 describe('PortalCampaignDetailPage — status badge', () => {
+  const LABELS: Record<string, string> = {
+    draft: 'Borrador',
+    scheduled: 'Programada',
+    sending: 'Enviando…',
+    sent: 'Enviada',
+    ab_testing: 'Test A/B',
+    cancelled: 'Cancelada',
+  };
   const statuses = ['draft', 'scheduled', 'sending', 'sent', 'ab_testing', 'cancelled'];
 
   for (const status of statuses) {
@@ -456,7 +464,7 @@ describe('PortalCampaignDetailPage — status badge', () => {
       });
       const { container } = renderPage();
       await waitFor(() => {
-        expect(container.textContent).toContain(status);
+        expect(container.textContent).toContain(LABELS[status]);
       });
     });
   }
@@ -484,10 +492,10 @@ describe('PortalCampaignDetailPage — stats section', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Sent');
-      expect(container.textContent).toContain('Open Rate');
-      expect(container.textContent).toContain('Click Rate');
-      expect(container.textContent).toContain('Bounce Rate');
+      expect(container.textContent).toContain('Enviados');
+      expect(container.textContent).toContain('Tasa de apertura');
+      expect(container.textContent).toContain('Tasa de clics');
+      expect(container.textContent).toContain('Tasa de rebote');
     });
   });
 
@@ -534,7 +542,7 @@ describe('PortalCampaignDetailPage — stats section', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('sent'));
+    await waitFor(() => expect(container.textContent).toContain('Enviada'));
     const text = container.textContent ?? '';
     const zeroRates = (text.match(/0%/g) ?? []).length;
     expect(zeroRates).toBeGreaterThanOrEqual(3);
@@ -554,9 +562,9 @@ describe('PortalCampaignDetailPage — tab navigation', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const buttons = Array.from(container.querySelectorAll('button'));
-      expect(buttons.some((b) => b.textContent?.includes('overview'))).toBe(true);
-      expect(buttons.some((b) => b.textContent?.includes('content'))).toBe(true);
-      expect(buttons.some((b) => b.textContent?.includes('sends'))).toBe(true);
+      expect(buttons.some((b) => b.textContent?.includes('Resumen'))).toBe(true);
+      expect(buttons.some((b) => b.textContent?.includes('Contenido'))).toBe(true);
+      expect(buttons.some((b) => b.textContent?.includes('Envíos'))).toBe(true);
     });
   });
 
@@ -571,11 +579,11 @@ describe('PortalCampaignDetailPage — tab navigation', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const contentTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'content',
+      (b) => b.textContent?.trim() === 'Contenido',
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Email Preview');
+      expect(container.textContent).toContain('Vista previa del correo');
     });
   });
 
@@ -583,11 +591,11 @@ describe('PortalCampaignDetailPage — tab navigation', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Send Log');
+      expect(container.textContent).toContain('Registro de envíos');
     });
   });
 });
@@ -619,7 +627,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Reply-To');
+      expect(container.textContent).toContain('Correo de respuesta');
       expect(container.textContent).toContain('—');
     });
   });
@@ -641,7 +649,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
   it('shows Unsubscribes count', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Unsubscribes');
+      expect(container.textContent).toContain('Cancelaciones de suscripción');
     });
   });
 
@@ -649,7 +657,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // sentAt is null → rendered as dash
-      expect(container.textContent).toContain('Sent At');
+      expect(container.textContent).toContain('Enviado el');
     });
   });
 
@@ -673,7 +681,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
   it('shows editor row with "Template / HTML" when useBlockEditor=false and status=draft', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Template / HTML');
+      expect(container.textContent).toContain('Plantilla / HTML');
     });
   });
 
@@ -687,7 +695,7 @@ describe('PortalCampaignDetailPage — overview tab', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Block builder');
+      expect(container.textContent).toContain('Constructor de bloques');
     });
   });
 
@@ -703,8 +711,8 @@ describe('PortalCampaignDetailPage — overview tab', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('sent'));
-    expect(container.textContent).not.toContain('Template / HTML');
+    await waitFor(() => expect(container.textContent).toContain('Enviada'));
+    expect(container.textContent).not.toContain('Plantilla / HTML');
   });
 });
 
@@ -718,9 +726,9 @@ describe('PortalCampaignDetailPage — toggleUseBlockEditor', () => {
       return makeRes({ success: true, data: { campaign: makeCampaign(), sends: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Switch to block builder'));
+    await waitFor(() => expect(container.textContent).toContain('Cambiar a constructor de bloques'));
     const toggleBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Switch to'),
+      (b) => b.textContent?.includes('Cambiar a'),
     ) as HTMLButtonElement;
     fireEvent.click(toggleBtn);
     await waitFor(() => {
@@ -739,7 +747,7 @@ describe('PortalCampaignDetailPage — content tab (view mode)', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const contentTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'content',
+      (b) => b.textContent?.trim() === 'Contenido',
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
@@ -751,11 +759,11 @@ describe('PortalCampaignDetailPage — content tab (view mode)', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const contentTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'content',
+      (b) => b.textContent?.trim() === 'Contenido',
     ) as HTMLButtonElement;
     fireEvent.click(contentTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Email Preview');
+      expect(container.textContent).toContain('Vista previa del correo');
     });
   });
 });
@@ -775,7 +783,7 @@ describe('PortalCampaignDetailPage — edit mode', () => {
     const { container } = renderPage();
     await openEditMode(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit Content');
+      expect(container.textContent).toContain('Editar contenido');
     });
   });
 
@@ -806,13 +814,13 @@ describe('PortalCampaignDetailPage — edit mode', () => {
   it('Cancel button closes edit mode', async () => {
     const { container } = renderPage();
     await openEditMode(container);
-    await waitFor(() => expect(container.textContent).toContain('Edit Content'));
+    await waitFor(() => expect(container.textContent).toContain('Editar contenido'));
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent?.includes('Cancel'),
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit Content');
+      expect(container.textContent).not.toContain('Editar contenido');
     });
   });
 
@@ -824,9 +832,9 @@ describe('PortalCampaignDetailPage — edit mode', () => {
     });
     const { container } = renderPage();
     await openEditMode(container);
-    await waitFor(() => expect(container.textContent).toContain('Save Changes'));
+    await waitFor(() => expect(container.textContent).toContain('Guardar cambios'));
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -847,9 +855,9 @@ describe('PortalCampaignDetailPage — edit mode', () => {
     });
     const { container } = renderPage();
     await openEditMode(container);
-    await waitFor(() => expect(container.textContent).toContain('Save Changes'));
+    await waitFor(() => expect(container.textContent).toContain('Guardar cambios'));
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -865,20 +873,20 @@ describe('PortalCampaignDetailPage — edit mode', () => {
     });
     const { container } = renderPage();
     await openEditMode(container);
-    await waitFor(() => expect(container.textContent).toContain('Save Changes'));
+    await waitFor(() => expect(container.textContent).toContain('Guardar cambios'));
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit Content');
+      expect(container.textContent).not.toContain('Editar contenido');
     });
   });
 
   it('updates subject input value on change', async () => {
     const { container } = renderPage();
     await openEditMode(container);
-    await waitFor(() => expect(container.textContent).toContain('Edit Content'));
+    await waitFor(() => expect(container.textContent).toContain('Editar contenido'));
     const inputs = container.querySelectorAll('input');
     const subjectInput = Array.from(inputs).find(
       (i) => (i as HTMLInputElement).value === 'Welcome to the newsletter',
@@ -910,9 +918,9 @@ describe('PortalCampaignDetailPage — sendCampaign', () => {
       return makeRes({ success: true, data: { campaign: makeCampaign(), sends: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send Now'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar ahora'));
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send Now'),
+      (b) => b.textContent?.includes('Enviar ahora'),
     ) as HTMLButtonElement;
     fireEvent.click(sendBtn);
     await waitFor(() => {
@@ -926,10 +934,10 @@ describe('PortalCampaignDetailPage — sendCampaign', () => {
   it('does NOT call POST when confirm returns false', async () => {
     vi.stubGlobal('confirm', vi.fn(() => false));
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send Now'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar ahora'));
     const beforeCalls = fetchMock.mock.calls.length;
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send Now'),
+      (b) => b.textContent?.includes('Enviar ahora'),
     ) as HTMLButtonElement;
     fireEvent.click(sendBtn);
     await new Promise((r) => setTimeout(r, 50));
@@ -950,14 +958,14 @@ describe('PortalCampaignDetailPage — sendCampaign', () => {
       return makeRes({ success: true, data: { campaign: makeCampaign(), sends: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send Now'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar ahora'));
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send Now'),
+      (b) => b.textContent?.includes('Enviar ahora'),
     ) as HTMLButtonElement;
     fireEvent.click(sendBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Queued');
-      expect(container.textContent).toContain('75 subscribers in the background');
+      expect(container.textContent).toContain('En cola');
+      expect(container.textContent).toContain('75 suscriptores en segundo plano');
     });
   });
 
@@ -971,13 +979,13 @@ describe('PortalCampaignDetailPage — sendCampaign', () => {
       return makeRes({ success: true, data: { campaign: makeCampaign(), sends: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send Now'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar ahora'));
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send Now'),
+      (b) => b.textContent?.includes('Enviar ahora'),
     ) as HTMLButtonElement;
     fireEvent.click(sendBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('1 subscriber in the background');
+      expect(container.textContent).toContain('1 suscriptor en segundo plano');
     });
   });
 
@@ -993,9 +1001,9 @@ describe('PortalCampaignDetailPage — sendCampaign', () => {
       return makeRes({ success: true, data: { campaign: makeCampaign(), sends: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send Now'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar ahora'));
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send Now'),
+      (b) => b.textContent?.includes('Enviar ahora'),
     ) as HTMLButtonElement;
     fireEvent.click(sendBtn);
     await waitFor(() => expect(alertMock).toHaveBeenCalled());
@@ -1011,13 +1019,13 @@ describe('PortalCampaignDetailPage — sendCampaign', () => {
       return makeRes({ success: true, data: { campaign: makeCampaign(), sends: [] } });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send Now'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar ahora'));
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send Now'),
+      (b) => b.textContent?.includes('Enviar ahora'),
     ) as HTMLButtonElement;
     fireEvent.click(sendBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Queued');
+      expect(container.textContent).toContain('En cola');
       expect(container.textContent).not.toContain('Sent successfully');
     });
   });
@@ -1061,7 +1069,7 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const testBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send test'),
+      (b) => b.textContent?.includes('Enviar prueba'),
     );
     expect(testBtn).toBeUndefined();
   });
@@ -1071,11 +1079,11 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Send test'),
+        (b) => b.textContent?.includes('Enviar prueba'),
       )).toBe(true);
     });
     const testBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send test'),
+      (b) => b.textContent?.includes('Enviar prueba'),
     ) as HTMLButtonElement;
     fireEvent.click(testBtn);
     await waitFor(() => {
@@ -1089,13 +1097,13 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
   it('shows "Test sent to …" banner on success', async () => {
     setupWithBlocks();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send test'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar prueba'));
     const testBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send test'),
+      (b) => b.textContent?.includes('Enviar prueba'),
     ) as HTMLButtonElement;
     fireEvent.click(testBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Test sent to');
+      expect(container.textContent).toContain('Prueba enviada a');
     });
   });
 
@@ -1120,13 +1128,13 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send test'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar prueba'));
     const testBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send test'),
+      (b) => b.textContent?.includes('Enviar prueba'),
     ) as HTMLButtonElement;
     fireEvent.click(testBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Test failed to send');
+      expect(container.textContent).toContain('No se pudo enviar la prueba');
     });
   });
 
@@ -1148,9 +1156,9 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send test'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar prueba'));
     const testBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send test'),
+      (b) => b.textContent?.includes('Enviar prueba'),
     ) as HTMLButtonElement;
     fireEvent.click(testBtn);
     await waitFor(() => {
@@ -1161,12 +1169,12 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
   it('dismiss button clears the test result banner', async () => {
     setupWithBlocks();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send test'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar prueba'));
     const testBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send test'),
+      (b) => b.textContent?.includes('Enviar prueba'),
     ) as HTMLButtonElement;
     fireEvent.click(testBtn);
-    await waitFor(() => expect(container.textContent).toContain('Test sent to'));
+    await waitFor(() => expect(container.textContent).toContain('Prueba enviada a'));
     // Find and click the close button inside the banner
     const closeBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.querySelector('.material-icons')?.textContent === 'close',
@@ -1174,7 +1182,7 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
     if (closeBtn) {
       fireEvent.click(closeBtn);
       await waitFor(() => {
-        expect(container.textContent).not.toContain('Test sent to');
+        expect(container.textContent).not.toContain('Prueba enviada a');
       });
     }
   });
@@ -1197,13 +1205,13 @@ describe('PortalCampaignDetailPage — sendTestEmail', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Send test'));
+    await waitFor(() => expect(container.textContent).toContain('Enviar prueba'));
     const testBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send test'),
+      (b) => b.textContent?.includes('Enviar prueba'),
     ) as HTMLButtonElement;
     fireEvent.click(testBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Test rendered');
+      expect(container.textContent).toContain('Prueba renderizada');
     });
   });
 });
@@ -1215,11 +1223,11 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('No sends recorded yet');
+      expect(container.textContent).toContain('Aún no hay envíos registrados.');
     });
   });
 
@@ -1234,11 +1242,11 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Send Log (2)');
+      expect(container.textContent).toContain('Registro de envíos (2)');
     });
   });
 
@@ -1253,7 +1261,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
@@ -1272,7 +1280,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
@@ -1291,14 +1299,14 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Welcome Series'));
     const sendsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'sends',
+      (b) => b.textContent?.trim() === 'Envíos',
     ) as HTMLButtonElement;
     fireEvent.click(sendsTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Recipient');
-      expect(container.textContent).toContain('Opened');
-      expect(container.textContent).toContain('Clicked');
-      expect(container.textContent).toContain('Bounced');
+      expect(container.textContent).toContain('Destinatario');
+      expect(container.textContent).toContain('Abierto');
+      expect(container.textContent).toContain('Clic');
+      expect(container.textContent).toContain('Rebotado');
     });
   });
 });

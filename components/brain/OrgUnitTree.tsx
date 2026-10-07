@@ -343,10 +343,10 @@ export default function OrgUnitTree({
       >
         {tree.length === 0 ? (
           <div className="text-xs text-muted-foreground p-4 italic">
-            No org units yet. Click &ldquo;New unit&rdquo; to add the first one.
+            Aún no hay unidades organizativas. Pulsa &ldquo;Nueva unidad&rdquo; para añadir la primera.
           </div>
         ) : (
-          <ul role="tree" aria-label="Org units" className="list-none p-1">
+          <ul role="tree" aria-label="Unidades organizativas" className="list-none p-1">
             {tree.map((node) => renderRow(node, 0))}
           </ul>
         )}
@@ -461,11 +461,11 @@ function RowMenu({
       onClick={(e) => e.stopPropagation()}
       className="absolute right-0 top-7 z-30 w-44 bg-popover border border-border rounded-md shadow-lg p-1 text-sm"
     >
-      <MenuItem icon="edit" label="Rename" onClick={onRename} />
+      <MenuItem icon="edit" label="Renombrar" onClick={onRename} />
       <MenuItem icon="subdirectory_arrow_right" label="New child" onClick={onNewChild} />
       <MenuItem icon="call_merge" label="Merge into…" onClick={onMerge} />
       <div className="my-1 h-px bg-border" />
-      <MenuItem icon="delete" label="Delete" onClick={onDelete} destructive />
+      <MenuItem icon="delete" label="Eliminar" onClick={onDelete} destructive />
     </div>
   );
 }
@@ -598,18 +598,14 @@ function DeleteDialog({
           type="button"
           onClick={onClose}
           className="px-3 py-1.5 text-sm rounded border border-border hover:bg-muted"
-        >
-          Cancel
-        </button>
+        >Cancelar</button>
         <button
           type="button"
           disabled={needsForce && !force}
           onClick={() => onConfirm(force)}
           className="px-3 py-1.5 text-sm rounded bg-destructive text-destructive-foreground hover:bg-destructive/90 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1.5"
         >
-          <span className="material-icons text-base">delete</span>
-          Delete
-        </button>
+          <span className="material-icons text-base">delete</span>Eliminar</button>
       </div>
     </Modal>
   );
@@ -647,7 +643,7 @@ function Modal({
             type="button"
             onClick={onClose}
             className="text-muted-foreground hover:text-foreground"
-            aria-label="Close"
+            aria-label="Cerrar"
           >
             <span className="material-icons text-base">close</span>
           </button>

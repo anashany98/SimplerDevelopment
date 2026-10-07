@@ -22,14 +22,14 @@ export default function RequestActivationButton({ siteId }: Props) {
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setError(json.message ?? 'Failed to request activation. Please try again.');
+        setError(json.message ?? 'No se pudo solicitar la activación. Inténtalo de nuevo.');
       } else {
         setDone(true);
         // Refresh the page so the provisioning banner replaces this one
         router.refresh();
       }
     } catch {
-      setError('Network error. Please try again.');
+      setError('Error de red. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -39,7 +39,7 @@ export default function RequestActivationButton({ siteId }: Props) {
     return (
       <span className="inline-flex items-center gap-1 text-xs text-blue-700 dark:text-blue-300 font-medium shrink-0">
         <span className="material-icons text-sm">check</span>
-        Activation requested
+        Activación solicitada
       </span>
     );
   }
@@ -54,12 +54,12 @@ export default function RequestActivationButton({ siteId }: Props) {
         {loading ? (
           <>
             <span className="material-icons text-sm animate-spin" style={{ animationDuration: '1.5s' }}>autorenew</span>
-            Requesting…
+            Solicitando…
           </>
         ) : (
           <>
             <span className="material-icons text-sm">rocket_launch</span>
-            Request activation
+            Solicitar activación
           </>
         )}
       </button>

@@ -24,32 +24,28 @@ export function TextBlockEdit({ block, onChange }: TextBlockEditProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Alignment
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
           <select
             value={block.alignment || 'left'}
             onChange={(e) => onChange({ ...block, alignment: e.target.value as TextBlock['alignment'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="left">Left</option>
-            <option value="center">Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center">Centrado</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Size
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Tamaño</label>
           <select
             value={block.size || 'base'}
             onChange={(e) => onChange({ ...block, size: e.target.value as TextBlock['size'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="sm">Small</option>
+            <option value="sm">Pequeño</option>
             <option value="base">Base</option>
-            <option value="lg">Large</option>
+            <option value="lg">Grande</option>
             <option value="xl">Extra Large</option>
           </select>
         </div>

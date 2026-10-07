@@ -112,7 +112,7 @@ function StepConfigForm({
             />
           </label>
           <label className="block sm:col-span-2">
-            <span className="text-[11px] font-medium text-muted-foreground">Description</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Descripción</span>
             <textarea
               value={String(config.description ?? '')}
               onChange={(e) => set('description', e.target.value)}
@@ -148,7 +148,7 @@ function StepConfigForm({
             />
           </label>
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Priority</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Prioridad</span>
             <select
               value={String(config.priority ?? 'medium')}
               onChange={(e) => set('priority', e.target.value)}
@@ -168,7 +168,7 @@ function StepConfigForm({
       return (
         <div className="grid grid-cols-1 gap-2">
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Title</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Título</span>
             <input
               type="text"
               value={String(config.title ?? '')}
@@ -194,7 +194,7 @@ function StepConfigForm({
       return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <label className="block sm:col-span-3">
-            <span className="text-[11px] font-medium text-muted-foreground">Title</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Título</span>
             <input
               type="text"
               value={String(config.title ?? '')}
@@ -233,7 +233,7 @@ function StepConfigForm({
             />
           </label>
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Description</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Descripción</span>
             <input
               type="text"
               value={String(config.description ?? '')}
@@ -548,7 +548,7 @@ export default function PlaybookStepEditor({
               />
             </label>
             <label className="block">
-              <span className="text-[11px] font-medium text-muted-foreground">Description</span>
+              <span className="text-[11px] font-medium text-muted-foreground">Descripción</span>
               <input
                 type="text"
                 value={local.description}
@@ -566,7 +566,7 @@ export default function PlaybookStepEditor({
 
           <div>
             <span className="block text-[11px] font-medium text-muted-foreground mb-1">
-              {kindChip.label} config
+              Configuración de {kindChip.label.toLowerCase()}
             </span>
             <StepConfigForm
               kind={step.kind}

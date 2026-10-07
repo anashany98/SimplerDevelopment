@@ -1,0 +1,157 @@
+name: crm-agents
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    env_file:
+      - ../../.env.production
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - crm-agents-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  # The image provides pgvector, but each database must enable the extension
+  # before the baseline schema can declare vector columns.
+  db-init:
+    image: pgvector/pgvector:pg16
+    restart: "no"
+    env_file:
+      - ../../.env.production
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    command:
+      - /bin/sh
+      - -ec
+      - >-
+        psql -h db -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+        -v ON_ERROR_STOP=1 -c "CREATE EXTENSION IF NOT EXISTS vector;"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    env_file:
+      - ../../.env.production
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "9000:9000"
+    volumes:
+      - crm-agents-minio:/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9000/minio/health/live >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  minio-init:
+    image: minio/mc:latest
+    restart: "no"
+    env_file:
+      - ../../.env.production
+    depends_on:
+      minio:
+        condition: service_healthy
+    volumes:
+      - ../../backups/minio:/backup
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - >-
+        mc alias set local http://minio:9000 "$${MINIO_ROOT_USER}" "$${MINIO_ROOT_PASSWORD}" &&
+        mc mb --ignore-existing "local/$${S3_BUCKET_NAME}"
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+        NEXT_PUBLIC_SIGNUP_DISABLED: ${NEXT_PUBLIC_SIGNUP_DISABLED}
+    image: crm-agents-app:local
+    restart: unless-stopped
+    env_file:
+      - ../../.env.production
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      DRIZZLE_DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      S3_ENDPOINT: http://minio:9000
+      S3_PUBLIC_ENDPOINT: ${S3_PUBLIC_ENDPOINT}
+      S3_REGION: ${S3_REGION}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      S3_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
+      S3_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      REALTIME_INTERNAL_URL: ""
+      SD_AGENTS_URL: ""
+      NODE_OPTIONS: --max-old-space-size=1536
+    command:
+      - /bin/sh
+      - -ec
+      - >-
+        bun scripts/verify-db-target.ts &&
+        node node_modules/drizzle-kit/bin.cjs migrate &&
+        bun scripts/apply-local-manual-migrations.ts &&
+        exec node node_modules/next/dist/bin/next start
+    depends_on:
+      db:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+      minio-init:
+        condition: service_completed_successfully
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "bun --eval \"fetch('http://localhost:3000/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))\""]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 120s
+
+  cron:
+    image: crm-agents-app:local
+    restart: unless-stopped
+    env_file:
+      - ../../.env.production
+    environment:
+      CRON_BASE_URL: http://app:3000
+    command: ["bun", "scripts/cron-runner.ts"]
+    depends_on:
+      app:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - crm-agents-caddy-data:/data
+      - crm-agents-caddy-config:/config
+
+volumes:
+  crm-agents-postgres:
+  crm-agents-minio:
+  crm-agents-caddy-data:
+  crm-agents-caddy-config:

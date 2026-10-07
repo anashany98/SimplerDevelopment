@@ -104,7 +104,7 @@ describe('MeetingReviewPage — loading and error states', () => {
       return new Promise((res) => { resolveMeeting = res; }) as any;
     });
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading review queue');
+    expect(container.textContent).toContain('Cargando la cola de revisión');
     // Resolve to avoid leak
     resolveMeeting(makeRes({ success: true, data: makeMeeting() }));
   });
@@ -120,7 +120,7 @@ describe('MeetingReviewPage — loading and error states', () => {
   it('renders "Review queue" heading once loaded', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Review queue');
+      expect(container.textContent).toContain('Cola de revisión');
     });
   });
 
@@ -129,7 +129,7 @@ describe('MeetingReviewPage — loading and error states', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/brain/communications/42"]');
       expect(link).toBeTruthy();
-      expect(link?.textContent).toContain('Back to communication');
+      expect(link?.textContent).toContain('Volver a la comunicación');
     });
   });
 
@@ -137,7 +137,7 @@ describe('MeetingReviewPage — loading and error states', () => {
     setupFetch(makeMeeting(), []);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All clear');
+      expect(container.textContent).toContain('Todo en orden');
     });
   });
 
@@ -150,7 +150,7 @@ describe('MeetingReviewPage — loading and error states', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('2');
-      expect(container.textContent).toContain('pending');
+      expect(container.textContent).toContain('pendientes');
     });
   });
 
@@ -158,7 +158,7 @@ describe('MeetingReviewPage — loading and error states', () => {
     setupFetch(makeMeeting(), []);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No items in the review queue');
+      expect(container.textContent).toContain('Aún no hay elementos en la cola de revisión');
     });
   });
 
@@ -166,7 +166,7 @@ describe('MeetingReviewPage — loading and error states', () => {
     setupFetch(makeMeeting({ aiSummary: 'A nice summary' }), []);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('AI summary');
+      expect(container.textContent).toContain('Resumen de IA');
       expect(container.textContent).toContain('A nice summary');
     });
   });
@@ -175,9 +175,9 @@ describe('MeetingReviewPage — loading and error states', () => {
     setupFetch(makeMeeting({ aiSummary: null }), []);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Review queue');
+      expect(container.textContent).toContain('Cola de revisión');
     });
-    expect(container.textContent).not.toContain('AI summary');
+    expect(container.textContent).not.toContain('Resumen de IA');
   });
 });
 
@@ -200,7 +200,7 @@ describe('MeetingReviewPage — failure paths', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load communication');
+      expect(container.textContent).toContain('No se pudo cargar la comunicación');
     });
   });
 
@@ -233,7 +233,7 @@ describe('MeetingReviewPage — failure paths', () => {
     fetchMock.mockImplementation(async () => { throw 'oops'; });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -242,7 +242,7 @@ describe('MeetingReviewPage — failure paths', () => {
     const { container } = renderPage();
     // Stays loading because effect never fires load
     await waitFor(() => {
-      expect(container.textContent).toContain('Loading review queue');
+      expect(container.textContent).toContain('Cargando la cola de revisión');
     });
     // No fetch calls because effect was skipped
     expect(fetchMock).not.toHaveBeenCalled();
@@ -259,7 +259,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Send draft');
-      expect(container.textContent).toContain('Task');
+      expect(container.textContent).toContain('Tarea');
     });
   });
 
@@ -269,7 +269,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Untitled task');
+      expect(container.textContent).toContain('Tarea sin título');
     });
   });
 
@@ -280,7 +280,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Ship in Q4');
-      expect(container.textContent).toContain('Decision');
+      expect(container.textContent).toContain('Decisión');
       expect(container.textContent).toContain('reviewed risks');
     });
   });
@@ -303,7 +303,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Someone');
+      expect(container.textContent).toContain('Alguien');
       expect(container.textContent).toContain('will help');
     });
   });
@@ -333,7 +333,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('PII leaked');
-      expect(container.textContent).toContain('Compliance warning');
+      expect(container.textContent).toContain('Aviso de cumplimiento');
       expect(container.textContent).toContain('high');
     });
   });
@@ -356,9 +356,9 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('#42');
-      expect(container.textContent).toContain('status → lead');
-      expect(container.textContent).toContain('seniority → manager');
-      expect(container.textContent).toContain('confidence');
+      expect(container.textContent).toContain('estado → lead');
+      expect(container.textContent).toContain('antigüedad → manager');
+      expect(container.textContent).toContain('confianza');
       expect(container.textContent).toContain('profile match');
     });
   });
@@ -372,7 +372,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Contact #99');
+      expect(container.textContent).toContain('Contacto #99');
     });
   });
 
@@ -385,7 +385,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Link this email to deal #7');
+      expect(container.textContent).toContain('Vincular este correo al negocio #7');
       expect(container.textContent).toContain('related thread');
     });
   });
@@ -426,7 +426,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Create deal: No Value Deal');
+      expect(container.textContent).toContain('Crear negocio: No Value Deal');
     });
   });
 
@@ -439,7 +439,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('(untitled)');
+      expect(container.textContent).toContain('(sin título)');
     });
   });
 
@@ -465,7 +465,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Link to company #11');
+      expect(container.textContent).toContain('Vincular a empresa #11');
       expect(container.textContent).toContain('matches domain');
     });
   });
@@ -479,7 +479,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Pick a company from 3 candidates');
+      expect(container.textContent).toContain('Elige una empresa entre 3 candidatas');
       expect(container.textContent).toContain('#22');
       expect(container.textContent).toContain('#33');
     });
@@ -517,7 +517,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Create company: NoDomain');
+      expect(container.textContent).toContain('Crear empresa: NoDomain');
     });
   });
 
@@ -530,7 +530,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('(unnamed)');
+      expect(container.textContent).toContain('(sin nombre)');
     });
   });
 
@@ -542,7 +542,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     await waitFor(() => {
       // follow_up has no branch → JSON.stringify fallback
       expect(container.textContent).toContain('someValue');
-      expect(container.textContent).toContain('Follow-up');
+      expect(container.textContent).toContain('Seguimiento');
     });
   });
 
@@ -552,7 +552,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Note');
+      expect(container.textContent).toContain('Nota');
       expect(container.textContent).toContain('a note');
     });
   });
@@ -595,7 +595,7 @@ describe('MeetingReviewPage — item grouping and summaries', () => {
       expect(container.textContent).toContain('Alice');
       expect(container.textContent).toContain('2025-07-01');
       expect(container.textContent).toContain('high');
-      expect(container.textContent).toContain('compliance flag');
+      expect(container.textContent).toContain('marca de cumplimiento');
       expect(container.textContent).toContain('related-brain');
     });
   });
@@ -608,22 +608,22 @@ describe('MeetingReviewPage — approve and reject actions', () => {
   // after portal redesign — previously was bg-primary).
   function findApproveBtn(container: HTMLElement): HTMLButtonElement {
     return Array.from(container.querySelectorAll('button')).find((b) =>
-      b.className.includes('bg-foreground') && b.textContent?.includes('Approve'),
+      b.className.includes('bg-foreground') && b.textContent?.includes('Aprobar'),
     ) as HTMLButtonElement;
   }
   function findRejectBtn(container: HTMLElement): HTMLButtonElement {
     return Array.from(container.querySelectorAll('button')).find((b) =>
-      b.className.includes('hover:bg-destructive') && b.textContent?.includes('Reject'),
+      b.className.includes('hover:bg-destructive') && b.textContent?.includes('Rechazar'),
     ) as HTMLButtonElement;
   }
   function findEditBtn(container: HTMLElement): HTMLButtonElement {
     return Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Edit',
+      b.textContent?.trim() === 'Editar',
     ) as HTMLButtonElement;
   }
   function findCancelEditBtn(container: HTMLElement): HTMLButtonElement {
     return Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel edit',
+      b.textContent?.trim() === 'Cancelar edición',
     ) as HTMLButtonElement;
   }
 
@@ -730,7 +730,7 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     await waitFor(() => {
       // The fallback "Failed to load review items." comes from the reload error,
       // but the original "Failed to approve." path also runs.
-      expect(container.textContent).toMatch(/Failed to (approve|load)/);
+      expect(container.textContent).toMatch(/No se pud(?:o|ieron) (?:aprobar|cargar)/);
     });
   });
 
@@ -753,7 +753,7 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     fireEvent.click(findRejectBtn(container));
     await waitFor(() => {
-      expect(container.textContent).toMatch(/Failed to (reject|load)/);
+      expect(container.textContent).toMatch(/No se pud(?:o|ieron) (?:rechazar|cargar)/);
     });
   });
 
@@ -765,7 +765,7 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     await waitFor(() => {
       const textarea = container.querySelector('textarea');
       expect(textarea).toBeTruthy();
-      expect(container.textContent).toContain('Edit JSON before approving');
+      expect(container.textContent).toContain('Edita el JSON antes de aprobar');
     });
   });
 
@@ -775,11 +775,11 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     fireEvent.click(findEditBtn(container));
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit JSON before approving');
+      expect(container.textContent).toContain('Edita el JSON antes de aprobar');
     });
     fireEvent.click(findCancelEditBtn(container));
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit JSON before approving');
+      expect(container.textContent).not.toContain('Edita el JSON antes de aprobar');
     });
   });
 
@@ -815,7 +815,7 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     fireEvent.change(textarea, { target: { value: 'not json!!!' } });
     fireEvent.click(findApproveBtn(container));
     await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Edited payload is not valid JSON.');
+      expect(alertSpy).toHaveBeenCalledWith('El JSON editado no es válido.');
     });
     // No /approve call should have been made
     const approveCalls = fetchMock.mock.calls.filter((c) => String(c[0]).includes('/approve'));
@@ -826,15 +826,15 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     setupFetch(makeMeeting(), [makeItem(1, { status: 'approved' })]);
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
-    expect(container.textContent).toContain('Approved');
-    expect(container.textContent).not.toContain('Cancel edit');
+    expect(container.textContent).toContain('Aprobado');
+    expect(container.textContent).not.toContain('Cancelar edición');
   });
 
   it('shows "Edited & approved" badge for edited items', async () => {
     setupFetch(makeMeeting(), [makeItem(1, { status: 'edited' })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Edited & approved');
+      expect(container.textContent).toContain('Editado y aprobado');
     });
   });
 
@@ -842,7 +842,7 @@ describe('MeetingReviewPage — approve and reject actions', () => {
     setupFetch(makeMeeting(), [makeItem(1, { status: 'rejected' })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Rejected');
+      expect(container.textContent).toContain('Rechazado');
     });
   });
 
@@ -917,7 +917,7 @@ describe('MeetingReviewPage — payload details branches', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('candidates');
+      expect(container.textContent).toContain('candidatas');
       expect(container.textContent).toContain('#1');
       expect(container.textContent).toContain('#2');
     });
@@ -929,7 +929,7 @@ describe('MeetingReviewPage — payload details branches', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Note');
+      expect(container.textContent).toContain('Nota');
     });
   });
 });

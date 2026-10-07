@@ -72,7 +72,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
     .from(surveys)
     .where(eq(surveys.slug, slug));
 
-  if (!survey) return corsJson({ success: false, message: 'Survey not found' }, { status: 404 });
+    if (!survey) return corsJson({ success: false, message: 'Encuesta no encontrada.' }, { status: 404 });
 
   // A reviewer holding a live approval link for THIS survey sees the draft
   // exactly as it will publish (PUX-060/061). Until now a draft survey could not
@@ -90,9 +90,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
   const viaApproval = !!approval && approval.clientId === survey.clientId;
 
   if (!viaApproval) {
-    if (survey.status !== 'active') return corsJson({ success: false, message: 'Survey is not active' }, { status: 403 });
-    if (survey.closesAt && new Date(survey.closesAt) < new Date()) return corsJson({ success: false, message: 'Survey is closed' }, { status: 403 });
-    if (survey.maxResponses && survey.responseCount >= survey.maxResponses) return corsJson({ success: false, message: 'Survey has reached maximum responses' }, { status: 403 });
+    if (survey.status !== 'active') return corsJson({ success: false, message: 'La encuesta no está activa.' }, { status: 403 });
+    if (survey.closesAt && new Date(survey.closesAt) < new Date()) return corsJson({ success: false, message: 'La encuesta está cerrada.' }, { status: 403 });
+    if (survey.maxResponses && survey.responseCount >= survey.maxResponses) return corsJson({ success: false, message: 'La encuesta ha alcanzado el máximo de respuestas.' }, { status: 403 });
   }
 
   const branding = await getBrandingBySurveySlug(slug);
@@ -162,13 +162,13 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   // cap, swap to Redis-backed limiter if a distributed flood gets through.
   if (!(await checkRateLimit(`survey-submit:${getClientIp(req)}:${slug}`, 30, 60_000))) {
     return corsJson(
-      { success: false, message: 'Too many submissions. Please wait a moment and try again.' },
+      { success: false, message: 'Demasiados envíos. Espera un momento e inténtalo de nuevo.' },
       { status: 429 },
     );
   }
 
   const [survey] = await db.select().from(surveys).where(eq(surveys.slug, slug));
-  if (!survey) return corsJson({ success: false, message: 'Survey not found' }, { status: 404 });
+    if (!survey) return corsJson({ success: false, message: 'Encuesta no encontrada.' }, { status: 404 });
 
   // Approval-mode shim (PUX-067). A reviewer walks the whole form — branching,
   // page jumps, submit — and reaches the thank-you screen, but NOTHING is
@@ -183,7 +183,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     return corsJson({
       success: true,
       approvalPreview: true,
-      message: 'Draft preview — this response was not saved.',
+      message: 'Vista previa de borrador: esta respuesta no se ha guardado.',
       data: { id: null, score: null, recommendation: null },
     });
   }
@@ -193,7 +193,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   if (survey.maxResponses && survey.responseCount >= survey.maxResponses) return corsJson({ success: false, message: 'Survey has reached maximum responses' }, { status: 403 });
 
   const { answers, email, name, source, sourceId, formName, variantId, sessionId } = await req.json();
-  if (!answers || typeof answers !== 'object') return corsJson({ success: false, message: 'Answers are required' }, { status: 400 });
+    if (!answers || typeof answers !== 'object') return corsJson({ success: false, message: 'Las respuestas son obligatorias.' }, { status: 400 });
 
   // Optional RESP-02 partial-session handle. Length-bounded + charset-restricted
   // here too because anything wider than 64 chars or off-whitelist would never
@@ -210,7 +210,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   if (variantId !== undefined && variantId !== null) {
     const parsed = typeof variantId === 'number' ? variantId : parseInt(String(variantId), 10);
     if (!Number.isFinite(parsed) || parsed <= 0) {
-      return corsJson({ success: false, message: 'Invalid variantId' }, { status: 400 });
+      return corsJson({ success: false, message: 'Variante no válida.' }, { status: 400 });
     }
     const [variant] = await db.select({ id: surveyVariants.id })
       .from(surveyVariants)
@@ -226,14 +226,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
   // from structured-survey submissions on the same survey row.
   const trimmedFormName = typeof formName === 'string' ? formName.trim() : '';
   if (!trimmedFormName) {
-    return corsJson({ success: false, message: 'formName is required' }, { status: 400 });
+      return corsJson({ success: false, message: 'El nombre del formulario es obligatorio.' }, { status: 400 });
   }
   if (trimmedFormName.length > 100) {
-    return corsJson({ success: false, message: 'formName must be 100 characters or fewer' }, { status: 400 });
+      return corsJson({ success: false, message: 'El nombre del formulario no puede superar los 100 caracteres.' }, { status: 400 });
   }
 
   if (survey.requireEmail && !email?.trim()) {
-    return corsJson({ success: false, message: 'Email is required' }, { status: 400 });
+      return corsJson({ success: false, message: 'El correo electrónico es obligatorio.' }, { status: 400 });
   }
 
   // Validate required fields against the survey's structured schema. When a
@@ -317,7 +317,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       .limit(1);
     if (existing) {
       return corsJson(
-        { success: false, message: 'You have already submitted a response to this survey' },
+        { success: false, message: 'Ya has enviado una respuesta a esta encuesta.' },
         { status: 403 },
       );
     }
@@ -360,14 +360,22 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
             eq(surveyPartialResponses.surveyId, survey.id),
             eq(surveyPartialResponses.sessionId, trimmedSessionId),
           ),
-        );
+      );
     }
+
+    // Persist webhook work with the response. Only the cron worker performs
+    // outbound HTTP, so the public request never waits on registered endpoints.
+    await dispatchSurveyResponseWebhooks({
+      ...inserted,
+      surveyTitle: survey.title,
+      surveySlug: survey.slug,
+    }, survey.clientId, tx);
 
     return [inserted];
   });
 
   // NOTE: emitEvent intentionally outside transaction — slow handlers must not hold DB connection
-  emitEvent('survey.response_submitted', survey.clientId, 0, {
+  await emitEvent('survey.response_submitted', survey.clientId, 0, {
     surveyId: survey.id,
     responseId: response.id,
     surveyTitle: survey.title,
@@ -376,18 +384,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     respondentEmail: response.respondentEmail,
     source: response.source,
     answers: response.answers,
-  });
-
-  // HOOK-01: fire registered survey webhooks. Fire-and-forget — webhooks must
-  // never block (or fail) the public response submission.
-  // TODO(HOOK-02 / Phase 4): the dispatcher will swap inline retries for a
-  // BullMQ queue once Upstash Redis is provisioned.
-  setImmediate(() => {
-    dispatchSurveyResponseWebhooks({
-      ...response,
-      surveyTitle: survey.title,
-      surveySlug: survey.slug,
-    }).catch((err) => console.error('[survey-webhooks] dispatch failed', err));
   });
 
   // SCORE-02: evaluate the survey-level auto-route rule. Best-effort —
@@ -450,7 +446,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       // Only for genuinely new contacts: a returning respondent isn't one.
       // userId 0 = unauthenticated public actor, as above for the response event.
       if (created) {
-        emitEvent('crm.contact.created', survey.clientId, 0, {
+        await emitEvent('crm.contact.created', survey.clientId, 0, {
           id: contactId,
           name: response.respondentName || '',
           email: respondentEmail,

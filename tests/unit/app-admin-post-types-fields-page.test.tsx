@@ -73,7 +73,7 @@ import CustomFieldsPage from '@/app/admin/post-types/[id]/fields/page';
 
 async function renderPage() {
   const result = render(<CustomFieldsPage />);
-  await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
+  await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
   return result;
 }
 
@@ -89,23 +89,23 @@ describe('CustomFieldsPage', () => {
       // Delay the post-type response so loading persists
       global.fetch = vi.fn(() => new Promise(() => {}));
       render(<CustomFieldsPage />);
-      expect(screen.getByText('Loading...')).toBeTruthy();
+      expect(screen.getByText('Cargando...')).toBeTruthy();
     });
 
     it('renders page heading with post type name after load', async () => {
       await renderPage();
-      expect(screen.getByText(/Custom Fields: Blog Post/)).toBeTruthy();
+      expect(screen.getByText(/Campos personalizados: Blog Post/)).toBeTruthy();
     });
 
     it('renders back link to /admin/post-types', async () => {
       await renderPage();
-      const link = screen.getByRole('link', { name: /Back to Post Types/ });
+      const link = screen.getByRole('link', { name: /Volver a tipos de publicación/ });
       expect((link as HTMLAnchorElement).href).toContain('/admin/post-types');
     });
 
     it('renders the Add Custom Field button', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: 'Add Custom Field' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'Añadir campo personalizado' })).toBeTruthy();
     });
   });
 
@@ -113,7 +113,7 @@ describe('CustomFieldsPage', () => {
     it('shows empty message when no fields exist', async () => {
       setupFetch([]);
       await renderPage();
-      expect(screen.getByText(/No custom fields yet/)).toBeTruthy();
+      expect(screen.getByText(/Aún no hay campos personalizados/)).toBeTruthy();
     });
   });
 
@@ -142,7 +142,7 @@ describe('CustomFieldsPage', () => {
       setupFetch([repeaterField, childField]);
       await renderPage();
       expect(screen.getByText('repeat')).toBeTruthy();
-      expect(screen.getByText('1 sub-field')).toBeTruthy();
+      expect(screen.getByText('1 subcampo')).toBeTruthy();
     });
 
     it('renders group field with folder icon', async () => {
@@ -155,7 +155,7 @@ describe('CustomFieldsPage', () => {
       const child2 = { ...childField, id: 6, parentId: 3, order: 1 };
       setupFetch([repeaterField, childField, child2]);
       await renderPage();
-      expect(screen.getByText('2 sub-fields')).toBeTruthy();
+      expect(screen.getByText('2 subcampos')).toBeTruthy();
     });
 
     it('renders child field row indented under parent', async () => {
@@ -176,54 +176,54 @@ describe('CustomFieldsPage', () => {
   describe('add field form', () => {
     it('shows form when Add Custom Field is clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      expect(screen.getByPlaceholderText('e.g., Author Name')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      expect(screen.getByPlaceholderText('p. ej., Nombre del autor')).toBeTruthy();
     });
 
     it('button label changes to Cancel when form is open', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
       // Both header button and in-form button say "Cancel" — verify at least one exists
-      const cancelBtns = screen.getAllByRole('button', { name: 'Cancel' });
+      const cancelBtns = screen.getAllByRole('button', { name: 'Cancelar' });
       expect(cancelBtns.length).toBeGreaterThanOrEqual(1);
     });
 
     it('hides form when Cancel is clicked again', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
       // The header toggle button says "Cancel" — click the first one (header)
-      const cancelBtns = screen.getAllByRole('button', { name: 'Cancel' });
+      const cancelBtns = screen.getAllByRole('button', { name: 'Cancelar' });
       fireEvent.click(cancelBtns[0]);
-      expect(screen.queryByPlaceholderText('e.g., Author Name')).toBeNull();
+      expect(screen.queryByPlaceholderText('p. ej., Nombre del autor')).toBeNull();
     });
 
     it('auto-generates slug from name for new field', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      const nameInput = screen.getByPlaceholderText('e.g., Author Name');
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      const nameInput = screen.getByPlaceholderText('p. ej., Nombre del autor');
       fireEvent.change(nameInput, { target: { value: 'My Cool Field' } });
-      const slugInput = screen.getByPlaceholderText('e.g., author_name') as HTMLInputElement;
+      const slugInput = screen.getByPlaceholderText('p. ej., author_name') as HTMLInputElement;
       expect(slugInput.value).toBe('my_cool_field');
     });
 
     it('shows select options textarea when fieldType is select', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'select' } });
-      expect(screen.getByText('Options (one per line)')).toBeTruthy();
+      expect(screen.getByText('Opciones (una por línea)')).toBeTruthy();
     });
 
     it('hides options textarea for non-select field type', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      expect(screen.queryByText('Options (one per line)')).toBeNull();
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      expect(screen.queryByText('Opciones (una por línea)')).toBeNull();
     });
 
     it('submits new field via POST and refreshes list', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      const nameInput = screen.getByPlaceholderText('e.g., Author Name');
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      const nameInput = screen.getByPlaceholderText('p. ej., Nombre del autor');
       fireEvent.change(nameInput, { target: { value: 'Tag Line' } });
       fireEvent.submit(nameInput.closest('form') as HTMLFormElement);
       await flush();
@@ -242,8 +242,8 @@ describe('CustomFieldsPage', () => {
         return jsonOk({ success: true });
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      const nameInput = screen.getByPlaceholderText('e.g., Author Name');
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      const nameInput = screen.getByPlaceholderText('p. ej., Nombre del autor');
       fireEvent.change(nameInput, { target: { value: 'Dup' } });
       fireEvent.submit(nameInput.closest('form') as HTMLFormElement);
       await waitFor(() => expect(screen.getByText('Slug already exists')).toBeTruthy());
@@ -258,11 +258,11 @@ describe('CustomFieldsPage', () => {
         return jsonOk({ success: true });
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      const nameInput = screen.getByPlaceholderText('e.g., Author Name');
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      const nameInput = screen.getByPlaceholderText('p. ej., Nombre del autor');
       fireEvent.change(nameInput, { target: { value: 'Err' } });
       fireEvent.submit(nameInput.closest('form') as HTMLFormElement);
-      await waitFor(() => expect(screen.getByText(/Request failed with status 500/)).toBeTruthy());
+      await waitFor(() => expect(screen.getByText(/Solicitud fallida con estado 500/)).toBeTruthy());
     });
 
     it('shows network error when fetch rejects', async () => {
@@ -273,18 +273,18 @@ describe('CustomFieldsPage', () => {
         return jsonOk({ success: true });
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      const nameInput = screen.getByPlaceholderText('e.g., Author Name');
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      const nameInput = screen.getByPlaceholderText('p. ej., Nombre del autor');
       fireEvent.change(nameInput, { target: { value: 'Net' } });
       fireEvent.submit(nameInput.closest('form') as HTMLFormElement);
-      await waitFor(() => expect(screen.getByText(/Network error/)).toBeTruthy());
+      await waitFor(() => expect(screen.getByText(/Error de red/)).toBeTruthy());
     });
   });
 
   describe('edit field', () => {
     it('opens form pre-filled when Edit is clicked', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const nameInput = screen.getByDisplayValue('Author') as HTMLInputElement;
       expect(nameInput.value).toBe('Author');
@@ -292,7 +292,7 @@ describe('CustomFieldsPage', () => {
 
     it('does not auto-update slug when editing existing field', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const nameInput = screen.getByDisplayValue('Author') as HTMLInputElement;
       const slugInput = screen.getByDisplayValue('author') as HTMLInputElement;
@@ -303,7 +303,7 @@ describe('CustomFieldsPage', () => {
 
     it('submits PUT request when form is saved in edit mode', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       const form = screen.getByDisplayValue('Author').closest('form') as HTMLFormElement;
       fireEvent.submit(form);
@@ -317,18 +317,18 @@ describe('CustomFieldsPage', () => {
 
     it('shows "Update Field" text on submit button when editing', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
-      expect(screen.getByRole('button', { name: 'Update Field' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'Actualizar campo' })).toBeTruthy();
     });
 
     it('shows options textarea pre-filled when editing a select field', async () => {
       // Use only the select field in the list so Edit buttons are unambiguous
       setupFetch([selectField]);
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
-      await waitFor(() => expect(screen.getByText('Options (one per line)')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Opciones (una por línea)')).toBeTruthy());
       // options joined with '\n' — textarea value contains 'A' and 'B'
       const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
       expect(textarea.value).toContain('A');
@@ -337,10 +337,10 @@ describe('CustomFieldsPage', () => {
 
     it('cancel button in form resets to list view', async () => {
       await renderPage();
-      const editBtns = screen.getAllByRole('button', { name: 'Edit' });
+      const editBtns = screen.getAllByRole('button', { name: 'Editar' });
       fireEvent.click(editBtns[0]);
       // There are two cancel buttons now — click the one inside the form
-      const cancelBtns = screen.getAllByRole('button', { name: 'Cancel' });
+      const cancelBtns = screen.getAllByRole('button', { name: 'Cancelar' });
       fireEvent.click(cancelBtns[cancelBtns.length - 1]);
       expect(screen.queryByDisplayValue('Author')).toBeNull();
     });
@@ -349,7 +349,7 @@ describe('CustomFieldsPage', () => {
   describe('delete field', () => {
     it('calls DELETE when Delete is clicked and confirmed', async () => {
       await renderPage();
-      const deleteBtns = screen.getAllByRole('button', { name: 'Delete' });
+      const deleteBtns = screen.getAllByRole('button', { name: 'Eliminar' });
       fireEvent.click(deleteBtns[0]);
       expect(confirmMock).toHaveBeenCalled();
       await waitFor(() => {
@@ -363,7 +363,7 @@ describe('CustomFieldsPage', () => {
     it('does not call DELETE when confirm is cancelled', async () => {
       confirmMock.mockReturnValueOnce(false);
       await renderPage();
-      const deleteBtns = screen.getAllByRole('button', { name: 'Delete' });
+      const deleteBtns = screen.getAllByRole('button', { name: 'Eliminar' });
       fireEvent.click(deleteBtns[0]);
       await flush();
       const delCall = mockFetch.mock.calls.find(
@@ -377,34 +377,34 @@ describe('CustomFieldsPage', () => {
     it('shows "+ Sub-field" button for repeater fields', async () => {
       setupFetch([repeaterField]);
       await renderPage();
-      expect(screen.getByRole('button', { name: '+ Sub-field' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: '+ Subcampo' })).toBeTruthy();
     });
 
     it('opens add-field form with parentId set when + Sub-field is clicked', async () => {
       setupFetch([repeaterField]);
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: '+ Sub-field' }));
+      fireEvent.click(screen.getByRole('button', { name: '+ Subcampo' }));
       // Form should appear; name input should be present
-      expect(screen.getByPlaceholderText('e.g., Author Name')).toBeTruthy();
+      expect(screen.getByPlaceholderText('p. ej., Nombre del autor')).toBeTruthy();
     });
 
     it('shows "+ Sub-field" button for group fields', async () => {
       setupFetch([groupField]);
       await renderPage();
-      expect(screen.getByRole('button', { name: '+ Sub-field' })).toBeTruthy();
+      expect(screen.getByRole('button', { name: '+ Subcampo' })).toBeTruthy();
     });
 
     it('does not show "+ Sub-field" for plain text fields', async () => {
       setupFetch([textField]);
       await renderPage();
-      expect(screen.queryByRole('button', { name: '+ Sub-field' })).toBeNull();
+      expect(screen.queryByRole('button', { name: '+ Subcampo' })).toBeNull();
     });
   });
 
   describe('form field interactions', () => {
     it('updates required checkbox', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
       const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
       expect(checkbox.checked).toBe(false);
       fireEvent.click(checkbox);
@@ -413,7 +413,7 @@ describe('CustomFieldsPage', () => {
 
     it('updates order number input', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
       const orderInputs = document.querySelectorAll('input[type="number"]');
       fireEvent.change(orderInputs[0], { target: { value: '5' } });
       expect((orderInputs[0] as HTMLInputElement).value).toBe('5');
@@ -421,17 +421,17 @@ describe('CustomFieldsPage', () => {
 
     it('updates help text input', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      const helpInput = screen.getByPlaceholderText('Additional information about this field') as HTMLInputElement;
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      const helpInput = screen.getByPlaceholderText('Información adicional sobre este campo') as HTMLInputElement;
       fireEvent.change(helpInput, { target: { value: 'My help text' } });
       expect(helpInput.value).toBe('My help text');
     });
 
     it('updates default value input', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
       // Default value input has no placeholder — find by label proximity
-      const labels = screen.getAllByText('Default Value');
+      const labels = screen.getAllByText('Valor predeterminado');
       const defaultInput = labels[0].nextElementSibling as HTMLInputElement;
       fireEvent.change(defaultInput, { target: { value: 'default123' } });
       expect(defaultInput.value).toBe('default123');
@@ -439,8 +439,8 @@ describe('CustomFieldsPage', () => {
 
     it('updates slug field directly', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Add Custom Field' }));
-      const slugInput = screen.getByPlaceholderText('e.g., author_name') as HTMLInputElement;
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir campo personalizado' }));
+      const slugInput = screen.getByPlaceholderText('p. ej., author_name') as HTMLInputElement;
       fireEvent.change(slugInput, { target: { value: 'my_slug' } });
       expect(slugInput.value).toBe('my_slug');
     });
@@ -449,12 +449,12 @@ describe('CustomFieldsPage', () => {
   describe('table column headers', () => {
     it('renders all expected column headers', async () => {
       await renderPage();
-      expect(screen.getByText('Order')).toBeTruthy();
-      expect(screen.getByText('Name')).toBeTruthy();
+      expect(screen.getByText('Pedido')).toBeTruthy();
+      expect(screen.getByText('Nombre')).toBeTruthy();
       expect(screen.getByText('Slug')).toBeTruthy();
-      expect(screen.getByText('Type')).toBeTruthy();
-      expect(screen.getByText('Required')).toBeTruthy();
-      expect(screen.getByText('Actions')).toBeTruthy();
+      expect(screen.getByText('Tipo')).toBeTruthy();
+      expect(screen.getByText('Obligatorio')).toBeTruthy();
+      expect(screen.getByText('Acciones')).toBeTruthy();
     });
   });
 });

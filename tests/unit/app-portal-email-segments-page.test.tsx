@@ -132,17 +132,17 @@ describe('EmailSegmentsPage', () => {
   describe('initial render — segments tab', () => {
     it('renders the Audience heading', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Audience');
+      expect(container.textContent).toContain('Audiencia');
     });
 
     it('renders Segments tab with correct count', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Segments (2)');
+      expect(container.textContent).toContain('Segmentos (2)');
     });
 
     it('renders Tags tab with correct count', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('Tags (2)');
+      expect(container.textContent).toContain('Etiquetas (2)');
     });
 
     it('renders all segment names', async () => {
@@ -165,23 +165,23 @@ describe('EmailSegmentsPage', () => {
 
     it('renders rule count with plural suffix', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('2 rules');
+      expect(container.textContent).toContain('2 reglas');
     });
 
     it('renders rule count with singular suffix', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('1 rule');
+      expect(container.textContent).toContain('1 regla');
     });
 
     it('renders subscriber count for each segment', async () => {
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('42 subscribers');
-      expect(container.textContent).toContain('7 subscribers');
+      expect(container.textContent).toContain('42 suscriptores');
+      expect(container.textContent).toContain('7 suscriptores');
     });
 
     it('renders the New Segment button', async () => {
       await renderAndLoad();
-      expect(screen.getByText('New Segment')).toBeTruthy();
+      expect(screen.getByText('Nuevo segmento')).toBeTruthy();
     });
   });
 
@@ -192,7 +192,7 @@ describe('EmailSegmentsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await renderAndLoad();
-      expect(container.textContent).toContain('No segments yet');
+      expect(container.textContent).toContain('Aún no hay segmentos');
     });
 
     it('does not show empty state when create form is open', async () => {
@@ -201,39 +201,39 @@ describe('EmailSegmentsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
-      expect(container.textContent).not.toContain('No segments yet');
+      fireEvent.click(screen.getByText('Nuevo segmento'));
+      expect(container.textContent).not.toContain('Aún no hay segmentos');
     });
   });
 
   describe('create segment form', () => {
     it('toggles the create segment form open', async () => {
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
       // Form heading has class "font-semibold" only (segment cards use "font-semibold text-sm")
       const formHeading = Array.from(container.querySelectorAll('h3')).find(
         (el) => el.classList.contains('font-semibold') && !el.classList.contains('text-sm'),
       );
-      expect(formHeading?.textContent).toContain('Create Segment');
+      expect(formHeading?.textContent).toContain('Crear segmento');
     });
 
     it('shows Segment Name input and Match select in form', async () => {
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
-      expect(container.querySelector('input[placeholder="e.g. Active Subscribers"]')).toBeTruthy();
-      expect(container.textContent).toContain('All rules must match');
+      fireEvent.click(screen.getByText('Nuevo segmento'));
+      expect(container.querySelector('input[placeholder="p. ej. Suscriptores activos"]')).toBeTruthy();
+      expect(container.textContent).toContain('Todas las reglas deben coincidir');
     });
 
     it('shows default rule with status field', async () => {
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
-      expect(container.textContent).toContain('Subscriber Status');
+      fireEvent.click(screen.getByText('Nuevo segmento'));
+      expect(container.textContent).toContain('Estado del suscriptor');
     });
 
     it('can add additional rules', async () => {
       await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
-      fireEvent.click(screen.getByText('Add rule'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
+      fireEvent.click(screen.getByText('Agregar regla'));
       // Now 2 rows of rule fields should exist
       const ruleRows = document.querySelectorAll('div.flex.items-center.gap-2.flex-wrap');
       expect(ruleRows.length).toBeGreaterThanOrEqual(2);
@@ -241,8 +241,8 @@ describe('EmailSegmentsPage', () => {
 
     it('can remove a rule when more than one exists', async () => {
       await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
-      fireEvent.click(screen.getByText('Add rule'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
+      fireEvent.click(screen.getByText('Agregar regla'));
       // Should have a close button for the second rule
       const closeButtons = document.querySelectorAll('button[type="button"] span.material-icons');
       const closeIcons = Array.from(closeButtons).filter(el => el.textContent === 'close');
@@ -256,7 +256,7 @@ describe('EmailSegmentsPage', () => {
 
     it('updates rule field when field select changes', async () => {
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
       // First select in the rule row is the field selector
       const form = container.querySelector('form')!;
       const selects = form.querySelectorAll('select');
@@ -267,10 +267,10 @@ describe('EmailSegmentsPage', () => {
 
     it('Cancel button closes the form', async () => {
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
       // form is open — form element exists
       expect(container.querySelector('form')).toBeTruthy();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       // form closed
       expect(container.querySelector('form')).toBeNull();
     });
@@ -281,9 +281,9 @@ describe('EmailSegmentsPage', () => {
       );
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
       const form = container.querySelector('form')!;
-      const nameInput = form.querySelector('input[placeholder="e.g. Active Subscribers"]') as HTMLInputElement;
+      const nameInput = form.querySelector('input[placeholder="p. ej. Suscriptores activos"]') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'New Seg' } });
       fireEvent.submit(form);
       await waitFor(() => {
@@ -304,7 +304,7 @@ describe('EmailSegmentsPage', () => {
       );
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
       const form = container.querySelector('form')!;
       // Don't fill name input
       fireEvent.submit(form);
@@ -323,9 +323,9 @@ describe('EmailSegmentsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText('New Segment'));
+      fireEvent.click(screen.getByText('Nuevo segmento'));
       const form = container.querySelector('form')!;
-      const nameInput = form.querySelector('input[placeholder="e.g. Active Subscribers"]') as HTMLInputElement;
+      const nameInput = form.querySelector('input[placeholder="p. ej. Suscriptores activos"]') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'Bad Seg' } });
       await act(async () => { fireEvent.submit(form); });
       // Form remains open (not closed) — form element still visible
@@ -375,7 +375,7 @@ describe('EmailSegmentsPage', () => {
   describe('tags tab', () => {
     async function switchToTags() {
       const result = await renderAndLoad();
-      fireEvent.click(screen.getByText(/Tags \(\d+\)/));
+      fireEvent.click(screen.getByText(/Etiquetas \(\d+\)/));
       return result;
     }
 
@@ -399,8 +399,8 @@ describe('EmailSegmentsPage', () => {
 
     it('renders the Tag Name input and Add Tag button', async () => {
       const { container } = await switchToTags();
-      expect(container.querySelector('input[placeholder="e.g. VIP, Newsletter, Lead"]')).toBeTruthy();
-      expect(screen.getByText('Add Tag')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="p. ej. VIP, Boletín, Lead"]')).toBeTruthy();
+      expect(screen.getByText('Añadir etiqueta')).toBeTruthy();
     });
 
     it('shows empty state when no tags', async () => {
@@ -409,7 +409,7 @@ describe('EmailSegmentsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await switchToTags();
-      expect(container.textContent).toContain('No tags yet');
+      expect(container.textContent).toContain('Aún no hay etiquetas');
     });
 
     it('creates a tag and appends it to the list', async () => {
@@ -418,7 +418,7 @@ describe('EmailSegmentsPage', () => {
       );
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await switchToTags();
-      const nameInput = container.querySelector('input[placeholder="e.g. VIP, Newsletter, Lead"]') as HTMLInputElement;
+      const nameInput = container.querySelector('input[placeholder="p. ej. VIP, Boletín, Lead"]') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'NewTag' } });
       const form = container.querySelector('form')!;
       fireEvent.submit(form);
@@ -455,7 +455,7 @@ describe('EmailSegmentsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await switchToTags();
-      const nameInput = container.querySelector('input[placeholder="e.g. VIP, Newsletter, Lead"]') as HTMLInputElement;
+      const nameInput = container.querySelector('input[placeholder="p. ej. VIP, Boletín, Lead"]') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'ShouldNotAppear' } });
       await act(async () => { fireEvent.submit(container.querySelector('form')!); });
       expect(container.textContent).not.toContain('ShouldNotAppear');
@@ -505,7 +505,7 @@ describe('EmailSegmentsPage', () => {
       };
       const { container } = await renderAndLoad();
       // Segments list should be empty, shows empty state
-      expect(container.textContent).toContain('No segments yet');
+      expect(container.textContent).toContain('Aún no hay segmentos');
     });
 
     it('handles tags fetch returning success: false gracefully', async () => {
@@ -514,8 +514,8 @@ describe('EmailSegmentsPage', () => {
         return defaultFetch(url, init);
       };
       const { container } = await renderAndLoad();
-      fireEvent.click(screen.getByText(/Tags \(0\)/));
-      expect(container.textContent).toContain('No tags yet');
+      fireEvent.click(screen.getByText(/Etiquetas \(0\)/));
+      expect(container.textContent).toContain('Aún no hay etiquetas');
     });
   });
 });

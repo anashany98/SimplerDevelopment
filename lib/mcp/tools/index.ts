@@ -17,7 +17,15 @@ import { registerKanbanSearchTools } from './kanban-search';
 import { registerSprintsTools } from './sprints';
 import { registerTicketsTools } from './tickets';
 import { registerCrmTools } from './crm';
+import { registerCrmDealExtrasTools } from './crm-deal-extras';
+import { registerCrmProposalsContractsTools } from './crm-proposals-contracts';
+import { registerCrmCustomFieldsTools } from './crm-custom-fields';
 import { registerCmsTools } from './cms';
+import { registerCmsPostsForkTools } from './cms-posts-fork';
+import { registerCmsMediaTaxonomyTools } from './cms-media-taxonomy';
+import { registerCmsSitesTools } from './cms-sites';
+import { registerCmsTemplatesTools } from './cms-templates';
+import { registerCmsDomainsTools } from './cms-domains';
 import { registerEmailTools } from './email';
 import { registerPitchDecksTools } from './pitch-decks';
 import { registerSurveysTools } from './surveys';
@@ -47,6 +55,7 @@ import { registerLinkedinTools } from './linkedin';
 import { registerPathvizTools } from './pathviz';
 import { registerPathvizCoordinationTools } from './pathviz-coordination';
 import { registerAgentFlowTools } from './agent-flows';
+import { registerOmnichannelTools } from './omnichannel';
 
 export {
   registerProjectsTools,
@@ -58,6 +67,11 @@ export {
   registerTicketsTools,
   registerCrmTools,
   registerCmsTools,
+  registerCmsPostsForkTools,
+  registerCmsMediaTaxonomyTools,
+  registerCmsSitesTools,
+  registerCmsTemplatesTools,
+  registerCmsDomainsTools,
   registerEmailTools,
   registerPitchDecksTools,
   registerSurveysTools,
@@ -87,6 +101,10 @@ export {
   registerPathvizTools,
   registerPathvizCoordinationTools,
   registerAgentFlowTools,
+  registerOmnichannelTools,
+  registerCrmDealExtrasTools,
+  registerCrmProposalsContractsTools,
+  registerCrmCustomFieldsTools,
 };
 
 /**
@@ -109,7 +127,15 @@ export const allToolRegistrars: readonly McpToolRegistrar[] = [
   registerKanbanSearchTools,
   registerTicketsTools,
   registerCrmTools,
+  registerCrmDealExtrasTools,
+  registerCrmProposalsContractsTools,
+  registerCrmCustomFieldsTools,
   registerCmsTools,
+  registerCmsPostsForkTools,
+  registerCmsMediaTaxonomyTools,
+  registerCmsSitesTools,
+  registerCmsTemplatesTools,
+  registerCmsDomainsTools,
   registerEmailTools,
   registerPitchDecksTools,
   registerSurveysTools,
@@ -132,6 +158,7 @@ export const allToolRegistrars: readonly McpToolRegistrar[] = [
   registerApprovalsTools,
   registerNotificationsTools,
   registerChatTools,
+  registerOmnichannelTools,
   registerLinkedinTools,
   registerAgentFlowTools,
 ];

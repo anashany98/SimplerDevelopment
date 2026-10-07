@@ -34,7 +34,7 @@ export default function PayInvoiceButton({ invoiceId, total }: Props) {
       <button
         onClick={handlePay}
         disabled={loading}
-        className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors whitespace-nowrap"
+        className="flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors whitespace-nowrap"
       >
         {loading ? (
           <><span className="material-icons text-base animate-spin">refresh</span>Redirecting...</>

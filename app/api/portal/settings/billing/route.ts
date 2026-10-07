@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { invoices, clientServices, services } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
 import { eq, desc } from 'drizzle-orm';
+import { PAYMENTS_DISABLED } from '@/lib/billing/disabled';
 
 export async function GET() {
   const session = await auth();
@@ -38,6 +39,9 @@ export async function GET() {
       invoices: recentInvoices,
       services: activeServices,
       stripeCustomerId: client.stripeCustomerId,
+      // Lets the page skip the payment-methods call entirely when payments are
+      // disabled — that endpoint 403s by design and logged a console error.
+      paymentsDisabled: PAYMENTS_DISABLED,
     },
   });
 }

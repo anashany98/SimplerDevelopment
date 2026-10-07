@@ -1,6 +1,6 @@
 # Developer Documentation
 
-SimplerDevelopment gives you three ways to build on the platform: an authenticated REST API for headless CMS and commerce, a public API for booking and chat without credentials, and an MCP server for driving the portal with an AI agent.
+CRM AGENTS gives you three ways to build on the platform: an authenticated REST API for headless CMS and commerce, a public API for booking and chat without credentials, and an MCP server for driving the portal with an AI agent.
 
 ## REST API
 

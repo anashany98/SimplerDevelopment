@@ -42,7 +42,7 @@ function SignupForm() {
   const searchParams = useSearchParams();
 
   const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
+  const [company, setEmpresa] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -97,10 +97,10 @@ function SignupForm() {
         setVerificationSent(data.data?.verificationSent !== false);
         setSubmitted(true);
       } else {
-        setError(data.message || 'Something went wrong. Please try again.');
+        setError(data.message || 'Algo salió mal. Inténtalo de nuevo.');
       }
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -114,16 +114,16 @@ function SignupForm() {
   // ── Success: verification email sent ──
   if (submitted && verificationSent) {
     return (
-      <AuthShell panelSubtitle="One click in your inbox and you're in.">
+      <AuthShell panelSubtitle="Un solo clic en tu correo y estarás dentro.">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
           <span className="material-icons text-3xl text-primary">mark_email_read</span>
         </div>
-        <h1 className={`${authHeading} mt-5`}>Check your email.</h1>
+        <h1 className={`${authHeading} mt-5`}>Revisa tu email.</h1>
         <p className={authSubtext}>
-          We sent a verification link to <strong className="text-foreground">{submittedEmail}</strong>. The link expires in
+          Hemos enviado un enlace de verificación a <strong className="text-foreground">{submittedEmail}</strong>. El enlace caduca en
           24&nbsp;hours.
         </p>
-        <p className="mt-2 text-xs text-muted-foreground">Can&apos;t find it? Check your spam folder.</p>
+        <p className="mt-2 text-xs text-muted-foreground">¿No lo encuentras? Revisa la carpeta de spam.</p>
         <BackToSignIn />
       </AuthShell>
     );
@@ -132,14 +132,13 @@ function SignupForm() {
   // ── Account created, but verification email could not be sent ──
   if (submitted && !verificationSent) {
     return (
-      <AuthShell panelSubtitle="Almost there — just confirm your email.">
+      <AuthShell panelSubtitle="¡Ya casi! Solo confirma tu email.">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10">
           <span className="material-icons text-3xl text-amber-600 dark:text-amber-400">mark_email_unread</span>
         </div>
-        <h1 className={`${authHeading} mt-5`}>Account created.</h1>
+        <h1 className={`${authHeading} mt-5`}>Cuenta creada.</h1>
         <p className={authSubtext}>
-          We couldn&apos;t send the verification email to <strong className="text-foreground">{submittedEmail}</strong> just
-          now. Resend it below to finish activating your account.
+          No hemos podido enviar el email de verificación a <strong className="text-foreground">{submittedEmail}</strong>ahora mismo. Reenvíalo abajo para terminar de activar tu cuenta.
         </p>
         <div className="mt-5">
           <ResendVerificationButton prefillEmail={submittedEmail} />
@@ -151,10 +150,10 @@ function SignupForm() {
 
   // ── Signup form ──
   return (
-    <AuthShell panelSubtitle="Set up your account and bring your whole stack into one place.">
-      <div className={authEyebrow}>{'// Get started'}</div>
-      <h1 className={authHeading}>Create your account.</h1>
-      <p className={authSubtext}>Websites, CRM, and AI in one place — free to start, no card required.</p>
+    <AuthShell panelSubtitle="Configura tu cuenta y reuní todo en un solo lugar.">
+      <div className={authEyebrow}>{'// Empezar'}</div>
+      <h1 className={authHeading}>Crea tu cuenta.</h1>
+      <p className={authSubtext}>Webs, CRM e IA en un solo lugar. Empieza gratis y sin tarjeta.</p>
 
       <div className="mt-7">
         {/* Verification-expired banner */}
@@ -162,7 +161,7 @@ function SignupForm() {
           <div className="mb-4 rounded-lg border border-amber-500/20 bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-400">
             <div className="mb-2 flex items-center gap-2">
               <span className="material-icons text-base">warning_amber</span>
-              That verification link expired.
+              Ese enlace de verificación ha caducado.
             </div>
             <ResendVerificationButton prefillEmail={email} />
           </div>
@@ -178,7 +177,7 @@ function SignupForm() {
                   <>
                     {error}{' '}
                     <a href="/portal/login" className="font-medium underline">
-                      Sign in instead.
+                      Inicia sesión.
                     </a>
                   </>
                 ) : (
@@ -199,7 +198,7 @@ function SignupForm() {
           <>
             <button type="button" onClick={handleGoogleSignIn} className={authGhostBtn}>
               <GoogleMark />
-              Sign up with Google
+              Registrarse con Google
             </button>
             <AuthDivider />
           </>
@@ -209,7 +208,7 @@ function SignupForm() {
         <form method="post" onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className={authLabel}>Full name</label>
+              <label className={authLabel}>Nombre completo</label>
               <AuthField icon="person_outline">
                 <input
                   type="text"
@@ -225,13 +224,13 @@ function SignupForm() {
             </div>
             <div>
               <label className={authLabel}>
-                Company <span className="font-normal text-muted-foreground">(optional)</span>
+                Empresa <span className="font-normal text-muted-foreground">(opcional)</span>
               </label>
               <AuthField icon="business">
                 <input
                   type="text"
                   value={company}
-                  onChange={(e) => setCompany(e.target.value)}
+                  onChange={(e) => setEmpresa(e.target.value)}
                   autoComplete="organization"
                   className={authInput}
                   placeholder="Acme Corp"
@@ -241,7 +240,7 @@ function SignupForm() {
           </div>
 
           <div>
-            <label className={authLabel}>Email</label>
+            <label className={authLabel}>Correo</label>
             <AuthField icon="mail_outline">
               <input
                 type="email"
@@ -250,7 +249,7 @@ function SignupForm() {
                 required
                 autoComplete="email"
                 className={authInput}
-                placeholder="you@company.com"
+                placeholder="tu@empresa.com"
               />
             </AuthField>
           </div>
@@ -266,7 +265,7 @@ function SignupForm() {
                 minLength={8}
                 autoComplete="new-password"
                 className={`${authInput} pr-11`}
-                placeholder="At least 8 characters"
+                placeholder="Al menos 8 caracteres"
               />
               <button
                 type="button"
@@ -281,10 +280,10 @@ function SignupForm() {
             {password.length > 0 && password.length < 8 ? (
               <p className="mt-1.5 flex items-center gap-1 text-xs text-destructive">
                 <span className="material-icons text-sm">error_outline</span>
-                Password must be at least 8 characters ({password.length}/8).
+                La contraseña debe tener al menos 8 caracteres ({password.length}/8).
               </p>
             ) : (
-              <p className="mt-1.5 text-xs text-muted-foreground">Minimum 8 characters</p>
+              <p className="mt-1.5 text-xs text-muted-foreground">Mínimo 8 caracteres</p>
             )}
           </div>
 
@@ -292,26 +291,22 @@ function SignupForm() {
             {loading ? (
               <>
                 <span className="material-icons animate-spin text-base">refresh</span>
-                Creating account…
+                Creando cuenta…
               </>
             ) : (
               <>
-                Create account
+                Crear cuenta
                 <span className="material-icons text-[19px] transition group-hover:translate-x-0.5">arrow_forward</span>
               </>
             )}
           </button>
         </form>
 
-        <p className="mt-5 text-center text-xs text-muted-foreground">
-          By creating an account you agree to our{' '}
-          <a href="/terms" className="underline hover:text-foreground">Terms</a> &amp;{' '}
-          <a href="/privacy" className="underline hover:text-foreground">Privacy Policy</a>.
-        </p>
+
         <p className="mt-4 text-sm text-muted-foreground">
-          Already have an account?{' '}
+          ¿Ya tienes una cuenta?{' '}
           <a href="/portal/login" className="font-bold text-foreground hover:text-primary">
-            Sign in
+            Iniciar sesión
           </a>
         </p>
       </div>
@@ -321,19 +316,15 @@ function SignupForm() {
 
 function SignupClosed() {
   return (
-    <AuthShell panelSubtitle="Run your whole agency on one platform — hosted and managed for you.">
+    <AuthShell panelSubtitle="Gestiona toda tu agencia en una sola plataforma: alojada y administrada por nosotros.">
       <div className={authEyebrow}>{'// Managed hosting'}</div>
-      <h1 className={authHeading}>Signup is closed here.</h1>
+      <h1 className={authHeading}>El registro está cerrado aquí.</h1>
       <p className={authSubtext}>
-        Self-serve accounts aren&apos;t available on this instance. Contact us for managed
-        hosting and we&apos;ll get you set up — or self-host the open-source platform free.
+        Las cuentas automáticas no están disponibles en esta instancia. Contacta con nosotros para un servicio
+        gestionado o instala la plataforma de código abierto por tu cuenta gratis.
       </p>
 
       <div className="mt-7 flex flex-col gap-3">
-        <a href="/contact" className={authPrimaryBtn}>
-          Contact us for managed hosting
-          <span className="material-icons text-lg">arrow_forward</span>
-        </a>
         <BackToSignIn />
       </div>
     </AuthShell>

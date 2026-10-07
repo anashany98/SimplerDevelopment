@@ -56,7 +56,7 @@ export default function SignIn() {
         if (err.code === 'invalid_token') {
           setError('Check your email, password and authenticator code.');
         } else if (err.code === 'network') {
-          setError("Couldn't reach SimplerDevelopment. Check your connection and try again.");
+          setError("Couldn't reach CRM AGENTS. Check your connection and try again.");
         } else {
           // 403 no_workspace + everything else
           setError(err.message || 'Sign-in failed. Please try again.');
@@ -151,7 +151,7 @@ export default function SignIn() {
                   maxWidth: 320,
                 }}
               >
-                Use your SimplerDevelopment portal credentials.
+                Use your CRM AGENTS portal credentials.
               </Text>
             </View>
 
@@ -378,7 +378,7 @@ export default function SignIn() {
                 lineHeight: 18,
               }}
             >
-              By continuing you agree to the SimplerDevelopment{' '}
+              By continuing you agree to the CRM AGENTS{' '}
               <Text style={{ textDecorationLine: 'underline' }}>Terms of Service</Text> and{' '}
               <Text style={{ textDecorationLine: 'underline' }}>Privacy Policy</Text>.
             </Text>

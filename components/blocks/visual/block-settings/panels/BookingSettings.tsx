@@ -76,12 +76,12 @@ export function BookingBlockSettings({ block, onChange }: { block: BookingBlock;
         )}
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <input type="text" value={block.title || ''} onChange={(e) => onChange({ title: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="Schedule a Meeting" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <input type="text" value={block.description || ''} onChange={(e) => onChange({ description: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="Pick a time that works for you" />
       </div>
@@ -138,7 +138,7 @@ export function BookingBlockSettings({ block, onChange }: { block: BookingBlock;
                     onChange={(v) => update({ primaryColor: v || undefined })}
                   />
                   <TokenColorPicker
-                    label="Background"
+                    label="Fondo"
                     value={so.backgroundColor || ''}
                     onChange={(v) => update({ backgroundColor: v || undefined })}
                   />
@@ -168,7 +168,7 @@ export function BookingBlockSettings({ block, onChange }: { block: BookingBlock;
                   />
                 </div>
                 <TokenColorPicker
-                  label="Button Text"
+                  label="Texto del botón"
                   value={so.buttonText || ''}
                   onChange={(v) => update({ buttonText: v || undefined })}
                 />

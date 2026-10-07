@@ -71,7 +71,7 @@ function looksLikeMarkdown(s: string): boolean {
 
 function formatDate(iso: string): string {
   try {
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return new Date(iso).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
   } catch {
     return iso;
   }
@@ -100,12 +100,12 @@ export default function BrainGlossaryDetailPage({
       const r = await fetch(`/api/portal/brain/glossary/${termId}`);
       const json: DetailResponse = await r.json();
       if (!r.ok || !json.success || !json.data) {
-        setError(json.message || 'Failed to load term.');
+        setError(json.message || 'No se pudo cargar el término.');
       } else {
         setData(json.data);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -132,19 +132,19 @@ export default function BrainGlossaryDetailPage({
 
   const handleDelete = async () => {
     if (!data) return;
-    if (!window.confirm(`Delete "${data.term.term}"? This cannot be undone.`)) return;
+    if (!window.confirm(`¿Eliminar "${data.term.term}"? Esta acción no se puede deshacer.`)) return;
     setDeleting(true);
     try {
       const r = await fetch(`/api/portal/brain/glossary/${termId}`, { method: 'DELETE' });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        alert(json.message || 'Delete failed.');
+        alert(json.message || 'No se pudo eliminar.');
         setDeleting(false);
         return;
       }
       router.push('/portal/brain/glossary');
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Network error');
+      alert(err instanceof Error ? err.message : 'Error de red');
       setDeleting(false);
     }
   };
@@ -152,9 +152,7 @@ export default function BrainGlossaryDetailPage({
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -164,12 +162,12 @@ export default function BrainGlossaryDetailPage({
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load this term
+            No se pudo cargar este término
           </div>
-          <p>{error ?? 'Not found'}</p>
+          <p>{error ?? 'No encontrado'}</p>
           <Link href="/portal/brain/glossary" className="inline-flex items-center gap-1 mt-3 text-xs underline">
             <span className="material-icons text-sm">arrow_back</span>
-            Back to glossary
+            Volver al glosario
           </Link>
         </div>
       </div>
@@ -178,18 +176,18 @@ export default function BrainGlossaryDetailPage({
 
   const { term, relatedTerms } = data;
   const ownerName = term.ownerId
-    ? users.find(u => u.id === term.ownerId)?.name ?? `User #${term.ownerId}`
+    ? users.find(u => u.id === term.ownerId)?.name ?? `Usuario #${term.ownerId}`
     : null;
   const creatorName = term.createdBy
-    ? users.find(u => u.id === term.createdBy)?.name ?? `User #${term.createdBy}`
-    : 'Unknown';
+    ? users.find(u => u.id === term.createdBy)?.name ?? `Usuario #${term.createdBy}`
+    : 'Desconocido';
 
   return (
     <div className="max-w-3xl mx-auto py-6 px-4 space-y-5">
       <nav className="text-xs text-muted-foreground flex items-center gap-1">
         <Link href="/portal/brain/glossary" className="hover:text-foreground inline-flex items-center gap-0.5">
           <span className="material-icons text-sm">menu_book</span>
-          Glossary
+          Glosario
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
         <span className="truncate">{term.term}</span>
@@ -219,7 +217,7 @@ export default function BrainGlossaryDetailPage({
                 {ownerName}
               </span>
             )}
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono rounded bg-muted/50 text-muted-foreground" title="Stable slug">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono rounded bg-muted/50 text-muted-foreground" title="Slug estable">
               /{term.slug}
             </span>
           </div>
@@ -227,9 +225,7 @@ export default function BrainGlossaryDetailPage({
         {!editing && (
           <div className="flex items-center gap-2 shrink-0">
             <button type="button" onClick={() => setEditing(true)} className={pBtnGhost}>
-              <span className="material-icons text-base">edit</span>
-              Edit
-            </button>
+              <span className="material-icons text-base">edit</span>Editar</button>
             <button
               type="button"
               onClick={handleDelete}
@@ -237,10 +233,10 @@ export default function BrainGlossaryDetailPage({
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md border border-destructive/40 text-destructive hover:bg-destructive/10 disabled:opacity-50"
             >
               {deleting
-                ? <span className="material-icons text-base animate-spin">progress_activity</span>
+                ? <span className="material-icons text-base animate-spin">autorenew</span>
                 : <span className="material-icons text-base">delete</span>
               }
-              Delete
+              Eliminar
             </button>
           </div>
         )}
@@ -271,7 +267,7 @@ export default function BrainGlossaryDetailPage({
           {/* Definition */}
           <section className="bg-card border border-border rounded-2xl p-5 space-y-3">
             <div>
-              <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Definition</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Definición</h2>
               {looksLikeMarkdown(term.definition) ? (
                 <div className="text-sm text-foreground leading-relaxed">
                   <MarkdownView>{term.definition}</MarkdownView>
@@ -290,7 +286,7 @@ export default function BrainGlossaryDetailPage({
           {/* Aliases */}
           {term.aliases.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Aliases</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Alias</h2>
               <div className="flex flex-wrap gap-1.5">
                 {term.aliases.map((a, i) => (
                   <span key={i} className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-primary/10 text-primary border border-primary/20">
@@ -305,7 +301,7 @@ export default function BrainGlossaryDetailPage({
           {/* See also */}
           {relatedTerms.length > 0 && (
             <section>
-              <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">See also</h2>
+              <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Ver también</h2>
               <div className="flex flex-wrap gap-1.5">
                 {relatedTerms.map(r => (
                   <Link
@@ -326,15 +322,15 @@ export default function BrainGlossaryDetailPage({
           <footer className="text-[11px] text-muted-foreground pt-3 border-t border-border flex items-center gap-3 flex-wrap">
             <span className="inline-flex items-center gap-1">
               <span className="material-icons text-[12px]">person_add</span>
-              Created by {creatorName} on {formatDate(term.createdAt)}
+              Creado por {creatorName} el {formatDate(term.createdAt)}
             </span>
             <span className="inline-flex items-center gap-1">
               <span className="material-icons text-[12px]">history</span>
-              Updated {formatDate(term.updatedAt)}
+              Actualizado {formatDate(term.updatedAt)}
             </span>
             <span className="inline-flex items-center gap-1">
               <span className="material-icons text-[12px]">{term.source === 'ai_suggested' ? 'auto_awesome' : 'edit_note'}</span>
-              Source: {term.source === 'ai_suggested' ? 'AI suggested' : 'Manual'}
+              Origen: {term.source === 'ai_suggested' ? 'Sugerido por IA' : 'Manual'}
             </span>
           </footer>
         </>

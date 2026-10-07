@@ -5,8 +5,8 @@
  * applies branding, and sends via Resend. Falls back to default templates
  * if no custom template exists.
  *
- * BYOK note: this always sends through the platform Resend key (the `resend`
- * proxy from ./index, ultimately process.env.RESEND_API_KEY) — it never calls
+ * BYOK note: this always sends through the platform Resend key (resolved by
+ * lib/email/config.ts: admin setting → RESEND_API_KEY env) — it never calls
  * resolveResendKey() the way campaign sends do (lib/email/campaign-send.ts,
  * ab-promotion.ts). Deliberate: order confirmations, booking reminders, invites,
  * and MCP approvals are platform-originated sends, not client-COGS sends, so
@@ -17,13 +17,14 @@ import { db } from '@/lib/db';
 import { websiteEmailTemplates, clientWebsites, brandingProfiles } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { resend } from './index';
+import { getEmailPlatformConfig } from './config';
 import { renderBlocksToEmailHtml } from './render-blocks-to-email';
 import { replaceVariables, getEventDefinition } from './website-email-events';
 import { getDefaultTemplates } from './default-email-templates';
 import { applyBrandingToBlocks, brandingProfileToEmailBranding } from './apply-branding-to-blocks';
 import type { Block, BlockEditorData } from '@/types/blocks';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+const FROM_EMAIL_FALLBACK = 'noreply@simplerdevelopment.com';
 
 interface SendTransactionalEmailOptions {
   idempotencyKey?: string;
@@ -57,7 +58,7 @@ function wrapEmailHtml(innerHtml: string, previewText?: string): string {
     ? `<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${previewText}</div>`
     : '';
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -76,7 +77,7 @@ function wrapEmailHtml(innerHtml: string, previewText?: string): string {
           <tr>
             <td style="padding:16px 40px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
-                Powered by SimplerDevelopment
+                Con la tecnología de CRM AGENTS
               </p>
             </td>
           </tr>
@@ -140,7 +141,7 @@ async function getWebsiteInfo(websiteId: number) {
     : baseUrl;
 
   return {
-    siteName: site?.name || 'Our Store',
+    siteName: site?.name || 'Nuestra tienda',
     siteUrl,
     /** Base URL for storefront account pages: /sites/[domain]/account */
     accountUrl: `${siteUrl}/account`,
@@ -220,14 +221,15 @@ export async function sendTransactionalEmail(
       const eventDef = getEventDefinition(event);
       subject = eventDef
         ? replaceVariables(eventDef.defaultSubject, allVars)
-        : `Notification from ${siteInfo.siteName}`;
+        : `Notificación de ${siteInfo.siteName}`;
       htmlContent = await renderDefaultTemplate(event, allVars, websiteId);
     }
 
-    // Send via Resend
+    // Send via the platform Resend transport (admin settings → env).
     const senderName = fromName || siteInfo.siteName;
+    const { fromEmail } = await getEmailPlatformConfig();
     const result = await resend.emails.send({
-      from: `${senderName} <${FROM_EMAIL}>`,
+      from: `${senderName} <${fromEmail || FROM_EMAIL_FALLBACK}>`,
       to,
       subject,
       html: htmlContent,
@@ -262,7 +264,7 @@ async function renderDefaultTemplate(
   if (!template || template.blocks.length === 0) {
     // Fallback: simple text email
     return wrapEmailHtml(
-      `<p style="font-size:16px;line-height:1.6;color:#333;">You have a new notification from ${variables.siteName || 'our store'}.</p>`,
+      `<p style="font-size:16px;line-height:1.6;color:#333;">Tienes una nueva notificación de ${variables.siteName || 'nuestra tienda'}.</p>`,
     );
   }
 
@@ -279,9 +281,9 @@ async function renderDefaultTemplate(
 
 // ─── CONVENIENCE HELPERS ─────────────────────────────────────────────────────
 
-/** Format cents to dollars (e.g. 14999 -> "$149.99") */
+/** Format cents as euros (e.g. 14999 -> "149,99 €") */
 export function formatCents(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
 }
 
 /** Format an address object to a single-line string */
@@ -300,7 +302,7 @@ export function formatAddress(addr: {
 export function formatEmailDate(date: Date | string | null): string {
   if (!date) return 'N/A';
   const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('es-ES', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -327,8 +329,8 @@ export function buildItemsHtml(items: Array<{
 
   return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:8px 0">
     <tr>
-      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:left;text-transform:uppercase;">Item</th>
-      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:center;text-transform:uppercase;">Qty</th>
+      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:left;text-transform:uppercase;">Producto</th>
+      <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:center;text-transform:uppercase;">Cant.</th>
       <th style="padding:8px 0;border-bottom:2px solid #e5e7eb;font-size:12px;color:#666;text-align:right;text-transform:uppercase;">Total</th>
     </tr>
     ${rows}

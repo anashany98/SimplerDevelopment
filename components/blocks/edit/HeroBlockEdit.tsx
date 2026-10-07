@@ -25,9 +25,7 @@ export function HeroBlockEdit({ block, onChange }: HeroBlockEditProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Subtitle
-        </label>
+        <label className="block text-sm font-medium text-foreground mb-2">Subtítulo</label>
         <input
           type="text"
           value={block.subtitle || ''}
@@ -38,9 +36,7 @@ export function HeroBlockEdit({ block, onChange }: HeroBlockEditProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Description
-        </label>
+        <label className="block text-sm font-medium text-foreground mb-2">Descripción</label>
         <textarea
           value={block.description || ''}
           onChange={(e) => onChange({ ...block, description: e.target.value })}

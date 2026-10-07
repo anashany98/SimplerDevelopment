@@ -67,15 +67,15 @@ export default function TicketSlaBadge({
     return (
       <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">
         <span className="material-icons text-[14px] leading-none">check_circle</span>
-        SLA met
+        SLA cumplido
       </span>
     );
   }
 
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      {firstResponseState.kind !== 'none' && chip(firstResponseState, 'First reply')}
-      {resolutionState.kind !== 'none' && chip(resolutionState, 'Resolution')}
+      {firstResponseState.kind !== 'none' && chip(firstResponseState, 'Primera respuesta')}
+      {resolutionState.kind !== 'none' && chip(resolutionState, 'Resolución')}
     </div>
   );
 }

@@ -16,7 +16,7 @@ sources: FEATURE-INVENTORY-api-mcp.md, docs/agents/architecture-for-agents.md, F
 
 ### Session Authentication (NextAuth v5)
 
-SimplerDevelopment uses **NextAuth v5** with a JWT strategy. Session tokens are stored in `httpOnly` cookies — never exposed to client-side JavaScript. Cookies carry a 7-day maximum age with a 1-day idle refresh. The cookie domain is scoped to the platform's root domain in production, so session tokens cannot be accessed from third-party origins.
+CRM AGENTS uses **NextAuth v5** with a JWT strategy. Session tokens are stored in `httpOnly` cookies — never exposed to client-side JavaScript. Cookies carry a 7-day maximum age with a 1-day idle refresh. The cookie domain is scoped to the platform's root domain in production, so session tokens cannot be accessed from third-party origins.
 
 **Password hashing:** bcryptjs with 10 rounds. Plaintext passwords are never stored.
 
@@ -123,7 +123,7 @@ The Company Brain AI agent sanitizes all tool results before they enter the LLM 
 
 ## 7. Vulnerability Disclosure
 
-SimplerDevelopment follows a **coordinated disclosure model**:
+CRM AGENTS follows a **coordinated disclosure model**:
 
 - Report to **security@simplerdevelopment.com** (not a public issue tracker)
 - Acknowledgment within **72 hours**
@@ -131,7 +131,7 @@ SimplerDevelopment follows a **coordinated disclosure model**:
 - Fix developed and released; reporter may publish **30 days** after the fix ships (or sooner by mutual agreement)
 - Researchers who report valid vulnerabilities are credited (unless they prefer anonymity)
 
-Scope: the SimplerDevelopment platform codebase. Third-party dependency vulnerabilities should be reported to the respective upstream project.
+Scope: the CRM AGENTS platform codebase. Third-party dependency vulnerabilities should be reported to the respective upstream project.
 
 ---
 

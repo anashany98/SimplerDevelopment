@@ -519,7 +519,7 @@ describe('saveSlug', () => {
     clickCb(container, 'EditorHeader-onSaveSlug');
     await waitFor(() => {
       const props = getProps('EditorHeader', container);
-      expect(props?.slugError).toContain('letter or number');
+      expect(props?.slugError).toContain('una letra o un número');
     });
     expect(apiMocks.patchDeck).not.toHaveBeenCalled();
   });
@@ -600,9 +600,9 @@ describe('handlePublishSlide (non-collab)', () => {
         ],
       }),
     );
-    // The inline "Publish slide" button appears when slideHasDraft(currentSlide)
+    // The inline "Publicar diapositiva" button appears when slideHasDraft(currentSlide)
     const publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish slide'),
+      (b) => b.textContent?.includes('Publicar diapositiva'),
     );
     if (publishBtn) {
       fireEvent.click(publishBtn);
@@ -642,7 +642,7 @@ describe('Inline draft-slide action buttons', () => {
         ],
       }),
     );
-    expect(container.textContent).toContain('New (draft)');
+    expect(container.textContent).toContain('Nuevo (borrador)');
   });
 
   it('renders "Pending delete" badge for pending-delete slide', () => {
@@ -654,14 +654,14 @@ describe('Inline draft-slide action buttons', () => {
         ],
       }),
     );
-    expect(container.textContent).toContain('Pending delete');
+    expect(container.textContent).toContain('Pendiente de eliminación');
   });
 
-  it('clicking inline "Publish slide" button triggers handlePublishSlide', async () => {
+  it('clicking inline "Publicar diapositiva" button triggers handlePublishSlide', async () => {
     const { container } = renderPage(makeDraftDeck());
-    // The button text includes material-icon text "publish" + "Publish slide"
+    // The button text includes material-icon text "publish" + "Publicar diapositiva"
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish slide') && b.getAttribute('title')?.includes('live deck'),
+      (b) => b.textContent?.includes('Publicar diapositiva') && b.getAttribute('title')?.includes('presentación publicada'),
     ) as HTMLButtonElement | undefined;
     expect(btn).toBeTruthy();
     if (btn) fireEvent.click(btn);
@@ -670,12 +670,12 @@ describe('Inline draft-slide action buttons', () => {
     });
   });
 
-  it('clicking "Discard draft" button triggers cancelSlideDraft (regular draft)', async () => {
+  it('clicking "Descartar borrador" button triggers cancelSlideDraft (regular draft)', async () => {
     const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
     const { container } = renderPage(makeDraftDeck());
     // The discard button appears for slides that have a draft
     const discardBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Discard draft'),
+      (b) => b.textContent?.includes('Descartar borrador'),
     ) as HTMLButtonElement | undefined;
     expect(discardBtn).toBeTruthy();
     if (discardBtn) fireEvent.click(discardBtn);
@@ -912,7 +912,7 @@ describe('handleStartAbTest', () => {
     const { container } = renderPage();
     clickCb(container, 'EditorHeader-onStartAbTest');
     await waitFor(() => {
-      expect(setErrorMock).toHaveBeenCalledWith('Failed to create experiment');
+      expect(setErrorMock).toHaveBeenCalledWith('No se pudo crear el experimento');
     });
   });
 });
@@ -1008,13 +1008,13 @@ describe('SurveyFieldEditorView onUpdateField', () => {
 
 describe('Mobile slide drawer', () => {
   function findMobileSlidesTrigger(container: HTMLElement): HTMLButtonElement | undefined {
-    // Button text is "view_carouselSlides (N)" — icon text prepended to label
+    // Button text is "view_carouselDiapositivas (N)" — icon text prepended to label
     return Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Slides (') && b.querySelector('.material-icons'),
+      (b) => b.textContent?.includes('Diapositivas (') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement | undefined;
   }
 
-  it('opens when the mobile "Slides (N)" trigger is clicked', async () => {
+  it('opens when the mobile "Diapositivas (N)" trigger is clicked', async () => {
     const { container } = renderPage();
     const slidesBtn = findMobileSlidesTrigger(container);
     expect(slidesBtn).toBeTruthy();
@@ -1045,15 +1045,15 @@ describe('Mobile slide drawer', () => {
     }
   });
 
-  it('closes via the "Close slides panel" button inside the drawer', async () => {
+  it('closes via the "Cerrar panel de diapositivas" button inside the drawer', async () => {
     const { container } = renderPage();
     const slidesBtn = findMobileSlidesTrigger(container);
     if (slidesBtn) {
       act(() => { fireEvent.click(slidesBtn); });
       await waitFor(() => {
-        expect(container.querySelector('[aria-label="Close slides panel"]')).toBeTruthy();
+        expect(container.querySelector('[aria-label="Cerrar panel de diapositivas"]')).toBeTruthy();
       });
-      act(() => { fireEvent.click(container.querySelector('[aria-label="Close slides panel"]') as HTMLElement); });
+      act(() => { fireEvent.click(container.querySelector('[aria-label="Cerrar panel de diapositivas"]') as HTMLElement); });
       await waitFor(() => {
         expect(container.querySelector('[aria-hidden="true"]')).toBeNull();
       });
@@ -1124,7 +1124,7 @@ describe('Empty state slide actions', () => {
   it('"Add Blank Slide" button on the empty state appends a new slide', () => {
     const { container } = renderPage(makeDeck({ slides: [] }));
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Add Blank Slide'),
+      (b) => b.textContent?.includes('Agregar diapositiva en blanco'),
     ) as HTMLButtonElement | undefined;
     expect(addBtn).toBeTruthy();
     if (addBtn) {
@@ -1136,7 +1136,7 @@ describe('Empty state slide actions', () => {
   it('"Generate with AI" button on the empty state opens the regenerate modal', () => {
     const { container } = renderPage(makeDeck({ slides: [] }));
     const genBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Generate with AI'),
+      (b) => b.textContent?.includes('Generar con IA'),
     ) as HTMLButtonElement | undefined;
     expect(genBtn).toBeTruthy();
     if (genBtn) {
@@ -1204,7 +1204,7 @@ describe('handlePublishSlide on pending-delete slide', () => {
     );
     // Publish button should have the "removes this slide" title for pending-delete
     const publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.title?.includes('removes this slide'),
+      (b) => b.title?.includes('elimina esta diapositiva'),
     ) as HTMLButtonElement | undefined;
     expect(publishBtn).toBeTruthy();
   });
@@ -1218,7 +1218,7 @@ describe('handlePublishSlide on pending-delete slide', () => {
         ],
       }),
     );
-    expect(container.textContent).toContain('Cancel deletion');
+    expect(container.textContent).toContain('Cancelar eliminación');
   });
 });
 

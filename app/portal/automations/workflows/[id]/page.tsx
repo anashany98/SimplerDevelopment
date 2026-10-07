@@ -63,33 +63,33 @@ interface PaletteEntry {
 }
 
 const PALETTE: PaletteEntry[] = [
-  { type: 'trigger', icon: 'person_add', label: 'Contact created', defaultData: { kind: 'contact.created' } },
-  { type: 'trigger', icon: 'sync_alt', label: 'Deal stage changed', defaultData: { kind: 'deal.stage_changed' } },
-  { type: 'trigger', icon: 'assignment_turned_in', label: 'Form submitted', defaultData: { kind: 'form.submitted' } },
-  { type: 'trigger', icon: 'webhook', label: 'Webhook received', defaultData: { kind: 'webhook.received', secret: 'change-me' } },
-  { type: 'trigger', icon: 'schedule', label: 'Schedule (cron)', defaultData: { kind: 'schedule', cron: '0 9 * * 1' } },
-  { type: 'action', icon: 'mail', label: 'Send email', defaultData: { kind: 'send_email', templateId: 0, to: 'contact' } },
-  { type: 'action', icon: 'task_alt', label: 'Create task', defaultData: { kind: 'create_task', title: 'Follow up' } },
-  { type: 'action', icon: 'playlist_add', label: 'Add to list', defaultData: { kind: 'add_to_list', listId: 0 } },
-  { type: 'action', icon: 'hourglass_empty', label: 'Wait', defaultData: { kind: 'wait', ms: 60_000 } },
+  { type: 'trigger', icon: 'person_add', label: 'Contacto creado', defaultData: { kind: 'contact.created' } },
+  { type: 'trigger', icon: 'sync_alt', label: 'Etapa de negocio cambiada', defaultData: { kind: 'deal.stage_changed' } },
+  { type: 'trigger', icon: 'assignment_turned_in', label: 'Formulario enviado', defaultData: { kind: 'form.submitted' } },
+  { type: 'trigger', icon: 'webhook', label: 'Webhook recibido', defaultData: { kind: 'webhook.received', secret: 'change-me' } },
+  { type: 'trigger', icon: 'schedule', label: 'Programación (cron)', defaultData: { kind: 'schedule', cron: '0 9 * * 1' } },
+  { type: 'action', icon: 'mail', label: 'Enviar email', defaultData: { kind: 'send_email', templateId: 0, to: 'contact' } },
+  { type: 'action', icon: 'task_alt', label: 'Crear tarea', defaultData: { kind: 'create_task', title: 'Seguimiento' } },
+  { type: 'action', icon: 'playlist_add', label: 'Añadir a lista', defaultData: { kind: 'add_to_list', listId: 0 } },
+  { type: 'action', icon: 'hourglass_empty', label: 'Esperar', defaultData: { kind: 'wait', ms: 60_000 } },
   { type: 'action', icon: 'send', label: 'Webhook', defaultData: { kind: 'webhook', url: 'https://example.com', payload: {} } },
-  { type: 'condition', icon: 'fork_right', label: 'Condition', defaultData: { kind: 'condition', expression: 'true' } },
+  { type: 'condition', icon: 'fork_right', label: 'Condición', defaultData: { kind: 'condition', expression: 'true' } },
 ];
 
 function nodeLabel(data: WorkflowTriggerConfig | WorkflowAction): string {
   switch (data.kind) {
-    case 'contact.created': return 'Contact created';
-    case 'deal.stage_changed': return 'Deal stage changed';
-    case 'form.submitted': return 'Form submitted';
-    case 'webhook.received': return 'Webhook received';
-    case 'schedule': return `Schedule: ${data.cron}`;
-    case 'send_email': return `Send email (template ${data.templateId})`;
-    case 'create_task': return `Create task: ${data.title}`;
-    case 'add_to_list': return `Add to list ${data.listId}`;
-    case 'wait': return `Wait ${Math.round(data.ms / 1000)}s`;
-    case 'webhook': return `Webhook to ${truncate(data.url, 30)}`;
-    case 'condition': return `If: ${truncate(data.expression, 30)}`;
-    default: return 'Unknown';
+    case 'contact.created': return 'Contacto creado';
+    case 'deal.stage_changed': return 'Etapa de negocio cambiada';
+    case 'form.submitted': return 'Formulario enviado';
+    case 'webhook.received': return 'Webhook recibido';
+    case 'schedule': return `Programación: ${data.cron}`;
+    case 'send_email': return `Enviar email (plantilla ${data.templateId})`;
+    case 'create_task': return `Crear tarea: ${data.title}`;
+    case 'add_to_list': return `Añadir a lista ${data.listId}`;
+    case 'wait': return `Esperar ${Math.round(data.ms / 1000)}s`;
+    case 'webhook': return `Webhook a ${truncate(data.url, 30)}`;
+    case 'condition': return `Si: ${truncate(data.expression, 30)}`;
+    default: return 'Desconocido';
   }
 }
 
@@ -121,13 +121,8 @@ function toRFEdges(graph: WorkflowGraph): Edge[] {
 }
 
 function nodeStyle(kind: 'trigger' | 'action' | 'condition'): React.CSSProperties {
-  if (kind === 'trigger') {
-    return { background: '#10b981', color: 'white', border: 'none', borderRadius: 10, padding: 8, fontSize: 12 };
-  }
-  if (kind === 'condition') {
-    return { background: '#f59e0b', color: 'white', border: 'none', borderRadius: 10, padding: 8, fontSize: 12 };
-  }
-  return { background: '#3b82f6', color: 'white', border: 'none', borderRadius: 10, padding: 8, fontSize: 12 };
+  const bg = kind === 'trigger' ? '#10b981' : kind === 'condition' ? '#f59e0b' : '#3b82f6';
+  return { background: bg, color: 'white', border: 'none', borderRadius: 10, padding: 8, fontSize: 12 };
 }
 
 function newNodeId(prefix: string): string {
@@ -175,6 +170,17 @@ export default function WorkflowEditorPage() {
   const [runSteps, setRunSteps] = useState<RunStepRow[]>([]);
   const [stepsLoading, setStepsLoading] = useState(false);
   const [retrying, setRetrying] = useState(false);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+
+  const selectedNode = nodes.find((node) => node.id === selectedNodeId) ?? null;
+  const updatePayloadField = useCallback((field: string, value: string | number) => {
+    if (!selectedNodeId) return;
+    setNodes((current) => current.map((node) => {
+      if (node.id !== selectedNodeId) return node;
+      const payload = { ...(node.data.payload as Record<string, unknown>), [field]: value } as WorkflowTriggerConfig | WorkflowAction;
+      return { ...node, data: { ...node.data, payload, label: nodeLabel(payload) } };
+    }));
+  }, [selectedNodeId]);
 
   useEffect(() => {
     if (!Number.isFinite(id)) return;
@@ -205,6 +211,7 @@ export default function WorkflowEditorPage() {
   const onConnect = useCallback((conn: Connection) => {
     setEdges((eds) => addEdge({ ...conn, id: `e-${Math.random().toString(36).slice(2, 8)}`, animated: true }, eds));
   }, []);
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => setSelectedNodeId(node.id), []);
 
   const handleAdd = useCallback((entry: PaletteEntry) => {
     const nid = newNodeId(entry.type);
@@ -258,7 +265,7 @@ export default function WorkflowEditorPage() {
 
   const handleDelete = useCallback(async () => {
     if (!wf) return;
-    if (!confirm('Delete this workflow? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar este flujo? Esta acción no se puede deshacer.')) return;
     await fetch(`/api/portal/workflows/${wf.id}`, { method: 'DELETE' });
     router.push('/portal/automations/workflows');
   }, [wf, router]);
@@ -305,28 +312,28 @@ export default function WorkflowEditorPage() {
   if (loading) {
     return (
       <div className="max-w-6xl mx-auto p-6 text-sm text-muted-foreground">
-        <span className="material-icons text-base align-middle animate-spin mr-2">progress_activity</span>
-        Loading workflow...
+        <span className="material-icons text-base align-middle animate-spin mr-2">autorenew</span>
+        Cargando flujo...
       </div>
     );
   }
   if (!wf) {
     return (
       <div className="max-w-6xl mx-auto p-6 text-sm text-muted-foreground">
-        Workflow not found.
-        <Link href="/portal/automations/workflows" className="text-primary ml-2 hover:underline">Back to list</Link>
+        Flujo no encontrado.
+        <Link href="/portal/automations/workflows" className="text-primary ml-2 hover:underline">Volver a la lista</Link>
       </div>
     );
   }
 
   return (
     <div className="h-[calc(100vh-100px)] flex flex-col gap-3 p-3">
-      {/* Beta notice — workflow execution is not yet implemented */}
+      {/* Aviso — la ejecución se procesa por el cron de fondo */}
       <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-200 text-xs">
         <span className="material-icons text-base shrink-0">science</span>
         <span>
-          <span className="font-semibold">Beta — workflows do not execute yet.</span>{' '}
-          Activating this workflow has no runtime effect. Use <strong>Automations</strong> (Rules) for live trigger-to-action rules today.
+          <span className="font-semibold">Beta — la ejecución de flujos aún se está afinando.</span>{' '}
+          Los flujos activos se ejecutan desde eventos de CRM, formularios y programaciones (cron); los de webhook se prueban con «Probar ejecución».
         </span>
       </div>
 
@@ -336,21 +343,21 @@ export default function WorkflowEditorPage() {
           <span className="material-icons">arrow_back</span>
         </Link>
         <input
-          value={name} aria-label="Workflow name"
+          value={name} aria-label="Nombre del flujo"
           onChange={(e) => setName(e.target.value)}
           className="text-lg font-semibold bg-transparent border border-transparent hover:border-border focus:border-border rounded px-2 py-1 outline-none flex-1 min-w-[200px]"
         />
         <select
-          aria-label="Workflow status" value={status}
+          aria-label="Estado del flujo" value={status}
           onChange={(e) => setStatus(e.target.value as WorkflowStatus)}
           className="text-xs px-2 py-1 border border-border rounded bg-background"
         >
-          <option value="draft">Draft</option>
-          <option value="active">Active</option>
-          <option value="paused">Paused</option>
+          <option value="draft">Borrador</option>
+          <option value="active">Activo</option>
+          <option value="paused">Pausado</option>
         </select>
         <span className="text-xs text-muted-foreground">
-          Trigger: <code className="font-mono">{triggerKindLabel}</code>
+          Disparador: <code className="font-mono">{triggerKindLabel}</code>
         </span>
         <button
           type="button"
@@ -359,16 +366,16 @@ export default function WorkflowEditorPage() {
           className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-muted disabled:opacity-60"
         >
           <span className="material-icons text-sm">play_arrow</span>
-          {testing ? 'Running...' : 'Test run'}
+          {testing ? 'Ejecutando...' : 'Probar ejecución'}
         </button>
         <button
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-60"
         >
           <span className="material-icons text-sm">save</span>
-          {saving ? 'Saving...' : 'Save'}
+          {saving ? 'Guardando...' : 'Guardar'}
         </button>
         <button
           type="button"
@@ -376,7 +383,7 @@ export default function WorkflowEditorPage() {
           className="inline-flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg border border-border hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-900/20"
         >
           <span className="material-icons text-sm">delete</span>
-          Delete
+          Eliminar
         </button>
       </div>
 
@@ -384,19 +391,19 @@ export default function WorkflowEditorPage() {
       <div className="flex flex-1 gap-3 min-h-0">
         {/* Sidebar */}
         <div className="w-56 bg-card border border-border rounded-xl p-3 overflow-y-auto">
-          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Triggers</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Disparadores</h3>
           <div className="space-y-1 mb-4">
             {PALETTE.filter((p) => p.type === 'trigger').map((p) => (
               <PaletteButton key={p.label} entry={p} onAdd={handleAdd} />
             ))}
           </div>
-          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Actions</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Acciones</h3>
           <div className="space-y-1 mb-4">
             {PALETTE.filter((p) => p.type === 'action').map((p) => (
               <PaletteButton key={p.label} entry={p} onAdd={handleAdd} />
             ))}
           </div>
-          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Logic</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Lógica</h3>
           <div className="space-y-1">
             {PALETTE.filter((p) => p.type === 'condition').map((p) => (
               <PaletteButton key={p.label} entry={p} onAdd={handleAdd} />
@@ -412,6 +419,7 @@ export default function WorkflowEditorPage() {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            onNodeClick={onNodeClick}
             onInit={setRfInstance}
             fitView
           >
@@ -421,11 +429,16 @@ export default function WorkflowEditorPage() {
           </ReactFlow>
         </div>
 
+        {/* Inspector */}
+        {selectedNode && (
+          <NodeInspector node={selectedNode} onChange={updatePayloadField} onClose={() => setSelectedNodeId(null)} />
+        )}
+
         {/* Runs panel */}
         <div className="w-72 bg-card border border-border rounded-xl p-3 overflow-y-auto">
-          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Recent runs</h3>
+          <h3 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Ejecuciones recientes</h3>
           {runs.length === 0 ? (
-            <div className="text-xs text-muted-foreground">No runs yet. Click Test run to fire one.</div>
+            <div className="text-xs text-muted-foreground">Aún no hay ejecuciones. Pulsa «Probar ejecución» para lanzar una.</div>
           ) : (
             <ul className="space-y-2">
               {runs.map((r) => (
@@ -464,7 +477,7 @@ export default function WorkflowEditorPage() {
                         className="inline-flex items-center gap-1 px-2 py-1 rounded border border-border hover:bg-muted disabled:opacity-60 text-xs"
                       >
                         <span className="material-icons text-sm">replay</span>
-                        {retrying ? 'Retrying…' : 'Retry'}
+                        {retrying ? 'Reintentando…' : 'Reintentar'}
                       </button>
                     </div>
                   )}
@@ -474,11 +487,11 @@ export default function WorkflowEditorPage() {
                     <div className="border-t border-border px-2 py-2">
                       {stepsLoading ? (
                         <div className="flex items-center gap-1 text-muted-foreground py-1">
-                          <span className="material-icons text-sm animate-spin">progress_activity</span>
-                          Loading steps…
+                          <span className="material-icons text-sm animate-spin">autorenew</span>
+                          Cargando pasos…
                         </div>
                       ) : runSteps.length === 0 ? (
-                        <div className="text-muted-foreground py-1">No step records yet.</div>
+                        <div className="text-muted-foreground py-1">Aún no hay registros de pasos.</div>
                       ) : (
                         <ul className="space-y-1.5">
                           {runSteps.map((s) => (
@@ -492,13 +505,13 @@ export default function WorkflowEditorPage() {
                               <div className="text-muted-foreground">
                                 <span className="font-medium">{s.action}</span>
                                 {s.attemptCount > 0 && (
-                                  <span className="ml-1">· {s.attemptCount} attempt{s.attemptCount !== 1 ? 's' : ''}</span>
+                                  <span className="ml-1">· {s.attemptCount} {s.attemptCount !== 1 ? 'intentos' : 'intento'}</span>
                                 )}
                               </div>
                               {s.nextRetryAt && (
                                 <div className="text-amber-600 dark:text-amber-400 mt-0.5">
                                   <span className="material-icons text-xs align-middle mr-0.5">schedule</span>
-                                  Retry at {new Date(s.nextRetryAt).toLocaleTimeString()}
+                                  Reintento a las {new Date(s.nextRetryAt).toLocaleTimeString()}
                                 </div>
                               )}
                               {s.error && (
@@ -522,10 +535,17 @@ export default function WorkflowEditorPage() {
       {/* Footer hint */}
       <div className="text-xs text-muted-foreground">
         <span className="material-icons text-sm align-middle mr-1">info</span>
-        Click a palette entry to add it to the canvas. Drag nodes to rearrange. Drag from a node handle to connect.
+        Haz clic en una entrada de la paleta para añadirla al lienzo. Haz clic en un nodo para abrir su inspector y configurar sus datos. Arrastra los nodos para recolocarlos y desde un conector para conectarlos.
       </div>
     </div>
   );
+}
+
+function NodeInspector({ node, onChange, onClose }: { node: Node; onChange: (field: string, value: string | number) => void; onClose: () => void }) {
+  const payload = node.data.payload as Record<string, unknown>;
+  const kind = String(payload.kind);
+  const fields = kind === 'schedule' ? [['cron', 'Expresión cron', String(payload.cron ?? '')]] : kind === 'send_email' ? [['templateId', 'ID de plantilla', String(payload.templateId ?? 0)], ['to', 'Destinatario', String(payload.to ?? 'contact')]] : kind === 'add_to_list' ? [['listId', 'ID de lista', String(payload.listId ?? 0)]] : kind === 'condition' ? [['expression', 'Expresión', String(payload.expression ?? '')]] : kind === 'create_task' ? [['title', 'Título', String(payload.title ?? '')]] : kind === 'webhook' ? [['url', 'URL', String(payload.url ?? '')]] : [];
+  return <aside className="w-64 bg-card border border-border rounded-xl p-3 overflow-y-auto" aria-label="Inspector del nodo"><div className="flex items-center justify-between mb-3"><h3 className="text-xs font-semibold uppercase tracking-wide">Configurar nodo</h3><button type="button" onClick={onClose} aria-label="Cerrar inspector" className="text-muted-foreground hover:text-foreground"><span className="material-icons text-sm">close</span></button></div><div className="text-xs text-muted-foreground mb-3">{nodeLabel(payload as WorkflowTriggerConfig | WorkflowAction)}</div>{fields.length === 0 ? <p className="text-xs text-muted-foreground">Este nodo no tiene opciones configurables.</p> : fields.map(([field, label, value]) => <label key={field} className="block text-xs mb-3"><span className="block mb-1 font-medium">{label}</span><input aria-label={label} value={value} type={field.endsWith('Id') ? 'number' : 'text'} onChange={(event) => onChange(field, field.endsWith('Id') ? Number(event.target.value) : event.target.value)} className="w-full px-2 py-1.5 border border-border rounded bg-background" /></label>)}</aside>;
 }
 
 function PaletteButton({ entry, onAdd }: { entry: PaletteEntry; onAdd: (e: PaletteEntry) => void }) {
@@ -541,6 +561,8 @@ function PaletteButton({ entry, onAdd }: { entry: PaletteEntry; onAdd: (e: Palet
   );
 }
 
+const RUN_STATUS_LABEL: Record<string, string> = { completed: 'Completada', running: 'En curso', pending: 'Pendiente', failed: 'Fallida' };
+
 function RunStatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
     completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
@@ -549,9 +571,11 @@ function RunStatusBadge({ status }: { status: string }) {
     failed: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
   };
   return (
-    <span className={`px-1.5 py-0.5 rounded ${styles[status] ?? styles.pending}`}>{status}</span>
+    <span className={`px-1.5 py-0.5 rounded ${styles[status] ?? styles.pending}`}>{RUN_STATUS_LABEL[status] ?? status}</span>
   );
 }
+
+const STEP_STATUS_LABEL: Record<string, string> = { completed: 'Completado', running: 'En curso', pending: 'Pendiente', failed: 'Fallido', dead_letter: 'Descartado' };
 
 function StepStatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
@@ -563,7 +587,7 @@ function StepStatusBadge({ status }: { status: string }) {
   };
   return (
     <span className={`px-1 py-0.5 rounded text-[10px] font-medium whitespace-nowrap ${styles[status] ?? styles.pending}`}>
-      {status}
+      {STEP_STATUS_LABEL[status] ?? status}
     </span>
   );
 }

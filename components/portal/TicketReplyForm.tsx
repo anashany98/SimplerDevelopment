@@ -31,7 +31,7 @@ export default function TicketReplyForm({ ticketId, isStaff }: Props) {
     setLoading(false);
 
     if (!data.success) {
-      setError(data.message ?? 'Failed to send reply.');
+      setError(data.message ?? 'No se pudo enviar la respuesta.');
     } else {
       setBody('');
       setIsInternal(false);
@@ -42,7 +42,7 @@ export default function TicketReplyForm({ ticketId, isStaff }: Props) {
   return (
     <div className="bg-card border border-border rounded-xl p-6">
       <h2 className="text-sm font-semibold text-foreground mb-3">
-        {isStaff ? 'Reply to Client' : 'Reply'}
+        {isStaff ? 'Responder al cliente' : 'Responder'}
       </h2>
 
       {error && (
@@ -58,7 +58,7 @@ export default function TicketReplyForm({ ticketId, isStaff }: Props) {
           onChange={(e) => setBody(e.target.value)}
           required
           rows={4}
-          placeholder="Write your reply..."
+          placeholder="Escribe tu respuesta…"
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-y"
         />
 
@@ -70,7 +70,7 @@ export default function TicketReplyForm({ ticketId, isStaff }: Props) {
               onChange={(e) => setIsInternal(e.target.checked)}
               className="rounded border-border"
             />
-            <span className="text-muted-foreground">Internal note (hidden from client)</span>
+            <span className="text-muted-foreground">Nota interna (oculta para el cliente)</span>
           </label>
         )}
 
@@ -78,12 +78,12 @@ export default function TicketReplyForm({ ticketId, isStaff }: Props) {
           <button
             type="submit"
             disabled={loading || !body.trim()}
-            className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
           >
             {loading ? (
-              <><span className="material-icons text-base animate-spin">refresh</span>Sending...</>
+              <><span className="material-icons text-base animate-spin">refresh</span>Enviando...</>
             ) : (
-              <><span className="material-icons text-base">send</span>Send Reply</>
+              <><span className="material-icons text-base">send</span>Enviar respuesta</>
             )}
           </button>
         </div>

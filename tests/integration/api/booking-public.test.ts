@@ -225,7 +225,7 @@ describe('POST /api/public/booking/[slug]/book @booking @public', () => {
       { params: { slug }, body: { name: 'A', email: 'a@b.c', startTime: soon.toISOString() } },
     );
     expect(res.status).toBe(409);
-    expect(res.data?.message).toMatch(/no longer available/i);
+    expect(res.data?.message).toMatch(/ya no está disponible/i);
   });
 
   it('400 when startTime is past maxAdvanceDays', async () => {
@@ -290,7 +290,7 @@ describe('POST /api/public/booking/[slug]/book @booking @public', () => {
       { params: { slug }, body: { name: 'Bob', email: 'bob@test.local', startTime: start.toISOString() } },
     );
     expect(second.status).toBe(409);
-    expect(second.data?.message).toMatch(/no longer available/i);
+    expect(second.data?.message).toMatch(/ya no está disponible/i);
   });
 
   it('capacity mode: rejects once booked >= maxGuests at that slot', async () => {
@@ -311,7 +311,7 @@ describe('POST /api/public/booking/[slug]/book @booking @public', () => {
       { params: { slug }, body: { name: 'C', email: 'c@t.l', startTime: start.toISOString(), groupSize: 1 } },
     );
     expect(overflow.status).toBe(409);
-    expect(overflow.data?.message).toMatch(/spots remaining/i);
+    expect(overflow.data?.message).toMatch(/plazas disponibles/i);
   });
 
   it('capacity mode: groupSize that exceeds remaining capacity is rejected', async () => {

@@ -11,7 +11,7 @@ sources:
   - marketing/feature-pages/
 ---
 
-# SimplerDevelopment — Sales FAQ
+# CRM AGENTS — Sales FAQ
 
 Answers are grounded in the current platform inventory. Pricing figures are omitted — all monetary specifics are at current pricing pages.
 
@@ -90,7 +90,7 @@ In the self-hosted model, the operator has full control over the Postgres schema
 
 **Q7: Can we self-host the platform?**
 
-A: Yes. SimplerDevelopment runs on standard open-web infrastructure:
+A: Yes. CRM AGENTS runs on standard open-web infrastructure:
 
 - **App layer:** Any Next.js-compatible host (Vercel, Railway, Render, or a self-managed server).
 - **Database:** Any Postgres instance with the `pgvector` extension enabled (Railway, Neon, Supabase, or self-hosted). pgvector is required — Company Brain semantic search depends on it.
@@ -122,7 +122,7 @@ Embedding indexing is asynchronous. Keyword search is immediate; vector similari
 
 **Q10: What does "MCP" mean, and why does it matter?**
 
-A: MCP (Model Context Protocol) is the open protocol that lets AI clients — such as Claude.ai, Claude Desktop, or a custom agent — call platform capabilities as structured, schema-validated tool calls. SimplerDevelopment exposes a single MCP endpoint (`POST /api/mcp`) with 450 tools covering every product domain.
+A: MCP (Model Context Protocol) is the open protocol that lets AI clients — such as Claude.ai, Claude Desktop, or a custom agent — call platform capabilities as structured, schema-validated tool calls. CRM AGENTS exposes a single MCP endpoint (`POST /api/mcp`) with 450 tools covering every product domain.
 
 This means an AI client can read CRM deal data, draft an email campaign, create a Brain note, log time on a project card, and check inventory on a storefront product — all from one connection, without the developer having to build separate integrations per domain. Access is controlled via ~50 named OAuth 2.1 scopes, so AI clients can be issued least-privilege tokens for their specific task.
 

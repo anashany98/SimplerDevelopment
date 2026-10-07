@@ -13,6 +13,7 @@
  */
 import { NextResponse } from 'next/server';
 import { spawn } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import os from 'node:os';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -61,7 +62,7 @@ export async function POST(request: Request) {
   }
 
   // ── Parse body ───────────────────────────────────────────────────────
-  let body: { skillId?: unknown; variables?: unknown };
+  let body: { skillId?: unknown; variables?: unknown; clientId?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -127,6 +128,15 @@ export async function POST(request: Request) {
   const userIdNum = Number.parseInt(String(session.user!.id), 10);
   const createdBy = Number.isFinite(userIdNum) ? userIdNum : null;
 
+  // Two distinct identifiers (see lib/db/schema/agenticOs.ts):
+  //  - `agenticRunId` is the UUID stored in agentic_os_runs.run_id and injected
+  //    into the child as AGENTIC_RUN_ID, so every MCP tool call the run makes can
+  //    be correlated back to it.
+  //  - the serial `id` is what the stream/cancel routes and the dashboard key on.
+  const agenticRunId = randomUUID();
+  const clientId =
+    typeof body.clientId === 'number' && Number.isFinite(body.clientId) ? body.clientId : null;
+
   const [inserted] = await db
     .insert(agenticOsRuns)
     .values({
@@ -135,6 +145,8 @@ export async function POST(request: Request) {
       variables,
       status: 'pending',
       createdBy,
+      clientId,
+      runId: agenticRunId,
       host: os.hostname().slice(0, 64),
     })
     .returning({ id: agenticOsRuns.id });
@@ -203,6 +215,9 @@ export async function POST(request: Request) {
       cwd: process.cwd(),
       env: {
         ...process.env,
+        // Correlation id read by the MCP server (lib/mcp-auth.ts) into
+        // PortalMcpContext so this run's tool calls are attributable to it.
+        AGENTIC_RUN_ID: agenticRunId,
         // Avoid Next.js' --inspect-brk / NODE_OPTIONS leaking into the subprocess.
         NODE_OPTIONS: '',
       },

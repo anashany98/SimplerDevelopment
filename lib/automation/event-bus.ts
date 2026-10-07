@@ -2,7 +2,7 @@
  * Automation Event Bus
  *
  * In-process pub/sub for automation triggers PLUS a durable journal. API routes
- * call `emitEvent()` after mutations; the engine runs matching rules inline for
+ * call `emitEvent()` after mutations; the engine runs matching rules in process for
  * instant execution, and every event is also journaled to `automation_jobs` and
  * marked completed once handlers finish. The process-automation-jobs cron
  * re-runs any event whose in-process dispatch was dropped (e.g. a serverless
@@ -35,19 +35,49 @@ export function onEvent(handler: EventHandler): void {
 }
 
 /**
- * Emit an automation event. Handlers run asynchronously — the caller does NOT
- * wait for automations to finish. The event is also journaled durably so a
- * dropped in-process dispatch is retried by the process-automation-jobs cron.
+ * Persist the event before returning to the caller, then run handlers in the
+ * background. The running row carries a lease so the cron cannot reclaim an
+ * event while this process is still dispatching it.
  */
-export function emitEvent(
+export async function emitEvent(
   event: string,
   clientId: number,
   userId: number,
   payload: Record<string, unknown>,
-): void {
+): Promise<void> {
   const automationEvent: AutomationEvent = { event, clientId, userId, payload, timestamp: new Date() };
-  // Floated so the API response isn't blocked.
-  void dispatchWithJournal(automationEvent);
+  let jobId: number | null = null;
+  try {
+    const [row] = await db
+      .insert(automationJobs)
+      .values({
+        clientId: automationEvent.clientId,
+        event: automationEvent.event,
+        userId: automationEvent.userId,
+        payload: automationEvent.payload,
+        status: 'running',
+        nextRetryAt: new Date(Date.now() + 10 * 60_000),
+      })
+      .returning({ id: automationJobs.id });
+    jobId = row?.id ?? null;
+  } catch (err) {
+    console.error(`[automation] journal insert failed for ${event}:`, err);
+  }
+
+  if (jobId === null) {
+    // A completed business mutation must not turn into an HTTP error and invite
+    // a duplicate retry just because its automation journal was unavailable.
+    // Preserve the old best-effort inline dispatch; this exceptional path is
+    // logged and cannot be recovered by the cron.
+    void runHandlers(automationEvent).catch((err) =>
+      console.error(`[automation] unjournaled dispatch failed for ${event}:`, err),
+    );
+    return;
+  }
+
+  // The durable row exists before the mutation endpoint can return. Handler
+  // work continues independently while the lease prevents an early cron retry.
+  void dispatchJournaledEvent(automationEvent, jobId);
 }
 
 /** Run all registered handlers for an event (no journaling). Used by the retry
@@ -56,26 +86,7 @@ export async function runHandlers(event: AutomationEvent): Promise<void> {
   await Promise.all(handlers.map((h) => h(event)));
 }
 
-async function dispatchWithJournal(event: AutomationEvent): Promise<void> {
-  // Durable journal first — a single fast insert, far likelier to survive a
-  // serverless cold-start than the full handler chain it backstops.
-  let jobId: number | null = null;
-  try {
-    const [row] = await db
-      .insert(automationJobs)
-      .values({
-        clientId: event.clientId,
-        event: event.event,
-        userId: event.userId,
-        payload: event.payload,
-        status: 'pending',
-      })
-      .returning({ id: automationJobs.id });
-    jobId = row?.id ?? null;
-  } catch (err) {
-    console.error(`[automation] journal insert failed for ${event.event}:`, err);
-  }
-
+async function dispatchJournaledEvent(event: AutomationEvent, jobId: number): Promise<void> {
   // In-process dispatch — unchanged behavior; each handler isolated so one
   // failure doesn't sink the others.
   let allOk = true;
@@ -89,13 +100,24 @@ async function dispatchWithJournal(event: AutomationEvent): Promise<void> {
   );
 
   // Mark done so the retry cron skips it. If the process died before reaching
-  // here, the row stays 'pending' and the cron re-runs the event (at-least-once).
-  if (jobId != null && allOk) {
+  // here, the running lease expires and the cron reclaims the journal row.
+  if (allOk) {
     await db
       .update(automationJobs)
-      .set({ status: 'completed', processedAt: new Date() })
+      .set({ status: 'completed', processedAt: new Date(), nextRetryAt: null })
       .where(eq(automationJobs.id, jobId))
-      .catch(() => {});
+      .catch((err) => console.error(`[automation] journal completion failed for ${event.event}:`, err));
+  } else {
+    await db
+      .update(automationJobs)
+      .set({
+        status: 'pending',
+        attemptCount: 1,
+        error: 'One or more in-process automation handlers failed',
+        nextRetryAt: new Date(Date.now() + 60_000),
+      })
+      .where(eq(automationJobs.id, jobId))
+      .catch((err) => console.error(`[automation] journal retry scheduling failed for ${event.event}:`, err));
   }
 }
 
@@ -157,6 +179,17 @@ export const AUTOMATION_EVENTS = {
   'proposal.viewed': 'A proposal is viewed',
   'proposal.accepted': 'A proposal is accepted',
   'proposal.declined': 'A proposal is declined',
+
+  // Omnichannel inbox
+  'conversation.created': 'A new channel conversation is created',
+  'conversation.message_received': 'A normalized inbound message is received',
+  'conversation.message_sent': 'An outbound channel message is sent',
+  'conversation.assigned': 'A conversation is assigned to a user or team',
+  'conversation.closed': 'A conversation is closed',
+  'conversation.ai_handoff': 'AI escalates a conversation to a human',
+  'channel.connected': 'A communication channel is connected',
+  'channel.disconnected': 'A communication channel is disconnected',
+  'channel.error': 'A communication channel enters an error state',
 } as const;
 
 export type AutomationEventType = keyof typeof AUTOMATION_EVENTS;

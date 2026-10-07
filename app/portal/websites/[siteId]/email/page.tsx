@@ -17,10 +17,10 @@ interface Template {
 }
 
 const CATEGORY_META: Record<string, { label: string; icon: string }> = {
-  store: { label: 'Store / eCommerce', icon: 'shopping_cart' },
+  store: { label: 'Tienda / eCommerce', icon: 'shopping_cart' },
   account: { label: 'Account', icon: 'person' },
-  booking: { label: 'Booking', icon: 'calendar_month' },
-  content: { label: 'Content', icon: 'article' },
+  booking: { label: 'Reserva', icon: 'calendar_month' },
+  content: { label: 'Contenido', icon: 'article' },
 };
 
 export default function WebsiteEmailPage({ params }: { params: Promise<{ siteId: string }> }) {
@@ -85,7 +85,7 @@ export default function WebsiteEmailPage({ params }: { params: Promise<{ siteId:
       label: CATEGORY_META[cat]?.label ?? cat,
       icon: CATEGORY_META[cat]?.icon ?? 'mail',
     })),
-    { id: 'variables', label: 'Variable Reference', icon: 'code' },
+    { id: 'variables', label: 'Referencia de variable', icon: 'code' },
   ];
 
   const activeCatEvents = EMAIL_EVENTS.filter(e => e.category === activeTab);
@@ -93,19 +93,19 @@ export default function WebsiteEmailPage({ params }: { params: Promise<{ siteId:
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Email Templates"
-        subtitle="Transactional emails triggered by website events. Customize the content and branding for each."
+        eyebrow="Sitio web"
+        title="Plantillas de email"
+        subtitle="Emails transaccionales activados por eventos del sitio web. Personaliza el contenido y la marca de cada uno."
       />
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-card border border-border rounded-2xl p-4">
-          <p className="text-xs text-muted-foreground mb-1">Total Templates</p>
+          <p className="text-xs text-muted-foreground mb-1">Total de plantillas</p>
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{templates.length}</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4">
-          <p className="text-xs text-muted-foreground mb-1">Active</p>
+          <p className="text-xs text-muted-foreground mb-1">Activo</p>
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-green-600">{templates.filter(t => t.enabled).length}</p>
         </div>
       </div>
@@ -134,25 +134,25 @@ export default function WebsiteEmailPage({ params }: { params: Promise<{ siteId:
       {activeTab === 'variables' ? (
         <div className={`${pCard} overflow-hidden`}>
           <div className="px-5 py-4 border-b border-border">
-            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm">Variable Reference</h2>
+            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm">Referencia de variable</h2>
             <p className="text-xs text-muted-foreground mt-0.5">
               Use <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">%%variableName%%</code> in your email content and subject lines. Variables are replaced with real data when the email is sent.
             </p>
           </div>
           <div className="px-5 py-4 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 text-xs">
             {[
-              { key: 'firstName', label: 'First Name' },
-              { key: 'lastName', label: 'Last Name' },
-              { key: 'fullName', label: 'Full Name' },
-              { key: 'email', label: 'Email' },
-              { key: 'orderNumber', label: 'Order Number' },
-              { key: 'orderTotal', label: 'Order Total' },
-              { key: 'trackingNumber', label: 'Tracking #' },
-              { key: 'trackingUrl', label: 'Tracking URL' },
-              { key: 'siteName', label: 'Site Name' },
+              { key: 'firstName', label: 'Nombre' },
+              { key: 'lastName', label: 'Apellidos' },
+              { key: 'fullName', label: 'Nombre completo' },
+              { key: 'email', label: 'Correo' },
+              { key: 'orderNumber', label: 'Número de pedido' },
+              { key: 'orderTotal', label: 'Total del pedido' },
+              { key: 'trackingNumber', label: 'N.º de rastreo' },
+              { key: 'trackingUrl', label: 'URL de rastreo' },
+              { key: 'siteName', label: 'Nombre del sitio' },
               { key: 'siteUrl', label: 'Site URL' },
-              { key: 'itemsHtml', label: 'Order Items' },
-              { key: 'currentYear', label: 'Year' },
+              { key: 'itemsHtml', label: 'Artículos del pedido' },
+              { key: 'currentYear', label: 'Año' },
             ].map(v => (
               <div key={v.key} className="flex items-center gap-2">
                 <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-primary">%%{v.key}%%</code>
@@ -177,10 +177,10 @@ export default function WebsiteEmailPage({ params }: { params: Promise<{ siteId:
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium text-foreground">{eventDef.name}</span>
                       {eventDef.isRequired && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 font-medium">Required</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 font-medium">Obligatorio</span>
                       )}
                       {template && !template.enabled && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">Disabled</span>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">Desactivado</span>
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5 truncate">{eventDef.description}</p>
@@ -197,7 +197,7 @@ export default function WebsiteEmailPage({ params }: { params: Promise<{ siteId:
                         <button
                           onClick={() => toggleEnabled(template)}
                           className={`p-1.5 rounded-md transition-colors ${template.enabled ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20' : 'text-muted-foreground hover:bg-accent'}`}
-                          title={template.enabled ? 'Disable' : 'Enable'}
+                          title={template.enabled ? 'Desactivar' : 'Activar'}
                         >
                           <span className="material-icons text-base">{template.enabled ? 'toggle_on' : 'toggle_off'}</span>
                         </button>
@@ -205,9 +205,7 @@ export default function WebsiteEmailPage({ params }: { params: Promise<{ siteId:
                           href={`/portal/websites/${siteId}/email/${template.id}`}
                           className={pBtnGhost}
                         >
-                          <span className="material-icons text-sm">edit</span>
-                          Edit
-                        </Link>
+                          <span className="material-icons text-sm">edit</span>Editar</Link>
                       </>
                     )}
                   </div>

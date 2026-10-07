@@ -30,10 +30,22 @@ export async function GET(req: NextRequest) {
   // doesn't render it; the detail endpoint refetches the full row.
   const where = eq(projects.clientId, client.id);
 
-  const [countResult] = await db
-    .select({ total: sql<number>`count(*)::int` })
-    .from(projects)
-    .where(where);
+  // The total must count the SAME set the caller can see: non-staff users only
+  // get projects with a project_members row (below), so counting every
+  // client-scoped project made `total` disagree with `data` (data:[] total:2).
+  const [countResult] = staff
+    ? await db
+        .select({ total: sql<number>`count(*)::int` })
+        .from(projects)
+        .where(where)
+    : await db
+        .select({ total: sql<number>`count(*)::int` })
+        .from(projects)
+        .innerJoin(
+          projectMembers,
+          and(eq(projectMembers.projectId, projects.id), eq(projectMembers.userId, userId)),
+        )
+        .where(where);
 
   const all = await db
     .select({
@@ -172,7 +184,7 @@ export async function POST(req: Request) {
     }
   }
 
-  emitEvent('project.created', client.id, userId, { id: project.id, name: project.name, status: project.status, clonedFrom: source?.id ?? null });
+  await emitEvent('project.created', client.id, userId, { id: project.id, name: project.name, status: project.status, clonedFrom: source?.id ?? null });
 
   // E2 — invalidate the admin dashboard cache (active-project count bumped).
   revalidateAdminDashboard();

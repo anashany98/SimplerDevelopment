@@ -14,81 +14,81 @@ interface PrefRow {
 // NOTIFICATION_TYPES tuple in lib/db/schema/crm.ts.
 const TYPE_META: Record<string, { label: string; hint: string; icon: string }> = {
   mention: {
-    label: '@-mentions',
-    hint: 'When a teammate mentions you in a deal comment.',
+    label: '@-menciones',
+    hint: 'Cuando un compañero te menciona en un comentario de un negocio.',
     icon: 'alternate_email',
   },
   deal_stage_changed: {
-    label: 'Deal stage changed',
-    hint: 'A deal in your pipeline moved to a new stage.',
+    label: 'Etapa del negocio cambiada',
+    hint: 'Un negocio de tu pipeline ha pasado a una nueva etapa.',
     icon: 'swap_horiz',
   },
   deal_assigned: {
-    label: 'Deal assigned',
-    hint: 'A deal was assigned to you.',
+    label: 'Negocio asignado',
+    hint: 'Te han asignado un negocio.',
     icon: 'assignment_ind',
   },
   deal_stale: {
-    label: 'Stale deal nudge',
-    hint: 'An open deal hasn’t been touched in a while.',
+    label: 'Recordatorio de negocio estancado',
+    hint: 'Un negocio abierto no ha tenido actividad durante un tiempo.',
     icon: 'hourglass_top',
   },
   contact_created: {
-    label: 'New contact',
-    hint: 'A new contact was added to the CRM.',
+    label: 'Nuevo contacto',
+    hint: 'Se ha añadido un nuevo contacto al CRM.',
     icon: 'person_add',
   },
   proposal_viewed: {
-    label: 'Proposal viewed',
-    hint: 'A client opened a proposal you sent.',
+    label: 'Propuesta vista',
+    hint: 'Un cliente abrió una propuesta que le enviaste.',
     icon: 'visibility',
   },
   document_comment_mention: {
-    label: 'Document comment mention',
-    hint: 'You were mentioned in a document comment thread.',
+    label: 'Mención en comentario de documento',
+    hint: 'Te mencionaron en un hilo de comentarios de un documento.',
     icon: 'comment',
   },
   task_assigned: {
-    label: 'Task assigned',
-    hint: 'A task was assigned to you.',
+    label: 'Tarea asignada',
+    hint: 'Te han asignado una tarea.',
     icon: 'task_alt',
   },
   task_due_soon: {
-    label: 'Task due soon',
-    hint: 'A task you own is approaching its due date.',
+    label: 'Tarea próxima a vencer',
+    hint: 'Se acerca la fecha límite de una tarea tuya.',
     icon: 'schedule',
   },
   ticket_assigned: {
-    label: 'Ticket assigned',
-    hint: 'A support ticket was assigned to you.',
+    label: 'Ticket asignado',
+    hint: 'Te han asignado un ticket de soporte.',
     icon: 'support_agent',
   },
   ticket_status_changed: {
-    label: 'Ticket status changed',
-    hint: 'A ticket you’re watching changed status.',
+    label: 'Estado del ticket cambiado',
+    hint: 'Ha cambiado el estado de un ticket que sigues.',
     icon: 'sync',
   },
   automation_failing: {
-    label: 'Automation failing',
-    hint: 'An automation rule has failed repeatedly.',
+    label: 'Automatización con errores',
+    hint: 'Una regla de automatización ha fallado varias veces.',
     icon: 'error',
   },
   survey_zero_responses: {
-    label: 'Survey with zero responses',
-    hint: 'A live survey has received no responses.',
+    label: 'Encuesta sin respuestas',
+    hint: 'Una encuesta activa todavía no ha recibido respuestas.',
     icon: 'poll',
   },
   booking_hold_stuck: {
-    label: 'Booking hold stuck',
-    hint: 'A booking hold has gone stale without checkout.',
+    label: 'Reserva bloqueada',
+    hint: 'Una reserva provisional lleva demasiado tiempo sin finalizarse.',
     icon: 'event_busy',
   },
 };
 
 const DELIVERY_OPTIONS: Array<{ value: Delivery; label: string; icon: string }> = [
-  { value: 'instant', label: 'Instant', icon: 'bolt' },
-  { value: 'digest_daily', label: 'Daily digest', icon: 'mail' },
-  { value: 'off', label: 'Off', icon: 'notifications_off' },
+  { value: 'instant', label: 'Inmediata', icon: 'bolt' },
+  { value: 'digest_daily', label: 'Resumen diario', icon: 'mail' },
+  { value: 'off', label: 'Desactivada', icon: 'notifications_off' },
 ];
 
 export default function NotificationPreferencesPage() {
@@ -123,10 +123,10 @@ export default function NotificationPreferencesPage() {
       });
       const data = await res.json();
       if (!data.success) {
-        setMessage({ type: 'error', text: data.message || 'Could not save.' });
+        setMessage({ type: 'error', text: data.message || 'No se pudo guardar.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error. Please try again.' });
+      setMessage({ type: 'error', text: 'Error de red. Inténtalo de nuevo.' });
     } finally {
       setSavingType(null);
     }
@@ -144,11 +144,11 @@ export default function NotificationPreferencesPage() {
     <div className="space-y-6">
       <div className={`${pCard} p-6 space-y-4`}>
         <div>
-          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Notification Preferences</h2>
+          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Preferencias de notificaciones</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Choose how each kind of notification is delivered. <strong>Instant</strong> shows
-            it in your panel right away. <strong>Daily digest</strong> batches it for one
-            email per day. <strong>Off</strong> silences it completely.
+            Elige cómo recibir cada tipo de notificación. <strong>Inmediata</strong> la ves
+            en tu panel al instante. <strong>Resumen diario</strong> la agrupa en un
+            correo diario. <strong>Desactivada</strong> la silencia por completo.
           </p>
         </div>
 
@@ -178,7 +178,7 @@ export default function NotificationPreferencesPage() {
                 </div>
                 <div
                   role="radiogroup"
-                  aria-label={`Delivery for ${meta.label}`}
+                  aria-label={`Entrega para ${meta.label}`}
                   className="flex gap-1 shrink-0 self-start sm:self-auto"
                 >
                   {DELIVERY_OPTIONS.map((opt) => {
@@ -193,7 +193,7 @@ export default function NotificationPreferencesPage() {
                         onClick={() => updateDelivery(pref.notificationType, opt.value)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border transition-colors disabled:opacity-50 ${
                           isActive
-                            ? 'bg-primary text-primary-foreground border-primary'
+                            ? 'bg-foreground text-background border-primary'
                             : 'bg-background text-foreground border-border hover:border-primary/50 hover:bg-accent'
                         }`}
                       >

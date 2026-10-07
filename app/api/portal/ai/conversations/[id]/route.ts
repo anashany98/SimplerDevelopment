@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { aiConversations, aiMessages } from '@/lib/db/schema';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
+import { portalToolCallSucceeded } from '@/lib/ai/portal-tool-history';
 import { eq, asc } from 'drizzle-orm';
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -23,7 +24,16 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       .where(eq(aiMessages.conversationId, convId))
       .orderBy(asc(aiMessages.createdAt));
 
-    return NextResponse.json({ success: true, data: { conversation: conv, messages } });
+    const safeMessages = messages.map(({ toolCalls, ...message }) => ({
+      ...message,
+      toolCalls: toolCalls?.map((call) => ({
+        name: call.name,
+        input: call.input,
+        success: portalToolCallSucceeded(call.result),
+      })) ?? null,
+    }));
+
+    return NextResponse.json({ success: true, data: { conversation: conv, messages: safeMessages } });
   } catch (err) {
     console.error('[GET /api/portal/ai/conversations/[id]]', err);
     return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });

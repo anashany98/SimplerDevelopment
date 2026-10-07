@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 import { supportTickets, ticketMessages, clients, users } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
 import { eq, and } from 'drizzle-orm';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -71,10 +71,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         if (clientRow?.userEmail) {
           const baseUrl = process.env.NEXTAUTH_URL || 'https://app.simplerdevelopment.com';
           const portalLink = `${baseUrl}/portal/tickets/${ticketId}`;
-          const from = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+          const from = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
 
           await resend.emails.send({
-            from: `Simpler Development Support <${from}>`,
+            from: `CRM AGENTS Support <${from}>`,
             to: clientRow.userEmail,
             subject: `New reply on ticket #${ticket.number}`,
             html: `<!DOCTYPE html>
@@ -97,7 +97,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
           </tr>
           <tr>
             <td style="padding:16px 40px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#9ca3af;">Powered by SimplerDevelopment</p>
+              <p style="margin:0;font-size:12px;color:#9ca3af;">Powered by CRM AGENTS</p>
             </td>
           </tr>
         </table>

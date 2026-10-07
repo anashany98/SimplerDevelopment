@@ -3,14 +3,16 @@ import { WORKFLOW_TEMPLATES, findTemplate, type WorkflowTemplate } from '@/lib/w
 import type { WorkflowGraph, WorkflowNode } from '@/lib/workflows/types';
 
 describe('Workflow templates', () => {
-  it('exports exactly 5 starter templates', () => {
-    expect(WORKFLOW_TEMPLATES).toHaveLength(5);
+  it('exports exactly 7 starter templates', () => {
+    expect(WORKFLOW_TEMPLATES).toHaveLength(7);
   });
 
   it('has the expected template ids', () => {
     const ids = WORKFLOW_TEMPLATES.map((t) => t.id).sort();
     expect(ids).toEqual([
+      'deal-outcome-branches',
       'form-submission-auto-task',
+      'form-submission-to-list',
       'new-lead-nurture',
       'stage-advance-celebration',
       'stale-deal-nudge',
@@ -19,7 +21,7 @@ describe('Workflow templates', () => {
   });
 
   it('findTemplate returns the matching template', () => {
-    expect(findTemplate('new-lead-nurture')?.name).toMatch(/lead nurture/i);
+    expect(findTemplate('new-lead-nurture')?.name).toMatch(/prospectos/i);
     expect(findTemplate('does-not-exist')).toBeUndefined();
   });
 

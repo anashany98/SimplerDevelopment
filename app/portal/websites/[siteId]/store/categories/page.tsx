@@ -107,27 +107,27 @@ export default function StoreCategoriesPage() {
       if (data.success) {
         setShowForm(false);
         setEditing(null);
-        setSuccess(editing ? 'Category updated.' : 'Category created.');
+        setSuccess(editing ? 'Categoría actualizada.' : 'Categoría creada.');
         load();
       } else {
-        setError(data.message || 'Failed to save.');
+        setError(data.message || 'No se pudo guardar.');
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this category? Products will be uncategorized, not deleted.')) return;
+    if (!confirm('¿Eliminar esta categoría? Los productos quedarán sin categoría, no se eliminarán.')) return;
     setSuccess('');
     try {
       await fetch(`${base}/${id}`, { method: 'DELETE' });
-      setSuccess('Category deleted.');
+      setSuccess('Categoría eliminada.');
       load();
     } catch {
-      setError('Failed to delete.');
+      setError('No se pudo eliminar.');
     }
   };
 
@@ -146,16 +146,16 @@ export default function StoreCategoriesPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Store"
-        title="Product Categories"
-        subtitle="Organize products into categories."
+        eyebrow="Tienda"
+        title="Categorías de productos"
+        subtitle="Organiza los productos en categorías."
         actions={
           <button
             onClick={showForm ? () => setShowForm(false) : openCreate}
             className={showForm ? pBtnGhost : pBtnPrimary}
           >
             <span className="material-icons text-base">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'Add Category'}
+            {showForm ? 'Cancelar' : 'Agregar categoría'}
           </button>
         }
       />
@@ -177,16 +177,16 @@ export default function StoreCategoriesPage() {
       {/* Form */}
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-6 space-y-4">
-          <h2 className="font-semibold text-foreground">{editing ? 'Edit Category' : 'New Category'}</h2>
+          <h2 className="font-semibold text-foreground">{editing ? 'Editar categoría' : 'Nueva categoría'}</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Name</label>
+              <label className="text-sm font-medium text-foreground">Nombre</label>
               <input
                 value={form.name}
                 onChange={(e) => handleNameChange(e.target.value)}
                 required
-                placeholder="e.g. T-Shirts"
+                placeholder="p. ej., Camisetas"
                 className={pInput}
               />
             </div>
@@ -199,18 +199,18 @@ export default function StoreCategoriesPage() {
                   setError('');
                 }}
                 required
-                placeholder="t-shirts"
+                placeholder="camisetas"
                 className={`${pInput} font-mono`}
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Description</label>
+            <label className="text-sm font-medium text-foreground">Descripción</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-              placeholder="Optional description"
+              placeholder="Descripción opcional"
               rows={2}
               className={pInput}
             />
@@ -218,7 +218,7 @@ export default function StoreCategoriesPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Image URL</label>
+              <label className="text-sm font-medium text-foreground">URL de la imagen</label>
               <input
                 value={form.imageUrl}
                 onChange={(e) => setForm((prev) => ({ ...prev, imageUrl: e.target.value }))}
@@ -229,7 +229,7 @@ export default function StoreCategoriesPage() {
                 <div className="mt-2">
                   <img
                     src={form.imageUrl}
-                    alt="Category preview"
+                    alt="Vista previa de la categoría"
                     className="w-16 h-16 rounded-lg object-cover border border-border"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none';
@@ -239,13 +239,13 @@ export default function StoreCategoriesPage() {
               )}
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Parent Category</label>
+              <label className="text-sm font-medium text-foreground">Categoría principal</label>
               <select
                 value={form.parentId}
                 onChange={(e) => setForm((prev) => ({ ...prev, parentId: e.target.value }))}
                 className={pInput}
               >
-                <option value="">None (top-level)</option>
+                <option value="">Ninguno (nivel superior)</option>
                 {parentOptions.map((cat) => (
                   <option key={cat.id} value={String(cat.id)}>
                     {cat.parentName ? `${cat.parentName} > ${cat.name}` : cat.name}
@@ -267,16 +267,14 @@ export default function StoreCategoriesPage() {
               type="button"
               onClick={() => setShowForm(false)}
               className={pBtnGhost}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="submit"
               disabled={saving}
               className={pBtnPrimary}
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {editing ? 'Update' : 'Create'} Category
+              {editing ? 'Actualizar' : 'Crear'} categoría
             </button>
           </div>
         </form>
@@ -287,7 +285,7 @@ export default function StoreCategoriesPage() {
         {categories.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground/40">category</span>
-            <p className="text-sm text-muted-foreground mt-2">No categories yet. Create your first one above.</p>
+            <p className="text-sm text-muted-foreground mt-2">Aún no hay categorías. Crea la primera arriba.</p>
           </div>
         ) : (
           <ul className="divide-y divide-border">
@@ -308,7 +306,7 @@ export default function StoreCategoriesPage() {
                     <p className="text-sm font-medium text-foreground">{cat.name}</p>
                     {cat.parentName && (
                       <span className="text-xs text-muted-foreground bg-accent/50 px-1.5 py-0.5 rounded">
-                        in {cat.parentName}
+                        en {cat.parentName}
                       </span>
                     )}
                   </div>
@@ -320,7 +318,7 @@ export default function StoreCategoriesPage() {
                 )}
 
                 {cat.productCount != null && (
-                  <span className="text-xs text-muted-foreground">{cat.productCount} products</span>
+                  <span className="text-xs text-muted-foreground">{cat.productCount} productos</span>
                 )}
 
                 {/* Actions */}
@@ -328,14 +326,14 @@ export default function StoreCategoriesPage() {
                   <button
                     onClick={() => openEdit(cat)}
                     className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                    title="Edit"
+                    title="Editar"
                   >
                     <span className="material-icons text-base">edit</span>
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id)}
                     className="p-1.5 rounded-md text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                    title="Delete"
+                    title="Eliminar"
                   >
                     <span className="material-icons text-base">delete</span>
                   </button>

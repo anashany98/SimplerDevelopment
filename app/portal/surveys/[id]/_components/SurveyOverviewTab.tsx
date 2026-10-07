@@ -65,19 +65,19 @@ export default function SurveyOverviewTab({ survey, responses, stats, setTab }: 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-          <p className="text-xs text-muted-foreground">Responses</p>
+          <p className="text-xs text-muted-foreground">Respuestas</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">{stats.completed}</p>
-          <p className="text-xs text-muted-foreground">Completed</p>
+          <p className="text-xs text-muted-foreground">Completadas</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">{stats.withEmail}</p>
-          <p className="text-xs text-muted-foreground">With Email</p>
+          <p className="text-xs text-muted-foreground">Con email</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">{questionCount}</p>
-          <p className="text-xs text-muted-foreground">Questions</p>
+          <p className="text-xs text-muted-foreground">Preguntas</p>
         </div>
       </div>
 
@@ -87,24 +87,24 @@ export default function SurveyOverviewTab({ survey, responses, stats, setTab }: 
           className="bg-card border border-border rounded-xl p-4 text-left hover:border-primary/50 transition-all"
         >
           <span className="material-icons text-xl text-primary mb-2">share</span>
-          <p className="font-medium text-foreground text-sm">Share Survey</p>
-          <p className="text-xs text-muted-foreground">Get link, embed code, or email integration</p>
+          <p className="font-medium text-foreground text-sm">Compartir encuesta</p>
+          <p className="text-xs text-muted-foreground">Obtén el enlace, el código de inserción o la integración por correo</p>
         </button>
         <button
           onClick={() => setTab('edit')}
           className="bg-card border border-border rounded-xl p-4 text-left hover:border-primary/50 transition-all"
         >
           <span className="material-icons text-xl text-primary mb-2">edit</span>
-          <p className="font-medium text-foreground text-sm">Edit Questions</p>
-          <p className="text-xs text-muted-foreground">Add, remove, or reorder questions</p>
+          <p className="font-medium text-foreground text-sm">Editar preguntas</p>
+          <p className="text-xs text-muted-foreground">Añadir, quitar o reordenar preguntas</p>
         </button>
         <button
           onClick={() => setTab('responses')}
           className="bg-card border border-border rounded-xl p-4 text-left hover:border-primary/50 transition-all"
         >
           <span className="material-icons text-xl text-primary mb-2">analytics</span>
-          <p className="font-medium text-foreground text-sm">View Responses</p>
-          <p className="text-xs text-muted-foreground">See individual answers and analytics</p>
+          <p className="font-medium text-foreground text-sm">Ver respuestas</p>
+          <p className="text-xs text-muted-foreground">Ver respuestas individuales y analíticas</p>
         </button>
       </div>
 
@@ -113,13 +113,12 @@ export default function SurveyOverviewTab({ survey, responses, stats, setTab }: 
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-foreground flex items-center gap-2">
               <span className="material-icons text-lg text-primary">science</span>
-              A/B Variants
+              Variantes A/B
             </h3>
             <button
               onClick={() => setTab('variants')}
               className="text-xs text-primary hover:underline inline-flex items-center gap-1"
-            >
-              Manage <span className="material-icons text-base">arrow_forward</span>
+            >Gestionar<span className="material-icons text-base">arrow_forward</span>
             </button>
           </div>
           <div className="space-y-2">
@@ -139,9 +138,9 @@ export default function SurveyOverviewTab({ survey, responses, stats, setTab }: 
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-foreground truncate">{v.name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {v.enabled ? `~${sharePct}% of traffic` : 'disabled'}
-                      {stat && ` • ${stat.total} response${stat.total === 1 ? '' : 's'}`}
-                      {conversion !== null && survey.requireEmail && ` • ${conversion}% completed`}
+                      {v.enabled ? `~${sharePct}% del tráfico` : 'desactivada'}
+                      {stat && ` • ${stat.total} respuesta${stat.total === 1 ? '' : 's'}`}
+                      {conversion !== null && survey.requireEmail && ` • ${conversion}% completadas`}
                     </p>
                   </div>
                 </div>
@@ -154,9 +153,9 @@ export default function SurveyOverviewTab({ survey, responses, stats, setTab }: 
                 <div className="flex items-center gap-3 py-2 border-t border-dashed border-border">
                   <span className="material-icons text-base text-muted-foreground/50">help_outline</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-muted-foreground">Unattributed</p>
+                    <p className="text-sm text-muted-foreground">Sin atribuir</p>
                     <p className="text-xs text-muted-foreground">
-                      {orphan.total} response{orphan.total === 1 ? '' : 's'} not tied to a variant (default fields or pre-A/B traffic)
+                      {orphan.total} respuesta{orphan.total === 1 ? '' : 's'} sin vincular a una variante (campos predeterminados o tráfico previo al A/B)
                     </p>
                   </div>
                 </div>
@@ -170,7 +169,7 @@ export default function SurveyOverviewTab({ survey, responses, stats, setTab }: 
         <div className="bg-card border border-border rounded-xl p-5">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <span className="material-icons text-lg text-primary">schedule</span>
-            Recent Responses
+            Respuestas recientes
           </h3>
           <div className="space-y-2">
             {responses.slice(0, 5).map((r) => (
@@ -178,7 +177,7 @@ export default function SurveyOverviewTab({ survey, responses, stats, setTab }: 
                 <span className="material-icons text-muted-foreground">person</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-foreground">
-                    {r.respondentEmail || r.respondentName || 'Anonymous'}
+                    {r.respondentEmail || r.respondentName || 'Anónimo'}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {r.source} &middot; {new Date(r.createdAt).toLocaleDateString()}

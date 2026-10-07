@@ -57,7 +57,7 @@ export function CtaBlockPreview({ block, isSelected, onChange }: CtaBlockPreview
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               type="button"
-              className="px-6 py-3 text-lg bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors"
+              className="px-6 py-3 text-lg bg-foreground text-background rounded-md font-medium hover:bg-foreground/90 transition-colors"
               onClick={(e) => e.preventDefault()}
               style={getElementCSS(block.elementStyles, 'primaryButton')}
             >

@@ -30,7 +30,7 @@ When clients do use a generic CRM, their pipeline stages, custom field needs, an
 
 ## Solution
 
-SimplerDevelopment provisions a complete, per-tenant CRM the moment a client is onboarded. Each tenant gets their own isolated contacts, companies, deal pipeline, proposal builder, and DropboxSign-backed e-signature — all in the portal.
+CRM AGENTS provisions a complete, per-tenant CRM the moment a client is onboarded. Each tenant gets their own isolated contacts, companies, deal pipeline, proposal builder, and DropboxSign-backed e-signature — all in the portal.
 
 Pipeline stages are configurable. Custom fields can be defined on contacts and companies. Lead scoring rules apply automatically. Saved views let each team member work the way they prefer. And the entire CRM surface is accessible to AI agents via 35+ MCP tools — so automations and integrations don't require a separate API integration.
 
@@ -78,7 +78,7 @@ Yes. 35+ MCP tools cover contacts, companies, deals, proposals, contracts, pipel
 
 | Field | Value |
 |---|---|
-| **Page title** | Per-Tenant CRM for Agencies \| SimplerDevelopment |
+| **Page title** | Per-Tenant CRM for Agencies \| CRM AGENTS |
 | **Meta description** | Full CRM per client — contacts, configurable deal pipelines, proposals, DropboxSign e-signature, lead scoring, and 35+ AI tools. No separate CRM platform needed. |
 | **URL slug** | /features/crm |
 | **Primary keyword** | white-label CRM for agencies |
@@ -91,7 +91,7 @@ Yes. 35+ MCP tools cover contacts, companies, deals, proposals, contracts, pipel
 Apply both types to this page:
 
 **SoftwareApplication**
-- `name`: "SimplerDevelopment – CRM"
+- `name`: "CRM AGENTS – CRM"
 - `applicationCategory`: "BusinessApplication"
 - `featureList`: ["Kanban deal pipeline with configurable stages", "Proposal builder with DropboxSign e-signature", "Custom fields on contacts and companies", "Lead scoring rules", "Activity log", "Browser extension CRM surface", "35+ MCP tools for AI agents"]
 - `operatingSystem`: "Web"

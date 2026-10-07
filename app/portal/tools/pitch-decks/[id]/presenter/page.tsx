@@ -86,9 +86,7 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
   if (!deck) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#1a1a2e] text-white">
-        <span className="material-icons animate-spin text-2xl mr-3">refresh</span>
-        Loading presenter view...
-      </div>
+        <span className="material-icons animate-spin text-2xl mr-3">refresh</span>Cargando vista de presentador…</div>
     );
   }
 
@@ -99,7 +97,7 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#1a1a2e] text-white gap-2">
         <span className="material-icons text-4xl text-white/40">slideshow</span>
-        <p className="text-white/70">This deck has no slides yet.</p>
+        <p className="text-white/70">Esta presentación aún no tiene diapositivas.</p>
       </div>
     );
   }
@@ -197,7 +195,7 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
                 <button
                   onClick={() => setMainZoom(z => Math.min(100, z + 10))}
                   className="p-1.5 rounded hover:bg-white/10 text-white/60 hover:text-white transition-colors"
-                  title="Zoom in"
+                  title="Acercar"
                 >
                   <span className="material-icons text-base">add</span>
                 </button>
@@ -206,12 +204,10 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
                 <button
                   onClick={() => setSidePanelOpen(o => !o)}
                   className="lg:hidden ml-2 inline-flex items-center gap-1 px-2.5 py-1.5 rounded hover:bg-white/10 text-white/70 hover:text-white transition-colors text-xs"
-                  title="Show speaker notes & up-next"
+                  title="Mostrar notas del presentador y la siguiente"
                   aria-expanded={sidePanelOpen}
                 >
-                  <span className="material-icons text-sm">speaker_notes</span>
-                  Notes
-                </button>
+                  <span className="material-icons text-sm">speaker_notes</span>Notas</button>
               </div>
 
               {/* Navigation — touch-sized buttons (44px min height) */}
@@ -240,7 +236,7 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
                   disabled={current >= deck.slides.length - 1}
                   className="px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center gap-1 text-sm min-h-[44px]"
                 >
-                  <span className="hidden sm:inline">Next</span>
+                  <span className="hidden sm:inline">Siguiente</span>
                   <span className="material-icons text-base">chevron_right</span>
                 </button>
               </div>
@@ -264,9 +260,7 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
             {/* Next slide preview */}
             <div className="shrink-0">
               <div className="text-xs text-white/40 uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                <span className="material-icons text-sm">skip_next</span>
-                Up Next
-              </div>
+                <span className="material-icons text-sm">skip_next</span>Siguiente</div>
               {nextSlide ? (
                 <div className="rounded-lg overflow-hidden border border-white/10 aspect-[16/9] relative">
                   <div className="absolute inset-0" style={{
@@ -288,7 +282,7 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
                   className="rounded-lg border border-white/10 aspect-[16/9] flex items-center justify-center"
                   style={{ backgroundColor: deck.theme.backgroundColor + '40' }}
                 >
-                  <span className="text-sm text-white/30">End of presentation</span>
+                  <span className="text-sm text-white/30">Fin de la presentación</span>
                 </div>
               )}
             </div>
@@ -303,7 +297,7 @@ export default function PresenterViewPage({ params }: { params: Promise<{ id: st
                 {slide.notes ? (
                   <p className="text-sm leading-relaxed whitespace-pre-wrap text-white/80">{slide.notes}</p>
                 ) : (
-                  <p className="text-sm text-white/30 italic">No notes for this slide.</p>
+                  <p className="text-sm text-white/30 italic">No hay notas para esta diapositiva.</p>
                 )}
               </div>
             </div>

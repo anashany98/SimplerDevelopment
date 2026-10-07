@@ -28,7 +28,7 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('@/lib/portal-utils', () => ({
-  formatCents: (cents: number) => `$${(cents / 100).toFixed(2)}`,
+  formatCents: (cents: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100),
 }));
 
 // SurveyBuilder renders nothing — it just needs to be a valid React component
@@ -124,7 +124,7 @@ import AdminSuggestedProjectsPage from '@/app/admin/portal-suggested-projects/pa
 async function renderPage() {
   const result = render(<AdminSuggestedProjectsPage />);
   await waitFor(() => {
-    expect(screen.queryByText('Loading...')).toBeNull();
+    expect(screen.queryByText('Cargando...')).toBeNull();
   });
   return result;
 }
@@ -135,18 +135,18 @@ describe('AdminSuggestedProjectsPage', () => {
   describe('initial render', () => {
     it('shows loading state before fetch resolves', () => {
       render(<AdminSuggestedProjectsPage />);
-      expect(screen.getByText('Loading...')).toBeTruthy();
+      expect(screen.getByText('Cargando...')).toBeTruthy();
     });
 
     it('renders page heading after fetch', async () => {
       await renderPage();
-      expect(screen.getByText('Project Market')).toBeTruthy();
-      expect(screen.getByText(/Create project suggestions/)).toBeTruthy();
+      expect(screen.getByText('Mercado de proyectos')).toBeTruthy();
+      expect(screen.getByText(/Crea sugerencias de proyectos/)).toBeTruthy();
     });
 
     it('renders "New Suggestion" button', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: /New Suggestion/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Nueva sugerencia/ })).toBeTruthy();
     });
   });
 
@@ -157,8 +157,8 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('No suggested projects yet')).toBeTruthy();
-      expect(screen.getByText('Create your first suggestion above.')).toBeTruthy();
+      expect(screen.getByText('Aún no hay proyectos sugeridos')).toBeTruthy();
+      expect(screen.getByText('Crea tu primera sugerencia arriba.')).toBeTruthy();
     });
 
     it('handles missing data field gracefully', async () => {
@@ -168,7 +168,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('No suggested projects yet')).toBeTruthy();
+      expect(screen.getByText('Aún no hay proyectos sugeridos')).toBeTruthy();
     });
   });
 
@@ -176,12 +176,12 @@ describe('AdminSuggestedProjectsPage', () => {
     it('renders a project card with title and category', async () => {
       await renderPage();
       expect(screen.getByText('Website Starter')).toBeTruthy();
-      expect(screen.getByText('Website')).toBeTruthy();
+      expect(screen.getByText('Sitio web')).toBeTruthy();
     });
 
     it('renders estimated price via formatCents', async () => {
       await renderPage();
-      expect(screen.getByText('$1500.00')).toBeTruthy();
+      expect(screen.getByText('1500,00 €')).toBeTruthy();
     });
 
     it('renders "Quote on request" when no price', async () => {
@@ -191,7 +191,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('Quote on request')).toBeTruthy();
+      expect(screen.getByText('Cotización a petición')).toBeTruthy();
     });
 
     it('renders estimated timeline when present', async () => {
@@ -214,12 +214,12 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('+2 more')).toBeTruthy();
+      expect(screen.getByText('+2 más')).toBeTruthy();
     });
 
     it('shows "All clients" badge when clientId is null', async () => {
       await renderPage();
-      expect(screen.getByText('All clients')).toBeTruthy();
+      expect(screen.getByText('Todos los clientes')).toBeTruthy();
     });
 
     it('shows client badge with company name when clientId is set', async () => {
@@ -249,7 +249,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('Client #42')).toBeTruthy();
+      expect(screen.getByText('Cliente #42')).toBeTruthy();
     });
 
     it('shows survey field badge when surveyFields present', async () => {
@@ -260,7 +260,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText(/1 survey field/)).toBeTruthy();
+      expect(screen.getByText(/1 campo de encuesta/)).toBeTruthy();
     });
 
     it('pluralises survey field badge for multiple fields', async () => {
@@ -274,12 +274,12 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText(/2 survey fields/)).toBeTruthy();
+      expect(screen.getByText(/2 campos de encuesta/)).toBeTruthy();
     });
 
     it('renders "Active" toggle on an active project', async () => {
       await renderPage();
-      expect(screen.getByText('Active')).toBeTruthy();
+      expect(screen.getByText('Activo')).toBeTruthy();
     });
 
     it('renders "Inactive" toggle on an inactive project', async () => {
@@ -289,7 +289,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('Inactive')).toBeTruthy();
+      expect(screen.getByText('Inactivo')).toBeTruthy();
     });
 
     it('shows reduced opacity for inactive projects', async () => {
@@ -322,44 +322,44 @@ describe('AdminSuggestedProjectsPage', () => {
   describe('create project', () => {
     it('shows create form when "New Suggestion" is clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      expect(screen.getByText('Create Suggested Project')).toBeTruthy();
-      expect(screen.getByRole('button', { name: 'Create' })).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
+      expect(screen.getByText('Crear proyecto sugerido')).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'Crear' })).toBeTruthy();
     });
 
     it('hides create form when Cancel is clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      expect(screen.getByText('Create Suggested Project')).toBeTruthy();
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-      expect(screen.queryByText('Create Suggested Project')).toBeNull();
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
+      expect(screen.getByText('Crear proyecto sugerido')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      expect(screen.queryByText('Crear proyecto sugerido')).toBeNull();
     });
 
     it('closes create form when "New Suggestion" is toggled again', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      expect(screen.getByText('Create Suggested Project')).toBeTruthy();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      expect(screen.queryByText('Create Suggested Project')).toBeNull();
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
+      expect(screen.getByText('Crear proyecto sugerido')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
+      expect(screen.queryByText('Crear proyecto sugerido')).toBeNull();
     });
 
     it('populates client dropdown with fetched clients', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      expect(screen.getByText('All clients (global)')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
+      expect(screen.getByText('Todos los clientes (global)')).toBeTruthy();
       expect(screen.getByText('Acme Corp')).toBeTruthy();
       expect(screen.getByText('orphan_user')).toBeTruthy();
     });
 
     it('submits create form and adds item to list', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
 
-      const titleInput = screen.getByText('Title').parentElement!.querySelector('input')!;
+      const titleInput = screen.getByText('Título').parentElement!.querySelector('input')!;
       fireEvent.change(titleInput, { target: { value: 'New Project' } });
 
       fireEvent.submit(titleInput.closest('form')!);
-      await waitFor(() => expect(screen.queryByText('Create Suggested Project')).toBeNull());
+      await waitFor(() => expect(screen.queryByText('Crear proyecto sugerido')).toBeNull());
     });
 
     it('shows error when create fails', async () => {
@@ -370,8 +370,8 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      const titleInput = screen.getByText('Title').parentElement!.querySelector('input')!;
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
+      const titleInput = screen.getByText('Título').parentElement!.querySelector('input')!;
       fireEvent.change(titleInput, { target: { value: 'Bad Project' } });
       fireEvent.submit(titleInput.closest('form')!);
       await waitFor(() => expect(screen.getByText('Server error on create')).toBeTruthy());
@@ -385,16 +385,16 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
-      const titleInput = screen.getByText('Title').parentElement!.querySelector('input')!;
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
+      const titleInput = screen.getByText('Título').parentElement!.querySelector('input')!;
       fireEvent.change(titleInput, { target: { value: 'Bad Project' } });
       fireEvent.submit(titleInput.closest('form')!);
-      await waitFor(() => expect(screen.getByText('Failed')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('No se pudo crear')).toBeTruthy());
     });
 
     it('updates category icon when category changes', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
       const catSelect = screen.getAllByRole('combobox')[0] as HTMLSelectElement;
       fireEvent.change(catSelect, { target: { value: 'mobile' } });
       // The icon field should now show the mobile icon value
@@ -406,15 +406,15 @@ describe('AdminSuggestedProjectsPage', () => {
   describe('edit project', () => {
     it('shows edit form when Edit button clicked', async () => {
       await renderPage();
-      const editBtn = screen.getByTitle('Edit');
+      const editBtn = screen.getByTitle('Editar');
       fireEvent.click(editBtn);
-      expect(screen.getByText(/Editing:/)).toBeTruthy();
-      expect(screen.getByRole('button', { name: 'Save Changes' })).toBeTruthy();
+      expect(screen.getByText(/Editando:/)).toBeTruthy();
+      expect(screen.getByRole('button', { name: 'Guardar cambios' })).toBeTruthy();
     });
 
     it('pre-populates edit form with item values', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       await waitFor(() => {
         const inputs = screen.getAllByDisplayValue('Website Starter');
         expect(inputs.length).toBeGreaterThan(0);
@@ -423,19 +423,19 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('cancels edit and returns to list view', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
-      expect(screen.getByText(/Editing:/)).toBeTruthy();
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-      expect(screen.queryByText(/Editing:/)).toBeNull();
+      fireEvent.click(screen.getByTitle('Editar'));
+      expect(screen.getByText(/Editando:/)).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      expect(screen.queryByText(/Editando:/)).toBeNull();
     });
 
     it('saves edit and updates item in list', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       const titleInput = screen.getAllByDisplayValue('Website Starter')[0] as HTMLInputElement;
       fireEvent.change(titleInput, { target: { value: 'Updated Project' } });
       fireEvent.submit(titleInput.closest('form')!);
-      await waitFor(() => expect(screen.queryByText(/Editing:/)).toBeNull());
+      await waitFor(() => expect(screen.queryByText(/Editando:/)).toBeNull());
     });
 
     it('shows error when save fails', async () => {
@@ -446,7 +446,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       const titleInput = screen.getAllByDisplayValue('Website Starter')[0] as HTMLInputElement;
       fireEvent.submit(titleInput.closest('form')!);
       await waitFor(() => expect(screen.getByText('Patch failed')).toBeTruthy());
@@ -460,15 +460,15 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       const titleInput = screen.getAllByDisplayValue('Website Starter')[0] as HTMLInputElement;
       fireEvent.submit(titleInput.closest('form')!);
-      await waitFor(() => expect(screen.getByText('Failed to save')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('No se pudo guardar')).toBeTruthy());
     });
 
     it('converts price from cents to decimal in edit form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Edit'));
+      fireEvent.click(screen.getByTitle('Editar'));
       // 150000 cents → "1500.00"
       await waitFor(() => {
         const priceInput = screen.getByDisplayValue('1500.00') as HTMLInputElement;
@@ -480,21 +480,21 @@ describe('AdminSuggestedProjectsPage', () => {
   describe('delete project', () => {
     it('calls confirm dialog before deleting', async () => {
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
-      expect(confirmMock).toHaveBeenCalledWith('Delete "Website Starter"? This cannot be undone.');
+      fireEvent.click(screen.getByTitle('Eliminar'));
+      expect(confirmMock).toHaveBeenCalledWith('¿Eliminar "Website Starter"? Esta acción no se puede deshacer.');
     });
 
     it('removes item from list after confirmed delete', async () => {
       await renderPage();
       expect(screen.getByText('Website Starter')).toBeTruthy();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       await waitFor(() => expect(screen.queryByText('Website Starter')).toBeNull());
     });
 
     it('does not delete when confirm is cancelled', async () => {
       confirmMock.mockReturnValueOnce(false);
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       await flush();
       expect(screen.getByText('Website Starter')).toBeTruthy();
     });
@@ -507,7 +507,7 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
       await waitFor(() => expect(alertMock).toHaveBeenCalledWith('Delete failed'));
     });
 
@@ -519,15 +519,15 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByTitle('Delete'));
-      await waitFor(() => expect(alertMock).toHaveBeenCalledWith('Delete failed'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
+      await waitFor(() => expect(alertMock).toHaveBeenCalledWith('No se pudo eliminar'));
     });
   });
 
   describe('toggleActive', () => {
     it('calls PATCH with toggled active value', async () => {
       await renderPage();
-      const toggleBtn = screen.getByText('Active');
+      const toggleBtn = screen.getByText('Activo');
       fireEvent.click(toggleBtn);
       await flush();
       expect(vi.mocked(fetch)).toHaveBeenCalledWith(
@@ -538,9 +538,9 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('updates item active state in the list on success', async () => {
       await renderPage();
-      const toggleBtn = screen.getByText('Active');
+      const toggleBtn = screen.getByText('Activo');
       fireEvent.click(toggleBtn);
-      await waitFor(() => expect(screen.getByText('Inactive')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Inactivo')).toBeTruthy());
     });
 
     it('does not update list when toggle PATCH fails', async () => {
@@ -551,22 +551,22 @@ describe('AdminSuggestedProjectsPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      const toggleBtn = screen.getByText('Active');
+      const toggleBtn = screen.getByText('Activo');
       fireEvent.click(toggleBtn);
       await flush();
       // Should still show Active (not toggled) since it failed
-      expect(screen.getByText('Active')).toBeTruthy();
+      expect(screen.getByText('Activo')).toBeTruthy();
     });
   });
 
   describe('form fields', () => {
     it('allows editing the description textarea', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
       const descTextareas = screen.getAllByRole('textbox');
       // The description textarea is the third textbox (title, description, icon, features, timeline...)
       // Find by its adjacent label
-      const descLabel = screen.getByText('Description');
+      const descLabel = screen.getByText('Descripción');
       const descTextarea = descLabel.parentElement!.querySelector('textarea')!;
       fireEvent.change(descTextarea, { target: { value: 'Great project' } });
       expect((descTextarea as HTMLTextAreaElement).value).toBe('Great project');
@@ -574,27 +574,27 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('renders all category options in create form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
       // Use getAllByText because the card list also shows a "Website" badge
-      expect(screen.getAllByText('Website').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('Sitio web').length).toBeGreaterThan(0);
       expect(screen.getByText('E-Commerce')).toBeTruthy();
-      expect(screen.getByText('Mobile App')).toBeTruthy();
-      expect(screen.getByText('Maintenance')).toBeTruthy();
+      expect(screen.getByText('App móvil')).toBeTruthy();
+      expect(screen.getByText('Mantenimiento')).toBeTruthy();
       expect(screen.getByText('Branding')).toBeTruthy();
-      expect(screen.getByText('Development')).toBeTruthy();
-      expect(screen.getByText('Other')).toBeTruthy();
+      expect(screen.getByText('Desarrollo')).toBeTruthy();
+      expect(screen.getByText('Otro')).toBeTruthy();
     });
 
     it('active checkbox is checked by default in create form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
       const activeCheckbox = screen.getByRole('checkbox') as HTMLInputElement;
       expect(activeCheckbox.checked).toBe(true);
     });
 
     it('can toggle active checkbox in create form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
       const activeCheckbox = screen.getByRole('checkbox') as HTMLInputElement;
       fireEvent.click(activeCheckbox);
       expect(activeCheckbox.checked).toBe(false);
@@ -602,7 +602,7 @@ describe('AdminSuggestedProjectsPage', () => {
 
     it('renders survey builder in create form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /New Suggestion/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva sugerencia/ }));
       expect(screen.getByTestId('survey-builder')).toBeTruthy();
     });
   });

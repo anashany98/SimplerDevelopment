@@ -22,14 +22,6 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: routerPush }),
 }));
 
-// Mock Navigation / Footer used by LayoutContent so we can assert on them.
-vi.mock('@/components/ui/Navigation', () => ({
-  Navigation: () => React.createElement('nav', { 'data-testid': 'mock-nav' }, 'NAV'),
-}));
-vi.mock('@/components/ui/Footer', () => ({
-  Footer: () => React.createElement('footer', { 'data-testid': 'mock-footer' }, 'FOOT'),
-}));
-
 // SelfDestruct is lazy-loaded by LayoutContent — provide a stub module so
 // React.lazy can resolve without hitting animate.css.
 vi.mock('@/components/easter-eggs/SelfDestruct', () => ({
@@ -368,22 +360,22 @@ describe('AccountLayout', () => {
     expect(screen.getByTestId('account-child')).toBeTruthy();
 
     // Each label exists in both desktop and mobile nav -> use getAllByText
-    for (const label of ['Dashboard', 'Orders', 'Wishlist', 'Support', 'Profile']) {
+    for (const label of ['Panel', 'Pedidos', 'Mis diseños', 'Lista de deseos', 'Soporte', 'Perfil']) {
       const matches = screen.getAllByText(label);
       expect(matches.length).toBeGreaterThanOrEqual(1);
     }
 
     // Sign Out is desktop-only
-    expect(screen.getByText('Sign Out')).toBeTruthy();
+    expect(screen.getByText('Cerrar sesión')).toBeTruthy();
   });
 
-  it('marks the Dashboard link as active when pathname is exactly /account', async () => {
+  it('marks the Panel link as active when pathname is exactly /account', async () => {
     renderAccountLayout({ pathname: '/account', customer: null });
 
-    // Multiple "Dashboard" texts (desktop + mobile). The desktop one wraps in
+    // Multiple "Panel" texts (desktop + mobile). The desktop one wraps in
     // an <a> with the active class set.
     const dashLinks = screen
-      .getAllByText('Dashboard')
+      .getAllByText('Panel')
       .map(node => node.closest('a'))
       .filter(Boolean) as HTMLAnchorElement[];
     expect(dashLinks.length).toBeGreaterThan(0);
@@ -391,18 +383,18 @@ describe('AccountLayout', () => {
     expect(dashLinks.some(a => a.className.includes('bg-gray-100'))).toBe(true);
   });
 
-  it('marks Orders as active when pathname starts with /account/orders', async () => {
+  it('marks Pedidos as active when pathname starts with /account/orders', async () => {
     renderAccountLayout({ pathname: '/account/orders/123', customer: null });
 
     const ordersLinks = screen
-      .getAllByText('Orders')
+      .getAllByText('Pedidos')
       .map(node => node.closest('a'))
       .filter(Boolean) as HTMLAnchorElement[];
     expect(ordersLinks.some(a => a.className.includes('bg-gray-100'))).toBe(true);
 
-    // Dashboard should NOT be active for /account/orders
+    // Panel should NOT be active for /account/orders
     const dashLinks = screen
-      .getAllByText('Dashboard')
+      .getAllByText('Panel')
       .map(node => node.closest('a'))
       .filter(Boolean) as HTMLAnchorElement[];
     expect(dashLinks.every(a => !a.className.includes('bg-gray-100'))).toBe(true);
@@ -474,7 +466,7 @@ describe('AccountLayout', () => {
     });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Sign Out'));
+      fireEvent.click(screen.getByText('Cerrar sesión'));
     });
     expect(logoutFetchCalled).toBe(true);
     expect(localStorage.getItem('customer_token_1')).toBeNull();
@@ -555,48 +547,43 @@ describe('LayoutContent', () => {
     );
   }
 
-  it('renders nav + footer for a normal marketing route', () => {
+  it('renders page body on a normal route', () => {
     renderAt('/about');
-    expect(screen.getByTestId('mock-nav')).toBeTruthy();
-    expect(screen.getByTestId('mock-footer')).toBeTruthy();
     expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome when pathname starts with /admin', () => {
+  it('renders children as-is when pathname starts with /admin', () => {
     renderAt('/admin/dashboard');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
-    expect(screen.queryByTestId('mock-footer')).toBeNull();
     expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /portal routes', () => {
+  it('renders children as-is on /portal routes', () => {
     renderAt('/portal/inbox');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /pitch-deck routes', () => {
+  it('renders children as-is on /pitch-deck routes', () => {
     renderAt('/pitch-deck/foo');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /book routes', () => {
+  it('renders children as-is on /book routes', () => {
     renderAt('/book/discovery');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /s/ survey routes', () => {
+  it('renders children as-is on /s/ survey routes', () => {
     renderAt('/s/abc');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome on /sites/ routes', () => {
+  it('renders children as-is on /sites/ routes', () => {
     renderAt('/sites/abc/edit');
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
+    expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 
-  it('skips chrome when isClientSite prop is true', () => {
+  it('renders children as-is when isClientSite prop is true', () => {
     renderAt('/some-public-page', { isClientSite: true });
-    expect(screen.queryByTestId('mock-nav')).toBeNull();
     expect(screen.getByTestId('page-body')).toBeTruthy();
   });
 });

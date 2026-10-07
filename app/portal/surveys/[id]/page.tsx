@@ -23,20 +23,20 @@ import type { SurveyScoringConfig } from '@/lib/db/schema';
 type Tab = 'overview' | 'edit' | 'flow' | 'recommendation' | 'variants' | 'responses' | 'analytics' | 'share' | 'webhooks' | 'email-followups' | 'settings';
 
 const TABS: { key: Tab; label: (responseCount: number) => string; icon: string }[] = [
-  { key: 'overview', label: () => 'Overview', icon: 'dashboard' },
-  { key: 'edit', label: () => 'Edit', icon: 'edit' },
-  { key: 'flow', label: () => 'Flow', icon: 'account_tree' },
-  { key: 'recommendation', label: () => 'Recommendation', icon: 'recommend' },
-  { key: 'variants', label: () => 'Variants', icon: 'science' },
-  { key: 'responses', label: (n) => `Responses (${n})`, icon: 'people' },
-  { key: 'analytics', label: () => 'Analytics', icon: 'bar_chart' },
-  { key: 'share', label: () => 'Share & Embed', icon: 'share' },
+  { key: 'overview', label: () => 'Resumen', icon: 'dashboard' },
+  { key: 'edit', label: () => 'Editar', icon: 'edit' },
+  { key: 'flow', label: () => 'Flujo', icon: 'account_tree' },
+  { key: 'recommendation', label: () => 'Recomendación', icon: 'recommend' },
+  { key: 'variants', label: () => 'Variantes', icon: 'science' },
+  { key: 'responses', label: (n) => `Respuestas (${n})`, icon: 'people' },
+  { key: 'analytics', label: () => 'Analíticas', icon: 'bar_chart' },
+  { key: 'share', label: () => 'Compartir e incrustar', icon: 'share' },
   { key: 'webhooks', label: () => 'Webhooks', icon: 'webhook' },
   // DIST-01/02: per-survey follow-up email sequences with opt-in gate. Placed
   // between webhooks and settings so the "outbound automation" controls are
   // grouped together.
-  { key: 'email-followups', label: () => 'Email Follow-ups', icon: 'forward_to_inbox' },
-  { key: 'settings', label: () => 'Settings', icon: 'settings' },
+  { key: 'email-followups', label: () => 'Seguimiento por email', icon: 'forward_to_inbox' },
+  { key: 'settings', label: () => 'Ajustes', icon: 'settings' },
 ];
 
 export default function SurveyDetailPage() {
@@ -147,7 +147,7 @@ export default function SurveyDetailPage() {
     setEditNotify(survey.notifyOnResponse);
     setEditDigest(survey.notifyDigest || 'off');
     setEditNotifyUserIds(Array.isArray(survey.notifyUserIds) ? survey.notifyUserIds : []);
-    setEditThankYouTitle(survey.thankYouTitle || 'Thank you!');
+    setEditThankYouTitle(survey.thankYouTitle || '¡Gracias!');
     setEditThankYouMessage(survey.thankYouMessage || '');
     setEditRedirectUrl(survey.redirectUrl || '');
     setEditClosesAt(survey.closesAt ? survey.closesAt.slice(0, 16) : '');
@@ -172,14 +172,14 @@ export default function SurveyDetailPage() {
 
   async function toggleStatus(newStatus: string) {
     if (newStatus === 'active' && (!survey?.fields || (survey.fields as unknown[]).length === 0)) {
-      setError('Add at least one question before publishing');
+      setError('Añade al menos una pregunta antes de publicar');
       return;
     }
     await save({ status: newStatus });
   }
 
   async function handleDelete() {
-    if (!confirm('Delete this survey and all responses? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar esta encuesta y todas sus respuestas? Esta acción no se puede deshacer.')) return;
     const result = await remove();
     if (result.success) router.push('/portal/surveys');
   }
@@ -203,7 +203,7 @@ export default function SurveyDetailPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto flex items-center justify-center py-20">
-        <span className="material-icons text-3xl animate-spin text-primary">progress_activity</span>
+        <span className="material-icons text-3xl animate-spin text-primary">autorenew</span>
       </div>
     );
   }
@@ -212,9 +212,9 @@ export default function SurveyDetailPage() {
     return (
       <div className="max-w-5xl mx-auto text-center py-20">
         <span className="material-icons text-5xl text-muted-foreground/50">error_outline</span>
-        <p className="mt-3 text-muted-foreground">Survey not found</p>
+        <p className="mt-3 text-muted-foreground">Encuesta no encontrada</p>
         <Link href="/portal/surveys" className="text-primary text-sm mt-2 inline-block">
-          Back to Surveys
+          Volver a encuestas
         </Link>
       </div>
     );

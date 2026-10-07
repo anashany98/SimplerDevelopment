@@ -1,7 +1,7 @@
 /**
  * SD Chat — Tanstack Query hooks for active sessions (portal API keys)
  *
- * Backed by the SimplerDevelopment portal endpoints
+ * Backed by the CRM AGENTS portal endpoints
  *  - GET    /api/portal/api-keys         → PortalApiKeyRow[]
  *  - DELETE /api/portal/api-keys?id=<id> → revoke (sets revokedAt + active=false)
  *

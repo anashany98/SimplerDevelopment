@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { relativeTimeEs } from '@/lib/portal-utils';
 
 interface Revision {
   id: number;
@@ -52,17 +53,14 @@ export default function RevisionHistory({ siteId, postId, open, onClose, onRever
   };
 
   const formatTime = (dateStr: string) => {
+    const rel = relativeTimeEs(dateStr);
+    // Fresh revisions read as relative time ("hace 5 min"); anything a day or
+    // more old gets an absolute date — the relative form says little at that
+    // distance. (Branching on the helper's output keeps Date.now() out of
+    // render, which the react-hooks/purity rule forbids.)
+    if (rel === 'ahora mismo' || rel.endsWith(' min') || rel.endsWith(' h')) return rel;
     const d = new Date(dateStr);
-    const now = new Date();
-    const diffMs = now.getTime() - d.getTime();
-    const diffMin = Math.floor(diffMs / 60000);
-    const diffHr = Math.floor(diffMin / 60);
-
-    if (diffMin < 1) return 'Just now';
-    if (diffMin < 60) return `${diffMin}m ago`;
-    if (diffHr < 24) return `${diffHr}h ago`;
-
-    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString('es-ES', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
   const triggerIcon = (trigger: string) => {
@@ -102,7 +100,7 @@ export default function RevisionHistory({ siteId, postId, open, onClose, onRever
       <div className="flex-1 overflow-y-auto">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <span className="material-icons text-2xl animate-spin text-muted-foreground">progress_activity</span>
+            <span className="material-icons text-2xl animate-spin text-muted-foreground">autorenew</span>
           </div>
         ) : revisions.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
@@ -155,7 +153,7 @@ export default function RevisionHistory({ siteId, postId, open, onClose, onRever
                       className="shrink-0 text-xs px-2 py-1 rounded border border-border hover:bg-accent transition-colors disabled:opacity-50"
                     >
                       {reverting === rev.id ? (
-                        <span className="material-icons text-xs animate-spin">progress_activity</span>
+                        <span className="material-icons text-xs animate-spin">autorenew</span>
                       ) : (
                         'Restore'
                       )}

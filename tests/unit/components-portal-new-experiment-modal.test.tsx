@@ -121,20 +121,20 @@ describe('NewExperimentModal — open state', () => {
   it('renders the modal heading', () => {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     // The heading is inside an h3; use role to avoid ambiguity with the launcher button
-    expect(screen.getByRole('heading', { name: /New Experiment/ })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Nuevo experimento/ })).toBeInTheDocument();
   });
 
   it('calls onClose when the close button is clicked', () => {
     const onClose = vi.fn();
     render(<NewExperimentModal open={true} onClose={onClose} />);
-    fireEvent.click(screen.getByTitle('Close'));
+    fireEvent.click(screen.getByTitle('Cerrar'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it('calls onClose when the Cancel button is clicked', () => {
     const onClose = vi.fn();
     render(<NewExperimentModal open={true} onClose={onClose} />);
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -143,14 +143,14 @@ describe('NewExperimentModal — open state', () => {
     // Buttons contain an icon <span> + text node; match via textContent substring
     const buttons = screen.getAllByRole('button');
     const labels = buttons.map((b) => b.textContent ?? '');
-    expect(labels.some((l) => l.includes('Page'))).toBe(true);
-    expect(labels.some((l) => l.includes('Pitch deck'))).toBe(true);
+    expect(labels.some((l) => l.includes('Página'))).toBe(true);
+    expect(labels.some((l) => l.includes('Presentación'))).toBe(true);
   });
 
   it('shows a loading spinner while fetching targets', () => {
     global.fetch = vi.fn(() => new Promise(() => {})) as unknown as typeof global.fetch;
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
   });
 
   it('fetches sites when opened', async () => {
@@ -169,7 +169,7 @@ describe('NewExperimentModal — page target type (loaded)', () => {
   /** Waits until the loading spinner disappears. */
   async function waitForLoaded() {
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
   }
 
@@ -189,8 +189,8 @@ describe('NewExperimentModal — page target type (loaded)', () => {
     fireEvent.change(select, { target: { value: '10' } });
 
     await waitFor(() => {
-      const nameInput = screen.getByPlaceholderText('A/B test — ...') as HTMLInputElement;
-      expect(nameInput.value).toBe('A/B test — Home page');
+      const nameInput = screen.getByPlaceholderText('Test A/B — ...') as HTMLInputElement;
+      expect(nameInput.value).toBe('Test A/B — Home page');
     });
   });
 
@@ -198,7 +198,7 @@ describe('NewExperimentModal — page target type (loaded)', () => {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitForLoaded();
 
-    const nameInput = screen.getByPlaceholderText('A/B test — ...') as HTMLInputElement;
+    const nameInput = screen.getByPlaceholderText('Test A/B — ...') as HTMLInputElement;
     // Mark name dirty
     fireEvent.change(nameInput, { target: { value: 'My custom name' } });
 
@@ -231,7 +231,7 @@ describe('NewExperimentModal — page target type (loaded)', () => {
 
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitFor(() => {
-      expect(screen.getByText('No pages found on your sites.')).toBeInTheDocument();
+      expect(screen.getByText('No se encontraron páginas en tus sitios.')).toBeInTheDocument();
     });
   });
 });
@@ -242,7 +242,7 @@ describe('NewExperimentModal — page target type (loaded)', () => {
 describe('NewExperimentModal — pitch deck target type', () => {
   async function waitForLoaded() {
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
   }
 
@@ -250,7 +250,7 @@ describe('NewExperimentModal — pitch deck target type', () => {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitForLoaded();
 
-    fireEvent.click(screen.getByRole('button', { name: /Pitch deck/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Presentación/ }));
     await waitFor(() => {
       expect(screen.getByRole('option', { name: 'Deck Alpha' })).toBeInTheDocument();
       expect(screen.getByRole('option', { name: 'Deck Beta' })).toBeInTheDocument();
@@ -280,9 +280,9 @@ describe('NewExperimentModal — pitch deck target type', () => {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitForLoaded();
 
-    fireEvent.click(screen.getByRole('button', { name: /Pitch deck/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Presentación/ }));
     await waitFor(() => {
-      expect(screen.getByText('No pitch decks yet.')).toBeInTheDocument();
+      expect(screen.getByText('Todavía no hay presentaciones.')).toBeInTheDocument();
     });
   });
 
@@ -290,7 +290,7 @@ describe('NewExperimentModal — pitch deck target type', () => {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitForLoaded();
 
-    fireEvent.click(screen.getByRole('button', { name: /Pitch deck/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Presentación/ }));
     await waitFor(() =>
       expect(screen.getByRole('option', { name: 'Deck Alpha' })).toBeInTheDocument(),
     );
@@ -299,8 +299,8 @@ describe('NewExperimentModal — pitch deck target type', () => {
     fireEvent.change(select, { target: { value: '20' } });
 
     await waitFor(() => {
-      const nameInput = screen.getByPlaceholderText('A/B test — ...') as HTMLInputElement;
-      expect(nameInput.value).toBe('A/B test — Deck Alpha');
+      const nameInput = screen.getByPlaceholderText('Test A/B — ...') as HTMLInputElement;
+      expect(nameInput.value).toBe('Test A/B — Deck Alpha');
     });
   });
 
@@ -313,10 +313,10 @@ describe('NewExperimentModal — pitch deck target type', () => {
     fireEvent.change(pageSelect, { target: { value: '10' } });
 
     // Switch to pitch deck — clears selection
-    fireEvent.click(screen.getByRole('button', { name: /Pitch deck/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Presentación/ }));
 
     await waitFor(() => {
-      const createBtn = screen.getByRole('button', { name: /Create/ }) as HTMLButtonElement;
+      const createBtn = screen.getByRole('button', { name: /Crear/ }) as HTMLButtonElement;
       expect(createBtn.disabled).toBe(true);
     });
   });
@@ -361,16 +361,16 @@ describe('NewExperimentModal — submit validation', () => {
   async function renderLoaded() {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
   }
 
   it('shows "Pick a target first" if submitted without a selection', async () => {
     await renderLoaded();
-    const form = screen.getByRole('button', { name: /Create/ }).closest('form')!;
+    const form = screen.getByRole('button', { name: /Crear/ }).closest('form')!;
     fireEvent.submit(form);
     await waitFor(() => {
-      expect(screen.getByText('Pick a target first.')).toBeInTheDocument();
+      expect(screen.getByText('Selecciona un objetivo primero.')).toBeInTheDocument();
     });
   });
 
@@ -380,20 +380,20 @@ describe('NewExperimentModal — submit validation', () => {
     const select = screen.getByRole('combobox') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '10' } });
 
-    const nameInput = screen.getByPlaceholderText('A/B test — ...') as HTMLInputElement;
+    const nameInput = screen.getByPlaceholderText('Test A/B — ...') as HTMLInputElement;
     // Clear name (marks dirty)
     fireEvent.change(nameInput, { target: { value: '' } });
 
     fireEvent.submit(nameInput.closest('form')!);
 
     await waitFor(() => {
-      expect(screen.getByText('Name is required.')).toBeInTheDocument();
+      expect(screen.getByText('El nombre es obligatorio.')).toBeInTheDocument();
     });
   });
 
   it('disables the Create button when no target is selected', async () => {
     await renderLoaded();
-    const createBtn = screen.getByRole('button', { name: /Create/ }) as HTMLButtonElement;
+    const createBtn = screen.getByRole('button', { name: /Crear/ }) as HTMLButtonElement;
     expect(createBtn.disabled).toBe(true);
   });
 
@@ -401,7 +401,7 @@ describe('NewExperimentModal — submit validation', () => {
     await renderLoaded();
     const select = screen.getByRole('combobox') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '10' } });
-    const createBtn = screen.getByRole('button', { name: /Create/ }) as HTMLButtonElement;
+    const createBtn = screen.getByRole('button', { name: /Crear/ }) as HTMLButtonElement;
     expect(createBtn.disabled).toBe(false);
   });
 });
@@ -413,13 +413,13 @@ describe('NewExperimentModal — submit success', () => {
   it('POSTs the correct payload and redirects on success', async () => {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
 
     const select = screen.getByRole('combobox') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '10' } });
 
-    const nameInput = screen.getByPlaceholderText('A/B test — ...') as HTMLInputElement;
+    const nameInput = screen.getByPlaceholderText('Test A/B — ...') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'My Test' } });
 
     await act(async () => {
@@ -453,11 +453,11 @@ describe('NewExperimentModal — submit error', () => {
   async function renderAndSelectPage() {
     render(<NewExperimentModal open={true} onClose={vi.fn()} />);
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
     const select = screen.getByRole('combobox') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '10' } });
-    return screen.getByPlaceholderText('A/B test — ...') as HTMLInputElement;
+    return screen.getByPlaceholderText('Test A/B — ...') as HTMLInputElement;
   }
 
   it('shows the error message returned by the API', async () => {
@@ -527,7 +527,7 @@ describe('NewExperimentModal — submit error', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Experiment created but response was missing an id.'),
+        screen.getByText('El experimento se creó pero la respuesta no incluía un id.'),
       ).toBeInTheDocument();
     });
   });
@@ -576,12 +576,12 @@ describe('NewExperimentModal — state reset on close/reopen', () => {
       <NewExperimentModal open={true} onClose={vi.fn()} />,
     );
     await waitFor(() =>
-      expect(screen.queryByText('Loading...')).not.toBeInTheDocument(),
+      expect(screen.queryByText('Cargando...')).not.toBeInTheDocument(),
     );
 
     // Switch to pitch deck and type a custom name
-    fireEvent.click(screen.getByRole('button', { name: /Pitch deck/ }));
-    const nameInput = screen.getByPlaceholderText('A/B test — ...') as HTMLInputElement;
+    fireEvent.click(screen.getByRole('button', { name: /Presentación/ }));
+    const nameInput = screen.getByPlaceholderText('Test A/B — ...') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'custom' } });
 
     // Close
@@ -589,16 +589,16 @@ describe('NewExperimentModal — state reset on close/reopen', () => {
     // Reopen
     rerender(<NewExperimentModal open={true} onClose={vi.fn()} />);
 
-    // Default type should be page — the Page toggle button has bg-primary.
+    // Default type should be page — the Page toggle button has bg-foreground.
     // The button contains an icon <span> so accessible name includes icon text;
     // find it by matching textContent instead.
     await waitFor(() => {
       const allBtns = screen.getAllByRole('button');
       const pageBtn = allBtns.find((b) =>
-        b.textContent?.includes('Page') && !b.textContent?.includes('Pitch'),
+        b.textContent?.includes('Página') && !b.textContent?.includes('Presentación'),
       ) as HTMLButtonElement | undefined;
       expect(pageBtn).toBeDefined();
-      expect(pageBtn!.className).toContain('bg-primary');
+      expect(pageBtn!.className).toContain('bg-foreground');
     });
   });
 });
@@ -610,7 +610,7 @@ describe('NewExperimentLauncher', () => {
   it('renders the trigger button with default label', () => {
     render(<NewExperimentLauncher />);
     // The trigger button + the modal heading "New Experiment" — use getAll
-    const elements = screen.getAllByText('New Experiment');
+    const elements = screen.getAllByText('Nuevo experimento');
     // Only the button is visible before clicking; modal is closed
     expect(elements.length).toBeGreaterThanOrEqual(1);
   });
@@ -622,10 +622,10 @@ describe('NewExperimentLauncher', () => {
 
   it('opens the modal when the trigger button is clicked', async () => {
     render(<NewExperimentLauncher />);
-    const btn = screen.getByRole('button', { name: /New Experiment/ });
+    const btn = screen.getByRole('button', { name: /Nuevo experimento/ });
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /New Experiment/ })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /Nuevo experimento/ })).toBeInTheDocument();
     });
   });
 

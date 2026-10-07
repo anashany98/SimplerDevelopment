@@ -59,12 +59,12 @@ export default function AgencyBrandingPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setMessage({ type: 'success', text: 'Branding saved.' });
+        setMessage({ type: 'success', text: 'Marca guardada.' });
       } else {
-        setMessage({ type: 'error', text: data.error || 'Could not save.' });
+        setMessage({ type: 'error', text: data.error || 'No se pudo guardar.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error.' });
+      setMessage({ type: 'error', text: 'Error de red.' });
     } finally {
       setSaving(false);
     }
@@ -74,13 +74,13 @@ export default function AgencyBrandingPage() {
     <div className="max-w-2xl">
       <Link href="/portal/agency" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">
         <span className="material-icons text-base">arrow_back</span>
-        Agency settings
+        Ajustes de la agencia
       </Link>
 
       <PortalPageHeader
-        eyebrow="Agency"
-        title="Agency Branding"
-        subtitle="These overrides appear in the portal chrome — sidebar header, login wordmark, document title — when white-label mode is on."
+        eyebrow="Agencia"
+        title="Marca de la agencia"
+        subtitle="Estas personalizaciones aparecen en el entorno del portal —cabecera lateral, marca del inicio de sesión, título del documento— cuando el modo marca blanca está activado."
       />
 
       {message && (
@@ -105,7 +105,7 @@ export default function AgencyBrandingPage() {
       ) : (
         <form onSubmit={save} className="bg-card border border-border rounded-2xl p-6 space-y-4">
           <label className="block">
-            <span className="text-sm font-medium text-foreground">Agency name</span>
+            <span className="text-sm font-medium text-foreground">Nombre de la agencia</span>
             <input
               type="text"
               value={state.agencyName ?? ''}
@@ -115,35 +115,35 @@ export default function AgencyBrandingPage() {
               className={`mt-1 ${pInput}`}
             />
             <span className="text-xs text-muted-foreground mt-1 block">
-              Replaces &quot;Simpler Development&quot; in the sidebar and login page.
+              Reemplaza a &quot;CRM AGENTS&quot; en la barra lateral y la página de inicio de sesión.
             </span>
           </label>
 
           <label className="block">
-            <span className="text-sm font-medium text-foreground">Logo URL</span>
+            <span className="text-sm font-medium text-foreground">URL del logo</span>
             <input
               type="url"
               value={state.agencyLogoUrl ?? ''}
               onChange={e => setState(s => ({ ...s, agencyLogoUrl: e.target.value }))}
-              placeholder="https://cdn.your-agency.com/logo.png"
+              placeholder="https://cdn.tuagencia.com/logo.png"
               maxLength={500}
               className={`mt-1 ${pInput}`}
             />
             <span className="text-xs text-muted-foreground mt-1 block">
-              Square or rectangular logo. Replaces the platform icon in portal chrome.
+              Logo cuadrado o rectangular. Reemplaza el icono de la plataforma en el entorno del portal.
             </span>
           </label>
 
           {state.agencyLogoUrl && (
             <div className="rounded-xl border border-border bg-muted/30 p-3 flex items-center gap-3">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Preview</span>
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">Vista previa</span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={state.agencyLogoUrl} alt="Agency logo preview" className="h-8 w-auto object-contain" />
+              <img src={state.agencyLogoUrl} alt="Vista previa del logo de la agencia" className="h-8 w-auto object-contain" />
             </div>
           )}
 
           <label className="block">
-            <span className="text-sm font-medium text-foreground">Primary color</span>
+            <span className="text-sm font-medium text-foreground">Color principal</span>
             <div className="mt-1 flex items-center gap-2">
               <input
                 type="color"
@@ -164,9 +164,7 @@ export default function AgencyBrandingPage() {
                   type="button"
                   onClick={() => setState(s => ({ ...s, agencyPrimaryColor: '' }))}
                   className="text-xs text-muted-foreground hover:text-foreground"
-                >
-                  Clear
-                </button>
+                >Limpiar</button>
               )}
             </div>
           </label>
@@ -177,7 +175,7 @@ export default function AgencyBrandingPage() {
             className={pBtnPrimary}
           >
             {saving && <span className="material-icons animate-spin text-base">refresh</span>}
-            Save
+            Guardar
           </button>
         </form>
       )}

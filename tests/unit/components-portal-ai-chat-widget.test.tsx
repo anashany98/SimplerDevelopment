@@ -9,15 +9,16 @@ import React from 'react';
 // ---------------------------------------------------------------------------
 
 const mockRouterPush = vi.fn();
+let mockPathname = '/portal/dashboard';
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: mockRouterPush }),
+  usePathname: () => mockPathname,
 }));
 
 vi.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, href, ...rest }: any) =>
-    React.createElement('a', { href, ...rest }, children),
+  default: ({ children, href, ...rest }: any) => React.createElement('a', { href, ...rest }, children),
 }));
 
 // react-markdown — render children as plain text so assertions are simple
@@ -45,17 +46,25 @@ function makeFetchJson(body: unknown) {
 }
 
 function openWidget() {
-  fireEvent.click(screen.getByTitle('AI Assistant'));
+  fireEvent.click(
+    screen.getByRole('button', {
+      name: /^Abrir /i,
+    }),
+  );
 }
 
 function getSendBtn() {
-  return document.querySelector('button[class*="shrink-0"]') as HTMLButtonElement;
+  return screen.getByRole('button', {
+    name: 'Enviar mensaje',
+  }) as HTMLButtonElement;
 }
 
 async function typeAndSend(text: string) {
-  const textarea = screen.getByPlaceholderText('Ask me anything…') as HTMLTextAreaElement;
+  const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
   fireEvent.change(textarea, { target: { value: text } });
-  await act(async () => { fireEvent.click(getSendBtn()); });
+  await act(async () => {
+    fireEvent.click(getSendBtn());
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -64,6 +73,7 @@ async function typeAndSend(text: string) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mockPathname = '/portal/dashboard';
   global.fetch = vi.fn();
   // jsdom does not implement scrollIntoView — the component calls it inside a
   // useEffect after messages update. Stub it globally so it doesn't throw.
@@ -84,51 +94,57 @@ describe('AIChatWidget', () => {
 
   it('renders the floating toggle button', () => {
     render(<AIChatWidget />);
-    expect(screen.getByTitle('AI Assistant')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Abrir Supervisor de operaciones' })).toBeTruthy();
   });
 
   it('chat panel is hidden initially', () => {
     render(<AIChatWidget />);
-    // "AI Assistant" text only appears inside the open panel header
-    expect(screen.queryByText('Powered by Claude')).toBeNull();
+    expect(screen.queryByRole('combobox', { name: 'Agente de IA activo' })).toBeNull();
+  });
+
+  it('renders the chat panel directly in page mode without the floating toggle', () => {
+    render(<AIChatWidget mode="page" />);
+
+    expect(screen.getByRole('combobox', { name: 'Agente de IA activo' })).toHaveValue('general');
+    expect(screen.getByRole('textbox')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /^Abrir /i })).toBeNull();
   });
 
   it('opens the chat panel when the toggle button is clicked', () => {
     render(<AIChatWidget />);
     openWidget();
-    expect(screen.getByText('AI Assistant')).toBeTruthy();
-    expect(screen.getByText('Powered by Claude')).toBeTruthy();
+    expect(screen.getByRole('combobox', { name: 'Agente de IA activo' })).toHaveValue('general');
+    expect(screen.getByText('Especialista contextual')).toBeTruthy();
   });
 
   it('closes the chat panel when toggle is clicked again', () => {
     render(<AIChatWidget />);
     openWidget();
-    expect(screen.getByText('Powered by Claude')).toBeTruthy();
-    fireEvent.click(screen.getByTitle('AI Assistant'));
-    expect(screen.queryByText('Powered by Claude')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar agente de IA' }));
+    expect(screen.queryByRole('combobox', { name: 'Agente de IA activo' })).toBeNull();
   });
 
   // ---- empty state ---------------------------------------------------------
 
-  it('shows "How can I help you?" when no messages exist', () => {
+  it('shows the contextual specialist when no messages exist', () => {
     render(<AIChatWidget />);
     openWidget();
-    expect(screen.getByText('How can I help you?')).toBeTruthy();
+    expect(screen.getByText('Enruta el trabajo por todo el portal y coordina al especialista adecuado.')).toBeTruthy();
   });
 
   it('renders suggestion chips when there are no messages', () => {
     render(<AIChatWidget />);
     openWidget();
-    expect(screen.getByText('Give me an overview of my account')).toBeTruthy();
-    expect(screen.getByText('Do I have any outstanding invoices?')).toBeTruthy();
+    expect(screen.getByText('Dame una visión general del negocio')).toBeTruthy();
+    expect(screen.getByText('¿Qué necesita mi atención hoy?')).toBeTruthy();
   });
 
   it('clicking a suggestion populates the textarea', () => {
     render(<AIChatWidget />);
     openWidget();
-    fireEvent.click(screen.getByText('Give me an overview of my account'));
-    const textarea = screen.getByPlaceholderText('Ask me anything…') as HTMLTextAreaElement;
-    expect(textarea.value).toBe('Give me an overview of my account');
+    fireEvent.click(screen.getByText('Dame una visión general del negocio'));
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
+    expect(textarea.value).toBe('Dame una visión general del negocio');
   });
 
   // ---- input controls ------------------------------------------------------
@@ -143,7 +159,7 @@ describe('AIChatWidget', () => {
   it('typing in the textarea updates the input value', () => {
     render(<AIChatWidget />);
     openWidget();
-    const textarea = screen.getByPlaceholderText('Ask me anything…') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Hello there' } });
     expect(textarea.value).toBe('Hello there');
   });
@@ -151,7 +167,7 @@ describe('AIChatWidget', () => {
   it('does NOT send on Shift+Enter', () => {
     render(<AIChatWidget />);
     openWidget();
-    const textarea = screen.getByPlaceholderText('Ask me anything…') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'No send' } });
     fireEvent.keyDown(textarea, { key: 'Enter', shiftKey: true });
     expect(global.fetch).not.toHaveBeenCalled();
@@ -160,10 +176,16 @@ describe('AIChatWidget', () => {
   // ---- send message — success ----------------------------------------------
 
   it('sends a message on send button click and shows the user message', async () => {
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: { conversationId: 42, reply: 'Hello from assistant', toolCalls: [] },
-    }));
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: {
+          conversationId: 42,
+          reply: 'Hello from assistant',
+          toolCalls: [],
+        },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
@@ -173,10 +195,16 @@ describe('AIChatWidget', () => {
   });
 
   it('renders assistant reply after a successful send', async () => {
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: { conversationId: 42, reply: 'Hello from assistant', toolCalls: [] },
-    }));
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: {
+          conversationId: 42,
+          reply: 'Hello from assistant',
+          toolCalls: [],
+        },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
@@ -186,29 +214,35 @@ describe('AIChatWidget', () => {
   });
 
   it('clears the textarea after sending', async () => {
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: { conversationId: 1, reply: 'Ack', toolCalls: [] },
-    }));
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: { conversationId: 1, reply: 'Ack', toolCalls: [] },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
     await typeAndSend('Will be cleared');
 
-    const textarea = screen.getByPlaceholderText('Ask me anything…') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     await waitFor(() => expect(textarea.value).toBe(''));
   });
 
   it('optimistically adds the user message before fetch resolves', async () => {
     let resolveChat!: (val: unknown) => void;
     (global.fetch as any).mockReturnValueOnce(
-      new Promise(res => { resolveChat = res; })
+      new Promise((res) => {
+        resolveChat = res;
+      }),
     );
 
     render(<AIChatWidget />);
     openWidget();
 
-    await act(async () => { await typeAndSend('Optimistic message'); });
+    await act(async () => {
+      await typeAndSend('Optimistic message');
+    });
 
     // User message must appear immediately, before fetch resolves
     expect(screen.getByText('Optimistic message')).toBeTruthy();
@@ -217,7 +251,10 @@ describe('AIChatWidget', () => {
     await act(async () => {
       resolveChat({
         ok: true,
-        json: async () => ({ success: true, data: { conversationId: 1, reply: 'ok', toolCalls: [] } }),
+        json: async () => ({
+          success: true,
+          data: { conversationId: 1, reply: 'ok', toolCalls: [] },
+        }),
       });
     });
   });
@@ -225,13 +262,17 @@ describe('AIChatWidget', () => {
   it('shows typing indicator while fetch is in-flight', async () => {
     let resolveChat!: (val: unknown) => void;
     (global.fetch as any).mockReturnValueOnce(
-      new Promise(res => { resolveChat = res; })
+      new Promise((res) => {
+        resolveChat = res;
+      }),
     );
 
     render(<AIChatWidget />);
     openWidget();
 
-    await act(async () => { await typeAndSend('Typing?'); });
+    await act(async () => {
+      await typeAndSend('Typing?');
+    });
 
     // Three bouncing dots are rendered while loading === true
     const dots = document.querySelectorAll('.animate-bounce');
@@ -240,7 +281,10 @@ describe('AIChatWidget', () => {
     await act(async () => {
       resolveChat({
         ok: true,
-        json: async () => ({ success: true, data: { conversationId: 1, reply: 'done', toolCalls: [] } }),
+        json: async () => ({
+          success: true,
+          data: { conversationId: 1, reply: 'done', toolCalls: [] },
+        }),
       });
     });
   });
@@ -254,9 +298,7 @@ describe('AIChatWidget', () => {
     openWidget();
     await typeAndSend('Fail me');
 
-    await waitFor(() =>
-      expect(screen.getByText('Something went wrong. Please try again.')).toBeTruthy()
-    );
+    await waitFor(() => expect(screen.getByText('Algo salió mal. Inténtalo de nuevo.')).toBeTruthy());
   });
 
   it('shows network error message when fetch throws', async () => {
@@ -266,23 +308,23 @@ describe('AIChatWidget', () => {
     openWidget();
     await typeAndSend('Network fail');
 
-    await waitFor(() =>
-      expect(screen.getByText('Unable to reach the assistant. Please check your connection.')).toBeTruthy()
-    );
+    await waitFor(() => expect(screen.getByText('No se pudo contactar con el asistente. Comprueba tu conexión.')).toBeTruthy());
   });
 
   // ---- Enter key send -------------------------------------------------------
 
   it('sends message on Enter key (not Shift+Enter)', async () => {
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: { conversationId: 5, reply: 'From Enter', toolCalls: [] },
-    }));
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: { conversationId: 5, reply: 'From Enter', toolCalls: [] },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
 
-    const textarea = screen.getByPlaceholderText('Ask me anything…') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Enter send' } });
 
     await act(async () => {
@@ -301,10 +343,10 @@ describe('AIChatWidget', () => {
     openWidget();
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Conversation history'));
+      fireEvent.click(screen.getByTitle('Historial de conversaciones'));
     });
 
-    await waitFor(() => expect(screen.getByText('Recent Conversations')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Conversaciones recientes')).toBeTruthy());
   });
 
   it('shows empty state when no conversations exist', async () => {
@@ -314,10 +356,10 @@ describe('AIChatWidget', () => {
     openWidget();
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Conversation history'));
+      fireEvent.click(screen.getByTitle('Historial de conversaciones'));
     });
 
-    await waitFor(() => expect(screen.getByText('No conversations yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Todavía no hay conversaciones.')).toBeTruthy());
   });
 
   it('renders conversation list items when conversations exist', async () => {
@@ -331,7 +373,7 @@ describe('AIChatWidget', () => {
     openWidget();
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Conversation history'));
+      fireEvent.click(screen.getByTitle('Historial de conversaciones'));
     });
 
     await waitFor(() => {
@@ -344,18 +386,20 @@ describe('AIChatWidget', () => {
     const convs = [{ id: 7, title: 'Old convo', updatedAt: '2026-01-01T00:00:00Z' }];
 
     // First call: loadConversations; second call: loadConversation(7)
-    (global.fetch as any)
-      .mockReturnValueOnce(makeFetchJson({ success: true, data: convs }))
-      .mockReturnValueOnce(makeFetchJson({
+    (global.fetch as any).mockReturnValueOnce(makeFetchJson({ success: true, data: convs })).mockReturnValueOnce(
+      makeFetchJson({
         success: true,
-        data: { messages: [{ role: 'user', content: 'Resumed message', toolCalls: null }] },
-      }));
+        data: {
+          messages: [{ role: 'user', content: 'Resumed message', toolCalls: null }],
+        },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Conversation history'));
+      fireEvent.click(screen.getByTitle('Historial de conversaciones'));
     });
 
     await waitFor(() => screen.getByText('Old convo'));
@@ -374,22 +418,24 @@ describe('AIChatWidget', () => {
     openWidget();
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Conversation history'));
+      fireEvent.click(screen.getByTitle('Historial de conversaciones'));
     });
 
-    await waitFor(() => screen.getByTitle('Back to chat'));
-    fireEvent.click(screen.getByTitle('Back to chat'));
+    await waitFor(() => screen.getByTitle('Volver al chat'));
+    fireEvent.click(screen.getByTitle('Volver al chat'));
 
-    expect(screen.getByPlaceholderText('Ask me anything…')).toBeTruthy();
+    expect(screen.getByRole('textbox')).toBeTruthy();
   });
 
   // ---- new conversation ----------------------------------------------------
 
-  it('clears messages when "New conversation" button is clicked', async () => {
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: { conversationId: 1, reply: 'Hi', toolCalls: [] },
-    }));
+  it('clears messages when "Nueva conversación" button is clicked', async () => {
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: { conversationId: 1, reply: 'Hi', toolCalls: [] },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
@@ -397,8 +443,8 @@ describe('AIChatWidget', () => {
 
     await waitFor(() => screen.getByText('A message'));
 
-    fireEvent.click(screen.getByTitle('New conversation'));
-    expect(screen.getByText('How can I help you?')).toBeTruthy();
+    fireEvent.click(screen.getByTitle('Nueva conversación'));
+    expect(screen.getByText('Dame una visión general del negocio')).toBeTruthy();
   });
 
   // ---- navigation tool call -----------------------------------------------
@@ -406,19 +452,21 @@ describe('AIChatWidget', () => {
   it('calls router.push when a navigate_to tool call is in the response', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
 
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: {
-        conversationId: 99,
-        reply: 'Navigating now',
-        toolCalls: [{ name: 'navigate_to', input: { path: '/portal/invoices' } }],
-      },
-    }));
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: {
+          conversationId: 99,
+          reply: 'Navigating now',
+          toolCalls: [{ name: 'navigate_to', input: { path: '/portal/invoices' } }],
+        },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
 
-    const textarea = screen.getByPlaceholderText('Ask me anything…') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Take me to invoices' } });
 
     await act(async () => {
@@ -430,7 +478,9 @@ describe('AIChatWidget', () => {
     });
 
     // Advance past the 300 ms setTimeout that calls router.push
-    act(() => { vi.advanceTimersByTime(400); });
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
 
     expect(mockRouterPush).toHaveBeenCalledWith('/portal/invoices');
   });
@@ -438,36 +488,114 @@ describe('AIChatWidget', () => {
   // ---- tool chips ----------------------------------------------------------
 
   it('renders tool chips for assistant messages with toolCalls', async () => {
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: {
-        conversationId: 10,
-        reply: 'Here are your invoices',
-        toolCalls: [{ name: 'get_my_invoices', input: {} }],
-      },
-    }));
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: {
+          conversationId: 10,
+          reply: 'Here are your invoices',
+          toolCalls: [{ name: 'get_my_invoices', input: {} }],
+        },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
     await typeAndSend('Show invoices');
 
-    await waitFor(() => expect(screen.getByText('Looked up invoices')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Consultó las facturas')).toBeTruthy());
   });
 
   it('renders unknown tool name verbatim in the chip', async () => {
-    (global.fetch as any).mockReturnValue(makeFetchJson({
-      success: true,
-      data: {
-        conversationId: 11,
-        reply: 'Done',
-        toolCalls: [{ name: 'some_unknown_tool', input: {} }],
-      },
-    }));
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: {
+          conversationId: 11,
+          reply: 'Done',
+          toolCalls: [{ name: 'some_unknown_tool', input: {} }],
+        },
+      }),
+    );
 
     render(<AIChatWidget />);
     openWidget();
     await typeAndSend('Do something');
 
     await waitFor(() => expect(screen.getByText('some_unknown_tool')).toBeTruthy());
+  });
+
+  it('renders a failed page creation with the error label and error state', async () => {
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: {
+          conversationId: 12,
+          reply: 'I could not create that page.',
+          toolCalls: [
+            { name: 'create_website_page', input: { website_id: 0 }, success: false },
+          ],
+        },
+      }),
+    );
+
+    render(<AIChatWidget />);
+    openWidget();
+    await typeAndSend('Create a page');
+
+    const label = await screen.findByText('No se creó la página');
+    expect(screen.queryByText('Creó la página')).toBeNull();
+    expect(label.className).toContain('bg-destructive/10');
+    expect(label.className).toContain('text-destructive');
+    expect(label.querySelector('.material-icons')?.textContent).toBe('error_outline');
+  });
+
+  it('renders a successful website creation with the success label and icon', async () => {
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: {
+          conversationId: 13,
+          reply: 'The website is ready.',
+          toolCalls: [
+            { name: 'create_website', input: { name: 'Acme' }, success: true },
+          ],
+        },
+      }),
+    );
+
+    render(<AIChatWidget />);
+    openWidget();
+    await typeAndSend('Create a website');
+
+    const label = await screen.findByText('Creó la web');
+    expect(label.className).toContain('bg-primary/10');
+    expect(label.className).toContain('text-primary');
+    expect(label.querySelector('.material-icons')?.textContent).toBe('check_circle');
+  });
+
+  it('selects the CRM specialist from the route and sends its server-owned id', async () => {
+    mockPathname = '/portal/crm/contacts';
+    (global.fetch as any).mockReturnValue(
+      makeFetchJson({
+        success: true,
+        data: { conversationId: 12, reply: 'CRM ready', toolCalls: [] },
+      }),
+    );
+
+    render(<AIChatWidget />);
+    openWidget();
+
+    expect(screen.getByRole('combobox', { name: 'Agente de IA activo' })).toHaveValue('crm');
+    expect(screen.getByText('Captación, contactos, empresas, negocios, propuestas y seguimiento comercial.')).toBeTruthy();
+
+    await typeAndSend('Show my contacts');
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+    const [, request] = (global.fetch as any).mock.calls[0] as [string, RequestInit];
+    expect(JSON.parse(String(request.body))).toMatchObject({
+      message: 'Show my contacts',
+      agentId: 'crm',
+    });
   });
 });

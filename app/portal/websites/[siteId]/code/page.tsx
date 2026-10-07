@@ -9,8 +9,8 @@ export default async function SiteCodePage({ params }: PageProps) {
   return (
     <CustomCodeForm
       endpoint={`/api/portal/cms/websites/${siteId}/code`}
-      title="Site Custom Code"
-      subtitle="Applies to every page on this website. Cascades before per-content-type and per-page custom code."
+      title="Código personalizado del sitio"
+      subtitle="Se aplica a todas las páginas de este sitio web. Se propaga antes del código personalizado por tipo de contenido y por página."
     />
   );
 }

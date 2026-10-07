@@ -123,13 +123,13 @@ function fmtAge(iso: string | null): string {
   const ms = Date.now() - new Date(iso).getTime();
   if (ms < 0) return new Date(iso).toLocaleString();
   const s = Math.round(ms / 1000);
-  if (s < 60) return `${s}s ago`;
+  if (s < 60) return `hace ${s}s`;
   const m = Math.round(s / 60);
-  if (m < 60) return `${m}m ago`;
+  if (m < 60) return `hace ${m}m`;
   const h = Math.round(m / 60);
-  if (h < 48) return `${h}h ago`;
+  if (h < 48) return `hace ${h}h`;
   const d = Math.round(h / 24);
-  return `${d}d ago`;
+  return `hace ${d}d`;
 }
 
 function passRateBadgeClass(rate: number): string {
@@ -168,7 +168,7 @@ function Sparkline({ runs }: { runs: EvalRun[] }) {
   if (runs.length === 0) {
     return (
       <div className="flex items-center justify-center h-12 text-xs text-muted-foreground">
-        No runs yet
+        Aún no hay ejecuciones
       </div>
     );
   }
@@ -197,7 +197,7 @@ function Sparkline({ runs }: { runs: EvalRun[] }) {
       width={W}
       height={H}
       className="overflow-visible"
-      aria-label="Pass rate trend sparkline"
+      aria-label="Tendencia de la tasa de acierto"
     >
       {/* 50% reference line */}
       <line
@@ -297,11 +297,11 @@ export default function PromptDetailPage() {
         if (d.success) {
           setRunCasesCache((c) => ({ ...c, [runId]: { status: 'done', cases: d.data?.cases ?? [] } }));
         } else {
-          setRunCasesCache((c) => ({ ...c, [runId]: { status: 'error', error: d.message ?? 'Failed to load cases' } }));
+          setRunCasesCache((c) => ({ ...c, [runId]: { status: 'error', error: d.message ?? 'No se pudieron cargar los casos' } }));
         }
       })
       .catch((e) => {
-        setRunCasesCache((c) => ({ ...c, [runId]: { status: 'error', error: e instanceof Error ? e.message : 'Failed to load cases' } }));
+        setRunCasesCache((c) => ({ ...c, [runId]: { status: 'error', error: e instanceof Error ? e.message : 'No se pudieron cargar los casos' } }));
       });
   }
 
@@ -312,9 +312,9 @@ export default function PromptDetailPage() {
       .then((r) => r.json())
       .then((d) => {
         if (d.success) setAuditEntries(d.data ?? []);
-        else setAuditError(d.message ?? 'Failed to load audit log');
+        else setAuditError(d.message ?? 'No se pudo cargar el registro de auditoría');
       })
-      .catch((e) => setAuditError(e instanceof Error ? e.message : 'Failed to load audit log'))
+      .catch((e) => setAuditError(e instanceof Error ? e.message : 'No se pudo cargar el registro de auditoría'))
       .finally(() => setAuditLoading(false));
   }, [promptId]);
 
@@ -348,10 +348,10 @@ export default function PromptDetailPage() {
               });
           }
         } else {
-          setErr(d.message ?? 'Failed to load');
+          setErr(d.message ?? 'No se pudo cargar');
         }
       })
-      .catch((e) => setErr(e instanceof Error ? e.message : 'Failed to load'))
+      .catch((e) => setErr(e instanceof Error ? e.message : 'No se pudo cargar'))
       .finally(() => setLoading(false));
   }, [promptId]);
 
@@ -376,7 +376,7 @@ export default function PromptDetailPage() {
   async function handleRunEval() {
     if (inFlight) return;
     setInFlight(true);
-    setLiveStatus('Starting…');
+    setLiveStatus('Iniciando…');
 
     try {
       const res = await fetch('/api/admin/eval-runs', {
@@ -390,13 +390,13 @@ export default function PromptDetailPage() {
       });
       const d = await res.json();
       if (!d.success) {
-        setLiveStatus(`Error: ${d.message ?? 'Failed to start run'}`);
+        setLiveStatus(`Error: ${d.message ?? 'No se pudo iniciar la ejecución'}`);
         setInFlight(false);
         return;
       }
 
       const runId: number = d.data.runId;
-      setLiveStatus('queued…');
+            setLiveStatus('en cola…');
 
       pollRef.current = setInterval(async () => {
         try {
@@ -406,16 +406,16 @@ export default function PromptDetailPage() {
 
           const run: LiveRun = pd.data.run;
           if (run.status === 'queued') {
-            setLiveStatus('queued…');
+      setLiveStatus('en cola…');
           } else if (run.status === 'running') {
-            setLiveStatus('running…');
+            setLiveStatus('en ejecución…');
           } else if (run.status === 'done') {
-            setLiveStatus(`done — ${run.passed}/${run.total} passed`);
+            setLiveStatus(`completado — ${run.passed}/${run.total} superados`);
             stopPolling();
             setInFlight(false);
             load();
           } else if (run.status === 'failed') {
-            setLiveStatus(`failed${run.error ? `: ${run.error}` : ''}`);
+            setLiveStatus(`fallido${run.error ? `: ${run.error}` : ''}`);
             stopPolling();
             setInFlight(false);
             load();
@@ -425,7 +425,7 @@ export default function PromptDetailPage() {
         }
       }, 1500);
     } catch (e) {
-      setLiveStatus(`Error: ${e instanceof Error ? e.message : 'Unknown error'}`);
+      setLiveStatus(`Error: ${e instanceof Error ? e.message : 'Error desconocido'}`);
       setInFlight(false);
     }
   }
@@ -449,10 +449,10 @@ export default function PromptDetailPage() {
         load();
         loadAudit();
       } else {
-        setEditorError(d.message ?? 'Failed to save draft');
+        setEditorError(d.message ?? 'No se pudo guardar el borrador');
       }
     } catch (e) {
-      setEditorError(e instanceof Error ? e.message : 'Failed to save draft');
+      setEditorError(e instanceof Error ? e.message : 'No se pudo guardar el borrador');
     } finally {
       setEditorSaving(false);
     }
@@ -477,10 +477,10 @@ export default function PromptDetailPage() {
         load();
         loadAudit();
       } else {
-        setScheduleError(d.message ?? 'Failed to save schedule');
+        setScheduleError(d.message ?? 'No se pudo guardar la programación');
       }
     } catch (e) {
-      setScheduleError(e instanceof Error ? e.message : 'Failed to save schedule');
+      setScheduleError(e instanceof Error ? e.message : 'No se pudo guardar la programación');
     } finally {
       setScheduleSaving(false);
     }
@@ -508,10 +508,10 @@ export default function PromptDetailPage() {
         load();
         loadAudit();
       } else {
-        setVersionActionError(d.message ?? 'Failed to promote version');
+        setVersionActionError(d.message ?? 'No se pudo promover la versión');
       }
     } catch (e) {
-      setVersionActionError(e instanceof Error ? e.message : 'Failed to promote version');
+      setVersionActionError(e instanceof Error ? e.message : 'No se pudo promover la versión');
     } finally {
       setVersionActionInFlight(null);
       setPromoteConfirm(null);
@@ -533,10 +533,10 @@ export default function PromptDetailPage() {
         load();
         loadAudit();
       } else {
-        setVersionActionError(d.message ?? 'Failed to roll back version');
+        setVersionActionError(d.message ?? 'No se pudo revertir la versión');
       }
     } catch (e) {
-      setVersionActionError(e instanceof Error ? e.message : 'Failed to roll back version');
+      setVersionActionError(e instanceof Error ? e.message : 'No se pudo revertir la versión');
     } finally {
       setVersionActionInFlight(null);
       setRollbackConfirm(null);
@@ -569,7 +569,7 @@ export default function PromptDetailPage() {
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <span className="material-icons text-base">arrow_back</span>
-        Prompt Evals
+        Evaluaciones de prompts
       </Link>
 
       {err && (
@@ -594,7 +594,7 @@ export default function PromptDetailPage() {
                   className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                 >
                   <span className="material-icons text-sm leading-none">dataset</span>
-                  Edit test cases
+                  Editar casos de prueba
                 </Link>
               </div>
               <div className="flex items-center gap-2 mt-0.5">
@@ -614,11 +614,11 @@ export default function PromptDetailPage() {
             {/* ── Run eval control ── */}
             <div className="flex-shrink-0 bg-card border border-border rounded-xl p-4 space-y-3 min-w-[220px]">
               <div className="text-xs font-semibold text-foreground uppercase tracking-wide">
-                Run Eval
+                Ejecutar evaluación
               </div>
               <div className="flex items-center gap-2">
                 <label htmlFor="mock-select" className="text-xs text-muted-foreground whitespace-nowrap">
-                  Mode
+                  Modo
                 </label>
                 <select
                   id="mock-select"
@@ -627,8 +627,8 @@ export default function PromptDetailPage() {
                   disabled={inFlight}
                   className="flex-1 text-xs border border-border rounded px-2 py-1 bg-background text-foreground disabled:opacity-50"
                 >
-                  <option value="mock">Mock</option>
-                  <option value="real">Real (costs tokens)</option>
+                  <option value="mock">Simulado</option>
+                  <option value="real">Real (consume tokens)</option>
                 </select>
               </div>
               {runDatasets.length > 0 && (
@@ -653,40 +653,38 @@ export default function PromptDetailPage() {
               )}
               {confirmingReal ? (
                 <div className="flex flex-col gap-2 bg-yellow-50 border border-yellow-200 rounded px-3 py-2 text-xs">
-                  <span className="text-yellow-900">Real run — hits the model and consumes tokens.</span>
+                  <span className="text-yellow-900">Ejecución real — llama al modelo y consume tokens.</span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => { setConfirmingReal(false); handleRunEval(); }}
                       disabled={inFlight}
                       className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-yellow-600 text-white hover:bg-yellow-700 disabled:opacity-50 transition-colors font-medium"
                     >
-                      Run anyway
+                      Ejecutar de todos modos
                     </button>
                     <button
                       onClick={() => setConfirmingReal(false)}
                       className="px-2 py-1 text-yellow-700 hover:text-yellow-900 transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                   </div>
                 </div>
               ) : (
                 <button
                   onClick={() => { if (!mock) { setConfirmingReal(true); } else { handleRunEval(); } }}
                   disabled={inFlight}
-                  className="w-full inline-flex items-center justify-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full inline-flex items-center justify-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <span className={`material-icons text-base leading-none ${inFlight ? 'animate-spin' : ''}`}>
                     {inFlight ? 'refresh' : 'play_arrow'}
                   </span>
-                  {inFlight ? 'Running…' : 'Run eval'}
+                  {inFlight ? 'Ejecutando…' : 'Ejecutar evaluación'}
                 </button>
               )}
               {liveStatus && (
                 <div className={`text-xs rounded px-2 py-1.5 border ${
-                  liveStatus.startsWith('done')
+                  liveStatus.startsWith('completado')
                     ? 'bg-green-50 text-green-800 border-green-200'
-                    : liveStatus.startsWith('failed') || liveStatus.startsWith('Error')
+                    : liveStatus.startsWith('fallido') || liveStatus.startsWith('Error')
                     ? 'bg-red-50 text-red-800 border-red-200'
                     : 'bg-blue-50 text-blue-800 border-blue-200'
                 }`}>
@@ -716,7 +714,7 @@ export default function PromptDetailPage() {
                   {editorOpen ? 'expand_less' : 'expand_more'}
                 </span>
                 <span className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                  Edit prompt
+                  Editar prompt
                 </span>
               </button>
 
@@ -724,7 +722,7 @@ export default function PromptDetailPage() {
                 <div className="space-y-3 pt-1">
                   <div className="space-y-1">
                     <label className="text-xs font-medium text-muted-foreground">
-                      Prompt body
+                      Cuerpo del prompt
                     </label>
                     <textarea
                       value={editorBody}
@@ -732,12 +730,12 @@ export default function PromptDetailPage() {
                       rows={10}
                       className="w-full text-sm font-mono border border-border rounded-lg px-3 py-2 bg-background text-foreground resize-y focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-50"
                       disabled={editorSaving}
-                      placeholder="Prompt body…"
+                      placeholder="Cuerpo del prompt…"
                     />
                   </div>
                   <div className="space-y-1">
                     <label className="text-xs font-medium text-muted-foreground">
-                      Notes (optional)
+                      Notas (opcional)
                     </label>
                     <input
                       type="text"
@@ -745,7 +743,7 @@ export default function PromptDetailPage() {
                       onChange={(e) => setEditorNotes(e.target.value)}
                       className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-50"
                       disabled={editorSaving}
-                      placeholder="What changed in this version?"
+                      placeholder="¿Qué cambió en esta versión?"
                     />
                   </div>
                   {editorError && (
@@ -757,22 +755,20 @@ export default function PromptDetailPage() {
                     <button
                       onClick={handleSaveDraft}
                       disabled={editorSaving || !editorBody.trim()}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       <span className={`material-icons text-base leading-none ${editorSaving ? 'animate-spin' : ''}`}>
                         {editorSaving ? 'refresh' : 'save'}
                       </span>
-                      {editorSaving ? 'Saving…' : 'Save as draft'}
+                      {editorSaving ? 'Guardando…' : 'Guardar como borrador'}
                     </button>
                     <button
                       onClick={() => { setEditorOpen(false); setEditorError(null); }}
                       disabled={editorSaving}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                     <span className="text-xs text-muted-foreground">
-                      Saves a new DRAFT version — does not change production.
+                      Guarda una nueva versión BORRADOR — no cambia producción.
                     </span>
                   </div>
                 </div>
@@ -786,11 +782,11 @@ export default function PromptDetailPage() {
               <div className="flex items-center gap-2">
                 <span className="material-icons text-muted-foreground text-lg">schedule</span>
                 <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                  Scheduled Eval
+                  Evaluación programada
                 </h2>
               </div>
               <p className="text-xs text-muted-foreground">
-                Opt-in cron for scheduled eval runs; leave blank to disable.
+                Cron opcional para ejecuciones programadas; deja vacío para desactivar.
               </p>
               <div className="flex items-center gap-2 flex-wrap">
                 <input
@@ -804,17 +800,17 @@ export default function PromptDetailPage() {
                 <button
                   onClick={handleSaveSchedule}
                   disabled={scheduleSaving}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <span className={`material-icons text-base leading-none ${scheduleSaving ? 'animate-spin' : ''}`}>
                     {scheduleSaving ? 'refresh' : 'save'}
                   </span>
-                  {scheduleSaving ? 'Saving…' : 'Save schedule'}
+                  {scheduleSaving ? 'Guardando…' : 'Guardar programación'}
                 </button>
                 {scheduleSuccess && !scheduleError && (
                   <span className="text-xs text-green-700 flex items-center gap-0.5">
                     <span className="material-icons text-sm leading-none">check_circle</span>
-                    Saved
+                    Guardado
                   </span>
                 )}
               </div>
@@ -831,16 +827,16 @@ export default function PromptDetailPage() {
             <div className="flex items-center gap-2">
               <span className="material-icons text-muted-foreground text-lg">show_chart</span>
               <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                Run Timeline
+                Cronología de ejecuciones
               </h2>
-              <span className="text-xs text-muted-foreground">({data.runs.length} runs)</span>
+              <span className="text-xs text-muted-foreground">({data.runs.length} ejecuciones)</span>
             </div>
 
             <div className="flex items-end gap-6">
               <Sparkline runs={data.runs} />
               <div className="text-xs text-muted-foreground space-y-0.5">
-                <div>Pass rate over time</div>
-                <div className="text-[10px]">oldest → newest</div>
+                <div>Tasa de acierto en el tiempo</div>
+                <div className="text-[10px]">más antiguo → más reciente</div>
               </div>
             </div>
 
@@ -850,13 +846,13 @@ export default function PromptDetailPage() {
                   <thead className="bg-muted/50 border-b border-border">
                     <tr>
                       <th className="px-3 py-2 w-6"></th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Run ID</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Pass Rate</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Passed / Total</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">ID de ejecución</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tasa de acierto</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Superados / Total</th>
                       <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tokens</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cost</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Age</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Coste</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Antigüedad</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -906,24 +902,24 @@ export default function PromptDetailPage() {
                                 {!cacheEntry || cacheEntry.status === 'loading' ? (
                                   <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
                                     <span className="material-icons animate-spin text-base leading-none">refresh</span>
-                                    Loading cases…
+                                    Cargando casos…
                                   </div>
                                 ) : cacheEntry.status === 'error' ? (
                                   <div className="text-xs text-red-700 py-2">
-                                    Error loading cases: {cacheEntry.error}
+                                    Error al cargar los casos: {cacheEntry.error}
                                   </div>
                                 ) : cacheEntry.cases && cacheEntry.cases.length === 0 ? (
-                                  <div className="text-xs text-muted-foreground py-2">No cases found for this run.</div>
+                                  <div className="text-xs text-muted-foreground py-2">No se encontraron casos para esta ejecución.</div>
                                 ) : (
                                   <table className="w-full text-xs">
                                     <thead>
                                       <tr className="border-b border-border">
-                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Case</th>
-                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Result</th>
-                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Agg</th>
-                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Latency</th>
+                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Caso</th>
+                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Resultado</th>
+                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Agr.</th>
+                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Latencia</th>
                                         <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider pr-4">Tokens</th>
-                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider">Details</th>
+                                        <th className="pb-1.5 text-left font-medium text-muted-foreground uppercase tracking-wider">Detalles</th>
                                       </tr>
                                     </thead>
                                     <tbody className="divide-y divide-border/50">
@@ -934,12 +930,12 @@ export default function PromptDetailPage() {
                                             {c.passed ? (
                                               <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 rounded-full font-medium border bg-green-100 text-green-800 border-green-200">
                                                 <span className="material-icons text-xs leading-none">check_circle</span>
-                                                pass
+                                                superado
                                               </span>
                                             ) : (
                                               <span className="inline-flex items-center gap-0.5 text-xs px-1.5 py-0.5 rounded-full font-medium border bg-red-100 text-red-800 border-red-200">
                                                 <span className="material-icons text-xs leading-none">cancel</span>
-                                                fail
+                                                fallido
                                               </span>
                                             )}
                                           </td>
@@ -951,13 +947,13 @@ export default function PromptDetailPage() {
                                               <div className="text-red-700">Error: {c.error}</div>
                                             )}
                                             <details>
-                                              <summary className="cursor-pointer text-muted-foreground hover:text-foreground select-none">Output</summary>
+                                              <summary className="cursor-pointer text-muted-foreground hover:text-foreground select-none">Salida</summary>
                                               <pre className="text-[10px] mt-1 bg-background border border-border rounded p-2 overflow-auto max-h-40 whitespace-pre-wrap break-all">
                                                 {JSON.stringify(c.output, null, 2)}
                                               </pre>
                                             </details>
                                             <details>
-                                              <summary className="cursor-pointer text-muted-foreground hover:text-foreground select-none">Scores</summary>
+                                              <summary className="cursor-pointer text-muted-foreground hover:text-foreground select-none">Puntuaciones</summary>
                                               <pre className="text-[10px] mt-1 bg-background border border-border rounded p-2 overflow-auto max-h-40 whitespace-pre-wrap break-all">
                                                 {JSON.stringify(c.scores, null, 2)}
                                               </pre>
@@ -1005,25 +1001,25 @@ export default function PromptDetailPage() {
                 <div className="flex items-center gap-2">
                   <span className="material-icons text-muted-foreground text-lg">compare_arrows</span>
                   <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                    Version Compare
+                    Comparar versiones
                   </h2>
                 </div>
 
                 {stats.length === 0 ? (
-                  <p className="text-xs text-muted-foreground">No versions yet.</p>
+                  <p className="text-xs text-muted-foreground">Aún no hay versiones.</p>
                 ) : (
                   <>
                     {stats.length < 2 && (
-                      <p className="text-xs text-muted-foreground">Add another version to compare.</p>
+                      <p className="text-xs text-muted-foreground">Añade otra versión para comparar.</p>
                     )}
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm">
                         <thead className="bg-muted/50 border-b border-border">
                           <tr>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Version</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Latest Pass Rate</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Latest Aggregate</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Δ vs Prev Version</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Versión</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Última tasa de acierto</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Última puntuación agregada</th>
+                            <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Δ vs versión anterior</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -1042,7 +1038,7 @@ export default function PromptDetailPage() {
                                     {isActive && (
                                       <span className="inline-flex items-center gap-0.5 text-xs text-green-700 font-medium">
                                         <span className="material-icons text-sm leading-none">check_circle</span>
-                                        active
+                                        activa
                                       </span>
                                     )}
                                   </div>
@@ -1053,11 +1049,11 @@ export default function PromptDetailPage() {
                                       {Math.round(s.passRate * 100)}%
                                     </span>
                                   ) : (
-                                    <span className="text-xs text-muted-foreground">no run</span>
+                                    <span className="text-xs text-muted-foreground">sin ejecución</span>
                                   )}
                                 </td>
                                 <td className="px-3 py-2 text-xs text-foreground">
-                                  {s.aggregate !== null ? s.aggregate.toFixed(2) : <span className="text-muted-foreground">no run</span>}
+                                  {s.aggregate !== null ? s.aggregate.toFixed(2) : <span className="text-muted-foreground">sin ejecución</span>}
                                 </td>
                                 <td className="px-3 py-2 text-xs font-medium">
                                   {i === 0 ? (
@@ -1089,7 +1085,7 @@ export default function PromptDetailPage() {
             <div className="flex items-center gap-2">
               <span className="material-icons text-muted-foreground text-lg">history</span>
               <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                Versions
+                Versiones
               </h2>
               <span className="text-xs text-muted-foreground">({data.versions.length})</span>
             </div>
@@ -1115,7 +1111,7 @@ export default function PromptDetailPage() {
             )}
 
             {data.versions.length === 0 ? (
-              <p className="text-xs text-muted-foreground">No versions yet.</p>
+              <p className="text-xs text-muted-foreground">Aún no hay versiones.</p>
             ) : (
               <div className="space-y-2">
                 {data.versions.map((v) => {
@@ -1146,7 +1142,7 @@ export default function PromptDetailPage() {
                             {isActive && (
                               <span className="inline-flex items-center gap-0.5 text-xs text-green-700 font-medium">
                                 <span className="material-icons text-sm leading-none">check_circle</span>
-                                active
+                                activa
                               </span>
                             )}
                           </div>
@@ -1163,12 +1159,12 @@ export default function PromptDetailPage() {
                               <button
                                 onClick={() => { setPromoteConfirm(v.id); setRollbackConfirm(null); setVersionActionError(null); }}
                                 disabled={isInFlight || versionActionInFlight !== null}
-                                className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                               >
                                 <span className={`material-icons text-sm leading-none ${isInFlight ? 'animate-spin' : ''}`}>
                                   {isInFlight ? 'refresh' : 'trending_up'}
                                 </span>
-                                {isInFlight ? 'Promoting…' : 'Promote'}
+                                {isInFlight ? 'Promoviendo…' : 'Promover'}
                               </button>
                             ) : (
                               <button
@@ -1179,7 +1175,7 @@ export default function PromptDetailPage() {
                                 <span className={`material-icons text-sm leading-none ${isInFlight ? 'animate-spin' : ''}`}>
                                   {isInFlight ? 'refresh' : 'undo'}
                                 </span>
-                                {isInFlight ? 'Rolling back…' : 'Roll back to this'}
+                                {isInFlight ? 'Revirtiendo…' : 'Revertir a esta'}
                               </button>
                             )
                           )}
@@ -1189,40 +1185,32 @@ export default function PromptDetailPage() {
                       {/* Inline confirm row for promote */}
                       {isAdmin && isPromoteConfirming && (
                         <div className="mt-2 flex items-center gap-2 text-xs bg-primary/5 border border-primary/20 rounded px-3 py-2">
-                          <span className="text-foreground">Promote v{v.version} to active? This will enqueue a regression eval.</span>
+                          <span className="text-foreground">¿Promover la v{v.version} a activa? Esto encolará una evaluación de regresión.</span>
                           <button
                             onClick={() => handlePromote(v.id)}
                             disabled={isInFlight}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors font-medium"
-                          >
-                            Confirm
-                          </button>
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 transition-colors font-medium"
+                          >Confirmar</button>
                           <button
                             onClick={() => setPromoteConfirm(null)}
                             className="px-2 py-1 text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            Cancel
-                          </button>
+                          >Cancelar</button>
                         </div>
                       )}
 
                       {/* Inline confirm row for rollback */}
                       {isAdmin && isRollbackConfirming && (
                         <div className="mt-2 flex items-center gap-2 text-xs bg-yellow-50 border border-yellow-200 rounded px-3 py-2">
-                          <span className="text-yellow-900">Roll back to v{v.version}? The current active version will be archived.</span>
+                          <span className="text-yellow-900">¿Revertir a la v{v.version}? La versión activa actual se archivará.</span>
                           <button
                             onClick={() => handleRollback(v.id)}
                             disabled={isInFlight}
                             className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-yellow-600 text-white hover:bg-yellow-700 disabled:opacity-50 transition-colors font-medium"
-                          >
-                            Confirm
-                          </button>
+                          >Confirmar</button>
                           <button
                             onClick={() => setRollbackConfirm(null)}
                             className="px-2 py-1 text-yellow-700 hover:text-yellow-900 transition-colors"
-                          >
-                            Cancel
-                          </button>
+                          >Cancelar</button>
                         </div>
                       )}
                     </div>
@@ -1236,21 +1224,19 @@ export default function PromptDetailPage() {
             <div className="flex items-center gap-2">
               <span className="material-icons text-muted-foreground text-lg">manage_history</span>
               <h2 className="text-sm font-semibold text-foreground uppercase tracking-wide">
-                Audit Log
+                Registro de auditoría
               </h2>
             </div>
 
             {auditLoading ? (
               <div className="flex items-center gap-2 py-3 text-xs text-muted-foreground">
-                <span className="material-icons animate-spin text-base leading-none">refresh</span>
-                Loading…
-              </div>
+                <span className="material-icons animate-spin text-base leading-none">refresh</span>Cargando…</div>
             ) : auditError ? (
               <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
                 {auditError}
               </div>
             ) : auditEntries.length === 0 ? (
-              <p className="text-xs text-muted-foreground">No audit events yet.</p>
+              <p className="text-xs text-muted-foreground">Aún no hay eventos de auditoría.</p>
             ) : (
               <div className="space-y-1">
                 {auditEntries.map((entry) => (

@@ -488,7 +488,7 @@ describe('POST /api/portal/crm/proposals', () => {
     expect(inserted.title).toBe('My Proposal');
     expect(inserted.summary).toBeNull();
     expect(inserted.status).toBe('draft');
-    expect(inserted.currency).toBe('USD');
+    expect(inserted.currency).toBe('EUR');
     expect(inserted.accentColor).toBe('#2563eb');
     expect(inserted.contactId).toBeNull();
     expect(inserted.companyId).toBeNull();

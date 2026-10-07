@@ -61,14 +61,14 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
       .then((json) => {
         if (cancelled) return;
         if (!json.success) {
-          setError(json.message || 'Failed to load pages.');
+          setError(json.message || 'No se pudieron cargar las páginas.');
           return;
         }
         setError('');
         setPages(json.data ?? []);
       })
       .catch(() => {
-        if (!cancelled) setError('Network error loading pages.');
+        if (!cancelled) setError('Error de red al cargar las páginas.');
       });
     return () => {
       cancelled = true;
@@ -104,7 +104,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
     return (
       <div className={`${pCard} p-10 text-center`}>
         <span className="material-icons text-4xl text-muted-foreground/50 mb-2">description</span>
-        <p className="text-sm text-muted-foreground">No crawls yet. Run an audit to see crawled pages here.</p>
+        <p className="text-sm text-muted-foreground">Aún no hay rastreos. Ejecuta una auditoría para ver aquí las páginas rastreadas.</p>
       </div>
     );
   }
@@ -112,7 +112,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
   if (pages === null) {
     return (
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin text-2xl">progress_activity</span>
+        <span className="material-icons animate-spin text-2xl">autorenew</span>
       </div>
     );
   }
@@ -122,7 +122,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
   if (pages.length === 0) {
     return (
       <div className={`${pCard} p-10 text-center`}>
-        <p className="text-sm text-muted-foreground">No pages crawled yet.</p>
+        <p className="text-sm text-muted-foreground">Aún no se han rastreado páginas.</p>
       </div>
     );
   }
@@ -134,7 +134,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
         <input
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          placeholder="Filter by URL…"
+          placeholder="Filtrar por URL…"
           className={`${pInput} pl-10`}
         />
       </div>
@@ -144,14 +144,14 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
           <thead className="border-b border-border">
             <tr>
               <SortHeader id="url" label="URL" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <SortHeader id="httpStatus" label="Status" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <th className="px-3 py-2 text-left font-medium text-muted-foreground">Title</th>
+              <SortHeader id="httpStatus" label="Estado" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <th className="px-3 py-2 text-left font-medium text-muted-foreground">Título</th>
               <th className="px-3 py-2 text-left font-medium text-muted-foreground">Indexable</th>
-              <SortHeader id="depth" label="Depth" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <SortHeader id="internalRank" label="Rank" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <SortHeader id="incomingLinks" label="Inbound" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <SortHeader id="wordCount" label="Words" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
-              <SortHeader id="responseTimeMs" label="Time" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <SortHeader id="depth" label="Profundidad" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <SortHeader id="internalRank" label="Posición" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <SortHeader id="incomingLinks" label="Entrantes" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <SortHeader id="wordCount" label="Palabras" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
+              <SortHeader id="responseTimeMs" label="Hora" activeKey={sortKey} dir={sortDir} onSort={toggleSort} />
             </tr>
           </thead>
           <tbody>
@@ -170,7 +170,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
                 </td>
                 <td className={`px-3 py-2 font-mono ${statusClasses(p.httpStatus)}`}>{p.httpStatus ?? '—'}</td>
                 <td className="px-3 py-2 max-w-xs truncate text-muted-foreground" title={p.title ?? undefined}>
-                  {p.title || <span className="italic">Missing</span>}
+                  {p.title || <span className="italic">Falta</span>}
                 </td>
                 <td className="px-3 py-2">
                   {p.indexable === true ? (
@@ -190,7 +190,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
                   {p.internalRank != null ? p.internalRank.toFixed(3) : '—'}
                   {p.orphan && (
                     <span className="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                      orphan
+                      huérfana
                     </span>
                   )}
                 </td>
@@ -205,7 +205,7 @@ export function PagesTab({ runId }: { runId: number | null; runStatus: string | 
         </table>
       </div>
       <p className="text-xs text-muted-foreground">
-        {filtered.length} of {pages.length} pages
+        {filtered.length} de {pages.length} páginas
       </p>
     </div>
   );

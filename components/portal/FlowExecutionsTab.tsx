@@ -15,6 +15,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { relativeTimeEs } from '@/lib/portal-utils';
 import {
   foldRunEvents,
   TERMINAL_RUN_STATUSES,
@@ -26,12 +27,12 @@ import {
 } from '@/lib/agent-flows/types';
 
 const STATUS_META: Record<AgentFlowRunStatus, { label: string; cls: string; icon: string }> = {
-  running:   { label: 'Running',   cls: 'text-blue-600 dark:text-blue-400',     icon: 'progress_activity' },
+  running:   { label: 'En ejecución',   cls: 'text-blue-600 dark:text-blue-400',     icon: 'autorenew' },
   // Amber matches the human-node colour on the canvas — the same "a person is
   // needed here" signal in both places.
   waiting:   { label: 'Waiting',   cls: 'text-amber-600 dark:text-amber-400',   icon: 'how_to_reg' },
-  succeeded: { label: 'Succeeded', cls: 'text-emerald-600 dark:text-emerald-400', icon: 'check_circle' },
-  failed:    { label: 'Failed',    cls: 'text-red-600 dark:text-red-400',       icon: 'error' },
+  succeeded: { label: 'Exitoso', cls: 'text-emerald-600 dark:text-emerald-400', icon: 'check_circle' },
+  failed:    { label: 'Fallido',    cls: 'text-red-600 dark:text-red-400',       icon: 'error' },
   // Deliberately not styled as a failure: the run didn't break, its session
   // went away.
   abandoned: { label: 'Abandoned', cls: 'text-muted-foreground',                icon: 'cloud_off' },
@@ -45,11 +46,7 @@ const NODE_STATUS_CLS: Record<string, string> = {
 };
 
 function ago(iso: string): string {
-  const s = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
-  if (s < 60) return `${s}s ago`;
-  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
-  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
-  return `${Math.floor(s / 86400)}d ago`;
+  return relativeTimeEs(iso);
 }
 
 function duration(startedAt: string, finishedAt: string | null): string {
@@ -97,7 +94,7 @@ export default function FlowExecutionsTab({ projectId }: { projectId: number }) 
   if (loading) {
     return (
       <div className="p-8 text-sm text-muted-foreground">
-        <span className="material-icons text-base align-middle animate-spin mr-2">progress_activity</span>
+        <span className="material-icons text-base align-middle animate-spin mr-2">autorenew</span>
         Loading executions…
       </div>
     );

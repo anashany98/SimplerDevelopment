@@ -20,7 +20,7 @@ interface ZonedParts {
 
 /** The calendar/clock parts of an instant as observed in `timeZone`. */
 export function zonedParts(instant: Date, timeZone: string): ZonedParts {
-  const dtf = new Intl.DateTimeFormat('en-US', {
+  const dtf = new Intl.DateTimeFormat('es-ES', {
     timeZone,
     hour12: false,
     year: 'numeric',

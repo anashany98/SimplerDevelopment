@@ -146,7 +146,7 @@ describe('TicketSlaBadge', () => {
         now={NOW}
       />,
     );
-    expect(container.textContent).toMatch(/SLA met/);
+    expect(container.textContent).toMatch(/SLA cumplido/);
   });
 
   it('shows "SLA met" chip when resolvedAt is provided regardless of status', () => {
@@ -159,7 +159,7 @@ describe('TicketSlaBadge', () => {
         now={NOW}
       />,
     );
-    expect(container.textContent).toMatch(/SLA met/);
+    expect(container.textContent).toMatch(/SLA cumplido/);
   });
 
   it('renders both "First reply" and "Resolution" chips in full mode when timers are on track', () => {
@@ -171,9 +171,9 @@ describe('TicketSlaBadge', () => {
         now={NOW}
       />,
     );
-    expect(container.textContent).toMatch(/First reply/);
-    expect(container.textContent).toMatch(/Resolution/);
-    expect(container.textContent).toMatch(/On track/);
+    expect(container.textContent).toMatch(/Primera respuesta/);
+    expect(container.textContent).toMatch(/Resolución/);
+    expect(container.textContent).toMatch(/En plazo/);
   });
 
   it('renders an "Overdue" chip when the timer has elapsed', () => {
@@ -185,7 +185,7 @@ describe('TicketSlaBadge', () => {
         now={NOW}
       />,
     );
-    expect(container.textContent).toMatch(/Overdue/);
+    expect(container.textContent).toMatch(/Vencido hace/);
   });
 
   it('picks the worse of the two timers in compact mode', () => {
@@ -199,7 +199,7 @@ describe('TicketSlaBadge', () => {
         now={NOW}
       />,
     );
-    expect(container.textContent).toMatch(/Overdue/);
+    expect(container.textContent).toMatch(/Vencido hace/);
     // Only one chip rendered in compact mode
     const chips = container.querySelectorAll('span.rounded-full');
     expect(chips.length).toBeGreaterThanOrEqual(1);
@@ -237,7 +237,7 @@ describe('AgencyChromeProvider', () => {
         <Probe />
       </AgencyChromeProvider>,
     );
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
     expect(screen.getByTestId('brandLogoUrl').textContent).toBe('/iconLogo.png');
     expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
   });
@@ -260,7 +260,7 @@ describe('AgencyChromeProvider', () => {
     await waitFor(() => {
       expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
     });
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
   });
 
   it('applies an agency override when white-label is enabled', async () => {
@@ -307,13 +307,13 @@ describe('AgencyChromeProvider', () => {
     await act(async () => {
       await Promise.resolve();
     });
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
     expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
   });
 
   it('returns the default value when useAgencyChrome is called outside the provider', () => {
     render(<Probe />);
-    expect(screen.getByTestId('brandName').textContent).toBe('Simpler Development');
+    expect(screen.getByTestId('brandName').textContent).toBe('CRM AGENTS');
     expect(screen.getByTestId('whiteLabel').textContent).toBe('false');
   });
 });
@@ -347,7 +347,7 @@ describe('BuyServiceButton', () => {
 
   it('renders the default "Buy Now" label', () => {
     render(<BuyServiceButton serviceId={1} />);
-    expect(screen.getByRole('button', { name: /Buy Now/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Comprar ahora/ })).toBeTruthy();
   });
 
   it('uses a custom label prop when provided', () => {
@@ -405,7 +405,7 @@ describe('BuyServiceButton', () => {
     fireEvent.click(screen.getByRole('button'));
 
     await waitFor(() => {
-      expect(screen.getByText('Could not start checkout.')).toBeTruthy();
+      expect(screen.getByText('No se pudo iniciar el pago.')).toBeTruthy();
     });
   });
 });

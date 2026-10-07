@@ -25,18 +25,18 @@ interface PostType {
 }
 
 const fieldTypes = [
-  { value: 'text', label: 'Text' },
-  { value: 'textarea', label: 'Textarea' },
-  { value: 'number', label: 'Number' },
-  { value: 'date', label: 'Date' },
-  { value: 'select', label: 'Select' },
-  { value: 'checkbox', label: 'Checkbox' },
+  { value: 'text', label: 'Texto' },
+  { value: 'textarea', label: 'Área de texto' },
+  { value: 'number', label: 'Número' },
+  { value: 'date', label: 'Fecha' },
+  { value: 'select', label: 'Campo de selección' },
+  { value: 'checkbox', label: 'Casilla' },
   { value: 'url', label: 'URL' },
-  { value: 'email', label: 'Email' },
-  { value: 'image', label: 'Image URL' },
-  { value: 'user_select', label: 'User Select' },
-  { value: 'repeater', label: 'Repeater' },
-  { value: 'group', label: 'Field Group' },
+  { value: 'email', label: 'Correo' },
+  { value: 'image', label: 'URL de imagen' },
+  { value: 'user_select', label: 'Selector de usuario' },
+  { value: 'repeater', label: 'Repetidor' },
+  { value: 'group', label: 'Grupo de campos' },
 ];
 
 export default function CustomFieldsPage() {
@@ -91,7 +91,7 @@ export default function CustomFieldsPage() {
     setError('');
 
     if (isNaN(postTypeId)) {
-      setError('Invalid post type ID');
+      setError('ID de tipo de publicación no válido');
       return;
     }
 
@@ -140,15 +140,15 @@ export default function CustomFieldsPage() {
         try {
           data = JSON.parse(text);
         } catch {
-          data = { error: `Request failed with status ${response.status}` };
+          data = { error: `Solicitud fallida con estado ${response.status}` };
         }
 
         console.error('API error:', data);
-        setError(data.error || 'Failed to save custom field');
+        setError(data.error || 'Error al guardar el campo personalizado');
       }
     } catch (error) {
       console.error('Request failed:', error);
-      setError('Network error: Failed to save custom field');
+      setError('Error de red: no se pudo guardar el campo personalizado');
     } finally {
       setSubmitting(false);
     }
@@ -172,7 +172,7 @@ export default function CustomFieldsPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this custom field?')) return;
+    if (!confirm('¿Seguro que quieres eliminar este campo personalizado?')) return;
     const response = await fetch(`/api/custom-fields/${id}`, { method: 'DELETE' });
     if (response.ok) {
       fetchCustomFields();
@@ -205,7 +205,7 @@ export default function CustomFieldsPage() {
   };
 
   if (loading || !postType) {
-    return <div className="p-8">Loading...</div>;
+    return <div className="p-8">Cargando...</div>;
   }
 
   return (
@@ -218,10 +218,10 @@ export default function CustomFieldsPage() {
               className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 mb-2"
             >
               <span className="material-icons text-sm">arrow_back</span>
-              Back to Post Types
+              Volver a tipos de publicación
             </Link>
             <h1 className="text-3xl font-bold text-foreground">
-              Custom Fields: {postType.name}
+              Campos personalizados: {postType.name}
             </h1>
           </div>
           <button
@@ -248,9 +248,9 @@ export default function CustomFieldsPage() {
                 });
               }
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
-            {showForm ? 'Cancel' : 'Add Custom Field'}
+            {showForm ? 'Cancelar' : 'Añadir campo personalizado'}
           </button>
         </div>
 
@@ -264,7 +264,7 @@ export default function CustomFieldsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground">Name *</label>
+                <label className="block text-sm font-medium text-foreground">Nombre *</label>
                 <input
                   type="text"
                   required
@@ -278,7 +278,7 @@ export default function CustomFieldsPage() {
                     }
                   }}
                   className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                  placeholder="e.g., Author Name"
+                  placeholder="p. ej., Nombre del autor"
                 />
               </div>
               <div>
@@ -289,14 +289,14 @@ export default function CustomFieldsPage() {
                   value={formData.slug}
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                   className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                  placeholder="e.g., author_name"
+                  placeholder="p. ej., author_name"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground">Field Type *</label>
+                <label className="block text-sm font-medium text-foreground">Tipo de campo *</label>
                 <select
                   value={formData.fieldType}
                   onChange={(e) => setFormData({ ...formData, fieldType: e.target.value })}
@@ -310,7 +310,7 @@ export default function CustomFieldsPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground">Order</label>
+                <label className="block text-sm font-medium text-foreground">Pedido</label>
                 <input
                   type="number"
                   value={formData.order}
@@ -322,30 +322,30 @@ export default function CustomFieldsPage() {
 
             {formData.fieldType === 'select' && (
               <div>
-                <label className="block text-sm font-medium text-foreground">Options (one per line)</label>
+                <label className="block text-sm font-medium text-foreground">Opciones (una por línea)</label>
                 <textarea
                   value={formData.optionsText}
                   onChange={(e) => setFormData({ ...formData, optionsText: e.target.value })}
                   rows={4}
                   className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                  placeholder="Option 1&#10;Option 2&#10;Option 3"
+                  placeholder="Opción 1&#10;Opción 2&#10;Opción 3"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-foreground">Help Text</label>
+              <label className="block text-sm font-medium text-foreground">Texto de ayuda</label>
               <input
                 type="text"
                 value={formData.helpText}
                 onChange={(e) => setFormData({ ...formData, helpText: e.target.value })}
                 className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
-                placeholder="Additional information about this field"
+                placeholder="Información adicional sobre este campo"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground">Default Value</label>
+              <label className="block text-sm font-medium text-foreground">Valor predeterminado</label>
               <input
                 type="text"
                 value={formData.defaultValue}
@@ -363,7 +363,7 @@ export default function CustomFieldsPage() {
                 className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
               />
               <label htmlFor="required" className="ml-2 block text-sm text-foreground">
-                Required field
+                Campo obligatorio
               </label>
             </div>
 
@@ -371,18 +371,16 @@ export default function CustomFieldsPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {submitting ? 'Saving...' : editingField ? 'Update Field' : 'Create Field'}
+                {submitting ? 'Guardando...' : editingField ? 'Actualizar campo' : 'Crear campo'}
               </button>
               <button
                 type="button"
                 onClick={resetForm}
                 disabled={submitting}
                 className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent disabled:opacity-50"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           </form>
         )}
@@ -391,24 +389,14 @@ export default function CustomFieldsPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Order
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Name
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Pedido</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Type
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Required
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Tipo</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Obligatorio</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -433,7 +421,7 @@ export default function CustomFieldsPage() {
                             <div className="text-sm text-muted-foreground">{field.helpText}</div>
                           )}
                           {isContainer && (
-                            <div className="text-xs text-muted-foreground">{children.length} sub-field{children.length !== 1 ? 's' : ''}</div>
+                            <div className="text-xs text-muted-foreground">{children.length} subcampo{children.length !== 1 ? 's' : ''}</div>
                           )}
                         </div>
                       </div>
@@ -475,21 +463,17 @@ export default function CustomFieldsPage() {
                           }}
                           className="text-primary hover:text-primary/80"
                         >
-                          + Sub-field
+                          + Subcampo
                         </button>
                       )}
                       <button
                         onClick={() => handleEdit(field)}
                         className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                      >
-                        Edit
-                      </button>
+                      >Editar</button>
                       <button
                         onClick={() => handleDelete(field.id)}
                         className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                      >
-                        Delete
-                      </button>
+                      >Eliminar</button>
                     </td>
                   </tr>,
                   ...children.map((child) => (
@@ -527,15 +511,11 @@ export default function CustomFieldsPage() {
                         <button
                           onClick={() => handleEdit(child)}
                           className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                        >
-                          Edit
-                        </button>
+                        >Editar</button>
                         <button
                           onClick={() => handleDelete(child.id)}
                           className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                        >
-                          Delete
-                        </button>
+                        >Eliminar</button>
                       </td>
                     </tr>
                   )),
@@ -544,7 +524,7 @@ export default function CustomFieldsPage() {
               {customFields.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
-                    No custom fields yet. Add your first custom field to get started!
+                    Aún no hay campos personalizados. ¡Añade tu primer campo para empezar!
                   </td>
                 </tr>
               )}

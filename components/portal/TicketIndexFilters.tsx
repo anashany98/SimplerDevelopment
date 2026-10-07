@@ -45,11 +45,11 @@ export default function TicketIndexFilters({ isStaff, initial }: TicketIndexFilt
         value={initial.status}
         onChange={(e) => update('status', e.target.value)}
         className="px-3 py-1.5 rounded-md border border-border bg-background"
-        aria-label="Filter by status"
+        aria-label="Filtrar por estado"
       >
         {STATUSES.map((s) => (
           <option key={s} value={s}>
-            {s === 'all' ? 'All statuses' : s.replace('_', ' ')}
+            {s === 'all' ? 'Todos los estados' : s === 'open' ? 'Abierto' : s === 'in_progress' ? 'En curso' : s === 'waiting' ? 'Esperando' : s === 'resolved' ? 'Resuelto' : 'Cerrado'}
           </option>
         ))}
       </select>
@@ -58,11 +58,11 @@ export default function TicketIndexFilters({ isStaff, initial }: TicketIndexFilt
         value={initial.priority}
         onChange={(e) => update('priority', e.target.value)}
         className="px-3 py-1.5 rounded-md border border-border bg-background"
-        aria-label="Filter by priority"
+        aria-label="Filtrar por prioridad"
       >
         {PRIORITIES.map((p) => (
           <option key={p} value={p}>
-            {p === 'all' ? 'All priorities' : p}
+            {p === 'all' ? 'Todas las prioridades' : p === 'low' ? 'Baja' : p === 'medium' ? 'Media' : p === 'high' ? 'Alta' : 'Urgente'}
           </option>
         ))}
       </select>
@@ -72,11 +72,11 @@ export default function TicketIndexFilters({ isStaff, initial }: TicketIndexFilt
           value={initial.assignee}
           onChange={(e) => update('assignee', e.target.value)}
           className="px-3 py-1.5 rounded-md border border-border bg-background"
-          aria-label="Filter by assignee"
+          aria-label="Filtrar por responsable"
         >
-          <option value="all">All assignees</option>
-          <option value="me">Assigned to me</option>
-          <option value="unassigned">Unassigned</option>
+          <option value="all">Todos los responsables</option>
+          <option value="me">Asignados a mí</option>
+          <option value="unassigned">Sin asignar</option>
         </select>
       )}
 
@@ -90,7 +90,7 @@ export default function TicketIndexFilters({ isStaff, initial }: TicketIndexFilt
         }`}
       >
         <span className="material-icons text-sm align-middle mr-1">schedule</span>
-        Overdue only
+        Solo vencidos
       </button>
     </div>
   );

@@ -57,10 +57,10 @@ export function HtmlRenderSchemaActions({
   const handlePaste = () => {
     if (!clipboard) return;
     const ok = window.confirm(
-      `Replace this block's schema with the copied one?\n\n` +
-      `Copied schema: ${clipboard.fields.length} fields from "${clipboard.sourceLabel || 'unknown'}"\n` +
-      `Current block has ${fields.length} fields.\n\n` +
-      `The current block's HTML, fields, and values will be overwritten.`,
+      `¿Reemplazar el esquema de este bloque con el copiado?\n\n` +
+      `Esquema copiado: ${clipboard.fields.length} campos de "${clipboard.sourceLabel || 'desconocido'}"\n` +
+      `El bloque actual tiene ${fields.length} campos.\n\n` +
+      `Se sobrescribirán el HTML, los campos y los valores del bloque actual.`,
     );
     if (!ok) return;
     onApply(applySchemaSnapshot(clipboard));
@@ -81,15 +81,15 @@ export function HtmlRenderSchemaActions({
         return;
       }
       const ok = window.confirm(
-        `Import schema?\n\n` +
-        `Source: ${result.sourceLabel || 'unknown'}\n` +
-        `Fields: ${result.fields.length}\n\n` +
-        `The current block's HTML, fields, and values will be overwritten.`,
+        `¿Importar esquema?\n\n` +
+        `Fuente: ${result.sourceLabel || 'desconocido'}\n` +
+        `Campos: ${result.fields.length}\n\n` +
+        `Se sobrescribirán el HTML, los campos y los valores del bloque actual.`,
       );
       if (!ok) return;
       onApply(applySchemaSnapshot(result));
     };
-    reader.onerror = () => setImportError('Failed to read file');
+    reader.onerror = () => setImportError('No se pudo leer el archivo');
     reader.readAsText(file);
   };
 
@@ -99,10 +99,10 @@ export function HtmlRenderSchemaActions({
   const formatRelative = (ts: number): string => {
     const diff = now - ts;
     const m = Math.round(diff / 60000);
-    if (m < 1) return 'just now';
-    if (m < 60) return `${m}m ago`;
+    if (m < 1) return 'ahora mismo';
+    if (m < 60) return `hace ${m} min`;
     const h = Math.round(m / 60);
-    if (h < 24) return `${h}h ago`;
+    if (h < 24) return `hace ${h} h`;
     return new Date(ts).toLocaleDateString();
   };
 
@@ -112,40 +112,34 @@ export function HtmlRenderSchemaActions({
         type="button"
         onClick={handleCopy}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground"
-        title="Copy this block's schema (fields + template + loop) to a shared clipboard"
+        title="Copiar el esquema de este bloque (campos + plantilla + bucle) a un portapapeles compartido"
       >
-        <span className="material-icons text-sm">content_copy</span>
-        Copy
-      </button>
+        <span className="material-icons text-sm">content_copy</span>Copiar</button>
       <button
         type="button"
         onClick={handlePaste}
         disabled={!clipboard}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-        title={clipboard ? `Paste ${clipboard.fields.length}-field schema from "${clipboard.sourceLabel || 'unknown'}" (${formatRelative(clipboard.copiedAt)})` : 'No schema in clipboard yet — Copy from another block first'}
+        title={clipboard ? `Pegar esquema de ${clipboard.fields.length} campos de "${clipboard.sourceLabel || 'desconocido'}" (${formatRelative(clipboard.copiedAt)})` : 'Aún no hay ningún esquema en el portapapeles — copia primero desde otro bloque'}
       >
         <span className="material-icons text-sm">content_paste</span>
-        Paste{clipboard ? ` (${formatRelative(clipboard.copiedAt)})` : ''}
+        Pegar{clipboard ? ` (${formatRelative(clipboard.copiedAt)})` : ''}
       </button>
       <span className="flex-1" />
       <button
         type="button"
         onClick={handleExport}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground"
-        title="Download schema as JSON"
+        title="Descargar esquema como JSON"
       >
-        <span className="material-icons text-sm">file_download</span>
-        Export
-      </button>
+        <span className="material-icons text-sm">file_download</span>Exportar</button>
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
         className="flex items-center gap-1 px-2 py-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground"
-        title="Import schema from JSON file"
+        title="Importar esquema desde un archivo JSON"
       >
-        <span className="material-icons text-sm">file_upload</span>
-        Import
-      </button>
+        <span className="material-icons text-sm">file_upload</span>Importar</button>
       <input
         ref={fileInputRef}
         type="file"

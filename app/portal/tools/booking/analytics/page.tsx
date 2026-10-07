@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pCardPad, pSectionTitle, pInput } from '@/components/portal/portal-ui';
+import { formatCents } from '@/lib/portal-utils';
 
 interface AnalyticsData {
   totalRevenue: number;
@@ -16,10 +17,6 @@ interface AnalyticsData {
   byDay: { date: string; revenue: number; bookings: number; guests: number }[];
   byPage: { pageId: number; title: string; revenue: number; bookings: number }[];
   topAddOns: { name: string; revenue: number; count: number }[];
-}
-
-function formatCents(cents: number) {
-  return `$${(cents / 100).toFixed(2)}`;
 }
 
 export default function BookingAnalyticsPage() {
@@ -46,14 +43,12 @@ export default function BookingAnalyticsPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Booking"
+        eyebrow="Reservas"
         title="Booking Analytics"
-        subtitle="Revenue and booking insights"
+        subtitle="Ingresos y analíticas de reservas"
         actions={
           <Link href="/portal/tools/booking" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <span className="material-icons text-lg">arrow_back</span>
-            Back to Bookings
-          </Link>
+            <span className="material-icons text-lg">arrow_back</span>Volver a las reservas</Link>
         }
       />
 
@@ -72,7 +67,7 @@ export default function BookingAnalyticsPage() {
           <div className="animate-spin rounded-full h-8 w-8 border-2 border-muted-foreground/20 border-t-primary" />
         </div>
       ) : !data ? (
-        <div className="text-center py-20 text-muted-foreground">Failed to load analytics</div>
+        <div className="text-center py-20 text-muted-foreground">No se pudieron cargar las analíticas</div>
       ) : (
         <>
           {/* Summary cards */}
@@ -103,12 +98,12 @@ export default function BookingAnalyticsPage() {
                   <p className="text-lg font-semibold">{formatCents(data.bookingRevenue)}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground">Add-on Revenue</p>
+                  <p className="text-xs text-muted-foreground">Ingresos por complementos</p>
                   <p className="text-lg font-semibold">{formatCents(data.addOnRevenue)}</p>
                 </div>
                 {data.cancelledCount > 0 && (
                   <div>
-                    <p className="text-xs text-muted-foreground">Cancelled</p>
+                    <p className="text-xs text-muted-foreground">Cancelado</p>
                     <p className="text-lg font-semibold text-red-500">{data.cancelledCount}</p>
                   </div>
                 )}
@@ -139,7 +134,7 @@ export default function BookingAnalyticsPage() {
           {/* Revenue by booking page */}
           {data.byPage.length > 0 && (
             <div className="bg-card border border-border rounded-2xl p-4">
-              <h3 className={pSectionTitle + " mb-3"}>By Booking Page</h3>
+              <h3 className={pSectionTitle + " mb-3"}>Por página de reservas</h3>
               <div className="space-y-2">
                 {data.byPage.map(page => (
                   <div key={page.pageId} className="flex items-center justify-between py-2 border-b border-border last:border-0">
@@ -157,7 +152,7 @@ export default function BookingAnalyticsPage() {
           {/* Top add-ons */}
           {data.topAddOns.length > 0 && (
             <div className="bg-card border border-border rounded-2xl p-4">
-              <h3 className={pSectionTitle + " mb-3"}>Top Add-ons</h3>
+              <h3 className={pSectionTitle + " mb-3"}>Mejores complementos</h3>
               <div className="space-y-2">
                 {data.topAddOns.map(addOn => (
                   <div key={addOn.name} className="flex items-center justify-between py-2 border-b border-border last:border-0">

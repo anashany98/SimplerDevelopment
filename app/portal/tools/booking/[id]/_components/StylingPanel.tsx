@@ -23,11 +23,11 @@ interface StylingPanelProps {
 }
 
 const COLOR_KEYS = [
-  { key: 'primaryColor', label: 'Primary' },
-  { key: 'secondaryColor', label: 'Secondary', fallback: '#1e40af' },
-  { key: 'accentColor', label: 'Accent', fallback: '#f59e0b' },
-  { key: 'backgroundColor', label: 'Background', fallback: '#ffffff' },
-  { key: 'textColor', label: 'Text', fallback: '#111827' },
+  { key: 'primaryColor', label: 'Principal' },
+  { key: 'secondaryColor', label: 'Secundario', fallback: '#1e40af' },
+  { key: 'accentColor', label: 'Acento', fallback: '#f59e0b' },
+  { key: 'backgroundColor', label: 'Fondo', fallback: '#ffffff' },
+  { key: 'textColor', label: 'Texto', fallback: '#111827' },
 ] as const;
 
 export function StylingPanel({
@@ -43,9 +43,7 @@ export function StylingPanel({
     <div className="bg-card border border-border rounded-xl p-6 space-y-6">
       <div>
         <h3 className="text-base font-semibold text-foreground mb-1">Appearance</h3>
-        <p className="text-sm text-muted-foreground">
-          Customize how your booking page looks. These settings override the branding profile when set.
-        </p>
+        <p className="text-sm text-muted-foreground">Personaliza el aspecto de tu página de reservas. Esta configuración anula el perfil de marca cuando se establece.</p>
       </div>
 
       {/* Branding Profile */}
@@ -65,7 +63,7 @@ export function StylingPanel({
           }}
           className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
         >
-          <option value="">None (use overrides below)</option>
+          <option value="">Ninguno (usa las anulaciones de abajo)</option>
           {brandingProfiles.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name}
@@ -78,9 +76,7 @@ export function StylingPanel({
           {brandingProfiles.length === 0 && (
             <>
               {' '}
-              <a href="/portal/branding" className="text-primary hover:underline">
-                Create a branding profile
-              </a>{' '}
+              <a href="/portal/branding" className="text-primary hover:underline">Crear un perfil de marca</a>{' '}
               first.
             </>
           )}
@@ -165,13 +161,13 @@ export function StylingPanel({
                 type="text"
                 value={(styling.buttonPrimaryBg as string) || ''}
                 onChange={(e) => setStyling((prev) => ({ ...prev, buttonPrimaryBg: e.target.value }))}
-                placeholder="Auto"
+                placeholder="Automático"
                 className="flex-1 px-2 py-1 text-xs bg-background border border-border rounded text-foreground font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
           </div>
           <div>
-            <label className="block text-xs text-muted-foreground mb-1">Button Text</label>
+            <label className="block text-xs text-muted-foreground mb-1">Texto del botón</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -201,7 +197,7 @@ export function StylingPanel({
               }
               className="w-full px-2 py-1 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <option value="">Default</option>
+              <option value="">Predeterminado</option>
               <option value="0px">Square (0px)</option>
               <option value="4px">Slight (4px)</option>
               <option value="8px">Rounded (8px)</option>
@@ -215,9 +211,7 @@ export function StylingPanel({
       {/* Layout */}
       <div>
         <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
-          <span className="material-icons text-base text-muted-foreground">view_quilt</span>
-          Layout
-        </h4>
+          <span className="material-icons text-base text-muted-foreground">view_quilt</span>Diseño</h4>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs text-muted-foreground mb-1">Card Border Radius</label>
@@ -243,7 +237,7 @@ export function StylingPanel({
               onChange={(e) => setStyling((prev) => ({ ...prev, hideTitle: e.target.checked }))}
               className="rounded border-border accent-primary"
             />
-            <span className="text-sm text-foreground">Hide title on public page</span>
+            <span className="text-sm text-foreground">Ocultar título en la página pública</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -252,14 +246,14 @@ export function StylingPanel({
               onChange={(e) => setStyling((prev) => ({ ...prev, hideLogo: e.target.checked }))}
               className="rounded border-border accent-primary"
             />
-            <span className="text-sm text-foreground">Hide logo</span>
+            <span className="text-sm text-foreground">Ocultar logotipo</span>
           </label>
         </div>
       </div>
 
       {/* Preview swatch */}
       <div>
-        <h4 className="text-sm font-semibold text-foreground mb-3">Preview</h4>
+        <h4 className="text-sm font-semibold text-foreground mb-3">Vista previa</h4>
         <div
           className="rounded-xl border p-6 flex items-center justify-center gap-4"
           style={{
@@ -278,9 +272,7 @@ export function StylingPanel({
                 fontWeight: 600,
                 fontSize: '1.1rem',
               }}
-            >
-              Book a Meeting
-            </p>
+            >Reservar una reunión</p>
             <button
               className="px-5 py-2 text-sm font-medium transition-opacity"
               style={{

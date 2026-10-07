@@ -14,11 +14,15 @@
 
 import { and, asc, eq, isNull, lt, lte, or } from 'drizzle-orm';
 import { db as defaultDb } from '@/lib/db';
-import { internalJobs, orders, type InternalJobType } from '@/lib/db/schema';
+import { internalJobs, type InternalJobType } from '@/lib/db/schema';
+import { MAX_ATTEMPTS } from './queue';
+import type { JobExecutionContext } from './queue';
+
+export { enqueueJob, MAX_ATTEMPTS } from './queue';
+export type { EnqueueJobParams, JobExecutionContext, JobQueueDatabase } from './queue';
 
 type Db = typeof defaultDb;
 
-export const MAX_ATTEMPTS = 3;
 /** Attempt n → wait before attempt n+1. Beyond the table, hold at the last value. */
 export const BACKOFF_MS: Record<number, number> = { 1: 60_000, 2: 5 * 60_000 };
 /** A claimed job must finish within this or a later tick reclaims it. */
@@ -45,17 +49,13 @@ export const DRAIN_BATCH = 50;
  */
 export const JOB_HANDLERS: Record<
   InternalJobType,
-  (payload: Record<string, unknown>, db: Db) => Promise<void>
+  (payload: Record<string, unknown>, db: Db, context: JobExecutionContext) => Promise<void>
 > = {
   'pod.submit': async (payload, db) => {
     const orderId = payload.orderId;
     if (typeof orderId !== 'number') {
       throw new Error(`pod.submit: payload.orderId must be a number, got ${typeof orderId}`);
     }
-    const [order] = await db.select({ paymentStatus: orders.paymentStatus }).from(orders).where(eq(orders.id, orderId)).limit(1);
-    // A refund/cancellation may arrive before the fulfillment job is drained.
-    // Hold such orders for an operator rather than printing refunded goods.
-    if (!order || order.paymentStatus !== 'paid') return;
     const { submitPODOrder } = await import('@/lib/fulfillment/pod');
     // Idempotent on its own (returns early once printfulOrderId is set), so a
     // duplicate delivery is a no-op rather than a second printed garment.
@@ -71,59 +71,32 @@ export const JOB_HANDLERS: Record<
     const { runDelayedAutomationAction } = await import('@/lib/automation/delayed-action-job');
     await runDelayedAutomationAction(payload, db);
   },
+
+  'ceo.background_analysis': async (payload, db, context) => {
+    const { runCeoBackgroundAnalysis } = await import('@/lib/ai/ceo-background-job');
+    await runCeoBackgroundAnalysis(payload, db, context);
+  },
+
+  'agent.background_analysis': async (payload, db, context) => {
+    const { runBackgroundPortalAnalysis } = await import('@/lib/ai/ceo-background-job');
+    await runBackgroundPortalAnalysis(payload, db, context);
+  },
+
+  'survey.webhook_delivery': async (payload, db, context) => {
+    const { runSurveyWebhookJob } = await import('@/lib/survey-webhooks/dispatcher');
+    await runSurveyWebhookJob(payload, db, context);
+  },
+
   'store.payment_notification': async (payload) => {
     const { sendStorePaymentNotification } = await import('@/lib/store/payment-notification');
     await sendStorePaymentNotification(payload);
   },
+
   'store.reservation_expire': async (payload) => {
     const { expireCheckout } = await import('@/lib/store/checkout-expiration');
     await expireCheckout(payload);
   },
 };
-
-// ─── enqueue ─────────────────────────────────────────────────────────────────
-
-export interface EnqueueJobParams {
-  /** Tenant that owns the work. Cascade-deletes with the client. */
-  clientId: number;
-  type: InternalJobType;
-  payload: Record<string, unknown>;
-  /**
-   * Idempotency key, unique table-wide. Omit only when duplicate work is
-   * genuinely harmless. Convention: `<type>:<entity id>`.
-   */
-  dedupeKey?: string;
-  /**
-   * Earliest time the job may run. Maps onto the dual-purpose next_retry_at
-   * column: on a 'pending' row that column is the earliest claim time, and the
-   * drain's PASS 2 already honors it — so a future runAt is a delayed job for
-   * free. Omit to run on the next tick.
-   */
-  runAt?: Date;
-}
-
-/**
- * Enqueue a job. Safe to call twice with the same dedupeKey — the second is
- * dropped by the unique index, not by a read-then-write race.
- *
- * Callers should AWAIT this. It is one INSERT; making it fire-and-forget would
- * reintroduce exactly the durability hole the queue exists to close.
- */
-export async function enqueueJob(
-  params: EnqueueJobParams,
-  db: Db = defaultDb,
-): Promise<void> {
-  await db
-    .insert(internalJobs)
-    .values({
-      clientId: params.clientId,
-      type: params.type,
-      payload: params.payload,
-      dedupeKey: params.dedupeKey ?? null,
-      nextRetryAt: params.runAt ?? null,
-    })
-    .onConflictDoNothing({ target: internalJobs.dedupeKey });
-}
 
 // ─── drain ───────────────────────────────────────────────────────────────────
 
@@ -182,7 +155,10 @@ export async function drainInternalJobs(db: Db = defaultDb): Promise<DrainResult
     try {
       const handler = JOB_HANDLERS[job.type];
       if (!handler) throw new Error(`No handler registered for job type '${job.type}'`);
-      await handler((job.payload ?? {}) as Record<string, unknown>, db);
+      await handler((job.payload ?? {}) as Record<string, unknown>, db, {
+        attempt: job.attemptCount + 1,
+        isFinalAttempt: job.attemptCount + 1 >= MAX_ATTEMPTS,
+      });
 
       await db
         .update(internalJobs)

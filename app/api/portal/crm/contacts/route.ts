@@ -297,7 +297,7 @@ export async function POST(req: Request) {
     );
   }
 
-  emitEvent('crm.contact.created', client.id, userId, { id: contact.id, name: `${contact.firstName} ${contact.lastName || ''}`.trim(), email: contact.email, phone: contact.phone, source: contact.source });
+  await emitEvent('crm.contact.created', client.id, userId, { id: contact.id, name: `${contact.firstName} ${contact.lastName || ''}`.trim(), email: contact.email, phone: contact.phone, source: contact.source });
 
   // Notify other client members that a contact was created (skip the creator).
   const displayName = `${contact.firstName ?? ''} ${contact.lastName ?? ''}`.trim();

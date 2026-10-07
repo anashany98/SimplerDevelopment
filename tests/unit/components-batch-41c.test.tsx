@@ -204,8 +204,8 @@ describe('IconPicker', () => {
 
   it('renders the placeholder label when no value is set', () => {
     render(<IconPicker value={undefined} onChange={() => {}} />);
-    expect(screen.getByText('Choose icon...')).toBeTruthy();
-    expect(screen.getByText('Icon')).toBeTruthy();
+    expect(screen.getByText('Elegir icono...')).toBeTruthy();
+    expect(screen.getByText('Icono')).toBeTruthy();
   });
 
   it('honours custom label', () => {
@@ -215,11 +215,11 @@ describe('IconPicker', () => {
 
   it('opens the picker and renders icon grid when the trigger is clicked', async () => {
     render(<IconPicker value={undefined} onChange={() => {}} />);
-    const trigger = screen.getByText('Choose icon...').closest('button')!;
+    const trigger = screen.getByText('Elegir icono...').closest('button')!;
     fireEvent.click(trigger);
 
     // Search input should appear after opening
-    const search = screen.getByPlaceholderText('Search icons...') as HTMLInputElement;
+    const search = screen.getByPlaceholderText('Buscar iconos...') as HTMLInputElement;
     expect(search).toBeTruthy();
 
     // The icon set arrives via a dynamic import (it is 4,300 components — see
@@ -232,7 +232,7 @@ describe('IconPicker', () => {
   it('calls onChange with the material-style name when an icon is selected', () => {
     const onChange = vi.fn();
     render(<IconPicker value={undefined} onChange={onChange} />);
-    const trigger = screen.getByText('Choose icon...').closest('button')!;
+    const trigger = screen.getByText('Elegir icono...').closest('button')!;
     fireEvent.click(trigger);
 
     // Pick the MdBarChart mock — its parent button is the one we click
@@ -246,11 +246,11 @@ describe('IconPicker', () => {
 
   it('filters icons by search query and shows the empty-state when nothing matches', () => {
     render(<IconPicker value={undefined} onChange={() => {}} />);
-    fireEvent.click(screen.getByText('Choose icon...').closest('button')!);
-    const search = screen.getByPlaceholderText('Search icons...') as HTMLInputElement;
+    fireEvent.click(screen.getByText('Elegir icono...').closest('button')!);
+    const search = screen.getByPlaceholderText('Buscar iconos...') as HTMLInputElement;
 
     fireEvent.change(search, { target: { value: 'zzzzzzzz-no-match' } });
-    expect(screen.getByText(/No icons match/i)).toBeTruthy();
+    expect(screen.getByText(/Ningún icono coincide/i)).toBeTruthy();
   });
 
   it('renders the current icon label when a value is provided', () => {
@@ -272,33 +272,33 @@ describe('IconPicker', () => {
 describe('resolvePortalTitle', () => {
   it('resolves exact-match top-level routes', () => {
     expect(resolvePortalTitle('/portal')).toBe('Portal');
-    expect(resolvePortalTitle('/portal/dashboard')).toBe('Dashboard');
-    expect(resolvePortalTitle('/portal/approvals')).toBe('Approvals');
+    expect(resolvePortalTitle('/portal/dashboard')).toBe('Panel');
+    expect(resolvePortalTitle('/portal/approvals')).toBe('Aprobaciones');
   });
 
   it('resolves parameterised routes', () => {
-    expect(resolvePortalTitle('/portal/projects/42')).toBe('Project');
-    expect(resolvePortalTitle('/portal/projects')).toBe('Projects');
-    expect(resolvePortalTitle('/portal/crm/contacts/9')).toBe('Contact');
-    expect(resolvePortalTitle('/portal/websites/1/posts/2/edit')).toBe('Edit Post');
+    expect(resolvePortalTitle('/portal/projects/42')).toBe('Proyecto');
+    expect(resolvePortalTitle('/portal/projects')).toBe('Proyectos');
+    expect(resolvePortalTitle('/portal/crm/contacts/9')).toBe('Contacto');
+    expect(resolvePortalTitle('/portal/websites/1/posts/2/edit')).toBe('Editar entrada');
   });
 
   it('prefers more-specific patterns over broader ones (order matters)', () => {
     // /communications/:id/review is more specific than /communications/:id
     expect(resolvePortalTitle('/portal/brain/communications/15/review')).toBe(
-      'Review Communication',
+      'Revisar comunicación',
     );
-    expect(resolvePortalTitle('/portal/brain/communications/15')).toBe('Communication');
-    expect(resolvePortalTitle('/portal/brain/communications')).toBe('Communications');
+    expect(resolvePortalTitle('/portal/brain/communications/15')).toBe('Comunicación');
+    expect(resolvePortalTitle('/portal/brain/communications')).toBe('Comunicaciones');
   });
 
   it('falls back to the nav label for routes the table never got', () => {
     // These sections all rendered a generic "Portal" tab for months —
     // the drift the fallback chain exists to kill.
     expect(resolvePortalTitle('/portal/seo')).toBe('SEO Intelligence');
-    expect(resolvePortalTitle('/portal/brain/decisions')).toBe('Decisions');
-    expect(resolvePortalTitle('/portal/brain/decisions/123')).toBe('Decisions');
-    expect(resolvePortalTitle('/portal/publishing/board')).toBe('Board');
+    expect(resolvePortalTitle('/portal/brain/decisions')).toBe('Decisiones');
+    expect(resolvePortalTitle('/portal/brain/decisions/123')).toBe('Decisiones');
+    expect(resolvePortalTitle('/portal/publishing/board')).toBe('Tablero');
   });
 
   it('humanizes trailing static segments past the nav match', () => {
@@ -323,7 +323,7 @@ describe('PortalTitle component', () => {
 
   it('sets document.title using the default app name when white-label is off', () => {
     render(<PortalTitle />);
-    expect(document.title).toBe('Dashboard | SimplerDevelopment');
+    expect(document.title).toBe('Panel | CRM AGENTS');
   });
 
   it('uses the agency name when white-label is enabled', () => {
@@ -331,7 +331,7 @@ describe('PortalTitle component', () => {
     agencyState.whiteLabelEnabled = true;
     pathnameRef.current = '/portal/approvals';
     render(<PortalTitle />);
-    expect(document.title).toBe('Approvals | Acme Co');
+    expect(document.title).toBe('Aprobaciones | Acme Co');
   });
 
   it('falls back to the default app when white-label is enabled but agencyName is empty', () => {
@@ -339,7 +339,7 @@ describe('PortalTitle component', () => {
     agencyState.whiteLabelEnabled = true;
     pathnameRef.current = '/portal';
     render(<PortalTitle />);
-    expect(document.title).toBe('Portal | SimplerDevelopment');
+    expect(document.title).toBe('Portal | CRM AGENTS');
   });
 
   it('returns null (renders nothing visible)', () => {

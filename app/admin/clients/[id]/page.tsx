@@ -42,7 +42,7 @@ const recordStatusColor: Record<string, string> = {
   pending: 'text-yellow-500', failed: 'text-red-500',
 };
 
-const TAB_LABELS: Record<string, string> = { overview: 'Overview', email: 'Email Marketing', billing: 'Billing', settings: 'Settings', team: 'Team' };
+const TAB_LABELS: Record<string, string> = { overview: 'Resumen', email: 'Email marketing', billing: 'Facturación', settings: 'Ajustes', team: 'Equipo' };
 
 interface MeteredItem {
   id: number; clientId: number; resource: string;
@@ -208,7 +208,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
     const unitPriceCents = parseInt(meteredForm.unitPriceCents, 10);
     const includedQuantity = parseFloat(meteredForm.includedQuantity || '0');
     if (!Number.isFinite(unitPriceCents) || unitPriceCents < 0) {
-      setMeteredError('unitPriceCents must be a non-negative integer');
+      setMeteredError('unitPriceCents debe ser un entero no negativo');
       setMeteredSaving(false);
       return;
     }
@@ -227,7 +227,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
     const data = await res.json();
     setMeteredSaving(false);
     if (!data.success) {
-      setMeteredError(data.message ?? 'Failed');
+      setMeteredError(data.message ?? 'Error');
       return;
     }
     setShowMeteredForm(false);
@@ -247,7 +247,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function deleteMeteredItemAdmin(itemId: number) {
-    if (!confirm('Remove this metered item? Stripe Subscription Item is left untouched.')) return;
+    if (!confirm('¿Quitar este artículo medido? El artículo de suscripción de Stripe no se modifica.')) return;
     await fetch(`/api/admin/portal/clients/${clientId}/billing/metered-items/${itemId}`, {
       method: 'DELETE',
     });
@@ -264,12 +264,12 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
     const data = await res.json();
     setRollupRunning(false);
     if (!data.success) {
-      setRollupMessage(data.message ?? 'Rollup failed');
+      setRollupMessage(data.message ?? 'El rollup falló');
       return;
     }
     setRollupMessage(force
-      ? `Pushed ${data.data.result.length} resource(s) to Stripe`
-      : `Dry-run computed ${data.data.result.length} resource(s) — Stripe NOT touched`);
+      ? `Enviados ${data.data.result.length} recurso(s) a Stripe`
+      : `Simulación calculada: ${data.data.result.length} recurso(s) — Stripe NO tocado`);
     await refreshBilling();
   }
 
@@ -282,14 +282,14 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
     });
     const data = await res.json();
     setMemberSaving(false);
-    if (!data.success) { setMemberError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setMemberError(data.message ?? 'Error'); return; }
     setMembers(prev => [...prev, data.data]);
     setShowAddMember(false);
     setMemberForm({ name: '', email: '', password: '' });
   }
 
   async function removeMember(memberId: number) {
-    if (!confirm('Remove this team member?')) return;
+    if (!confirm('¿Quitar a este miembro del equipo?')) return;
     await fetch(`/api/admin/portal/clients/${clientId}/members/${memberId}`, { method: 'DELETE' });
     setMembers(prev => prev.filter(m => m.memberId !== memberId));
   }
@@ -315,7 +315,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
     });
     const data = await res.json();
     setSettingsSaving(false);
-    if (!data.success) { setSettingsError(data.message ?? 'Failed to save'); return; }
+    if (!data.success) { setSettingsError(data.message ?? 'No se pudo guardar'); return; }
     setClient(prev => prev ? {
       ...prev, company: settingsForm.company || null, phone: settingsForm.phone || null,
       website: settingsForm.website || null, notes: settingsForm.notes || null,
@@ -349,7 +349,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
     });
     const data = await res.json();
     setAddingDomain(false);
-    if (!data.success) { setAddDomainError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setAddDomainError(data.message ?? 'Error'); return; }
     setNewDomain(''); setShowAddDomainForm(false);
     await loadDomains();
     openDomain(data.data);
@@ -381,7 +381,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function deleteDomain(domainId: string, name: string) {
-    if (!confirm(`Remove domain "${name}" from Resend? This cannot be undone.`)) return;
+    if (!confirm(`¿Quitar el dominio "${name}" de Resend? Esta acción no se puede deshacer.`)) return;
     await fetch(`/api/admin/email/domains/${domainId}`, { method: 'DELETE' });
     setDomains(prev => prev.filter(d => d.id !== domainId));
     if (selectedDomain?.id === domainId) setSelectedDomain(null);
@@ -422,13 +422,13 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function removeSubscriber(subId: number) {
-    if (!confirm('Remove subscriber?')) return;
+    if (!confirm('¿Quitar suscriptor?')) return;
     await fetch(`/api/admin/email/subscribers?id=${subId}`, { method: 'DELETE' });
     setSubscribers(prev => prev.filter(s => s.id !== subId));
   }
 
   async function deleteList(listId: number) {
-    if (!confirm('Delete this list and all subscribers?')) return;
+    if (!confirm('¿Eliminar esta lista y todos sus suscriptores?')) return;
     await fetch(`/api/admin/email/lists/${listId}`, { method: 'DELETE' });
     setLists(prev => prev.filter(l => l.id !== listId));
     if (selectedList?.id === listId) setSelectedList(null);
@@ -443,15 +443,15 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
     });
     const data = await res.json();
     setCampSaving(false);
-    if (!data.success) { setCampError(data.message ?? 'Failed'); return; }
+    if (!data.success) { setCampError(data.message ?? 'Error'); return; }
     setCampaigns(prev => [{ ...data.data, listName: lists.find(l => l.id === parseInt(campForm.listId))?.name ?? null }, ...prev]);
     setShowCampForm(false);
     setCampForm({ name: '', subject: '', fromName: '', fromEmail: '', listId: '', htmlContent: '' });
   }
 
   async function deleteCampaign(campId: number, status: string) {
-    if (status === 'sending') { alert('Cannot delete a sending campaign.'); return; }
-    if (!confirm('Delete campaign?')) return;
+    if (status === 'sending') { alert('No se puede eliminar una campaña en envío.'); return; }
+    if (!confirm('¿Eliminar campaña?')) return;
     await fetch(`/api/admin/email/campaigns/${campId}`, { method: 'DELETE' });
     setCampaigns(prev => prev.filter(c => c.id !== campId));
   }
@@ -459,8 +459,8 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
   const ic = 'w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary';
   function copyToClipboard(text: string) { navigator.clipboard.writeText(text); }
 
-  if (loading) return <div className="p-6 text-sm text-muted-foreground">Loading…</div>;
-  if (!client) return <div className="p-6 text-sm text-muted-foreground">Client not found.</div>;
+  if (loading) return <div className="p-6 text-sm text-muted-foreground">Cargando…</div>;
+  if (!client) return <div className="p-6 text-sm text-muted-foreground">Cliente no encontrado.</div>;
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
@@ -480,11 +480,11 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
         >
           <button
             type="submit"
-            title="View the portal as this client"
+            title="Ver el portal como este cliente"
             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md border border-border bg-background hover:bg-accent text-sm font-medium"
           >
             <span className="material-icons text-base">visibility</span>
-            Impersonate
+            Suplantar
           </button>
         </form>
       </div>
@@ -503,13 +503,13 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
       {tab === 'overview' && (
         <div className="bg-card border border-border rounded-lg divide-y divide-border">
           {[
-            { label: 'Name', value: client.userName },
-            { label: 'Email', value: client.userEmail },
-            { label: 'Company', value: client.company ?? '—' },
-            { label: 'Phone', value: client.phone ?? '—' },
-            { label: 'Website', value: client.website ?? '—' },
-            { label: 'Status', value: client.userActive ? 'Active' : 'Inactive' },
-            { label: 'Notes', value: client.notes ?? '—' },
+            { label: 'Nombre', value: client.userName },
+            { label: 'Correo', value: client.userEmail },
+            { label: 'Empresa', value: client.company ?? '—' },
+            { label: 'Teléfono', value: client.phone ?? '—' },
+            { label: 'Sitio web', value: client.website ?? '—' },
+            { label: 'Estado', value: client.userActive ? 'Activo' : 'Inactivo' },
+            { label: 'Notas', value: client.notes ?? '—' },
           ].map(row => (
             <div key={row.label} className="flex px-5 py-3 gap-4">
               <span className="text-sm text-muted-foreground w-24 shrink-0">{row.label}</span>
@@ -525,21 +525,21 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           <ClientBillingSummary clientId={clientId} />
 
           {!billingLoaded && (
-            <div className="text-sm text-muted-foreground">Loading billing…</div>
+            <div className="text-sm text-muted-foreground">Cargando facturación…</div>
           )}
 
           {/* Live totals */}
           <section className="bg-card border border-border rounded-lg">
             <header className="flex items-center justify-between px-5 py-3 border-b border-border">
               <div>
-                <h2 className="text-sm font-semibold text-foreground">Current period totals</h2>
+                <h2 className="text-sm font-semibold text-foreground">Totales del periodo actual</h2>
                 <p className="text-xs text-muted-foreground">
-                  Period {billingUsage?.period ?? '—'} — raw observations from <code>usage_meter_events</code>.
+                  Periodo {billingUsage?.period ?? '—'} — observaciones sin procesar de <code>usage_meter_events</code>.
                 </p>
               </div>
             </header>
             {billingUsage && billingUsage.liveTotals.length === 0 ? (
-              <div className="px-5 py-6 text-sm text-muted-foreground">No usage observed for this period.</div>
+              <div className="px-5 py-6 text-sm text-muted-foreground">No se ha registrado uso en este periodo.</div>
             ) : (
               <ul className="divide-y divide-border">
                 {(billingUsage?.liveTotals ?? []).map(t => (
@@ -556,22 +556,22 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           <section className="bg-card border border-border rounded-lg">
             <header className="flex items-center justify-between px-5 py-3 border-b border-border">
               <div>
-                <h2 className="text-sm font-semibold text-foreground">Stripe metered items</h2>
-                <p className="text-xs text-muted-foreground">Per-resource Subscription Items wired to this client.</p>
+                <h2 className="text-sm font-semibold text-foreground">Artículos medidos de Stripe</h2>
+                <p className="text-xs text-muted-foreground">Artículos de suscripción por recurso vinculados a este cliente.</p>
               </div>
               <button
                 onClick={() => setShowMeteredForm(v => !v)}
                 className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md border border-border hover:bg-accent"
               >
                 <span className="material-icons text-base">{showMeteredForm ? 'close' : 'add'}</span>
-                {showMeteredForm ? 'Cancel' : 'Add metered item'}
+                {showMeteredForm ? 'Cancelar' : 'Añadir artículo medido'}
               </button>
             </header>
             {showMeteredForm && (
               <form onSubmit={addMeteredItem} className="px-5 py-4 border-b border-border space-y-3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <label className="text-xs text-muted-foreground">
-                    Resource
+                    Recurso
                     <select
                       value={meteredForm.resource}
                       onChange={e => setMeteredForm({ ...meteredForm, resource: e.target.value })}
@@ -584,7 +584,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     </select>
                   </label>
                   <label className="text-xs text-muted-foreground">
-                    Unit price (cents)
+                    Precio unitario (céntimos)
                     <input
                       type="number" min={0}
                       value={meteredForm.unitPriceCents}
@@ -594,7 +594,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     />
                   </label>
                   <label className="text-xs text-muted-foreground">
-                    Included quantity
+                    Cantidad incluida
                     <input
                       type="number" min={0} step="any"
                       value={meteredForm.includedQuantity}
@@ -603,7 +603,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     />
                   </label>
                   <label className="text-xs text-muted-foreground">
-                    Stripe Subscription ID
+                    ID de suscripción de Stripe
                     <input
                       value={meteredForm.stripeSubscriptionId}
                       onChange={e => setMeteredForm({ ...meteredForm, stripeSubscriptionId: e.target.value })}
@@ -613,7 +613,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     />
                   </label>
                   <label className="text-xs text-muted-foreground">
-                    Stripe Price ID (creates new sub item)
+                    ID de precio de Stripe (crea un nuevo artículo de suscripción)
                     <input
                       value={meteredForm.stripePriceId}
                       onChange={e => setMeteredForm({ ...meteredForm, stripePriceId: e.target.value })}
@@ -622,7 +622,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     />
                   </label>
                   <label className="text-xs text-muted-foreground">
-                    Or existing Stripe Subscription Item ID
+                    O ID de artículo de suscripción de Stripe existente
                     <input
                       value={meteredForm.stripeSubscriptionItemId}
                       onChange={e => setMeteredForm({ ...meteredForm, stripeSubscriptionItemId: e.target.value })}
@@ -635,25 +635,25 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                 <div className="flex justify-end">
                   <button
                     type="submit" disabled={meteredSaving}
-                    className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-primary text-primary-foreground disabled:opacity-50"
+                    className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-foreground text-background disabled:opacity-50"
                   >
                     <span className="material-icons text-base">save</span>
-                    {meteredSaving ? 'Saving…' : 'Save metered item'}
+                    {meteredSaving ? 'Guardando…' : 'Guardar artículo medido'}
                   </button>
                 </div>
               </form>
             )}
             {meteredItems.length === 0 ? (
-              <div className="px-5 py-6 text-sm text-muted-foreground">No metered items configured.</div>
+              <div className="px-5 py-6 text-sm text-muted-foreground">No hay artículos medidos configurados.</div>
             ) : (
               <table className="w-full text-sm">
                 <thead className="text-xs text-muted-foreground">
                   <tr>
-                    <th className="text-left px-5 py-2 font-medium">Resource</th>
-                    <th className="text-left px-5 py-2 font-medium">Stripe Item</th>
-                    <th className="text-right px-5 py-2 font-medium">Unit (¢)</th>
-                    <th className="text-right px-5 py-2 font-medium">Included</th>
-                    <th className="text-left px-5 py-2 font-medium">Status</th>
+                    <th className="text-left px-5 py-2 font-medium">Recurso</th>
+                    <th className="text-left px-5 py-2 font-medium">Artículo de Stripe</th>
+                    <th className="text-right px-5 py-2 font-medium">Unidad (¢)</th>
+                    <th className="text-right px-5 py-2 font-medium">Incluido</th>
+                    <th className="text-left px-5 py-2 font-medium">Estado</th>
                     <th className="px-5 py-2"></th>
                   </tr>
                 </thead>
@@ -675,17 +675,17 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                         <div className="flex items-center justify-end gap-1">
                           {it.status === 'active' ? (
                             <button onClick={() => patchMeteredStatus(it.id, 'paused')}
-                              className="p-1 text-muted-foreground hover:text-foreground" title="Pause">
+                              className="p-1 text-muted-foreground hover:text-foreground" title="Pausar">
                               <span className="material-icons text-base">pause</span>
                             </button>
                           ) : (
                             <button onClick={() => patchMeteredStatus(it.id, 'active')}
-                              className="p-1 text-muted-foreground hover:text-foreground" title="Resume">
+                              className="p-1 text-muted-foreground hover:text-foreground" title="Reanudar">
                               <span className="material-icons text-base">play_arrow</span>
                             </button>
                           )}
                           <button onClick={() => deleteMeteredItemAdmin(it.id)}
-                            className="p-1 text-muted-foreground hover:text-red-500" title="Delete">
+                            className="p-1 text-muted-foreground hover:text-red-500" title="Eliminar">
                             <span className="material-icons text-base">delete</span>
                           </button>
                         </div>
@@ -701,8 +701,8 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           <section className="bg-card border border-border rounded-lg">
             <header className="flex items-center justify-between px-5 py-3 border-b border-border">
               <div>
-                <h2 className="text-sm font-semibold text-foreground">Rollup preview (dry run)</h2>
-                <p className="text-xs text-muted-foreground">What would be pushed to Stripe right now.</p>
+                <h2 className="text-sm font-semibold text-foreground">Vista previa del rollup (simulación)</h2>
+                <p className="text-xs text-muted-foreground">Lo que se enviaría a Stripe ahora mismo.</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -711,19 +711,19 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                   className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md border border-border hover:bg-accent disabled:opacity-50"
                 >
                   <span className="material-icons text-base">refresh</span>
-                  {rollupRunning ? 'Running…' : 'Re-run dry run'}
+                  {rollupRunning ? 'Ejecutando…' : 'Volver a simular'}
                 </button>
                 <button
                   onClick={() => {
-                    if (confirm('Push usage to Stripe NOW for this client? This is a real billing action.')) {
+                    if (confirm('¿Enviar el uso a Stripe AHORA para este cliente? Esta es una acción de facturación real.')) {
                       runRollupNow(true);
                     }
                   }}
                   disabled={rollupRunning}
-                  className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-primary text-primary-foreground disabled:opacity-50"
+                  className="inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-md bg-foreground text-background disabled:opacity-50"
                 >
                   <span className="material-icons text-base">cloud_upload</span>
-                  Run rollup now
+                  Ejecutar rollup ahora
                 </button>
               </div>
             </header>
@@ -732,17 +732,17 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
             )}
             {(billingUsage?.dryRun ?? []).length === 0 ? (
               <div className="px-5 py-6 text-sm text-muted-foreground">
-                No active metered items — nothing to roll up.
+                No hay artículos medidos activos — nada que procesar.
               </div>
             ) : (
               <table className="w-full text-sm">
                 <thead className="text-xs text-muted-foreground">
                   <tr>
-                    <th className="text-left px-5 py-2 font-medium">Resource</th>
+                    <th className="text-left px-5 py-2 font-medium">Recurso</th>
                     <th className="text-right px-5 py-2 font-medium">Total</th>
-                    <th className="text-right px-5 py-2 font-medium">Included</th>
-                    <th className="text-right px-5 py-2 font-medium">Billable</th>
-                    <th className="text-right px-5 py-2 font-medium">Billed (¢)</th>
+                    <th className="text-right px-5 py-2 font-medium">Incluido</th>
+                    <th className="text-right px-5 py-2 font-medium">Facturable</th>
+                    <th className="text-right px-5 py-2 font-medium">Facturado (¢)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -763,21 +763,21 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           {/* History */}
           <section className="bg-card border border-border rounded-lg">
             <header className="px-5 py-3 border-b border-border">
-              <h2 className="text-sm font-semibold text-foreground">Recent rollups</h2>
-              <p className="text-xs text-muted-foreground">Latest <code>usage_billing_periods</code> rows for this client.</p>
+              <h2 className="text-sm font-semibold text-foreground">Rollups recientes</h2>
+              <p className="text-xs text-muted-foreground">Últimas filas de <code>usage_billing_periods</code> para este cliente.</p>
             </header>
             {(billingUsage?.history ?? []).length === 0 ? (
-              <div className="px-5 py-6 text-sm text-muted-foreground">No rollup history yet.</div>
+              <div className="px-5 py-6 text-sm text-muted-foreground">Aún no hay historial de rollups.</div>
             ) : (
               <table className="w-full text-sm">
                 <thead className="text-xs text-muted-foreground">
                   <tr>
-                    <th className="text-left px-5 py-2 font-medium">Period</th>
-                    <th className="text-left px-5 py-2 font-medium">Resource</th>
-                    <th className="text-right px-5 py-2 font-medium">Billable</th>
-                    <th className="text-right px-5 py-2 font-medium">Billed (¢)</th>
-                    <th className="text-left px-5 py-2 font-medium">Stripe record</th>
-                    <th className="text-left px-5 py-2 font-medium">Reported at</th>
+                    <th className="text-left px-5 py-2 font-medium">Periodo</th>
+                    <th className="text-left px-5 py-2 font-medium">Recurso</th>
+                    <th className="text-right px-5 py-2 font-medium">Facturable</th>
+                    <th className="text-right px-5 py-2 font-medium">Facturado (¢)</th>
+                    <th className="text-left px-5 py-2 font-medium">Registro de Stripe</th>
+                    <th className="text-left px-5 py-2 font-medium">Reportado el</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -808,43 +808,43 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           {/* Profile editing */}
           <div className="bg-card border border-border rounded-lg overflow-hidden">
             <div className="px-5 py-4 border-b border-border">
-              <h2 className="font-semibold text-foreground">Client Profile</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">Update company details and account status.</p>
+              <h2 className="font-semibold text-foreground">Perfil del cliente</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Actualiza los datos de la empresa y el estado de la cuenta.</p>
             </div>
             <form onSubmit={saveSettings} className="p-5 space-y-4">
               {settingsError && <p className="text-sm text-red-600">{settingsError}</p>}
               {settingsSaved && (
                 <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-md px-3 py-2">
                   <span className="material-icons text-base">check_circle</span>
-                  Changes saved successfully.
+                  Cambios guardados correctamente.
                 </div>
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Full Name</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Nombre completo</label>
                   <input value={settingsForm.name} onChange={e => setSettingsForm(p => ({ ...p, name: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Company</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Empresa</label>
                   <input value={settingsForm.company} onChange={e => setSettingsForm(p => ({ ...p, company: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Phone</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Teléfono</label>
                   <input value={settingsForm.phone} onChange={e => setSettingsForm(p => ({ ...p, phone: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Website</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Sitio web</label>
                   <input type="url" value={settingsForm.website} onChange={e => setSettingsForm(p => ({ ...p, website: e.target.value }))} className={ic} placeholder="https://" />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-medium text-foreground mb-1">Notes</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Notas</label>
                   <textarea value={settingsForm.notes} onChange={e => setSettingsForm(p => ({ ...p, notes: e.target.value }))}
                     rows={3} className={ic} />
                 </div>
                 <div className="sm:col-span-2 flex items-center justify-between border border-border rounded-md px-4 py-3">
                   <div>
-                    <p className="text-sm font-medium text-foreground">Account Active</p>
-                    <p className="text-xs text-muted-foreground">Inactive clients cannot log in to the portal.</p>
+                    <p className="text-sm font-medium text-foreground">Cuenta activa</p>
+                    <p className="text-xs text-muted-foreground">Los clientes inactivos no pueden iniciar sesión en el portal.</p>
                   </div>
                   <button type="button"
                     onClick={() => setSettingsForm(p => ({ ...p, active: !p.active }))}
@@ -855,8 +855,8 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               </div>
               <div className="flex gap-2">
                 <button type="submit" disabled={settingsSaving}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-                  {settingsSaving ? 'Saving…' : 'Save Changes'}
+                  className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
+                  {settingsSaving ? 'Guardando…' : 'Guardar cambios'}
                 </button>
               </div>
             </form>
@@ -866,13 +866,13 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           <div className="bg-card border border-border rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
               <div>
-                <h2 className="font-semibold text-foreground">Sending Domains</h2>
-                <p className="text-xs text-muted-foreground mt-0.5">Manage verified domains for white-label email sending.</p>
+                <h2 className="font-semibold text-foreground">Dominios de envío</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">Gestiona dominios verificados para envío de email de marca blanca.</p>
               </div>
               <button onClick={() => setShowAddDomainForm(!showAddDomainForm)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">
+                className="flex items-center gap-2 px-3 py-1.5 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 transition-colors">
                 <span className="material-icons text-base">add</span>
-                Add Domain
+                Añadir dominio
               </button>
             </div>
 
@@ -880,19 +880,17 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               <form onSubmit={addDomain} className="p-5 space-y-3 border-b border-border bg-muted/20">
                 {addDomainError && <p className="text-sm text-red-600">{addDomainError}</p>}
                 <p className="text-sm text-muted-foreground">
-                  Enter the domain to send from (e.g. <code className="bg-muted px-1 rounded text-xs">yourdomain.com</code>). DNS records will be generated.
+                  Introduce el dominio desde el que enviar (p. ej. <code className="bg-muted px-1 rounded text-xs">tudominio.com</code>). Se generarán los registros DNS.
                 </p>
                 <div className="flex gap-3">
                   <input required value={newDomain} onChange={e => setNewDomain(e.target.value)}
                     placeholder="yourdomain.com" className={`${ic} flex-1`} />
                   <button type="submit" disabled={addingDomain}
-                    className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-                    {addingDomain ? 'Adding…' : 'Add Domain'}
+                    className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
+                    {addingDomain ? 'Añadiendo…' : 'Añadir dominio'}
                   </button>
                   <button type="button" onClick={() => setShowAddDomainForm(false)}
-                    className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">
-                    Cancel
-                  </button>
+                    className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
                 </div>
               </form>
             )}
@@ -901,11 +899,11 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               {/* Domain list */}
               <div className="lg:col-span-2 border-r border-border">
                 {domainsLoading ? (
-                  <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+                  <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
                 ) : domains.length === 0 ? (
                   <div className="p-10 text-center">
                     <span className="material-icons text-3xl text-muted-foreground mb-2 block">domain</span>
-                    <p className="text-sm text-muted-foreground">No domains added yet.</p>
+                    <p className="text-sm text-muted-foreground">Aún no hay dominios añadidos.</p>
                   </div>
                 ) : (
                   <div className="divide-y divide-border">
@@ -938,10 +936,10 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                 {!selectedDomain ? (
                   <div className="text-center py-10">
                     <span className="material-icons text-3xl text-muted-foreground mb-2 block">dns</span>
-                    <p className="text-sm text-muted-foreground">Select a domain to view DNS records and settings.</p>
+                    <p className="text-sm text-muted-foreground">Selecciona un dominio para ver registros DNS y ajustes.</p>
                   </div>
                 ) : domainDetailLoading ? (
-                  <p className="text-sm text-muted-foreground py-8 text-center">Loading…</p>
+                  <p className="text-sm text-muted-foreground py-8 text-center">Cargando…</p>
                 ) : (
                   <>
                     {/* Domain header */}
@@ -954,9 +952,9 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                       </div>
                       {selectedDomain.status !== 'verified' && (
                         <button onClick={() => verifyDomain(selectedDomain.id)} disabled={verifying}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors">
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors">
                           <span className="material-icons text-base">{verifying ? 'hourglass_empty' : 'verified'}</span>
-                          {verifying ? 'Checking…' : 'Verify Now'}
+                          {verifying ? 'Comprobando…' : 'Verificar ahora'}
                         </button>
                       )}
                     </div>
@@ -966,13 +964,13 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                       <div className="border border-border rounded-lg overflow-hidden">
                         <div className="px-4 py-3 border-b border-border flex items-center justify-between bg-muted/20">
                           <div>
-                            <p className="text-sm font-semibold text-foreground">DNS Records</p>
-                            <p className="text-xs text-muted-foreground">Add these to your domain registrar, then click Verify Now.</p>
+                            <p className="text-sm font-semibold text-foreground">Registros DNS</p>
+                            <p className="text-xs text-muted-foreground">Añádelos a tu registrador de dominio y haz clic en Verificar ahora.</p>
                           </div>
                           {selectedDomain.status !== 'verified' && (
                             <div className="flex items-center gap-1.5 text-xs text-yellow-600 bg-yellow-50 px-2 py-1 rounded-md">
                               <span className="material-icons text-sm">warning</span>
-                              Pending DNS
+                              DNS pendiente
                             </div>
                           )}
                         </div>
@@ -980,10 +978,10 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                           <table className="w-full text-xs">
                             <thead>
                               <tr className="border-b border-border bg-muted/40">
-                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Type</th>
-                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Name</th>
-                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Value</th>
-                                <th className="text-center px-4 py-2.5 font-medium text-muted-foreground">Status</th>
+                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Tipo</th>
+                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Nombre</th>
+                                <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Valor</th>
+                                <th className="text-center px-4 py-2.5 font-medium text-muted-foreground">Estado</th>
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-border">
@@ -996,7 +994,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                                   <td className="px-4 py-3">
                                     <div className="flex items-center gap-1.5">
                                       <code className="font-mono text-foreground break-all">{record.name}</code>
-                                      <button onClick={() => copyToClipboard(record.name)} title="Copy"
+                                      <button onClick={() => copyToClipboard(record.name)} title="Copiar"
                                         className="shrink-0 p-0.5 rounded text-muted-foreground hover:text-foreground">
                                         <span className="material-icons text-sm">content_copy</span>
                                       </button>
@@ -1005,12 +1003,12 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                                   <td className="px-4 py-3 max-w-xs">
                                     <div className="flex items-center gap-1.5">
                                       <code className="font-mono text-foreground break-all line-clamp-2">{record.value}</code>
-                                      <button onClick={() => copyToClipboard(record.value)} title="Copy"
+                                      <button onClick={() => copyToClipboard(record.value)} title="Copiar"
                                         className="shrink-0 p-0.5 rounded text-muted-foreground hover:text-foreground">
                                         <span className="material-icons text-sm">content_copy</span>
                                       </button>
                                     </div>
-                                    {record.priority !== undefined && <p className="text-muted-foreground mt-0.5">Priority: {record.priority}</p>}
+                                    {record.priority !== undefined && <p className="text-muted-foreground mt-0.5">Prioridad: {record.priority}</p>}
                                   </td>
                                   <td className="px-4 py-3 text-center">
                                     <span className={`material-icons text-base ${recordStatusColor[record.status] ?? 'text-muted-foreground'}`} title={record.status}>
@@ -1023,7 +1021,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                           </table>
                         </div>
                         <p className="px-4 py-2.5 text-xs text-muted-foreground bg-muted/20 border-t border-border">
-                          DNS changes can take up to 72 hours to propagate.
+                          Los cambios de DNS pueden tardar hasta 72 horas en propagarse.
                         </p>
                       </div>
                     )}
@@ -1032,12 +1030,12 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     {selectedDomain.status === 'verified' && (
                       <div className="border border-border rounded-lg overflow-hidden">
                         <div className="px-4 py-3 border-b border-border bg-muted/20">
-                          <p className="text-sm font-semibold text-foreground">Tracking Settings</p>
+                          <p className="text-sm font-semibold text-foreground">Ajustes de seguimiento</p>
                         </div>
                         <div className="divide-y divide-border">
                           {[
-                            { key: 'openTracking' as const, label: 'Open Tracking', description: 'Track opens via a 1×1 pixel.' },
-                            { key: 'clickTracking' as const, label: 'Click Tracking', description: 'Wrap links to track clicks.' },
+                            { key: 'openTracking' as const, label: 'Seguimiento de aperturas', description: 'Registra las aperturas con un píxel de 1×1.' },
+                            { key: 'clickTracking' as const, label: 'Seguimiento de clics', description: 'Envuelve los enlaces para registrar los clics.' },
                           ].map(({ key, label, description }) => (
                             <div key={key} className="flex items-center justify-between px-4 py-3">
                               <div>
@@ -1060,12 +1058,12 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
                         <div className="flex items-center gap-2 text-blue-800">
                           <span className="material-icons text-base">info</span>
-                          <p className="text-sm font-medium">Next steps</p>
+                          <p className="text-sm font-medium">Próximos pasos</p>
                         </div>
                         <ol className="text-sm text-blue-700 space-y-1 list-decimal list-inside">
-                          <li>Copy each DNS record above and add it to your domain registrar</li>
-                          <li>Wait for DNS to propagate — usually a few minutes, up to 72 hours</li>
-                          <li>Click <strong>Verify Now</strong> to check if the records are live</li>
+                          <li>Copia cada registro DNS de arriba y añádelo a tu registrador de dominio</li>
+                          <li>Espera a que se propague el DNS: suele tardar unos minutos, hasta 72 horas</li>
+                          <li>Haz clic en <strong>Verificar ahora</strong> para comprobar si los registros están activos</li>
                         </ol>
                       </div>
                     )}
@@ -1082,12 +1080,12 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-border">
             <div>
-              <h2 className="font-semibold text-foreground">Team Members</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">All users with access to this client account.</p>
+              <h2 className="font-semibold text-foreground">Miembros del equipo</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">Todos los usuarios con acceso a esta cuenta de cliente.</p>
             </div>
             <button onClick={() => setShowAddMember(!showAddMember)}
               className="flex items-center gap-1 text-sm text-primary hover:underline">
-              <span className="material-icons text-sm">person_add</span> Add Member
+              <span className="material-icons text-sm">person_add</span> Añadir miembro
             </button>
           </div>
 
@@ -1096,34 +1094,34 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               {memberError && <p className="text-sm text-red-600">{memberError}</p>}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Full Name *</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Nombre completo *</label>
                   <input required value={memberForm.name} onChange={e => setMemberForm(p => ({ ...p, name: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Email *</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Correo *</label>
                   <input required type="email" value={memberForm.email} onChange={e => setMemberForm(p => ({ ...p, email: e.target.value }))} className={ic} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground mb-1">Password *</label>
+                  <label className="block text-xs font-medium text-foreground mb-1">Contraseña *</label>
                   <input required type="password" value={memberForm.password} onChange={e => setMemberForm(p => ({ ...p, password: e.target.value }))} className={ic} />
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">If the email already exists in the system, the existing user will be added to this client.</p>
+              <p className="text-xs text-muted-foreground">Si el email ya existe en el sistema, el usuario existente se añadirá a este cliente.</p>
               <div className="flex gap-2">
                 <button type="submit" disabled={memberSaving}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-                  {memberSaving ? 'Adding…' : 'Add Member'}
+                  className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
+                  {memberSaving ? 'Añadiendo…' : 'Añadir miembro'}
                 </button>
                 <button type="button" onClick={() => setShowAddMember(false)}
-                  className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancel</button>
+                  className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
               </div>
             </form>
           )}
 
           {!teamLoaded ? (
-            <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+            <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
           ) : members.length === 0 ? (
-            <p className="p-8 text-sm text-muted-foreground text-center">No team members yet.</p>
+            <p className="p-8 text-sm text-muted-foreground text-center">Aún no hay miembros del equipo.</p>
           ) : (
             <div className="divide-y divide-border">
               {members.map(m => (
@@ -1136,7 +1134,7 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${m.role === 'owner' ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-600'}`}>
                       {m.role}
                     </span>
-                    {!m.active && <span className="text-xs text-muted-foreground">inactive</span>}
+                    {!m.active && <span className="text-xs text-muted-foreground">inactivo</span>}
                     {m.role !== 'owner' && (
                       <button onClick={() => removeMember(m.memberId)}
                         className="p-1 text-muted-foreground hover:text-red-500 transition-colors">
@@ -1157,21 +1155,21 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           {/* Lists + Subscribers */}
           <div className="bg-card border border-border rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-              <h2 className="font-semibold text-foreground">Subscriber Lists</h2>
+              <h2 className="font-semibold text-foreground">Listas de suscriptores</h2>
               <button onClick={() => setShowListForm(!showListForm)}
                 className="flex items-center gap-1 text-sm text-primary hover:underline">
-                <span className="material-icons text-sm">add</span> New List
+                <span className="material-icons text-sm">add</span> Nueva lista
               </button>
             </div>
 
             {showListForm && (
               <form onSubmit={createList} className="flex gap-3 p-4 border-b border-border">
                 <input required value={listForm.name} onChange={e => setListForm(p => ({ ...p, name: e.target.value }))}
-                  placeholder="List name" className={ic} />
+                  placeholder="Nombre de la lista" className={ic} />
                 <input value={listForm.description} onChange={e => setListForm(p => ({ ...p, description: e.target.value }))}
-                  placeholder="Description (optional)" className={ic} />
-                <button type="submit" className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90">Create</button>
-                <button type="button" onClick={() => setShowListForm(false)} className="px-3 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancel</button>
+                  placeholder="Descripción (opcional)" className={ic} />
+                <button type="submit" className="px-3 py-2 bg-foreground text-background rounded-md text-sm hover:bg-foreground/90">Crear</button>
+                <button type="button" onClick={() => setShowListForm(false)} className="px-3 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
               </form>
             )}
 
@@ -1179,15 +1177,15 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               {/* List column */}
               <div className="divide-y divide-border">
                 {!emailLoaded ? (
-                  <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+                  <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
                 ) : lists.length === 0 ? (
-                  <p className="p-6 text-sm text-muted-foreground">No lists yet.</p>
+                  <p className="p-6 text-sm text-muted-foreground">Aún no hay listas.</p>
                 ) : lists.map(list => (
                   <div key={list.id} onClick={() => openList(list)}
                     className={`flex items-center justify-between px-5 py-3 cursor-pointer hover:bg-accent transition-colors ${selectedList?.id === list.id ? 'bg-accent' : ''}`}>
                     <div>
                       <p className="text-sm font-medium text-foreground">{list.name}</p>
-                      <p className="text-xs text-muted-foreground">{list.subscriberCount} subscriber{list.subscriberCount !== 1 ? 's' : ''}</p>
+                      <p className="text-xs text-muted-foreground">{list.subscriberCount} suscriptor{list.subscriberCount !== 1 ? 'es' : ''}</p>
                     </div>
                     <button onClick={e => { e.stopPropagation(); deleteList(list.id); }}
                       className="p-1 text-muted-foreground hover:text-red-500 transition-colors">
@@ -1200,21 +1198,21 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               {/* Subscribers column */}
               <div>
                 {!selectedList ? (
-                  <p className="p-6 text-sm text-muted-foreground">Select a list to manage subscribers.</p>
+                  <p className="p-6 text-sm text-muted-foreground">Selecciona una lista para gestionar suscriptores.</p>
                 ) : (
                   <>
                     <form onSubmit={addSubscriber} className="flex gap-2 p-4 border-b border-border">
                       <input required type="email" value={subForm.email} onChange={e => setSubForm(p => ({ ...p, email: e.target.value }))}
-                        placeholder="Email" className={`${ic} flex-1`} />
+                        placeholder="Correo" className={`${ic} flex-1`} />
                       <input value={subForm.name} onChange={e => setSubForm(p => ({ ...p, name: e.target.value }))}
-                        placeholder="Name" className={`${ic} w-28`} />
-                      <button type="submit" disabled={subSaving} className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm hover:bg-primary/90 disabled:opacity-50">
+                        placeholder="Nombre" className={`${ic} w-28`} />
+                      <button type="submit" disabled={subSaving} className="px-3 py-2 bg-foreground text-background rounded-md text-sm hover:bg-foreground/90 disabled:opacity-50">
                         <span className="material-icons text-base">add</span>
                       </button>
                     </form>
                     <div className="divide-y divide-border max-h-64 overflow-y-auto">
                       {subscribers.length === 0 ? (
-                        <p className="p-4 text-sm text-muted-foreground">No subscribers yet.</p>
+                        <p className="p-4 text-sm text-muted-foreground">Aún no hay suscriptores.</p>
                       ) : subscribers.map(s => (
                         <div key={s.id} className="flex items-center justify-between px-4 py-2.5">
                           <div>
@@ -1239,10 +1237,10 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
           {/* Campaigns */}
           <div className="bg-card border border-border rounded-lg overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-              <h2 className="font-semibold text-foreground">Campaigns</h2>
+              <h2 className="font-semibold text-foreground">Campañas</h2>
               <button onClick={() => setShowCampForm(!showCampForm)}
                 className="flex items-center gap-1 text-sm text-primary hover:underline">
-                <span className="material-icons text-sm">add</span> New Campaign
+                <span className="material-icons text-sm">add</span> Nueva campaña
               </button>
             </div>
 
@@ -1250,43 +1248,43 @@ export default function ClientDetailPage({ params }: { params: Promise<{ id: str
               <form onSubmit={createCampaign} className="p-5 space-y-4 border-b border-border">
                 {campError && <p className="text-sm text-red-600">{campError}</p>}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div><label className="block text-xs font-medium text-foreground mb-1">Internal Name *</label>
+                  <div><label className="block text-xs font-medium text-foreground mb-1">Nombre interno *</label>
                     <input required value={campForm.name} onChange={e => setCampForm(p => ({ ...p, name: e.target.value }))} className={ic} /></div>
-                  <div><label className="block text-xs font-medium text-foreground mb-1">Subject *</label>
+                  <div><label className="block text-xs font-medium text-foreground mb-1">Asunto *</label>
                     <input required value={campForm.subject} onChange={e => setCampForm(p => ({ ...p, subject: e.target.value }))} className={ic} /></div>
-                  <div><label className="block text-xs font-medium text-foreground mb-1">From Name *</label>
+                  <div><label className="block text-xs font-medium text-foreground mb-1">Nombre del remitente *</label>
                     <input required value={campForm.fromName} onChange={e => setCampForm(p => ({ ...p, fromName: e.target.value }))} className={ic} /></div>
-                  <div><label className="block text-xs font-medium text-foreground mb-1">From Email *</label>
+                  <div><label className="block text-xs font-medium text-foreground mb-1">Correo del remitente *</label>
                     <input required type="email" value={campForm.fromEmail} onChange={e => setCampForm(p => ({ ...p, fromEmail: e.target.value }))} className={ic} /></div>
-                  <div><label className="block text-xs font-medium text-foreground mb-1">List *</label>
+                  <div><label className="block text-xs font-medium text-foreground mb-1">Lista *</label>
                     <select required value={campForm.listId} onChange={e => setCampForm(p => ({ ...p, listId: e.target.value }))} className={ic}>
-                      <option value="">Select a list…</option>
+                      <option value="">Selecciona una lista…</option>
                       {lists.map(l => <option key={l.id} value={l.id}>{l.name} ({l.subscriberCount})</option>)}
                     </select></div>
-                  <div className="sm:col-span-2"><label className="block text-xs font-medium text-foreground mb-1">HTML Content *</label>
+                  <div className="sm:col-span-2"><label className="block text-xs font-medium text-foreground mb-1">Contenido HTML *</label>
                     <textarea required value={campForm.htmlContent} onChange={e => setCampForm(p => ({ ...p, htmlContent: e.target.value }))}
-                      rows={6} className={`${ic} font-mono text-xs`} placeholder="<h1>Hello</h1><p>Your message here...</p>" /></div>
+                      rows={6} className={`${ic} font-mono text-xs`} placeholder="<h1>Hola</h1><p>Tu mensaje aquí...</p>" /></div>
                 </div>
                 <div className="flex gap-2">
-                  <button type="submit" disabled={campSaving} className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-                    {campSaving ? 'Saving…' : 'Create Campaign'}
+                  <button type="submit" disabled={campSaving} className="px-4 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
+                    {campSaving ? 'Guardando…' : 'Crear campaña'}
                   </button>
-                  <button type="button" onClick={() => setShowCampForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancel</button>
+                  <button type="button" onClick={() => setShowCampForm(false)} className="px-4 py-2 border border-border rounded-md text-sm text-muted-foreground hover:bg-accent">Cancelar</button>
                 </div>
               </form>
             )}
 
             {!emailLoaded ? (
-              <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+              <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
             ) : campaigns.length === 0 ? (
-              <p className="p-8 text-sm text-muted-foreground text-center">No campaigns yet.</p>
+              <p className="p-8 text-sm text-muted-foreground text-center">Aún no hay campañas.</p>
             ) : (
               <table className="w-full text-sm">
                 <thead><tr className="border-b border-border bg-muted/40">
-                  <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Campaign</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-muted-foreground hidden sm:table-cell">List</th>
-                  <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Status</th>
-                  <th className="text-right px-4 py-2.5 font-medium text-muted-foreground hidden md:table-cell">Open Rate</th>
+                  <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Campaña</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-muted-foreground hidden sm:table-cell">Lista</th>
+                  <th className="text-left px-4 py-2.5 font-medium text-muted-foreground">Estado</th>
+                  <th className="text-right px-4 py-2.5 font-medium text-muted-foreground hidden md:table-cell">Tasa de apertura</th>
                   <th className="px-4 py-2.5"></th>
                 </tr></thead>
                 <tbody className="divide-y divide-border">

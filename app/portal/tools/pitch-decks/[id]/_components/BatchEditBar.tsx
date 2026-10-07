@@ -27,16 +27,14 @@ export function BatchEditBar({ selectedCount, totalSlides, prompt, generating, o
             onClick={onSelectAll}
             className="text-xs text-primary hover:text-primary/80 transition-colors"
           >
-            {selectedCount === totalSlides ? 'Deselect all' : 'Select all'}
+            {selectedCount === totalSlides ? 'Deseleccionar todo' : 'Seleccionar todo'}
           </button>
           <span className="text-border">|</span>
           <button
             type="button"
             onClick={onClear}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         </div>
         <div className="flex items-center gap-2 sm:flex-1">
           <div className="flex-1 relative">
@@ -45,7 +43,7 @@ export function BatchEditBar({ selectedCount, totalSlides, prompt, generating, o
               type="text"
               value={prompt}
               onChange={(e) => onPromptChange(e.target.value)}
-              placeholder="Apply to selected slides... e.g. 'Make the tone more formal'"
+              placeholder="Aplicar a las diapositivas seleccionadas… ej. «Que el tono sea más formal»"
               className="w-full pl-10 pr-3 py-2.5 bg-background border border-border rounded-lg text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               disabled={generating}
             />
@@ -53,12 +51,12 @@ export function BatchEditBar({ selectedCount, totalSlides, prompt, generating, o
           <button
             type="submit"
             disabled={generating || !prompt.trim()}
-            className="px-3 sm:px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium disabled:opacity-50 shrink-0 flex items-center gap-1.5"
+            className="px-3 sm:px-4 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium disabled:opacity-50 shrink-0 flex items-center gap-1.5"
           >
             {generating ? (
               <><span className="material-icons animate-spin text-base">autorenew</span><span className="hidden sm:inline">Editing {selectedCount}...</span></>
             ) : (
-              <><span className="material-icons text-base">edit_note</span><span className="hidden sm:inline">Edit {selectedCount} Slides</span><span className="sm:hidden">Edit {selectedCount}</span></>
+              <><span className="material-icons text-base">edit_note</span><span className="hidden sm:inline">Editar {selectedCount} diapositivas</span><span className="sm:hidden">Editar {selectedCount}</span></>
             )}
           </button>
         </div>

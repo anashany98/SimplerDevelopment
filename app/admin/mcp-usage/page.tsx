@@ -99,10 +99,10 @@ function formatBytes(n: number) {
 function relativeTime(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
   const m = Math.round(diff / 60_000);
-  if (m < 60) return `${m}m ago`;
+  if (m < 60) return `hace ${m} min`;
   const h = Math.round(m / 60);
-  if (h < 24) return `${h}h ago`;
-  return `${Math.round(h / 24)}d ago`;
+  if (h < 24) return `hace ${h} h`;
+  return `hace ${Math.round(h / 24)} días`;
 }
 
 const WINDOWS = [1, 7, 14, 30] as const;
@@ -128,10 +128,10 @@ export default function AdminMcpUsagePage() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">MCP Usage</h1>
+          <h1 className="text-2xl font-bold text-foreground">Uso de MCP</h1>
           <p className="text-muted-foreground mt-1">
-            Per-tool, per-client telemetry from the portal MCP server. Token costs are estimates
-            (~3 chars/token for JSON; reconciliation against count_tokens API arrives in Round 4a).
+            Telemetría por herramienta y por cliente del servidor MCP del portal. Los costes de tokens son estimaciones
+            (~3 caracteres/token para JSON; la reconciliación con la API count_tokens llega en la ronda 4a).
           </p>
         </div>
         <div className="flex gap-1 bg-muted/50 rounded-lg p-1">
@@ -151,37 +151,37 @@ export default function AdminMcpUsagePage() {
 
       {loading || !data ? (
         <div className="text-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin text-3xl">progress_activity</span>
-          <p className="mt-2">Loading MCP usage…</p>
+          <span className="material-icons animate-spin text-3xl">autorenew</span>
+          <p className="mt-2">Cargando uso de MCP…</p>
         </div>
       ) : (
         <>
           {/* Summary cards: window total + today so-far */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="bg-card border border-border rounded-xl p-5">
-              <p className="text-sm text-muted-foreground">Total calls</p>
+              <p className="text-sm text-muted-foreground">Llamadas totales</p>
               <p className="text-2xl font-bold text-foreground mt-1">{formatNumber(data.summary.totalCalls)}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">last {data.summary.windowDays}d</p>
+              <p className="text-xs text-muted-foreground mt-0.5">últimos {data.summary.windowDays} d</p>
             </div>
             <div className="bg-card border border-border rounded-xl p-5">
-              <p className="text-sm text-muted-foreground">Estimated tokens</p>
+              <p className="text-sm text-muted-foreground">Tokens estimados</p>
               <p className="text-2xl font-bold text-foreground mt-1">{formatTokens(data.summary.totalTokens)}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">@ {data.costPerMTokUsd.toFixed(2)}/MTok input</p>
+              <p className="text-xs text-muted-foreground mt-0.5">@ {data.costPerMTokUsd.toFixed(2)}/MTok de entrada</p>
             </div>
             <div className="bg-card border border-border rounded-xl p-5">
-              <p className="text-sm text-muted-foreground">Estimated cost</p>
+              <p className="text-sm text-muted-foreground">Coste estimado</p>
               <p className="text-2xl font-bold text-foreground mt-1">{formatUsd(data.summary.estimatedCostUsd)}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">last {data.summary.windowDays}d</p>
+              <p className="text-xs text-muted-foreground mt-0.5">últimos {data.summary.windowDays} d</p>
             </div>
             <div className="bg-card border border-border rounded-xl p-5">
-              <p className="text-sm text-muted-foreground">Error rate</p>
+              <p className="text-sm text-muted-foreground">Tasa de errores</p>
               <p className={`text-2xl font-bold mt-1 ${data.summary.errorRate > 0.05 ? 'text-red-600' : 'text-foreground'}`}>
                 {(data.summary.errorRate * 100).toFixed(1)}%
               </p>
-              <p className="text-xs text-muted-foreground mt-0.5">{formatNumber(data.summary.totalErrors)} errored</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{formatNumber(data.summary.totalErrors)} con error</p>
             </div>
             <div className="bg-card border border-border rounded-xl p-5">
-              <p className="text-sm text-muted-foreground">Today so far</p>
+              <p className="text-sm text-muted-foreground">Hoy hasta ahora</p>
               <p className="text-2xl font-bold text-foreground mt-1">{formatNumber(data.todaySoFar.calls)}</p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {formatTokens(data.todaySoFar.tokens)} tok · {formatUsd(data.todaySoFar.estimatedCostUsd)}
@@ -192,16 +192,16 @@ export default function AdminMcpUsagePage() {
           {/* Daily sparkline (text-only — no chart lib in repo) */}
           {data.dailySeries.length > 0 && (
             <div className="bg-card border border-border rounded-xl p-5">
-              <h2 className="font-semibold text-foreground mb-3">Daily totals</h2>
+              <h2 className="font-semibold text-foreground mb-3">Totales diarios</h2>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="text-left">
                     <tr className="text-xs uppercase tracking-wider text-muted-foreground">
-                      <th className="pr-6 pb-2">Day</th>
-                      <th className="pr-6 pb-2">Calls</th>
+                      <th className="pr-6 pb-2">Día</th>
+                      <th className="pr-6 pb-2">Llamadas</th>
                       <th className="pr-6 pb-2">Tokens</th>
-                      <th className="pr-6 pb-2">Errors</th>
-                      <th className="pb-2">Est. cost</th>
+                      <th className="pr-6 pb-2">Errores</th>
+                      <th className="pb-2">Coste est.</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -226,19 +226,19 @@ export default function AdminMcpUsagePage() {
             {/* Top clients */}
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-border">
-                <h2 className="font-semibold text-foreground">Top clients by tokens</h2>
+                <h2 className="font-semibold text-foreground">Clientes con más tokens</h2>
               </div>
               {data.topClients.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground text-sm">No data yet.</div>
+                <div className="p-8 text-center text-muted-foreground text-sm">Aún no hay datos.</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead className="bg-muted/50 border-b border-border">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Calls</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Llamadas</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tokens</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Est. cost</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Errors</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Coste est.</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Errores</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -261,19 +261,19 @@ export default function AdminMcpUsagePage() {
             {/* Top tools */}
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-border">
-                <h2 className="font-semibold text-foreground">Top tools by tokens</h2>
+                <h2 className="font-semibold text-foreground">Herramientas con más tokens</h2>
               </div>
               {data.topTools.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground text-sm">No data yet.</div>
+                <div className="p-8 text-center text-muted-foreground text-sm">Aún no hay datos.</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead className="bg-muted/50 border-b border-border">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tool</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Calls</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Avg tok</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">p95 tok</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Max</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Herramienta</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Llamadas</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tok. medio</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tok. p95</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Máx.</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -284,7 +284,7 @@ export default function AdminMcpUsagePage() {
                           {t.truncationRisk && (
                             <span
                               className="ml-2 inline-block text-[10px] px-1.5 py-0.5 rounded font-medium bg-red-100 text-red-700"
-                              title="At least one response exceeded ~25k tokens — Claude Code silently truncates above that"
+                              title="Al menos una respuesta superó ~25k tokens — Claude Code trunca silenciosamente por encima de eso"
                             >
                               TRUNC
                             </span>
@@ -306,17 +306,17 @@ export default function AdminMcpUsagePage() {
             {/* Slow tools */}
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-border">
-                <h2 className="font-semibold text-foreground">Slowest tools (p95 duration)</h2>
+                <h2 className="font-semibold text-foreground">Herramientas más lentas (duración p95)</h2>
               </div>
               {data.slowTools.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground text-sm">No data yet.</div>
+                <div className="p-8 text-center text-muted-foreground text-sm">Aún no hay datos.</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead className="bg-muted/50 border-b border-border">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tool</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Herramienta</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">p95</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Calls</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Llamadas</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -337,17 +337,17 @@ export default function AdminMcpUsagePage() {
             {/* Recent errors */}
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-border">
-                <h2 className="font-semibold text-foreground">Recent errors</h2>
+                <h2 className="font-semibold text-foreground">Errores recientes</h2>
               </div>
               {data.recentErrors.length === 0 ? (
-                <div className="p-8 text-center text-muted-foreground text-sm">No errors recorded.</div>
+                <div className="p-8 text-center text-muted-foreground text-sm">No hay errores registrados.</div>
               ) : (
                 <table className="w-full text-sm">
                   <thead className="bg-muted/50 border-b border-border">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">When</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tool</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cuándo</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Herramienta</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Error</th>
                     </tr>
                   </thead>

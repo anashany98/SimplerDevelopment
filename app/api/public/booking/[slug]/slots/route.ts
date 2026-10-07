@@ -12,14 +12,14 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
   const staffId = searchParams.get('staffId');
 
   if (!dateStr || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    return NextResponse.json({ success: false, message: 'Valid date parameter required (YYYY-MM-DD)' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'Se requiere una fecha válida (AAAA-MM-DD).' }, { status: 400 });
   }
 
   const [page] = await db.select().from(bookingPages)
     .where(and(eq(bookingPages.slug, slug), eq(bookingPages.active, true)))
     .limit(1);
 
-  if (!page) return NextResponse.json({ success: false, message: 'Booking page not found' }, { status: 404 });
+  if (!page) return NextResponse.json({ success: false, message: 'Página de reservas no encontrada.' }, { status: 404 });
 
   const requestedDate = new Date(dateStr + 'T00:00:00');
   const now = new Date();

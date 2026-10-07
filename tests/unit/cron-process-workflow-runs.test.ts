@@ -553,6 +553,59 @@ describe('process-workflow-runs — failure and retry', () => {
     expect(updatedRun.status).toBe('failed');
     expect(updatedRun.completedAt).toBeInstanceOf(Date);
   });
+
+  it('re-claims a failed step once its backoff window has elapsed', async () => {
+    const step = makeStep({
+      id: 1,
+      status: 'failed',
+      attemptCount: 1,
+      nextRetryAt: new Date(Date.now() - 1000),
+    });
+    state.workflowRunSteps.push(step);
+    state.workflowRuns.push(makeRun({ id: 10, status: 'running' }));
+    state.workflows.push(makeWorkflow({ id: 5 }));
+
+    mockExecuteAction.mockResolvedValue({
+      status: 'success',
+      output: { ok: true },
+      durationMs: 1,
+    });
+
+    const { body } = await callHandler();
+
+    // The main pass picks the due retry up with no manual reset.
+    expect(body.processed).toBe(1);
+    expect(state.workflowRunSteps[0].status).toBe('completed');
+    expect(state.workflowRuns[0].status).toBe('completed');
+  });
+
+  it('parks pending/retrying sibling steps when the run dead-letters', async () => {
+    const failing = makeStep({ id: 1, attemptCount: 2 });
+    const pendingSibling = makeStep({ id: 2, nodeId: 'act2', status: 'pending' });
+    const retrySibling = makeStep({
+      id: 3,
+      nodeId: 'act3',
+      status: 'failed',
+      attemptCount: 1,
+      nextRetryAt: new Date(Date.now() - 1000),
+    });
+    state.workflowRunSteps.push(failing, pendingSibling, retrySibling);
+    state.workflowRuns.push(makeRun({ id: 10, status: 'running' }));
+
+    mockExecuteAction.mockResolvedValue({
+      status: 'failed',
+      output: { error: 'fatal error' },
+      durationMs: 1,
+    });
+
+    const { body } = await callHandler();
+
+    expect(body.deadLettered).toBe(1);
+    // Siblings must not execute against a failed run — neither the pending
+    // one nor the one whose retry window had elapsed.
+    expect(state.workflowRunSteps.find((s) => s.id === 2)?.status).toBe('dead_letter');
+    expect(state.workflowRunSteps.find((s) => s.id === 3)?.status).toBe('dead_letter');
+  });
 });
 
 // ── Tests: stuck-run recovery ─────────────────────────────────────────────────

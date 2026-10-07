@@ -91,16 +91,16 @@ test.describe('Portal CRM Deals Page — refactor baseline @crm @ui @critical', 
       }
     });
 
-    await page.getByRole('button', { name: /Add Deal/ }).click();
+    await page.getByRole('button', { name: /Añadir negocio/ }).click();
     // Form labels are not associated via htmlFor in the current page —
     // address inputs by their position inside the New Deal form.
-    const newDealForm = page.locator('form').filter({ has: page.getByRole('heading', { name: 'New Deal' }) });
+    const newDealForm = page.locator('form').filter({ has: page.getByRole('heading', { name: 'Nuevo negocio' }) });
     await expect(newDealForm).toBeVisible();
     // First text input is "Title *", first number input is "Value ($) *".
     await newDealForm.locator('input[type="text"], input:not([type])').first().fill(dealTitle);
     await newDealForm.locator('input[type="number"]').first().fill('1234.56');
     // The form auto-selects pipeline + first stage when opened, so just submit.
-    await newDealForm.getByRole('button', { name: /Create Deal/ }).click();
+    await newDealForm.getByRole('button', { name: /Crear negocio/ }).click();
 
     // The form closes and the kanban refreshes. The new card title becomes visible.
     await expect(page.getByText(dealTitle)).toBeVisible({ timeout: 10_000 });
@@ -130,17 +130,17 @@ test.describe('Portal CRM Deals Page — refactor baseline @crm @ui @critical', 
     // ── Open the drawer by clicking the card
     await page.getByText(dealTitle).click();
     // The "Save Changes" button only mounts inside the slide-over Details tab.
-    await expect(page.getByRole('button', { name: /Save Changes/ })).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole('button', { name: /Guardar cambios/ })).toBeVisible({ timeout: 10_000 });
     // Close drawer by clicking the backdrop overlay (top-level fixed div).
     await page.locator('.fixed.inset-0').first().click({ position: { x: 5, y: 5 } });
-    await expect(page.getByRole('button', { name: /Save Changes/ })).toBeHidden({ timeout: 5_000 });
+    await expect(page.getByRole('button', { name: /Guardar cambios/ })).toBeHidden({ timeout: 5_000 });
 
     // ── Filter by status — flip to Won, our open deal disappears
     const wonReq = page.waitForResponse(
       (res) => res.url().includes('/api/portal/crm/deals?') && res.url().includes('status=won'),
       { timeout: 15_000 },
     );
-    await page.getByRole('button', { name: 'Won', exact: true }).click();
+    await page.getByRole('button', { name: 'Ganados', exact: true }).click();
     await wonReq;
     await expect(page.getByText(dealTitle)).toHaveCount(0);
 
@@ -149,7 +149,7 @@ test.describe('Portal CRM Deals Page — refactor baseline @crm @ui @critical', 
       (res) => res.url().includes('/api/portal/crm/deals?') && res.url().includes('status=open'),
       { timeout: 15_000 },
     );
-    await page.getByRole('button', { name: 'Open', exact: true }).click();
+    await page.getByRole('button', { name: 'Abiertos', exact: true }).click();
     await openReq;
     await expect(page.getByText(dealTitle)).toBeVisible();
   });

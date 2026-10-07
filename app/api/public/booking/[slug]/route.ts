@@ -46,7 +46,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
     .where(eq(bookingPages.slug, slug))
     .limit(1);
 
-  if (!page) return NextResponse.json({ success: false, message: 'Booking page not found' }, { status: 404 });
+    if (!page) return NextResponse.json({ success: false, message: 'Página de reservas no encontrada.' }, { status: 404 });
 
   // An inactive booking page is invisible to the public — approving one is what
   // flips active=true. A reviewer holding a live approval link for THIS page

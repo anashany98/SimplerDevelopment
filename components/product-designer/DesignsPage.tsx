@@ -30,7 +30,7 @@ export const DesignsPage: React.FC<DesignsPageProps> = ({
   const list = Array.isArray(designs) ? designs : [];
   
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -80,9 +80,7 @@ export const DesignsPage: React.FC<DesignsPageProps> = ({
                     onClick={() => onEdit(d)}
                     className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors"
                     type="button"
-                  >
-                    Edit
-                  </button>
+                  >Editar</button>
                   {onClone && (
                     <button
                       onClick={() => onClone(d)}

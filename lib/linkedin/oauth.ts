@@ -1,7 +1,7 @@
 /**
  * LinkedIn OAuth 2.0 (OpenID Connect) helpers — Phase A: personal-profile posting.
  *
- * Auth model: SimplerDevelopment owns ONE LinkedIn app ("Sign In with LinkedIn
+ * Auth model: CRM AGENTS owns ONE LinkedIn app ("Sign In with LinkedIn
  * using OpenID Connect" + "Share on LinkedIn"). A member authorizes it and we
  * post AS that member to their own profile via the `w_member_social` scope.
  * No tenant concept (unlike Microsoft/Azure). Organization/company-page posting

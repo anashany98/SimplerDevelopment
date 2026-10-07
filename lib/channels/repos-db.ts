@@ -35,6 +35,7 @@ export async function ensureWebchatConnection(
   const findConnection = async () => {
     const [connection] = await db.select().from(channelConnections).where(and(
       eq(channelConnections.clientId, clientId),
+      eq(channelConnections.channel, 'webchat'),
       eq(channelConnections.provider, 'webchat'),
       eq(channelConnections.externalAccountId, externalAccountId),
     )).limit(1);
@@ -46,6 +47,7 @@ export async function ensureWebchatConnection(
     .insert(channelConnections)
     .values({
       clientId,
+      channel: 'webchat',
       provider: 'webchat',
       externalAccountId,
       status: 'connected',
@@ -53,6 +55,7 @@ export async function ensureWebchatConnection(
     .onConflictDoNothing({
       target: [
         channelConnections.clientId,
+        channelConnections.channel,
         channelConnections.provider,
         channelConnections.externalAccountId,
       ],

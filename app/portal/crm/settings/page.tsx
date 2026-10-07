@@ -17,37 +17,37 @@ import { pBtnPrimary } from '@/components/portal/portal-ui';
 const CRM_AUTOMATION_PRESETS: AutomationPreset[] = [
   {
     key: 'deal_won_notification',
-    name: 'Deal Won Notification',
-    description: 'Create a task to kick off onboarding when a deal is marked as won',
+    name: 'Aviso de negocio ganado',
+    description: 'Crea una tarea para arrancar el onboarding cuando un negocio se marca como ganado',
     icon: 'celebration',
     trigger: { event: 'crm.deal.won' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Deal won: {{event.title}} - Start onboarding', body: 'Deal "{{event.title}}" has been won! Begin onboarding process for the client.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Negocio ganado: {{event.title}} - Iniciar onboarding', body: '¡El negocio "{{event.title}}" se ha ganado! Inicia el proceso de onboarding para el cliente.' } }],
   },
   {
     key: 'deal_lost_review',
-    name: 'Deal Lost Review',
-    description: 'Create a review task when a deal is lost to analyze what went wrong',
+    name: 'Revisión de negocio perdido',
+    description: 'Crea una tarea de revisión cuando un negocio se pierde para analizar qué salió mal',
     icon: 'rate_review',
     trigger: { event: 'crm.deal.lost' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Deal lost review: {{event.title}}', body: 'Deal "{{event.title}}" was lost. Schedule a review to understand what happened and improve the process.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Revisión de negocio perdido: {{event.title}}', body: 'El negocio "{{event.title}}" se ha perdido. Programa una revisión para entender qué pasó y mejorar el proceso.' } }],
   },
   {
     key: 'new_contact_task',
-    name: 'New Contact Follow-up',
-    description: 'Create a follow-up task when a new contact is added to the CRM',
+    name: 'Seguimiento de nuevo contacto',
+    description: 'Crea una tarea de seguimiento cuando se añade un nuevo contacto al CRM',
     icon: 'person_add',
     trigger: { event: 'crm.contact.created' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Follow up with new contact: {{event.name}}', body: 'New contact added: {{event.name}} ({{event.email}}). Reach out within 24 hours.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Seguimiento con nuevo contacto: {{event.name}}', body: 'Nuevo contacto añadido: {{event.name}} ({{event.email}}). Contacta dentro de 24 horas.' } }],
     settings: [
       {
         key: 'followUpDelay',
-        label: 'Follow up within',
+        label: 'Seguimiento dentro de',
         type: 'select',
         options: [
-          { value: '0', label: 'Immediately' },
-          { value: '3600', label: '1 hour' },
-          { value: '86400', label: '1 day' },
-          { value: '172800', label: '2 days' },
+          { value: '0', label: 'Inmediatamente' },
+          { value: '3600', label: '1 hora' },
+          { value: '86400', label: '1 día' },
+          { value: '172800', label: '2 días' },
         ],
         defaultValue: '0',
         mapsTo: { actionIndex: 0, paramKey: 'delay' },
@@ -56,19 +56,19 @@ const CRM_AUTOMATION_PRESETS: AutomationPreset[] = [
   },
   {
     key: 'deal_stage_change',
-    name: 'Deal Stage Change Alert',
-    description: 'Get notified when a deal moves to a new pipeline stage',
+    name: 'Aviso de cambio de etapa',
+    description: 'Recibe un aviso cuando un negocio pasa a una nueva etapa del pipeline',
     icon: 'swap_horiz',
     trigger: { event: 'crm.deal.updated' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'Deal moved: {{event.title}}', body: 'Deal "{{event.title}}" has been updated. Review the new stage and plan next steps.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Negocio movido: {{event.title}}', body: 'El negocio "{{event.title}}" se ha actualizado. Revisa la nueva etapa y planifica los siguientes pasos.' } }],
   },
   {
     key: 'deal_created_project',
-    name: 'Auto-Create Project on Deal Won',
-    description: 'Automatically create a project when a deal is won to track delivery',
+    name: 'Crear proyecto automáticamente al ganar un negocio',
+    description: 'Crea automáticamente un proyecto cuando un negocio se gana para hacer seguimiento de la entrega',
     icon: 'view_kanban',
     trigger: { event: 'crm.deal.won' },
-    actions: [{ tool: 'create_support_ticket', params: { subject: 'New project needed: {{event.title}}', body: 'Deal "{{event.title}}" was won. A project should be created to track delivery.' } }],
+    actions: [{ tool: 'create_support_ticket', params: { subject: 'Nuevo proyecto necesario: {{event.title}}', body: 'El negocio "{{event.title}}" se ha ganado. Debería crearse un proyecto para hacer seguimiento de la entrega.' } }],
   },
 ];
 
@@ -101,11 +101,11 @@ type SettingsTab = 'pipelines' | 'tags' | 'custom-fields' | 'automations' | 'lea
 
 const SETTINGS_TABS: { value: SettingsTab; label: string; icon: string }[] = [
   { value: 'pipelines', label: 'Pipelines', icon: 'view_column' },
-  { value: 'tags', label: 'Tags', icon: 'sell' },
-  { value: 'custom-fields', label: 'Custom Fields', icon: 'tune' },
-  { value: 'automations', label: 'Automations', icon: 'bolt' },
-  { value: 'lead-scoring', label: 'Lead Scoring', icon: 'leaderboard' },
-  { value: 'notifications', label: 'Notifications', icon: 'notifications' },
+  { value: 'tags', label: 'Etiquetas', icon: 'sell' },
+  { value: 'custom-fields', label: 'Campos personalizados', icon: 'tune' },
+  { value: 'automations', label: 'Automatizaciones', icon: 'bolt' },
+  { value: 'lead-scoring', label: 'Puntuación de leads', icon: 'leaderboard' },
+  { value: 'notifications', label: 'Notificaciones', icon: 'notifications' },
 ];
 
 export default function CrmSettingsPage() {
@@ -172,7 +172,7 @@ export default function CrmSettingsPage() {
   }
 
   async function deletePipeline(id: number) {
-    if (!confirm('Delete this pipeline and all its stages? Deals will be unassigned.')) return;
+    if (!confirm('¿Eliminar este pipeline y todas sus etapas? Los negocios quedarán sin asignar.')) return;
     await fetch(`/api/portal/crm/pipelines/${id}`, { method: 'DELETE' });
     setPipelines(prev => prev.filter(p => p.id !== id));
     if (expandedPipelineId === id) setExpandedPipelineId(null);
@@ -211,7 +211,7 @@ export default function CrmSettingsPage() {
   }
 
   async function deleteStage(pipelineId: number, stageId: number) {
-    if (!confirm('Delete this stage? Deals in this stage will need to be reassigned.')) return;
+    if (!confirm('¿Eliminar esta etapa? Los negocios de esta etapa deberán reasignarse.')) return;
     await fetch(`/api/portal/crm/pipelines/${pipelineId}/stages/${stageId}`, { method: 'DELETE' });
     setPipelines(prev =>
       prev.map(p =>
@@ -269,7 +269,7 @@ export default function CrmSettingsPage() {
   }
 
   async function deleteTag(id: number) {
-    if (!confirm('Delete this tag?')) return;
+    if (!confirm('¿Eliminar esta etiqueta?')) return;
     await fetch(`/api/portal/crm/tags/${id}`, { method: 'DELETE' });
     setTags(prev => prev.filter(t => t.id !== id));
   }
@@ -284,7 +284,7 @@ export default function CrmSettingsPage() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <PortalPageHeader eyebrow="CRM" title="CRM Settings" subtitle="Manage pipelines, tags, fields, and automations" />
+      <PortalPageHeader eyebrow="CRM" title="Ajustes del CRM" subtitle="Gestiona pipelines, etiquetas, campos y automatizaciones" />
       {/* Tab nav */}
       <div className="flex border-b border-border overflow-x-auto">
         {SETTINGS_TABS.map(tab => (
@@ -308,13 +308,13 @@ export default function CrmSettingsPage() {
       <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
         <div>
           <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Pipelines</h2>
-          <p className="text-sm text-muted-foreground mt-1">Manage your deal pipelines and stages.</p>
+          <p className="text-sm text-muted-foreground mt-1">Gestiona tus pipelines de negocios y sus etapas.</p>
         </div>
 
         {/* Pipeline list */}
         <div className="space-y-3">
           {pipelines.length === 0 && (
-            <p className="text-sm text-muted-foreground py-4 text-center">No pipelines yet. Create one to get started.</p>
+            <p className="text-sm text-muted-foreground py-4 text-center">Aún no hay pipelines. Crea uno para empezar.</p>
           )}
           {pipelines.map(pipeline => (
             <div key={pipeline.id} className="border border-border rounded-xl overflow-hidden">
@@ -336,13 +336,13 @@ export default function CrmSettingsPage() {
                       onClick={() => updatePipelineName(pipeline.id)}
                       className="text-primary text-sm font-medium hover:underline"
                     >
-                      Save
+                      Guardar
                     </button>
                     <button
                       onClick={() => setEditingPipelineId(null)}
                       className="text-muted-foreground text-sm hover:text-foreground"
                     >
-                      Cancel
+                      Cancelar
                     </button>
                   </div>
                 ) : (
@@ -355,7 +355,7 @@ export default function CrmSettingsPage() {
                     </span>
                     {pipeline.name}
                     <span className="text-xs text-muted-foreground font-normal">
-                      ({(pipeline.stages ?? []).length} stage{(pipeline.stages ?? []).length !== 1 ? 's' : ''})
+                      ({(pipeline.stages ?? []).length} etapa{(pipeline.stages ?? []).length !== 1 ? 's' : ''})
                     </span>
                   </button>
                 )}
@@ -366,14 +366,14 @@ export default function CrmSettingsPage() {
                       setEditPipelineName(pipeline.name);
                     }}
                     className="p-1 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                    title="Rename"
+                    title="Renombrar"
                   >
                     <span className="material-icons text-base">edit</span>
                   </button>
                   <button
                     onClick={() => deletePipeline(pipeline.id)}
                     className="p-1 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                    title="Delete"
+                    title="Eliminar"
                   >
                     <span className="material-icons text-base">delete</span>
                   </button>
@@ -420,11 +420,11 @@ export default function CrmSettingsPage() {
                   {/* Add stage form */}
                   <form onSubmit={e => addStage(pipeline.id, e)} className="flex items-end gap-3 pt-2 border-t border-border">
                     <div className="flex-1">
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Stage Name</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre de la etapa</label>
                       <input
                         value={newStageName}
                         onChange={e => setNewStageName(e.target.value)}
-                        placeholder="e.g. Proposal"
+                        placeholder="p. ej. Propuesta"
                         className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
                       />
                     </div>
@@ -457,7 +457,7 @@ export default function CrmSettingsPage() {
                     >
                       {stageSaving && <span className="material-icons animate-spin text-xs">refresh</span>}
                       <span className="material-icons text-sm">add</span>
-                      Add
+                      Añadir
                     </button>
                   </form>
                 </div>
@@ -471,7 +471,7 @@ export default function CrmSettingsPage() {
           <input
             value={newPipelineName}
             onChange={e => setNewPipelineName(e.target.value)}
-            placeholder="New pipeline name..."
+            placeholder="Nombre del nuevo pipeline..."
             className="flex-1 rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
           />
           <button
@@ -480,7 +480,7 @@ export default function CrmSettingsPage() {
             className={pBtnPrimary}
           >
             {pipelineSaving && <span className="material-icons animate-spin text-sm">refresh</span>}
-            Create Pipeline
+            Crear pipeline
           </button>
         </form>
       </div>
@@ -490,14 +490,14 @@ export default function CrmSettingsPage() {
       {activeTab === 'tags' && (
       <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
         <div>
-          <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Tags</h2>
-          <p className="text-sm text-muted-foreground mt-1">Manage tags for organizing contacts.</p>
+          <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Etiquetas</h2>
+          <p className="text-sm text-muted-foreground mt-1">Gestiona las etiquetas para organizar tus contactos.</p>
         </div>
 
         {/* Tag list */}
         <div className="flex flex-wrap gap-2">
           {tags.length === 0 && (
-            <p className="text-sm text-muted-foreground">No tags yet.</p>
+            <p className="text-sm text-muted-foreground">Aún no hay etiquetas.</p>
           )}
           {tags.map(tag => (
             <span
@@ -522,7 +522,7 @@ export default function CrmSettingsPage() {
         {/* Add tag form */}
         <form onSubmit={createTag} className="flex items-end gap-3 pt-2 border-t border-border">
           <div className="flex-1">
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Tag Name</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre de la etiqueta</label>
             <input
               value={newTagName}
               onChange={e => setNewTagName(e.target.value)}
@@ -560,7 +560,7 @@ export default function CrmSettingsPage() {
             className={pBtnPrimary}
           >
             {tagSaving && <span className="material-icons animate-spin text-sm">refresh</span>}
-            Add Tag
+            Añadir etiqueta
           </button>
         </form>
       </div>
@@ -579,8 +579,8 @@ export default function CrmSettingsPage() {
         <ProductAutomationSettings
           productScope="crm"
           presets={CRM_AUTOMATION_PRESETS}
-          title="CRM Automations"
-          description="Automate follow-ups, notifications, and workflows for your deals and contacts"
+          title="Automatizaciones del CRM"
+          description="Automatiza seguimientos, avisos y flujos de trabajo para tus negocios y contactos"
         />
       </div>
       )}

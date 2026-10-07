@@ -225,7 +225,7 @@ describe('PublishingCalendar', () => {
     mockFetch.mockReset();
     setupFetchSuccess([]);
 
-    const prev = screen.getByRole('button', { name: /previous/i });
+    const prev = screen.getByRole('button', { name: /anterior/i });
     await act(async () => {
       fireEvent.click(prev);
     });
@@ -240,7 +240,7 @@ describe('PublishingCalendar', () => {
     mockFetch.mockReset();
     setupFetchSuccess([]);
 
-    const next = screen.getByRole('button', { name: /next/i });
+    const next = screen.getByRole('button', { name: /siguiente/i });
     await act(async () => {
       fireEvent.click(next);
     });
@@ -255,7 +255,7 @@ describe('PublishingCalendar', () => {
     // Navigate away first
     mockFetch.mockReset();
     setupFetchSuccess([]);
-    const prev = screen.getByRole('button', { name: /previous/i });
+    const prev = screen.getByRole('button', { name: /anterior/i });
     await act(async () => {
       fireEvent.click(prev);
     });
@@ -264,7 +264,7 @@ describe('PublishingCalendar', () => {
     // Now go back to today
     mockFetch.mockReset();
     setupFetchSuccess([]);
-    const todayBtn = screen.getByRole('button', { name: /today/i });
+    const todayBtn = screen.getByRole('button', { name: /hoy/i });
     await act(async () => {
       fireEvent.click(todayBtn);
     });
@@ -332,7 +332,7 @@ describe('PublishingCalendar', () => {
     mockFetch.mockReset();
     setupFetchSuccess([]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /previous/i }));
+      fireEvent.click(screen.getByRole('button', { name: /anterior/i }));
     });
     await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(1));
   });
@@ -354,7 +354,7 @@ describe('PublishingCalendar', () => {
     mockFetch.mockReset();
     setupFetchSuccess([]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /next/i }));
+      fireEvent.click(screen.getByRole('button', { name: /siguiente/i }));
     });
     await waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(1));
   });
@@ -372,7 +372,7 @@ describe('PublishingCalendar', () => {
     await waitFor(() => screen.getByText('A Post'));
     await waitFor(() => screen.getByText('An Email'));
 
-    const channelSelect = screen.getByRole('combobox', { name: /channel filter/i });
+    const channelSelect = screen.getByRole('combobox', { name: /filtrar por canal/i });
     // Filter to email_campaign only
     fireEvent.change(channelSelect, { target: { value: 'email_campaign' } });
 
@@ -388,7 +388,7 @@ describe('PublishingCalendar', () => {
     render(<PublishingCalendar {...DEFAULT_PROPS} />);
     await waitFor(() => screen.getByText('Draft Card'));
 
-    const stageSelect = screen.getByRole('combobox', { name: /stage filter/i });
+    const stageSelect = screen.getByRole('combobox', { name: /filtrar por etapa/i });
     fireEvent.change(stageSelect, { target: { value: 'Published' } });
 
     expect(screen.getByText('Published Card')).toBeInTheDocument();
@@ -405,11 +405,11 @@ describe('PublishingCalendar', () => {
     await waitFor(() => expect(mockFetch).toHaveBeenCalled());
     // Blog, Email, LinkedIn, Deck, Survey, Booking legend items
     expect(screen.getByText('Blog')).toBeInTheDocument();
-    expect(screen.getByText('Email')).toBeInTheDocument();
+    expect(screen.getByText('Correo')).toBeInTheDocument();
     expect(screen.getByText('LinkedIn')).toBeInTheDocument();
     expect(screen.getByText('Deck')).toBeInTheDocument();
-    expect(screen.getByText('Survey')).toBeInTheDocument();
-    expect(screen.getByText('Booking')).toBeInTheDocument();
+    expect(screen.getByText('Encuesta')).toBeInTheDocument();
+    expect(screen.getByText('Reserva')).toBeInTheDocument();
   });
 
   // -------------------------------------------------------------------------

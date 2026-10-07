@@ -44,13 +44,13 @@ export default function PathChartView({ chartId, onBack }: PathChartViewProps) {
           setSnapshot(res.data);
           setLoadState('ready');
         } else {
-          setErrorMessage(res?.message ?? 'Failed to load this chart.');
+          setErrorMessage(res?.message ?? 'No se pudo cargar este gráfico.');
           setLoadState('error');
         }
       })
       .catch(() => {
         if (!cancelled) {
-          setErrorMessage('Failed to load this chart.');
+          setErrorMessage('No se pudo cargar este gráfico.');
           setLoadState('error');
         }
       });
@@ -93,7 +93,7 @@ export default function PathChartView({ chartId, onBack }: PathChartViewProps) {
           style={{ color: THEME.ink2 }}
         >
           <span className="material-icons text-sm">arrow_back</span>
-          Charts
+          Gráficos
         </button>
         <span className="text-sm font-semibold truncate">
           {snapshot?.chart.title ?? '—'}
@@ -112,7 +112,7 @@ export default function PathChartView({ chartId, onBack }: PathChartViewProps) {
             style={{ borderColor: '#ECA83D88', color: '#ECA83D' }}
             data-testid="pathviz-reconnecting-badge"
           >
-            reconnecting…
+            reconectando…
           </span>
         )}
         <div className="flex-1" />
@@ -143,8 +143,8 @@ export default function PathChartView({ chartId, onBack }: PathChartViewProps) {
         <div className="flex-1 min-w-0 relative">
           {loadState === 'loading' && (
             <div className="p-16 text-center text-sm" style={{ color: THEME.ink3 }} data-testid="pathviz-chart-loading">
-              <span className="material-icons text-3xl align-middle mr-2 animate-spin">progress_activity</span>
-              Loading chart…
+              <span className="material-icons text-3xl align-middle mr-2 animate-spin">autorenew</span>
+              Cargando gráfico…
             </div>
           )}
           {loadState === 'error' && (

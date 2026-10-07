@@ -316,7 +316,7 @@ describe('CrmContactsPage', () => {
 
     it('renders the total contact count', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('5 contacts');
+      expect(container.textContent).toContain('5 contactos');
     });
 
     it('renders all contact rows', async () => {
@@ -337,10 +337,10 @@ describe('CrmContactsPage', () => {
 
     it('renders status badges including the unknown-status fallback', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('active');
-      expect(container.textContent).toContain('lead');
-      expect(container.textContent).toContain('customer');
-      expect(container.textContent).toContain('inactive');
+      expect(container.textContent).toContain('Activo');
+      expect(container.textContent).toContain('Prospecto');
+      expect(container.textContent).toContain('Cliente');
+      expect(container.textContent).toContain('Inactivo');
       expect(container.textContent).toContain('unknown');
     });
 
@@ -369,12 +369,12 @@ describe('CrmContactsPage', () => {
 
     it('renders the Add Contact header button', async () => {
       await renderPage();
-      expect(screen.getByText('Add Contact')).toBeTruthy();
+      expect(screen.getByText('Añadir contacto')).toBeTruthy();
     });
 
     it('renders the All Contacts default saved-view option', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('All Contacts');
+      expect(container.textContent).toContain('Todos los contactos');
     });
 
     it('renders saved-view names in the dropdown', async () => {
@@ -385,21 +385,21 @@ describe('CrmContactsPage', () => {
 
     it('renders all status filter options', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('All Statuses');
-      expect(container.textContent).toContain('Active');
-      expect(container.textContent).toContain('Inactive');
-      expect(container.textContent).toContain('Lead');
-      expect(container.textContent).toContain('Customer');
+      expect(container.textContent).toContain('Todos los estados');
+      expect(container.textContent).toContain('Activo');
+      expect(container.textContent).toContain('Inactivo');
+      expect(container.textContent).toContain('Prospecto');
+      expect(container.textContent).toContain('Cliente');
     });
 
     it('renders the All Companies select option', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('All Companies');
+      expect(container.textContent).toContain('Todas las empresas');
     });
 
     it('renders the search input', async () => {
       await renderPage();
-      const input = document.querySelector('input[placeholder="Search contacts..."]');
+      const input = document.querySelector('input[placeholder="Buscar contactos..."]');
       expect(input).toBeTruthy();
     });
 
@@ -424,9 +424,9 @@ describe('CrmContactsPage', () => {
       });
       const result = render(<CrmContactsPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No contacts found');
+        expect(result.container.textContent).toContain('No se encontraron contactos.');
       });
-      expect(screen.getByText('Add First Contact')).toBeTruthy();
+      expect(screen.getByText('Añadir primer contacto')).toBeTruthy();
     });
 
     it('Add First Contact button opens the inline form', async () => {
@@ -437,9 +437,9 @@ describe('CrmContactsPage', () => {
         return defaultFetch(url, init);
       });
       render(<CrmContactsPage />);
-      await waitFor(() => screen.getByText('Add First Contact'));
-      fireEvent.click(screen.getByText('Add First Contact'));
-      expect(screen.getByText('New Contact')).toBeTruthy();
+      await waitFor(() => screen.getByText('Añadir primer contacto'));
+      fireEvent.click(screen.getByText('Añadir primer contacto'));
+      expect(screen.getByText('Nuevo contacto')).toBeTruthy();
     });
 
     it('falls back to data.data array shape when data.contacts is missing', async () => {
@@ -464,7 +464,7 @@ describe('CrmContactsPage', () => {
       });
       const result = render(<CrmContactsPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('All Companies');
+        expect(result.container.textContent).toContain('Todas las empresas');
       });
     });
 
@@ -527,29 +527,29 @@ describe('CrmContactsPage', () => {
   describe('inline create form', () => {
     it('Add Contact toggles the form open', async () => {
       await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
-      expect(screen.getByText('New Contact')).toBeTruthy();
-      expect(screen.getByText('First Name *')).toBeTruthy();
-      expect(screen.getByText('Last Name *')).toBeTruthy();
+      fireEvent.click(screen.getByText('Añadir contacto'));
+      expect(screen.getByText('Nuevo contacto')).toBeTruthy();
+      expect(screen.getByText('Nombre *')).toBeTruthy();
+      expect(screen.getByText('Apellido *')).toBeTruthy();
     });
 
     it('Add Contact button toggles to Cancel when open', async () => {
       await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       // The header button now reads Cancel
-      expect(screen.getByText('Cancel')).toBeTruthy();
+      expect(screen.getByText('Cancelar')).toBeTruthy();
     });
 
     it('Cancel closes the form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
-      fireEvent.click(screen.getByText('Cancel'));
-      expect(screen.queryByText('New Contact')).toBeNull();
+      fireEvent.click(screen.getByText('Añadir contacto'));
+      fireEvent.click(screen.getByText('Cancelar'));
+      expect(screen.queryByText('Nuevo contacto')).toBeNull();
     });
 
     it('typing in first/last name updates inputs', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       const inputs = container.querySelectorAll('input');
       // first = first name, second = last name
       fireEvent.change(inputs[1], { target: { value: 'Jane' } });
@@ -560,7 +560,7 @@ describe('CrmContactsPage', () => {
 
     it('populates company select with fetched companies', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       // company options are fetched async by the mock's useEffect
       await waitFor(() => {
         expect(container.textContent).toContain('Acme');
@@ -570,13 +570,13 @@ describe('CrmContactsPage', () => {
 
     it('populates source select with all source options', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
-      expect(container.textContent).toContain('web');
-      expect(container.textContent).toContain('referral');
-      expect(container.textContent).toContain('cold call');
-      expect(container.textContent).toContain('event');
-      expect(container.textContent).toContain('social');
-      expect(container.textContent).toContain('other');
+      fireEvent.click(screen.getByText('Añadir contacto'));
+      expect(container.textContent).toContain('Web');
+      expect(container.textContent).toContain('Referido');
+      expect(container.textContent).toContain('Llamada en frío');
+      expect(container.textContent).toContain('Evento');
+      expect(container.textContent).toContain('Redes sociales');
+      expect(container.textContent).toContain('Otro');
     });
 
     it('submits the form and resets to closed on success', async () => {
@@ -586,7 +586,7 @@ describe('CrmContactsPage', () => {
       // @ts-ignore
       global.fetch = fetchSpy;
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       const inputs = container.querySelectorAll('input');
       fireEvent.change(inputs[1], { target: { value: 'Test' } });
       fireEvent.change(inputs[2], { target: { value: 'User' } });
@@ -600,7 +600,7 @@ describe('CrmContactsPage', () => {
         expect(post).toBeTruthy();
       });
       await waitFor(() => {
-        expect(screen.queryByText('New Contact')).toBeNull();
+        expect(screen.queryByText('Nuevo contacto')).toBeNull();
       });
     });
 
@@ -611,7 +611,7 @@ describe('CrmContactsPage', () => {
       // @ts-ignore
       global.fetch = fetchSpy;
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       const inputs = container.querySelectorAll('input');
       fireEvent.change(inputs[1], { target: { value: 'X' } });
       fireEvent.change(inputs[2], { target: { value: 'Y' } });
@@ -643,7 +643,7 @@ describe('CrmContactsPage', () => {
       // @ts-ignore
       global.fetch = fetchSpy;
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       const inputs = container.querySelectorAll('input');
       fireEvent.change(inputs[1], { target: { value: 'X' } });
       fireEvent.change(inputs[2], { target: { value: 'Y' } });
@@ -662,21 +662,20 @@ describe('CrmContactsPage', () => {
     it('shows API error message when create fails', async () => {
       setFetchHandler((url, init) => {
         if (url === '/api/portal/crm/contacts' && init?.method === 'POST') {
-          return jsonResponse({ success: false, message: 'Email taken' });
+          return jsonResponse({ success: false, message: 'Correo electrónico ya está registrado' });
         }
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       const inputs = container.querySelectorAll('input');
       fireEvent.change(inputs[1], { target: { value: 'X' } });
       fireEvent.change(inputs[2], { target: { value: 'Y' } });
       fireEvent.submit(container.querySelector('form')!);
       await waitFor(() => {
-        expect(screen.getByText('Email taken')).toBeTruthy();
-      });
+        expect(container.textContent).toContain('Correo electrónico ya está registrado');      });
       // Form should still be open after a failure
-      expect(screen.queryByText('New Contact')).toBeTruthy();
+      expect(screen.queryByText('Nuevo contacto')).toBeTruthy();
     });
 
     it('falls back to default error message when API returns no message', async () => {
@@ -687,13 +686,13 @@ describe('CrmContactsPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Add Contact'));
+      fireEvent.click(screen.getByText('Añadir contacto'));
       const inputs = container.querySelectorAll('input');
       fireEvent.change(inputs[1], { target: { value: 'X' } });
       fireEvent.change(inputs[2], { target: { value: 'Y' } });
       fireEvent.submit(container.querySelector('form')!);
       await waitFor(() => {
-        expect(screen.getByText('Failed to create contact.')).toBeTruthy();
+        expect(screen.getByText('No se pudo crear el contacto.')).toBeTruthy();
       });
     });
   });
@@ -711,7 +710,7 @@ describe('CrmContactsPage', () => {
         await Promise.resolve();
       });
       const searchInput = document.querySelector(
-        'input[placeholder="Search contacts..."]',
+        'input[placeholder="Buscar contactos..."]',
       ) as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'jane' } });
       await act(async () => {
@@ -760,13 +759,13 @@ describe('CrmContactsPage', () => {
       // Wait for the mock's async company fetch to populate option '100'
       await waitFor(() => {
         const companySelect = Array.from(container.querySelectorAll('select')).find(
-          (s) => Array.from(s.options).some((o) => o.textContent === 'All Companies'),
+          (s) => Array.from(s.options).some((o) => o.textContent === 'Todas las empresas'),
         ) as HTMLSelectElement;
         expect(companySelect).toBeTruthy();
         expect(Array.from(companySelect.options).some(o => o.value === '100')).toBe(true);
       });
       const companySelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Companies'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todas las empresas'),
       ) as HTMLSelectElement;
       fireEvent.change(companySelect, { target: { value: '100' } });
       await waitFor(() => {
@@ -819,7 +818,7 @@ describe('CrmContactsPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
       await waitFor(() => {
@@ -836,7 +835,7 @@ describe('CrmContactsPage', () => {
     it('selecting "All Contacts" clears filters', async () => {
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       // First apply view 11
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
@@ -854,7 +853,7 @@ describe('CrmContactsPage', () => {
     it('applying a saved view with no title still works', async () => {
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '12' } });
       // No exception thrown — saved view 12 has empty filters
@@ -864,13 +863,13 @@ describe('CrmContactsPage', () => {
     it('shows delete button only when a saved view is selected', async () => {
       const { container } = await renderPage();
       // No delete button initially
-      expect(container.querySelector('button[title="Delete saved view"]')).toBeNull();
+      expect(container.querySelector('button[title="Eliminar vista guardada"]')).toBeNull();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
       await waitFor(() => {
-        expect(container.querySelector('button[title="Delete saved view"]')).toBeTruthy();
+        expect(container.querySelector('button[title="Eliminar vista guardada"]')).toBeTruthy();
       });
     });
 
@@ -882,13 +881,13 @@ describe('CrmContactsPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const savedViewSelect = Array.from(container.querySelectorAll('select')).find(
-        (s) => Array.from(s.options).some((o) => o.textContent === 'All Contacts'),
+        (s) => Array.from(s.options).some((o) => o.textContent === 'Todos los contactos'),
       ) as HTMLSelectElement;
       fireEvent.change(savedViewSelect, { target: { value: '11' } });
       await waitFor(() => {
-        expect(container.querySelector('button[title="Delete saved view"]')).toBeTruthy();
+        expect(container.querySelector('button[title="Eliminar vista guardada"]')).toBeTruthy();
       });
-      const delBtn = container.querySelector('button[title="Delete saved view"]')!;
+      const delBtn = container.querySelector('button[title="Eliminar vista guardada"]')!;
       fireEvent.click(delBtn);
       await waitFor(() => {
         const call = fetchSpy.mock.calls.find(
@@ -910,7 +909,7 @@ describe('CrmContactsPage', () => {
       ) as HTMLSelectElement;
       fireEvent.change(statusSelect, { target: { value: 'active' } });
       await waitFor(() => {
-        expect(container.textContent).toContain('Save View');
+        expect(container.textContent).toContain('Guardar vista');
       });
     });
 
@@ -922,10 +921,10 @@ describe('CrmContactsPage', () => {
           Array.from(s.options).some((o) => o.value === ''),
       ) as HTMLSelectElement;
       fireEvent.change(statusSelect, { target: { value: 'active' } });
-      await waitFor(() => screen.getByText('Save View'));
-      fireEvent.click(screen.getByText('Save View'));
+      await waitFor(() => screen.getByText('Guardar vista'));
+      fireEvent.click(screen.getByText('Guardar vista'));
       const nameInput = document.querySelector(
-        'input[placeholder="View name..."]',
+        'input[placeholder="Nombre de la vista..."]',
       ) as HTMLInputElement;
       expect(nameInput).toBeTruthy();
     });
@@ -938,10 +937,10 @@ describe('CrmContactsPage', () => {
           Array.from(s.options).some((o) => o.value === ''),
       ) as HTMLSelectElement;
       fireEvent.change(statusSelect, { target: { value: 'active' } });
-      await waitFor(() => screen.getByText('Save View'));
-      fireEvent.click(screen.getByText('Save View'));
+      await waitFor(() => screen.getByText('Guardar vista'));
+      fireEvent.click(screen.getByText('Guardar vista'));
       const nameInput = document.querySelector(
-        'input[placeholder="View name..."]',
+        'input[placeholder="Nombre de la vista..."]',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'My View' } });
       // The close-X is the button without text inside the save form; find by parent form
@@ -950,7 +949,7 @@ describe('CrmContactsPage', () => {
       const closeBtn = buttons[buttons.length - 1]; // last button is the cancel/close
       fireEvent.click(closeBtn);
       expect(
-        document.querySelector('input[placeholder="View name..."]'),
+        document.querySelector('input[placeholder="Nombre de la vista..."]'),
       ).toBeNull();
     });
 
@@ -967,10 +966,10 @@ describe('CrmContactsPage', () => {
           Array.from(s.options).some((o) => o.value === ''),
       ) as HTMLSelectElement;
       fireEvent.change(statusSelect, { target: { value: 'active' } });
-      await waitFor(() => screen.getByText('Save View'));
-      fireEvent.click(screen.getByText('Save View'));
+      await waitFor(() => screen.getByText('Guardar vista'));
+      fireEvent.click(screen.getByText('Guardar vista'));
       const nameInput = document.querySelector(
-        'input[placeholder="View name..."]',
+        'input[placeholder="Nombre de la vista..."]',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: '  Active Only  ' } });
       const saveForm = nameInput.closest('form')!;
@@ -1002,10 +1001,10 @@ describe('CrmContactsPage', () => {
           Array.from(s.options).some((o) => o.value === ''),
       ) as HTMLSelectElement;
       fireEvent.change(statusSelect, { target: { value: 'active' } });
-      await waitFor(() => screen.getByText('Save View'));
-      fireEvent.click(screen.getByText('Save View'));
+      await waitFor(() => screen.getByText('Guardar vista'));
+      fireEvent.click(screen.getByText('Guardar vista'));
       const nameInput = document.querySelector(
-        'input[placeholder="View name..."]',
+        'input[placeholder="Nombre de la vista..."]',
       ) as HTMLInputElement;
       // submit without typing
       const saveForm = nameInput.closest('form')!;
@@ -1050,14 +1049,14 @@ describe('CrmContactsPage', () => {
       });
       const { container } = render(<CrmContactsPage />);
       await waitFor(() => {
-        expect(container.textContent).toContain('Page 1 of 3');
+        expect(container.textContent).toContain('Página 1 de 3');
       });
     });
 
     it('does not show pagination when there is only one page', async () => {
       const { container } = await renderPage();
       // total=5, limit=25 => 1 page => no pagination
-      expect(container.textContent).not.toContain('Page 1 of');
+      expect(container.textContent).not.toContain('Página 1 de');
     });
 
     it('Next page button is disabled on first page when there is only one page', async () => {
@@ -1079,7 +1078,7 @@ describe('CrmContactsPage', () => {
       global.fetch = fetchSpy;
       const result = render(<CrmContactsPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Page 1 of 4');
+        expect(result.container.textContent).toContain('Página 1 de 4');
       });
       // Find button labeled "2"
       const pageBtn = Array.from(result.container.querySelectorAll('button')).find(
@@ -1108,7 +1107,7 @@ describe('CrmContactsPage', () => {
       global.fetch = fetchSpy;
       const result = render(<CrmContactsPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Page 1 of 4');
+        expect(result.container.textContent).toContain('Página 1 de 4');
       });
       // The right-chevron button is the LAST button in the pagination row
       const allButtons = Array.from(

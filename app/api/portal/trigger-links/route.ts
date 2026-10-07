@@ -4,10 +4,8 @@
 // UNIQUE index so two concurrent inserts can never both win.
 
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { triggerLinks } from '@/lib/db/schema';
-import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { eq, desc, sql } from 'drizzle-orm';
 import { randomBytes } from 'node:crypto';
@@ -31,15 +29,9 @@ function isValidSlug(s: string): boolean {
 
 // GET /api/portal/trigger-links — list with click counts
 export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'read', scope: 'crm:read' });
+  const authResult = await authorizePortal({ action: 'read', scope: 'automations:read' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client } = authResult;
 
   // Single round-trip: derive click count via correlated subquery. Hard-code
   // outer-table column names here — see feedback_drizzle_correlated_subqueries
@@ -70,15 +62,9 @@ export async function GET() {
 // POST /api/portal/trigger-links — create a link, auto-generate slug if not
 // provided. Returns 409 on slug collision after retries (very unlikely).
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'write', scope: 'crm:write' });
+  const authResult = await authorizePortal({ action: 'write', scope: 'automations:write' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client, userId } = authResult;
 
   const body = await req.json().catch(() => ({}));
   const { destinationUrl, label, contactFieldKey } = body as {

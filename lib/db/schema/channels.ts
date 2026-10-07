@@ -17,10 +17,10 @@ import {
   uniqueIndex,
   index,
 } from 'drizzle-orm/pg-core';
-import { encryptedText } from './columns';
 import { users } from './auth';
 import { clients } from './sites';
 import { crmContacts } from './crm';
+import { channelConnections, channelOutbox } from './chat';
 
 export const CHANNEL_PROVIDERS = ['whatsapp', 'instagram', 'messenger', 'webchat', 'email'] as const;
 export type ChannelProvider = (typeof CHANNEL_PROVIDERS)[number];
@@ -54,49 +54,6 @@ export const CHANNEL_OUTBOX_STATUSES = [
   'failed',
 ] as const;
 export type ChannelOutboxStatus = (typeof CHANNEL_OUTBOX_STATUSES)[number];
-
-// ─── CONNECTIONS ──────────────────────────────────────────────────────────────
-// One row per tenant channel connection (a WABA phone number, an IG business
-// account, a Facebook page, a web widget, or an email address). `provider` is
-// the coarse channel; the adapter key (e.g. "meta-whatsapp") is derivable from
-// it. Credentials are JSON-stringified and encrypted at rest — never select
-// them back to the frontend.
-
-export const channelConnections = pgTable(
-  'channel_connections',
-  {
-    id: serial('id').primaryKey(),
-    clientId: integer('client_id')
-      .notNull()
-      .references(() => clients.id, { onDelete: 'cascade' }),
-    provider: varchar('provider', { length: 20 }).notNull(),
-    // Stable provider-scoped account id: WABA id, IG business id, page id,
-    // widget id, or email address. Combined with provider for idempotent
-    // connection upsert.
-    externalAccountId: varchar('external_account_id', { length: 255 }),
-    displayName: varchar('display_name', { length: 255 }),
-    status: varchar('status', { length: 20 }).default('incomplete').notNull(),
-    // JSON string of provider credentials (access token, phone_number_id,
-    // app secret, etc.) — encrypted at rest. Never returned to clients.
-    encryptedCredentials: encryptedText('encrypted_credentials'),
-    metadata: json('metadata').$type<Record<string, unknown>>().default({}).notNull(),
-    lastWebhookAt: timestamp('last_webhook_at', { withTimezone: true }),
-    lastInboundAt: timestamp('last_inbound_at', { withTimezone: true }),
-    lastOutboundAt: timestamp('last_outbound_at', { withTimezone: true }),
-    lastErrorAt: timestamp('last_error_at', { withTimezone: true }),
-    lastErrorCode: varchar('last_error_code', { length: 100 }),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  },
-  (t) => [
-    uniqueIndex('channel_connections_client_provider_account_idx').on(
-      t.clientId,
-      t.provider,
-      t.externalAccountId,
-    ),
-    index('channel_connections_client_provider_idx').on(t.clientId, t.provider),
-  ],
-);
 
 // ─── CONTACT IDENTITIES ───────────────────────────────────────────────────────
 // Maps every channel handle (phone, email, IG id, PSID, web visitor id) back to
@@ -186,55 +143,6 @@ export const channelConsent = pgTable(
   ],
 );
 
-// ─── OUTBOX ───────────────────────────────────────────────────────────────────
-// Durable, idempotent queue of outbound channel messages. One row per logical
-// send; retries are recorded on the same row (never insert a second row for the
-// same externalMessageId). Drained by a cron that scans queued/retrying rows
-// whose nextAttemptAt <= now().
-
-export const channelOutbox = pgTable(
-  'channel_outbox',
-  {
-    id: serial('id').primaryKey(),
-    clientId: integer('client_id')
-      .notNull()
-      .references(() => clients.id, { onDelete: 'cascade' }),
-    connectionId: integer('connection_id')
-      .notNull()
-      .references(() => channelConnections.id, { onDelete: 'cascade' }),
-    conversationId: integer('conversation_id'),
-    contactId: integer('contact_id').references(() => crmContacts.id, { onDelete: 'set null' }),
-    channel: varchar('channel', { length: 20 }).notNull(),
-    provider: varchar('provider', { length: 40 }).notNull(),
-    // Provider message id, once known; unique per (connection) for idempotency.
-    externalMessageId: varchar('external_message_id', { length: 255 }),
-    idempotencyKey: varchar('idempotency_key', { length: 255 }),
-    recipientIdentity: json('recipient_identity').$type<{ kind: string; value: string }>().notNull(),
-    senderIdentity: json('sender_identity').$type<{ kind: string; value: string }>(),
-    messageType: varchar('message_type', { length: 20 }).default('text').notNull(),
-    body: text('body'),
-    media: json('media').$type<unknown[]>(),
-    status: varchar('status', { length: 20 }).default('queued').notNull(),
-    attempts: integer('attempts').default(0).notNull(),
-    maxAttempts: integer('max_attempts').default(6).notNull(),
-    nextAttemptAt: timestamp('next_attempt_at', { withTimezone: true }).defaultNow().notNull(),
-    lastError: text('last_error'),
-    lastErrorCode: varchar('last_error_code', { length: 100 }),
-    sentAt: timestamp('sent_at', { withTimezone: true }),
-    deliveredAt: timestamp('delivered_at', { withTimezone: true }),
-    readAt: timestamp('read_at', { withTimezone: true }),
-    failedAt: timestamp('failed_at', { withTimezone: true }),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
-  },
-  (t) => [
-    uniqueIndex('channel_outbox_connection_external_idx').on(t.connectionId, t.externalMessageId),
-    uniqueIndex('channel_outbox_connection_key_idx').on(t.connectionId, t.idempotencyKey),
-    index('channel_outbox_due_idx').on(t.clientId, t.status, t.nextAttemptAt),
-  ],
-);
-
-export type ChannelConnection = typeof channelConnections.$inferSelect;
 export type NewChannelConnection = typeof channelConnections.$inferInsert;
 export type ContactIdentity = typeof contactIdentities.$inferSelect;
 export type NewContactIdentity = typeof contactIdentities.$inferInsert;

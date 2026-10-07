@@ -98,14 +98,14 @@ describe('ProjectRoadmapTab', () => {
     it('shows "No dated sprints yet" when no sprints returned', async () => {
       global.fetch = sprintResponse([]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
-      await waitFor(() => expect(screen.getByText('No dated sprints yet')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Aún no hay sprints con fechas')).toBeTruthy());
     });
 
     it('shows the help text about setting start/end dates', async () => {
       global.fetch = sprintResponse([]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() =>
-        expect(screen.getByText(/Set a startDate and endDate/)).toBeTruthy(),
+        expect(screen.getByText(/Define startDate y endDate/)).toBeTruthy(),
       );
     });
 
@@ -114,7 +114,7 @@ describe('ProjectRoadmapTab', () => {
         makeSprint({ startDate: null, endDate: null }),
       ]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
-      await waitFor(() => expect(screen.getByText('No dated sprints yet')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Aún no hay sprints con fechas')).toBeTruthy());
     });
 
     it('shows empty state if only one sprint has a date (range would collapse)', async () => {
@@ -125,8 +125,8 @@ describe('ProjectRoadmapTab', () => {
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       // Either empty state OR roadmap heading — just don't throw
       await waitFor(() => {
-        const heading = screen.queryByText('No dated sprints yet');
-        const roadmap = screen.queryByText('Roadmap');
+        const heading = screen.queryByText('Aún no hay sprints con fechas');
+        const roadmap = screen.queryByText('Hoja de ruta');
         expect(heading !== null || roadmap !== null).toBe(true);
       });
     });
@@ -143,7 +143,7 @@ describe('ProjectRoadmapTab', () => {
     it('renders the Roadmap heading', async () => {
       global.fetch = sprintResponse([sprint1, sprint2]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
-      await waitFor(() => expect(screen.getByText('Roadmap')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Hoja de ruta')).toBeTruthy());
     });
 
     it('renders an SVG with role="img"', async () => {
@@ -189,11 +189,11 @@ describe('ProjectRoadmapTab', () => {
       global.fetch = sprintResponse([sprint1, sprint2]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() => {
-        expect(screen.getByText('Planning')).toBeTruthy();
-        expect(screen.getByText('Active')).toBeTruthy();
-        expect(screen.getByText('Completed')).toBeTruthy();
-        expect(screen.getByText('Open card due')).toBeTruthy();
-        expect(screen.getByText('Done card')).toBeTruthy();
+        expect(screen.getByText('Planificación')).toBeTruthy();
+        expect(screen.getByText('Activo')).toBeTruthy();
+        expect(screen.getByText('Completado')).toBeTruthy();
+        expect(screen.getByText('Tarjeta abierta con vencimiento')).toBeTruthy();
+        expect(screen.getByText('Tarjeta completada')).toBeTruthy();
       });
     });
 
@@ -222,7 +222,7 @@ describe('ProjectRoadmapTab', () => {
       global.fetch = sprintResponse([sprint1, sprintWithCards]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() => {
-        expect(screen.getByText('2 cards')).toBeTruthy();
+        expect(screen.getByText('2 tarjetas')).toBeTruthy();
       });
     });
 
@@ -239,7 +239,7 @@ describe('ProjectRoadmapTab', () => {
       global.fetch = sprintResponse([sprint1, oneCardSprint]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() => {
-        expect(screen.getByText('1 card')).toBeTruthy();
+        expect(screen.getByText('1 tarjeta')).toBeTruthy();
       });
     });
   });
@@ -337,7 +337,7 @@ describe('ProjectRoadmapTab', () => {
       };
       global.fetch = sprintResponse([sprint]);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
-      await waitFor(() => screen.getByText('Roadmap'));
+      await waitFor(() => screen.getByText('Hoja de ruta'));
       const circles = document.querySelectorAll('circle');
       expect(circles.length).toBe(0);
     });
@@ -356,7 +356,7 @@ describe('ProjectRoadmapTab', () => {
       global.fetch = sprintResponse([sprint], backlog);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() =>
-        expect(screen.getByText(/2 backlog cards with due dates/)).toBeTruthy(),
+        expect(screen.getByText(/2 tarjetas del backlog con fecha límite/)).toBeTruthy(),
       );
     });
 
@@ -366,7 +366,7 @@ describe('ProjectRoadmapTab', () => {
       global.fetch = sprintResponse([sprint], backlog);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       await waitFor(() =>
-        expect(screen.getByText(/1 backlog card with due dates/)).toBeTruthy(),
+        expect(screen.getByText(/1 tarjeta del backlog con fecha límite/)).toBeTruthy(),
       );
     });
 
@@ -375,8 +375,8 @@ describe('ProjectRoadmapTab', () => {
       const backlog = [{ id: 700, dueDate: null, title: 'No due backlog' }];
       global.fetch = sprintResponse([sprint], backlog);
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
-      await waitFor(() => screen.getByText('Roadmap'));
-      expect(screen.queryByText(/backlog card/)).toBeNull();
+      await waitFor(() => screen.getByText('Hoja de ruta'));
+      expect(screen.queryByText(/del backlog/)).toBeNull();
     });
   });
 
@@ -392,18 +392,18 @@ describe('ProjectRoadmapTab', () => {
 
       render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
       // Should reach empty state without throwing
-      await waitFor(() => expect(screen.getByText('No dated sprints yet')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Aún no hay sprints con fechas')).toBeTruthy());
     });
 
     it('re-fetches when projectId changes', async () => {
       global.fetch = sprintResponse([]);
       const { rerender } = render(<ProjectRoadmapTab projectId={1} projectKey="PRJ" />);
-      await waitFor(() => screen.getByText('No dated sprints yet'));
+      await waitFor(() => screen.getByText('Aún no hay sprints con fechas'));
 
       const sprint = makeSprint({ startDate: '2025-01-01', endDate: '2025-06-01' });
       global.fetch = sprintResponse([sprint]);
       rerender(<ProjectRoadmapTab projectId={2} projectKey="PRJ" />);
-      await waitFor(() => expect(screen.getByText('Roadmap')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Hoja de ruta')).toBeTruthy());
     });
 
     it('month ticks are rendered for multi-month date ranges', async () => {

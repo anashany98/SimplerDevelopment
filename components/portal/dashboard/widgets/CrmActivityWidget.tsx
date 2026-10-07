@@ -37,7 +37,7 @@ export default async function CrmActivityWidget({
   if (activities.length === 0) {
     return (
       <div className="py-2 text-center">
-        <p className="text-sm text-muted-foreground mb-2">No CRM activity yet.</p>
+        <p className="text-sm text-muted-foreground mb-2">Aún no hay actividad en el CRM.</p>
         <Link href="/portal/crm" className="text-xs text-primary hover:underline">
           Log your first activity
         </Link>

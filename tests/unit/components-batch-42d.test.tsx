@@ -506,7 +506,7 @@ describe('SocialLinksBlockPreview', () => {
         onChange={() => {}}
       />,
     );
-    expect(screen.getByText('Add')).toBeInTheDocument();
+    expect(screen.getByText('Añadir')).toBeInTheDocument();
     expect(screen.getByText('Click to add social links')).toBeInTheDocument();
   });
 
@@ -519,7 +519,7 @@ describe('SocialLinksBlockPreview', () => {
         onChange={onChange}
       />,
     );
-    fireEvent.click(screen.getByText('Add'));
+    fireEvent.click(screen.getByText('Añadir'));
     expect(onChange).toHaveBeenCalledWith({ links: [{ platform: 'facebook', url: '' }] });
   });
 
@@ -540,7 +540,7 @@ describe('SocialLinksBlockPreview', () => {
         onChange={() => {}}
       />,
     );
-    expect(screen.queryByText('Add')).toBeNull();
+    expect(screen.queryByText('Añadir')).toBeNull();
   });
 
   it('selected mode renders a select + url input per link', () => {

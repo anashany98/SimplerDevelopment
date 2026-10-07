@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import {
   resolveTargetDir,
   targetDirState,
@@ -11,8 +11,7 @@ import {
 
 describe('resolveTargetDir', () => {
   it('resolves the dir arg against cwd', () => {
-    const cwd = join(tmpdir(), 'cli-workspace');
-    expect(resolveTargetDir(['create', 'my-app'], cwd)).toBe(join(cwd, 'my-app'));
+    expect(resolveTargetDir(['create', 'my-app'], '/home/x')).toBe(resolve('/home/x', 'my-app'));
   });
 
   it('throws when no dir is given', () => {

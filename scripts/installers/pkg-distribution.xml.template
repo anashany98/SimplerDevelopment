@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Distribution definition for the SimplerDevelopment Claude Skills macOS
+  Distribution definition for the CRM AGENTS Claude Skills macOS
   installer. Values like @@VERSION@@ are substituted by build-mac-pkg.sh
   before productbuild reads this file.
 
@@ -10,7 +10,7 @@
   in /private/tmp/ and postinstall copies into $HOME/.claude/skills/.
 -->
 <installer-gui-script minSpecVersion="2">
-  <title>SimplerDevelopment Skills</title>
+  <title>CRM AGENTS Skills</title>
 
   <welcome    file="welcome.html"    mime-type="text/html"/>
   <conclusion file="conclusion.html" mime-type="text/html"/>

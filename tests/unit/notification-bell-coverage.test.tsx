@@ -218,11 +218,11 @@ async function flush() {
 }
 
 // Prefix match, not equality: the bell's accessible name carries the unread count
-// ("Notifications, 3 unread") so screen-reader users get the state, not just the
+// ("Notificaciones, 3 sin leer") so screen-reader users get the state, not just the
 // control. An exact-match selector silently stops finding the button the moment a
 // fixture has unread items.
 async function openDropdown(container: HTMLElement) {
-  const bell = container.querySelector('button[aria-label^="Notifications"]') as HTMLElement;
+  const bell = container.querySelector('button[aria-label^="Notificaciones"]') as HTMLElement;
   await act(async () => {
     fireEvent.click(bell);
     await Promise.resolve();
@@ -256,7 +256,7 @@ describe('NotificationBell — bell button + badge', () => {
   it('renders the bell button with aria-label', async () => {
     const { container } = render(<NotificationBell />);
     await flush();
-    expect(container.querySelector('button[aria-label^="Notifications"]')).toBeTruthy();
+    expect(container.querySelector('button[aria-label^="Notificaciones"]')).toBeTruthy();
   });
 
   it('does not show a badge when both feeds report zero unread', async () => {
@@ -302,7 +302,7 @@ describe('NotificationBell — open / close', () => {
     await flush();
     const bell = await openDropdown(container);
     expect(bell.getAttribute('aria-expanded')).toBe('true');
-    expect(container.textContent).toContain('Notifications');
+    expect(container.textContent).toContain('Notificaciones');
     expect(container.querySelector('button[aria-pressed]')).toBeTruthy();
   });
 
@@ -397,7 +397,7 @@ describe('NotificationBell — fetching', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('No notifications yet');
+    expect(container.textContent).toContain('Aún no hay notificaciones');
   });
 });
 
@@ -422,7 +422,7 @@ describe('NotificationBell — unread filter query params', () => {
     });
 
     expect(filterBtn.getAttribute('aria-pressed')).toBe('true');
-    expect(container.textContent).toContain('Showing unread');
+    expect(container.textContent).toContain('Mostrando sin leer');
 
     const urls = fetchMock.mock.calls.map((c) => c[0]).filter((u): u is string => typeof u === 'string');
     expect(urls.some((u) => u.startsWith('/api/portal/notifications?') && u.includes('unread=1'))).toBe(true);
@@ -440,7 +440,7 @@ describe('NotificationBell — empty state', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('No notifications yet');
+    expect(container.textContent).toContain('Aún no hay notificaciones');
   });
 
   it('shows "No unread notifications" when filter is on and both feeds are empty', async () => {
@@ -454,7 +454,7 @@ describe('NotificationBell — empty state', () => {
       await Promise.resolve();
       await Promise.resolve();
     });
-    expect(container.textContent).toContain('No unread notifications');
+    expect(container.textContent).toContain('No hay notificaciones sin leer');
   });
 });
 
@@ -468,7 +468,7 @@ describe('NotificationBell — grouping', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('Projects & Tasks');
+    expect(container.textContent).toContain('Proyectos y tareas');
   });
 
   it('groups a billing.usage_alert PM row under "Billing"', async () => {
@@ -481,7 +481,7 @@ describe('NotificationBell — grouping', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('Billing');
+    expect(container.textContent).toContain('Facturación');
   });
 
   it('groups CRM deal entityType under "Deals"', async () => {
@@ -489,7 +489,7 @@ describe('NotificationBell — grouping', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('Deals');
+    expect(container.textContent).toContain('Negocios');
   });
 
   it('groups CRM mcp_approval entityType under "Pending approvals"', async () => {
@@ -502,7 +502,7 @@ describe('NotificationBell — grouping', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('Pending approvals');
+    expect(container.textContent).toContain('Aprobaciones pendientes');
   });
 
   it('groups CRM mention type with null entityType under "Mentions"', async () => {
@@ -512,7 +512,7 @@ describe('NotificationBell — grouping', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('Mentions');
+    expect(container.textContent).toContain('Menciones');
   });
 
   it('renders items from BOTH feeds together in the dropdown', async () => {
@@ -525,8 +525,8 @@ describe('NotificationBell — grouping', () => {
     await openDropdown(container);
     expect(container.textContent).toContain('PM Item');
     expect(container.textContent).toContain('CRM Item');
-    expect(container.textContent).toContain('Projects & Tasks');
-    expect(container.textContent).toContain('Deals');
+    expect(container.textContent).toContain('Proyectos y tareas');
+    expect(container.textContent).toContain('Negocios');
   });
 
   it('renders groups in newest-first order when items belong to different groups', async () => {
@@ -556,8 +556,8 @@ describe('NotificationBell — grouping', () => {
     await flush();
     await openDropdown(container);
     const html = container.innerHTML;
-    expect(html.indexOf('Projects &amp; Tasks')).toBeGreaterThan(-1);
-    expect(html.indexOf('Projects &amp; Tasks')).toBeLessThan(html.indexOf('Deals'));
+    expect(html.indexOf('Proyectos y tareas')).toBeGreaterThan(-1);
+    expect(html.indexOf('Proyectos y tareas')).toBeLessThan(html.indexOf('Negocios'));
   });
 
   it('renders items newest-first within the same group', async () => {
@@ -599,7 +599,7 @@ describe('NotificationBell — markAllRead', () => {
     await flush();
     await openDropdown(container);
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark all read'),
+      b.textContent?.includes('Marcar todas como leídas'),
     );
     expect(btn).toBeTruthy();
   });
@@ -610,7 +610,7 @@ describe('NotificationBell — markAllRead', () => {
     await flush();
     await openDropdown(container);
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark all read'),
+      b.textContent?.includes('Marcar todas como leídas'),
     );
     expect(btn).toBeUndefined();
   });
@@ -629,7 +629,7 @@ describe('NotificationBell — markAllRead', () => {
     await openDropdown(container);
 
     const markAllBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark all read'),
+      b.textContent?.includes('Marcar todas como leídas'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(markAllBtn);
@@ -640,7 +640,7 @@ describe('NotificationBell — markAllRead', () => {
     expect(onPmMarkRead).toHaveBeenCalledWith({ all: true });
     expect(onCrmMarkAll).toHaveBeenCalled();
     // Badge cleared + no unread dots remain
-    expect(container.querySelector('[aria-label="Unread"]')).toBeNull();
+    expect(container.querySelector('[aria-label="Sin leer"]')).toBeNull();
     const badge = Array.from(container.querySelectorAll('span')).find(
       (s) => /^\d+\+?$/.test(s.textContent?.trim() ?? ''),
     );
@@ -657,14 +657,14 @@ describe('NotificationBell — markAllRead', () => {
     await flush();
     await openDropdown(container);
     const markAllBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark all read'),
+      b.textContent?.includes('Marcar todas como leídas'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(markAllBtn);
       await Promise.resolve();
       await Promise.resolve();
     });
-    expect(container.querySelector('button[aria-label^="Notifications"]')).toBeTruthy();
+    expect(container.querySelector('button[aria-label^="Notificaciones"]')).toBeTruthy();
   });
 });
 
@@ -929,7 +929,7 @@ describe('NotificationBell — per-item Mark read button', () => {
     await flush();
     await openDropdown(container);
     const markReadBtns = Array.from(container.querySelectorAll('button')).filter((b) =>
-      b.textContent?.includes('Mark read'),
+      b.textContent?.includes('Marcar como leída'),
     );
     expect(markReadBtns.length).toBe(2);
   });
@@ -942,7 +942,7 @@ describe('NotificationBell — per-item Mark read button', () => {
     await flush();
     await openDropdown(container);
     const markReadBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark read'),
+      b.textContent?.includes('Marcar como leída'),
     );
     expect(markReadBtn).toBeUndefined();
   });
@@ -957,7 +957,7 @@ describe('NotificationBell — per-item Mark read button', () => {
     await flush();
     await openDropdown(container);
     const markReadBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark read'),
+      b.textContent?.includes('Marcar como leída'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(markReadBtn);
@@ -967,7 +967,7 @@ describe('NotificationBell — per-item Mark read button', () => {
     expect(mockRouterPush).not.toHaveBeenCalled();
     // Item should now show as read (no more "Mark read" button)
     const after = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark read'),
+      b.textContent?.includes('Marcar como leída'),
     );
     expect(after).toBeUndefined();
   });
@@ -982,7 +982,7 @@ describe('NotificationBell — per-item Mark read button', () => {
     await flush();
     await openDropdown(container);
     const markReadBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark read'),
+      b.textContent?.includes('Marcar como leída'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(markReadBtn);
@@ -1005,7 +1005,7 @@ describe('NotificationBell — relative time', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('just now');
+    expect(container.textContent).toContain('ahora mismo');
   });
 
   it('renders minutes-ago for a CRM item several minutes old', async () => {
@@ -1018,7 +1018,7 @@ describe('NotificationBell — relative time', () => {
     const { container } = render(<NotificationBell />);
     await flush();
     await openDropdown(container);
-    expect(container.textContent).toContain('m ago');
+    expect(container.textContent).toContain('hace 5 min');
   });
 });
 
@@ -1109,7 +1109,7 @@ describe('NotificationBell — staff sessions (PUX-090 guard split)', () => {
     await openDropdown(container);
 
     const markAllBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Mark all read'),
+      b.textContent?.includes('Marcar todas como leídas'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(markAllBtn);
@@ -1247,7 +1247,7 @@ describe('NotificationBell — desktop notifications', () => {
     await flush();
     await openDropdown(container);
     const toggle = container.querySelector('button[role="switch"]') as HTMLButtonElement;
-    expect(toggle.textContent).toContain('Blocked');
+    expect(toggle.textContent).toContain('Bloqueadas');
     expect(toggle.disabled).toBe(true);
   });
 });

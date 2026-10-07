@@ -1,23 +1,25 @@
 /**
  * Company Brain service entitlement.
  *
- * Brain is gated behind the `'brain'` service category (or any active `'bundle'`
- * subscription). Use {@link isBrainEntitled} to check at the page/layout level
- * and {@link requireBrainEntitlement} from API routes — the latter returns a
- * `NextResponse` with a `402 Payment Required` envelope when the client has not
- * paid for the SKU yet.
+ * Brain access resolves through the canonical client-entitlement helper
+ * ({@link isEntitledToDomain} → `lib/billing/entitlements.ts`), which covers
+ * every lane in one place:
+ *   1. `billingMode = 'agency'` (legacy default) bypasses module gating.
+ *   2. An active `'bundle'` row grants everything.
+ *   3. A legacy `'subscription'` row grants everything.
+ *   4. A plan-tier row grants the tier's curated domain set.
+ *   5. An active `'brain'` SKU row grants brain.
+ *   6. `clients.brainTrialUntil > now()` grants brain (PLG trial).
+ *   7. When `PAYMENTS_DISABLED` is true, paid subscriptions do not gate portal modules.
  *
- * Bypasses (in priority order):
- *   1. `BRAIN_ENTITLEMENT_BYPASS=1` — explicit opt-out, used by integration tests
- *      whose tenants are created without subscriptions.
- *   2. `process.env.VITEST` / `VITEST_POOL_ID` set — vitest runtime, treat as
- *      bypassed so existing brain integration specs pass without seeding the
- *      `brain` SKU into every test schema.
- *   3. `clients.brainTrialUntil` is non-null and `> now()` — self-serve trials
- *      and product-led-growth sign-ups get brain access without an explicit
- *      `clientServices` row. Expired trials fall through to the next check.
- *   4. Active `clientServices` row joined to a `services` row whose category is
- *      `'brain'` or `'bundle'`.
+ * Test bypasses (kept for integration specs that don't seed subscriptions):
+ *   - `BRAIN_ENTITLEMENT_BYPASS=1`, or
+ *   - `process.env.VITEST` / `VITEST_POOL_ID` set.
+ *
+ * Use {@link isBrainEntitled} at the page/layout level and
+ * {@link requireBrainEntitlement} from API routes — the latter returns a
+ * `NextResponse` with a `402 Payment Required` envelope when the client is
+ * not entitled.
  *
  * Rollout complete: every authenticated `/api/portal/brain/**` route now calls
  * `requireBrainEntitlement` directly. The cron handler at
@@ -26,10 +28,9 @@
  */
 
 import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { clients, clientServices, services } from '@/lib/db/schema';
-import { and, eq } from 'drizzle-orm';
+import { clients } from '@/lib/db/schema';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
+import { isEntitledToDomain } from '@/lib/billing/entitlements';
 
 type Client = typeof clients.$inferSelect;
 type PortalRole = 'owner' | 'admin' | 'member' | 'viewer';
@@ -48,34 +49,18 @@ function isTestRuntime(): boolean {
 }
 
 /**
- * Returns true if the client has an active subscription to the `brain` service
- * (or an active `bundle` that includes brain), is on an active self-serve
- * trial (`clients.brainTrialUntil > now()`), or if a runtime bypass is set.
+ * Returns true if the client can access Brain: an active `brain` /
+ * `bundle` / legacy-subscription row, a plan tier that includes brain, an
+ * active self-serve trial (`clients.brainTrialUntil > now()`), an agency-mode
+ * client, payments-disabled module access, or a runtime test bypass.
  */
 export async function isBrainEntitled(clientId: number): Promise<boolean> {
   if (isTestRuntime()) return true;
 
-  // Active self-serve trial — wins over the absence of a clientServices row.
-  // Expired trials silently fall through to the paid-subscription check.
-  const [trialRow] = await db
-    .select({ brainTrialUntil: clients.brainTrialUntil })
-    .from(clients)
-    .where(eq(clients.id, clientId))
-    .limit(1);
-  if (trialRow?.brainTrialUntil && trialRow.brainTrialUntil > new Date()) {
-    return true;
-  }
-
-  const rows = await db
-    .select({ category: services.category })
-    .from(clientServices)
-    .innerJoin(services, eq(services.id, clientServices.serviceId))
-    .where(and(
-      eq(clientServices.clientId, clientId),
-      eq(clientServices.status, 'active'),
-    ));
-
-  return rows.some((r) => r.category === BRAIN_SERVICE_CATEGORY || r.category === 'bundle');
+  // Canonical resolution — see module docstring. The old hand-rolled check
+  // here ignored agency mode and paywalled clients the platform considers
+  // fully entitled (the same bug class as app/portal/email/layout.tsx).
+  return isEntitledToDomain(clientId, 'brain');
 }
 
 /**

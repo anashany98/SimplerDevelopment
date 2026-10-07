@@ -18,9 +18,10 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { clientServices, services } from '@/lib/db/schema';
+import { services } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
+import { isEntitledToDomain } from '@/lib/billing/entitlements';
 import { formatCents } from '@/lib/portal';
 
 const EMAIL_SERVICE_CATEGORY = 'email' as const;
@@ -40,16 +41,12 @@ function isTestRuntime(): boolean {
 async function isEmailEntitled(clientId: number): Promise<boolean> {
   if (isTestRuntime()) return true;
 
-  const rows = await db
-    .select({ category: services.category })
-    .from(clientServices)
-    .innerJoin(services, eq(services.id, clientServices.serviceId))
-    .where(and(
-      eq(clientServices.clientId, clientId),
-      eq(clientServices.status, 'active'),
-    ));
-
-  return rows.some((r) => r.category === EMAIL_SERVICE_CATEGORY || r.category === 'bundle');
+  // Canonical resolution (lib/billing/entitlements.ts) in one place: agency
+  // mode bypasses module gating entirely, bundle / legacy subscription grant
+  // everything, and saas clients get the domain when their active services or
+  // plan tier includes it. This layout previously re-implemented the check
+  // and paywalled agency clients that the platform considers fully entitled.
+  return isEntitledToDomain(clientId, 'email');
 }
 
 export default async function EmailLayout({ children }: { children: React.ReactNode }) {
@@ -80,24 +77,24 @@ function EmailUpsell({
 }: {
   emailService: typeof services.$inferSelect | null;
 }) {
-  const price = emailService ? formatCents(emailService.price) : '$19';
+  const price = emailService ? formatCents(emailService.price) : formatCents(1900);
   const cycle: string = emailService?.billingCycle ?? 'monthly';
   const description = emailService?.description
-    ?? 'Send beautiful email campaigns to your audience. Manage subscriber lists, design emails with a rich editor, and track opens, clicks, and unsubscribes — all from your client portal.';
+    ?? 'Envía campañas de email bonitas a tu audiencia. Gestiona listas de suscriptores, diseña emails con un editor enriquecido y sigue aperturas, clics y bajas — todo desde tu portal de cliente.';
   const features = (emailService?.features as string[] | undefined) ?? [
-    'Unlimited subscriber lists',
-    'Visual email campaign builder',
-    'Open & click tracking',
-    'Unsubscribe management',
-    'Custom sending domain',
-    'Campaign scheduling',
+    'Listas de suscriptores ilimitadas',
+    'Constructor visual de campañas',
+    'Seguimiento de aperturas y clics',
+    'Gestión de bajas',
+    'Dominio de envío personalizado',
+    'Programación de campañas',
   ];
 
   return (
     <div className="max-w-3xl mx-auto py-12 px-4">
       <div className="bg-card border border-border rounded-2xl p-8 text-center">
         <span className="material-icons text-5xl text-primary mb-3 block">mail</span>
-        <h1 className="text-2xl font-bold text-foreground mb-2">Email Marketing</h1>
+        <h1 className="text-2xl font-bold text-foreground mb-2">Email marketing</h1>
         <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-6">{description}</p>
 
         <div className="grid sm:grid-cols-2 gap-3 max-w-2xl mx-auto mb-6 text-left">
@@ -118,28 +115,26 @@ function EmailUpsell({
           {emailService ? (
             <Link
               href={`/portal/services/${emailService.id}/request`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
             >
-              <span className="material-icons text-base">shopping_cart</span>
-              Subscribe to Email Marketing
-            </Link>
+              <span className="material-icons text-base">shopping_cart</span>Suscribirse a Email marketing</Link>
           ) : (
             <Link
               href="/portal/services"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90"
             >
               <span className="material-icons text-base">storefront</span>
-              View Services
+              Ver servicios
             </Link>
           )}
 
           <Link href="/portal/dashboard" className="text-xs text-muted-foreground hover:underline">
-            Back to dashboard
+            Volver al panel
           </Link>
         </div>
 
         <p className="text-xs text-muted-foreground mt-6">
-          Already subscribed but seeing this page? Refresh — provisioning can take a moment after checkout completes.
+          ¿Ya estás suscrito pero ves esta página? Actualiza — el aprovisionamiento puede tardar un momento tras completar el pago.
         </p>
       </div>
     </div>

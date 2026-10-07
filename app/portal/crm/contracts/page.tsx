@@ -74,12 +74,12 @@ const STATUS_ICON: Record<string, string> = {
 
 // Humanized labels so the raw snake_case enum never leaks into the UI unformatted.
 const STATUS_LABELS: Record<string, string> = {
-  draft:            'Draft',
-  sent:              'Sent',
-  partially_signed:  'Partially Signed',
-  fully_executed:    'Fully Executed',
-  voided:            'Voided',
-  expired:           'Expired',
+  draft:            'Borrador',
+  sent:              'Enviado',
+  partially_signed:  'Firmado parcialmente',
+  fully_executed:    'Totalmente firmado',
+  voided:            'Anulado',
+  expired:           'Expirado',
 };
 
 function humanizeStatus(status: string): string {
@@ -113,7 +113,7 @@ function SignersBadge({ signers }: { signers: { total: number; signed: number } 
 
 export default function ContractsPageWrapper() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Loading...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Cargando...</div>}>
       <ContractsPage />
     </Suspense>
   );
@@ -221,7 +221,7 @@ function ContractsPage() {
       });
       const d = await res.json();
       if (!d.success) {
-        setFormError(d.message ?? 'Failed to create contract.');
+        setFormError(d.message ?? 'No se pudo crear el contrato.');
         setSaving(false);
         return;
       }
@@ -230,7 +230,7 @@ function ContractsPage() {
       resetForm();
       router.push(`/portal/crm/contracts/${d.data.id}`);
     } catch {
-      setFormError('Network error. Please try again.');
+      setFormError('Error de red. Inténtalo de nuevo.');
       setSaving(false);
     }
   }
@@ -253,15 +253,15 @@ function ContractsPage() {
       {/* ─── Header ──────────────────────────────────────────────────────────── */}
       <PortalPageHeader
         eyebrow="CRM"
-        title="Contracts"
-        subtitle="Create and manage client contracts with e-signature support"
+        title="Contratos"
+        subtitle="Crea y gestiona contratos de clientes con firma electrónica"
         actions={
           <button
             onClick={() => { setShowForm(f => !f); if (showForm) resetForm(); }}
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'New Contract'}
+            {showForm ? 'Cancelar' : 'Nuevo contrato'}
           </button>
         }
       />
@@ -280,21 +280,21 @@ function ContractsPage() {
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 text-muted-foreground text-xs font-medium mb-1">
             <span className="material-icons text-base">edit_note</span>
-            Drafts
+            Borradores
           </div>
           <p className="text-2xl font-bold text-foreground">{draftCount}</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 text-blue-600 text-xs font-medium mb-1">
             <span className="material-icons text-base">send</span>
-            Sent
+            Enviados
           </div>
           <p className="text-2xl font-bold text-foreground">{sentCount}</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 text-green-600 text-xs font-medium mb-1">
             <span className="material-icons text-base">check_circle</span>
-            Signed
+            Firmados
           </div>
           <p className="text-2xl font-bold text-foreground">{signedCount}</p>
         </div>
@@ -305,7 +305,7 @@ function ContractsPage() {
         <form onSubmit={handleSubmit} className={`${pCard} p-6 space-y-5`}>
           <h3 className="font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-primary">article</span>
-            New Contract
+            Nuevo contrato
           </h3>
 
           {formError && (
@@ -318,60 +318,60 @@ function ContractsPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             {/* Title */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Title *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Título *</label>
               <input
                 required
                 value={form.title}
                 onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                placeholder="e.g. Service Agreement — Acme Corp Q3 2026"
+                placeholder="p. ej. Contrato de servicios — Acme Corp Q3 2026"
                 className={pInput}
               />
             </div>
 
             {/* Summary */}
             <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Summary (optional)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Resumen (opcional)</label>
               <textarea
                 rows={2}
                 value={form.summary}
                 onChange={e => setForm(f => ({ ...f, summary: e.target.value }))}
-                placeholder="Brief description of what this contract covers"
+                placeholder="Breve descripción de lo que cubre este contrato"
                 className={`${pInput} resize-none`}
               />
             </div>
 
             {/* Signer name */}
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Signer Name</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre del firmante</label>
               <input
                 value={form.signerName}
                 onChange={e => setForm(f => ({ ...f, signerName: e.target.value }))}
-                placeholder="Jane Smith"
+                placeholder="María García"
                 className={pInput}
               />
             </div>
 
             {/* Signer email */}
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Signer Email</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Email del firmante</label>
               <input
                 type="email"
                 value={form.signerEmail}
                 onChange={e => setForm(f => ({ ...f, signerEmail: e.target.value }))}
-                placeholder="jane@acme.com"
+                placeholder="maria@acme.com"
                 className={pInput}
               />
             </div>
 
             {/* Contact */}
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Contact (optional)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Contacto (opcional)</label>
               <select
                 value={form.contactId}
                 onChange={e => setForm(f => ({ ...f, contactId: e.target.value }))}
                 className={pInput}
               >
-                <option value="">Select contact...</option>
+                <option value="">Seleccionar contacto...</option>
                 {contacts.map(c => (
                   <option key={c.id} value={c.id}>{c.firstName} {c.lastName}</option>
                 ))}
@@ -380,13 +380,13 @@ function ContractsPage() {
 
             {/* Deal */}
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Deal (optional)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Negocio (opcional)</label>
               <select
                 value={form.dealId}
                 onChange={e => setForm(f => ({ ...f, dealId: e.target.value }))}
                 className={pInput}
               >
-                <option value="">No deal linked</option>
+                <option value="">Sin negocio vinculado</option>
                 {deals.map(d => (
                   <option key={d.id} value={d.id}>{d.title}</option>
                 ))}
@@ -395,7 +395,7 @@ function ContractsPage() {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            Signer details can also be added or changed after creation on the contract detail page.
+            Los datos del firmante también pueden añadirse o cambiarse tras la creación en la página de detalle del contrato.
           </p>
 
           <div className="flex justify-end gap-2 pt-1">
@@ -404,14 +404,14 @@ function ContractsPage() {
               onClick={handleCancelForm}
               className={pBtnGhost}
             >
-              Cancel
+              Cancelar
             </button>
             <button
               type="submit"
               disabled={saving}
               className={pBtnPrimary}
             >
-              {saving ? 'Creating...' : 'Create Contract'}
+              {saving ? 'Creando...' : 'Crear contrato'}
             </button>
           </div>
         </form>
@@ -425,14 +425,14 @@ function ContractsPage() {
           <input
             value={searchInput}
             onChange={e => setSearchInput(e.target.value)}
-            placeholder="Search contracts by title..."
+            placeholder="Buscar contratos por título..."
             className={`${pInput} pl-10 pr-9`}
           />
           {searchInput && (
             <button
               onClick={() => setSearchInput('')}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-muted-foreground hover:text-foreground"
-              title="Clear search"
+              title="Limpiar búsqueda"
             >
               <span className="material-icons text-base">close</span>
             </button>
@@ -444,11 +444,11 @@ function ContractsPage() {
           {/* 'Signed' filters on 'fully_executed' — the real terminal-signed enum value
               (lib/db/schema/crm.ts:251). Same mapping as signedCount above (QAD-011). */}
           {([
-            { value: '', label: 'All' },
-            { value: 'draft', label: 'Draft' },
-            { value: 'sent', label: 'Sent' },
-            { value: 'fully_executed', label: 'Signed' },
-            { value: 'voided', label: 'Voided' },
+            { value: '', label: 'Todos' },
+            { value: 'draft', label: 'Borrador' },
+            { value: 'sent', label: 'Enviado' },
+            { value: 'fully_executed', label: 'Firmados' },
+            { value: 'voided', label: 'Anulados' },
           ] as const).map(({ value: s, label }) => {
             const count = s === ''
               ? contracts.length
@@ -476,42 +476,42 @@ function ContractsPage() {
       {/* ─── Table / Empty State ─────────────────────────────────────────────── */}
       {loading ? (
         <div className="flex items-center justify-center py-12 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading contracts...
+          <span className="material-icons animate-spin mr-2">autorenew</span>
+          Cargando contratos...
         </div>
       ) : contracts.length === 0 && !search && !statusFilter ? (
         /* Pristine empty state */
         <div className={`${pCard} p-10 text-center space-y-4`}>
           <span className="material-icons text-5xl text-muted-foreground/40">article</span>
-          <h2 className="text-lg font-semibold text-foreground">No contracts yet</h2>
+          <h2 className="text-lg font-semibold text-foreground">Aún no hay contratos</h2>
           <p className="text-muted-foreground text-sm max-w-md mx-auto">
-            Create your first contract to start collecting e-signatures from clients.
-            You can add clauses, link a deal, and send for signing — all in one place.
+            Crea tu primer contrato para empezar a recoger firmas electrónicas de tus clientes.
+            Puedes añadir cláusulas, vincular un negocio y enviarlo a firmar — todo en un mismo lugar.
           </p>
           <button
             onClick={() => setShowForm(true)}
             className={pBtnPrimary}
           >
             <span className="material-icons text-lg">add</span>
-            Create Your First Contract
+            Crea tu primer contrato
           </button>
         </div>
       ) : contracts.length === 0 ? (
         /* Filtered empty state */
         <div className={`${pCard} p-10 text-center space-y-3`}>
           <span className="material-icons text-4xl text-muted-foreground/40">search_off</span>
-          <h2 className="text-base font-semibold text-foreground">No contracts match your filters</h2>
+          <h2 className="text-base font-semibold text-foreground">Ningún contrato coincide con tus filtros</h2>
           <p className="text-muted-foreground text-sm">
-            {search && <>No contracts contain &ldquo;<span className="font-medium">{search}</span>&rdquo;. </>}
-            {statusFilter && <>No <span className="font-medium">{humanizeStatus(statusFilter).toLowerCase()}</span> contracts. </>}
-            Adjust your search or status filter above.
+            {search && <>Ningún contrato contiene &ldquo;<span className="font-medium">{search}</span>&rdquo;. </>}
+            {statusFilter && <>Ningún contrato <span className="font-medium">{humanizeStatus(statusFilter).toLowerCase()}</span>. </>}
+            Ajusta tu búsqueda o el filtro de estado de arriba.
           </p>
           <button
             onClick={() => { setSearchInput(''); setStatusFilter(''); }}
             className={pBtnGhost}
           >
             <span className="material-icons text-sm">refresh</span>
-            Reset filters
+            Restablecer filtros
           </button>
         </div>
       ) : (
@@ -520,13 +520,13 @@ function ContractsPage() {
             <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="border-b border-border bg-accent/30">
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Title</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Contact</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Deal</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Signers</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Created</th>
-                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Actions</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Título</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Contacto</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Negocio</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Firmantes</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Estado</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Creado</th>
+                  <th className="text-right px-4 py-3 font-medium text-muted-foreground">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -563,7 +563,7 @@ function ContractsPage() {
                         <button
                           onClick={() => router.push(`/portal/crm/contracts/${c.id}`)}
                           className="p-1.5 rounded-lg hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-                          title="Open contract"
+                          title="Abrir contrato"
                         >
                           <span className="material-icons text-base">open_in_new</span>
                         </button>

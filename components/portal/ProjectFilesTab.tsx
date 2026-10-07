@@ -90,7 +90,7 @@ export default function ProjectFilesTab({ projectId }: { projectId: number }) {
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Search by filename, card, or uploader…"
+          placeholder="Buscar por nombre de archivo, tarjeta o usuario…"
           className="w-full pl-9 pr-4 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         />
       </div>

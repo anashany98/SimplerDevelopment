@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, relative, resolve } from 'node:path';
+import { join, relative, resolve, sep } from 'node:path';
 
 /**
  * Regression guard for the paid-module billing bypass fixed in 8d0df3bf (MCP)
@@ -25,6 +25,14 @@ import { join, relative, resolve } from 'node:path';
  */
 const ROOT = resolve(__dirname, '..', '..');
 const repoPath = (file: string) => relative(ROOT, file).replace(/\\/g, '/');
+
+// walkRouteFiles returns absolute paths with OS-native separators; the
+// allow-lists below use forward slashes, so relativize + normalize before
+// comparing. `ROOT + '/'` string-splicing never matches on Windows (the
+// prefix carries a backslash), which silently disabled every allow-list entry.
+// Without this, allow-listed routes flag as offenders on Windows while Linux
+// CI stays green.
+const toRel = (f: string) => relative(ROOT, f).split(sep).join('/');
 
 function walkRouteFiles(dir: string): string[] {
   const out: string[] = [];
@@ -63,12 +71,12 @@ describe('paid-module entitlement guards', () => {
   it('every CRM write route is entitlement-gated (or explicitly allow-listed)', () => {
     const offenders = walkRouteFiles(resolve(ROOT, 'app/api/portal/crm'))
       .filter((f) => {
-        const rel = repoPath(f);
+        const rel = toRel(f);
         if (CRM_WRITE_UNGATED.has(rel)) return false;
         const src = readFileSync(f, 'utf8');
         return hasWriteHandler(src) && !(hasEntitlementCall(src) || src.includes('crmEntitlementError'));
       })
-      .map(repoPath);
+      .map((f) => toRel(f));
     expect(
       offenders,
       `ungated CRM write routes (call crmEntitlementError from @/lib/crm/entitlement, or add to CRM_WRITE_UNGATED with a reason):\n${offenders.join('\n')}`,
@@ -96,14 +104,14 @@ describe('paid-module entitlement guards', () => {
 
   it('every store write route is entitlement-gated (or explicitly allow-listed)', () => {
     const offenders = walkRouteFiles(resolve(ROOT, 'app/api/portal/websites'))
-      .filter((f) => repoPath(f).includes('/store/'))
+      .filter((f) => toRel(f).includes('/store/'))
       .filter((f) => {
-        const rel = repoPath(f);
+        const rel = toRel(f);
         if (STORE_WRITE_UNGATED.has(rel)) return false;
         const src = readFileSync(f, 'utf8');
         return hasWriteHandler(src) && !hasEntitlementCall(src);
       })
-      .map(repoPath);
+      .map((f) => toRel(f));
     expect(
       offenders,
       `ungated store write routes (gate via resolveStoreSite, or add to STORE_WRITE_UNGATED with a reason):\n${offenders.join('\n')}`,

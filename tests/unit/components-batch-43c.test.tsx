@@ -82,7 +82,7 @@ describe('ProjectStatusControl', () => {
     const { container } = render(
       <ProjectStatusControl projectId={1} status="active" canEdit={false} />,
     );
-    expect(container.textContent).toContain('active');
+    expect(container.textContent).toContain('activo');
     // No button or popover trigger
     expect(container.querySelector('button')).toBeNull();
   });
@@ -91,8 +91,8 @@ describe('ProjectStatusControl', () => {
     const { container } = render(
       <ProjectStatusControl projectId={1} status="bogus" canEdit={false} />,
     );
-    // active label is "Active" -> toLowerCase() -> "active"
-    expect(container.textContent).toContain('active');
+    // active label is "Activo" -> toLowerCase() -> "activo"
+    expect(container.textContent).toContain('activo');
   });
 
   it('renders the toggle button with arrow_drop_down when canEdit is true', () => {
@@ -111,10 +111,10 @@ describe('ProjectStatusControl', () => {
     );
     const btn = container.querySelector('button') as HTMLButtonElement;
     fireEvent.click(btn);
-    expect(container.textContent).toContain('Active');
+    expect(container.textContent).toContain('Activo');
     expect(container.textContent).toContain('Paused');
-    expect(container.textContent).toContain('Completed');
-    expect(container.textContent).toContain('Archived');
+    expect(container.textContent).toContain('Completado');
+    expect(container.textContent).toContain('Archivado');
   });
 
   it('closes the popover without firing fetch when clicking the same status', async () => {
@@ -128,7 +128,7 @@ describe('ProjectStatusControl', () => {
     fireEvent.click(container.querySelector('button') as HTMLButtonElement);
     // The "Active" option is now visible — click it (same status)
     const activeOpt = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Active'),
+      (b) => b.textContent?.includes('Activo'),
     ) as HTMLButtonElement;
     expect(activeOpt).toBeTruthy();
     fireEvent.click(activeOpt);
@@ -145,7 +145,7 @@ describe('ProjectStatusControl', () => {
 
     // Find the "Completed" option button
     const completedOpt = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Completed'),
+      (b) => b.textContent?.includes('Completado'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(completedOpt);
@@ -172,7 +172,7 @@ describe('ProjectStatusControl', () => {
     );
     fireEvent.click(container.querySelector('button') as HTMLButtonElement);
     const completedOpt = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Completed'),
+      (b) => b.textContent?.includes('Completado'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(completedOpt);
@@ -191,14 +191,14 @@ describe('UploadHtmlDeckButton', () => {
   it('renders the default idle label and secondary styling', () => {
     const { container } = render(<UploadHtmlDeckButton />);
     const btn = container.querySelector('button');
-    expect(btn?.textContent).toContain('Upload HTML / Zip');
+    expect(btn?.textContent).toContain('Subir HTML / Zip');
     expect(btn?.className).toContain('border');
   });
 
   it('applies the primary variant styles when variant="primary"', () => {
     const { container } = render(<UploadHtmlDeckButton variant="primary" />);
     const btn = container.querySelector('button');
-    expect(btn?.className).toContain('bg-primary');
+    expect(btn?.className).toContain('bg-foreground');
   });
 
   it('hidden input accepts html and zip', () => {
@@ -323,19 +323,19 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={1} siteName="acme.com" />,
     );
-    expect(container.textContent).toContain('Danger Zone');
+    expect(container.textContent).toContain('Zona de peligro');
     expect(container.textContent).toContain('acme.com');
-    expect(container.textContent).toContain('Delete Website');
+    expect(container.textContent).toContain('Eliminar sitio web');
   });
 
   it('switches to the confirm view when Delete Website is clicked', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={2} siteName="example.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
-    expect(container.textContent).toContain('Type');
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
+    expect(container.textContent).toContain('Escribe');
     expect(container.querySelector('input')).toBeTruthy();
-    expect(container.textContent).toContain('Permanently Delete');
+    expect(container.textContent).toContain('Eliminar definitivamente');
     expect(container.textContent).toContain('Cancel');
   });
 
@@ -343,8 +343,8 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={3} siteName="needs-exact-match.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
-    const deleteBtn = screen.getByText('Permanently Delete') as HTMLButtonElement;
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
+    const deleteBtn = screen.getByText('Eliminar definitivamente') as HTMLButtonElement;
     expect(deleteBtn.disabled).toBe(true);
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -359,14 +359,14 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={4} siteName="x.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'partial' } });
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Cancelar'));
 
-    expect(container.textContent).toContain('Delete this website');
+    expect(container.textContent).toContain('Eliminar este sitio web');
     // Re-open should show empty input
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input2 = container.querySelector('input') as HTMLInputElement;
     expect(input2.value).toBe('');
   });
@@ -377,12 +377,12 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={42} siteName="bye.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'bye.com' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Permanently Delete'));
+      fireEvent.click(screen.getByText('Eliminar definitivamente'));
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -401,12 +401,12 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={50} siteName="block.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'block.com' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Permanently Delete'));
+      fireEvent.click(screen.getByText('Eliminar definitivamente'));
       await Promise.resolve();
       await Promise.resolve();
     });
@@ -424,18 +424,18 @@ describe('DeleteWebsiteButton', () => {
     const { container } = render(
       <DeleteWebsiteButton siteId={51} siteName="throw.com" />,
     );
-    fireEvent.click(screen.getByText('Delete Website'));
+    fireEvent.click(screen.getByText('Eliminar sitio web'));
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'throw.com' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Permanently Delete'));
+      fireEvent.click(screen.getByText('Eliminar definitivamente'));
       await Promise.resolve();
       await Promise.resolve();
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Something went wrong.');
+      expect(container.textContent).toContain('Algo salió mal.');
     });
   });
 });
@@ -446,9 +446,9 @@ describe('DeleteWebsiteButton', () => {
 describe('GitHubConnectButton', () => {
   it('renders the panel and shows Connect GitHub link', () => {
     const { container } = render(<GitHubConnectButton siteId={1} />);
-    expect(container.textContent).toContain('GitHub Access');
-    expect(container.textContent).toContain('Connect GitHub');
-    expect(container.textContent).toContain('Request Repo Access');
+    expect(container.textContent).toContain('Acceso a GitHub');
+    expect(container.textContent).toContain('Conectar GitHub');
+    expect(container.textContent).toContain('Solicitar acceso al repositorio');
     const link = container.querySelector('a[href="/api/portal/github/connect"]');
     expect(link).toBeTruthy();
   });
@@ -462,7 +462,7 @@ describe('GitHubConnectButton', () => {
 
     try {
       const { container } = render(<GitHubConnectButton siteId={2} />);
-      expect(container.textContent).toContain('GitHub connected successfully!');
+      expect(container.textContent).toContain('¡GitHub conectado correctamente!');
     } finally {
       Object.defineProperty(window, 'location', {
         configurable: true,
@@ -479,7 +479,7 @@ describe('GitHubConnectButton', () => {
 
     const { container } = render(<GitHubConnectButton siteId={99} />);
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Request Repo Access'),
+      b.textContent?.includes('Solicitar acceso al repositorio'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -530,7 +530,7 @@ describe('GitHubConnectButton', () => {
     try {
       const { container } = render(<GitHubConnectButton siteId={5} />);
       const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Request Repo Access'),
+        b.textContent?.includes('Solicitar acceso al repositorio'),
       ) as HTMLButtonElement;
 
       await act(async () => {
@@ -560,7 +560,7 @@ describe('GitHubConnectButton', () => {
 
     const { container } = render(<GitHubConnectButton siteId={7} />);
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Request Repo Access'),
+      b.textContent?.includes('Solicitar acceso al repositorio'),
     ) as HTMLButtonElement;
 
     await act(async () => {

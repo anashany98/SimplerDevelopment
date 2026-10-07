@@ -66,7 +66,7 @@ function renderTree(overProps: Partial<OrgUnitTreeProps> = {}) {
 describe('OrgUnitTree — empty state', () => {
   it('renders the empty-state message when tree is empty', () => {
     const { getByText } = renderTree({ tree: [] });
-    expect(getByText(/No org units yet/)).toBeInTheDocument();
+    expect(getByText(/Aún no hay unidades organizativas/)).toBeInTheDocument();
   });
 
   it('renders a tree list when nodes are provided', () => {
@@ -206,10 +206,10 @@ describe('OrgUnitTree — row menu', () => {
     const { getAllByRole, getByText } = renderTree();
     const menuBtns = getAllByRole('button', { name: 'Unit actions' });
     fireEvent.click(menuBtns[0]);
-    expect(getByText('Rename')).toBeInTheDocument();
+    expect(getByText('Renombrar')).toBeInTheDocument();
     expect(getByText('New child')).toBeInTheDocument();
     expect(getByText('Merge into…')).toBeInTheDocument();
-    expect(getByText('Delete')).toBeInTheDocument();
+    expect(getByText('Eliminar')).toBeInTheDocument();
   });
 });
 
@@ -219,7 +219,7 @@ describe('OrgUnitTree — inline rename', () => {
   it('shows an input when Rename is clicked from the menu', () => {
     const { getAllByRole, getByText, getByDisplayValue } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Rename'));
+    fireEvent.click(getByText('Renombrar'));
     // Input pre-filled with the node name
     expect(getByDisplayValue('Engineering')).toBeInTheDocument();
   });
@@ -228,7 +228,7 @@ describe('OrgUnitTree — inline rename', () => {
     const onRename = vi.fn();
     const { getAllByRole, getByText, getByDisplayValue } = renderTree({ onRename });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Rename'));
+    fireEvent.click(getByText('Renombrar'));
     const input = getByDisplayValue('Engineering') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Eng Team' } });
     fireEvent.keyDown(input, { key: 'Enter' });
@@ -239,7 +239,7 @@ describe('OrgUnitTree — inline rename', () => {
     const onRename = vi.fn();
     const { getAllByRole, getByText, getByDisplayValue } = renderTree({ onRename });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Rename'));
+    fireEvent.click(getByText('Renombrar'));
     const input = getByDisplayValue('Engineering') as HTMLInputElement;
     fireEvent.keyDown(input, { key: 'Enter' }); // same value
     await waitFor(() => expect(onRename).not.toHaveBeenCalled());
@@ -249,7 +249,7 @@ describe('OrgUnitTree — inline rename', () => {
     const onRename = vi.fn();
     const { getAllByRole, getByText, getByDisplayValue } = renderTree({ onRename });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Rename'));
+    fireEvent.click(getByText('Renombrar'));
     const input = getByDisplayValue('Engineering') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '   ' } });
     fireEvent.keyDown(input, { key: 'Enter' });
@@ -259,7 +259,7 @@ describe('OrgUnitTree — inline rename', () => {
   it('cancels rename on Escape', () => {
     const { getAllByRole, getByText, getByDisplayValue, queryByDisplayValue } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Rename'));
+    fireEvent.click(getByText('Renombrar'));
     const input = getByDisplayValue('Engineering');
     fireEvent.keyDown(input, { key: 'Escape' });
     expect(queryByDisplayValue('Engineering')).not.toBeInTheDocument();
@@ -269,7 +269,7 @@ describe('OrgUnitTree — inline rename', () => {
     const onRename = vi.fn();
     const { getAllByRole, getByText, getByDisplayValue } = renderTree({ onRename });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Rename'));
+    fireEvent.click(getByText('Renombrar'));
     const input = getByDisplayValue('Engineering') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Eng Updated' } });
     fireEvent.blur(input);
@@ -359,14 +359,14 @@ describe('OrgUnitTree — delete dialog', () => {
   it('opens the delete dialog when Delete is clicked', () => {
     const { getAllByRole, getByText, getByRole } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     expect(getByRole('dialog', { name: /Delete/ })).toBeInTheDocument();
   });
 
   it('shows the simple deletion message for an empty unit', () => {
     const { getAllByRole, getByText } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     expect(getByText(/permanently delete/)).toBeInTheDocument();
   });
 
@@ -374,7 +374,7 @@ describe('OrgUnitTree — delete dialog', () => {
     const nodeWithMembers = makeNode({ id: 20, name: 'BigTeam', memberCount: 3 });
     const { getAllByRole, getByText, getByRole } = renderTree({ tree: [nodeWithMembers] });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     expect(getByRole('checkbox')).toBeInTheDocument();
   });
 
@@ -385,7 +385,7 @@ describe('OrgUnitTree — delete dialog', () => {
     };
     const { getAllByRole, getByText, getByRole } = renderTree({ tree: [nodeWithChildren] });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     expect(getByRole('checkbox')).toBeInTheDocument();
   });
 
@@ -393,10 +393,10 @@ describe('OrgUnitTree — delete dialog', () => {
     const nodeWithMembers = makeNode({ id: 23, name: 'BigTeam2', memberCount: 2 });
     const { getAllByRole, getByText } = renderTree({ tree: [nodeWithMembers] });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     // The delete submit button is disabled when needsForce && !force
     const deleteBtn = getAllByRole('button').find(
-      (b) => b.textContent?.includes('Delete') && b !== getAllByRole('button', { name: 'Unit actions' })[0],
+      (b) => b.textContent?.includes('Eliminar') && b !== getAllByRole('button', { name: 'Unit actions' })[0],
     );
     // find the submit button inside dialog by searching for disabled attribute
     const dialog = screen.getByRole('dialog', { name: /Delete/ });
@@ -412,13 +412,13 @@ describe('OrgUnitTree — delete dialog', () => {
       onDelete,
     });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     const checkbox = getByRole('checkbox') as HTMLInputElement;
     fireEvent.click(checkbox);
     // Now find the submit Delete button (not disabled)
     const dialog = screen.getByRole('dialog', { name: /Delete/ });
     const submitBtns = Array.from(dialog.querySelectorAll('button')).filter(
-      (b) => b.textContent?.includes('Delete') && !b.disabled,
+      (b) => b.textContent?.includes('Eliminar') && !b.disabled,
     );
     expect(submitBtns.length).toBeGreaterThan(0);
     fireEvent.click(submitBtns[0]);
@@ -429,10 +429,10 @@ describe('OrgUnitTree — delete dialog', () => {
     const onDelete = vi.fn();
     const { getAllByRole, getByText } = renderTree({ tree: [ENG], onDelete });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     const dialog = screen.getByRole('dialog', { name: /Delete/ });
     const submitBtns = Array.from(dialog.querySelectorAll('button')).filter(
-      (b) => b.textContent?.includes('Delete') && !b.disabled,
+      (b) => b.textContent?.includes('Eliminar') && !b.disabled,
     );
     fireEvent.click(submitBtns[0]);
     await waitFor(() => expect(onDelete).toHaveBeenCalledWith(1, false));
@@ -441,15 +441,15 @@ describe('OrgUnitTree — delete dialog', () => {
   it('closes the delete dialog on Cancel', () => {
     const { getAllByRole, getByText, queryByRole } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
-    fireEvent.click(getByText('Cancel'));
+    fireEvent.click(getByText('Eliminar'));
+    fireEvent.click(getByText('Cancelar'));
     expect(queryByRole('dialog', { name: /Delete/ })).not.toBeInTheDocument();
   });
 
   it('closes the dialog when clicking the backdrop', () => {
     const { getAllByRole, getByText, queryByRole, container } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     // The backdrop is the fixed outer div; click it (not the inner dialog div)
     const backdrop = container.querySelector(
       '.fixed.inset-0',
@@ -461,7 +461,7 @@ describe('OrgUnitTree — delete dialog', () => {
   it('closes the dialog on Escape keydown', () => {
     const { getAllByRole, getByText, queryByRole } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
+    fireEvent.click(getByText('Eliminar'));
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(queryByRole('dialog', { name: /Delete/ })).not.toBeInTheDocument();
   });
@@ -469,8 +469,8 @@ describe('OrgUnitTree — delete dialog', () => {
   it('closes the dialog via the × close button', () => {
     const { getAllByRole, getByText, getByLabelText, queryByRole } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Delete'));
-    fireEvent.click(getByLabelText('Close'));
+    fireEvent.click(getByText('Eliminar'));
+    fireEvent.click(getByLabelText('Cerrar'));
     expect(queryByRole('dialog', { name: /Delete/ })).not.toBeInTheDocument();
   });
 });
@@ -552,7 +552,7 @@ describe('OrgUnitTree — merge dialog', () => {
     const { getAllByRole, getByText, getByLabelText, queryByRole } = renderTree();
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
     fireEvent.click(getByText('Merge into…'));
-    fireEvent.click(getByLabelText('Close'));
+    fireEvent.click(getByLabelText('Cerrar'));
     expect(queryByRole('dialog', { name: /Merge/ })).not.toBeInTheDocument();
   });
 
@@ -705,7 +705,7 @@ describe('OrgUnitTree — InlineNameInput click isolation', () => {
     const onSelect = vi.fn();
     const { getAllByRole, getByText, getByDisplayValue } = renderTree({ onSelect });
     fireEvent.click(getAllByRole('button', { name: 'Unit actions' })[0]);
-    fireEvent.click(getByText('Rename'));
+    fireEvent.click(getByText('Renombrar'));
     const input = getByDisplayValue('Engineering');
     fireEvent.click(input);
     // onSelect was called when we opened the menu (fireEvent.click on row), but

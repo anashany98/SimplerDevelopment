@@ -34,7 +34,7 @@ function StickyScrollTabsBlockSettings({ block, onChange }: { block: StickyScrol
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Overline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Antetítulo</label>
         <input
           type="text"
           value={block.overline || ''}
@@ -44,7 +44,7 @@ function StickyScrollTabsBlockSettings({ block, onChange }: { block: StickyScrol
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <input
           type="text"
           value={block.title || ''}
@@ -54,7 +54,7 @@ function StickyScrollTabsBlockSettings({ block, onChange }: { block: StickyScrol
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <textarea
           value={block.description || ''}
           onChange={(e) => onChange({ description: e.target.value || undefined })}
@@ -115,7 +115,7 @@ function StickyScrollTabsBlockSettings({ block, onChange }: { block: StickyScrol
       </div>
 
       <div className="border-t border-border pt-4 space-y-3">
-        <label className="block text-sm font-medium text-foreground">Layout</label>
+        <label className="block text-sm font-medium text-foreground">Diseño</label>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">Sticky Top Offset</label>
@@ -253,7 +253,7 @@ function SectionBlockSettings({ block, onChange }: { block: SectionBlock; onChan
       </div>
 
       <p className="text-xs text-muted-foreground">{block.blocks.length} nested block{block.blocks.length !== 1 ? 's' : ''}</p>
-      <p className="text-xs text-muted-foreground italic">Use the Style tab for colors, padding, borders, and other visual properties.</p>
+      <p className="text-xs text-muted-foreground italic">Usa la pestaña Estilo para colores, relleno, bordes y otras propiedades visuales.</p>
     </div>
   );
 }
@@ -268,7 +268,7 @@ function DividerBlockSettings({ block, onChange, currentViewport }: { block: Div
           onChange={(e) => onChange({ lineStyle: e.target.value as DividerBlock['lineStyle'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="solid">Solid</option>
+          <option value="solid">Sólido</option>
           <option value="dashed">Dashed</option>
           <option value="dotted">Dotted</option>
         </select>

@@ -243,7 +243,7 @@ const ROWS: SeedRow[] = [
   {
     name: 'All-In-One',
     slug: 'all-in-one',
-    description: 'Get every SimplerDevelopment tool in one package at 29% off. Includes websites, email marketing, booking, surveys, project management, AI chat bot, pitch decks, Company Brain, and hosting — all with pooled AI credits and generous usage limits.',
+    description: 'Get every CRM AGENTS tool in one package at 29% off. Includes websites, email marketing, booking, surveys, project management, AI chat bot, pitch decks, Company Brain, and hosting — all with pooled AI credits and generous usage limits.',
     category: 'bundle',
     price: 14900,
     billingCycle: 'monthly',

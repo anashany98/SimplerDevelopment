@@ -65,19 +65,15 @@ export function QuestionsPanel({ questions, setQuestions }: QuestionsPanelProps)
         </div>
         <button
           onClick={addQuestion}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
-          <span className="material-icons text-lg">add</span>
-          Add Question
-        </button>
+          <span className="material-icons text-lg">add</span>Agregar pregunta</button>
       </div>
 
       {questions.length === 0 ? (
         <div className="text-center py-8 text-muted-foreground">
           <span className="material-icons text-3xl mb-2 block">quiz</span>
-          <p className="text-sm">
-            No custom questions yet. Guests will only be asked for name, email, and phone.
-          </p>
+          <p className="text-sm">Aún no hay preguntas personalizadas. Solo se pedirá nombre, correo y teléfono a los invitados.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -95,18 +91,18 @@ export function QuestionsPanel({ questions, setQuestions }: QuestionsPanelProps)
                 </button>
               </div>
               <div>
-                <label className="block text-xs text-muted-foreground mb-1">Label</label>
+                <label className="block text-xs text-muted-foreground mb-1">Etiqueta</label>
                 <input
                   type="text"
                   value={q.label}
                   onChange={(e) => updateQuestion(q.id, 'label', e.target.value)}
-                  placeholder="e.g. What would you like to discuss?"
+                  placeholder="p. ej. ¿De qué te gustaría hablar?"
                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
-                  <label className="block text-xs text-muted-foreground mb-1">Type</label>
+                  <label className="block text-xs text-muted-foreground mb-1">Tipo</label>
                   <select
                     value={q.type}
                     onChange={(e) => updateQuestion(q.id, 'type', e.target.value)}
@@ -114,11 +110,11 @@ export function QuestionsPanel({ questions, setQuestions }: QuestionsPanelProps)
                   >
                     <option value="text">Short Text</option>
                     <option value="textarea">Long Text</option>
-                    <option value="select">Select</option>
+                    <option value="select">Seleccionar</option>
                   </select>
                 </div>
                 <div className="flex items-center gap-2 pt-4">
-                  <label className="text-xs text-muted-foreground">Required</label>
+                  <label className="text-xs text-muted-foreground">Obligatorio</label>
                   <button
                     type="button"
                     onClick={() => updateQuestion(q.id, 'required', !q.required)}
@@ -136,7 +132,7 @@ export function QuestionsPanel({ questions, setQuestions }: QuestionsPanelProps)
               </div>
               {q.type === 'select' && (
                 <div>
-                  <label className="block text-xs text-muted-foreground mb-1">Options</label>
+                  <label className="block text-xs text-muted-foreground mb-1">Opciones</label>
                   <div className="space-y-2">
                     {(q.options || []).map((opt, optIdx) => (
                       <div key={optIdx} className="flex items-center gap-2">
@@ -159,9 +155,7 @@ export function QuestionsPanel({ questions, setQuestions }: QuestionsPanelProps)
                       onClick={() => addOption(q.id)}
                       className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
                     >
-                      <span className="material-icons text-sm">add</span>
-                      Add option
-                    </button>
+                      <span className="material-icons text-sm">add</span>Agregar opción</button>
                   </div>
                 </div>
               )}

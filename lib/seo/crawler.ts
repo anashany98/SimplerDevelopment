@@ -18,7 +18,7 @@ import { parseRobotsTxt, type ParsedRobots } from './robots';
 import { parseSitemap } from './sitemap';
 
 export const SEO_CRAWLER_USER_AGENT =
-  'Mozilla/5.0 (compatible; SimplerDevelopmentBot/1.0; +https://simplerdevelopment.com)';
+  'Mozilla/5.0 (compatible; CRMAgentsBot/1.0; +https://simplerdevelopment.com)';
 
 const FETCH_TIMEOUT_MS = 15_000;
 const MAX_HTML_BYTES = 2_500_000;

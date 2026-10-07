@@ -42,7 +42,7 @@ export function HeroCtaBlockPreview({ block, isSelected, onChange }: HeroCtaBloc
               html={block.title}
               onChange={(html) => onChange({ title: html })}
               className="font-display text-4xl md:text-6xl font-bold mb-6 tracking-wide w-full bg-transparent border-none focus:outline-none focus:border-b-2 border-primary text-center text-foreground"
-              placeholder="Title"
+              placeholder="Título"
               singleLine={true}
               style={getElementCSS(block.elementStyles, 'title')}
             />
@@ -61,7 +61,7 @@ export function HeroCtaBlockPreview({ block, isSelected, onChange }: HeroCtaBloc
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 type="button"
-                className="px-6 py-3 text-lg bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors"
+                className="px-6 py-3 text-lg bg-foreground text-background rounded-md font-medium hover:bg-foreground/90 transition-colors"
                 onClick={(e) => e.preventDefault()}
                 style={getElementCSS(block.elementStyles, 'primaryButton')}
               >
@@ -126,7 +126,7 @@ export function HeroCtaBlockPreview({ block, isSelected, onChange }: HeroCtaBloc
             html={block.title}
             onChange={(html) => onChange({ title: html })}
             className={`font-display text-5xl md:text-7xl font-bold mb-6 tracking-wide w-full bg-transparent border-none focus:outline-none focus:border-b-2 border-primary text-center ${hasBackground ? 'text-white' : 'text-foreground'}`}
-            placeholder="Title"
+            placeholder="Título"
             singleLine={true}
             style={getElementCSS(block.elementStyles, 'title')}
           />
@@ -146,7 +146,7 @@ export function HeroCtaBlockPreview({ block, isSelected, onChange }: HeroCtaBloc
             {(block.primaryButtonText || isSelected) && (
               <button
                 type="button"
-                className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium text-lg hover:bg-primary/90 transition-colors"
+                className="px-6 py-3 bg-foreground text-background rounded-md font-medium text-lg hover:bg-foreground/90 transition-colors"
                 onClick={(e) => e.preventDefault()}
                 style={getElementCSS(block.elementStyles, 'primaryButton')}
               >

@@ -85,13 +85,13 @@ describe('PaletteFromImage', () => {
   describe('initial render', () => {
     it('renders the panel header', () => {
       render(<PaletteFromImage onApply={vi.fn()} />);
-      expect(screen.getByText('Extract palette from image')).toBeInTheDocument();
+      expect(screen.getByText('Extraer paleta desde una imagen')).toBeInTheDocument();
     });
 
     it('renders the drop zone with upload instructions', () => {
       render(<PaletteFromImage onApply={vi.fn()} />);
       expect(
-        screen.getByText('Drop an image or click to upload'),
+        screen.getByText('Suelta una imagen o haz clic para subirla'),
       ).toBeInTheDocument();
       expect(
         screen.getByText(/PNG, JPG, WebP, SVG/),
@@ -155,7 +155,7 @@ describe('PaletteFromImage', () => {
       await uploadFile(makeImageFile());
       await waitFor(() => {
         expect(
-          screen.queryByText('Drop an image or click to upload'),
+          screen.queryByText('Suelta una imagen o haz clic para subirla'),
         ).not.toBeInTheDocument();
       });
     });
@@ -327,14 +327,14 @@ describe('PaletteFromImage', () => {
         expect(screen.getByText('photo.jpg')).toBeInTheDocument();
       });
 
-      const clearBtn = screen.getByRole('button', { name: /clear/i });
+      const clearBtn = screen.getByRole('button', { name: /limpiar/i });
       await act(async () => {
         fireEvent.click(clearBtn);
       });
 
       // Drop zone should return
       expect(
-        screen.getByText('Drop an image or click to upload'),
+        screen.getByText('Suelta una imagen o haz clic para subirla'),
       ).toBeInTheDocument();
       // No palette
       expect(document.querySelectorAll('select').length).toBe(0);
@@ -370,7 +370,7 @@ describe('PaletteFromImage', () => {
 
       // Clear the state first
       // The error persists until clear or next upload; trigger clear
-      const clearBtn = screen.getByRole('button', { name: /clear/i });
+      const clearBtn = screen.getByRole('button', { name: /limpiar/i });
       await act(async () => {
         fireEvent.click(clearBtn);
       });
@@ -382,7 +382,7 @@ describe('PaletteFromImage', () => {
     it('applies drag-over style class on dragOver', () => {
       render(<PaletteFromImage onApply={vi.fn()} />);
       const dropZone = screen
-        .getByText('Drop an image or click to upload')
+        .getByText('Suelta una imagen o haz clic para subirla')
         .closest('div')!.parentElement!;
 
       fireEvent.dragOver(dropZone, {
@@ -397,7 +397,7 @@ describe('PaletteFromImage', () => {
     it('removes drag-over class on dragLeave', () => {
       render(<PaletteFromImage onApply={vi.fn()} />);
       const dropZone = screen
-        .getByText('Drop an image or click to upload')
+        .getByText('Suelta una imagen o haz clic para subirla')
         .closest('div')!.parentElement!;
 
       fireEvent.dragOver(dropZone, {
@@ -412,7 +412,7 @@ describe('PaletteFromImage', () => {
     it('handles a valid image file dropped on the zone', async () => {
       render(<PaletteFromImage onApply={vi.fn()} />);
       const dropZone = screen
-        .getByText('Drop an image or click to upload')
+        .getByText('Suelta una imagen o haz clic para subirla')
         .closest('div')!.parentElement!;
 
       const file = makeImageFile('dropped.png');

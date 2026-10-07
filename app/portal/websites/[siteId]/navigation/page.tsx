@@ -52,9 +52,9 @@ export default function NavigationEditorPage() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
         <div className="flex items-center gap-4">
           <div>
-            <h1 className="text-xl font-bold text-foreground">Navigation Editor</h1>
+            <h1 className="text-xl font-bold text-foreground">Editor de navegación</h1>
             <p className="text-sm text-muted-foreground">
-              Customize your site navigation, branding, and layout
+              Personaliza la navegación, la marca y el diseño de tu web
             </p>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function NavigationEditorPage() {
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">{saving ? 'refresh' : 'save'}</span>
-            {saving ? 'Saving...' : 'Save Changes'}
+            {saving ? 'Guardando…' : 'Guardar cambios'}
           </button>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function NavigationEditorPage() {
                 }`}
               >
                 <span className="material-icons text-base mr-1.5 align-middle">menu</span>
-                Menu Items
+                Elementos del menú
               </button>
               <button
                 onClick={() => setActiveTab('branding')}
@@ -105,9 +105,7 @@ export default function NavigationEditorPage() {
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <span className="material-icons text-base mr-1.5 align-middle">palette</span>
-                Branding
-              </button>
+                <span className="material-icons text-base mr-1.5 align-middle">palette</span>Marca</button>
             </div>
 
             {activeTab === 'items' ? (
@@ -139,7 +137,7 @@ export default function NavigationEditorPage() {
           onClick={() => setLeftPanelOpen((prev) => !prev)}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-6 h-12 flex items-center justify-center bg-background border border-border border-l-0 rounded-r-lg shadow-sm hover:bg-muted transition-colors"
           style={{ left: leftPanelOpen ? '420px' : '0px', transition: 'left 0.3s' }}
-          title={leftPanelOpen ? 'Collapse panel' : 'Expand panel'}
+          title={leftPanelOpen ? 'Contraer panel' : 'Expandir panel'}
         >
           <span className="material-icons text-sm text-muted-foreground">
             {leftPanelOpen ? 'chevron_left' : 'chevron_right'}

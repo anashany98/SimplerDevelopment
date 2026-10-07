@@ -74,7 +74,7 @@ describe('OrgUnitTree', () => {
   describe('empty state', () => {
     it('renders the empty-state message when tree is empty', () => {
       const { getByText } = render(<OrgUnitTree tree={[]} />);
-      expect(getByText(/No org units yet/i)).toBeTruthy();
+      expect(getByText(/Aún no hay unidades organizativas/i)).toBeTruthy();
     });
 
     it('does not render a tree list when empty', () => {
@@ -254,10 +254,10 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ name: 'Engineering' });
       const { getByLabelText, getByText } = render(<OrgUnitTree tree={[node]} />);
       fireEvent.click(getByLabelText('Unit actions'));
-      expect(getByText('Rename')).toBeTruthy();
+      expect(getByText('Renombrar')).toBeTruthy();
       expect(getByText('New child')).toBeTruthy();
       expect(getByText('Merge into…')).toBeTruthy();
-      expect(getByText('Delete')).toBeTruthy();
+      expect(getByText('Eliminar')).toBeTruthy();
     });
   });
 
@@ -270,7 +270,7 @@ describe('OrgUnitTree', () => {
         <OrgUnitTree tree={[node]} onRename={vi.fn()} />,
       );
       fireEvent.click(getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       // InlineNameInput for rename has no placeholder — just check for an input
       const inputs = document.querySelectorAll('input');
       expect(inputs.length).toBeGreaterThan(0);
@@ -288,7 +288,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onRename={onRename} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.change(input, { target: { value: '  Backend  ' } });
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -300,7 +300,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onRename={onRename} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       // value is already 'Engineering'
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -312,7 +312,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onRename={onRename} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.change(input, { target: { value: '   ' } });
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -323,7 +323,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onRename={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.keyDown(input, { key: 'Escape' });
       // input should be gone, name visible again
@@ -336,7 +336,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onRename={onRename} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.change(input, { target: { value: 'Platform' } });
       fireEvent.blur(input);
@@ -417,7 +417,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(screen.getByRole('dialog')).toBeTruthy();
     });
 
@@ -425,7 +425,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(screen.getByText(/Delete "Engineering"\?/)).toBeTruthy();
     });
 
@@ -433,8 +433,8 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Eliminar'));
+      fireEvent.click(screen.getByText('Cancelar'));
       expect(screen.queryByRole('dialog')).toBeNull();
     });
 
@@ -443,7 +443,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering', memberCount: 0, children: [] });
       render(<OrgUnitTree tree={[node]} onDelete={onDelete} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       const dialog = screen.getByRole('dialog');
       // No force checkbox for empty unit, so confirm button is not disabled
       const confirmDisabledBtn = dialog.querySelector('button[disabled]');
@@ -458,7 +458,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Big Team', memberCount: 5, children: [] });
       render(<OrgUnitTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       // The force-delete checkbox label text lives in a <strong> + surrounding <span>
       const dialog = screen.getByRole('dialog');
       expect(dialog.querySelector('input[type="checkbox"]')).toBeTruthy();
@@ -471,7 +471,7 @@ describe('OrgUnitTree', () => {
       // Multiple "Unit actions" buttons exist (parent + child rows); click the parent's
       const actionBtns = screen.getAllByLabelText('Unit actions');
       fireEvent.click(actionBtns[0]);
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       const dialog = screen.getByRole('dialog');
       expect(dialog.querySelector('input[type="checkbox"]')).toBeTruthy();
     });
@@ -480,7 +480,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Big Team', memberCount: 5, children: [] });
       render(<OrgUnitTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       const dialog = screen.getByRole('dialog');
       // The confirm delete button is the last button in dialog
       const buttons = dialog.querySelectorAll('button');
@@ -493,7 +493,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Big Team', memberCount: 5, children: [] });
       render(<OrgUnitTree tree={[node]} onDelete={onDelete} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
       fireEvent.click(checkbox);
       const dialog = screen.getByRole('dialog');
@@ -508,7 +508,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(screen.getByRole('dialog')).toBeTruthy();
       fireEvent.keyDown(document, { key: 'Escape' });
       expect(screen.queryByRole('dialog')).toBeNull();
@@ -518,7 +518,7 @@ describe('OrgUnitTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<OrgUnitTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('Unit actions'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       // The backdrop is the fixed overlay div (first child of portal root)
       const backdrop = screen.getByRole('dialog').parentElement!;
       fireEvent.click(backdrop);
@@ -618,7 +618,7 @@ describe('OrgUnitTree', () => {
       render(<OrgUnitTree tree={tree} onMerge={vi.fn()} />);
       fireEvent.click(screen.getAllByLabelText('Unit actions')[0]);
       fireEvent.click(screen.getByText('Merge into…'));
-      fireEvent.click(screen.getByLabelText('Close'));
+      fireEvent.click(screen.getByLabelText('Cerrar'));
       expect(screen.queryByRole('dialog')).toBeNull();
     });
   });

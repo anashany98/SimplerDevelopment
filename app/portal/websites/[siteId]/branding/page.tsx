@@ -84,27 +84,27 @@ const DEFAULT_TYPOGRAPHY: Record<string, ElementTypography> = {
 };
 
 const ELEMENT_LABELS: Record<string, { label: string; desc: string; category: 'heading' | 'body' | 'ui' }> = {
-  h1: { label: 'H1', desc: 'Main page title', category: 'heading' },
-  h2: { label: 'H2', desc: 'Section heading', category: 'heading' },
-  h3: { label: 'H3', desc: 'Sub-section heading', category: 'heading' },
-  h4: { label: 'H4', desc: 'Card / block title', category: 'heading' },
-  h5: { label: 'H5', desc: 'Small heading', category: 'heading' },
-  h6: { label: 'H6', desc: 'Label heading', category: 'heading' },
-  p: { label: 'Paragraph', desc: 'Body text', category: 'body' },
-  blockquote: { label: 'Blockquote', desc: 'Quoted text', category: 'body' },
-  small: { label: 'Small', desc: 'Fine print, captions', category: 'body' },
-  caption: { label: 'Caption', desc: 'Image / table captions', category: 'body' },
-  button: { label: 'Button', desc: 'Buttons and CTAs', category: 'ui' },
-  nav: { label: 'Nav Link', desc: 'Navigation items', category: 'ui' },
+  h1: { label: 'H1', desc: 'Título de la página principal', category: 'heading' },
+  h2: { label: 'H2', desc: 'Título de sección', category: 'heading' },
+  h3: { label: 'H3', desc: 'Título de subsección', category: 'heading' },
+  h4: { label: 'H4', desc: 'Título de tarjeta o bloque', category: 'heading' },
+  h5: { label: 'H5', desc: 'Título pequeño', category: 'heading' },
+  h6: { label: 'H6', desc: 'Etiqueta de título', category: 'heading' },
+  p: { label: 'Párrafo', desc: 'Texto del cuerpo', category: 'body' },
+  blockquote: { label: 'Cita', desc: 'Texto citado', category: 'body' },
+  small: { label: 'Small', desc: 'Letra pequeña y leyendas', category: 'body' },
+  caption: { label: 'Leyenda', desc: 'Descripciones de imágenes y tablas', category: 'body' },
+  button: { label: 'Botón', desc: 'Botones y CTA', category: 'ui' },
+  nav: { label: 'Enlace de navegación', desc: 'Elementos de navegación', category: 'ui' },
 };
 
 const WEIGHT_OPTIONS = [
-  { value: '300', label: 'Light' },
-  { value: '400', label: 'Regular' },
-  { value: '500', label: 'Medium' },
-  { value: '600', label: 'Semibold' },
-  { value: '700', label: 'Bold' },
-  { value: '800', label: 'Extra Bold' },
+  { value: '300', label: 'Ligera' },
+  { value: '400', label: 'Normal' },
+  { value: '500', label: 'Medios' },
+  { value: '600', label: 'Seminegrita' },
+  { value: '700', label: 'Negrita' },
+  { value: '800', label: 'Extra negrita' },
 ];
 
 const DEFAULTS: Branding = {
@@ -150,7 +150,7 @@ export default function BrandingPage() {
 
   const generateBranding = async () => {
     if (!aiPrompt.trim() || aiPrompt.trim().length < 10) {
-      setAiError('Please describe your brand in at least 10 characters.');
+      setAiError('Describe tu marca con al menos 10 caracteres.');
       return;
     }
     setAiGenerating(true);
@@ -164,7 +164,7 @@ export default function BrandingPage() {
       });
       const data = await res.json();
       if (!data.success) {
-        setAiError(data.message || 'Generation failed.');
+        setAiError(data.message || 'La generación falló.');
         return;
       }
       const g = data.data;
@@ -189,7 +189,7 @@ export default function BrandingPage() {
       setDirty(true);
       if (g.tone) setAiTone(g.tone);
     } catch {
-      setAiError('Network error. Please try again.');
+      setAiError('Error de red. Inténtalo de nuevo.');
     } finally {
       setAiGenerating(false);
     }
@@ -267,19 +267,19 @@ export default function BrandingPage() {
   const labelClass = 'block text-xs font-medium text-muted-foreground mb-1.5';
 
   const tabs = [
-    { id: 'logos' as const, label: 'Logos', icon: 'image' },
+    { id: 'logos' as const, label: 'Logotipos', icon: 'image' },
     { id: 'colors' as const, label: 'Colors', icon: 'palette' },
-    { id: 'typography' as const, label: 'Typography', icon: 'text_fields' },
-    { id: 'style' as const, label: 'Style', icon: 'tune' },
+    { id: 'typography' as const, label: 'Tipografía', icon: 'text_fields' },
+    { id: 'style' as const, label: 'Estilo', icon: 'tune' },
   ];
 
   return (
     <div className="max-w-4xl mx-auto py-6 px-6 space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Website"
-        title="Brand Guidelines"
-        subtitle="Set your brand identity. These styles apply as defaults across your site."
+        eyebrow="Sitio web"
+        title="Guía de marca"
+        subtitle="Define la identidad de tu marca. Estos estilos se aplican de forma predeterminada en todo tu sitio."
         actions={
           <button
             onClick={save}
@@ -287,7 +287,7 @@ export default function BrandingPage() {
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">{saving ? 'refresh' : 'save'}</span>
-            {saving ? 'Saving...' : 'Save Changes'}
+            {saving ? 'Guardando…' : 'Guardar cambios'}
           </button>
         }
       />
@@ -302,8 +302,8 @@ export default function BrandingPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-primary">auto_awesome</span>
             <div className="text-left">
-              <p className="text-sm font-semibold text-foreground">AI Brand Generator</p>
-              <p className="text-xs text-muted-foreground">Describe your brand and let AI generate colors, fonts, and styles</p>
+              <p className="text-sm font-semibold text-foreground">Generador de marca con IA</p>
+              <p className="text-xs text-muted-foreground">Describe tu marca y deja que la IA genere colores, fuentes y estilos</p>
             </div>
           </div>
           <span className="material-icons text-muted-foreground text-base">{showAiPanel ? 'expand_less' : 'expand_more'}</span>
@@ -312,7 +312,7 @@ export default function BrandingPage() {
         {showAiPanel && (
           <div className="px-5 pb-5 border-t border-border space-y-3">
             <div className="pt-3">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Describe your brand</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Describe tu marca</label>
               <textarea
                 value={aiPrompt}
                 onChange={(e) => setAiPrompt(e.target.value)}
@@ -337,7 +337,7 @@ export default function BrandingPage() {
             )}
 
             <div className="flex items-center justify-between">
-              <p className="text-[11px] text-muted-foreground">AI will generate colors, fonts, typography, button styles, and dark mode. Logos are preserved.</p>
+              <p className="text-[11px] text-muted-foreground">La IA generará colores, fuentes, tipografía, estilos de botones y modo oscuro. Los logotipos se conservan.</p>
               <button
                 type="button"
                 onClick={generateBranding}
@@ -383,20 +383,18 @@ export default function BrandingPage() {
       {activeTab === 'logos' && (
       <div>
         <h2 className={`${pSectionTitle} mb-1 flex items-center gap-2`}>
-          <span className="material-icons text-base">image</span>
-          Logos
-        </h2>
-        <p className="text-sm text-muted-foreground mb-5">Upload different logo formats for various use cases across your site.</p>
+          <span className="material-icons text-base">image</span>Logotipos</h2>
+        <p className="text-sm text-muted-foreground mb-5">Sube distintos formatos de logotipo para los diferentes usos de tu sitio.</p>
 
         <div className="grid grid-cols-2 gap-6">
           {/* Square Logo */}
           <div>
-            <label className={labelClass}>Square Logo</label>
-            <p className="text-xs text-muted-foreground mb-2">Used for favicons, social media, and small displays.</p>
+            <label className={labelClass}>Logotipo cuadrado</label>
+            <p className="text-xs text-muted-foreground mb-2">Se usa para favicon, redes sociales y pantallas pequeñas.</p>
             <MediaPicker
               value={branding.logoSquareUrl}
               onChange={(url) => update({ logoSquareUrl: url })}
-              label="Square Logo"
+              label="Logotipo cuadrado"
               mimeTypeFilter="image"
               apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
             />
@@ -404,12 +402,12 @@ export default function BrandingPage() {
 
           {/* Rectangle Logo */}
           <div>
-            <label className={labelClass}>Rectangle Logo</label>
-            <p className="text-xs text-muted-foreground mb-2">Used in the navigation bar and headers.</p>
+            <label className={labelClass}>Logotipo rectangular</label>
+            <p className="text-xs text-muted-foreground mb-2">Se usa en la barra de navegación y los encabezados.</p>
             <MediaPicker
               value={branding.logoRectUrl}
               onChange={(url) => update({ logoRectUrl: url })}
-              label="Rectangle Logo"
+              label="Logotipo rectangular"
               mimeTypeFilter="image"
               apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
             />
@@ -417,12 +415,12 @@ export default function BrandingPage() {
 
           {/* Icon + Text Logo */}
           <div>
-            <label className={labelClass}>Logo Icon</label>
-            <p className="text-xs text-muted-foreground mb-2">Small icon that appears alongside your brand name.</p>
+            <label className={labelClass}>Icono de logotipo</label>
+            <p className="text-xs text-muted-foreground mb-2">Icono pequeño que aparece junto al nombre de tu marca.</p>
             <MediaPicker
               value={branding.logoIconUrl}
               onChange={(url) => update({ logoIconUrl: url })}
-              label="Logo Icon"
+              label="Icono de logotipo"
               mimeTypeFilter="image"
               apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
             />
@@ -430,14 +428,14 @@ export default function BrandingPage() {
 
           {/* Text Logo */}
           <div>
-            <label className={labelClass}>Brand Name / Text Logo</label>
-            <p className="text-xs text-muted-foreground mb-2">Text displayed when no image logo is available.</p>
+            <label className={labelClass}>Nombre de marca / logotipo de texto</label>
+            <p className="text-xs text-muted-foreground mb-2">Texto que se muestra cuando no hay logotipo de imagen disponible.</p>
             <input
               type="text"
               value={branding.logoText}
               onChange={(e) => update({ logoText: e.target.value })}
               className={inputClass}
-              placeholder="Your Brand Name"
+              placeholder="El nombre de tu marca"
             />
             {branding.logoText && (
               <div className="mt-3 p-4 rounded-xl bg-muted/30 border border-border">
@@ -455,44 +453,44 @@ export default function BrandingPage() {
             <span className="material-icons text-base">dark_mode</span>
             Dark Mode Logo Overrides
           </h3>
-          <p className="text-xs text-muted-foreground mb-4">Upload alternate logos for dark backgrounds. Falls back to light versions if not set.</p>
+          <p className="text-xs text-muted-foreground mb-4">Sube logotipos alternativos para fondos oscuros. Si no se definen, se usan las versiones claras.</p>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className={labelClass}>Dark Square Logo</label>
+              <label className={labelClass}>Logotipo cuadrado oscuro</label>
               <MediaPicker
                 value={branding.darkMode?.logoSquareUrl || ''}
                 onChange={(url) => updateDark({ logoSquareUrl: url })}
-                label="Dark Square Logo"
+                label="Logotipo cuadrado oscuro"
                 mimeTypeFilter="image"
                 apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
               />
             </div>
             <div>
-              <label className={labelClass}>Dark Rectangle Logo</label>
+              <label className={labelClass}>Logotipo rectangular oscuro</label>
               <MediaPicker
                 value={branding.darkMode?.logoRectUrl || ''}
                 onChange={(url) => updateDark({ logoRectUrl: url })}
-                label="Dark Rectangle Logo"
+                label="Logotipo rectangular oscuro"
                 mimeTypeFilter="image"
                 apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
               />
             </div>
             <div>
-              <label className={labelClass}>Dark Logo Icon</label>
+              <label className={labelClass}>Icono de logotipo oscuro</label>
               <MediaPicker
                 value={branding.darkMode?.logoIconUrl || ''}
                 onChange={(url) => updateDark({ logoIconUrl: url })}
-                label="Dark Logo Icon"
+                label="Icono de logotipo oscuro"
                 mimeTypeFilter="image"
                 apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
               />
             </div>
             <div>
-              <label className={labelClass}>Dark Primary Logo (legacy)</label>
+              <label className={labelClass}>Logotipo primario oscuro (heredado)</label>
               <MediaPicker
                 value={branding.darkMode?.logoUrl || ''}
                 onChange={(url) => updateDark({ logoUrl: url })}
-                label="Dark Primary Logo"
+                label="Logotipo primario oscuro"
                 mimeTypeFilter="image"
                 apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
               />
@@ -504,23 +502,23 @@ export default function BrandingPage() {
         <div className="mt-6 pt-6 border-t border-border">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className={labelClass}>Primary Logo (legacy)</label>
+              <label className={labelClass}>Logotipo primario (heredado)</label>
               <MediaPicker
                 value={branding.logoUrl}
                 onChange={(url) => update({ logoUrl: url })}
-                label="Primary Logo"
+                label="Logotipo primario"
                 mimeTypeFilter="image"
                 apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
               />
             </div>
             <div>
-              <label className={labelClass}>Logo Alt Text</label>
+              <label className={labelClass}>Texto alternativo del logotipo</label>
               <input
                 type="text"
                 value={branding.logoAlt}
                 onChange={(e) => update({ logoAlt: e.target.value })}
                 className={inputClass}
-                placeholder="Company name"
+                placeholder="Nombre de la empresa"
               />
             </div>
           </div>
@@ -535,17 +533,17 @@ export default function BrandingPage() {
           <span className="material-icons text-base">palette</span>
           Colors
         </h2>
-        <p className="text-sm text-muted-foreground mb-5">Define your brand color palette. These are used as defaults in blocks and navigation.</p>
+        <p className="text-sm text-muted-foreground mb-5">Define la paleta de colores de tu marca. Se usa de forma predeterminada en bloques y navegación.</p>
 
         <div className="grid grid-cols-3 gap-4">
           {([
-            { key: 'primaryColor', label: 'Primary', desc: 'Buttons, links, accents' },
-            { key: 'secondaryColor', label: 'Secondary', desc: 'Supporting elements' },
-            { key: 'accentColor', label: 'Accent', desc: 'Highlights, badges' },
-            { key: 'backgroundColor', label: 'Background', desc: 'Page background' },
-            { key: 'textColor', label: 'Text', desc: 'Body text color' },
-            { key: 'navBackground', label: 'Nav Background', desc: 'Navigation bar' },
-            { key: 'navTextColor', label: 'Nav Text', desc: 'Navigation text' },
+            { key: 'primaryColor', label: 'Primario', desc: 'Botones, enlaces y acentos' },
+            { key: 'secondaryColor', label: 'Secundario', desc: 'Elementos secundarios' },
+            { key: 'accentColor', label: 'Acento', desc: 'Destacados e insignias' },
+            { key: 'backgroundColor', label: 'Fondo', desc: 'Fondo de página' },
+            { key: 'textColor', label: 'Texto', desc: 'Color del texto' },
+            { key: 'navBackground', label: 'Fondo de la navegación', desc: 'Barra de navegación' },
+            { key: 'navTextColor', label: 'Texto de la navegación', desc: 'Texto de navegación' },
           ] as const).map(({ key, label, desc }) => (
             <div key={key}>
               <label className={labelClass}>{label}</label>
@@ -574,16 +572,16 @@ export default function BrandingPage() {
             <span className="material-icons text-base">dark_mode</span>
             Dark Mode Color Overrides
           </h3>
-          <p className="text-xs text-muted-foreground mb-4">Colors used when the site is in dark mode. Falls back to light values if not set.</p>
+          <p className="text-xs text-muted-foreground mb-4">Colores que se usan cuando el sitio está en modo oscuro. Si no se definen, se toman los del modo claro.</p>
           <div className="grid grid-cols-3 gap-4">
             {([
-              { key: 'primaryColor' as const, label: 'Primary' },
-              { key: 'secondaryColor' as const, label: 'Secondary' },
-              { key: 'accentColor' as const, label: 'Accent' },
-              { key: 'backgroundColor' as const, label: 'Background' },
-              { key: 'textColor' as const, label: 'Text' },
-              { key: 'navBackground' as const, label: 'Nav Background' },
-              { key: 'navTextColor' as const, label: 'Nav Text' },
+              { key: 'primaryColor' as const, label: 'Primario' },
+              { key: 'secondaryColor' as const, label: 'Secundario' },
+              { key: 'accentColor' as const, label: 'Acento' },
+              { key: 'backgroundColor' as const, label: 'Fondo' },
+              { key: 'textColor' as const, label: 'Texto' },
+              { key: 'navBackground' as const, label: 'Fondo de la navegación' },
+              { key: 'navTextColor' as const, label: 'Texto de la navegación' },
             ]).map(({ key, label }) => (
               <div key={key}>
                 <label className={labelClass}>{label}</label>
@@ -609,46 +607,46 @@ export default function BrandingPage() {
 
         {/* Color previews: Light + Dark side by side */}
         <div className="mt-6 pt-6 border-t border-border">
-          <label className={labelClass}>Preview</label>
+          <label className={labelClass}>Vista previa</label>
           <div className="grid grid-cols-2 gap-4">
             {/* Light mode preview */}
             <div>
-              <span className="text-[11px] text-muted-foreground mb-1 block">Light Mode</span>
+              <span className="text-[11px] text-muted-foreground mb-1 block">Modo claro</span>
               <div className="rounded-lg overflow-hidden border border-border">
                 <div className="h-10 flex items-center px-4 gap-4" style={{ backgroundColor: branding.navBackground, color: branding.navTextColor }}>
                   <span className="text-sm font-semibold">{branding.logoText || 'Brand'}</span>
                   <div className="flex-1" />
-                  <span className="text-xs">Link</span>
-                  <span className="text-xs px-2 py-0.5 rounded text-white" style={{ backgroundColor: branding.primaryColor }}>Button</span>
+                  <span className="text-xs">Enlace</span>
+                  <span className="text-xs px-2 py-0.5 rounded text-white" style={{ backgroundColor: branding.primaryColor }}>Botón</span>
                 </div>
                 <div className="p-4" style={{ backgroundColor: branding.backgroundColor, color: branding.textColor }}>
-                  <h3 className="text-base font-bold mb-1">Heading</h3>
-                  <p className="text-xs mb-2">Body text preview with brand colors.</p>
+                  <h3 className="text-base font-bold mb-1">Título</h3>
+                  <p className="text-xs mb-2">Vista previa del texto con los colores de la marca.</p>
                   <div className="flex gap-1.5">
-                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.primaryColor }}>Primary</span>
-                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.secondaryColor }}>Secondary</span>
-                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.accentColor }}>Accent</span>
+                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.primaryColor }}>Primario</span>
+                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.secondaryColor }}>Secundario</span>
+                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.accentColor }}>Acento</span>
                   </div>
                 </div>
               </div>
             </div>
             {/* Dark mode preview */}
             <div>
-              <span className="text-[11px] text-muted-foreground mb-1 block">Dark Mode</span>
+              <span className="text-[11px] text-muted-foreground mb-1 block">Modo oscuro</span>
               <div className="rounded-lg overflow-hidden border border-border">
                 <div className="h-10 flex items-center px-4 gap-4" style={{ backgroundColor: branding.darkMode?.navBackground || branding.navBackground, color: branding.darkMode?.textColor || branding.navTextColor }}>
                   <span className="text-sm font-semibold">{branding.logoText || 'Brand'}</span>
                   <div className="flex-1" />
-                  <span className="text-xs">Link</span>
-                  <span className="text-xs px-2 py-0.5 rounded text-white" style={{ backgroundColor: branding.darkMode?.primaryColor || branding.primaryColor }}>Button</span>
+                  <span className="text-xs">Enlace</span>
+                  <span className="text-xs px-2 py-0.5 rounded text-white" style={{ backgroundColor: branding.darkMode?.primaryColor || branding.primaryColor }}>Botón</span>
                 </div>
                 <div className="p-4" style={{ backgroundColor: branding.darkMode?.backgroundColor || '#111827', color: branding.darkMode?.textColor || '#f3f4f6' }}>
-                  <h3 className="text-base font-bold mb-1">Heading</h3>
-                  <p className="text-xs mb-2">Body text preview with dark mode colors.</p>
+                  <h3 className="text-base font-bold mb-1">Título</h3>
+                  <p className="text-xs mb-2">Vista previa del texto con los colores del modo oscuro.</p>
                   <div className="flex gap-1.5">
-                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.darkMode?.primaryColor || branding.primaryColor }}>Primary</span>
-                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.darkMode?.secondaryColor || branding.secondaryColor }}>Secondary</span>
-                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.darkMode?.accentColor || branding.accentColor }}>Accent</span>
+                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.darkMode?.primaryColor || branding.primaryColor }}>Primario</span>
+                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.darkMode?.secondaryColor || branding.secondaryColor }}>Secundario</span>
+                    <span className="px-2 py-0.5 rounded text-xs text-white" style={{ backgroundColor: branding.darkMode?.accentColor || branding.accentColor }}>Acento</span>
                   </div>
                 </div>
               </div>
@@ -662,24 +660,22 @@ export default function BrandingPage() {
       {activeTab === 'typography' && (
       <div>
         <h2 className={`${pSectionTitle} mb-1 flex items-center gap-2`}>
-          <span className="material-icons text-base">text_fields</span>
-          Typography
-        </h2>
-        <p className="text-sm text-muted-foreground mb-5">Set default fonts for headings and body, then fine-tune each element.</p>
+          <span className="material-icons text-base">text_fields</span>Tipografía</h2>
+        <p className="text-sm text-muted-foreground mb-5">Define las fuentes predeterminadas de títulos y texto, y luego ajusta cada elemento.</p>
 
         {/* Global font defaults */}
         <div className="grid grid-cols-2 gap-6 mb-8">
           <div>
-            <label className={labelClass}>Default Heading Font</label>
-            <p className="text-[11px] text-muted-foreground mb-2">Applied to H1-H6 unless overridden below.</p>
+            <label className={labelClass}>Fuente predeterminada de títulos</label>
+            <p className="text-[11px] text-muted-foreground mb-2">Se aplica a H1-H6 salvo que se anule abajo.</p>
             <GoogleFontPicker
               value={branding.headingFont}
               onChange={(font) => update({ headingFont: font })}
             />
           </div>
           <div>
-            <label className={labelClass}>Default Body Font</label>
-            <p className="text-[11px] text-muted-foreground mb-2">Applied to paragraphs, blockquotes, captions.</p>
+            <label className={labelClass}>Fuente predeterminada del texto</label>
+            <p className="text-[11px] text-muted-foreground mb-2">Se aplica a los párrafos, las citas y las leyendas.</p>
             <GoogleFontPicker
               value={branding.bodyFont}
               onChange={(font) => update({ bodyFont: font })}
@@ -694,7 +690,7 @@ export default function BrandingPage() {
               <span className="material-icons text-sm">
                 {category === 'heading' ? 'title' : category === 'body' ? 'notes' : 'smart_button'}
               </span>
-              {category === 'heading' ? 'Headings' : category === 'body' ? 'Body Text' : 'UI Elements'}
+              {category === 'heading' ? 'Títulos' : category === 'body' ? 'Texto del cuerpo' : 'UI Elements'}
             </h3>
             <div className="space-y-3">
               {Object.entries(ELEMENT_LABELS)
@@ -732,7 +728,7 @@ export default function BrandingPage() {
                       {/* Controls */}
                       <div className="grid grid-cols-5 gap-3 mt-3 pt-3 border-t border-border/50">
                         <div>
-                          <label className="block text-[11px] text-muted-foreground mb-1">Font Family</label>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Familia de fuente</label>
                           <GoogleFontPicker
                             value={t.font || ''}
                             onChange={(font) => updateTypo(el, { font: font || undefined })}
@@ -742,7 +738,7 @@ export default function BrandingPage() {
                           )}
                         </div>
                         <div>
-                          <label className="block text-[11px] text-muted-foreground mb-1">Size</label>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Tamaño</label>
                           <input
                             type="text"
                             value={t.size || ''}
@@ -752,7 +748,7 @@ export default function BrandingPage() {
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] text-muted-foreground mb-1">Weight</label>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Peso</label>
                           <select
                             value={t.weight || '400'}
                             onChange={(e) => updateTypo(el, { weight: e.target.value })}
@@ -764,7 +760,7 @@ export default function BrandingPage() {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-[11px] text-muted-foreground mb-1">Line Height</label>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Interlineado</label>
                           <input
                             type="text"
                             value={t.lineHeight || ''}
@@ -774,7 +770,7 @@ export default function BrandingPage() {
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] text-muted-foreground mb-1">Char Spacing</label>
+                          <label className="block text-[11px] text-muted-foreground mb-1">Espaciado de caracteres</label>
                           <input
                             type="text"
                             value={t.letterSpacing || ''}
@@ -802,13 +798,13 @@ export default function BrandingPage() {
             <span className="material-icons text-base">rounded_corner</span>
             Border Radius
           </h2>
-          <p className="text-sm text-muted-foreground mb-4">Global shape language applied to buttons, cards, and UI elements.</p>
+          <p className="text-sm text-muted-foreground mb-4">Lenguaje de formas global aplicado a botones, tarjetas y elementos de la interfaz.</p>
           <div className="grid grid-cols-4 gap-3">
             {[
-              { value: '0px', label: 'Sharp' },
-              { value: '4px', label: 'Subtle' },
-              { value: '8px', label: 'Rounded' },
-              { value: '9999px', label: 'Pill' },
+              { value: '0px', label: 'Angular' },
+              { value: '4px', label: 'Sutil' },
+              { value: '8px', label: 'Redondeado' },
+              { value: '9999px', label: 'Pastilla' },
             ].map(opt => (
               <button
                 key={opt.value}
@@ -829,7 +825,7 @@ export default function BrandingPage() {
             ))}
           </div>
           <div className="mt-3">
-            <label className={labelClass}>Custom Value</label>
+            <label className={labelClass}>Valor personalizado</label>
             <input
               type="text"
               value={branding.borderRadius}
@@ -846,10 +842,10 @@ export default function BrandingPage() {
             <span className="material-icons text-base">link</span>
             Link Colors
           </h2>
-          <p className="text-sm text-muted-foreground mb-4">Colors for inline text links. Separate from primary color for accessibility.</p>
+          <p className="text-sm text-muted-foreground mb-4">Colores para los enlaces de texto en línea. Van separados del color primario por accesibilidad.</p>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className={labelClass}>Link Color</label>
+              <label className={labelClass}>Color de enlaces</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -867,7 +863,7 @@ export default function BrandingPage() {
               </div>
             </div>
             <div>
-              <label className={labelClass}>Link Hover Color</label>
+              <label className={labelClass}>Color de enlace al pasar el cursor</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -899,10 +895,10 @@ export default function BrandingPage() {
             <span className="material-icons text-base">smart_button</span>
             Button Style
           </h2>
-          <p className="text-sm text-muted-foreground mb-4">Default styling for buttons and CTAs across blocks.</p>
+          <p className="text-sm text-muted-foreground mb-4">Estilo predeterminado de botones y CTA en todos los bloques.</p>
 
           <div className="mb-4">
-            <label className={labelClass}>Default Variant</label>
+            <label className={labelClass}>Variante predeterminada</label>
             <div className="flex gap-2">
               {(['filled', 'outline'] as const).map(v => (
                 <button
@@ -922,7 +918,7 @@ export default function BrandingPage() {
           </div>
 
           <div className="mb-4">
-            <label className={labelClass}>Button Border Radius</label>
+            <label className={labelClass}>Radio de borde de botones</label>
             <input
               type="text"
               value={branding.buttonStyle?.borderRadius || ''}
@@ -930,14 +926,14 @@ export default function BrandingPage() {
               className={`${inputClass} max-w-[200px]`}
               placeholder={branding.borderRadius || '8px'}
             />
-            <p className="text-[11px] text-muted-foreground mt-1">Leave empty to inherit global border radius.</p>
+            <p className="text-[11px] text-muted-foreground mt-1">Déjalo vacío para heredar el radio de borde global.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">Primary Button</h3>
+              <h3 className="text-sm font-semibold text-foreground">Botón primario</h3>
               <div>
-                <label className={labelClass}>Background</label>
+                <label className={labelClass}>Fondo</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -955,7 +951,7 @@ export default function BrandingPage() {
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Text Color</label>
+                <label className={labelClass}>Color de texto</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -973,7 +969,7 @@ export default function BrandingPage() {
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Hover Background</label>
+                <label className={labelClass}>Fondo al pasar el cursor</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -998,16 +994,14 @@ export default function BrandingPage() {
                     color: branding.buttonStyle?.primaryText || '#ffffff',
                     borderRadius: branding.buttonStyle?.borderRadius || branding.borderRadius,
                   }}
-                >
-                  Primary Button
-                </button>
+                >Botón primario</button>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">Secondary Button</h3>
+              <h3 className="text-sm font-semibold text-foreground">Botón secundario</h3>
               <div>
-                <label className={labelClass}>Background</label>
+                <label className={labelClass}>Fondo</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -1025,7 +1019,7 @@ export default function BrandingPage() {
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Text Color</label>
+                <label className={labelClass}>Color de texto</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -1043,7 +1037,7 @@ export default function BrandingPage() {
                 </div>
               </div>
               <div>
-                <label className={labelClass}>Hover Background</label>
+                <label className={labelClass}>Fondo al pasar el cursor</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
@@ -1068,9 +1062,7 @@ export default function BrandingPage() {
                     color: branding.buttonStyle?.secondaryText || '#ffffff',
                     borderRadius: branding.buttonStyle?.borderRadius || branding.borderRadius,
                   }}
-                >
-                  Secondary Button
-                </button>
+                >Botón secundario</button>
               </div>
             </div>
           </div>
@@ -1082,7 +1074,7 @@ export default function BrandingPage() {
             <span className="material-icons text-base">tab</span>
             Favicon
           </h2>
-          <p className="text-sm text-muted-foreground mb-4">The small icon shown in browser tabs. Recommended: 32x32 or 48x48 PNG.</p>
+          <p className="text-sm text-muted-foreground mb-4">El icono pequeño que se muestra en las pestañas del navegador. Recomendado: PNG de 32x32 o 48x48.</p>
           <div className="max-w-sm">
             <MediaPicker
               value={branding.faviconUrl}
@@ -1097,15 +1089,13 @@ export default function BrandingPage() {
         {/* OG / Social Image */}
         <div>
           <h2 className={`${pSectionTitle} mb-1 flex items-center gap-2`}>
-            <span className="material-icons text-base">share</span>
-            Social / OG Image
-          </h2>
-          <p className="text-sm text-muted-foreground mb-4">Default image shown when pages are shared on social media. Recommended: 1200x630.</p>
+            <span className="material-icons text-base">share</span>Social / Imagen OG</h2>
+          <p className="text-sm text-muted-foreground mb-4">Imagen que se muestra al compartir páginas en redes sociales. Recomendada: 1200x630.</p>
           <div className="max-w-sm">
             <MediaPicker
               value={branding.ogImageUrl}
               onChange={(url) => update({ ogImageUrl: url })}
-              label="OG Image"
+              label="Imagen OG"
               mimeTypeFilter="image"
               apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
             />

@@ -1,6 +1,6 @@
 import { resend } from './index';
+import { getConfiguredFromEmail } from './config';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'store@simplerdevelopment.com';
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
 
@@ -17,12 +17,12 @@ export async function sendCartRecoveryEmail(opts: {
   cartValue: number;
 }): Promise<void> {
   const link = `${BASE_URL}/api/storefront/${opts.websiteId}/cart/recover?token=${encodeURIComponent(opts.recoveryToken)}`;
-  const dollars = (opts.cartValue / 100).toFixed(2);
+  const amount = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(opts.cartValue / 100);
   await resend.emails.send({
-    from: `Your Cart <${FROM_EMAIL}>`,
+    from: `Tu carrito <${(await getConfiguredFromEmail()) || 'store@simplerdevelopment.com'}>`,
     to: opts.to,
-    subject: 'You left items in your cart',
-    html: `<p>You still have ${opts.itemCount} item${opts.itemCount === 1 ? '' : 's'} waiting in your cart (total $${dollars}).</p>
-<p><a href="${link}">Return to your cart</a> to finish checking out.</p>`,
+    subject: 'Dejaste artículos en tu carrito',
+    html: `<p>Todavía tienes ${opts.itemCount} ${opts.itemCount === 1 ? 'artículo' : 'artículos'} esperando en tu carrito (total ${amount}).</p>
+<p><a href="${link}">Vuelve a tu carrito</a> para terminar la compra.</p>`,
   });
 }

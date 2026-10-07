@@ -106,7 +106,7 @@ async function renderPage() {
   const result = render(<AdminPortalWebsitesPage />);
   // Wait until the main heading is visible (loading complete)
   await waitFor(() => {
-    expect(result.container.textContent).toContain('Client Websites');
+    expect(result.container.textContent).toContain('Sitios web de clientes');
   }, { timeout: 10000 });
   return result;
 }
@@ -138,13 +138,13 @@ describe('AdminPortalWebsitesPage — loading state', () => {
 describe('AdminPortalWebsitesPage — page header', () => {
   it('renders the heading and add-website button', async () => {
     await renderPage();
-    expect(screen.getByText('Client Websites')).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Add Website/ })).toBeTruthy();
+    expect(screen.getByText('Sitios web de clientes')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Añadir sitio web/ })).toBeTruthy();
   });
 
   it('renders the search input', async () => {
     await renderPage();
-    expect(screen.getByPlaceholderText('Search websites or clients...')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Buscar sitios web o clientes...')).toBeTruthy();
   });
 });
 
@@ -170,7 +170,7 @@ describe('AdminPortalWebsitesPage — websites list', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    expect(screen.getByText('Not set')).toBeTruthy();
+    expect(screen.getByText('Sin configurar')).toBeTruthy();
   });
 
   it('falls back to clientUserName when clientCompany is null', async () => {
@@ -192,12 +192,12 @@ describe('AdminPortalWebsitesPage — websites list', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    expect(screen.getByText('No client websites yet.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay sitios web de clientes.')).toBeTruthy();
   });
 
   it('shows active badge for active site', async () => {
     await renderPage();
-    expect(screen.getByText('Active')).toBeTruthy();
+    expect(screen.getByText('Activo')).toBeTruthy();
   });
 
   it('shows inactive badge for inactive site', async () => {
@@ -208,7 +208,7 @@ describe('AdminPortalWebsitesPage — websites list', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    expect(screen.getByText('Inactive')).toBeTruthy();
+    expect(screen.getByText('Inactivo')).toBeTruthy();
   });
 });
 
@@ -232,7 +232,7 @@ describe('AdminPortalWebsitesPage — stripe BYOK column', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    expect(screen.getByText('BYOK Allowed')).toBeTruthy();
+    expect(screen.getByText('BYOK permitido')).toBeTruthy();
   });
 
   it('shows "BYOK Active" pill when stripeMode=byok', async () => {
@@ -249,12 +249,12 @@ describe('AdminPortalWebsitesPage — stripe BYOK column', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    expect(screen.getByText('BYOK Active')).toBeTruthy();
+    expect(screen.getByText('BYOK activo')).toBeTruthy();
   });
 
   it('renders the "Allow BYOK" checkbox', async () => {
     await renderPage();
-    expect(screen.getByText('Allow BYOK')).toBeTruthy();
+    expect(screen.getByText('Permitir BYOK')).toBeTruthy();
   });
 });
 
@@ -268,7 +268,7 @@ describe('AdminPortalWebsitesPage — search filter', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    const searchInput = screen.getByPlaceholderText('Search websites or clients...');
+    const searchInput = screen.getByPlaceholderText('Buscar sitios web o clientes...');
     fireEvent.change(searchInput, { target: { value: 'Beta' } });
     expect(screen.queryByText('Acme Site')).toBeNull();
     expect(screen.getByText('Beta Site')).toBeTruthy();
@@ -276,28 +276,28 @@ describe('AdminPortalWebsitesPage — search filter', () => {
 
   it('filters by domain', async () => {
     await renderPage();
-    const searchInput = screen.getByPlaceholderText('Search websites or clients...');
+    const searchInput = screen.getByPlaceholderText('Buscar sitios web o clientes...');
     fireEvent.change(searchInput, { target: { value: 'acme.example' } });
     expect(screen.getByText('Acme Site')).toBeTruthy();
   });
 
   it('shows "No websites match your search." when no results', async () => {
     await renderPage();
-    const searchInput = screen.getByPlaceholderText('Search websites or clients...');
+    const searchInput = screen.getByPlaceholderText('Buscar sitios web o clientes...');
     fireEvent.change(searchInput, { target: { value: 'zzznomatch' } });
-    expect(screen.getByText('No websites match your search.')).toBeTruthy();
+    expect(screen.getByText('No hay sitios web que coincidan con tu búsqueda.')).toBeTruthy();
   });
 
   it('filters case-insensitively by clientUserName', async () => {
     await renderPage();
-    const searchInput = screen.getByPlaceholderText('Search websites or clients...');
+    const searchInput = screen.getByPlaceholderText('Buscar sitios web o clientes...');
     fireEvent.change(searchInput, { target: { value: 'ALICE' } });
     expect(screen.getByText('Acme Site')).toBeTruthy();
   });
 
   it('filters by clientCompany', async () => {
     await renderPage();
-    const searchInput = screen.getByPlaceholderText('Search websites or clients...');
+    const searchInput = screen.getByPlaceholderText('Buscar sitios web o clientes...');
     fireEvent.change(searchInput, { target: { value: 'Acme Corp' } });
     expect(screen.getByText('Acme Site')).toBeTruthy();
   });
@@ -306,42 +306,42 @@ describe('AdminPortalWebsitesPage — search filter', () => {
 describe('AdminPortalWebsitesPage — create modal', () => {
   it('opens Add Website modal when button is clicked', async () => {
     await renderPage();
-    fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
-    expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /Añadir sitio web/ }));
+    expect(screen.getByText('Añadir sitio web', { selector: 'h2' })).toBeTruthy();
   });
 
   it('closes modal via the close (X) button', async () => {
     await renderPage();
-    fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
-    await waitFor(() => expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir sitio web/ }));
+    await waitFor(() => expect(screen.getByText('Añadir sitio web', { selector: 'h2' })).toBeTruthy());
     const closeBtn = Array.from(document.querySelectorAll('button')).find(b =>
       b.querySelector('.material-icons')?.textContent === 'close',
     ) as HTMLButtonElement;
     fireEvent.click(closeBtn);
-    expect(screen.queryByText('Add Website', { selector: 'h2' })).toBeNull();
+    expect(screen.queryByText('Añadir sitio web', { selector: 'h2' })).toBeNull();
   });
 
   it('closes modal via Cancel button', async () => {
     await renderPage();
-    fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
-    await waitFor(() => expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-    expect(screen.queryByText('Add Website', { selector: 'h2' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Añadir sitio web/ }));
+    await waitFor(() => expect(screen.getByText('Añadir sitio web', { selector: 'h2' })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+    expect(screen.queryByText('Añadir sitio web', { selector: 'h2' })).toBeNull();
   });
 
   it('shows error if client or name is missing on save', async () => {
     await renderPage();
-    fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
-    await waitFor(() => expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir sitio web/ }));
+    await waitFor(() => expect(screen.getByText('Añadir sitio web', { selector: 'h2' })).toBeTruthy());
     // Submit without filling anything
-    fireEvent.click(screen.getByRole('button', { name: 'Add Website', hidden: true }));
-    await waitFor(() => expect(screen.getByText('Client and name are required.')).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: 'Añadir sitio web', hidden: true }));
+    await waitFor(() => expect(screen.getByText('El cliente y el nombre son obligatorios.')).toBeTruthy());
   });
 
   it('populates clients in the select dropdown', async () => {
     await renderPage();
-    fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
-    await waitFor(() => expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir sitio web/ }));
+    await waitFor(() => expect(screen.getByText('Añadir sitio web', { selector: 'h2' })).toBeTruthy());
     const sel = document.querySelector('select') as HTMLSelectElement;
     expect(sel).toBeTruthy();
     expect(sel.textContent).toContain('Acme Corp');
@@ -356,17 +356,17 @@ describe('AdminPortalWebsitesPage — create modal', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
-    await waitFor(() => expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir sitio web/ }));
+    await waitFor(() => expect(screen.getByText('Añadir sitio web', { selector: 'h2' })).toBeTruthy());
     // Select a client
     const sel = document.querySelector('select') as HTMLSelectElement;
     fireEvent.change(sel, { target: { value: '10' } });
     // Fill name
-    const nameInput = screen.getByPlaceholderText('e.g. Acme Corp Main Site') as HTMLInputElement;
+    const nameInput = screen.getByPlaceholderText('p. ej. Sitio principal de Acme') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'New Site' } });
     // Save
-    fireEvent.click(screen.getByRole('button', { name: 'Add Website', hidden: true }));
-    await waitFor(() => expect(screen.queryByText('Add Website', { selector: 'h2' })).toBeNull());
+    fireEvent.click(screen.getByRole('button', { name: 'Añadir sitio web', hidden: true }));
+    await waitFor(() => expect(screen.queryByText('Añadir sitio web', { selector: 'h2' })).toBeNull());
     expect(screen.getByText('New Site')).toBeTruthy();
   });
 
@@ -378,13 +378,13 @@ describe('AdminPortalWebsitesPage — create modal', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByRole('button', { name: /Add Website/ }));
-    await waitFor(() => expect(screen.getByText('Add Website', { selector: 'h2' })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir sitio web/ }));
+    await waitFor(() => expect(screen.getByText('Añadir sitio web', { selector: 'h2' })).toBeTruthy());
     const sel = document.querySelector('select') as HTMLSelectElement;
     fireEvent.change(sel, { target: { value: '10' } });
-    const nameInput = screen.getByPlaceholderText('e.g. Acme Corp Main Site') as HTMLInputElement;
+    const nameInput = screen.getByPlaceholderText('p. ej. Sitio principal de Acme') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Dupe' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Add Website', hidden: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Añadir sitio web', hidden: true }));
     await waitFor(() => expect(screen.getByText('Name already taken')).toBeTruthy());
   });
 });
@@ -393,17 +393,17 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
   it('opens edit modal with pre-populated values', async () => {
     await renderPage();
     // Click the Edit (pencil) button
-    const editBtn = screen.getByTitle('Edit');
+    const editBtn = screen.getByTitle('Editar');
     fireEvent.click(editBtn);
-    await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
-    const nameInput = screen.getByPlaceholderText('e.g. Acme Corp Main Site') as HTMLInputElement;
+    await waitFor(() => expect(screen.getByText('Editar sitio web')).toBeTruthy());
+    const nameInput = screen.getByPlaceholderText('p. ej. Sitio principal de Acme') as HTMLInputElement;
     expect(nameInput.value).toBe('Acme Site');
   });
 
   it('client select is disabled in edit mode', async () => {
     await renderPage();
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => expect(screen.getByText('Editar sitio web')).toBeTruthy());
     const sel = document.querySelector('select') as HTMLSelectElement;
     expect(sel.disabled).toBe(true);
   });
@@ -416,12 +416,12 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
-    const nameInput = screen.getByPlaceholderText('e.g. Acme Corp Main Site') as HTMLInputElement;
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => expect(screen.getByText('Editar sitio web')).toBeTruthy());
+    const nameInput = screen.getByPlaceholderText('p. ej. Sitio principal de Acme') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Updated Site' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
-    await waitFor(() => expect(screen.queryByText('Edit Website')).toBeNull());
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar cambios' }));
+    await waitFor(() => expect(screen.queryByText('Editar sitio web')).toBeNull());
     expect(screen.getByText('Updated Site')).toBeTruthy();
   });
 
@@ -433,9 +433,9 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => expect(screen.getByText('Edit Website')).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => expect(screen.getByText('Editar sitio web')).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar cambios' }));
     await waitFor(() => expect(screen.getByText('Forbidden')).toBeTruthy());
   });
 });
@@ -443,16 +443,16 @@ describe('AdminPortalWebsitesPage — edit modal', () => {
 describe('AdminPortalWebsitesPage — delete flow', () => {
   it('opens delete confirmation dialog when Delete button clicked', async () => {
     await renderPage();
-    fireEvent.click(screen.getByTitle('Delete'));
-    expect(screen.getByText('Delete website?')).toBeTruthy();
+    fireEvent.click(screen.getByTitle('Eliminar'));
+    expect(screen.getByText('¿Eliminar sitio web?')).toBeTruthy();
   });
 
   it('cancels deletion via Cancel button', async () => {
     await renderPage();
-    fireEvent.click(screen.getByTitle('Delete'));
-    await waitFor(() => expect(screen.getByText('Delete website?')).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-    expect(screen.queryByText('Delete website?')).toBeNull();
+    fireEvent.click(screen.getByTitle('Eliminar'));
+    await waitFor(() => expect(screen.getByText('¿Eliminar sitio web?')).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+    expect(screen.queryByText('¿Eliminar sitio web?')).toBeNull();
     // Site still present
     expect(screen.getByText('Acme Site')).toBeTruthy();
   });
@@ -467,9 +467,9 @@ describe('AdminPortalWebsitesPage — delete flow', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByTitle('Delete'));
-    await waitFor(() => expect(screen.getByText('Delete website?')).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+    fireEvent.click(screen.getByTitle('Eliminar'));
+    await waitFor(() => expect(screen.getByText('¿Eliminar sitio web?')).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
     await waitFor(() => {
       expect(deleteCalled).toBe(true);
       expect(screen.queryByText('Acme Site')).toBeNull();
@@ -489,7 +489,7 @@ describe('AdminPortalWebsitesPage — toggle active', () => {
     });
     await renderPage();
     // Active badge button
-    const activeBtn = screen.getByText('Active').closest('button') as HTMLButtonElement;
+    const activeBtn = screen.getByText('Activo').closest('button') as HTMLButtonElement;
     fireEvent.click(activeBtn);
     await waitFor(() => expect(patched).toBe(true));
   });
@@ -562,6 +562,6 @@ describe('AdminPortalWebsitesPage — toggle BYOK', () => {
     await renderPage();
     const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
     fireEvent.click(checkbox);
-    await waitFor(() => expect(screen.getByText('BYOK Allowed')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('BYOK permitido')).toBeTruthy());
   });
 });

@@ -21,6 +21,7 @@ import { pitchDeckTools, pitchDeckHandlers } from '@/lib/ai/portal-tools/pitch-d
 import { bookingTools, bookingHandlers } from '@/lib/ai/portal-tools/booking';
 import { teamTools, teamHandlers } from '@/lib/ai/portal-tools/team';
 import { navigationTools, navigationHandlers } from '@/lib/ai/portal-tools/navigation';
+import { inboxTools, inboxHandlers } from '@/lib/ai/portal-tools/inbox';
 import { crmTools, crmHandlers } from '@/lib/ai/portal-tools/crm';
 import { surveyTools, surveyHandlers } from '@/lib/ai/portal-tools/surveys';
 import { automationTools, automationHandlers } from '@/lib/ai/portal-tools/automations';
@@ -32,12 +33,7 @@ const DOMAINS = [
     name: 'projects',
     tools: projectTools,
     handlers: projectHandlers,
-    expected: [
-      'get_my_projects', 'pm_spawn_project_from_deal',
-      'get_project_board', 'get_project_cards', 'get_sprint_progress',
-      'get_project_files', 'add_card_comment', 'create_project_card', 'update_project_card',
-      'move_project_card',
-    ],
+    expected: ['get_my_projects', 'pm_spawn_project_from_deal', 'get_project_board', 'get_project_cards', 'get_sprint_progress', 'get_project_files', 'add_card_comment', 'create_project_card', 'update_project_card', 'move_project_card'],
   },
   {
     name: 'billing',
@@ -62,20 +58,28 @@ const DOMAINS = [
     tools: cmsTools,
     handlers: cmsHandlers,
     expected: [
-      'get_my_websites', 'get_website_pages', 'get_website_categories', 'get_website_tags',
-      'get_website_media', 'get_my_hosted_sites', 'create_website_page', 'publish_page',
-      'create_website_category', 'create_website_tag', 'get_page_content', 'update_page_blocks',
-      'update_block_by_id', 'update_page_metadata',
+      'get_my_websites',
+      'get_website_pages',
+      'get_website_categories',
+      'get_website_tags',
+      'get_website_media',
+      'get_my_hosted_sites',
+      'create_website',
+      'create_website_page',
+      'publish_page',
+      'create_website_category',
+      'create_website_tag',
+      'get_page_content',
+      'update_page_blocks',
+      'update_block_by_id',
+      'update_page_metadata',
     ],
   },
   {
     name: 'email',
     tools: emailTools,
     handlers: emailHandlers,
-    expected: [
-      'get_my_email_campaigns', 'get_my_email_lists', 'create_email_campaign', 'update_email_campaign',
-      'get_email_campaign_details', 'add_email_subscriber', 'get_email_segments', 'create_email_segment',
-    ],
+    expected: ['get_my_email_campaigns', 'get_my_email_lists', 'create_email_campaign', 'update_email_campaign', 'get_email_campaign_details', 'add_email_subscriber', 'get_email_segments', 'create_email_segment'],
   },
   {
     name: 'pitch-decks',
@@ -93,21 +97,45 @@ const DOMAINS = [
     name: 'team',
     tools: teamTools,
     handlers: teamHandlers,
-    expected: [
-      'get_suggested_projects', 'get_my_team', 'get_my_profile',
-      'request_suggested_project', 'update_profile', 'invite_team_member',
-    ],
+    expected: ['get_suggested_projects', 'get_my_team', 'get_my_profile', 'request_suggested_project', 'update_profile', 'invite_team_member'],
   },
   { name: 'navigation', tools: navigationTools, handlers: navigationHandlers, expected: ['navigate_to'] },
+  {
+    name: 'inbox',
+    tools: inboxTools,
+    handlers: inboxHandlers,
+    expected: [
+      'get_inbox_channels',
+      'get_inbox_conversations',
+      'get_inbox_conversation',
+      'send_inbox_message',
+      'assign_inbox_conversation',
+      'take_over_inbox_conversation',
+      'pause_inbox_ai',
+      'return_inbox_conversation_to_ai',
+      'close_inbox_conversation',
+    ],
+  },
   {
     name: 'crm',
     tools: crmTools,
     handlers: crmHandlers,
     expected: [
-      'get_crm_contacts', 'get_crm_contact_detail', 'get_crm_companies', 'get_crm_deals',
-      'get_crm_pipelines', 'get_crm_activities', 'create_crm_contact', 'update_crm_contact',
-      'create_crm_company', 'create_crm_deal', 'update_crm_deal', 'log_crm_activity',
-      'get_crm_proposals', 'create_crm_proposal', 'send_crm_proposal',
+      'get_crm_contacts',
+      'get_crm_contact_detail',
+      'get_crm_companies',
+      'get_crm_deals',
+      'get_crm_pipelines',
+      'get_crm_activities',
+      'create_crm_contact',
+      'update_crm_contact',
+      'create_crm_company',
+      'create_crm_deal',
+      'update_crm_deal',
+      'log_crm_activity',
+      'get_crm_proposals',
+      'create_crm_proposal',
+      'send_crm_proposal',
     ],
   },
   {
@@ -127,7 +155,7 @@ const DOMAINS = [
 describe('per-domain portal-tools modules', () => {
   for (const d of DOMAINS) {
     it(`[${d.name}] tools array exposes the expected names`, () => {
-      const names = d.tools.map(t => t.name).sort();
+      const names = d.tools.map((t) => t.name).sort();
       expect(names).toEqual([...d.expected].sort());
     });
 
@@ -148,8 +176,8 @@ describe('per-domain portal-tools modules', () => {
 
 describe('barrel aggregation', () => {
   it('PORTAL_TOOLS is the union of all domain tools (no missing, no duplicates)', () => {
-    const fromDomains = DOMAINS.flatMap(d => d.tools.map(t => t.name)).sort();
-    const fromBarrel = PORTAL_TOOLS.map(t => t.name).sort();
+    const fromDomains = DOMAINS.flatMap((d) => d.tools.map((t) => t.name)).sort();
+    const fromBarrel = PORTAL_TOOLS.map((t) => t.name).sort();
     expect(fromBarrel).toEqual(fromDomains);
 
     const dedup = new Set(fromBarrel);
@@ -164,10 +192,7 @@ describe('barrel aggregation', () => {
 
 describe('navigation handler is fully pure (no DB)', () => {
   it('navigate_to returns the navigate envelope passing through path/section/message', async () => {
-    const result = await navigationHandlers.navigate_to(
-      { path: '/portal/dashboard', section: 'overview', message: 'Take a look.' },
-      1, 1,
-    );
+    const result = await navigationHandlers.navigate_to({ path: '/portal/dashboard', section: 'overview', message: 'Take a look.' }, 1, 1);
     expect(result).toEqual({
       action: 'navigate',
       path: '/portal/dashboard',

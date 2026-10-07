@@ -53,35 +53,35 @@ const activityIcons: Record<string, string> = {
 
 function formatCompact(cents: number): string {
   const dollars = cents / 100;
-  if (dollars >= 1_000_000) return `$${(dollars / 1_000_000).toFixed(1)}M`;
-  if (dollars >= 1_000) return `$${(dollars / 1_000).toFixed(1)}K`;
-  return `$${dollars.toFixed(0)}`;
+  if (dollars >= 1_000_000) return `${(dollars / 1_000_000).toFixed(1).replace('.', ',')}M €`;
+  if (dollars >= 1_000) return `${(dollars / 1_000).toFixed(1).replace('.', ',')}K €`;
+  return `${dollars.toFixed(0)} €`;
 }
 
 function relativeTime(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return 'ahora mismo';
+  if (mins < 60) return `hace ${mins} min`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(dateStr).toLocaleDateString();
+  if (days < 7) return `hace ${days} d`;
+  return new Date(dateStr).toLocaleDateString('es-ES');
 }
 
 // --- SVG Chart Components ---
 
 function DonutChart({ won, lost, open }: { won: number; lost: number; open: number }) {
   const total = won + lost + open;
-  if (total === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">No deal data yet</div>;
+  if (total === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">Aún no hay datos de negocios</div>;
 
   const radius = 50;
   const circumference = 2 * Math.PI * radius;
   const segments = [
-    { dash: (won / total) * circumference, color: '#22c55e', label: 'Won', count: won, pct: won / total },
-    { dash: (lost / total) * circumference, color: '#ef4444', label: 'Lost', count: lost, pct: lost / total },
-    { dash: (open / total) * circumference, color: '#3b82f6', label: 'Open', count: open, pct: open / total },
+    { dash: (won / total) * circumference, color: '#22c55e', label: 'Ganadas', count: won, pct: won / total },
+    { dash: (lost / total) * circumference, color: '#ef4444', label: 'Perdidas', count: lost, pct: lost / total },
+    { dash: (open / total) * circumference, color: '#3b82f6', label: 'Abiertas', count: open, pct: open / total },
   ];
   let offset = 0;
 
@@ -94,7 +94,7 @@ function DonutChart({ won, lost, open }: { won: number; lost: number; open: numb
           return <circle key={seg.label} cx="60" cy="60" r={radius} fill="none" stroke={seg.color} strokeWidth="16" strokeDasharray={`${seg.dash} ${circumference - seg.dash}`} strokeDashoffset={o} transform="rotate(-90 60 60)" className="transition-all duration-700" />;
         })}
         <text x="60" y="56" textAnchor="middle" className="fill-foreground text-xl font-bold" fontSize="20">{total}</text>
-        <text x="60" y="72" textAnchor="middle" className="fill-muted-foreground" fontSize="10">Deals</text>
+        <text x="60" y="72" textAnchor="middle" className="fill-muted-foreground" fontSize="10">Negocios</text>
       </svg>
       <div className="space-y-1.5">
         {segments.map((seg) => (
@@ -110,7 +110,13 @@ function DonutChart({ won, lost, open }: { won: number; lost: number; open: numb
 }
 
 function LineChart({ data }: { data: RevenueMonth[] }) {
-  if (data.length === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">No revenue data yet</div>;
+  if (data.length === 0) return (
+    <div className="flex flex-col items-center justify-center h-40 text-center gap-1">
+      <span className="material-icons text-3xl text-muted-foreground/50">show_chart</span>
+      <p className="text-sm font-medium text-foreground">Aún no hay datos de ingresos</p>
+      <p className="text-xs text-muted-foreground">Cuando ganes tu primer negocio, aquí verás su evolución.</p>
+    </div>
+  );
 
   const values = data.map((d) => Number(d.won_value));
   const maxVal = Math.max(...values, 1);
@@ -141,7 +147,7 @@ function LineChart({ data }: { data: RevenueMonth[] }) {
 }
 
 function FunnelChart({ stages }: { stages: FunnelStage[] }) {
-  if (stages.length === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">No pipeline data</div>;
+  if (stages.length === 0) return <div className="flex items-center justify-center h-40 text-muted-foreground text-sm">Sin datos de pipeline</div>;
   const maxValue = Math.max(...stages.map((s) => Number(s.total_value)), 1);
 
   return (
@@ -150,7 +156,7 @@ function FunnelChart({ stages }: { stages: FunnelStage[] }) {
         <div key={stage.stage_name} className="space-y-0.5">
           <div className="flex justify-between text-xs">
             <span className="text-foreground font-medium">{stage.stage_name}</span>
-            <span className="text-muted-foreground">{Number(stage.deal_count)} deals &middot; {formatMoney(Number(stage.total_value), { fractionDigits: 0 })}</span>
+            <span className="text-muted-foreground">{Number(stage.deal_count)} negocios &middot; {formatMoney(Number(stage.total_value), { fractionDigits: 0 })}</span>
           </div>
           <div className="w-full bg-accent rounded-full h-4 overflow-hidden">
             <div className="h-full rounded-full transition-all duration-700" style={{ width: `${Math.max((Number(stage.total_value) / maxValue) * 100, 2)}%`, backgroundColor: stage.color || '#6366f1' }} />
@@ -175,13 +181,13 @@ export default function CrmDashboardPage() {
     setLoading(true);
     setError('');
     Promise.all([
-      fetch('/api/portal/crm/dashboard').then(r => { if (!r.ok) throw new Error('Dashboard failed'); return r.json(); }),
-      fetch(`/api/portal/crm/analytics?period=${period}`).then(r => { if (!r.ok) throw new Error('Analytics failed'); return r.json(); }),
+      fetch('/api/portal/crm/dashboard').then(r => { if (!r.ok) throw new Error('Error al cargar el panel'); return r.json(); }),
+      fetch(`/api/portal/crm/analytics?period=${period}`).then(r => { if (!r.ok) throw new Error('Error al cargar las analíticas'); return r.json(); }),
     ]).then(([d, a]) => {
       setDashboard(d.data ?? null);
       setAnalytics(a.data ?? null);
       setLoading(false);
-    }).catch((err) => { setError(err.message || 'Failed to load dashboard'); setLoading(false); });
+    }).catch((err) => { setError(err.message || 'No se pudo cargar el panel'); setLoading(false); });
   }, [period]);
 
   if (loading) {
@@ -193,7 +199,7 @@ export default function CrmDashboardPage() {
       <div className="flex flex-col items-center justify-center py-20 gap-3">
         <span className="material-icons text-3xl text-destructive">error</span>
         <p className="text-sm text-muted-foreground">{error}</p>
-        <button onClick={() => setPeriod(p => p)} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90">Retry</button>
+        <button onClick={() => setPeriod(p => p)} className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90">Reintentar</button>
       </div>
     );
   }
@@ -207,20 +213,20 @@ export default function CrmDashboardPage() {
     { value: '30d', label: '30D' },
     { value: '90d', label: '90D' },
     { value: '12m', label: '12M' },
-    { value: 'all', label: 'All' },
+    { value: 'all', label: 'Todo' },
   ];
 
   return (
     <div className="space-y-6">
       {/* Header with period selector */}
       <PortalPageHeader
-        eyebrow="Sales"
-        title="CRM Dashboard"
-        subtitle="Sales performance and pipeline health"
+        eyebrow="Ventas"
+        title="Panel de CRM"
+        subtitle="Rendimiento de ventas y salud del pipeline"
         actions={
           <div className="flex items-center gap-1 bg-accent rounded-lg p-1">
             {periods.map((p) => (
-              <button key={p.value} onClick={() => setPeriod(p.value)} className={`px-3 py-1.5 text-xs rounded-md transition-colors ${period === p.value ? 'bg-primary text-primary-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}>
+              <button key={p.value} onClick={() => setPeriod(p.value)} className={`px-3 py-1.5 text-xs rounded-md transition-colors ${period === p.value ? 'bg-foreground text-background font-medium' : 'text-muted-foreground hover:text-foreground'}`}>
                 {p.label}
               </button>
             ))}
@@ -233,12 +239,12 @@ export default function CrmDashboardPage() {
       {/* Top Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
         {[
-          { label: 'Contacts', value: dashboard?.totalContacts ?? 0, icon: 'people', color: 'text-blue-500', href: '/portal/crm/contacts' },
-          { label: 'Companies', value: dashboard?.totalCompanies ?? 0, icon: 'business', color: 'text-purple-500', href: '/portal/crm/companies' },
-          { label: 'Win Rate', value: winRate === '--' ? '--' : `${winRate}%`, icon: 'emoji_events', color: 'text-green-500' },
-          { label: 'Open Pipeline', value: formatMoney(openPipelineValue, { fractionDigits: 0 }), icon: 'trending_up', color: 'text-orange-500', href: '/portal/crm/deals' },
+          { label: 'Contactos', value: dashboard?.totalContacts ?? 0, icon: 'people', color: 'text-blue-500', href: '/portal/crm/contacts' },
+          { label: 'Empresas', value: dashboard?.totalCompanies ?? 0, icon: 'business', color: 'text-purple-500', href: '/portal/crm/companies' },
+          { label: 'Tasa de éxito', value: winRate === '--' ? '--' : `${winRate}%`, icon: 'emoji_events', color: 'text-green-500' },
+          { label: 'Pipeline abierto', value: formatMoney(openPipelineValue, { fractionDigits: 0 }), icon: 'trending_up', color: 'text-orange-500', href: '/portal/crm/deals' },
           { label: 'MRR', value: formatMoney(analytics?.mrr ?? 0, { fractionDigits: 0 }), subtitle: `ARR: ${formatMoney(analytics?.arr ?? 0, { fractionDigits: 0 })}`, icon: 'autorenew', color: 'text-emerald-500' },
-          { label: 'Avg Close', value: analytics?.avgDaysToClose != null ? `${analytics.avgDaysToClose}d` : '--', icon: 'schedule', color: 'text-cyan-500' },
+          { label: 'Cierre promedio', value: analytics?.avgDaysToClose != null ? `${analytics.avgDaysToClose} d` : '--', icon: 'schedule', color: 'text-cyan-500' },
         ].map((s) => {
           const content = (
             <>
@@ -260,11 +266,11 @@ export default function CrmDashboardPage() {
       {analytics && (
         <div className="grid lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2 bg-card border border-border rounded-2xl p-5">
-            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Revenue Trend</h2>
+            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Tendencia de ingresos</h2>
             <LineChart data={analytics.revenueByMonth} />
           </div>
           <div className="bg-card border border-border rounded-2xl p-5">
-            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Win / Loss</h2>
+            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Ganadas / Perdidas</h2>
             <DonutChart won={Number(analytics.winLoss.won)} lost={Number(analytics.winLoss.lost)} open={Number(analytics.winLoss.open)} />
           </div>
         </div>
@@ -274,15 +280,19 @@ export default function CrmDashboardPage() {
       <div className="grid lg:grid-cols-3 gap-4">
         {analytics && (
           <div className="bg-card border border-border rounded-2xl p-5">
-            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Pipeline Funnel</h2>
+            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Embudo del pipeline</h2>
             <FunnelChart stages={analytics.pipelineFunnel} />
           </div>
         )}
 
         <div className="bg-card border border-border rounded-2xl p-5">
-          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Recent Activity</h2>
+          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Actividad reciente</h2>
           {(dashboard?.recentActivities ?? []).length === 0 ? (
-            <p className="text-xs text-muted-foreground py-4 text-center">No recent activity.</p>
+            <div className="flex flex-col items-center justify-center py-6 text-center gap-1">
+              <span className="material-icons text-2xl text-muted-foreground/50">history</span>
+              <p className="text-xs font-medium text-foreground">Sin actividad reciente</p>
+              <p className="text-[11px] text-muted-foreground">Los cambios en contactos y negocios aparecerán aquí.</p>
+            </div>
           ) : (
             <ul className="space-y-2 max-h-64 overflow-y-auto">
               {(dashboard?.recentActivities ?? []).slice(0, 8).map(a => (
@@ -299,19 +309,19 @@ export default function CrmDashboardPage() {
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5">
-          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Quick Actions</h2>
+          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Acciones rápidas</h2>
           <div className="space-y-2">
             <Link href="/portal/crm/contacts" className={`${pBtnPrimary} w-full text-xs`}>
-              <span className="material-icons text-sm">person_add</span>Add Contact
+              <span className="material-icons text-sm">person_add</span>Añadir contacto
             </Link>
             <Link href="/portal/crm/deals" className={`${pBtnGhost} w-full text-xs`}>
-              <span className="material-icons text-sm">add_circle</span>Create Deal
+              <span className="material-icons text-sm">add_circle</span>Crear negocio
             </Link>
             <Link href="/portal/crm/companies" className={`${pBtnGhost} w-full text-xs`}>
-              <span className="material-icons text-sm">domain_add</span>Add Company
+              <span className="material-icons text-sm">domain_add</span>Añadir empresa
             </Link>
             <Link href="/portal/crm/proposals" className={`${pBtnGhost} w-full text-xs`}>
-              <span className="material-icons text-sm">description</span>New Proposal
+              <span className="material-icons text-sm">description</span>Nueva propuesta
             </Link>
           </div>
         </div>
@@ -320,13 +330,13 @@ export default function CrmDashboardPage() {
       {/* Top Deals Table */}
       {analytics && analytics.topDeals.length > 0 && (
         <div className="bg-card border border-border rounded-2xl p-5">
-          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Top Open Deals</h2>
+          <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground text-sm mb-3">Negocios abiertos principales</h2>
           <div className="overflow-x-auto -mx-4 sm:mx-0">
             <table className="w-full text-sm min-w-[640px]">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="pb-2 text-xs text-muted-foreground font-medium">Deal</th>
-                  <th className="pb-2 text-xs text-muted-foreground font-medium text-right">Value</th>
+                  <th className="pb-2 text-xs text-muted-foreground font-medium">Negocio</th>
+                  <th className="pb-2 text-xs text-muted-foreground font-medium text-right">Valor</th>
                   <th className="pb-2 text-xs text-muted-foreground font-medium text-right" />
                 </tr>
               </thead>
@@ -336,7 +346,7 @@ export default function CrmDashboardPage() {
                     <td className="py-2.5 text-foreground font-medium text-sm">{deal.title}</td>
                     <td className="py-2.5 text-foreground text-right text-sm">{deal.value != null ? formatMoney(Number(deal.value), { fractionDigits: 0 }) : '--'}</td>
                     <td className="py-2.5 text-right">
-                      <Link href={`/portal/crm/deals?deal=${deal.id}`} className="text-primary hover:text-primary/80 text-xs font-medium">View</Link>
+                      <Link href={`/portal/crm/deals?deal=${deal.id}`} className="text-primary hover:text-primary/80 text-xs font-medium">Ver</Link>
                     </td>
                   </tr>
                 ))}

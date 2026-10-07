@@ -52,10 +52,10 @@ function groupByThread(meetings: BrainMeetingRow[]): ThreadGroup[] {
 }
 
 const STATUS_LABELS: Record<BrainMeetingRow['status'], { label: string; tone: string }> = {
-  draft: { label: 'Draft', tone: 'bg-muted text-muted-foreground' },
-  processing: { label: 'Processing…', tone: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
-  needs_review: { label: 'Needs review', tone: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
-  approved: { label: 'Approved', tone: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
+  draft: { label: 'Borrador', tone: 'bg-muted text-muted-foreground' },
+  processing: { label: 'Procesando…', tone: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
+  needs_review: { label: 'Requiere revisión', tone: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
+  approved: { label: 'Aprobado', tone: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
 };
 
 export default function BrainMeetingsPage() {
@@ -70,12 +70,12 @@ export default function BrainMeetingsPage() {
       const r = await fetch('/api/portal/brain/communications');
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load meetings.');
+        setError(json.message || 'No se pudieron cargar las comunicaciones.');
       } else {
         setMeetings(json.data);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -86,14 +86,12 @@ export default function BrainMeetingsPage() {
   return (
     <div className="max-w-5xl mx-auto py-8 space-y-6">
       <PortalPageHeader
-        eyebrow="Company Brain"
-        title={<span className="flex items-center gap-2"><span className="material-icons text-primary">forum</span>Communications</span>}
-        subtitle="Capture communication transcripts, emails, and notes. AI extracts decisions, commitments, and tasks for your review."
+        eyebrow="Cerebro de empresa"
+        title={<span className="flex items-center gap-2"><span className="material-icons text-primary">forum</span>Comunicaciones</span>}
+        subtitle="Captura transcripciones de comunicaciones, correos y notas. La IA extrae decisiones, compromisos y tareas para que las revises."
         actions={
           <Link href="/portal/brain/communications/new" className={pBtnPrimary}>
-            <span className="material-icons text-base">add</span>
-            New note
-          </Link>
+            <span className="material-icons text-base">add</span>Nueva nota</Link>
         }
       />
 
@@ -105,22 +103,20 @@ export default function BrainMeetingsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       ) : meetings.length === 0 ? (
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">forum</span>
-          <p className="text-foreground text-sm font-medium">No notes yet.</p>
+          <p className="text-foreground text-sm font-medium">Aún no hay notas.</p>
           <p className="text-muted-foreground text-xs mt-1 mb-4">
-            Paste your first transcript to see how Brain turns it into reviewable next steps.
+            Pega tu primera transcripción para ver cómo Brain la convierte en próximos pasos revisables.
           </p>
           <Link
             href="/portal/brain/communications/new"
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            New communication
+            Nueva comunicación
           </Link>
         </div>
       ) : (
@@ -144,14 +140,14 @@ export default function BrainMeetingsPage() {
                     <span className="truncate">{m.title}</span>
                     {isThread && (
                       <span className="shrink-0 text-xs font-medium px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">
-                        {g.count} messages
+                        {g.count} mensajes
                       </span>
                     )}
                   </div>
                   <div className="text-xs text-muted-foreground mt-0.5">
                     {date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
                     {' · '}
-                    via {m.source.replace(/_/g, ' ')}
+                    vía {m.source.replace(/_/g, ' ')}
                   </div>
                 </div>
                 <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${status.tone}`}>

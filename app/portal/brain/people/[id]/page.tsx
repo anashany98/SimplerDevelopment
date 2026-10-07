@@ -51,9 +51,9 @@ const STATUS_TONE: Record<BrainPersonStatus, string> = {
 };
 
 const STATUS_OPTIONS: { value: BrainPersonStatus; label: string }[] = [
-  { value: 'active',   label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
-  { value: 'departed', label: 'Departed' },
+  { value: 'active',   label: 'Activo' },
+  { value: 'inactive', label: 'Inactivo' },
+  { value: 'departed', label: 'Baja' },
 ];
 
 function initialsOf(name: string): string {
@@ -69,7 +69,7 @@ function fmtDate(value: string | Date | null | undefined): string | null {
   if (!value) return null;
   const d = typeof value === 'string' ? new Date(value) : value;
   if (Number.isNaN(d.getTime())) return null;
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
 export default function BrainPersonProfilePage({
@@ -103,12 +103,12 @@ export default function BrainPersonProfilePage({
       const r = await fetch(`/api/portal/brain/people/${personId}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load person.');
+        setError(json.message || 'No se pudo cargar la persona.');
         return;
       }
       setBundle(json.data as PersonBundle);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -152,13 +152,13 @@ export default function BrainPersonProfilePage({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Could not save changes.');
+        setError(json.message || 'No se pudieron guardar los cambios.');
         return;
       }
       setEditing(false);
       await load();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setSaving(false);
     }
@@ -170,13 +170,13 @@ export default function BrainPersonProfilePage({
       const r = await fetch(`/api/portal/brain/people/${personId}`, { method: 'DELETE' });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Could not delete person.');
+        setError(json.message || 'No se pudo eliminar la persona.');
         setDeleting(false);
         return;
       }
       router.push('/portal/brain/people');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
       setDeleting(false);
     }
   }, [personId, router]);
@@ -184,9 +184,7 @@ export default function BrainPersonProfilePage({
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto py-12 flex items-center justify-center text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
 
@@ -198,12 +196,12 @@ export default function BrainPersonProfilePage({
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4"
         >
           <span className="material-icons text-sm">chevron_left</span>
-          Back to People
+          Volver a Personas
         </Link>
         <div className="bg-destructive/10 border border-destructive/30 rounded-2xl p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load person
+            No se pudo cargar la persona
           </div>
           <p>{error}</p>
         </div>
@@ -224,11 +222,11 @@ export default function BrainPersonProfilePage({
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <span className="material-icons text-sm">chevron_left</span>
-        Back to People
+        Volver a Personas
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-3">
             <span className="shrink-0 w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base font-bold">
@@ -257,7 +255,7 @@ export default function BrainPersonProfilePage({
                 className="inline-flex items-center gap-1 hover:underline"
               >
                 <span className="material-icons text-[14px]">supervisor_account</span>
-                Reports to {manager.fullName}
+                Reporta a {manager.fullName}
               </Link>
             )}
             {person.email && (
@@ -276,17 +274,13 @@ export default function BrainPersonProfilePage({
                 onClick={startEdit}
                 className={pBtnGhost}
               >
-                <span className="material-icons text-base">edit</span>
-                Edit
-              </button>
+                <span className="material-icons text-base">edit</span>Editar</button>
               <button
                 type="button"
                 onClick={() => setConfirmingDelete(true)}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-rose-500/30 bg-card px-4 py-2.5 text-sm font-semibold text-rose-600 dark:text-rose-400 transition hover:border-rose-500/50 hover:bg-rose-500/5"
               >
-                <span className="material-icons text-base">delete</span>
-                Delete
-              </button>
+                <span className="material-icons text-base">delete</span>Eliminar</button>
             </>
           ) : (
             <>
@@ -295,9 +289,7 @@ export default function BrainPersonProfilePage({
                 onClick={() => setEditing(false)}
                 disabled={saving}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 type="button"
                 onClick={saveEdit}
@@ -306,14 +298,12 @@ export default function BrainPersonProfilePage({
               >
                 {saving ? (
                   <>
-                    <span className="material-icons animate-spin text-base">progress_activity</span>
-                    Saving…
+                    <span className="material-icons animate-spin text-base">autorenew</span>
+                    Guardando…
                   </>
                 ) : (
                   <>
-                    <span className="material-icons text-base">check</span>
-                    Save
-                  </>
+                    <span className="material-icons text-base">check</span>Guardar</>
                 )}
               </button>
             </>
@@ -334,11 +324,11 @@ export default function BrainPersonProfilePage({
           <section className={`${pCard} p-5`}>
             <h2 className={`${pSectionTitle} mb-4 flex items-center gap-1.5`}>
               <span className="material-icons text-base text-primary">badge</span>
-              Profile
+              Perfil
             </h2>
             {editing ? (
               <div className="space-y-4">
-                <FormRow label="Full name">
+                <FormRow label="Nombre completo">
                   <input
                     type="text"
                     value={formName}
@@ -346,7 +336,7 @@ export default function BrainPersonProfilePage({
                     className={pInput}
                   />
                 </FormRow>
-                <FormRow label="Title">
+                <FormRow label="Título">
                   <input
                     type="text"
                     value={formTitle}
@@ -354,7 +344,7 @@ export default function BrainPersonProfilePage({
                     className={pInput}
                   />
                 </FormRow>
-                <FormRow label="Email">
+                <FormRow label="Correo">
                   <input
                     type="email"
                     value={formEmail}
@@ -362,7 +352,7 @@ export default function BrainPersonProfilePage({
                     className={pInput}
                   />
                 </FormRow>
-                <FormRow label="Status">
+                <FormRow label="Estado">
                   <select
                     value={formStatus}
                     onChange={(e) => setFormStatus(e.target.value as BrainPersonStatus)}
@@ -373,7 +363,7 @@ export default function BrainPersonProfilePage({
                     ))}
                   </select>
                 </FormRow>
-                <FormRow label="Notes">
+                <FormRow label="Notas">
                   <textarea
                     value={formNotes}
                     onChange={(e) => setFormNotes(e.target.value)}
@@ -384,17 +374,17 @@ export default function BrainPersonProfilePage({
               </div>
             ) : (
               <dl className="text-sm space-y-2.5">
-                <Detail label="Email">{person.email ?? <Muted />}</Detail>
-                <Detail label="Title">{person.title ?? <Muted />}</Detail>
-                <Detail label="Start date">{fmtDate(person.startDate) ?? <Muted />}</Detail>
-                <Detail label="End date">{fmtDate(person.endDate) ?? <Muted />}</Detail>
-                <Detail label="Notes">
+                <Detail label="Correo">{person.email ?? <Muted />}</Detail>
+                <Detail label="Título">{person.title ?? <Muted />}</Detail>
+                <Detail label="Fecha de inicio">{fmtDate(person.startDate) ?? <Muted />}</Detail>
+                <Detail label="Fecha de fin">{fmtDate(person.endDate) ?? <Muted />}</Detail>
+                <Detail label="Notas">
                   {person.notes
                     ? <span className="whitespace-pre-wrap">{person.notes}</span>
                     : <Muted />
                   }
                 </Detail>
-                <Detail label="Profile links">
+                <Detail label="Enlaces de perfil">
                   {profileUrls.length === 0 ? (
                     <Muted />
                   ) : (
@@ -438,7 +428,7 @@ export default function BrainPersonProfilePage({
               Org membership
             </h2>
             {orgUnits.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Not assigned to any org units yet.</p>
+              <p className="text-sm text-muted-foreground">Aún no está asignado a ninguna unidad organizativa.</p>
             ) : (
               <ul className="space-y-2">
                 {orgUnits.map((u) => (
@@ -455,7 +445,7 @@ export default function BrainPersonProfilePage({
                       )}
                       {u.primary && (
                         <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded-lg font-semibold bg-primary/10 text-primary">
-                          Primary
+                          Principal
                         </span>
                       )}
                     </div>
@@ -469,12 +459,12 @@ export default function BrainPersonProfilePage({
           <section className={`${pCard} p-5`}>
             <h2 className={`${pSectionTitle} mb-4 flex items-center gap-1.5`}>
               <span className="material-icons text-base text-primary">supervisor_account</span>
-              Reporting
+              Informes
             </h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-2">
-                  Reports to
+                  Reporta a
                 </h3>
                 {manager ? (
                   <Link
@@ -485,15 +475,15 @@ export default function BrainPersonProfilePage({
                     {manager.fullName}
                   </Link>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No manager set.</p>
+                  <p className="text-sm text-muted-foreground">Sin gerente asignado.</p>
                 )}
               </div>
               <div>
                 <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-2">
-                  Direct reports
+                  Personas a cargo
                 </h3>
                 {directReports.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No direct reports.</p>
+                  <p className="text-sm text-muted-foreground">Sin personas a cargo.</p>
                 ) : (
                   <ul className="space-y-1.5">
                     {directReports.map((r) => (
@@ -530,13 +520,13 @@ export default function BrainPersonProfilePage({
           <div className={`${pCard} p-6 max-w-md w-full`}>
             <h3 className="text-base font-bold text-foreground flex items-center gap-1.5">
               <span className="material-icons text-rose-500">warning</span>
-              Delete this person?
+              ¿Eliminar a esta persona?
             </h3>
             <p className="text-sm text-muted-foreground mt-2">
-              <strong className="text-foreground">{person.fullName}</strong> will be removed from your team roster.
-              Their org-unit memberships and expertise links will be cleared.
-              Direct reports will be unassigned (their <em>reports-to</em> will be cleared).
-              This cannot be undone.
+              <strong className="text-foreground">{person.fullName}</strong> se eliminará del equipo.
+              Se borrarán sus pertenencias a unidades organizativas y sus vínculos de especialidad.
+              Las personas a su cargo quedarán sin responsable (se borrará su <em>reporta a</em>).
+              Esta acción no se puede deshacer.
             </p>
             <div className="flex items-center justify-end gap-2 mt-5">
               <button
@@ -544,9 +534,7 @@ export default function BrainPersonProfilePage({
                 onClick={() => setConfirmingDelete(false)}
                 disabled={deleting}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 type="button"
                 onClick={doDelete}
@@ -555,14 +543,12 @@ export default function BrainPersonProfilePage({
               >
                 {deleting ? (
                   <>
-                    <span className="material-icons animate-spin text-base">progress_activity</span>
-                    Deleting…
+                    <span className="material-icons animate-spin text-base">autorenew</span>
+                    Eliminando…
                   </>
                 ) : (
                   <>
-                    <span className="material-icons text-base">delete</span>
-                    Delete
-                  </>
+                    <span className="material-icons text-base">delete</span>Eliminar</>
                 )}
               </button>
             </div>

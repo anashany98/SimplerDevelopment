@@ -1,8 +1,8 @@
 /**
- * Request logging middleware for SimplerDevelopment client websites.
+ * Request logging middleware for CRM AGENTS client websites.
  *
  * Drop this into any Next.js client site's middleware.ts to send HTTP request
- * logs back to the SimplerDevelopment portal.
+ * logs back to the CRM AGENTS portal.
  *
  * Required environment variables (set automatically during provisioning):
  *   LOG_ENDPOINT  — e.g. "https://simplerdevelopment.com/api/logs/ingest"

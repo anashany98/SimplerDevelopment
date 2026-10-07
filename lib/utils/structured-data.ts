@@ -208,7 +208,7 @@ export function generateSoftwareApplicationSchema(): SoftwareApplicationSchema {
     dateModified: '2026-06-27',
     offers: {
       '@type': 'Offer',
-      priceCurrency: 'USD',
+      priceCurrency: 'EUR',
       price: '0',
       priceSpecification: {
         '@type': 'UnitPriceSpecification',

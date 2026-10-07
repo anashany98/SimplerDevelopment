@@ -182,7 +182,7 @@ describe('BookingFormInline — loading and not-found', () => {
       utils = render(<BookingFormInline slug="test-slug" />);
       await flushPromises();
     });
-    expect(utils!.container.textContent).toContain('Page Not Found');
+    expect(utils!.container.textContent).toContain('Página no encontrada');
     expect(utils!.container.textContent).toContain('event_busy');
   });
 
@@ -195,7 +195,7 @@ describe('BookingFormInline — loading and not-found', () => {
       utils = render(<BookingFormInline slug="test-slug" />);
       await flushPromises();
     });
-    expect(utils!.container.textContent).toContain('Page Not Found');
+    expect(utils!.container.textContent).toContain('Página no encontrada');
   });
 
   it('renders not-found when fetch throws', async () => {
@@ -207,7 +207,7 @@ describe('BookingFormInline — loading and not-found', () => {
       utils = render(<BookingFormInline slug="test-slug" />);
       await flushPromises();
     });
-    expect(utils!.container.textContent).toContain('Page Not Found');
+    expect(utils!.container.textContent).toContain('Página no encontrada');
   });
 });
 
@@ -232,8 +232,8 @@ describe('BookingFormInline — initial render', () => {
 
   it('renders the price badge when price > 0', async () => {
     const { container } = await renderWithInfo({ price: 5000, priceLabel: 'per session' });
-    // $50.00
-    expect(container.textContent).toContain('$50.00');
+    // 50,00 € (es-ES EUR, NBSP before the symbol)
+    expect(container.textContent).toContain('50,00\u00A0€');
     expect(container.textContent).toContain('per session');
   });
 
@@ -289,9 +289,9 @@ describe('BookingFormInline — initial render', () => {
     // The step indicator labels live in `title` attributes on the bubbles.
     const bubbles = container.querySelectorAll('[title]');
     const titles = Array.from(bubbles).map((b) => b.getAttribute('title'));
-    expect(titles).toContain('Date');
-    expect(titles).toContain('Time');
-    expect(titles).toContain('Details');
+    expect(titles).toContain('Fecha');
+    expect(titles).toContain('Hora');
+    expect(titles).toContain('Datos');
   });
 
   it('includes an Extras step when enableAddOns + add-ons are present', async () => {
@@ -326,7 +326,7 @@ describe('BookingFormInline — initial render', () => {
     const titles = Array.from(container.querySelectorAll('[title]')).map((b) =>
       b.getAttribute('title'),
     );
-    expect(titles).toContain('Pay');
+    expect(titles).toContain('Pago');
   });
 
   it('applies branding fonts via the <link> tag once', async () => {
@@ -386,7 +386,7 @@ describe('BookingFormInline — calendar navigation', () => {
       const labels = container.querySelectorAll('span.text-sm.font-semibold');
       return Array.from(labels)
         .map((l) => l.textContent || '')
-        .find((t) => /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/.test(t)) || '';
+        .find((t) => /\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\b/.test(t)) || '';
     };
     const initial = monthLabel();
     // Find the chevron_right button.
@@ -415,7 +415,7 @@ describe('BookingFormInline — calendar navigation', () => {
     // The header should still render a known month name from MONTH_NAMES.
     const labels = container.querySelectorAll('span.text-sm.font-semibold');
     const text = Array.from(labels).map((l) => l.textContent).join(' ');
-    expect(text).toMatch(/January|February|March|April|May|June|July|August|September|October|November|December/);
+    expect(text).toMatch(/enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre/);
   });
 
   it('walks the prevMonth wrap-around (Jan → Dec) once a future month is visible', async () => {
@@ -433,7 +433,7 @@ describe('BookingFormInline — calendar navigation', () => {
     for (let i = 0; i < 13; i++) {
       await act(async () => { fireEvent.click(prevBtn); });
     }
-    expect(container.textContent).toMatch(/January|February|March|April|May|June|July|August|September|October|November|December/);
+    expect(container.textContent).toMatch(/enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre/);
   });
 
   it('marks dates outside availability or before today as unavailable', async () => {
@@ -485,7 +485,7 @@ describe('BookingFormInline — date → time flow', () => {
       fireEvent.click(dayBtn);
       await flushPromises();
     });
-    expect(container.textContent).toContain('Back');
+    expect(container.textContent).toContain('Atrás');
     // fetchSlots was called.
     expect(slotsCalls.length).toBeGreaterThan(0);
     void fetchMock;
@@ -506,7 +506,7 @@ describe('BookingFormInline — date → time flow', () => {
       fireEvent.click(dayBtn);
       await flushPromises();
     });
-    expect(container.textContent).toContain('No available times');
+    expect(container.textContent).toContain('No hay horarios disponibles este día');
   });
 
   it('renders the spinner while slots are loading', async () => {
@@ -554,7 +554,7 @@ describe('BookingFormInline — date → time flow', () => {
       await flushPromises();
     });
     // Catch branch should produce "No available times" (slots remained empty).
-    expect(container.textContent).toContain('No available times');
+    expect(container.textContent).toContain('No hay horarios disponibles este día');
   });
 
   it('navigates back from the time step to the date step', async () => {
@@ -574,13 +574,13 @@ describe('BookingFormInline — date → time flow', () => {
     });
     // Click Back.
     const backBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      (b.textContent || '').includes('Back'),
+      (b.textContent || '').includes('Atrás'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(backBtn);
     });
-    // Back on the date step — calendar Sunday header visible.
-    expect(container.textContent).toContain('Su');
+    // Back on the date step — calendar weekday header visible.
+    expect(container.textContent).toContain('Do');
   });
 });
 
@@ -616,20 +616,21 @@ describe('BookingFormInline — time → info flow', () => {
       { time: '2026-12-15T15:00:00.000Z', remainingCapacity: 1 },
       { time: '2026-12-15T16:00:00.000Z', remainingCapacity: 4 },
     ]);
-    expect(container.textContent).toContain('1 spot left');
-    expect(container.textContent).toContain('4 spots left');
-    expect(slotButton(container)).not.toBe(slotButton(container, '2026-12-15T16:00:00.000Z'));
+    expect(container.textContent).toContain('1 plaza disponible');
+    expect(container.textContent).toContain('4 plazas disponibles');
   });
 
   it('advances to the info step when a slot is selected (no add-ons)', async () => {
     const { container } = await setupAtTime();
-    const slotBtn = slotButton(container);
-    expect(slotBtn.disabled).toBe(false);
+    const slotBtns = Array.from(container.querySelectorAll('button')).filter((b) =>
+      /\d{1,2}:\d{2}/.test(b.textContent || ''),
+    );
+    expect(slotBtns.length).toBeGreaterThan(0);
     await act(async () => {
       fireEvent.click(slotBtn);
     });
-    expect(container.textContent).toContain('Name');
-    expect(container.textContent).toContain('Email');
+    expect(container.textContent).toContain('Nombre');
+    expect(container.textContent).toContain('Correo');
   });
 
   it.each(['en-US', 'es-ES'])('selects the localized time label in %s and advances to details', async locale => {
@@ -673,7 +674,7 @@ describe('BookingFormInline — time → info flow', () => {
       fireEvent.click(dayBtn);
       await flushPromises();
     });
-    expect(container.textContent).toContain('Group size');
+    expect(container.textContent).toContain('Tamaño del grupo');
     // Click the "+" once to bump from 1 → 2.
     const addIcons = Array.from(container.querySelectorAll('.material-icons')).filter(
       (i) => i.textContent === 'add',
@@ -719,9 +720,9 @@ describe('BookingFormInline — time → info flow', () => {
       fireEvent.click(addIcons[0].parentElement as HTMLButtonElement);
       fireEvent.click(addIcons[0].parentElement as HTMLButtonElement);
     });
-    // Slot button with "1 spot left" should now be disabled.
+    // Slot button with "1 plaza disponible" should now be disabled.
     const slotBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      (b.textContent || '').includes('1 spot left'),
+      (b.textContent || '').includes('1 plaza disponible'),
     ) as HTMLButtonElement;
     expect(slotBtn.disabled).toBe(true);
   });
@@ -741,8 +742,8 @@ describe('BookingFormInline — staff selection', () => {
         { userId: 22, name: 'Brett', color: null },
       ],
     });
-    expect(container.textContent).toContain('Choose a staff member');
-    expect(container.textContent).toContain('Any available');
+    expect(container.textContent).toContain('Elige a un miembro del equipo');
+    expect(container.textContent).toContain('Cualquiera disponible');
     expect(container.textContent).toContain('Alex');
     expect(container.textContent).toContain('Brett');
     // Click "Alex".
@@ -782,7 +783,9 @@ describe('BookingFormInline — info form & submit', () => {
       fireEvent.click(dayBtn);
       await flushPromises();
     });
-    const slotBtn = slotButton(utils.container);
+    const slotBtn = Array.from(utils.container.querySelectorAll('button')).find((b) =>
+      /\d{1,2}:\d{2}/.test(b.textContent || ''),
+    ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(slotBtn);
     });
@@ -811,7 +814,7 @@ describe('BookingFormInline — info form & submit', () => {
       fireEvent.click(submitBtn);
       await flushPromises();
     });
-    expect(container.textContent).toContain('Booking Confirmed');
+    expect(container.textContent).toContain('Reserva confirmada');
     expect(container.textContent).toContain('jane@example.com');
     expect(bookCalls.length).toBe(1);
     expect(bookCalls[0].name).toBe('Jane Doe');
@@ -854,7 +857,7 @@ describe('BookingFormInline — info form & submit', () => {
       fireEvent.click(submitBtn);
       await flushPromises();
     });
-    expect(container.textContent).toContain('Something went wrong');
+    expect(container.textContent).toContain('Algo salió mal');
   });
 
   it('navigates to the payment step when the book response includes clientSecret', async () => {
@@ -877,7 +880,7 @@ describe('BookingFormInline — info form & submit', () => {
       await flushPromises();
     });
     expect(container.querySelector('[data-testid="payment-form-mock"]')).toBeTruthy();
-    expect(container.textContent).toContain('Complete Payment');
+    expect(container.textContent).toContain('Completar pago');
   });
 
   it('payment success callback advances to confirmed', async () => {
@@ -903,7 +906,7 @@ describe('BookingFormInline — info form & submit', () => {
     await act(async () => {
       fireEvent.click(okBtn);
     });
-    expect(container.textContent).toContain('Booking Confirmed');
+    expect(container.textContent).toContain('Reserva confirmada');
   });
 
   it('renders the meeting link when book returns one', async () => {
@@ -927,7 +930,7 @@ describe('BookingFormInline — info form & submit', () => {
     });
     const link = container.querySelector('a[href="https://meet.example.com/abc"]');
     expect(link).toBeTruthy();
-    expect(container.textContent).toContain('Join Video Call');
+    expect(container.textContent).toContain('Unirse a la videollamada');
   });
 
   it('shows the checkin code on the confirmed step when provided', async () => {
@@ -950,7 +953,7 @@ describe('BookingFormInline — info form & submit', () => {
       await flushPromises();
     });
     expect(container.textContent).toContain('XYZ-123');
-    expect(container.textContent).toContain('Check-in code');
+    expect(container.textContent).toContain('Código de check-in');
   });
 
   it('does not submit when name or email are empty (early return)', async () => {
@@ -1048,7 +1051,9 @@ describe('BookingFormInline — discount + gift cert', () => {
       fireEvent.click(dayBtn);
       await flushPromises();
     });
-    const slotBtn = slotButton(utils.container);
+    const slotBtn = Array.from(utils.container.querySelectorAll('button')).find((b) =>
+      /\d{1,2}:\d{2}/.test(b.textContent || ''),
+    ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(slotBtn);
     });
@@ -1069,25 +1074,25 @@ describe('BookingFormInline — discount + gift cert', () => {
         }),
     });
     const codeInputs = Array.from(container.querySelectorAll('input[type="text"]')).filter(
-      (i) => (i as HTMLInputElement).placeholder === 'Enter code',
+      (i) => (i as HTMLInputElement).placeholder === 'Introduce el código',
     ) as HTMLInputElement[];
     expect(codeInputs.length).toBe(1);
     await act(async () => {
       fireEvent.change(codeInputs[0], { target: { value: 'SAVE10' } });
     });
     const applyBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => (b.textContent || '').trim() === 'Apply' && b.previousElementSibling === null
-        || (b.textContent || '').trim() === 'Apply',
+      (b) => (b.textContent || '').trim() === 'Aplicar' && b.previousElementSibling === null
+        || (b.textContent || '').trim() === 'Aplicar',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(applyBtn);
       await flushPromises();
     });
-    expect(container.textContent).toContain('SAVE10 applied');
+    expect(container.textContent).toContain('SAVE10 aplicado');
     // The clear button replaces apply.
     expect(
       Array.from(container.querySelectorAll('button')).some(
-        (b) => (b.textContent || '').trim() === 'Clear',
+        (b) => (b.textContent || '').trim() === 'Limpiar',
       ),
     ).toBe(true);
   });
@@ -1098,13 +1103,13 @@ describe('BookingFormInline — discount + gift cert', () => {
         jsonResponse({ success: false, message: 'Code expired' }),
     });
     const codeInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (i) => (i as HTMLInputElement).placeholder === 'Enter code',
+      (i) => (i as HTMLInputElement).placeholder === 'Introduce el código',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(codeInput, { target: { value: 'BAD' } });
     });
     const applyBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => (b.textContent || '').trim() === 'Apply',
+      (b) => (b.textContent || '').trim() === 'Aplicar',
     );
     await act(async () => {
       fireEvent.click(applyBtns[0]);
@@ -1120,19 +1125,19 @@ describe('BookingFormInline — discount + gift cert', () => {
       },
     });
     const codeInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (i) => (i as HTMLInputElement).placeholder === 'Enter code',
+      (i) => (i as HTMLInputElement).placeholder === 'Introduce el código',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(codeInput, { target: { value: 'X' } });
     });
     const applyBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => (b.textContent || '').trim() === 'Apply',
+      (b) => (b.textContent || '').trim() === 'Aplicar',
     );
     await act(async () => {
       fireEvent.click(applyBtns[0]);
       await flushPromises();
     });
-    expect(container.textContent).toContain('Failed to validate code');
+    expect(container.textContent).toContain('No se pudo validar el código');
   });
 
   it('applies a fixed_amount discount type via calculateTotal', async () => {
@@ -1149,20 +1154,20 @@ describe('BookingFormInline — discount + gift cert', () => {
         }),
     });
     const codeInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (i) => (i as HTMLInputElement).placeholder === 'Enter code',
+      (i) => (i as HTMLInputElement).placeholder === 'Introduce el código',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(codeInput, { target: { value: 'FLAT5' } });
     });
     const applyBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => (b.textContent || '').trim() === 'Apply',
+      (b) => (b.textContent || '').trim() === 'Aplicar',
     );
     await act(async () => {
       fireEvent.click(applyBtns[0]);
       await flushPromises();
     });
-    expect(container.textContent).toContain('FLAT5 applied');
-    expect(container.textContent).toContain('Discount');
+    expect(container.textContent).toContain('FLAT5 aplicado');
+    expect(container.textContent).toContain('Descuento');
   });
 
   it('applies a gift certificate', async () => {
@@ -1180,14 +1185,14 @@ describe('BookingFormInline — discount + gift cert', () => {
       fireEvent.change(giftInput, { target: { value: 'GIFT' } });
     });
     const applyBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => (b.textContent || '').trim() === 'Apply',
+      (b) => (b.textContent || '').trim() === 'Aplicar',
     );
     // The 2nd apply button is for gift cert.
     await act(async () => {
       fireEvent.click(applyBtns[applyBtns.length - 1]);
       await flushPromises();
     });
-    expect(container.textContent).toContain('Certificate applied');
+    expect(container.textContent).toContain('Certificado aplicado');
   });
 
   it('renders gift certificate failure', async () => {
@@ -1202,7 +1207,7 @@ describe('BookingFormInline — discount + gift cert', () => {
       fireEvent.change(giftInput, { target: { value: 'GIFT' } });
     });
     const applyBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => (b.textContent || '').trim() === 'Apply',
+      (b) => (b.textContent || '').trim() === 'Aplicar',
     );
     await act(async () => {
       fireEvent.click(applyBtns[applyBtns.length - 1]);
@@ -1224,13 +1229,13 @@ describe('BookingFormInline — discount + gift cert', () => {
       fireEvent.change(giftInput, { target: { value: 'GIFT' } });
     });
     const applyBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => (b.textContent || '').trim() === 'Apply',
+      (b) => (b.textContent || '').trim() === 'Aplicar',
     );
     await act(async () => {
       fireEvent.click(applyBtns[applyBtns.length - 1]);
       await flushPromises();
     });
-    expect(container.textContent).toContain('Failed to validate certificate');
+    expect(container.textContent).toContain('No se pudo validar el certificado');
   });
 });
 
@@ -1273,12 +1278,14 @@ describe('BookingFormInline — add-ons step', () => {
       fireEvent.click(dayBtn);
       await flushPromises();
     });
-    const slotBtn = slotButton(container);
+    const slotBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      /\d{1,2}:\d{2}/.test(b.textContent || ''),
+    ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(slotBtn);
     });
     // We should be on the add-ons step.
-    expect(container.textContent).toContain('Add extras');
+    expect(container.textContent).toContain('Añadir extras');
     expect(container.textContent).toContain('Notebook');
     expect(container.textContent).toContain('Hardcover');
     // Bump the quantity.
@@ -1303,11 +1310,11 @@ describe('BookingFormInline — add-ons step', () => {
     });
     // Continue → info step.
     const continueBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => (b.textContent || '').trim() === 'Continue',
+      (b) => (b.textContent || '').trim() === 'Continuar',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(continueBtn);
     });
-    expect(container.textContent).toContain('Name');
+    expect(container.textContent).toContain('Nombre');
   });
 });

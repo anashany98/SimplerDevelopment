@@ -161,13 +161,13 @@ describe('PlaybooksListPage — loading', () => {
   it('shows loading indicator while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise<FetchResp>(() => { /* never resolves */ }));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 
-  it('shows progress_activity icon in loading state', () => {
+  it('shows autorenew icon in loading state', () => {
     fetchMock.mockImplementation(() => new Promise<FetchResp>(() => { /* never resolves */ }));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 });
 
@@ -203,7 +203,7 @@ describe('PlaybooksListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load playbooks');
+      expect(container.textContent).toContain('No se pudieron cargar los playbooks');
     });
   });
 
@@ -226,7 +226,7 @@ describe('PlaybooksListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -255,7 +255,7 @@ describe('PlaybooksListPage — empty state', () => {
   it('shows "No playbooks yet" in empty state', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No playbooks yet');
+      expect(container.textContent).toContain('Aún no hay playbooks.');
     });
   });
 
@@ -347,7 +347,7 @@ describe('PlaybooksListPage — header', () => {
 // ─── Status filter pills ──────────────────────────────────────────────────────
 
 describe('PlaybooksListPage — status filter pills', () => {
-  const statusLabels = ['Active', 'Draft', 'Archived', 'All'];
+  const statusLabels = ['Activo', 'Borrador', 'Archivado', 'Todos'];
 
   statusLabels.forEach((label) => {
     it(`renders "${label}" status pill`, async () => {
@@ -358,11 +358,11 @@ describe('PlaybooksListPage — status filter pills', () => {
     });
   });
 
-  it('clicking "Draft" pill calls router.replace', async () => {
+  it('clicking "Borrador" pill calls router.replace', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Draft',
+      (b) => b.textContent?.trim() === 'Borrador',
     ) as HTMLButtonElement;
     expect(btn).toBeTruthy();
     fireEvent.click(btn);
@@ -374,18 +374,18 @@ describe('PlaybooksListPage — status filter pills', () => {
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     // Find the "All" button among the status pills (first row of pills)
     const buttons = Array.from(container.querySelectorAll('button'));
-    const allBtn = buttons.find((b) => b.textContent?.trim() === 'All');
+    const allBtn = buttons.find((b) => b.textContent?.trim() === 'Todos');
     expect(allBtn).toBeTruthy();
     fireEvent.click(allBtn!);
     expect(replaceMock).toHaveBeenCalled();
   });
 
   it('active status pill has highlighted styling (bg-primary/10)', async () => {
-    // Default status is "active", so "Active" pill should carry highlight class
+    // Default status is "active", so "Activo" pill should carry highlight class
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
     const activeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Active',
+      (b) => b.textContent?.trim() === 'Activo',
     ) as HTMLButtonElement;
     expect(activeBtn?.className).toContain('bg-primary');
   });
@@ -400,16 +400,16 @@ describe('PlaybooksListPage — trigger-kind filter', () => {
     expect(container.textContent).toContain('Manual');
   });
 
-  it('renders "Event" trigger filter button', async () => {
+  it('renders "Evento" trigger filter button', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
-    expect(container.textContent).toContain('Event');
+    expect(container.textContent).toContain('Evento');
   });
 
-  it('renders "Scheduled" trigger filter button', async () => {
+  it('renders "Programado" trigger filter button', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
-    expect(container.textContent).toContain('Scheduled');
+    expect(container.textContent).toContain('Programado');
   });
 
   it('clicking "Manual" trigger filter calls router.replace', async () => {
@@ -426,7 +426,7 @@ describe('PlaybooksListPage — trigger-kind filter', () => {
   it('renders "Trigger:" label for the filter row', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
-    expect(container.textContent).toContain('Trigger:');
+    expect(container.textContent).toContain('Disparador:');
   });
 });
 
@@ -436,14 +436,14 @@ describe('PlaybooksListPage — category and owner selects', () => {
   it('renders "All categories" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All categories');
+      expect(container.textContent).toContain('Todas las categorías');
     });
   });
 
   it('renders "Any owner" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Any owner');
+      expect(container.textContent).toContain('Todos los responsables');
     });
   });
 
@@ -549,14 +549,14 @@ describe('PlaybooksListPage — clear filters button', () => {
   it('does NOT render "Clear" when no secondary filters are active', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.querySelector('h1')).toBeTruthy());
-    expect(container.textContent).not.toContain('Clear');
+    expect(container.textContent).not.toContain('Limpiar');
   });
 
   it('renders "Clear" when triggerKind filter is active', async () => {
     searchParamsMap = { triggerKind: 'manual' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Clear');
+      expect(container.textContent).toContain('Limpiar');
     });
   });
 
@@ -564,7 +564,7 @@ describe('PlaybooksListPage — clear filters button', () => {
     searchParamsMap = { category: 'HR' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Clear');
+      expect(container.textContent).toContain('Limpiar');
     });
   });
 
@@ -572,16 +572,16 @@ describe('PlaybooksListPage — clear filters button', () => {
     searchParamsMap = { ownerId: '5' };
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Clear');
+      expect(container.textContent).toContain('Limpiar');
     });
   });
 
   it('clicking "Clear" calls router.replace', async () => {
     searchParamsMap = { triggerKind: 'event' };
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Clear'));
+    await waitFor(() => expect(container.textContent).toContain('Limpiar'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear'),
+      (b) => b.textContent?.includes('Limpiar'),
     ) as HTMLButtonElement;
     fireEvent.click(clearBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -595,7 +595,7 @@ describe('PlaybooksListPage — pagination', () => {
     // Default: 1 item returned, offset=0 → no pagination
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Onboarding Flow'));
-    expect(container.textContent).not.toContain('Previous');
+    expect(container.textContent).not.toContain('Anterior');
   });
 
   it('shows Previous/Next buttons when hasMore is true (API returns PAGE_SIZE+1 items)', async () => {
@@ -609,7 +609,7 @@ describe('PlaybooksListPage — pagination', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Next');
+      expect(container.textContent).toContain('Siguiente');
     });
   });
 
@@ -623,9 +623,9 @@ describe('PlaybooksListPage — pagination', () => {
       return makeRes(makeListResp(items));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Previous'));
+    await waitFor(() => expect(container.textContent).toContain('Anterior'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     expect(prevBtn.disabled).toBe(true);
   });
@@ -637,9 +637,9 @@ describe('PlaybooksListPage — pagination', () => {
       return makeRes(makeListResp([makePlaybookRow({ id: 99, name: 'Last One' })]));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Previous'));
+    await waitFor(() => expect(container.textContent).toContain('Anterior'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     expect(prevBtn.disabled).toBe(false);
   });
@@ -653,9 +653,9 @@ describe('PlaybooksListPage — pagination', () => {
       return makeRes(makeListResp(items));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Next'));
+    await waitFor(() => expect(container.textContent).toContain('Siguiente'));
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     fireEvent.click(nextBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -668,9 +668,9 @@ describe('PlaybooksListPage — pagination', () => {
       return makeRes(makeListResp([makePlaybookRow({ id: 99, name: 'Last One' })]));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Previous'));
+    await waitFor(() => expect(container.textContent).toContain('Anterior'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Previous'),
+      (b) => b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     fireEvent.click(prevBtn);
     expect(replaceMock).toHaveBeenCalled();
@@ -839,7 +839,7 @@ describe('PlaybooksListPage — category dropdown from returned items', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All categories');
+      expect(container.textContent).toContain('Todas las categorías');
     });
   });
 });
@@ -854,7 +854,7 @@ describe('PlaybooksListPage — re-fetch on filter change', () => {
       String(c[0]).includes('/api/portal/brain/playbooks'),
     ).length;
     const draftBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Draft',
+      (b) => b.textContent?.trim() === 'Borrador',
     ) as HTMLButtonElement;
     fireEvent.click(draftBtn);
     // The setParam → router.replace updates the URL; simulate rerender

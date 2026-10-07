@@ -102,7 +102,7 @@ export default function NewInitiativePage() {
     });
     const initJson = await initRes.json();
     if (!initRes.ok || !initJson.success) {
-      throw new Error(initJson.message || 'Failed to create initiative');
+      throw new Error(initJson.message || 'No se pudo crear la iniciativa');
     }
     const initiativeId: number = initJson.data.id;
 
@@ -128,15 +128,15 @@ export default function NewInitiativePage() {
           }),
         });
         const j = await r.json();
-        if (!r.ok || !j.success) goalErrors.push(`${g.title}: ${j.message ?? 'create failed'}`);
+        if (!r.ok || !j.success) goalErrors.push(`${g.title}: ${j.message ?? 'error al crear'}`);
       } catch (e) {
-        goalErrors.push(`${g.title}: ${e instanceof Error ? e.message : 'network error'}`);
+        goalErrors.push(`${g.title}: ${e instanceof Error ? e.message : 'error de red'}`);
       }
     }
 
     // 3) redirect.
     if (goalErrors.length > 0) {
-      setError(`Initiative created, but ${goalErrors.length} goal(s) failed: ${goalErrors.join('; ')}`);
+      setError(`Se creó la iniciativa, pero ${goalErrors.length} objetivo(s) fallaron: ${goalErrors.join('; ')}`);
       // Still redirect — the user can add goals from the detail page.
       setTimeout(() => router.push(`/portal/brain/initiatives/${initiativeId}`), 1500);
     } else {
@@ -160,14 +160,14 @@ export default function NewInitiativePage() {
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4"
         >
           <span className="material-icons text-sm">chevron_left</span>
-          Initiatives
+          Iniciativas
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">flag</span>
-              New initiative
+              Nueva iniciativa
             </span>
           }
         />
@@ -181,7 +181,7 @@ export default function NewInitiativePage() {
       )}
 
       <section className="rounded-2xl border border-border bg-card p-5">
-        <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground mb-3">Initiative details</h2>
+        <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground mb-3">Detalles de la iniciativa</h2>
         <InitiativeForm
           mode="create"
           team={team}
@@ -195,11 +195,11 @@ export default function NewInitiativePage() {
           <div>
             <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground inline-flex items-center gap-2">
               <span className="material-icons text-base text-primary">track_changes</span>
-              Initial goals
-              <span className="text-xs text-muted-foreground font-normal">(optional)</span>
+              Objetivos iniciales
+              <span className="text-xs text-muted-foreground font-normal">(opcional)</span>
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Leave the title blank to skip a row. You can always add more later.
+              Deja el título en blanco para omitir una fila. Siempre puedes añadir más después.
             </p>
           </div>
           <button
@@ -208,7 +208,7 @@ export default function NewInitiativePage() {
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary/15"
           >
             <span className="material-icons text-sm">add</span>
-            Add goal
+            Añadir objetivo
           </button>
         </div>
 
@@ -216,13 +216,13 @@ export default function NewInitiativePage() {
           {goals.map((g, idx) => (
             <div key={g.key} className="bg-muted/30 border border-border rounded-xl p-3 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-muted-foreground">Goal #{idx + 1}</span>
+                <span className="text-xs font-medium text-muted-foreground">Objetivo n.º {idx + 1}</span>
                 {goals.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeGoal(g.key)}
                     className="p-1 text-muted-foreground hover:text-destructive rounded"
-                    aria-label="Remove this goal"
+                    aria-label="Quitar este objetivo"
                   >
                     <span className="material-icons text-sm">close</span>
                   </button>
@@ -232,33 +232,33 @@ export default function NewInitiativePage() {
                 type="text"
                 value={g.title}
                 onChange={(e) => updateGoal(g.key, { title: e.target.value })}
-                placeholder="Goal title (e.g. Reduce time-to-onboard by 30%)"
+                placeholder="Título del objetivo (p. ej., reducir el tiempo de incorporación en un 30 %)"
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
               />
               <textarea
                 value={g.description}
                 onChange={(e) => updateGoal(g.key, { description: e.target.value })}
                 rows={2}
-                placeholder="Description (optional)"
+                placeholder="Descripción (opcional)"
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
               />
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <label className="block">
-                  <span className="text-[11px] font-medium text-muted-foreground">Unit</span>
+                  <span className="text-[11px] font-medium text-muted-foreground">Unidad</span>
                   <select
                     value={g.unit}
                     onChange={(e) => updateGoal(g.key, { unit: e.target.value as InlineGoal['unit'] })}
                     className="mt-1 w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15"
                   >
-                    <option value="">none</option>
+                    <option value="">ninguna</option>
                     <option value="percent">%</option>
-                    <option value="usd_cents">$ (cents)</option>
-                    <option value="count">count</option>
-                    <option value="boolean">yes/no</option>
+                    <option value="usd_cents">€ (céntimos)</option>
+                    <option value="count">recuento</option>
+                    <option value="boolean">sí/no</option>
                   </select>
                 </label>
                 <label className="block">
-                  <span className="text-[11px] font-medium text-muted-foreground">Target</span>
+                  <span className="text-[11px] font-medium text-muted-foreground">Objetivo</span>
                   <input
                     type="number"
                     step="any"
@@ -268,7 +268,7 @@ export default function NewInitiativePage() {
                   />
                 </label>
                 <label className="block">
-                  <span className="text-[11px] font-medium text-muted-foreground">Current</span>
+                  <span className="text-[11px] font-medium text-muted-foreground">Actual</span>
                   <input
                     type="number"
                     step="any"
@@ -278,7 +278,7 @@ export default function NewInitiativePage() {
                   />
                 </label>
                 <label className="block">
-                  <span className="text-[11px] font-medium text-muted-foreground">Target date</span>
+                  <span className="text-[11px] font-medium text-muted-foreground">Fecha objetivo</span>
                   <input
                     type="date"
                     value={g.targetDate}
@@ -288,7 +288,7 @@ export default function NewInitiativePage() {
                 </label>
               </div>
               <label className="block">
-                <span className="text-[11px] font-medium text-muted-foreground">Initial status</span>
+                <span className="text-[11px] font-medium text-muted-foreground">Estado inicial</span>
                 <select
                   value={g.status}
                   onChange={(e) => updateGoal(g.key, { status: e.target.value as BrainGoalStatus })}

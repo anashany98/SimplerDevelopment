@@ -25,11 +25,15 @@ const MODULE_SLUGS = new Set(FEATURE_DOMAINS.map((d) => d.slug));
 export async function POST(req: Request) {
   const auth = await authorizePortal({ action: 'admin', scope: 'billing:write' });
   if (isAuthError(auth)) return auth.response;
+
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   const { client } = auth;
 
   if (client.billingMode === 'agency') {
     return NextResponse.json(
-      { success: false, message: 'Your plan is managed by SimplerDevelopment — contact us to make changes.' },
+      { success: false, message: 'Your plan is managed by CRM AGENTS — contact us to make changes.' },
       { status: 403 },
     );
   }

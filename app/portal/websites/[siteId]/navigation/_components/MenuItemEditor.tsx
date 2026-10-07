@@ -29,13 +29,13 @@ function formatDraftTooltip(item: NavItem): string {
   const parts: string[] = [];
   if (updatedAt) {
     try {
-      parts.push(`Updated ${new Date(updatedAt).toLocaleString()}`);
+      parts.push(`Actualizado el ${new Date(updatedAt).toLocaleString()}`);
     } catch {
-      parts.push(`Updated ${updatedAt}`);
+      parts.push(`Actualizado el ${updatedAt}`);
     }
   }
-  if (updatedBy != null) parts.push(`by user ${updatedBy}`);
-  return parts.length > 0 ? parts.join(' ') : 'Unpublished draft';
+  if (updatedBy != null) parts.push(`por el usuario ${updatedBy}`);
+  return parts.length > 0 ? parts.join(' ') : 'Borrador sin publicar';
 }
 
 export function MenuItemEditor({
@@ -66,7 +66,7 @@ export function MenuItemEditor({
     : null;
   const roleIcon =
     megaRole === 'column' ? 'view_column' : megaRole === 'mega-item' ? 'link' : undefined;
-  const roleLabel = megaRole === 'column' ? 'Column' : megaRole === 'mega-item' ? 'Item' : undefined;
+  const roleLabel = megaRole === 'column' ? 'Columna' : megaRole === 'mega-item' ? 'Elemento' : undefined;
 
   return (
     <div className={`${depth === 1 ? 'ml-6' : depth === 2 ? 'ml-12' : ''}`}>
@@ -95,9 +95,7 @@ export function MenuItemEditor({
                 {item.label}
               </span>
               {item.isButton && (
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary leading-none">
-                  Button
-                </span>
+                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/10 text-primary leading-none">Botón</span>
               )}
               {roleLabel && (
                 <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground leading-none">
@@ -108,16 +106,14 @@ export function MenuItemEditor({
                 <span
                   className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200 leading-none"
                   title={draftTooltip}
-                >
-                  Draft
-                </span>
+                >Borrador</span>
               )}
               {pendingDelete && (
                 <span
                   className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-destructive/10 text-destructive leading-none"
                   title={draftTooltip}
                 >
-                  Pending delete
+                  Eliminación pendiente
                 </span>
               )}
             </div>
@@ -134,7 +130,7 @@ export function MenuItemEditor({
               <button
                 onClick={onCancelDelete}
                 className="p-1 hover:bg-muted rounded"
-                title="Cancel deletion"
+                title="Cancelar eliminación"
               >
                 <span className="material-icons text-sm text-muted-foreground">undo</span>
               </button>
@@ -143,24 +139,24 @@ export function MenuItemEditor({
               <button
                 onClick={onPublish}
                 className="p-1 hover:bg-amber-100 dark:hover:bg-amber-900/30 rounded"
-                title={`Publish this item${draftTooltip ? ` — ${draftTooltip}` : ''}`}
+                title={`Publicar este elemento${draftTooltip ? ` — ${draftTooltip}` : ''}`}
               >
                 <span className="material-icons text-sm text-amber-700 dark:text-amber-300">
                   publish
                 </span>
               </button>
             )}
-            <button onClick={onMoveUp} className="p-1 hover:bg-muted rounded" title="Move up">
+            <button onClick={onMoveUp} className="p-1 hover:bg-muted rounded" title="Mover hacia arriba">
               <span className="material-icons text-sm text-muted-foreground">
                 keyboard_arrow_up
               </span>
             </button>
-            <button onClick={onMoveDown} className="p-1 hover:bg-muted rounded" title="Move down">
+            <button onClick={onMoveDown} className="p-1 hover:bg-muted rounded" title="Mover hacia abajo">
               <span className="material-icons text-sm text-muted-foreground">
                 keyboard_arrow_down
               </span>
             </button>
-            <button onClick={onEdit} className="p-1 hover:bg-muted rounded" title="Edit">
+            <button onClick={onEdit} className="p-1 hover:bg-muted rounded" title="Editar">
               <span className="material-icons text-sm text-muted-foreground">
                 {editing ? 'expand_less' : 'edit'}
               </span>
@@ -168,7 +164,7 @@ export function MenuItemEditor({
             <button
               onClick={onRemove}
               className="p-1 hover:bg-destructive/10 rounded"
-              title="Remove"
+              title="Quitar"
             >
               <span className="material-icons text-sm text-destructive">delete</span>
             </button>
@@ -218,24 +214,22 @@ function ColumnEditFields({
     <>
       <div>
         <label className="block text-xs font-medium text-muted-foreground mb-1">
-          Column Heading
+          Encabezado de columna
         </label>
         <input
           type="text"
           value={item.label}
           onChange={(e) => onUpdate({ label: e.target.value })}
           className="w-full px-3 py-1.5 rounded-md border border-border bg-background text-sm text-foreground"
-          placeholder="e.g. Products, Resources"
+          placeholder="p. ej., Productos, Recursos"
         />
       </div>
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">
-          Featured Image
-        </label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Imagen destacada</label>
         <MediaPicker
           value={item.featuredImage || ''}
           onChange={(url) => onUpdate({ featuredImage: url })}
-          label="Column Image"
+          label="Imagen de columna"
           mimeTypeFilter="image"
           apiEndpoint={
             siteId ? `/api/portal/cms/websites/${siteId}/media` : '/api/portal/media'
@@ -248,7 +242,7 @@ function ColumnEditFields({
           className="text-xs text-primary hover:underline flex items-center gap-1"
         >
           <span className="material-icons text-sm">add</span>
-          Add menu item
+          Añadir elemento al menú
         </button>
       )}
     </>
@@ -275,7 +269,7 @@ function LinkEditFields({
   return (
     <>
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">Label</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Etiqueta</label>
         <input
           type="text"
           value={item.label}
@@ -298,26 +292,24 @@ function LinkEditFields({
       {megaRole === 'mega-item' && (
         <>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Description
-            </label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción</label>
             <textarea
               value={item.description || ''}
               onChange={(e) => onUpdate({ description: e.target.value })}
               rows={2}
               className="w-full px-3 py-1.5 rounded-md border border-border bg-background text-sm text-foreground"
-              placeholder="Short description shown under the link"
+              placeholder="Descripción breve que se muestra bajo el enlace"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Icon</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Icono</label>
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 value={item.icon || ''}
                 onChange={(e) => onUpdate({ icon: e.target.value })}
                 className="flex-1 px-3 py-1.5 rounded-md border border-border bg-background text-sm text-foreground"
-                placeholder="e.g. rocket_launch"
+                placeholder="p. ej. rocket_launch"
               />
               {item.icon && (
                 <span className="material-icons text-xl text-muted-foreground">{item.icon}</span>
@@ -325,13 +317,11 @@ function LinkEditFields({
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">
-              Featured Image
-            </label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Imagen destacada</label>
             <MediaPicker
               value={item.featuredImage || ''}
               onChange={(url) => onUpdate({ featuredImage: url })}
-              label="Featured Image"
+              label="Imagen destacada"
               mimeTypeFilter="image"
               apiEndpoint={
                 siteId ? `/api/portal/cms/websites/${siteId}/media` : '/api/portal/media'
@@ -351,7 +341,7 @@ function LinkEditFields({
               onChange={(e) => onUpdate({ openInNewTab: e.target.checked })}
               className="rounded border-border"
             />
-            Open in new tab
+            Abrir en nueva pestaña
           </label>
           <label className="flex items-center gap-2 text-sm text-foreground">
             <input
@@ -360,7 +350,7 @@ function LinkEditFields({
               onChange={(e) => onUpdate({ isButton: e.target.checked })}
               className="rounded border-border accent-primary"
             />
-            Display as button
+            Mostrar como botón
           </label>
         </div>
       )}
@@ -371,7 +361,7 @@ function LinkEditFields({
           className="text-xs text-primary hover:underline flex items-center gap-1"
         >
           <span className="material-icons text-sm">add</span>
-          {isMegaMenu ? 'Add column' : 'Add dropdown item'}
+          {isMegaMenu ? 'Agregar columna' : 'Agregar elemento desplegable'}
         </button>
       )}
     </>

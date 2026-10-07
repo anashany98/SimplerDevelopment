@@ -79,7 +79,7 @@ function installDefaultFetch() {
       return makeSubRes([]);
     }
     if (url === '/api/portal/email/lists' && init?.method === 'POST') {
-      return makeRes({ success: true, data: { id: 99, name: 'New List' } });
+      return makeRes({ success: true, data: { id: 99, name: 'Nova Lista' } });
     }
     if (url === '/api/portal/email/subscribers' && init?.method === 'POST') {
       return makeRes({ success: true, data: { id: 1 } });
@@ -135,24 +135,23 @@ describe('PortalEmailListsPage — initial render', () => {
   it('renders the page heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Subscriber Lists');
+      expect(container.textContent).toContain('Listas de suscriptores');
     });
   });
 
   it('renders the sub-heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Manage your email lists and contacts');
+      expect(container.textContent).toContain('Gestiona tus listas de correo y contactos.');
     });
   });
 
-  it('shows Loading… while lists are fetching', () => {
+  it('shows Carregando… while lists are fetching', () => {
     let resolve: (v: FetchResp) => void = () => {};
     fetchMock.mockImplementationOnce(
       () => new Promise<FetchResp>((res) => { resolve = res; }),
     );
-    const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    const { container } = renderPage();      expect(container.textContent).toContain('Cargando…');
     // resolve so we don't leak the promise
     resolve(makeListRes([]));
   });
@@ -160,14 +159,14 @@ describe('PortalEmailListsPage — initial render', () => {
   it('shows empty-state message when no lists exist', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No lists yet. Create one above.');
+      expect(container.textContent).toContain('Aún no hay listas. Crea una arriba.');
     });
   });
 
-  it('renders the "New List" button', async () => {
+  it('renders the "Nova Lista" button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New List');
+      expect(container.textContent).toContain('Nueva lista');
     });
   });
 
@@ -177,21 +176,21 @@ describe('PortalEmailListsPage — initial render', () => {
       // The portal redesign replaced the inline back-link with a PortalPageHeader
       // that shows an uppercase "Email" eyebrow for navigation context.
       // Per-section navigation is now provided by the portal sidebar shell.
-      expect(container.textContent).toContain('Email');
+      expect(container.textContent).toContain('Correo');
     });
   });
 
   it('shows "Select a list" placeholder in subscriber pane', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Select a list');
+      expect(container.textContent).toContain('Selecciona una lista');
     });
   });
 
   it('shows the prompt to click a list when none is selected', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Click a list to view and manage subscribers.');
+      expect(container.textContent).toContain('Haz clic en una lista para ver y gestionar suscriptores.');
     });
   });
 });
@@ -216,7 +215,7 @@ describe('PortalEmailListsPage — lists table', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('1 subscriber');
+      expect(container.textContent).toContain('suscriptor');
     });
   });
 
@@ -226,7 +225,7 @@ describe('PortalEmailListsPage — lists table', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('3 subscribers');
+      expect(container.textContent).toContain('suscriptores');
     });
   });
 
@@ -259,32 +258,30 @@ describe('PortalEmailListsPage — lists table', () => {
 // ---------------------------------------------------------------------------
 
 describe('PortalEmailListsPage — create list form', () => {
-  it('toggles the create form when New List is clicked', async () => {
-    const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New List'));
+  it('toggles the create form when Nova Lista is clicked', async () => {
+    const { container } = renderPage();      await waitFor(() => expect(container.textContent).toContain('Nueva lista'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New List'),
+      (b) => b.textContent?.includes('Nueva lista'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Create List');
+      expect(container.textContent).toContain('Crear lista');
     });
   });
 
   it('hides the form when Cancel is clicked', async () => {
-    const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New List'));
+    const { container } = renderPage();      await waitFor(() => expect(container.textContent).toContain('Nueva lista'));
     const newListBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New List'),
+      (b) => b.textContent?.includes('Nueva lista'),
     ) as HTMLButtonElement;
     fireEvent.click(newListBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create List'));
+    await waitFor(() => expect(container.textContent).toContain('Crear lista'));
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Create List');
+      expect(container.textContent).not.toContain('Crear lista');
     });
   });
 
@@ -298,17 +295,16 @@ describe('PortalEmailListsPage — create list form', () => {
       }
       return makeRes({ success: true });
     });
-    const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New List'));
+    const { container } = renderPage();      await waitFor(() => expect(container.textContent).toContain('Nueva lista'));
     const newListBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New List'),
+      (b) => b.textContent?.includes('Nueva lista'),
     ) as HTMLButtonElement;
     fireEvent.click(newListBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create List'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    await waitFor(() => expect(container.textContent).toContain('Crear lista'));
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Newsletter' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create List'),
+      (b) => b.textContent?.includes('Crear lista'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
     await waitFor(() => {
@@ -326,17 +322,16 @@ describe('PortalEmailListsPage — create list form', () => {
       }
       return makeRes({ success: true });
     });
-    const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New List'));
+    const { container } = renderPage();      await waitFor(() => expect(container.textContent).toContain('Nueva lista'));
     const newListBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New List'),
+      (b) => b.textContent?.includes('Nueva lista'),
     ) as HTMLButtonElement;
     fireEvent.click(newListBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create List'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    await waitFor(() => expect(container.textContent).toContain('Crear lista'));
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create List'),
+      (b) => b.textContent?.includes('Crear lista'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
     await waitFor(() => {
@@ -355,20 +350,19 @@ describe('PortalEmailListsPage — create list form', () => {
       }
       return makeRes({ success: true });
     });
-    const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New List'));
+    const { container } = renderPage();      await waitFor(() => expect(container.textContent).toContain('Nueva lista'));
     const newListBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New List'),
+      (b) => b.textContent?.includes('Nueva lista'),
     ) as HTMLButtonElement;
     fireEvent.click(newListBtn);
-    await waitFor(() => expect(container.textContent).toContain('Create List'));
-    const nameInput = container.querySelector('input[placeholder="e.g. Newsletter"]') as HTMLInputElement;
+    await waitFor(() => expect(container.textContent).toContain('Crear lista'));
+    const nameInput = container.querySelector('input[placeholder="p. ej. Newsletter"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Test' } });
     const submitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create List'),
+      (b) => b.textContent?.includes('Crear lista'),
     ) as HTMLButtonElement;
     fireEvent.click(submitBtn);
-    expect(container.textContent).toContain('Creating');
+    expect(container.textContent).toContain('Creando');
     resolvePost(makeRes({ success: true, data: { id: 1, name: 'Test' } }));
   });
 });
@@ -460,7 +454,7 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscribers yet.');
+      expect(container.textContent).toContain('Aún no hay suscriptores.');
     });
   });
 
@@ -512,7 +506,7 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     });
   });
 
-  it('shows Import CSV button when a list is selected', async () => {
+  it('shows Importar CSV button when a list is selected', async () => {
     setupWithList();
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Newsletter'));
@@ -521,7 +515,7 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.textContent).toContain('Import CSV');
+      expect(container.textContent).toContain('Importar CSV');
     });
   });
 
@@ -534,8 +528,8 @@ describe('PortalEmailListsPage — subscriber pane', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Email address"]')).toBeTruthy();
-      expect(container.querySelector('input[placeholder="Name"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Correo electrónico"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Nombre"]')).toBeTruthy();
     });
   });
 
@@ -581,7 +575,7 @@ describe('PortalEmailListsPage — add subscriber', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Email address"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Correo electrónico"]')).toBeTruthy();
     });
   }
 
@@ -589,7 +583,7 @@ describe('PortalEmailListsPage — add subscriber', () => {
     setupWithList();
     const { container } = renderPage();
     await openList(container);
-    const emailInput = container.querySelector('input[placeholder="Email address"]') as HTMLInputElement;
+    const emailInput = container.querySelector('input[placeholder="Correo electrónico"]') as HTMLInputElement;
     fireEvent.change(emailInput, { target: { value: 'new@example.com' } });
     const addBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     fireEvent.click(addBtn);
@@ -614,7 +608,7 @@ describe('PortalEmailListsPage — add subscriber', () => {
     });
     const { container } = renderPage();
     await openList(container);
-    const emailInput = container.querySelector('input[placeholder="Email address"]') as HTMLInputElement;
+    const emailInput = container.querySelector('input[placeholder="Correo electrónico"]') as HTMLInputElement;
     fireEvent.change(emailInput, { target: { value: 'dup@example.com' } });
     const addBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     fireEvent.click(addBtn);
@@ -659,7 +653,7 @@ describe('PortalEmailListsPage — remove subscriber', () => {
     await waitFor(() => {
       expect(container.textContent).not.toContain('user42@example.com');
     });
-    expect(window.confirm).toHaveBeenCalledWith('Remove this subscriber?');
+    expect(window.confirm).toHaveBeenCalledWith('¿Quitar este suscriptor?');
   });
 
   it('does not remove subscriber when confirm returns false', async () => {
@@ -716,9 +710,9 @@ describe('PortalEmailListsPage — CSV import', () => {
       (el) => el.textContent?.includes('Newsletter'),
     ) as HTMLElement;
     fireEvent.click(listRow);
-    await waitFor(() => expect(container.textContent).toContain('Import CSV'));
+    await waitFor(() => expect(container.textContent).toContain('Importar CSV'));
     const importBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Import CSV'),
+      (b) => b.textContent?.includes('Importar CSV'),
     ) as HTMLButtonElement;
     fireEvent.click(importBtn);
     await waitFor(() => {
@@ -738,7 +732,7 @@ describe('PortalEmailListsPage — CSV import', () => {
     const { container } = renderPage();
     await openCsvPanel(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -755,11 +749,11 @@ describe('PortalEmailListsPage — CSV import', () => {
       target: { value: 'email,name\nalice@example.com,Alice\nbob@example.com,Bob' },
     });
     const importSubmitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Import',
+      (b) => b.textContent?.trim() === 'Importar',
     ) as HTMLButtonElement;
     fireEvent.click(importSubmitBtn);
     await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith('Imported 2 of 2 subscribers.');
+      expect(window.alert).toHaveBeenCalledWith('Se importaron 2 de 2 suscriptores.');
     });
   });
 
@@ -772,7 +766,7 @@ describe('PortalEmailListsPage — CSV import', () => {
       target: { value: 'email,name\nbadrow' },
     });
     const importSubmitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Import',
+      (b) => b.textContent?.trim() === 'Importar',
     ) as HTMLButtonElement;
     fireEvent.click(importSubmitBtn);
     await waitFor(() => {
@@ -785,7 +779,7 @@ describe('PortalEmailListsPage — CSV import', () => {
     const { container } = renderPage();
     await openCsvPanel(container);
     const importSubmitBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Import',
+      (b) => b.textContent?.trim() === 'Importar',
     ) as HTMLButtonElement;
     expect(importSubmitBtn.disabled).toBe(true);
   });
@@ -813,9 +807,9 @@ describe('PortalEmailListsPage — pagination', () => {
     ) as HTMLElement;
     fireEvent.click(listRow);
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1');
-      expect(container.textContent).toContain('Prev');
-      expect(container.textContent).toContain('Next');
+      expect(container.textContent).toContain('Página 1');
+      expect(container.textContent).toContain('Anterior');
+      expect(container.textContent).toContain('Siguiente');
     });
   });
 
@@ -838,7 +832,7 @@ describe('PortalEmailListsPage — pagination', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('user1@example.com');
     });
-    expect(container.textContent).not.toContain('Prev');
+    expect(container.textContent).not.toContain('Anterior');
     expect(container.textContent).not.toContain('Next');
   });
 
@@ -858,14 +852,14 @@ describe('PortalEmailListsPage — pagination', () => {
       (el) => el.textContent?.includes('BigList'),
     ) as HTMLElement;
     fireEvent.click(listRow);
-    await waitFor(() => expect(container.textContent).toContain('Prev'));
+    await waitFor(() => expect(container.textContent).toContain('Anterior'));
     const prevBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Prev',
+      (b) => b.textContent?.trim() === 'Anterior',
     ) as HTMLButtonElement;
     expect(prevBtn.disabled).toBe(true);
   });
 
-  it('clicking Next advances to page 2', async () => {
+  it('clicking Próxima advances to page 2', async () => {
     fetchMock.mockImplementation(async (url: string, init?: RequestInit) => {
       if (url === '/api/portal/email/lists' && (!init?.method || init.method === 'GET')) {
         return makeListRes([makeList(1, { name: 'BigList', subscriberCount: 100 })]);
@@ -881,15 +875,15 @@ describe('PortalEmailListsPage — pagination', () => {
       (el) => el.textContent?.includes('BigList'),
     ) as HTMLElement;
     fireEvent.click(listRow);
-    await waitFor(() => expect(container.textContent).toContain('Next'));
+    await waitFor(() => expect(container.textContent).toContain('Siguiente'));
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Next',
+      (b) => b.textContent?.trim() === 'Siguiente',
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(nextBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2');
+      expect(container.textContent).toContain('Página 2');
     });
   });
 });
@@ -951,7 +945,7 @@ describe('PortalEmailListsPage — search and status filter', () => {
     vi.advanceTimersByTime(300);
     vi.useRealTimers();
     await waitFor(() => {
-      expect(container.textContent).toContain('No subscribers match.');
+      expect(container.textContent).toContain('Ningún suscriptor coincide.');
     });
   });
 
@@ -987,7 +981,7 @@ describe('PortalEmailListsPage — search and status filter', () => {
 // ---------------------------------------------------------------------------
 
 describe('PortalEmailListsPage — subscriber pane loading', () => {
-  it('shows Loading… in subscriber pane while fetching subscribers', async () => {
+  it('shows Carregando… in subscriber pane while fetching subscribers', async () => {
     let resolveSubFetch: (v: FetchResp) => void = () => {};
     fetchMock.mockImplementation(async (url: string, init?: RequestInit) => {
       if (url === '/api/portal/email/lists' && (!init?.method || init.method === 'GET')) {
@@ -1007,8 +1001,7 @@ describe('PortalEmailListsPage — subscriber pane loading', () => {
     fireEvent.click(listRow);
     // The loading state appears synchronously via React state update.
     // Use act to flush the synchronous state updates, then check.
-    await act(async () => {});
-    expect(container.textContent).toContain('Loading');
+    await act(async () => {});      expect(container.textContent).toContain('Cargando…');
     // Resolve so there is no dangling promise
     resolveSubFetch(makeSubRes([]));
   });

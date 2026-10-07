@@ -342,7 +342,7 @@ describe('ServicesGridBlockEdit', () => {
       <ServicesGridBlockEdit block={baseServicesGrid} onChange={onChange} />,
     );
     const removeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Remove',
+      (b) => b.textContent === 'Quitar',
     ) as HTMLButtonElement;
     fireEvent.click(removeBtn);
     const call = onChange.mock.calls.at(-1)?.[0] as ServicesGridBlock;

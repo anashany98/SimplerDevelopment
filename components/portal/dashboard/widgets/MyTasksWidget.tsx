@@ -23,12 +23,12 @@ export default async function MyTasksWidget({
       <div>
         <div className="mb-3">
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">0</span>
-          <span className="ml-2 text-sm text-muted-foreground">open tasks</span>
+          <span className="ml-2 text-sm text-muted-foreground">tareas abiertas</span>
         </div>
         <p className="text-sm text-muted-foreground py-2 text-center">
-          No projects yet.{' '}
+          Aún no hay proyectos.{' '}
           <Link href="/portal/projects" className="text-primary hover:underline">
-            Create one
+            Crear uno
           </Link>
         </p>
       </div>
@@ -93,14 +93,14 @@ export default async function MyTasksWidget({
       <div className="mb-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{openCount}</span>
         <span className="ml-2 text-sm text-muted-foreground">
-          open task{openCount !== 1 ? 's' : ''}
+          {openCount === 1 ? 'tarea abierta' : 'tareas abiertas'}
         </span>
       </div>
       {topTasks.length === 0 ? (
         <p className="text-sm text-muted-foreground py-2 text-center">
-          No tasks due.{' '}
+          No hay tareas para hoy.{' '}
           <Link href="/portal/my-tasks" className="text-primary hover:underline">
-            View all tasks
+            Ver todas las tareas
           </Link>
         </p>
       ) : (
@@ -117,7 +117,7 @@ export default async function MyTasksWidget({
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">{task.title}</p>
                     <p className="text-xs text-muted-foreground truncate">
-                      {projectNames[task.projectId] ?? 'Unknown project'}
+                      {projectNames[task.projectId] ?? 'Proyecto desconocido'}
                     </p>
                   </div>
                   {due && (
@@ -141,7 +141,7 @@ export default async function MyTasksWidget({
           className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
         >
           <span className="material-icons text-sm">task_alt</span>
-          View all my tasks
+          Ver todas mis tareas
         </Link>
       </div>
     </div>

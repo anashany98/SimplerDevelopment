@@ -155,7 +155,7 @@ export default function CommandPalette({ onToggleTheme }: { onToggleTheme: () =>
         <div className="flex items-center gap-4 px-4 py-2.5 border-t border-border text-[11px] text-muted-foreground">
           <span className="flex items-center gap-1.5"><kbd className="font-mono px-1 rounded border border-border bg-[var(--admin-surface-2)]">↑↓</kbd> navigate</span>
           <span className="flex items-center gap-1.5"><kbd className="font-mono px-1 rounded border border-border bg-[var(--admin-surface-2)]">↵</kbd> open</span>
-          <span className="ml-auto">SimplerDev Admin</span>
+          <span className="ml-auto">CRM AGENTS Admin</span>
         </div>
       </div>
     </div>

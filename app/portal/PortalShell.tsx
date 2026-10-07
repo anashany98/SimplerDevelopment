@@ -16,8 +16,12 @@
 // the plugin registry blows up we degrade to "no Apps group" instead of
 // blanking out the entire portal.
 
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
+import { db } from '@/lib/db';
+import { userOnboarding } from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
 import { getPortalClient } from '@/lib/portal-client';
 import { loadUserApps, type UserAppNavMeta } from '@/lib/plugins/load-user-apps';
 import { getClientEntitlements } from '@/lib/billing/entitlements';
@@ -44,6 +48,8 @@ export default async function PortalShell({ children }: { children: React.ReactN
   await cookies();
   let apps: UserAppNavMeta[] = [];
   let entitlements: SerializableEntitlements = { domains: [], gatingBypassed: true };
+  // Authenticated-but-clientless user (pre-onboarding) → wizard redirect below.
+  let clientless = false;
 
   try {
     const session = await auth();
@@ -52,7 +58,17 @@ export default async function PortalShell({ children }: { children: React.ReactN
       const userId = parseInt(String(userIdRaw), 10);
       if (!Number.isNaN(userId)) {
         const client = await getPortalClient(userId);
-        if (client) {
+        if (!client) {
+          // Only PRE-onboarding users get the wizard. A user who already
+          // completed onboarding but still has no client (e.g. a staff account
+          // that walked the portal wizard) must NOT loop dashboard→wizard.
+          const [ob] = await db
+            .select({ completedAt: userOnboarding.completedAt })
+            .from(userOnboarding)
+            .where(eq(userOnboarding.userId, userId))
+            .limit(1);
+          clientless = !ob?.completedAt;
+        } else {
           apps = await loadUserApps(client.id);
           const ent = await getClientEntitlements(client.id, client);
           entitlements = {
@@ -69,6 +85,27 @@ export default async function PortalShell({ children }: { children: React.ReactN
     // ungated UI to a client who may not be entitled.
     apps = [];
     entitlements = { domains: [], gatingBypassed: false };
+  }
+
+  // Pre-onboarding gate: an authenticated user with NO portal client yet used
+  // to reach module pages whose data calls 404 ("Client not found"), rendering
+  // error cards on first contact (e.g. CRM's "Error al cargar el panel").
+  // Send them to the wizard instead — same first-run intent as the dashboard
+  // gate — while keeping the auth-flow pages reachable. Deliberately OUTSIDE
+  // the try above: redirect() throws NEXT_REDIRECT and the catch must not
+  // swallow it.
+  if (clientless) {
+    const pathname = (await headers()).get('x-pathname') ?? '';
+    const isAuthFlowPage = [
+      '/portal/onboarding',
+      '/portal/login',
+      '/portal/invite',
+      '/portal/signup',
+      '/portal/forgot-password',
+      '/portal/reset-password',
+      '/portal/mobile-auth',
+    ].some((p) => pathname === p || pathname.startsWith(`${p}/`));
+    if (pathname && !isAuthFlowPage) redirect('/portal/onboarding');
   }
 
   return <PortalLayoutClient apps={apps} entitlements={entitlements}>{children}</PortalLayoutClient>;

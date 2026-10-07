@@ -7,7 +7,7 @@ interface Props {
   label?: string;
 }
 
-export default function BuyServiceButton({ serviceId, label = 'Buy Now' }: Props) {
+export default function BuyServiceButton({ serviceId, label = 'Comprar ahora' }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -18,7 +18,7 @@ export default function BuyServiceButton({ serviceId, label = 'Buy Now' }: Props
     const data = await res.json();
     setLoading(false);
     if (!data.success || !data.data?.url) {
-      setError(data.message ?? 'Could not start checkout.');
+      setError(data.message ?? 'No se pudo iniciar el pago.');
     } else {
       window.location.href = data.data.url;
     }
@@ -29,10 +29,10 @@ export default function BuyServiceButton({ serviceId, label = 'Buy Now' }: Props
       <button
         onClick={handleBuy}
         disabled={loading}
-        className="flex items-center gap-1 text-xs px-3 py-1.5 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors"
+        className="flex items-center gap-1 text-xs px-3 py-1.5 bg-foreground text-background rounded-lg hover:bg-foreground/90 disabled:opacity-50 transition-colors"
       >
         {loading ? (
-          <><span className="material-icons text-xs animate-spin">refresh</span>Redirecting...</>
+          <><span className="material-icons text-xs animate-spin">refresh</span>Redirigiendo...</>
         ) : (
           <><span className="material-icons text-xs">shopping_cart</span>{label}</>
         )}

@@ -45,19 +45,19 @@ function relativeTime(iso: string | null): string {
   const now = Date.now();
   const diff = Math.max(0, now - then);
   const sec = Math.floor(diff / 1000);
-  if (sec < 60) return 'just now';
+  if (sec < 60) return 'ahora mismo';
   const min = Math.floor(sec / 60);
-  if (min < 60) return `${min} minute${min === 1 ? '' : 's'} ago`;
+  if (min < 60) return `hace ${min} minuto${min === 1 ? '' : 's'}`;
   const hr = Math.floor(min / 60);
-  if (hr < 24) return `${hr} hour${hr === 1 ? '' : 's'} ago`;
+  if (hr < 24) return `hace ${hr} hora${hr === 1 ? '' : 's'}`;
   const days = Math.floor(hr / 24);
-  if (days < 30) return `${days} day${days === 1 ? '' : 's'} ago`;
+  if (days < 30) return `hace ${days} día${days === 1 ? '' : 's'}`;
   return new Date(iso).toLocaleDateString();
 }
 
 export function CustomCodeForm({
   endpoint,
-  title = 'Custom CSS & JavaScript',
+  title = 'CSS y JavaScript personalizados',
   subtitle,
   supportsDrafts = true,
 }: CustomCodeFormProps) {
@@ -121,10 +121,10 @@ export function CustomCodeForm({
             hasDraft: res.data.hasDraft ?? false,
           });
         } else {
-          setError(res.message || 'Failed to load custom code.');
+          setError(res.message || 'No se pudo cargar el código personalizado.');
         }
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load.');
+        if (!cancelled) setError(e instanceof Error ? e.message : 'No se pudo cargar.');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -171,12 +171,12 @@ export function CustomCodeForm({
           setLiveCss(draftCss);
           setLiveJs(draftJs);
         }
-        setToast(supportsDrafts ? 'Draft saved' : 'Saved');
+        setToast(supportsDrafts ? 'Borrador guardado' : 'Guardado');
       } else {
-        setError(res.message || 'Save failed.');
+        setError(res.message || 'No se pudo guardar.');
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Save failed.');
+      setError(e instanceof Error ? e.message : 'No se pudo guardar.');
     } finally {
       setSaving(false);
     }
@@ -184,7 +184,7 @@ export function CustomCodeForm({
 
   async function publishDraft() {
     if (!supportsDrafts) return;
-    if (!confirm('Publish draft to live? This affects every page on the site.')) return;
+    if (!confirm('¿Publicar el borrador? Afecta a todas las páginas del sitio.')) return;
     setPublishing(true);
     setError(null);
     try {
@@ -192,12 +192,12 @@ export function CustomCodeForm({
       if (res.success && res.data) {
         applyPayload(res.data as CodePayload);
         setView('live');
-        setToast('Published to live');
+        setToast('Publicado');
       } else {
-        setError(res.message || 'Publish failed.');
+        setError(res.message || 'No se pudo publicar.');
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Publish failed.');
+      setError(e instanceof Error ? e.message : 'No se pudo publicar.');
     } finally {
       setPublishing(false);
     }
@@ -205,19 +205,19 @@ export function CustomCodeForm({
 
   async function discardDraft() {
     if (!supportsDrafts) return;
-    if (!confirm('Discard draft and revert to the published version?')) return;
+    if (!confirm('¿Descartar el borrador y volver a la versión publicada?')) return;
     setDiscarding(true);
     setError(null);
     try {
       const res = await fetch(`${endpoint}/discard`, { method: 'POST' }).then(r => r.json());
       if (res.success && res.data) {
         applyPayload(res.data as CodePayload);
-        setToast('Draft discarded');
+        setToast('Borrador descartado');
       } else {
-        setError(res.message || 'Discard failed.');
+        setError(res.message || 'No se pudo descartar.');
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Discard failed.');
+      setError(e instanceof Error ? e.message : 'No se pudo descartar.');
     } finally {
       setDiscarding(false);
     }
@@ -239,11 +239,11 @@ export function CustomCodeForm({
           {supportsDrafts && hasDraft && draftDiffersFromLive && (
             <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 px-2 py-1 rounded-md">
               <span className="material-icons text-sm">edit_note</span>
-              Draft has unpublished changes
+              El borrador tiene cambios sin publicar
             </span>
           )}
           {dirty && (
-            <span className="text-xs text-muted-foreground">Unsaved changes</span>
+            <span className="text-xs text-muted-foreground">Cambios sin guardar</span>
           )}
           {supportsDrafts && canDiscard && (
             <button
@@ -257,7 +257,7 @@ export function CustomCodeForm({
               ) : (
                 <span className="material-icons text-base">delete_sweep</span>
               )}
-              Discard draft
+              Descartar borrador
             </button>
           )}
           <button
@@ -265,29 +265,29 @@ export function CustomCodeForm({
             onClick={saveDraft}
             disabled={!dirty || saving || loading || showingLive}
             className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors disabled:opacity-50"
-            title={showingLive ? 'Switch to Draft tab to edit' : undefined}
+            title={showingLive ? 'Cambia a la pestaña Borrador para editar' : undefined}
           >
             {saving ? (
               <span className="material-icons text-base animate-spin">refresh</span>
             ) : (
               <span className="material-icons text-base">save</span>
             )}
-            {supportsDrafts ? 'Save draft' : 'Save'}
+            {supportsDrafts ? 'Guardar borrador' : 'Guardar'}
           </button>
           {supportsDrafts && (
             <button
               type="button"
               onClick={publishDraft}
               disabled={!canPublish}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
-              title={!canPublish ? 'No draft changes to publish' : undefined}
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-colors disabled:opacity-50"
+              title={!canPublish ? 'No hay cambios en el borrador para publicar' : undefined}
             >
               {publishing ? (
                 <span className="material-icons text-base animate-spin">refresh</span>
               ) : (
                 <span className="material-icons text-base">publish</span>
               )}
-              Publish
+              Publicar
             </button>
           )}
         </div>
@@ -296,9 +296,9 @@ export function CustomCodeForm({
       {supportsDrafts && hasDraft && draftUpdatedAt && (
         <div className="text-xs text-muted-foreground flex items-center gap-1.5">
           <span className="material-icons text-sm">history</span>
-          Drafted by{' '}
+          Borrador de{' '}
           <span className="font-medium text-foreground">
-            {draftUpdatedBy?.name || draftUpdatedBy?.email || 'unknown'}
+            {draftUpdatedBy?.name || draftUpdatedBy?.email || 'desconocido'}
           </span>
           {' · '}
           <span title={new Date(draftUpdatedAt).toLocaleString()}>{relativeTime(draftUpdatedAt)}</span>
@@ -318,9 +318,9 @@ export function CustomCodeForm({
               }`}
             >
               <span className="material-icons text-base">edit</span>
-              Draft
+              Borrador
               {hasDraft && draftDiffersFromLive && (
-                <span className="ml-1 w-1.5 h-1.5 rounded-full bg-amber-500" aria-label="Unpublished changes" />
+                <span className="ml-1 w-1.5 h-1.5 rounded-full bg-amber-500" aria-label="Cambios sin publicar" />
               )}
             </button>
             <button
@@ -333,10 +333,10 @@ export function CustomCodeForm({
               }`}
             >
               <span className="material-icons text-base">public</span>
-              Live
+              En vivo
             </button>
             <div className="ml-auto text-xs text-muted-foreground pb-1">
-              {showingLive ? 'Currently serving on the public site (read-only).' : 'Edits stage here until you publish.'}
+              {showingLive ? 'Actualmente en el sitio público (solo lectura).' : 'Los cambios se guardan aquí hasta que publiques.'}
             </div>
           </div>
         )}
@@ -362,8 +362,8 @@ export function CustomCodeForm({
           </button>
           <div className="ml-auto text-xs text-muted-foreground pb-1">
             {lang === 'css'
-              ? 'Injected as a <style> tag at render time. Cascades after earlier layers.'
-              : 'Wrapped in an IIFE and run after window load on the public site.'}
+              ? 'Se inyecta como etiqueta <style> al renderizar. Se aplica después de las capas anteriores.'
+              : 'Se envuelve en una IIFE y se ejecuta tras la carga de la ventana en el sitio público.'}
           </div>
         </div>
 
@@ -378,7 +378,7 @@ export function CustomCodeForm({
               onChange={readOnly ? undefined : (e) => setDraftCss(e.target.value)}
               readOnly={readOnly}
               spellCheck={false}
-              placeholder={'/* Custom CSS */'}
+              placeholder={'/* CSS personalizado */'}
               className={`w-full h-[60vh] resize-none rounded-lg border border-border bg-muted/20 px-4 py-3 text-sm font-mono text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary ${readOnly ? 'opacity-90 cursor-default' : ''}`}
             />
           ) : (
@@ -387,7 +387,7 @@ export function CustomCodeForm({
               onChange={readOnly ? undefined : (e) => setDraftJs(e.target.value)}
               readOnly={readOnly}
               spellCheck={false}
-              placeholder={'// Custom JS — runs once on the public site after window load.'}
+              placeholder={'// JS personalizado — se ejecuta una vez en el sitio público tras la carga de la ventana.'}
               className={`w-full h-[60vh] resize-none rounded-lg border border-border bg-muted/20 px-4 py-3 text-sm font-mono text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary ${readOnly ? 'opacity-90 cursor-default' : ''}`}
             />
           )}

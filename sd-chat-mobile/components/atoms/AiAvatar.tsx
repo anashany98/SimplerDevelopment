@@ -10,7 +10,7 @@ export type AiAvatarProps = {
   /** Adds a white ring + drop shadow (mirrors the mockup's primary AI avatar). */
   ring?: boolean;
   /**
-   * Render the SimplerDevelopment `</>` brand mark instead of the assistant
+   * Render the CRM AGENTS `</>` brand mark instead of the assistant
    * sparkle, in the same gradient tile. Use on company/brand surfaces
    * (sign-in, onboarding chrome); leave off for the in-chat assistant avatar.
    */

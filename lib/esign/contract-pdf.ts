@@ -76,9 +76,9 @@ function hexToRgb(hex: string): [number, number, number] {
 function formatCents(cents: number, currency: string): string {
   const dollars = cents / 100;
   try {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('es-ES', {
       style: 'currency',
-      currency: currency || 'USD',
+      currency: currency || 'EUR',
       minimumFractionDigits: 2,
     }).format(dollars);
   } catch {
@@ -92,7 +92,7 @@ export async function renderContractPdf(input: ContractPdfInput): Promise<Buffer
   const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
   const accentRgb = input.accentColor ? hexToRgb(input.accentColor) : [0.145, 0.388, 0.922] as [number, number, number];
-  const currency = input.currency || 'USD';
+  const currency = input.currency || 'EUR';
 
   // Try to fetch and embed the logo image.
   let logoImageEmbed: Awaited<ReturnType<PDFDocument['embedPng']>> | null = null;

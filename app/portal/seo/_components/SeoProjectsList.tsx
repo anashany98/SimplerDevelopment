@@ -31,13 +31,13 @@ export default function SeoProjectsList() {
       const res = await fetch('/api/portal/seo/projects');
       const json = await res.json();
       if (!json.success) {
-        setError(json.message || 'Failed to load SEO projects.');
+        setError(json.message || 'No se pudieron cargar los proyectos SEO.');
         return;
       }
       setError('');
       setProjects(json.data ?? []);
     } catch {
-      setError('Network error loading SEO projects.');
+      setError('Error de red al cargar los proyectos SEO.');
     }
   }, []);
 
@@ -65,12 +65,12 @@ export default function SeoProjectsList() {
       const res = await fetch(`/api/portal/seo/projects/${projectId}/crawl`, { method: 'POST' });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setRunErrors((prev) => ({ ...prev, [projectId]: json.message || 'Failed to start audit.' }));
+        setRunErrors((prev) => ({ ...prev, [projectId]: json.message || 'No se pudo iniciar la auditoría.' }));
       } else {
         await fetchProjects();
       }
     } catch {
-      setRunErrors((prev) => ({ ...prev, [projectId]: 'Network error starting audit.' }));
+      setRunErrors((prev) => ({ ...prev, [projectId]: 'Error de red al iniciar la auditoría.' }));
     } finally {
       setStartingIds((prev) => {
         const next = new Set(prev);
@@ -83,13 +83,13 @@ export default function SeoProjectsList() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Optimization"
+        eyebrow="Optimización"
         title="SEO Intelligence"
-        subtitle="Crawl your sites, find technical issues, and track health over time."
+        subtitle="Rastrea tus sitios, encuentra problemas técnicos y supervisa la salud con el tiempo."
         actions={
           <button type="button" onClick={() => setDialogOpen(true)} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
-            New project
+            Nuevo proyecto
           </button>
         }
       />
@@ -105,7 +105,7 @@ export default function SeoProjectsList() {
 
       {projects === null ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin text-2xl">progress_activity</span>
+          <span className="material-icons animate-spin text-2xl">autorenew</span>
         </div>
       ) : projects.length === 0 ? (
         <div className={`${pCard} p-10 flex flex-col items-center text-center`}>
@@ -113,15 +113,15 @@ export default function SeoProjectsList() {
             <span className="material-icons text-3xl text-primary">travel_explore</span>
           </div>
           <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">
-            Find and fix what&apos;s holding your rankings back
+            Encuentra y corrige lo que frena tu posicionamiento
           </h2>
           <p className="text-sm text-muted-foreground max-w-md mb-6">
-            Crawl any domain — hosted here or elsewhere — for technical SEO issues, broken links, and
-            indexability problems, then track your health score as you fix them.
+            Rastrea cualquier dominio —alojado aquí o en otro sitio— en busca de problemas técnicos de SEO,
+            enlaces rotos y problemas de indexabilidad, y sigue tu puntuación de salud a medida que los corriges.
           </p>
           <button type="button" onClick={() => setDialogOpen(true)} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
-            Audit your first site
+            Audita tu primer sitio
           </button>
         </div>
       ) : (
@@ -149,7 +149,7 @@ export default function SeoProjectsList() {
                   <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-3">
                     {active && p.latestRun && <RunStatusPill status={p.latestRun.status} />}
                     <span>
-                      Last crawl: {p.latestRun ? relativeTime(p.latestRun.finishedAt ?? p.latestRun.createdAt) : 'never'}
+                      Último rastreo: {p.latestRun ? relativeTime(p.latestRun.finishedAt ?? p.latestRun.createdAt) : 'nunca'}
                     </span>
                   </div>
 
@@ -157,15 +157,15 @@ export default function SeoProjectsList() {
                     <div className="flex items-center gap-3 text-xs border-t border-border pt-3">
                       <span className="flex items-center gap-1 text-red-600 dark:text-red-400">
                         <span className="material-icons text-xs">error</span>
-                        {p.latestRun.criticalCount} critical
+                        {p.latestRun.criticalCount} críticos
                       </span>
                       <span className="flex items-center gap-1 text-yellow-600 dark:text-yellow-400">
                         <span className="material-icons text-xs">warning</span>
-                        {p.latestRun.warningCount} warning
+                        {p.latestRun.warningCount} advertencias
                       </span>
                       <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
                         <span className="material-icons text-xs">info</span>
-                        {p.latestRun.noticeCount} notice
+                        {p.latestRun.noticeCount} avisos
                       </span>
                     </div>
                   )}
@@ -180,13 +180,13 @@ export default function SeoProjectsList() {
                   >
                     {startingIds.has(p.id) || active ? (
                       <>
-                        <span className="material-icons text-sm animate-spin">progress_activity</span>
-                        {active ? 'Auditing…' : 'Starting…'}
+                        <span className="material-icons text-sm animate-spin">autorenew</span>
+                        {active ? 'Auditando…' : 'Iniciando…'}
                       </>
                     ) : (
                       <>
                         <span className="material-icons text-sm">play_arrow</span>
-                        Run audit
+                        Ejecutar auditoría
                       </>
                     )}
                   </button>
@@ -194,7 +194,7 @@ export default function SeoProjectsList() {
                     href={`/portal/seo/${p.id}`}
                     className="text-xs text-primary hover:underline flex items-center gap-1"
                   >
-                    View report
+                    Ver informe
                     <span className="material-icons text-xs">arrow_forward</span>
                   </Link>
                 </div>

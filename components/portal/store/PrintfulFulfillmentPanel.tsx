@@ -52,7 +52,7 @@ export function PrintfulFulfillmentPanel({
       {hasVariants ? (
         <p className="text-sm text-muted-foreground">
           Set the Printful Variant ID per variant in the Options &amp; Variants section
-          below. Required for automatic print-on-demand fulfillment via Printful.
+          below. Required for automátic print-on-demand fulfillment via Printful.
         </p>
       ) : (
         <div className="space-y-1.5 max-w-xs">
@@ -71,7 +71,7 @@ export function PrintfulFulfillmentPanel({
             className={pInput}
           />
           <p className="text-xs text-muted-foreground">
-            Printful catalog variant ID. Required for automatic print-on-demand
+            Printful catalog variant ID. Required for automátic print-on-demand
             fulfillment via Printful.
           </p>
         </div>

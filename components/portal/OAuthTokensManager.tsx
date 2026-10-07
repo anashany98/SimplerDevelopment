@@ -47,19 +47,19 @@ function TokenTable({
         <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-muted/50">
             <tr className="text-left">
-              <th className="px-3 py-2 font-medium">Application</th>
-              {showMember && <th className="px-3 py-2 font-medium">Member</th>}
+              <th className="px-3 py-2 font-medium">Aplicación</th>
+              {showMember && <th className="px-3 py-2 font-medium">Miembro</th>}
               <th className="px-3 py-2 font-medium">Token</th>
-              <th className="px-3 py-2 font-medium">Scopes</th>
-              <th className="px-3 py-2 font-medium">Last used</th>
-              <th className="px-3 py-2 font-medium">Expires</th>
-              <th className="px-3 py-2 font-medium">Status</th>
+              <th className="px-3 py-2 font-medium">Permisos</th>
+              <th className="px-3 py-2 font-medium">Último uso</th>
+              <th className="px-3 py-2 font-medium">Caduca</th>
+              <th className="px-3 py-2 font-medium">Estado</th>
               <th className="px-3 py-2"></th>
             </tr>
           </thead>
           <tbody>
             {loading && (
-              <tr><td colSpan={colCount} className="px-3 py-4 text-center text-muted-foreground">Loading…</td></tr>
+              <tr><td colSpan={colCount} className="px-3 py-4 text-center text-muted-foreground">Cargando…</td></tr>
             )}
             {!loading && tokens.length === 0 && (
               <tr>
@@ -82,7 +82,7 @@ function TokenTable({
                   </td>
                   {showMember && (
                     <td className="px-3 py-2">
-                      <div>{t.memberName ?? 'Unknown'}</div>
+                      <div>{t.memberName ?? 'Desconocido'}</div>
                       {t.memberEmail && (
                         <div className="text-xs text-muted-foreground">{t.memberEmail}</div>
                       )}
@@ -97,18 +97,18 @@ function TokenTable({
                     </div>
                   </td>
                   <td className="px-3 py-2 text-muted-foreground">
-                    {t.lastUsedAt ? new Date(t.lastUsedAt).toLocaleString() : 'Never'}
+                    {t.lastUsedAt ? new Date(t.lastUsedAt).toLocaleString() : 'Nunca'}
                   </td>
                   <td className="px-3 py-2 text-muted-foreground">
-                    {t.expiresAt ? new Date(t.expiresAt).toLocaleDateString() : 'Never'}
+                    {t.expiresAt ? new Date(t.expiresAt).toLocaleDateString() : 'Nunca'}
                   </td>
                   <td className="px-3 py-2">
                     {t.revokedAt ? (
-                      <span className="text-xs px-2 py-0.5 bg-destructive/10 text-destructive rounded">Revoked</span>
+                      <span className="text-xs px-2 py-0.5 bg-destructive/10 text-destructive rounded">Revocado</span>
                     ) : expired ? (
-                      <span className="text-xs px-2 py-0.5 bg-muted rounded">Expired</span>
+                      <span className="text-xs px-2 py-0.5 bg-muted rounded">Caducado</span>
                     ) : (
-                      <span className="text-xs px-2 py-0.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded">Active</span>
+                      <span className="text-xs px-2 py-0.5 bg-green-500/10 text-green-700 dark:text-green-400 rounded">Activo</span>
                     )}
                   </td>
                   <td className="px-3 py-2 text-right">
@@ -117,7 +117,7 @@ function TokenTable({
                         onClick={() => onRevoke(t.id, t.clientName)}
                         className="text-xs text-destructive hover:underline"
                       >
-                        Revoke
+                        Revocar
                       </button>
                     )}
                   </td>
@@ -132,8 +132,8 @@ function TokenTable({
 }
 
 export default function OAuthTokensManager({
-  heading = 'OAuth-issued tokens',
-  subheading = 'Apps you approved through an OAuth consent screen, such as a Claude.ai connector. Revoking one cuts its access immediately.',
+  heading = 'Tokens emitidos mediante OAuth',
+  subheading = 'Aplicaciones que aprobaste mediante una pantalla de consentimiento de OAuth, como un conector de Claude.ai. Revocar una corta su acceso de inmediato.',
 }: OAuthTokensManagerProps) {
   const [mine, setMine] = useState<OAuthToken[]>([]);
   const [team, setTeam] = useState<OAuthToken[]>([]);
@@ -155,10 +155,10 @@ export default function OAuthTokensManager({
         setTeam(json.data.team ?? []);
         setCanManageTeam(Boolean(json.data.canManageTeam));
       } else {
-        setError(json.message ?? 'Failed to load tokens');
+        setError(json.message ?? 'No se pudieron cargar los tokens');
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load tokens');
+      setError(e instanceof Error ? e.message : 'No se pudieron cargar los tokens');
     } finally {
       setLoading(false);
     }
@@ -172,7 +172,7 @@ export default function OAuthTokensManager({
   }, []);
 
   async function handleRevoke(id: number, clientName: string) {
-    if (!confirm(`Revoke ${clientName}'s access? It will lose access immediately and need to reconnect.`)) return;
+    if (!confirm(`¿Revocar el acceso de ${clientName}? Perderá el acceso inmediatamente y tendrá que volver a conectarse.`)) return;
     const res = await fetch(`/api/portal/oauth-tokens?id=${id}`, { method: 'DELETE' });
     // The route 404s when the grant isn't the caller's to revoke. Refresh FIRST
     // and report after: `load()` clears `error` on entry, so setting it
@@ -181,7 +181,7 @@ export default function OAuthTokensManager({
     await load();
     if (!res.ok) {
       const json = await res.json().catch(() => null);
-      setError(json?.message ?? 'Failed to revoke token');
+      setError(json?.message ?? 'No se pudo revocar el token');
     }
   }
 
@@ -199,7 +199,7 @@ export default function OAuthTokensManager({
           tokens={mine}
           loading={loading}
           showMember={false}
-          emptyMessage="No OAuth connections yet. Connect Claude.ai using the steps above to see tokens here."
+          emptyMessage="Aún no hay conexiones OAuth. Conecta Claude.ai con los pasos anteriores para ver los tokens aquí."
           onRevoke={handleRevoke}
         />
       </div>
@@ -207,10 +207,10 @@ export default function OAuthTokensManager({
       {canManageTeam && (
         <div className="space-y-4">
           <div>
-            <h3 className="text-lg font-semibold">Team connections</h3>
+            <h3 className="text-lg font-semibold">Conexiones del equipo</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              Apps other members have connected. Visible to owners and admins so access can be
-              audited and cut off when someone leaves.
+              Aplicaciones que han conectado otros miembros. Visible para propietarios y administradores para poder auditar
+              y cortar el acceso cuando alguien se va.
             </p>
           </div>
 
@@ -218,7 +218,7 @@ export default function OAuthTokensManager({
             tokens={team}
             loading={loading}
             showMember
-            emptyMessage="No other members have connected an app."
+            emptyMessage="Ningún otro miembro ha conectado una aplicación."
             onRevoke={handleRevoke}
           />
         </div>

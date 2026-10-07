@@ -74,7 +74,7 @@ export default function PortalPostForm(props: PortalPostFormProps) {
   // Realtime is only meaningful in edit mode against an existing post id.
   // In create mode the post id doesn't exist yet, so collaboration is moot.
   const collabEnabled = mode === 'edit' && Boolean(post?.id) && Boolean(currentUser);
-  const fallbackUser = currentUser ?? { id: 'anon', name: 'Anonymous', image: null };
+  const fallbackUser = currentUser ?? { id: 'anon', name: 'Anónimo', image: null };
 
   return (
     <CollaborationProvider
@@ -230,7 +230,7 @@ function PortalPostFormInner({
             type="button"
             onClick={() => setAbError(null)}
             className="material-icons text-base text-destructive/70 hover:text-destructive"
-            aria-label="Dismiss error"
+            aria-label="Descartar error"
           >
             close
           </button>
@@ -241,9 +241,9 @@ function PortalPostFormInner({
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50"
+          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90 disabled:opacity-50"
         >
-          {loading ? 'Saving...' : mode === 'create' ? 'Create Page' : 'Save Changes'}
+          {loading ? 'Guardando...' : mode === 'create' ? 'Crear página' : 'Guardar cambios'}
         </button>
         {mode === 'edit' && post?.id ? (
           <button
@@ -254,31 +254,29 @@ function PortalPostFormInner({
                 const res = await fetch(`/api/portal/posts/${post.id}/experiments`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ name: `A/B test — ${formData.title || 'Untitled'}` }),
+                  body: JSON.stringify({ name: `A/B test — ${formData.title || 'Sin título'}` }),
                 });
                 const json = await res.json();
                 if (json.success && json.data?.id) {
                   router.push(`/portal/experiments/${json.data.id}`);
                 } else {
-                  setAbError(json.error || 'Failed to create experiment');
+                  setAbError(json.error || 'No se pudo crear el experimento');
                 }
               } catch (err) {
-                setAbError(err instanceof Error ? err.message : 'Failed to create experiment');
+                setAbError(err instanceof Error ? err.message : 'No se pudo crear el experimento');
               }
             }}
             className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent inline-flex items-center gap-1"
           >
             <span className="material-icons text-base">science</span>
-            Start A/B test
+            Iniciar test A/B
           </button>
         ) : null}
         <button
           type="button"
           onClick={() => router.push(`/portal/websites/${siteId}`)}
           className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-        >
-          Cancel
-        </button>
+        >Cancelar</button>
       </div>
     </form>
   );
@@ -292,7 +290,7 @@ function PortalPostFormInner({
         onViewportChange={setCurrentViewport}
       >
         <PostEditorLayout
-          postTitle={formData.title || (mode === 'create' ? 'New Page' : 'Edit Page')}
+          postTitle={formData.title || (mode === 'create' ? 'Nueva página' : 'Editar página')}
           onOpenSettings={() => setSettingsOpen(prev => !prev)}
           backHref={`/portal/websites/${siteId}`}
           liveUrl={liveUrl}

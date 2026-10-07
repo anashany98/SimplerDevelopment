@@ -46,66 +46,66 @@ function PopupBlockSettings({ block, onChange }: { block: PopupBlock; onChange: 
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Headline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Titular</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
           <RichTextEditable
             html={block.headline || ''}
             onChange={(html) => onChange({ headline: html })}
             singleLine
-            placeholder="Modal headline"
+            placeholder="Titular del modal"
             className="text-sm text-foreground"
           />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Body</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Cuerpo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[60px]">
           <RichTextEditable
             html={block.body || ''}
             onChange={(html) => onChange({ body: html || undefined })}
-            placeholder="Body text — supports rich text"
+            placeholder="Texto del cuerpo — admite texto enriquecido"
             className="text-sm text-foreground"
           />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">CTA label</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Etiqueta CTA</label>
           <input
             type="text"
             value={block.ctaLabel || ''}
             onChange={(e) => onChange({ ctaLabel: e.target.value || undefined })}
             className={inputClass}
-            placeholder="Sign me up"
+            placeholder="Quiero registrarme"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">CTA URL</label>
+          <label className="block text-sm font-medium text-foreground mb-1">URL CTA</label>
           <input
             type="text"
             value={block.ctaUrl || ''}
             onChange={(e) => onChange({ ctaUrl: e.target.value || undefined })}
             className={inputClass}
-            placeholder="https:// or /go/<slug>"
+            placeholder="https:// o /go/<slug>"
           />
         </div>
       </div>
       <div className="border-t border-border pt-4">
-        <label className="block text-sm font-medium text-foreground mb-1">Trigger</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Disparador</label>
         <select
           value={trigger}
           onChange={(e) => onChange({ trigger: e.target.value as PopupBlock['trigger'] })}
           className={inputClass}
         >
-          <option value="page-load">Page load</option>
-          <option value="time-delay">Time delay</option>
-          <option value="scroll-percent">Scroll percent</option>
-          <option value="exit-intent">Exit intent (desktop only)</option>
+          <option value="page-load">Al cargar la página</option>
+          <option value="time-delay">Retardo de tiempo</option>
+          <option value="scroll-percent">Porcentaje de scroll</option>
+          <option value="exit-intent">Intención de salida (solo escritorio)</option>
         </select>
       </div>
       {trigger === 'time-delay' && (
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Delay (seconds)</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Retardo (segundos)</label>
           <input
             type="number"
             min={0}
@@ -118,7 +118,7 @@ function PopupBlockSettings({ block, onChange }: { block: PopupBlock; onChange: 
       )}
       {trigger === 'scroll-percent' && (
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Scroll percent (0-100)</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Porcentaje de scroll (0-100)</label>
           <input
             type="number"
             min={0}
@@ -131,18 +131,18 @@ function PopupBlockSettings({ block, onChange }: { block: PopupBlock; onChange: 
         </div>
       )}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Frequency</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Frecuencia</label>
         <select
           value={block.frequency ?? 'once-per-session'}
           onChange={(e) => onChange({ frequency: e.target.value as PopupBlock['frequency'] })}
           className={inputClass}
         >
-          <option value="always">Every visit</option>
-          <option value="once-per-session">Once per session</option>
-          <option value="once-per-week">Once per week</option>
+          <option value="always">Cada visita</option>
+          <option value="once-per-session">Una vez por sesión</option>
+          <option value="once-per-week">Una vez por semana</option>
         </select>
         <p className="text-xs text-muted-foreground mt-1">
-          Persisted in <code className="font-mono">localStorage</code> keyed by block id.
+          Se guarda en <code className="font-mono">localStorage</code> con la clave del id del bloque.
         </p>
       </div>
       <label className="flex items-center gap-2 text-sm text-foreground">
@@ -152,7 +152,7 @@ function PopupBlockSettings({ block, onChange }: { block: PopupBlock; onChange: 
           onChange={(e) => onChange({ dismissable: e.target.checked })}
           className="rounded border-border"
         />
-        Dismissable (close button + Esc + click backdrop)
+        Descartable (botón de cierre + Esc + clic en el fondo)
       </label>
     </div>
   );
@@ -162,18 +162,18 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.text}
           onChange={(e) => onChange({ text: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Click me"
+          placeholder="Haz clic aquí"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Link URL</label>
+        <label className="block text-sm font-medium text-foreground mb-2">URL del enlace</label>
         <input
           type="text"
           value={block.url}
@@ -184,33 +184,33 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Variant</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Variante</label>
         <select
           value={block.variant || 'primary'}
           onChange={(e) => onChange({ variant: e.target.value as ButtonBlock['variant'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="primary">Primary</option>
-          <option value="secondary">Secondary</option>
-          <option value="outline">Outline</option>
+          <option value="primary">Primario</option>
+          <option value="secondary">Secundario</option>
+          <option value="outline">Contorno</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Size</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Tamaño</label>
         <select
           value={block.size || 'md'}
           onChange={(e) => onChange({ size: e.target.value as ButtonBlock['size'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="sm">Small</option>
-          <option value="md">Medium</option>
-          <option value="lg">Large</option>
+          <option value="sm">Pequeño</option>
+          <option value="md">Media</option>
+          <option value="lg">Grande</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Alignment</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
         <div className="flex gap-2">
           {(['left', 'center', 'right'] as const).map((align) => (
             <button
@@ -219,7 +219,7 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
               onClick={() => onChange({ alignment: align })}
               className={`flex-1 px-3 py-2 text-sm rounded ${
                 (block.alignment || 'left') === align
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-background border border-border text-foreground hover:bg-accent'
               }`}
             >
@@ -240,64 +240,64 @@ function ButtonBlockSettings({ block, onChange, currentViewport }: { block: Butt
           className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
         />
         <label htmlFor="openInNewTab" className="ml-2 text-sm text-foreground">
-          Open in new tab
+          Abrir en nueva pestaña
         </label>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Icon (Material Icon name)</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Icono (nombre de Material Icon)</label>
         <input
           type="text"
           value={block.icon || ''}
           onChange={(e) => onChange({ icon: e.target.value || undefined })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="e.g. arrow_forward"
+          placeholder="p. ej. arrow_forward"
         />
         <p className="text-xs text-muted-foreground mt-1">
-          Browse names at <span className="font-mono">fonts.google.com/icons</span>
+          Explora nombres en <span className="font-mono">fonts.google.com/icons</span>
         </p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Icon Position</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Posición del icono</label>
         <select
           value={block.iconPosition || 'left'}
           onChange={(e) => onChange({ iconPosition: e.target.value as ButtonBlock['iconPosition'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
           disabled={!block.icon}
         >
-          <option value="left">Left of text</option>
-          <option value="right">Right of text</option>
+          <option value="left">A la izquierda del texto</option>
+          <option value="right">A la derecha del texto</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Hover Effect</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Efecto al pasar el cursor</label>
         <select
           value={block.hoverEffect || 'none'}
           onChange={(e) => onChange({ hoverEffect: e.target.value as ButtonBlock['hoverEffect'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="none">None</option>
-          <option value="lift">Lift (translate up)</option>
-          <option value="glow">Glow</option>
-          <option value="fill">Fill (subtle wash)</option>
-          <option value="slide">Slide (light sweep)</option>
-          <option value="pulse">Pulse</option>
+          <option value="none">Ninguno</option>
+          <option value="lift">Elevar (desplazar hacia arriba)</option>
+          <option value="glow">Brillo</option>
+          <option value="fill">Relleno (lavado sutil)</option>
+          <option value="slide">Deslizar (barrido de luz)</option>
+          <option value="pulse">Pulso</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Brand Preset (optional)</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Preset de marca (opcional)</label>
         <input
           type="text"
           value={block.presetId || ''}
           onChange={(e) => onChange({ presetId: e.target.value || undefined })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Preset ID from brand presets"
+          placeholder="ID de preset de los presets de marca"
         />
         <p className="text-xs text-muted-foreground mt-1">
-          Preset key from brand presets. Configure presets in the site Branding panel; preset styles apply first, this block&apos;s style overrides on top.
+          Clave de preset de los presets de marca. Configura los presets en el panel Branding del sitio; los estilos del preset se aplican primero y los estilos de este bloque se superponen.
         </p>
       </div>
 
@@ -336,14 +336,14 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
   return (
     <div className="space-y-4">
       <div ref={ref} className="relative">
-        <label className="block text-sm font-medium text-foreground mb-1">Survey</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Encuesta</label>
         {selected && !open ? (
           <button type="button" onClick={() => setOpen(true)}
             className="w-full flex items-center gap-2 rounded border border-border bg-background px-3 py-2 text-sm text-left hover:border-primary transition-colors">
             <span className="material-icons text-primary text-base">assignment</span>
             <div className="flex-1 min-w-0">
               <div className="truncate font-medium">{selected.title}</div>
-              <div className="text-xs text-muted-foreground">{selected.slug} &middot; {selected.responseCount} responses</div>
+              <div className="text-xs text-muted-foreground">{selected.slug} &middot; {selected.responseCount} respuestas</div>
             </div>
             <span className="material-icons text-sm text-muted-foreground">unfold_more</span>
           </button>
@@ -351,14 +351,14 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
           <input type="text" value={open ? search : block.slug || ''}
             onChange={(e) => { setSearch(e.target.value); if (!open) onChange({ slug: e.target.value }); }}
             onFocus={() => setOpen(true)}
-            placeholder={loading ? 'Loading...' : 'Search surveys...'}
+            placeholder={loading ? 'Cargando...' : 'Buscar encuestas...'}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:ring-1 focus:ring-primary" />
         )}
         {open && (
           <div className="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-lg border border-border bg-card shadow-lg">
             {filtered.length === 0 ? (
               <div className="px-3 py-4 text-xs text-muted-foreground text-center">
-                {loading ? 'Loading...' : surveys.length === 0 ? 'No surveys found' : 'No matches'}
+                {loading ? 'Cargando...' : surveys.length === 0 ? 'No se encontraron encuestas' : 'Sin resultados'}
               </div>
             ) : filtered.map(s => (
               <button key={s.slug} type="button"
@@ -378,17 +378,17 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
         )}
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <input type="text" value={block.title || ''} onChange={(e) => onChange({ title: e.target.value })}
-          className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="Take Our Survey" />
+          className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="Responde nuestra encuesta" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <input type="text" value={block.description || ''} onChange={(e) => onChange({ description: e.target.value })}
-          className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="We'd love to hear your feedback" />
+          className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="Nos encantaría conocer tu opinión" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Embed Height</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Altura del embed</label>
         <input type="text" value={block.height || '700px'} onChange={(e) => onChange({ height: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="700px" />
       </div>
@@ -396,29 +396,29 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
         <input type="checkbox" id="surveyShowPageTitle" checked={block.showPageTitle !== false}
           onChange={(e) => onChange({ showPageTitle: e.target.checked })}
           className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-        <label htmlFor="surveyShowPageTitle" className="ml-2 text-sm text-foreground">Show Survey Title</label>
+        <label htmlFor="surveyShowPageTitle" className="ml-2 text-sm text-foreground">Mostrar título de la encuesta</label>
       </div>
       <div className="flex items-center">
         <input type="checkbox" id="surveyShowDescription" checked={block.showDescription !== false}
           onChange={(e) => onChange({ showDescription: e.target.checked })}
           className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-        <label htmlFor="surveyShowDescription" className="ml-2 text-sm text-foreground">Show Description</label>
+        <label htmlFor="surveyShowDescription" className="ml-2 text-sm text-foreground">Mostrar descripción</label>
       </div>
       <div className="flex items-center">
         <input type="checkbox" id="surveyShowLogo" checked={block.showLogo !== false}
           onChange={(e) => onChange({ showLogo: e.target.checked })}
           className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-        <label htmlFor="surveyShowLogo" className="ml-2 text-sm text-foreground">Show Logo</label>
+        <label htmlFor="surveyShowLogo" className="ml-2 text-sm text-foreground">Mostrar logo</label>
       </div>
 
       {/* Advanced styling overrides — take precedence over the survey's own styling and the site branding. */}
       <details className="border border-border rounded">
         <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-foreground hover:bg-accent/40">
-          Advanced styling overrides
+          Ajustes de estilo avanzados
         </summary>
         <div className="px-3 pb-3 pt-2 space-y-4">
           <p className="text-xs text-muted-foreground">
-            These take precedence over the survey&apos;s own styling and the site branding. Leave blank to use defaults.
+            Tienen prioridad sobre el estilo propio de la encuesta y el branding del sitio. Déjalo en blanco para usar los valores predeterminados.
           </p>
           {(() => {
             const so = block.styleOverrides || {};
@@ -431,18 +431,18 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
               <>
                 {/* ── Brand colors ─────────────────────────────────────── */}
                 <div className="space-y-2">
-                  <div className={groupLabel}>Brand colors</div>
+                  <div className={groupLabel}>Colores de marca</div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Primary" value={so.primaryColor || ''} onChange={(v) => update({ primaryColor: v || undefined })} />
-                    <TokenColorPicker label="Secondary (card tint)" value={so.secondaryColor || ''} onChange={(v) => update({ secondaryColor: v || undefined })} />
+                    <TokenColorPicker label="Primario" value={so.primaryColor || ''} onChange={(v) => update({ primaryColor: v || undefined })} />
+                    <TokenColorPicker label="Secundario (tinte de tarjeta)" value={so.secondaryColor || ''} onChange={(v) => update({ secondaryColor: v || undefined })} />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Accent (input tint)" value={so.accentColor || ''} onChange={(v) => update({ accentColor: v || undefined })} />
-                    <TokenColorPicker label="Background" value={so.backgroundColor || ''} onChange={(v) => update({ backgroundColor: v || undefined })} />
+                    <TokenColorPicker label="Acento (tinte de campo)" value={so.accentColor || ''} onChange={(v) => update({ accentColor: v || undefined })} />
+                    <TokenColorPicker label="Fondo" value={so.backgroundColor || ''} onChange={(v) => update({ backgroundColor: v || undefined })} />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Text" value={so.textColor || ''} onChange={(v) => update({ textColor: v || undefined })} />
-                    <TokenColorPicker label="Label" value={so.labelColor || ''} onChange={(v) => update({ labelColor: v || undefined })} />
+                    <TokenColorPicker label="Texto" value={so.textColor || ''} onChange={(v) => update({ textColor: v || undefined })} />
+                    <TokenColorPicker label="Etiqueta" value={so.labelColor || ''} onChange={(v) => update({ labelColor: v || undefined })} />
                   </div>
                   <label className="flex items-center gap-1.5 text-xs text-foreground">
                     <input
@@ -451,14 +451,14 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
                       onChange={(e) => update({ hideQuestionNumbers: e.target.checked || undefined })}
                       className="h-3.5 w-3.5 rounded border-border"
                     />
-                    Hide question numbers
+                    Ocultar números de pregunta
                   </label>
                 </div>
 
                 {/* ── Form / Card chrome ──────────────────────────────── */}
                 <div className="space-y-2 border-t border-border pt-3">
                   <div className="flex items-center justify-between">
-                    <div className={groupLabel}>Form card</div>
+                    <div className={groupLabel}>Tarjeta del formulario</div>
                     <label className="flex items-center gap-1.5 text-xs text-foreground">
                       <input
                         type="checkbox"
@@ -466,111 +466,111 @@ function SurveyBlockSettings({ block, onChange }: { block: SurveyBlock; onChange
                         onChange={(e) => update({ hideCardChrome: e.target.checked || undefined })}
                         className="h-3.5 w-3.5 rounded border-border"
                       />
-                      Hide card chrome
+                      Ocultar el marco de la tarjeta
                     </label>
                   </div>
                   <p className="text-[11px] text-muted-foreground -mt-1">
-                    Hide chrome drops the card background, border, and shadow — useful when embedding inside an already-styled section.
+                    Ocultar el marco elimina el fondo, el borde y la sombra de la tarjeta: útil al insertarla dentro de una sección que ya tiene estilo.
                   </p>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Card Background" value={so.formBg || ''} onChange={(v) => update({ formBg: v || undefined })} />
-                    <TokenColorPicker label="Card Border" value={so.formBorderColor || ''} onChange={(v) => update({ formBorderColor: v || undefined })} />
+                    <TokenColorPicker label="Fondo de la tarjeta" value={so.formBg || ''} onChange={(v) => update({ formBg: v || undefined })} />
+                    <TokenColorPicker label="Borde de la tarjeta" value={so.formBorderColor || ''} onChange={(v) => update({ formBorderColor: v || undefined })} />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Accent Bar" value={so.formAccentBarColor || ''} onChange={(v) => update({ formAccentBarColor: v || undefined })} />
+                    <TokenColorPicker label="Barra de acento" value={so.formAccentBarColor || ''} onChange={(v) => update({ formAccentBarColor: v || undefined })} />
                   </div>
                   <p className="text-[11px] text-muted-foreground -mt-1">
-                    Adds a small decorative bar (156×12px) top-left inside the card, above the first field. Leave blank for none.
+                    Añade una pequeña barra decorativa (156×12px) arriba a la izquierda dentro de la tarjeta, encima del primer campo. Déjalo en blanco para no mostrarla.
                   </p>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className={fieldLabel}>Card Border Width</label>
+                      <label className={fieldLabel}>Ancho del borde de la tarjeta</label>
                       <input type="text" value={so.formBorderWidth || ''} onChange={(e) => update({ formBorderWidth: e.target.value || undefined })}
-                        className={inputClass} placeholder='e.g. 0, 1px, 2px' />
+                        className={inputClass} placeholder='p. ej. 0, 1px, 2px' />
                     </div>
                     <div>
-                      <label className={fieldLabel}>Card Radius</label>
+                      <label className={fieldLabel}>Radio de la tarjeta</label>
                       <input type="text" value={so.formBorderRadius || ''} onChange={(e) => update({ formBorderRadius: e.target.value || undefined })}
-                        className={inputClass} placeholder="e.g. 16px" />
+                        className={inputClass} placeholder="p. ej. 16px" />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className={fieldLabel}>Card Padding</label>
+                      <label className={fieldLabel}>Relleno de la tarjeta</label>
                       <input type="text" value={so.formPadding || ''} onChange={(e) => update({ formPadding: e.target.value || undefined })}
-                        className={inputClass} placeholder="e.g. 1.5rem" />
+                        className={inputClass} placeholder="p. ej. 1.5rem" />
                     </div>
                     <div>
-                      <label className={fieldLabel}>Card Shadow</label>
+                      <label className={fieldLabel}>Sombra de la tarjeta</label>
                       <input type="text" value={so.formShadow || ''} onChange={(e) => update({ formShadow: e.target.value || undefined })}
-                        className={inputClass} placeholder='e.g. none' />
+                        className={inputClass} placeholder='p. ej. none' />
                     </div>
                   </div>
                 </div>
 
                 {/* ── Inputs ──────────────────────────────────────────── */}
                 <div className="space-y-2 border-t border-border pt-3">
-                  <div className={groupLabel}>Inputs</div>
+                  <div className={groupLabel}>Campos</div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Input Background" value={so.inputBg || ''} onChange={(v) => update({ inputBg: v || undefined })} />
-                    <TokenColorPicker label="Input Text" value={so.inputTextColor || ''} onChange={(v) => update({ inputTextColor: v || undefined })} />
+                    <TokenColorPicker label="Fondo del campo" value={so.inputBg || ''} onChange={(v) => update({ inputBg: v || undefined })} />
+                    <TokenColorPicker label="Texto del campo" value={so.inputTextColor || ''} onChange={(v) => update({ inputTextColor: v || undefined })} />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Input Border" value={so.inputBorderColor || ''} onChange={(v) => update({ inputBorderColor: v || undefined })} />
-                    <TokenColorPicker label="Focus Ring" value={so.inputFocusRingColor || ''} onChange={(v) => update({ inputFocusRingColor: v || undefined })} />
+                    <TokenColorPicker label="Borde del campo" value={so.inputBorderColor || ''} onChange={(v) => update({ inputBorderColor: v || undefined })} />
+                    <TokenColorPicker label="Anillo de foco" value={so.inputFocusRingColor || ''} onChange={(v) => update({ inputFocusRingColor: v || undefined })} />
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className={fieldLabel}>Input Border Width</label>
+                      <label className={fieldLabel}>Ancho del borde del campo</label>
                       <input type="text" value={so.inputBorderWidth || ''} onChange={(e) => update({ inputBorderWidth: e.target.value || undefined })}
-                        className={inputClass} placeholder="e.g. 1px" />
+                        className={inputClass} placeholder="p. ej. 1px" />
                     </div>
                     <div>
-                      <label className={fieldLabel}>Input Radius</label>
+                      <label className={fieldLabel}>Radio del campo</label>
                       <input type="text" value={so.inputBorderRadius || ''} onChange={(e) => update({ inputBorderRadius: e.target.value || undefined })}
-                        className={inputClass} placeholder="e.g. 8px" />
+                        className={inputClass} placeholder="p. ej. 8px" />
                     </div>
                   </div>
                 </div>
 
                 {/* ── Buttons ─────────────────────────────────────────── */}
                 <div className="space-y-2 border-t border-border pt-3">
-                  <div className={groupLabel}>Buttons</div>
+                  <div className={groupLabel}>Botones</div>
                   <div className="grid grid-cols-2 gap-2">
-                    <TokenColorPicker label="Button Background" value={so.buttonBg || ''} onChange={(v) => update({ buttonBg: v || undefined })} />
-                    <TokenColorPicker label="Button Text" value={so.buttonText || ''} onChange={(v) => update({ buttonText: v || undefined })} />
+                    <TokenColorPicker label="Fondo del botón" value={so.buttonBg || ''} onChange={(v) => update({ buttonBg: v || undefined })} />
+                    <TokenColorPicker label="Texto del botón" value={so.buttonText || ''} onChange={(v) => update({ buttonText: v || undefined })} />
                   </div>
                   <div>
-                    <label className={fieldLabel}>Button Radius</label>
+                    <label className={fieldLabel}>Radio del botón</label>
                     <input type="text" value={so.buttonBorderRadius || ''} onChange={(e) => update({ buttonBorderRadius: e.target.value || undefined })}
-                      className={inputClass} placeholder="e.g. 6px" />
+                      className={inputClass} placeholder="p. ej. 6px" />
                   </div>
                   <div>
-                    <label className={fieldLabel}>Submit Label</label>
+                    <label className={fieldLabel}>Etiqueta de envío</label>
                     <input type="text" value={so.submitLabel || ''} onChange={(e) => update({ submitLabel: e.target.value || undefined })}
-                      className={inputClass} placeholder="Submit" />
+                      className={inputClass} placeholder="Enviar" />
                   </div>
                 </div>
 
                 {/* ── Typography / global ─────────────────────────────── */}
                 <div className="space-y-2 border-t border-border pt-3">
-                  <div className={groupLabel}>Typography &amp; global</div>
+                  <div className={groupLabel}>Tipografía y global</div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className={fieldLabel}>Heading Font</label>
+                      <label className={fieldLabel}>Fuente de títulos</label>
                       <input type="text" value={so.headingFont || ''} onChange={(e) => update({ headingFont: e.target.value || undefined })}
-                        className={inputClass} placeholder="e.g. Inter, sans-serif" />
+                        className={inputClass} placeholder="p. ej. Inter, sans-serif" />
                     </div>
                     <div>
-                      <label className={fieldLabel}>Body Font</label>
+                      <label className={fieldLabel}>Fuente del cuerpo</label>
                       <input type="text" value={so.bodyFont || ''} onChange={(e) => update({ bodyFont: e.target.value || undefined })}
-                        className={inputClass} placeholder="e.g. system-ui, sans-serif" />
+                        className={inputClass} placeholder="p. ej. system-ui, sans-serif" />
                     </div>
                   </div>
                   <div>
-                    <label className={fieldLabel}>Global Border Radius (fallback)</label>
+                    <label className={fieldLabel}>Radio de borde global (reserva)</label>
                     <input type="text" value={so.borderRadius || ''} onChange={(e) => update({ borderRadius: e.target.value || undefined })}
-                      className={inputClass} placeholder="e.g. 8px — used when per-element radius is unset" />
+                      className={inputClass} placeholder="p. ej. 8px — se usa cuando no se define un radio por elemento" />
                   </div>
                 </div>
               </>
@@ -590,7 +590,7 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Field Type</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Tipo de campo</label>
         <select
           value={block.fieldType}
           onChange={(e) => onChange({ fieldType: e.target.value })}
@@ -600,28 +600,28 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Field Label</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Etiqueta del campo</label>
         <input
           type="text"
           value={block.fieldLabel}
           onChange={(e) => onChange({ fieldLabel: e.target.value })}
           className={inputClass}
-          placeholder="Question or label"
+          placeholder="Pregunta o etiqueta"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Placeholder</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Marcador de posición</label>
         <input
           type="text"
           value={block.placeholder || ''}
           onChange={(e) => onChange({ placeholder: e.target.value || undefined })}
           className={inputClass}
-          placeholder="Placeholder text (optional)"
+          placeholder="Texto del marcador de posición (opcional)"
         />
       </div>
       {showOptions && (
         <div className="border-t border-border pt-4 space-y-2">
-          <label className="block text-sm font-medium text-foreground">Options</label>
+          <label className="block text-sm font-medium text-foreground">Opciones</label>
           {(block.options || []).map((opt, i) => (
             <div key={i} className="flex gap-2">
               <input
@@ -633,7 +633,7 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
                   onChange({ options: next });
                 }}
                 className="flex-1 text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-                placeholder="Option value"
+                placeholder="Valor de la opción"
               />
               <button
                 type="button"
@@ -649,14 +649,14 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
             onClick={() => onChange({ options: [...(block.options || []), ''] })}
             className="w-full px-3 py-2 text-xs font-medium rounded border border-dashed border-border text-muted-foreground hover:text-foreground hover:bg-accent/50"
           >
-            + Add Option
+            + Añadir opción
           </button>
         </div>
       )}
       {showSliderConfig && (
         <div className="grid grid-cols-3 gap-3 border-t border-border pt-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Min</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Mín</label>
             <input
               type="number"
               value={block.min ?? 0}
@@ -665,7 +665,7 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Max</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Máx</label>
             <input
               type="number"
               value={block.max ?? 100}
@@ -674,7 +674,7 @@ function SurveyInputBlockSettings({ block, onChange }: { block: SurveyInputBlock
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Step</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Paso</label>
             <input
               type="number"
               value={block.step ?? 1}
@@ -704,7 +704,7 @@ function EmailHeaderBlockSettings({ block, onChange }: { block: EmailHeaderBlock
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Logo Width (px)</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Ancho del logo (px)</label>
           <input
             type="number"
             value={block.logoWidth ?? 180}
@@ -713,26 +713,26 @@ function EmailHeaderBlockSettings({ block, onChange }: { block: EmailHeaderBlock
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Alignment</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Alineación</label>
           <select
             value={block.alignment || 'center'}
             onChange={(e) => onChange({ alignment: e.target.value as EmailHeaderBlock['alignment'] })}
             className={inputClass}
           >
-            <option value="left">Left</option>
-            <option value="center">Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center">Centrado</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Tagline</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Lema</label>
         <input
           type="text"
           value={block.tagline || ''}
           onChange={(e) => onChange({ tagline: e.target.value || undefined })}
           className={inputClass}
-          placeholder="Optional tagline below the logo"
+          placeholder="Lema opcional debajo del logo"
         />
       </div>
     </div>
@@ -744,22 +744,22 @@ function EmailFooterBlockSettings({ block, onChange }: { block: EmailFooterBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Company Name</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Nombre de la empresa</label>
         <input
           type="text"
           value={block.companyName || ''}
           onChange={(e) => onChange({ companyName: e.target.value || undefined })}
           className={inputClass}
-          placeholder="Your Company"
+          placeholder="Tu empresa"
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Address</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Dirección</label>
         <textarea
           value={block.address || ''}
           onChange={(e) => onChange({ address: e.target.value || undefined })}
           className={`${inputClass} min-h-[60px] resize-y`}
-          placeholder="123 Main St, City, ST 00000"
+          placeholder="Calle 123, Ciudad, CP 00000"
         />
       </div>
       <div className="space-y-2">
@@ -770,7 +770,7 @@ function EmailFooterBlockSettings({ block, onChange }: { block: EmailFooterBlock
             onChange={(e) => onChange({ showUnsubscribe: e.target.checked })}
             className="rounded border-border"
           />
-          Show unsubscribe link
+          Mostrar enlace de cancelación de suscripción
         </label>
         <label className="flex items-center gap-2 text-sm text-foreground">
           <input
@@ -779,11 +779,11 @@ function EmailFooterBlockSettings({ block, onChange }: { block: EmailFooterBlock
             onChange={(e) => onChange({ showViewInBrowser: e.target.checked })}
             className="rounded border-border"
           />
-          Show &quot;View in browser&quot; link
+          Mostrar enlace &quot;Ver en el navegador&quot;
         </label>
       </div>
       <div className="border-t border-border pt-4 space-y-2">
-        <label className="block text-sm font-medium text-foreground">Social Links</label>
+        <label className="block text-sm font-medium text-foreground">Enlaces sociales</label>
         {(block.socialLinks || []).map((link, i) => (
           <div key={i} className="flex gap-1">
             <input
@@ -795,7 +795,7 @@ function EmailFooterBlockSettings({ block, onChange }: { block: EmailFooterBlock
                 onChange({ socialLinks: next });
               }}
               className="flex-1 text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Platform (e.g. linkedin)"
+              placeholder="Plataforma (p. ej. linkedin)"
             />
             <input
               type="url"
@@ -822,7 +822,7 @@ function EmailFooterBlockSettings({ block, onChange }: { block: EmailFooterBlock
           onClick={() => onChange({ socialLinks: [...(block.socialLinks || []), { platform: '', url: '' }] })}
           className="w-full px-3 py-2 text-xs font-medium rounded border border-dashed border-border text-muted-foreground hover:text-foreground hover:bg-accent/50"
         >
-          + Add Social Link
+          + Añadir enlace social
         </button>
       </div>
     </div>
@@ -834,31 +834,31 @@ function BookingMenuBlockSettings({ block, onChange }: { block: BookingMenuBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de sección opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Descripción opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ columns: Number(e.target.value) as BookingMenuBlock['columns'] })}
           className={inputClass}
         >
-          <option value={2}>2 Columns</option>
-          <option value={3}>3 Columns</option>
-          <option value={4}>4 Columns</option>
+          <option value={2}>2 columnas</option>
+          <option value={3}>3 columnas</option>
+          <option value={4}>4 columnas</option>
         </select>
       </div>
       <p className="text-xs text-muted-foreground">
-        Booking pages are pulled live from this site&apos;s published bookings. Add booking pages from the Bookings admin to populate the grid.
+        Las páginas de reserva se toman en vivo de las reservas publicadas de este sitio. Añade páginas de reserva desde el admin de Reservas para llenar la cuadrícula.
       </p>
     </div>
   );

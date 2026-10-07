@@ -449,7 +449,7 @@ describe('EditorInner — block toolbar actions', () => {
     setupBlocks();
     const block = screen.getByTestId('vbp-a').closest('.group') as HTMLElement;
     fireEvent.mouseEnter(block);
-    fireEvent.click(screen.getAllByTitle('Duplicate')[0]);
+    fireEvent.click(screen.getAllByTitle('Duplicar')[0]);
     expect(mockEditor.duplicateBlock).toHaveBeenCalledWith('a');
   });
 
@@ -457,7 +457,7 @@ describe('EditorInner — block toolbar actions', () => {
     setupBlocks();
     const block = screen.getByTestId('vbp-a').closest('.group') as HTMLElement;
     fireEvent.mouseEnter(block);
-    fireEvent.click(screen.getAllByTitle('Delete')[0]);
+    fireEvent.click(screen.getAllByTitle('Eliminar')[0]);
     expect(mockEditor.deleteBlock).toHaveBeenCalledWith('a');
   });
 

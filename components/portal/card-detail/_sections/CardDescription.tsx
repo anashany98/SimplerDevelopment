@@ -29,9 +29,7 @@ export function CardDescription({
 }: Props) {
   return (
     <div>
-      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-        Description
-      </h3>
+      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Descripción</h3>
       {editingDesc ? (
         <div>
           <textarea
@@ -39,24 +37,22 @@ export function CardDescription({
             value={descDraft}
             onChange={e => setDescDraft(e.target.value)}
             rows={8}
-            placeholder="Supports Markdown — **bold**, # headings, - lists, `code`, [links](url)…"
+            placeholder="Admite Markdown — **negrita**, # encabezados, - listas, `code`, [enlaces](url)…"
             className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary resize-y"
           />
           <div className="flex items-center gap-2 mt-2">
             <button
               onClick={saveDesc}
               disabled={savingField === 'description'}
-              className="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
+              className="px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 disabled:opacity-50"
             >
-              {savingField === 'description' ? 'Saving…' : 'Save'}
+              {savingField === 'description' ? 'Guardando…' : 'Guardar'}
             </button>
             <button
               onClick={() => setEditingDesc(false)}
               className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-            >
-              Cancel
-            </button>
-            <span className="ml-auto text-xs text-muted-foreground">Markdown supported</span>
+            >Cancelar</button>
+            <span className="ml-auto text-xs text-muted-foreground">Markdown admitido</span>
           </div>
         </div>
       ) : (
@@ -73,7 +69,7 @@ export function CardDescription({
             <MarkdownView>{card.description}</MarkdownView>
           ) : (
             <span className="text-muted-foreground italic">
-              {canEdit ? 'Add a description…' : 'No description'}
+              {canEdit ? 'Añadir una descripción…' : 'Sin descripción'}
             </span>
           )}
         </div>

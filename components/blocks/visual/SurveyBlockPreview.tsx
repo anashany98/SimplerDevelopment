@@ -82,9 +82,7 @@ export function SurveyBlockPreview({ block, isSelected, onChange }: SurveyBlockP
         </div>
 
         <div className="mt-6">
-          <div className="inline-block px-6 py-2.5 bg-primary text-primary-foreground rounded-md text-sm font-medium">
-            Submit
-          </div>
+          <div className="inline-block px-6 py-2.5 bg-foreground text-background rounded-md text-sm font-medium">Enviar</div>
         </div>
       </div>
 

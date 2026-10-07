@@ -102,39 +102,39 @@ afterEach(() => {
 describe('CustomDomainForm — empty state', () => {
   it('renders the section heading', () => {
     mountWith();
-    expect(screen.getByText('Custom Domains')).toBeInTheDocument();
+    expect(screen.getByText('Dominios personalizados')).toBeInTheDocument();
   });
 
   it('renders the description paragraph', () => {
     mountWith();
     expect(
-      screen.getByText(/Connect custom domains to this website/i),
+      screen.getByText(/Conecta dominios personalizados a este sitio web/i),
     ).toBeInTheDocument();
   });
 
   it('renders the domain input placeholder', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     expect(input).toBeInTheDocument();
   });
 
   it('renders "Add Domain" button', () => {
     mountWith();
     expect(
-      screen.getByRole('button', { name: /Add Domain/i }),
+      screen.getByRole('button', { name: /Añadir dominio/i }),
     ).toBeInTheDocument();
   });
 
   it('shows "No custom domains configured" when no initialDomains', () => {
     mountWith();
     expect(
-      screen.getByText(/No custom domains configured/i),
+      screen.getByText(/No hay dominios personalizados configurados/i),
     ).toBeInTheDocument();
   });
 
   it('"Add Domain" button is disabled when input is empty', () => {
     mountWith();
-    const btn = screen.getByRole('button', { name: /Add Domain/i });
+    const btn = screen.getByRole('button', { name: /Añadir dominio/i });
     expect(btn).toBeDisabled();
   });
 });
@@ -145,21 +145,21 @@ describe('CustomDomainForm — empty state', () => {
 describe('CustomDomainForm — input', () => {
   it('enables Add Domain button once input is non-empty', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'mysite.com' } });
-    expect(screen.getByRole('button', { name: /Add Domain/i })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: /Añadir dominio/i })).not.toBeDisabled();
   });
 
   it('strips leading https:// from typed value', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('tusitio.com') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'https://mysite.com' } });
     expect(input.value).toBe('mysite.com');
   });
 
   it('strips leading http:// from typed value', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('tusitio.com') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'http://mysite.com' } });
     expect(input.value).toBe('mysite.com');
   });
@@ -167,7 +167,7 @@ describe('CustomDomainForm — input', () => {
   it('pressing Enter with non-empty input calls fetch (POST)', async () => {
     setupFetch({ addBody: { success: true, data: { id: 5, domain: 'enter.com' } } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'enter.com' } });
     await act(async () => {
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -183,7 +183,7 @@ describe('CustomDomainForm — input', () => {
 
   it('pressing Enter with empty input does NOT call fetch', () => {
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.keyDown(input, { key: 'Enter' });
     const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
     expect(calls.length).toBe(0);
@@ -197,10 +197,10 @@ describe('CustomDomainForm — add domain success', () => {
   it('POSTs to the domains endpoint with the typed domain', async () => {
     setupFetch({ addBody: { success: true, data: { id: 10, domain: 'newsite.io' } } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'newsite.io' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -219,23 +219,23 @@ describe('CustomDomainForm — add domain success', () => {
       listBody: { success: true, data: [makeDomain({ id: 10, domain: 'newsite.io' })] },
     });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'newsite.io' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText(/Domain newsite.io added/i)).toBeInTheDocument();
+      expect(screen.getByText(/Dominio newsite.io añadido/i)).toBeInTheDocument();
     });
   });
 
   it('clears the input after successful add', async () => {
     setupFetch({ addBody: { success: true, data: { id: 10, domain: 'newsite.io' } } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('tusitio.com') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'newsite.io' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
     });
     await waitFor(() => {
       expect(input.value).toBe('');
@@ -246,10 +246,10 @@ describe('CustomDomainForm — add domain success', () => {
     // Use a never-resolving fetch so the button stays in the loading state
     global.fetch = vi.fn(() => new Promise(() => {})) as typeof global.fetch;
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'slow.com' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Domain/i }));
-    expect(screen.getByRole('button', { name: /Adding\.\.\./i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
+    expect(screen.getByRole('button', { name: /Añadiendo\.\.\./i })).toBeInTheDocument();
   });
 });
 
@@ -260,10 +260,10 @@ describe('CustomDomainForm — add domain error', () => {
   it('shows error message when add returns success=false', async () => {
     setupFetch({ addBody: { success: false, message: 'Domain already exists' } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'taken.com' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('Domain already exists')).toBeInTheDocument();
@@ -273,13 +273,13 @@ describe('CustomDomainForm — add domain error', () => {
   it('shows fallback error when message is missing', async () => {
     setupFetch({ addBody: { success: false } });
     mountWith();
-    const input = screen.getByPlaceholderText('yoursite.com');
+    const input = screen.getByPlaceholderText('tusitio.com');
     fireEvent.change(input, { target: { value: 'bad.com' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText('Failed to add domain.')).toBeInTheDocument();
+      expect(screen.getByText('No se pudo añadir el dominio.')).toBeInTheDocument();
     });
   });
 });
@@ -295,22 +295,22 @@ describe('CustomDomainForm — domain list', () => {
 
   it('renders "Primary" badge for primary domain', () => {
     mountWith([makeDomain({ isPrimary: true })]);
-    expect(screen.getByText('Primary')).toBeInTheDocument();
+    expect(screen.getByText('Principal')).toBeInTheDocument();
   });
 
   it('does not render "Primary" badge for non-primary domain', () => {
     mountWith([makeDomain({ isPrimary: false })]);
-    expect(screen.queryByText('Primary')).toBeNull();
+    expect(screen.queryByText('Principal')).toBeNull();
   });
 
   it('renders "Verified" badge for verified domain', () => {
     mountWith([makeDomain({ status: 'verified' })]);
-    expect(screen.getByText('Verified')).toBeInTheDocument();
+    expect(screen.getByText('Verificado')).toBeInTheDocument();
   });
 
   it('renders "Pending" badge for non-verified domain', () => {
     mountWith([makeDomain({ status: 'pending' })]);
-    expect(screen.getByText('Pending')).toBeInTheDocument();
+    expect(screen.getByText('Pendiente')).toBeInTheDocument();
   });
 
   it('renders multiple domains', () => {
@@ -324,17 +324,17 @@ describe('CustomDomainForm — domain list', () => {
 
   it('shows "Set as primary" button for non-primary domain', () => {
     mountWith([makeDomain({ isPrimary: false })]);
-    expect(screen.getByTitle('Set as primary')).toBeInTheDocument();
+    expect(screen.getByTitle('Establecer como principal')).toBeInTheDocument();
   });
 
   it('does not show "Set as primary" button for primary domain', () => {
     mountWith([makeDomain({ isPrimary: true })]);
-    expect(screen.queryByTitle('Set as primary')).toBeNull();
+    expect(screen.queryByTitle('Establecer como principal')).toBeNull();
   });
 
   it('hides the empty-state message when domains are present', () => {
     mountWith([makeDomain()]);
-    expect(screen.queryByText(/No custom domains configured/i)).toBeNull();
+    expect(screen.queryByText(/No hay dominios personalizados configurados/i)).toBeNull();
   });
 });
 
@@ -344,53 +344,53 @@ describe('CustomDomainForm — domain list', () => {
 describe('CustomDomainForm — DNS records toggle', () => {
   it('"Show DNS Records" button is rendered for each domain', () => {
     mountWith([makeDomain()]);
-    expect(screen.getByRole('button', { name: /Show DNS Records/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Mostrar registros DNS/i })).toBeInTheDocument();
   });
 
   it('clicking "Show DNS Records" reveals the DNS table', () => {
     mountWith([makeDomain()]);
-    fireEvent.click(screen.getByRole('button', { name: /Show DNS Records/i }));
-    expect(screen.getByText('Add these records at your domain registrar')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Mostrar registros DNS/i }));
+    expect(screen.getByText('Añade estos registros en tu registrador de dominios')).toBeInTheDocument();
   });
 
   it('DNS table shows A and CNAME record types', () => {
     mountWith([makeDomain()]);
-    fireEvent.click(screen.getByRole('button', { name: /Show DNS Records/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Mostrar registros DNS/i }));
     expect(screen.getByText('A')).toBeInTheDocument();
     expect(screen.getByText('CNAME')).toBeInTheDocument();
   });
 
   it('shows the Vercel A record value', () => {
     mountWith([makeDomain()]);
-    fireEvent.click(screen.getByRole('button', { name: /Show DNS Records/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Mostrar registros DNS/i }));
     expect(screen.getByText('76.76.21.21')).toBeInTheDocument();
   });
 
   it('shows the Vercel CNAME value', () => {
     mountWith([makeDomain()]);
-    fireEvent.click(screen.getByRole('button', { name: /Show DNS Records/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Mostrar registros DNS/i }));
     expect(screen.getByText('cname.vercel-dns.com')).toBeInTheDocument();
   });
 
   it('button label toggles to "Hide DNS Records" after click', () => {
     mountWith([makeDomain()]);
-    const btn = screen.getByRole('button', { name: /Show DNS Records/i });
+    const btn = screen.getByRole('button', { name: /Mostrar registros DNS/i });
     fireEvent.click(btn);
-    expect(screen.getByRole('button', { name: /Hide DNS Records/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Ocultar registros DNS/i })).toBeInTheDocument();
   });
 
   it('clicking "Hide DNS Records" hides the DNS table again', () => {
     mountWith([makeDomain()]);
-    const btn = screen.getByRole('button', { name: /Show DNS Records/i });
+    const btn = screen.getByRole('button', { name: /Mostrar registros DNS/i });
     fireEvent.click(btn);
-    fireEvent.click(screen.getByRole('button', { name: /Hide DNS Records/i }));
-    expect(screen.queryByText('Add these records at your domain registrar')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Ocultar registros DNS/i }));
+    expect(screen.queryByText('Añade estos registros en tu registrador de dominios')).toBeNull();
   });
 
   it('shows propagation note when DNS table is visible', () => {
     mountWith([makeDomain()]);
-    fireEvent.click(screen.getByRole('button', { name: /Show DNS Records/i }));
-    expect(screen.getByText(/DNS changes may take up to 48 hours/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Mostrar registros DNS/i }));
+    expect(screen.getByText(/Los cambios de DNS pueden tardar hasta 48 horas/i)).toBeInTheDocument();
   });
 });
 
@@ -400,13 +400,13 @@ describe('CustomDomainForm — DNS records toggle', () => {
 describe('CustomDomainForm — verify DNS', () => {
   it('renders "Verify DNS" button for each domain', () => {
     mountWith([makeDomain()]);
-    expect(screen.getByRole('button', { name: /Verify DNS/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Verificar DNS/i })).toBeInTheDocument();
   });
 
   it('POSTs to the verify endpoint when "Verify DNS" is clicked', async () => {
     mountWith([makeDomain({ id: 7 })]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Verify DNS/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Verificar DNS/i }));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -440,10 +440,10 @@ describe('CustomDomainForm — verify DNS', () => {
 
     mountWith([domain]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Verify DNS/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Verificar DNS/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText('DNS verified and working')).toBeInTheDocument();
+      expect(screen.getByText('DNS verificado y funcionando')).toBeInTheDocument();
     });
   });
 
@@ -456,10 +456,10 @@ describe('CustomDomainForm — verify DNS', () => {
     });
     mountWith([makeDomain({ id: 7 })]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Verify DNS/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Verificar DNS/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText(/DNS not yet verified/i)).toBeInTheDocument();
+      expect(screen.getByText(/DNS aún sin verificar/i)).toBeInTheDocument();
     });
   });
 
@@ -476,10 +476,10 @@ describe('CustomDomainForm — verify DNS', () => {
     });
     mountWith([makeDomain({ id: 7 })]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Verify DNS/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Verificar DNS/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText('Current DNS Records Detected')).toBeInTheDocument();
+      expect(screen.getByText('Registros DNS actuales detectados')).toBeInTheDocument();
       expect(screen.getByText('1.2.3.4')).toBeInTheDocument();
     });
   });
@@ -497,10 +497,10 @@ describe('CustomDomainForm — verify DNS', () => {
     });
     mountWith([makeDomain({ id: 7 })]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Verify DNS/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Verificar DNS/i }));
     });
     await waitFor(() => {
-      expect(screen.queryByText('Current DNS Records Detected')).toBeNull();
+      expect(screen.queryByText('Registros DNS actuales detectados')).toBeNull();
     });
   });
 
@@ -510,7 +510,7 @@ describe('CustomDomainForm — verify DNS', () => {
     });
     mountWith([makeDomain({ id: 7 })]);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Verify DNS/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Verificar DNS/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('Verify failed')).toBeInTheDocument();
@@ -520,8 +520,8 @@ describe('CustomDomainForm — verify DNS', () => {
   it('shows "Checking..." while verification is in flight', () => {
     global.fetch = vi.fn(() => new Promise(() => {})) as typeof global.fetch;
     mountWith([makeDomain()]);
-    fireEvent.click(screen.getByRole('button', { name: /Verify DNS/i }));
-    expect(screen.getByRole('button', { name: /Checking\.\.\./i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Verificar DNS/i }));
+    expect(screen.getByRole('button', { name: /Comprobando\.\.\./i })).toBeInTheDocument();
   });
 });
 
@@ -531,14 +531,14 @@ describe('CustomDomainForm — verify DNS', () => {
 describe('CustomDomainForm — remove domain', () => {
   it('renders "Remove domain" button for each domain', () => {
     mountWith([makeDomain()]);
-    expect(screen.getByTitle('Remove domain')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar dominio')).toBeInTheDocument();
   });
 
   it('DELETEs to the correct endpoint when remove is clicked', async () => {
     setupFetch({ deleteBody: { success: true } });
     mountWith([makeDomain({ id: 55 })]);
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Remove domain'));
+      fireEvent.click(screen.getByTitle('Eliminar dominio'));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -555,7 +555,7 @@ describe('CustomDomainForm — remove domain', () => {
     setupFetch({ deleteBody: { success: true } });
     mountWith([makeDomain({ id: 55, domain: 'gone.com' })]);
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Remove domain'));
+      fireEvent.click(screen.getByTitle('Eliminar dominio'));
     });
     await waitFor(() => {
       expect(screen.queryByText('gone.com')).toBeNull();
@@ -566,10 +566,10 @@ describe('CustomDomainForm — remove domain', () => {
     setupFetch({ deleteBody: { success: true } });
     mountWith([makeDomain({ id: 55 })]);
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Remove domain'));
+      fireEvent.click(screen.getByTitle('Eliminar dominio'));
     });
     await waitFor(() => {
-      expect(screen.getByText('Domain removed.')).toBeInTheDocument();
+      expect(screen.getByText('Dominio eliminado.')).toBeInTheDocument();
     });
   });
 
@@ -577,7 +577,7 @@ describe('CustomDomainForm — remove domain', () => {
     setupFetch({ deleteBody: { success: false, message: 'Cannot remove primary' } });
     mountWith([makeDomain({ id: 55 })]);
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Remove domain'));
+      fireEvent.click(screen.getByTitle('Eliminar dominio'));
     });
     await waitFor(() => {
       expect(screen.getByText('Cannot remove primary')).toBeInTheDocument();
@@ -596,7 +596,7 @@ describe('CustomDomainForm — set primary', () => {
     });
     mountWith([makeDomain({ id: 3, isPrimary: false })]);
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Set as primary'));
+      fireEvent.click(screen.getByTitle('Establecer como principal'));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -615,7 +615,7 @@ describe('CustomDomainForm — set primary', () => {
     setupFetch({ patchBody: { success: false, message: 'Not allowed' } });
     mountWith([makeDomain({ id: 3, isPrimary: false })]);
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Set as primary'));
+      fireEvent.click(screen.getByTitle('Establecer como principal'));
     });
     await waitFor(() => {
       expect(screen.getByText('Not allowed')).toBeInTheDocument();

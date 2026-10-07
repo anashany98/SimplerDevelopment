@@ -57,7 +57,7 @@ export default function NoteBacklinksPanel({ noteId }: NoteBacklinksPanelProps) 
   if (items === null) {
     return (
       <div className="p-4 flex items-center gap-2 text-sm text-muted-foreground">
-        <span className="material-icons animate-spin text-base">progress_activity</span>
+        <span className="material-icons animate-spin text-base">autorenew</span>
         Loading backlinks…
       </div>
     );

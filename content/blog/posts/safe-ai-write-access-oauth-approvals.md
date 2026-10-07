@@ -10,7 +10,7 @@ tags:
   - mcp
   - authorization
   - human-in-the-loop
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 ---
 

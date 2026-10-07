@@ -1,6 +1,6 @@
 # Storefront API
 
-The Storefront API powers embedded storefronts and the custom product designer on SimplerDevelopment-hosted tenant websites. It handles the full transactional surface: browsing products, managing a shopping cart, running checkout via Stripe, looking up orders, and the complete custom-product-designer lifecycle (create, edit, AI-generated artwork, share, add to cart).
+The Storefront API powers embedded storefronts and the custom product designer on CRM AGENTS-hosted tenant websites. It handles the full transactional surface: browsing products, managing a shopping cart, running checkout via Stripe, looking up orders, and the complete custom-product-designer lifecycle (create, edit, AI-generated artwork, share, add to cart).
 
 This API is distinct from the read-only [Commerce API](./commerce.md), which is keyed with a platform API key and is designed for third-party integrations. The Storefront API has no platform API key — it is called directly from the storefront JavaScript running on the customer's browser.
 

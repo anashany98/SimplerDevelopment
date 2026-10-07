@@ -125,14 +125,14 @@ describe('TaxonomyPage — initial render', () => {
   it('renders the page heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Taxonomy');
+      expect(container.textContent).toContain('Taxonomía');
     });
   });
 
   it('renders the page subtitle', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Manage how your content is organized');
+      expect(container.textContent).toContain('Gestiona cómo se organiza y clasifica tu contenido.');
     });
   });
 
@@ -153,7 +153,7 @@ describe('TaxonomyPage — initial render', () => {
   it('shows "Flat" label for non-hierarchical taxonomy', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Flat');
+      expect(container.textContent).toContain('Fija');
     });
   });
 
@@ -166,7 +166,7 @@ describe('TaxonomyPage — initial render', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Hierarchical');
+      expect(container.textContent).toContain('Jerárquica');
     });
   });
 
@@ -200,7 +200,7 @@ describe('TaxonomyPage — initial render', () => {
   it('shows "New Taxonomy" button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New Taxonomy');
+      expect(container.textContent).toContain('Nueva taxonomía');
     });
   });
 });
@@ -224,7 +224,7 @@ describe('TaxonomyPage — empty states', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Select a taxonomy or create a new one');
+      expect(container.textContent).toContain('Selecciona una taxonomía o crea una nueva');
     });
   });
 });
@@ -253,23 +253,23 @@ describe('TaxonomyPage — taxonomy sidebar', () => {
 
   it('clicking "New Taxonomy" toggles the taxonomy form', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New Taxonomy'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva taxonomía'));
     const newTaxBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New Taxonomy')
+      (b) => b.textContent?.includes('Nueva taxonomía')
     ) as HTMLButtonElement;
     fireEvent.click(newTaxBtn);
     await waitFor(() => {
-      // Form appears with Name label
-      expect(container.textContent).toContain('Name');
+      // Form appears with Nombre label
+      expect(container.textContent).toContain('Nombre');
       expect(container.textContent).toContain('Slug');
     });
   });
 
   it('clicking "Cancel" hides the taxonomy form', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New Taxonomy'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva taxonomía'));
     const newTaxBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New Taxonomy')
+      (b) => b.textContent?.includes('Nueva taxonomía')
     ) as HTMLButtonElement;
     fireEvent.click(newTaxBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
@@ -290,9 +290,9 @@ describe('TaxonomyPage — taxonomy sidebar', () => {
 describe('TaxonomyPage — create taxonomy', () => {
   it('typing a name auto-fills the slug', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New Taxonomy'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva taxonomía'));
     const newTaxBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New Taxonomy')
+      (b) => b.textContent?.includes('Nueva taxonomía')
     ) as HTMLButtonElement;
     fireEvent.click(newTaxBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
@@ -315,9 +315,9 @@ describe('TaxonomyPage — create taxonomy', () => {
       return makeRes({ success: true, data: [] });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New Taxonomy'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva taxonomía'));
     const newTaxBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New Taxonomy')
+      (b) => b.textContent?.includes('Nueva taxonomía')
     ) as HTMLButtonElement;
     fireEvent.click(newTaxBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
@@ -344,9 +344,9 @@ describe('TaxonomyPage — create taxonomy', () => {
       return makeRes({ success: true, data: [] });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New Taxonomy'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva taxonomía'));
     const newTaxBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New Taxonomy')
+      (b) => b.textContent?.includes('Nueva taxonomía')
     ) as HTMLButtonElement;
     fireEvent.click(newTaxBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
@@ -361,9 +361,9 @@ describe('TaxonomyPage — create taxonomy', () => {
 
   it('taxonomy form shows the icon picker', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New Taxonomy'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva taxonomía'));
     const newTaxBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New Taxonomy')
+      (b) => b.textContent?.includes('Nueva taxonomía')
     ) as HTMLButtonElement;
     fireEvent.click(newTaxBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
@@ -372,9 +372,9 @@ describe('TaxonomyPage — create taxonomy', () => {
 
   it('taxonomy form has a hierarchical checkbox', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New Taxonomy'));
+    await waitFor(() => expect(container.textContent).toContain('Nueva taxonomía'));
     const newTaxBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('New Taxonomy')
+      (b) => b.textContent?.includes('Nueva taxonomía')
     ) as HTMLButtonElement;
     fireEvent.click(newTaxBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
@@ -518,7 +518,7 @@ describe('TaxonomyPage — add term form', () => {
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('New Tax');
+      expect(container.textContent).toContain('Nueva Tax');
     });
   });
 
@@ -530,9 +530,9 @@ describe('TaxonomyPage — add term form', () => {
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
-    expect(container.textContent).toContain('Name');
+    expect(container.textContent).toContain('Nombre');
     expect(container.textContent).toContain('Slug');
-    expect(container.textContent).toContain('Description');
+    expect(container.textContent).toContain('Descripción');
     expect(container.textContent).toContain('Color');
   });
 
@@ -621,7 +621,7 @@ describe('TaxonomyPage — add term form', () => {
     fireEvent.click(addBtn);
     await waitFor(() => expect(container.querySelector('form')).toBeTruthy());
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel'
+      (b) => b.textContent?.trim() === 'Cancelar'
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -646,8 +646,8 @@ describe('TaxonomyPage — add term form', () => {
     ) as HTMLButtonElement;
     fireEvent.click(addBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Parent');
-      expect(container.textContent).toContain('None (top-level)');
+      expect(container.textContent).toContain('Principal');
+      expect(container.textContent).toContain('Ninguno (nivel superior)');
     });
   });
 });

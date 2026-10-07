@@ -3,18 +3,18 @@
 import { useEffect, useState } from 'react';
 
 const FIELD_TYPES = [
-  { value: 'text', label: 'Text' },
-  { value: 'textarea', label: 'Textarea' },
-  { value: 'number', label: 'Number' },
-  { value: 'date', label: 'Date' },
-  { value: 'select', label: 'Select' },
-  { value: 'checkbox', label: 'Checkbox' },
+  { value: 'text', label: 'Texto' },
+  { value: 'textarea', label: 'Área de texto' },
+  { value: 'number', label: 'Número' },
+  { value: 'date', label: 'Fecha' },
+  { value: 'select', label: 'Campo de selección' },
+  { value: 'checkbox', label: 'Casilla' },
   { value: 'url', label: 'URL' },
-  { value: 'email', label: 'Email' },
-  { value: 'image', label: 'Image' },
-  { value: 'user_select', label: 'User Select' },
-  { value: 'repeater', label: 'Repeater' },
-  { value: 'group', label: 'Field Group' },
+  { value: 'email', label: 'Correo' },
+  { value: 'image', label: 'Imagen' },
+  { value: 'user_select', label: 'Selector de usuario' },
+  { value: 'repeater', label: 'Repetidor' },
+  { value: 'group', label: 'Grupo de campos' },
 ];
 
 interface ManagedField {
@@ -114,9 +114,9 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
         const res = await fetch(collectionEndpoint).then(r => r.json());
         if (cancelled) return;
         if (res.success) setFields(res.data);
-        else setError(res.message || 'Failed to load custom fields.');
+        else setError(res.message || 'No se pudieron cargar los campos personalizados.');
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load.');
+        if (!cancelled) setError(e instanceof Error ? e.message : 'No se pudo cargar.');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -162,11 +162,11 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
         onChanged?.();
         resetForm();
       } else {
-        const data = await res.json().catch(() => ({ message: 'Failed to save' }));
-        setError(data.message || data.error || 'Failed to save custom field');
+        const data = await res.json().catch(() => ({ message: 'No se pudo guardar' }));
+        setError(data.message || data.error || 'No se pudo guardar el campo personalizado');
       }
     } catch {
-      setError('Network error');
+      setError('Error de red');
     } finally {
       setSubmitting(false);
     }
@@ -189,7 +189,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this custom field? All saved values for it will be lost.')) return;
+    if (!confirm('¿Eliminar este campo personalizado? Se perderán todos los valores guardados.')) return;
     const res = await fetch(`${itemEndpoint}/${id}`, { method: 'DELETE' });
     if (res.ok) {
       await refetch();
@@ -204,11 +204,9 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
         <form onSubmit={handleSubmit} className="bg-muted/50 border border-border rounded-lg p-4 space-y-3">
           <div className="flex items-center justify-between mb-1">
             <h4 className="text-sm font-semibold text-foreground">
-              {editingField ? 'Edit Field' : formData.parentId ? 'New Sub-field' : 'New Field'}
+              {editingField ? 'Editar campo' : formData.parentId ? 'Nuevo subcampo' : 'Nuevo campo'}
             </h4>
-            <button type="button" onClick={resetForm} className="text-xs text-muted-foreground hover:text-foreground">
-              Cancel
-            </button>
+            <button type="button" onClick={resetForm} className="text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
           </div>
 
           {error && (
@@ -219,7 +217,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Name *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre *</label>
               <input
                 required
                 value={formData.name}
@@ -231,7 +229,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                     ...(!editingField ? { slug: generateSlug(name) } : {}),
                   }));
                 }}
-                placeholder="e.g. Author Name"
+                placeholder="p. ej. Nombre del autor"
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
               />
             </div>
@@ -249,7 +247,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Field Type *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo de campo *</label>
               <select
                 value={formData.fieldType}
                 onChange={(e) => setFormData((prev) => ({ ...prev, fieldType: e.target.value }))}
@@ -263,7 +261,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Order</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Pedido</label>
               <input
                 type="number"
                 value={formData.order}
@@ -275,12 +273,12 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
 
           {formData.fieldType === 'select' && (
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Options (one per line)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Opciones (una por línea)</label>
               <textarea
                 value={formData.optionsText}
                 onChange={(e) => setFormData((prev) => ({ ...prev, optionsText: e.target.value }))}
                 rows={3}
-                placeholder={'Option 1\nOption 2\nOption 3'}
+                placeholder={'Opción 1\nOpción 2\nOpción 3'}
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary resize-none"
               />
             </div>
@@ -288,7 +286,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Default Value</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Valor por defecto</label>
               <input
                 value={formData.defaultValue}
                 onChange={(e) => setFormData((prev) => ({ ...prev, defaultValue: e.target.value }))}
@@ -296,11 +294,11 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Help Text</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Texto de ayuda</label>
               <input
                 value={formData.helpText}
                 onChange={(e) => setFormData((prev) => ({ ...prev, helpText: e.target.value }))}
-                placeholder="Description for editors"
+                placeholder="Descripción para los editores"
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground outline-none focus:border-primary"
               />
             </div>
@@ -314,14 +312,14 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                 onChange={(e) => setFormData((prev) => ({ ...prev, required: e.target.checked }))}
                 className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
               />
-              <span className="text-sm text-foreground">Required</span>
+              <span className="text-sm text-foreground">Obligatorio</span>
             </label>
             <button
               type="submit"
               disabled={submitting}
-              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-lg hover:bg-primary/90 disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-lg hover:bg-foreground/90 disabled:opacity-50"
             >
-              {submitting ? 'Saving…' : editingField ? 'Update Field' : 'Add Field'}
+              {submitting ? 'Guardando…' : editingField ? 'Actualizar campo' : 'Añadir campo'}
             </button>
           </div>
         </form>
@@ -334,20 +332,18 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
           }}
           className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80"
         >
-          <span className="material-icons text-base">add</span>
-          Add Field
-        </button>
+          <span className="material-icons text-base">add</span>Añadir campo</button>
       )}
 
       {/* Loading / empty / list */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <span className="material-icons animate-spin text-muted-foreground">progress_activity</span>
+          <span className="material-icons animate-spin text-muted-foreground">autorenew</span>
         </div>
       ) : topLevelFields.length === 0 && !showForm ? (
         <div className="text-center py-12 border border-dashed border-border rounded-lg">
           <span className="material-icons text-3xl text-muted-foreground mb-2 block">input</span>
-          <p className="text-sm text-muted-foreground">No fields defined for this content type yet.</p>
+          <p className="text-sm text-muted-foreground">Aún no hay campos definidos para este tipo de contenido.</p>
         </div>
       ) : (
         <div className="space-y-1">
@@ -384,7 +380,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                         <span className="text-xs font-mono text-muted-foreground">{field.slug}</span>
                         <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-primary/10 text-primary">{field.fieldType}</span>
                         {isContainer && (
-                          <span className="text-[10px] text-muted-foreground">{children.length} sub-field{children.length !== 1 ? 's' : ''}</span>
+                          <span className="text-[10px] text-muted-foreground">{children.length} subcampo{children.length !== 1 ? 's' : ''}</span>
                         )}
                       </div>
                     </div>
@@ -395,7 +391,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                         type="button"
                         onClick={() => { toggleGroup(field.id); startAddSubField(field.id); }}
                         className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-primary"
-                        title="Add sub-field"
+                        title="Añadir subcampo"
                       >
                         <span className="material-icons text-base">add</span>
                       </button>
@@ -404,7 +400,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                       type="button"
                       onClick={() => handleEdit(field)}
                       className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                      title="Edit"
+                      title="Editar"
                     >
                       <span className="material-icons text-base">edit</span>
                     </button>
@@ -412,7 +408,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                       type="button"
                       onClick={() => handleDelete(field.id)}
                       className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-                      title="Delete"
+                      title="Eliminar"
                     >
                       <span className="material-icons text-base">delete</span>
                     </button>
@@ -443,7 +439,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                             type="button"
                             onClick={() => handleEdit(child)}
                             className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                            title="Edit"
+                            title="Editar"
                           >
                             <span className="material-icons text-base">edit</span>
                           </button>
@@ -451,7 +447,7 @@ export function CustomFieldsManager({ collectionEndpoint, itemEndpoint, onChange
                             type="button"
                             onClick={() => handleDelete(child.id)}
                             className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-                            title="Delete"
+                            title="Eliminar"
                           >
                             <span className="material-icons text-base">delete</span>
                           </button>

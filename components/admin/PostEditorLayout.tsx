@@ -63,7 +63,7 @@ export function PostEditorLayout({
               <Link
                 href={backHref || '/admin/posts'}
                 className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent transition-colors shrink-0"
-                title="Back"
+                title="Atrás"
               >
                 <span className="material-icons text-xl">chevron_left</span>
               </Link>
@@ -73,14 +73,14 @@ export function PostEditorLayout({
                   Editor body content (e.g. CreatePageIntroCard) must start at
                   h2, not h3, or the outline skips a level. */}
               <h1 className="text-base font-bold font-heading truncate" data-post-title>
-                {postTitle || 'New Post'}
+                {postTitle || 'Nueva entrada'}
               </h1>
 
               <button
                 type="button"
                 onClick={onOpenSettings}
                 className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent transition-colors shrink-0"
-                title="Edit Post Details"
+                title="Editar detalles de la entrada"
               >
                 <span className="material-icons text-lg">edit_note</span>
               </button>
@@ -94,13 +94,13 @@ export function PostEditorLayout({
 
               {/* Right — status + publish */}
               <select
-                aria-label="Post publish status"
+                aria-label="Estado de la entrada"
                 value={published ? 'published' : 'draft'}
                 onChange={(e) => onStatusChange(e.target.value as 'draft' | 'published')}
                 className="px-2 py-1 text-sm rounded-md border border-border hover:bg-accent transition-colors bg-background shrink-0"
               >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
+                <option value="draft">Borrador</option>
+                <option value="published">Publicado</option>
               </select>
 
               {onPreviewToggle && (
@@ -109,13 +109,13 @@ export function PostEditorLayout({
                   onClick={onPreviewToggle}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border transition-colors shrink-0 ${
                     previewMode
-                      ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
+                      ? 'bg-foreground text-background border-primary hover:bg-foreground/90'
                       : 'border-border hover:bg-accent'
                   }`}
-                  title={previewMode ? 'Exit Preview' : 'Live Preview'}
+                  title={previewMode ? 'Salir de la vista previa' : 'Vista previa en vivo'}
                 >
                   <span className="material-icons text-base">{previewMode ? 'edit' : 'visibility'}</span>
-                  {previewMode ? 'Edit' : 'Preview'}
+                  {previewMode ? 'Editar' : 'Vista previa'}
                 </button>
               )}
 
@@ -125,13 +125,13 @@ export function PostEditorLayout({
                   onClick={onHistoryToggle}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border transition-colors shrink-0 ${
                     historyOpen
-                      ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
+                      ? 'bg-foreground text-background border-primary hover:bg-foreground/90'
                       : 'border-border hover:bg-accent'
                   }`}
-                  title="Revision History"
+                  title="Historial de revisiones"
                 >
                   <span className="material-icons text-base">history</span>
-                  History
+                  Historial
                 </button>
               )}
 
@@ -144,10 +144,10 @@ export function PostEditorLayout({
                       ? 'border-primary/60 text-primary hover:bg-primary/10'
                       : 'border-border hover:bg-accent'
                   }`}
-                  title="Custom CSS & JavaScript"
+                  title="CSS y JavaScript personalizados"
                 >
                   <span className="material-icons text-base">code</span>
-                  Code
+                  Código
                   {hasCustomCode && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
                 </button>
               )}
@@ -158,17 +158,17 @@ export function PostEditorLayout({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-border hover:bg-accent transition-colors shrink-0"
-                  title="View Live"
+                  title="Ver en vivo"
                 >
                   <span className="material-icons text-base">open_in_new</span>
-                  View Live
+                  Ver en vivo
                 </a>
               )}
 
               {siteIsPrivate && (
                 <span
                   className="material-icons text-base text-amber-500 shrink-0"
-                  title="This site is still private — published pages won't be publicly visible until an admin enables public access in Website Settings."
+                  title="Este sitio sigue siendo privado: las páginas publicadas no serán visibles públicamente hasta que un administrador active el acceso público en Ajustes del sitio."
                 >
                   warning
                 </span>
@@ -180,26 +180,24 @@ export function PostEditorLayout({
                 type="button"
                 onClick={onPublish}
                 disabled={saveStatus === 'saving'}
-                className="flex items-center justify-center gap-1.5 px-3 py-1.5 min-w-[104px] text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shrink-0 disabled:opacity-50"
+                className="flex items-center justify-center gap-1.5 px-3 py-1.5 min-w-[104px] text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors shrink-0 disabled:opacity-50"
               >
                 {saveStatus === 'saving' ? (
-                  <span className="material-icons text-base animate-spin">progress_activity</span>
+                  <span className="material-icons text-base animate-spin">autorenew</span>
                 ) : (
                   <span className="material-icons text-base">check</span>
                 )}
-                {saveStatus === 'saving' ? 'Saving...' : published ? 'Update' : 'Publish'}
+                {saveStatus === 'saving' ? 'Guardando...' : published ? 'Actualizar' : 'Publicar'}
               </button>
               {saveStatus === 'saved' && (
                 <span className="flex items-center gap-1 text-xs text-green-600 shrink-0">
                   <span className="material-icons text-sm">check_circle</span>
-                  Saved
+                  Guardado
                 </span>
               )}
               {saveStatus === 'error' && (
                 <span className="flex items-center gap-1 text-xs text-destructive shrink-0">
-                  <span className="material-icons text-sm">error</span>
-                  Failed
-                </span>
+                  <span className="material-icons text-sm">error</span>Fallido</span>
               )}
             </div>
           ) : (
@@ -209,7 +207,7 @@ export function PostEditorLayout({
                 <Link
                   href={backHref || '/admin/posts'}
                   className="flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent transition-colors"
-                  title="Back to Posts"
+                  title="Volver a entradas"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -217,7 +215,7 @@ export function PostEditorLayout({
                 </Link>
                 {/* Wide-nav twin of the compact h1 above — same rule applies. */}
                 <h1 className="text-xl font-bold font-heading truncate" data-post-title>
-                  {postTitle || 'New Post'}
+                  {postTitle || 'Nueva entrada'}
                 </h1>
               </div>
               <div className="flex h-14 items-center justify-between gap-4">
@@ -226,40 +224,40 @@ export function PostEditorLayout({
                     type="button"
                     onClick={onOpenSettings}
                     className="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md border border-border hover:bg-accent transition-colors"
-                    title="Edit Post Details"
+                    title="Editar detalles de la entrada"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
-                    Edit Details
+                    Editar detalles
                   </button>
                   <select
                     value={published ? 'published' : 'draft'}
                     onChange={(e) => onStatusChange(e.target.value as 'draft' | 'published')}
                     className="px-3 py-1.5 text-sm rounded-md border border-border hover:bg-accent transition-colors bg-background"
                   >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
+                    <option value="draft">Borrador</option>
+                    <option value="published">Publicado</option>
                   </select>
                   <button
                     type="button"
                     onClick={onPublish}
                     disabled={saveStatus === 'saving'}
-                    className="flex items-center justify-center gap-2 px-4 py-1.5 min-w-[116px] text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 px-4 py-1.5 min-w-[116px] text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   >
                     {saveStatus === 'saving' ? (
-                      <span className="material-icons text-base animate-spin">progress_activity</span>
+                      <span className="material-icons text-base animate-spin">autorenew</span>
                     ) : (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     )}
-                    {saveStatus === 'saving' ? 'Saving...' : published ? 'Update' : 'Publish'}
+                    {saveStatus === 'saving' ? 'Guardando...' : published ? 'Actualizar' : 'Publicar'}
                   </button>
                   {siteIsPrivate && (
                     <span
                       className="material-icons text-base text-amber-500"
-                      title="This site is still private — published pages won't be publicly visible until an admin enables public access in Website Settings."
+                      title="Este sitio sigue siendo privado: las páginas publicadas no serán visibles públicamente hasta que un administrador active el acceso público en Ajustes del sitio."
                     >
                       warning
                     </span>
@@ -267,14 +265,12 @@ export function PostEditorLayout({
                   {saveStatus === 'saved' && (
                     <span className="flex items-center gap-1 text-xs text-green-600">
                       <span className="material-icons text-sm">check_circle</span>
-                      Saved
+                      Guardado
                     </span>
                   )}
                   {saveStatus === 'error' && (
                     <span className="flex items-center gap-1 text-xs text-destructive">
-                      <span className="material-icons text-sm">error</span>
-                      Failed
-                    </span>
+                      <span className="material-icons text-sm">error</span>Fallido</span>
                   )}
 
                 </div>

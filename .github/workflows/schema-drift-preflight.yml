@@ -62,14 +62,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Guard — skip if prod secret is unavailable (e.g. fork PRs)
+      - name: Guard — skip fork PRs, fail if same-repo secret is missing
         id: guard
         env:
           PROD_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
         run: |
-          if [ -z "${PROD_DATABASE_URL:-}" ]; then
-            echo "PROD_DATABASE_URL not set — cannot diff against prod; skipping."
+          if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
+            echo "Fork PR has no production secret; skipping read-only production comparison."
             echo "skip=true" >> "$GITHUB_OUTPUT"
+          elif [ -z "${PROD_DATABASE_URL:-}" ]; then
+            echo "::error::PROD_DATABASE_URL is required for same-repository schema changes."
+            exit 1
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi

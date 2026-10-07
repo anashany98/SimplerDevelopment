@@ -76,7 +76,7 @@ function renderPromptTemplate(template: string, values: Record<string, string | 
 
 function formatDate(d: string | null) {
   if (!d) return '--';
-  return new Date(d).toLocaleDateString('en-US', {
+  return new Date(d).toLocaleDateString('es-ES', {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -209,26 +209,26 @@ function SkillCard({
         {isOnDemand ? (
           <button
             onClick={() => onRun(skill.id)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-foreground text-background hover:opacity-90 transition-opacity"
           >
             <span className="material-icons" style={{ fontSize: '16px' }}>
               play_arrow
             </span>
-            Run
+            Ejecutar
           </button>
         ) : isScheduled ? (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="material-icons" style={{ fontSize: '16px' }}>
               schedule
             </span>
-            <span>Cron-managed</span>
+            <span>Programado por cron</span>
           </div>
         ) : (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="material-icons" style={{ fontSize: '16px' }}>
               cloud
             </span>
-            <span>Cloud-triggered</span>
+            <span>Invocada desde la nube</span>
           </div>
         )}
         {skill.manualRunPath && (
@@ -316,8 +316,8 @@ function RunDrawer({
         const msg =
           json?.message ??
           (res.status === 503
-            ? 'Executor disabled on this host. Use Copy Prompt instead.'
-            : `Request failed (${res.status}).`);
+            ? 'Ejecutor deshabilitado en este host. Usa Copiar prompt en su lugar.'
+            : `La solicitud falló (${res.status}).`);
         setRunState({ runId: null, status: 'unavailable', output: '', error: msg });
         setSubmitting(false);
         return;
@@ -358,7 +358,7 @@ function RunDrawer({
         setRunState((s) => ({
           ...s,
           status: s.status === 'running' ? 'failed' : s.status,
-          error: s.error ?? 'Live stream disconnected.',
+          error: s.error ?? 'Transmisión en vivo desconectada.',
         }));
         es.close();
         esRef.current = null;
@@ -369,7 +369,7 @@ function RunDrawer({
         runId: null,
         status: 'failed',
         output: '',
-        error: err instanceof Error ? err.message : 'Request failed.',
+        error: err instanceof Error ? err.message : 'La solicitud falló.',
       });
       setSubmitting(false);
     }
@@ -390,7 +390,7 @@ function RunDrawer({
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground"
-            aria-label="Close drawer"
+            aria-label="Cerrar panel"
           >
             <span className="material-icons">close</span>
           </button>
@@ -401,7 +401,7 @@ function RunDrawer({
 
           {(skill.variables ?? []).length > 0 ? (
             <div className="space-y-3">
-              <h3 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Inputs</h3>
+              <h3 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Entradas</h3>
               {(skill.variables ?? []).map((v) => {
                 const value = vars[v.key] ?? '';
                 const setValue = (next: string) => setVars((prev) => ({ ...prev, [v.key]: next }));
@@ -418,7 +418,7 @@ function RunDrawer({
                         onChange={(e) => setValue(e.target.value)}
                         className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
                       >
-                        <option value="">{v.placeholder ?? 'Select…'}</option>
+                        <option value="">{v.placeholder ?? 'Seleccionar…'}</option>
                         {v.options.map((opt) => (
                           <option key={opt} value={opt}>
                             {opt}
@@ -448,18 +448,18 @@ function RunDrawer({
               })}
             </div>
           ) : (
-            <p className="text-xs text-muted-foreground italic">This skill takes no inputs.</p>
+            <p className="text-xs text-muted-foreground italic">Esta skill no admite entradas.</p>
           )}
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Rendered prompt</h3>
+              <h3 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Prompt renderizado</h3>
               <span className="text-[10px] text-muted-foreground">
-                {rendered.length} chars
+                {rendered.length} caracteres
               </span>
             </div>
             <pre className="text-xs bg-muted/40 border border-border rounded-lg p-3 whitespace-pre-wrap break-words font-mono max-h-72 overflow-y-auto">
-              {rendered || '(no prompt template)'}
+              {rendered || '(sin plantilla de prompt)'}
             </pre>
           </div>
 
@@ -478,14 +478,14 @@ function RunDrawer({
           {runState.runId != null && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Live output</h3>
+                <h3 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Salida en vivo</h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground font-mono">run #{runState.runId}</span>
+                  <span className="text-[10px] text-muted-foreground font-mono">ejecución #{runState.runId}</span>
                   {runState.status && statusBadge(runState.status)}
                 </div>
               </div>
               <pre className="text-xs bg-black/90 text-green-200 border border-border rounded-lg p-3 whitespace-pre-wrap break-words font-mono max-h-72 overflow-y-auto min-h-[80px]">
-                {runState.output || '(waiting for output…)'}
+                {runState.output || '(esperando salida…)'}
               </pre>
             </div>
           )}
@@ -494,7 +494,7 @@ function RunDrawer({
         <footer className="border-t border-border p-4 flex items-center justify-end gap-2 bg-background">
           {!executorAvailable && (
             <span className="text-[11px] text-muted-foreground mr-auto">
-              Executor disabled — use Copy prompt.
+              Ejecutor deshabilitado — usa Copiar prompt.
             </span>
           )}
           <button
@@ -505,24 +505,24 @@ function RunDrawer({
             <span className="material-icons" style={{ fontSize: '16px' }}>
               {copied ? 'check' : 'content_copy'}
             </span>
-            {copied ? 'Copied' : 'Copy prompt'}
+            {copied ? 'Copiado' : 'Copiar prompt'}
           </button>
           <button
             onClick={startRun}
             disabled={!executorAvailable || !requiredOk || submitting}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-40"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-foreground text-background hover:opacity-90 disabled:opacity-40"
             title={
               !executorAvailable
-                ? 'Executor disabled on this host'
+                ? 'Ejecutor deshabilitado en este host'
                 : !requiredOk
-                  ? 'Fill all required variables'
-                  : 'Run skill as headless claude -p'
+                  ? 'Completa todas las variables obligatorias'
+                  : 'Ejecutar la skill como claude -p sin interfaz'
             }
           >
             <span className="material-icons" style={{ fontSize: '16px' }}>
               {submitting ? 'autorenew' : 'play_arrow'}
             </span>
-            {submitting ? 'Running…' : 'Run'}
+            {submitting ? 'Ejecutando…' : 'Ejecutar'}
           </button>
         </footer>
       </aside>
@@ -546,14 +546,14 @@ export default function AgenticOsPage() {
       const res = await fetch('/api/admin/agentic-os');
       const json = await res.json();
       if (!json?.success) {
-        setError(json?.message ?? 'Failed to load catalog');
+        setError(json?.message ?? 'No se pudo cargar el catálogo');
         setLoading(false);
         return;
       }
       setData(json.data);
       setRecentRuns(json.data.recentRuns ?? []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load catalog');
+      setError(err instanceof Error ? err.message : 'No se pudo cargar el catálogo');
     } finally {
       setLoading(false);
     }
@@ -603,7 +603,7 @@ export default function AgenticOsPage() {
       <div className="p-6 max-w-7xl mx-auto">
         <div className="text-center py-24 text-muted-foreground">
           <span className="material-icons animate-spin text-3xl">autorenew</span>
-          <p className="mt-2">Loading Agentic OS…</p>
+          <p className="mt-2">Cargando Agentic OS…</p>
         </div>
       </div>
     );
@@ -614,8 +614,8 @@ export default function AgenticOsPage() {
       <div className="p-6 max-w-7xl mx-auto">
         <div className="bg-card border border-red-500/40 rounded-xl p-6 text-center">
           <span className="material-icons text-4xl text-red-500">error_outline</span>
-          <p className="mt-2 text-foreground font-semibold">Couldn&apos;t load Agentic OS</p>
-          <p className="mt-1 text-sm text-muted-foreground">{error ?? 'Unknown error.'}</p>
+          <p className="mt-2 text-foreground font-semibold">No se pudo cargar Agentic OS</p>
+          <p className="mt-1 text-sm text-muted-foreground">{error ?? 'Error desconocido.'}</p>
         </div>
       </div>
     );
@@ -638,19 +638,19 @@ export default function AgenticOsPage() {
                 <span className="material-icons" style={{ fontSize: '14px' }}>
                   bolt
                 </span>
-                Local executor available
+                Ejecutor local disponible
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                 <span className="material-icons" style={{ fontSize: '14px' }}>
                   visibility
                 </span>
-                Catalog mode
+                Modo catálogo
               </span>
             )}
           </div>
           <p className="text-muted-foreground mt-1">
-            Domains, skills, automations. Fire skills as headless Claude Code runs or copy a prompt.
+            Dominios, skills, automatizaciones. Ejecuta skills como claude -p sin interfaz o copia un prompt.
           </p>
           {!data.executorAvailable && data.executorHostHint && (
             <p className="text-xs text-muted-foreground mt-1 max-w-2xl">{data.executorHostHint}</p>
@@ -661,14 +661,14 @@ export default function AgenticOsPage() {
             onClick={() => setShowRules((v) => !v)}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               showRules
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'border border-border text-muted-foreground hover:bg-accent'
             }`}
           >
             <span className="material-icons" style={{ fontSize: '16px' }}>
               gavel
             </span>
-            Rules ({data.rules.length})
+            Reglas ({data.rules.length})
           </button>
           <button
             onClick={refreshCatalog}
@@ -676,9 +676,7 @@ export default function AgenticOsPage() {
           >
             <span className="material-icons" style={{ fontSize: '16px' }}>
               refresh
-            </span>
-            Refresh
-          </button>
+            </span>Actualizar</button>
         </div>
       </div>
 
@@ -686,10 +684,10 @@ export default function AgenticOsPage() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
           { label: 'Skills', value: totalSkills, icon: 'extension' },
-          { label: 'On-demand', value: onDemandCount, icon: 'play_arrow' },
-          { label: 'Scheduled', value: scheduledCount, icon: 'schedule' },
-          { label: 'Succeeded', value: data.counts.succeeded ?? 0, icon: 'check_circle' },
-          { label: 'Failed', value: data.counts.failed ?? 0, icon: 'error_outline' },
+          { label: 'Bajo demanda', value: onDemandCount, icon: 'play_arrow' },
+          { label: 'Programado', value: scheduledCount, icon: 'schedule' },
+          { label: 'Exitoso', value: data.counts.succeeded ?? 0, icon: 'check_circle' },
+          { label: 'Fallido', value: data.counts.failed ?? 0, icon: 'error_outline' },
         ].map((s) => (
           <div key={s.label} className="bg-card border border-border rounded-xl p-3">
             <div className="flex items-center gap-2">
@@ -708,7 +706,7 @@ export default function AgenticOsPage() {
         <div className="bg-card border border-border rounded-2xl p-5">
           <h2 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <span className="material-icons text-muted-foreground">gavel</span>
-            Cross-cutting rules
+            Reglas transversales
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {data.rules.map((r) => (
@@ -726,10 +724,10 @@ export default function AgenticOsPage() {
       <div className="flex items-center gap-2 flex-wrap">
         {(
           [
-            { id: 'all', label: 'All domains', icon: 'apps' },
-            { id: 'on-demand', label: 'On-demand only', icon: 'play_arrow' },
-            { id: 'scheduled', label: 'Scheduled', icon: 'schedule' },
-            { id: 'history', label: 'Run history', icon: 'history' },
+            { id: 'all', label: 'Todos los dominios', icon: 'apps' },
+            { id: 'on-demand', label: 'Solo bajo demanda', icon: 'play_arrow' },
+            { id: 'scheduled', label: 'Programado', icon: 'schedule' },
+            { id: 'history', label: 'Historial de ejecuciones', icon: 'history' },
           ] as { id: FilterMode; label: string; icon: string }[]
         ).map((f) => (
           <button
@@ -737,7 +735,7 @@ export default function AgenticOsPage() {
             onClick={() => setFilter(f.id)}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               filter === f.id
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'border border-border text-muted-foreground hover:bg-accent'
             }`}
           >
@@ -757,7 +755,7 @@ export default function AgenticOsPage() {
           {orderedDomains.length === 0 && (
             <div className="bg-card border border-border rounded-2xl p-12 text-center">
               <span className="material-icons text-5xl text-muted-foreground">filter_alt_off</span>
-              <p className="mt-2 text-foreground font-semibold">No skills match this filter</p>
+              <p className="mt-2 text-foreground font-semibold">Ninguna skill coincide con este filtro</p>
             </div>
           )}
           {orderedDomains.map((domain) => {
@@ -816,9 +814,9 @@ function RunHistory({
     return (
       <div className="bg-card border border-border rounded-2xl p-8 text-center">
         <span className="material-icons text-4xl text-muted-foreground">history</span>
-        <p className="mt-2 text-foreground font-semibold">No runs yet</p>
+        <p className="mt-2 text-foreground font-semibold">Aún no hay ejecuciones</p>
         <p className="text-sm text-muted-foreground mt-1">
-          Fire a skill from the catalog above to see it logged here.
+          Ejecuta una skill del catálogo de arriba para verla registrada aquí.
         </p>
       </div>
     );
@@ -826,8 +824,8 @@ function RunHistory({
   return (
     <section className="space-y-3">
       <div className="flex items-baseline justify-between border-b border-border pb-2">
-        <h2 className="font-semibold text-foreground">{compact ? 'Recent runs' : 'Run history'}</h2>
-        <span className="text-xs text-muted-foreground">{runs.length} shown</span>
+        <h2 className="font-semibold text-foreground">{compact ? 'Ejecuciones recientes' : 'Historial de ejecuciones'}</h2>
+        <span className="text-xs text-muted-foreground">{runs.length} mostradas</span>
       </div>
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
         <table className="w-full text-sm">
@@ -836,14 +834,10 @@ function RunHistory({
               <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Skill
               </th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duración</th>
               <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Duration
-              </th>
-              <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Started
+                Iniciada
               </th>
               <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Error

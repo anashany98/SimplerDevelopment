@@ -135,7 +135,7 @@ export function TeamFlipGridBlockRender({ block }: Props) {
                 >
                   <button
                     type="button"
-                    aria-label="Close"
+                    aria-label="Cerrar"
                     className="pc-flip-card__toggle pc-flip-card__toggle--back"
                     onClick={() => setFlipped((prev) => ({ ...prev, [m.id]: false }))}
                     style={{ color: backColor, borderColor: backColor }}

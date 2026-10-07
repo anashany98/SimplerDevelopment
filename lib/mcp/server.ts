@@ -59,14 +59,14 @@ export function buildMcpServer(ctx: PortalMcpContext): McpServer {
   const multiClient = reachable.length > 1;
 
   const server = new McpServer(
-    { name: 'simplerdevelopment-portal', version: '0.1.0' },
+    { name: 'crm-agents-portal', version: '0.1.0' },
     {
       capabilities: { tools: {}, resources: {}, prompts: {} },
       instructions: multiClient
-        ? `You are connected to the SimplerDevelopment portal as a user who acts for ${reachable.length} companies:\n` +
+        ? `You are connected to the CRM AGENTS portal as a user who acts for ${reachable.length} companies:\n` +
           `${describeRoster(reachable)}\n` +
           `Pass "clientId" on EVERY tool call to say which company it applies to. If the user has not said which company they mean, ASK — never guess, and never assume the last one used. Call whoami for the full roster.`
-        : `You are connected to the SimplerDevelopment portal for client "${ctx.client.company ?? `#${ctx.client.id}`}" (id ${ctx.client.id}). Use these tools to manage projects, tickets, CRM, content, media, websites, and email campaigns. All operations are automatically scoped to this client.`,
+        : `You are connected to the CRM AGENTS portal for client "${ctx.client.company ?? `#${ctx.client.id}`}" (id ${ctx.client.id}). Use these tools to manage projects, tickets, CRM, content, media, websites, and email campaigns. All operations are automatically scoped to this client.`,
     },
   );
 

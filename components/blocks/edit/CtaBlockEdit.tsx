@@ -24,9 +24,7 @@ export function CtaBlockEdit({ block, onChange }: CtaBlockEditProps) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">
-          Description
-        </label>
+        <label className="block text-sm font-medium text-foreground mb-2">Descripción</label>
         <textarea
           value={block.description || ''}
           onChange={(e) => onChange({ ...block, description: e.target.value })}
@@ -102,8 +100,8 @@ export function CtaBlockEdit({ block, onChange }: CtaBlockEditProps) {
           className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
         >
           <option value="gradient">Gradient</option>
-          <option value="solid">Solid</option>
-          <option value="none">None</option>
+          <option value="solid">Sólido</option>
+          <option value="none">Ninguno</option>
         </select>
       </div>
     </div>

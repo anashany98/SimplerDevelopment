@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { resend } from '@/lib/email';
+import { getResendClient } from '@/lib/email';
 
 async function requireAdmin() {
   const session = await auth();
@@ -10,9 +10,25 @@ async function requireAdmin() {
   return session;
 }
 
+async function resolveResendClient() {
+  try {
+    return await getResendClient();
+  } catch {
+    return null;
+  }
+}
+
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
+  const resend = await resolveResendClient();
+  if (!resend) {
+    return NextResponse.json(
+      { success: false, message: 'Resend API key is not configured (Admin → Email → Ajustes).' },
+      { status: 400 },
+    );
+  }
 
   const { id } = await params;
   const { data, error } = await resend.domains.get(id);
@@ -24,6 +40,14 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
+  const resend = await resolveResendClient();
+  if (!resend) {
+    return NextResponse.json(
+      { success: false, message: 'Resend API key is not configured (Admin → Email → Ajustes).' },
+      { status: 400 },
+    );
+  }
 
   const { id } = await params;
   const { openTracking, clickTracking, tls } = await req.json();
@@ -43,6 +67,14 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
+  const resend = await resolveResendClient();
+  if (!resend) {
+    return NextResponse.json(
+      { success: false, message: 'Resend API key is not configured (Admin → Email → Ajustes).' },
+      { status: 400 },
+    );
+  }
 
   const { id } = await params;
   const { error } = await resend.domains.remove(id);

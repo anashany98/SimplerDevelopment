@@ -80,7 +80,7 @@ function successFetch(data: Record<string, unknown> = {}) {
   } as Response);
 }
 
-function failFetch(message = 'Save failed') {
+function failFetch(message = 'Error al guardar') {
   return Promise.resolve({
     json: () => Promise.resolve({ success: false, message }),
   } as Response);
@@ -108,29 +108,29 @@ afterEach(() => {
 describe('EmailAbConfig — header rendering', () => {
   it('renders header label', () => {
     renderAb(makeCampaign());
-    expect(screen.getByText('A/B test subject lines')).toBeTruthy();
+    expect(screen.getByText('Prueba A/B de asuntos')).toBeTruthy();
   });
 
   it('does not show status badge when ab is not enabled', () => {
     renderAb(makeCampaign({ abEnabled: false }));
-    expect(screen.queryByText('Enabled')).toBeNull();
-    expect(screen.queryByText('Testing')).toBeNull();
-    expect(screen.queryByText('Promoted')).toBeNull();
+    expect(screen.queryByText('Activado')).toBeNull();
+    expect(screen.queryByText('En prueba')).toBeNull();
+    expect(screen.queryByText('Promocionado')).toBeNull();
   });
 
   it('shows "Enabled" badge when abEnabled and not testing or decided', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'draft', abDecidedAt: null }));
-    expect(screen.getByText('Enabled')).toBeTruthy();
+    expect(screen.getByText('Activado')).toBeTruthy();
   });
 
   it('shows "Testing" badge when status is ab_testing', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'ab_testing', abDecidedAt: null }));
-    expect(screen.getByText('Testing')).toBeTruthy();
+    expect(screen.getByText('En prueba')).toBeTruthy();
   });
 
   it('shows "Promoted" badge when abDecidedAt is set', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'sent', abDecidedAt: '2024-06-01T12:00:00Z' }));
-    expect(screen.getByText('Promoted')).toBeTruthy();
+    expect(screen.getByText('Promocionado')).toBeTruthy();
   });
 });
 
@@ -150,13 +150,13 @@ describe('EmailAbConfig — expand/collapse', () => {
   it('clicking header button toggles panel open', () => {
     renderAb(makeCampaign({ abEnabled: false }));
     expect(screen.queryByRole('checkbox')).toBeNull();
-    fireEvent.click(screen.getByText('A/B test subject lines').closest('button')!);
+    fireEvent.click(screen.getByText('Prueba A/B de asuntos').closest('button')!);
     expect(screen.getByRole('checkbox')).toBeTruthy();
   });
 
   it('clicking header button again closes panel', () => {
     renderAb(makeCampaign({ abEnabled: false }));
-    const btn = screen.getByText('A/B test subject lines').closest('button')!;
+    const btn = screen.getByText('Prueba A/B de asuntos').closest('button')!;
     fireEvent.click(btn);
     expect(screen.getByRole('checkbox')).toBeTruthy();
     fireEvent.click(btn);
@@ -167,7 +167,7 @@ describe('EmailAbConfig — expand/collapse', () => {
 describe('EmailAbConfig — draft mode: enable/disable checkbox', () => {
   it('checkbox is unchecked when abEnabled=false', () => {
     renderAb(makeCampaign({ abEnabled: false }));
-    fireEvent.click(screen.getByText('A/B test subject lines').closest('button')!);
+    fireEvent.click(screen.getByText('Prueba A/B de asuntos').closest('button')!);
     const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
     expect(checkbox.checked).toBe(false);
   });
@@ -181,7 +181,7 @@ describe('EmailAbConfig — draft mode: enable/disable checkbox', () => {
   it('checking the checkbox sends PATCH with abEnabled:true and calls onChange', async () => {
     fetchMock.mockResolvedValueOnce(successFetch());
     const { onChange } = renderAb(makeCampaign({ abEnabled: false }));
-    fireEvent.click(screen.getByText('A/B test subject lines').closest('button')!);
+    fireEvent.click(screen.getByText('Prueba A/B de asuntos').closest('button')!);
     await act(async () => {
       fireEvent.click(screen.getByRole('checkbox'));
     });
@@ -208,7 +208,7 @@ describe('EmailAbConfig — draft mode: enable/disable checkbox', () => {
   it('shows error when PATCH returns failure', async () => {
     fetchMock.mockResolvedValueOnce(failFetch('Server error'));
     renderAb(makeCampaign({ abEnabled: false }));
-    fireEvent.click(screen.getByText('A/B test subject lines').closest('button')!);
+    fireEvent.click(screen.getByText('Prueba A/B de asuntos').closest('button')!);
     await act(async () => {
       fireEvent.click(screen.getByRole('checkbox'));
     });
@@ -222,24 +222,24 @@ describe('EmailAbConfig — draft mode: enable/disable checkbox', () => {
       json: () => Promise.resolve({ success: false }),
     } as Response);
     renderAb(makeCampaign({ abEnabled: false }));
-    fireEvent.click(screen.getByText('A/B test subject lines').closest('button')!);
+    fireEvent.click(screen.getByText('Prueba A/B de asuntos').closest('button')!);
     await act(async () => {
       fireEvent.click(screen.getByRole('checkbox'));
     });
     await waitFor(() => {
-      expect(screen.getByText('Save failed')).toBeTruthy();
+      expect(screen.getByText('Error al guardar')).toBeTruthy();
     });
   });
 
   it('shows error on network failure', async () => {
     fetchMock.mockRejectedValueOnce(new Error('Network error'));
     renderAb(makeCampaign({ abEnabled: false }));
-    fireEvent.click(screen.getByText('A/B test subject lines').closest('button')!);
+    fireEvent.click(screen.getByText('Prueba A/B de asuntos').closest('button')!);
     await act(async () => {
       fireEvent.click(screen.getByRole('checkbox'));
     });
     await waitFor(() => {
-      expect(screen.getByText('Save failed')).toBeTruthy();
+      expect(screen.getByText('Error al guardar')).toBeTruthy();
     });
   });
 });
@@ -251,18 +251,18 @@ describe('EmailAbConfig — draft + enabled: Subject B input', () => {
 
   it('renders Subject B input', () => {
     renderDraftEnabled();
-    expect(screen.getByPlaceholderText('Alternate subject line to test')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Linea de asunto alternativa para probar')).toBeTruthy();
   });
 
   it('shows existing Subject B value', () => {
     renderDraftEnabled('Variant B subject');
-    const input = screen.getByPlaceholderText('Alternate subject line to test') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar') as HTMLInputElement;
     expect(input.value).toBe('Variant B subject');
   });
 
   it('typing updates local state but does not call fetch mid-type', () => {
     renderDraftEnabled();
-    const input = screen.getByPlaceholderText('Alternate subject line to test');
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar');
     fireEvent.change(input, { target: { value: 'New subject B' } });
     // fetch should NOT have been called during typing (only on blur)
     // Note: fetch may have been called for the status GET on mount — check PATCH only
@@ -275,7 +275,7 @@ describe('EmailAbConfig — draft + enabled: Subject B input', () => {
   it('blurring with changed value sends PATCH with abSubjectB', async () => {
     fetchMock.mockResolvedValue(successFetch());
     const { onChange } = renderDraftEnabled('Original');
-    const input = screen.getByPlaceholderText('Alternate subject line to test');
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar');
     fireEvent.change(input, { target: { value: 'Changed Subject B' } });
     await act(async () => {
       fireEvent.blur(input);
@@ -287,7 +287,7 @@ describe('EmailAbConfig — draft + enabled: Subject B input', () => {
 
   it('blurring without change does NOT send PATCH', async () => {
     renderDraftEnabled('Same subject');
-    const input = screen.getByPlaceholderText('Alternate subject line to test');
+    const input = screen.getByPlaceholderText('Linea de asunto alternativa para probar');
     // Don't change value — just blur
     await act(async () => {
       fireEvent.blur(input);
@@ -308,22 +308,22 @@ describe('EmailAbConfig — draft + enabled: Subject B input', () => {
 describe('EmailAbConfig — draft + enabled: winner metric', () => {
   it('renders Open rate and Click rate buttons', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'draft' }));
-    expect(screen.getByText('Open rate')).toBeTruthy();
-    expect(screen.getByText('Click rate')).toBeTruthy();
+    expect(screen.getByText('Tasa de apertura')).toBeTruthy();
+    expect(screen.getByText('Tasa de clics')).toBeTruthy();
   });
 
   it('defaults to "open" metric', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'draft', abWinnerMetric: null }));
     // "Open rate" should have the primary styling (active)
-    const openBtn = screen.getByText('Open rate');
-    expect(openBtn.className).toContain('bg-primary');
+    const openBtn = screen.getByText('Tasa de apertura');
+    expect(openBtn.className).toContain('bg-foreground');
   });
 
   it('clicking Click rate updates metric and sends PATCH', async () => {
     fetchMock.mockResolvedValue(successFetch());
     const { onChange } = renderAb(makeCampaign({ abEnabled: true, status: 'draft', abWinnerMetric: 'open' }));
     await act(async () => {
-      fireEvent.click(screen.getByText('Click rate'));
+      fireEvent.click(screen.getByText('Tasa de clics'));
     });
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledWith({ abWinnerMetric: 'click' });
@@ -334,7 +334,7 @@ describe('EmailAbConfig — draft + enabled: winner metric', () => {
     fetchMock.mockResolvedValue(successFetch());
     const { onChange } = renderAb(makeCampaign({ abEnabled: true, status: 'draft', abWinnerMetric: 'click' }));
     await act(async () => {
-      fireEvent.click(screen.getByText('Open rate'));
+      fireEvent.click(screen.getByText('Tasa de apertura'));
     });
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledWith({ abWinnerMetric: 'open' });
@@ -365,7 +365,7 @@ describe('EmailAbConfig — draft + enabled: test size slider', () => {
 
   it('renders test size description in label', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'draft', abTestSizePct: 20 }));
-    expect(screen.getByText(/Test size: 20% of list/)).toBeTruthy();
+    expect(screen.getByText(/Tamaño de la prueba: 20% de la lista/)).toBeTruthy();
   });
 
   it('mouseUp sends PATCH when value changed', async () => {
@@ -397,7 +397,7 @@ describe('EmailAbConfig — draft + enabled: test size slider', () => {
     const { container } = render(
       <EmailAbConfig campaign={makeCampaign({ abEnabled: true, status: 'draft', abTestSizePct: 20 })} onChange={vi.fn()} />,
     );
-    expect(container.textContent).toContain('4-hour wait');
+    expect(container.textContent).toContain('espera de 4 horas');
   });
 });
 
@@ -407,7 +407,7 @@ describe('EmailAbConfig — not-draft + enabled', () => {
     const { container } = render(
       <EmailAbConfig campaign={makeCampaign({ abEnabled: true, status: 'ab_testing', abDecidedAt: null, subject: 'A Subject', abSubjectB: 'B Subject' })} onChange={vi.fn()} />,
     );
-    expect(container.textContent).toContain('in progress');
+    expect(container.textContent).toContain('en curso');
     expect(container.textContent).toContain('A Subject');
     expect(container.textContent).toContain('B Subject');
   });
@@ -419,12 +419,12 @@ describe('EmailAbConfig — not-draft + enabled', () => {
         onChange={vi.fn()}
       />,
     );
-    expect(container.textContent).toContain('promoted');
+    expect(container.textContent).toContain('promocionada');
   });
 
   it('does NOT show the edit fields (Subject B input) when not draft', () => {
     renderAb(makeCampaign({ abEnabled: true, status: 'ab_testing' }));
-    expect(screen.queryByPlaceholderText('Alternate subject line to test')).toBeNull();
+    expect(screen.queryByPlaceholderText('Linea de asunto alternativa para probar')).toBeNull();
   });
 
   it('does NOT show the enable checkbox when not draft', () => {
@@ -436,9 +436,9 @@ describe('EmailAbConfig — not-draft + enabled', () => {
 describe('EmailAbConfig — informational text (draft + disabled)', () => {
   it('shows hint text about how A/B testing works', () => {
     const { container } = renderAb(makeCampaign({ abEnabled: false }));
-    fireEvent.click(screen.getByText('A/B test subject lines').closest('button')!);
+    fireEvent.click(screen.getByText('Prueba A/B de asuntos').closest('button')!);
     // The panel is now open and shows explanatory text
-    expect(container.textContent).toContain('4 hours');
+    expect(container.textContent).toContain('4 horas');
   });
 });
 
@@ -468,12 +468,12 @@ describe('EmailAbConfig — status panel (non-draft, enabled, status loaded)', (
       />,
     );
     await waitFor(() => {
-      expect(screen.getByText('Test status')).toBeTruthy();
+      expect(screen.getByText('Estado de la prueba')).toBeTruthy();
     });
-    expect(screen.getByText('Variant')).toBeTruthy();
-    expect(screen.getByText('Sent')).toBeTruthy();
-    expect(screen.getByText('Opened')).toBeTruthy();
-    expect(screen.getByText('Clicked')).toBeTruthy();
+    expect(screen.getByText('Variante')).toBeTruthy();
+    expect(screen.getByText('Enviado')).toBeTruthy();
+    expect(screen.getByText('Aperturas')).toBeTruthy();
+    expect(screen.getByText('Clics')).toBeTruthy();
   });
 
   it('shows projected winner when not decided', async () => {
@@ -487,7 +487,7 @@ describe('EmailAbConfig — status panel (non-draft, enabled, status loaded)', (
       />,
     );
     await waitFor(() => {
-      expect(screen.getByText(/Projected winner/)).toBeTruthy();
+      expect(screen.getByText(/Ganador previsto/)).toBeTruthy();
     });
     expect(screen.getByText('B')).toBeTruthy();
     expect(screen.getByText(/Higher open rate/)).toBeTruthy();
@@ -504,7 +504,7 @@ describe('EmailAbConfig — status panel (non-draft, enabled, status loaded)', (
       />,
     );
     await waitFor(() => {
-      expect(screen.getByText('Promote winner')).toBeTruthy();
+      expect(screen.getByText('Promover ganador')).toBeTruthy();
     });
   });
 
@@ -520,7 +520,7 @@ describe('EmailAbConfig — status panel (non-draft, enabled, status loaded)', (
       />,
     );
     await waitFor(() => {
-      expect(screen.getByText('Force-promote now')).toBeTruthy();
+      expect(screen.getByText('Forzar promoción ahora')).toBeTruthy();
     });
   });
 
@@ -535,9 +535,9 @@ describe('EmailAbConfig — status panel (non-draft, enabled, status loaded)', (
       />,
     );
     await waitFor(() => {
-      expect(screen.getByText('Promote winner')).toBeTruthy();
+      expect(screen.getByText('Promover ganador')).toBeTruthy();
     });
-    expect(screen.queryByText('Force-promote now')).toBeNull();
+    expect(screen.queryByText('Forzar promoción ahora')).toBeNull();
   });
 
   it('shows decided state with winner subject', async () => {
@@ -586,9 +586,9 @@ describe('EmailAbConfig — promoteWinner', () => {
     render(
       <EmailAbConfig campaign={makeCampaign({ abEnabled: true, status: 'ab_testing' })} onChange={onChange} />,
     );
-    await waitFor(() => screen.getByText('Promote winner'));
+    await waitFor(() => screen.getByText('Promover ganador'));
     await act(async () => {
-      fireEvent.click(screen.getByText('Promote winner'));
+      fireEvent.click(screen.getByText('Promover ganador'));
     });
     await waitFor(() => {
       const postCalls = fetchMock.mock.calls.filter(c => c[1]?.method === 'POST');
@@ -618,9 +618,9 @@ describe('EmailAbConfig — promoteWinner', () => {
     render(
       <EmailAbConfig campaign={makeCampaign({ abEnabled: true, status: 'ab_testing' })} onChange={vi.fn()} />,
     );
-    await waitFor(() => screen.getByText('Promote winner'));
+    await waitFor(() => screen.getByText('Promover ganador'));
     await act(async () => {
-      fireEvent.click(screen.getByText('Promote winner'));
+      fireEvent.click(screen.getByText('Promover ganador'));
     });
     const postCalls = fetchMock.mock.calls.filter(c => c[1]?.method === 'POST');
     expect(postCalls).toHaveLength(0);
@@ -634,9 +634,9 @@ describe('EmailAbConfig — promoteWinner', () => {
     render(
       <EmailAbConfig campaign={makeCampaign({ abEnabled: true, status: 'ab_testing' })} onChange={vi.fn()} />,
     );
-    await waitFor(() => screen.getByText('Promote winner'));
+    await waitFor(() => screen.getByText('Promover ganador'));
     await act(async () => {
-      fireEvent.click(screen.getByText('Promote winner'));
+      fireEvent.click(screen.getByText('Promover ganador'));
     });
     await waitFor(() => {
       expect(screen.getByText('Promotion failed')).toBeTruthy();
@@ -652,9 +652,9 @@ describe('EmailAbConfig — promoteWinner', () => {
     render(
       <EmailAbConfig campaign={makeCampaign({ abEnabled: true, status: 'ab_testing' })} onChange={vi.fn()} />,
     );
-    await waitFor(() => screen.getByText('Force-promote now'));
+    await waitFor(() => screen.getByText('Forzar promoción ahora'));
     await act(async () => {
-      fireEvent.click(screen.getByText('Force-promote now'));
+      fireEvent.click(screen.getByText('Forzar promoción ahora'));
     });
     await waitFor(() => {
       const postCalls = fetchMock.mock.calls.filter(c => c[1]?.method === 'POST');
@@ -672,7 +672,7 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    let input = screen.getByPlaceholderText('Alternate subject line to test') as HTMLInputElement;
+    let input = screen.getByPlaceholderText('Linea de asunto alternativa para probar') as HTMLInputElement;
     expect(input.value).toBe('Original B');
 
     rerender(
@@ -681,7 +681,7 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    input = screen.getByPlaceholderText('Alternate subject line to test') as HTMLInputElement;
+    input = screen.getByPlaceholderText('Linea de asunto alternativa para probar') as HTMLInputElement;
     expect(input.value).toBe('Updated B');
   });
 
@@ -692,7 +692,7 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    expect(screen.getByText('Open rate').className).toContain('bg-primary');
+    expect(screen.getByText('Tasa de apertura').className).toContain('bg-foreground');
 
     rerender(
       <EmailAbConfig
@@ -700,6 +700,6 @@ describe('EmailAbConfig — prop sync via useEffect', () => {
         onChange={vi.fn()}
       />,
     );
-    expect(screen.getByText('Click rate').className).toContain('bg-primary');
+    expect(screen.getByText('Tasa de clics').className).toContain('bg-foreground');
   });
 });

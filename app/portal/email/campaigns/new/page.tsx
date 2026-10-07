@@ -15,11 +15,21 @@ interface EmailList {
   subscriberCount: number;
 }
 
+interface SavedEmailTemplate {
+  id: number;
+  name: string;
+  subject: string | null;
+  htmlContent: string;
+  blockContent: { blocks?: Block[] } | null;
+}
+
 type EditorMode = 'visual' | 'html';
 
 export default function NewPortalCampaignPage() {
   const router = useRouter();
   const [lists, setLists] = useState<EmailList[]>([]);
+  const [templates, setTemplates] = useState<SavedEmailTemplate[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [form, setForm] = useState({
     name: '',
     subject: '',
@@ -58,6 +68,11 @@ export default function NewPortalCampaignPage() {
           setForm(p => ({ ...p, listId: String(fetchedLists[0].id) }));
         }
       });
+
+    fetch('/api/portal/email/templates')
+      .then(r => r.json())
+      .then(d => { if (d.success && Array.isArray(d.data)) setTemplates(d.data); })
+      .catch(() => {});
   }, []);
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -80,12 +95,32 @@ export default function NewPortalCampaignPage() {
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Failed to create campaign'); return; }
+    if (!data.success) { setError(data.message ?? 'No se pudo crear la campaña'); return; }
     router.push(`/portal/email/campaigns/${data.data.id}`);
   }
 
   function handleBlocksChange(newBlocks: Block[]) {
     setBlocks(newBlocks);
+  }
+
+  function applySavedTemplate(templateId: string) {
+    setSelectedTemplateId(templateId);
+    const template = templates.find(item => String(item.id) === templateId);
+    if (!template) return;
+
+    const templateBlocks = template.blockContent?.blocks;
+    if (Array.isArray(templateBlocks) && templateBlocks.length > 0) {
+      setBlocks(templateBlocks);
+      setEditorMode('visual');
+    } else {
+      setBlocks([]);
+      setEditorMode('html');
+    }
+    setForm(current => ({
+      ...current,
+      htmlContent: template.htmlContent,
+      ...(template.subject?.trim() && !current.subject.trim() ? { subject: template.subject } : {}),
+    }));
   }
 
   const inputClass = pInput;
@@ -105,16 +140,14 @@ export default function NewPortalCampaignPage() {
             <span className="material-icons">arrow_back</span>
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-foreground">New Campaign</h1>
+            <h1 className="text-xl font-bold text-foreground">Nueva campaña</h1>
             <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
               <span className="inline-flex items-center gap-1">
-                <span className="material-icons text-xs">edit_note</span>
-                Draft
-              </span>
+                <span className="material-icons text-xs">edit_note</span>Borrador</span>
               {blocks.length > 0 && (
                 <>
                   <span>·</span>
-                  <span>{blocks.length} block{blocks.length !== 1 ? 's' : ''}</span>
+                  <span>{blocks.length} {blocks.length !== 1 ? 'bloques' : 'bloque'}</span>
                 </>
               )}
             </div>
@@ -143,17 +176,13 @@ export default function NewPortalCampaignPage() {
             </button>
           </div>
 
-          {editorMode === 'visual' && (
-            <button
-              onClick={() => setShowEmailPreview(!showEmailPreview)}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border rounded-xl transition-colors ${
-                showEmailPreview ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground hover:bg-muted'
-              }`}
-            >
-              <span className="material-icons text-base">email</span>
-              Email Preview
-            </button>
-          )}
+          <button
+            onClick={() => setShowEmailPreview(!showEmailPreview)}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border rounded-xl transition-colors ${
+              showEmailPreview ? 'border-primary bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground hover:bg-muted'
+            }`}
+          >
+            <span className="material-icons text-base">email</span>Vista previa del correo</button>
 
           <button
             onClick={save}
@@ -165,7 +194,7 @@ export default function NewPortalCampaignPage() {
             ) : (
               <span className="material-icons text-base">save</span>
             )}
-            {saving ? 'Saving...' : 'Save Campaign'}
+            {saving ? 'Guardando...' : 'Guardar campaña'}
           </button>
         </div>
       </div>
@@ -188,24 +217,24 @@ export default function NewPortalCampaignPage() {
                 <button
                   onClick={() => setSettingsCollapsed(false)}
                   className="w-full p-2 border-b border-border text-muted-foreground hover:text-foreground transition-colors"
-                  title="Expand settings"
+                  title="Expandir ajustes"
                 >
                   <span className="material-icons text-base">chevron_right</span>
                 </button>
                 <div className="flex flex-col items-center gap-2 py-3">
-                  <span className="material-icons text-sm text-muted-foreground" title="Campaign details">campaign</span>
-                  <span className="material-icons text-sm text-muted-foreground" title="Sender">person</span>
-                  <span className="material-icons text-sm text-muted-foreground" title="Recipients">group</span>
+                  <span className="material-icons text-sm text-muted-foreground" title="Detalles de la campaña">campaign</span>
+                  <span className="material-icons text-sm text-muted-foreground" title="Remitente">person</span>
+                  <span className="material-icons text-sm text-muted-foreground" title="Destinatarios">group</span>
                 </div>
               </>
             ) : (
               <>
                 <div className="p-3 border-b border-border flex items-center justify-between">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Settings</span>
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Ajustes</span>
                   <button
                     onClick={() => setSettingsCollapsed(true)}
                     className="text-muted-foreground hover:text-foreground transition-colors"
-                    title="Collapse settings"
+                    title="Contraer ajustes"
                   >
                     <span className="material-icons text-base">chevron_left</span>
                   </button>
@@ -214,20 +243,37 @@ export default function NewPortalCampaignPage() {
                   {/* Campaign Details */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      <span className="material-icons text-sm">campaign</span>
-                      Campaign
+                      <span className="material-icons text-sm">campaign</span>Campaña</div>
+                    <div>
+                      <label className={labelClass}>Nombre *</label>
+                      <input value={form.name} onChange={set('name')} className={inputClass} placeholder="p. ej. Boletín de marzo" />
                     </div>
                     <div>
-                      <label className={labelClass}>Name *</label>
-                      <input value={form.name} onChange={set('name')} className={inputClass} placeholder="e.g. March Newsletter" />
+                      <label className={labelClass}>Línea de asunto *</label>
+                      <input value={form.subject} onChange={set('subject')} className={inputClass} placeholder="¿De qué trata tu correo?" />
                     </div>
                     <div>
-                      <label className={labelClass}>Subject Line *</label>
-                      <input value={form.subject} onChange={set('subject')} className={inputClass} placeholder="What's your email about?" />
+                      <label className={labelClass}>Texto de vista previa</label>
+                      <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Resumen breve en la bandeja de entrada" />
                     </div>
                     <div>
-                      <label className={labelClass}>Preview Text</label>
-                      <input value={form.previewText} onChange={set('previewText')} className={inputClass} placeholder="Short summary in inbox" />
+                      <label htmlFor="campaign-email-template" className={labelClass}>Aplicar plantilla guardada</label>
+                      <select
+                        id="campaign-email-template"
+                        value={selectedTemplateId}
+                        onChange={e => applySavedTemplate(e.target.value)}
+                        className={inputClass}
+                      >
+                        <option value="">Selecciona una plantilla…</option>
+                        {templates.map(template => (
+                          <option key={template.id} value={template.id}>{template.name}</option>
+                        ))}
+                      </select>
+                      {templates.length === 0 && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Aún no hay plantillas. <Link href="/portal/email/templates" className="text-primary hover:underline">Crear una</Link>
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -236,20 +282,18 @@ export default function NewPortalCampaignPage() {
                   {/* Sender */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      <span className="material-icons text-sm">person</span>
-                      Sender
+                      <span className="material-icons text-sm">person</span>Remitente</div>
+                    <div>
+                      <label className={labelClass}>Nombre del remitente *</label>
+                      <input value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="Tu nombre o empresa" />
                     </div>
                     <div>
-                      <label className={labelClass}>From Name *</label>
-                      <input value={form.fromName} onChange={set('fromName')} className={inputClass} placeholder="Your Name or Company" />
+                      <label className={labelClass}>Email del remitente *</label>
+                      <input type="email" value={form.fromEmail} onChange={set('fromEmail')} className={inputClass} placeholder="hola@tudominio.com" />
                     </div>
                     <div>
-                      <label className={labelClass}>From Email *</label>
-                      <input type="email" value={form.fromEmail} onChange={set('fromEmail')} className={inputClass} placeholder="hello@yourdomain.com" />
-                    </div>
-                    <div>
-                      <label className={labelClass}>Reply-To</label>
-                      <input type="email" value={form.replyTo} onChange={set('replyTo')} className={inputClass} placeholder="Optional" />
+                      <label className={labelClass}>Correo de respuesta</label>
+                      <input type="email" value={form.replyTo} onChange={set('replyTo')} className={inputClass} placeholder="Opcional" />
                     </div>
                   </div>
 
@@ -258,20 +302,18 @@ export default function NewPortalCampaignPage() {
                   {/* Recipients */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                      <span className="material-icons text-sm">group</span>
-                      Recipients
-                    </div>
+                      <span className="material-icons text-sm">group</span>Destinatarios</div>
                     <div>
-                      <label htmlFor="campaign-list" className={labelClass}>Subscriber List *</label>
+                      <label htmlFor="campaign-list" className={labelClass}>Lista de suscriptores *</label>
                       <select id="campaign-list" value={form.listId} onChange={set('listId')} className={inputClass}>
-                        <option value="">Select a list...</option>
+                        <option value="">Selecciona una lista...</option>
                         {lists.map(l => (
                           <option key={l.id} value={l.id}>{l.name} ({l.subscriberCount})</option>
                         ))}
                       </select>
                       {lists.length === 0 && (
                         <p className="text-xs text-muted-foreground mt-1">
-                          <Link href="/portal/email/lists" className="text-primary hover:underline">Create a list first</Link>
+                          <Link href="/portal/email/lists" className="text-primary hover:underline">Crea una lista primero</Link>
                         </p>
                       )}
                     </div>
@@ -325,22 +367,29 @@ export default function NewPortalCampaignPage() {
               )}
             </div>
           ) : (
-            <div className={`${pCard} overflow-hidden`}>
-              <div className="px-5 py-3 border-b border-border">
-                <h3 className="text-sm font-semibold text-foreground">Raw HTML Content</h3>
+            <div className={showEmailPreview ? 'flex flex-col md:flex-row gap-4' : ''}>
+              <div className={showEmailPreview ? 'flex-1 min-w-0' : 'w-full'}>
+                <div className={`${pCard} overflow-hidden`}>
+                  <div className="px-5 py-3 border-b border-border">
+                    <h3 className="text-sm font-semibold text-foreground">Contenido HTML sin procesar</h3>
+                  </div>
+                  <div className="p-5 space-y-3">
+                    <textarea
+                      value={form.htmlContent}
+                      onChange={set('htmlContent')}
+                      rows={24}
+                      className={`${inputClass} font-mono text-xs`}
+                      placeholder={`<h1>Hola,</h1>\n<p>El contenido de tu correo aquí...</p>`}
+                    />
+                    <p className="text-xs text-muted-foreground">Escribe o pega el HTML. Se añade el pie de cancelación de suscripción al enviar.</p>
+                  </div>
+                </div>
               </div>
-              <div className="p-5 space-y-3">
-                <textarea
-                  value={form.htmlContent}
-                  onChange={set('htmlContent')}
-                  rows={24}
-                  className={`${inputClass} font-mono text-xs`}
-                  placeholder={`<h1>Hello,</h1>\n<p>Your email content here...</p>`}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Write HTML directly. An unsubscribe footer is added automatically on send.
-                </p>
-              </div>
+              {showEmailPreview && (
+                <div className={`w-full md:w-[400px] shrink-0 ${pCard} overflow-hidden`} style={{ height: 'calc(100vh - 180px)' }}>
+                  <EmailPreviewPane blocks={[]} htmlContent={form.htmlContent} previewText={form.previewText} />
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -355,13 +404,13 @@ function createEmailBlock(type: BlockType, order: number): Block {
 
   switch (type) {
     case 'text':
-      return { ...base, type: 'text', content: 'Start writing your email content...', alignment: 'left', size: 'base' };
+      return { ...base, type: 'text', content: 'Empieza a escribir el contenido de tu correo...', alignment: 'left', size: 'base' };
     case 'heading':
-      return { ...base, type: 'heading', content: 'Email Heading', level: 2, alignment: 'left' };
+      return { ...base, type: 'heading', content: 'Título del correo', level: 2, alignment: 'left' };
     case 'image':
       return { ...base, type: 'image', url: '', alt: '', width: 'full', alignment: 'center' };
     case 'button':
-      return { ...base, type: 'button', text: 'Click Here', url: '', variant: 'primary', size: 'md', alignment: 'center' };
+      return { ...base, type: 'button', text: 'Haz clic aquí', url: '', variant: 'primary', size: 'md', alignment: 'center' };
     case 'spacer':
       return { ...base, type: 'spacer', height: 'md' };
     case 'divider':
@@ -372,7 +421,7 @@ function createEmailBlock(type: BlockType, order: number): Block {
         { id: `col-${Date.now()}-2`, width: 50, blocks: [] },
       ], gap: 'md' };
     case 'quote':
-      return { ...base, type: 'quote', content: 'Add a memorable quote...', author: '' };
+      return { ...base, type: 'quote', content: 'Añade una cita memorable...', author: '' };
     case 'section':
       return { ...base, type: 'section', blocks: [] };
     case 'social-links':
@@ -382,6 +431,6 @@ function createEmailBlock(type: BlockType, order: number): Block {
     case 'email-footer':
       return { ...base, type: 'email-footer', showUnsubscribe: true };
     default:
-      return { ...base, type: 'text', content: 'New block', alignment: 'left', size: 'base' };
+      return { ...base, type: 'text', content: 'Nuevo bloque', alignment: 'left', size: 'base' };
   }
 }

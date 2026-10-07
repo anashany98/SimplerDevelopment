@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { StepProps } from './types';
 import { BUNDLE, BUNDLE_SLUG, FEATURE_DOMAINS } from '@/lib/billing/domain-catalog';
 import { obPrimaryBtn, obChip, obFootbar } from '../ob-styles';
+import { formatCents } from '@/lib/portal-utils';
 
 interface ModuleItem {
   key: string;
@@ -115,11 +116,11 @@ export function StepUpsell({ next }: StepProps) {
         setFn('added');
       } else {
         setFn('error');
-        setAddErrors((e) => ({ ...e, [stateKey]: 'Something went wrong. Try again.' }));
+        setAddErrors((e) => ({ ...e, [stateKey]: 'Algo salió mal. Inténtalo de nuevo.' }));
       }
     } catch {
       setFn('error');
-      setAddErrors((e) => ({ ...e, [stateKey]: 'Network error. Try again.' }));
+      setAddErrors((e) => ({ ...e, [stateKey]: 'Error de red. Inténtalo de nuevo.' }));
     }
   }
 
@@ -131,19 +132,18 @@ export function StepUpsell({ next }: StepProps) {
   }
 
   function handleAddBundle() {
-    if (!window.confirm('Switch to SimplerDev Complete? This will replace your individual modules with the bundle subscription.')) return;
+    if (!window.confirm('¿Cambiar a CRM AGENTS Complete? Esto reemplazará tus módulos individuales por la suscripción al paquete.')) return;
     setBundleState('loading');
     void addModule(BUNDLE_SLUG, '__bundle__', setBundleState);
   }
 
-  const formatPrice = (cents: number) =>
-    `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`;
+  const formatPrice = (cents: number) => `${formatCents(cents)}/mes`;
 
   if (!mounted) {
     return (
       <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
         <span className="material-icons animate-spin mr-2 text-base">refresh</span>
-        Loading recommendations…
+        Cargando recomendaciones…
       </div>
     );
   }
@@ -177,14 +177,14 @@ export function StepUpsell({ next }: StepProps) {
                   {st === 'added' ? (
                     <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-emerald-600">
                       <span className="material-icons text-base text-emerald-600">check_circle</span>
-                      Added
+                      Añadido
                     </span>
                   ) : st === 'checkout' ? (
                     <Link
                       href="/portal/settings/billing/plans"
                       className="text-xs text-primary underline hover:text-primary/80 font-medium"
                     >
-                      Set up billing
+                      Configurar facturación
                       <span className="material-icons text-sm align-middle ml-0.5">arrow_forward</span>
                     </Link>
                   ) : (
@@ -199,7 +199,7 @@ export function StepUpsell({ next }: StepProps) {
                       ) : (
                         <span className="material-icons text-sm">add</span>
                       )}
-                      Add — {formatPrice(mod.monthlyPriceCents)}
+                      Añadir — {formatPrice(mod.monthlyPriceCents)}
                     </button>
                   )}
                 </div>
@@ -215,9 +215,9 @@ export function StepUpsell({ next }: StepProps) {
           <span className="material-icons text-foreground shrink-0">star</span>
           <p className="flex-1 text-[13.5px] text-foreground">
             {bundleUpgradeCents > 0 ? (
-              <>You&apos;re <strong>{formatPrice(bundleUpgradeCents)}/mo</strong> away from everything</>
+              <>Estás a <strong>{formatPrice(bundleUpgradeCents)}</strong> de tenerlo todo</>
             ) : (
-              <>Unlock everything for the same price</>
+              <>Desbloquea todo por el mismo precio</>
             )}
             {' '}—{' '}
             <button
@@ -226,7 +226,7 @@ export function StepUpsell({ next }: StepProps) {
               disabled={bundleState === 'loading' || bundleState === 'added'}
               className="underline text-primary hover:text-primary/80 font-medium disabled:opacity-50"
             >
-              Switch to Complete
+              Cambiar a Complete
             </button>
           </p>
           {bundleState === 'loading' && (
@@ -240,11 +240,11 @@ export function StepUpsell({ next }: StepProps) {
               href="/portal/settings/billing/plans"
               className="text-xs text-primary underline hover:text-primary/80 font-medium whitespace-nowrap"
             >
-              Set up billing
+              Configurar facturación
             </Link>
           )}
           {bundleState === 'error' && (
-            <span className="text-xs text-destructive">Error — try again</span>
+            <span className="text-xs text-destructive">Error — inténtalo de nuevo</span>
           )}
         </div>
       )}
@@ -254,9 +254,7 @@ export function StepUpsell({ next }: StepProps) {
           type="button"
           onClick={() => next()}
           className={obPrimaryBtn}
-        >
-          Continue
-          <span className="material-icons text-base">arrow_forward</span>
+        >Continuar<span className="material-icons text-base">arrow_forward</span>
         </button>
       </div>
     </div>

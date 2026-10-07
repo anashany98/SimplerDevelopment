@@ -120,7 +120,7 @@ export function StatsBlockPreview({ block, isSelected, onChange }: StatsBlockPre
               onChange={(e) => updateStat(stat.id, { label: e.target.value })}
               onClick={(e) => e.stopPropagation()}
               className="text-lg text-muted-foreground w-full bg-transparent border-none focus:outline-none focus:border-b border-border text-center"
-              placeholder="Label"
+              placeholder="Etiqueta"
               style={getElementCSS(block.elementStyles, 'statLabel')}
             />
           </div>

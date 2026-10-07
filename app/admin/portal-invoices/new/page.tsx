@@ -60,7 +60,7 @@ export default function NewInvoicePage() {
     setSaving(false);
 
     if (!data.success) {
-      setError(data.message ?? 'Failed to create invoice');
+      setError(data.message ?? 'No se pudo crear la factura');
     } else {
       router.push('/admin/portal-invoices');
     }
@@ -70,11 +70,11 @@ export default function NewInvoicePage() {
     <div className="p-6 max-w-3xl mx-auto space-y-6">
       <div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-          <Link href="/admin/portal-invoices" className="hover:text-foreground">Invoices</Link>
+          <Link href="/admin/portal-invoices" className="hover:text-foreground">Facturas</Link>
           <span className="material-icons text-sm">chevron_right</span>
-          <span className="text-foreground">New Invoice</span>
+          <span className="text-foreground">Nueva factura</span>
         </div>
-        <h1 className="text-2xl font-bold text-foreground">Create Invoice</h1>
+        <h1 className="text-2xl font-bold text-foreground">Crear factura</h1>
       </div>
 
       <div className="bg-card border border-border rounded-xl p-6">
@@ -86,53 +86,52 @@ export default function NewInvoicePage() {
           {/* Client + meta */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Client <span className="text-destructive">*</span></label>
+              <label className="block text-sm font-medium text-foreground mb-1">Cliente<span className="text-destructive">*</span></label>
               <select required value={form.clientId} onChange={e => setForm({ ...form, clientId: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                <option value="">Select client...</option>
+                <option value="">Selecciona un cliente...</option>
                 {clients.map(c => <option key={c.id} value={c.id}>{c.company ?? c.userName}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Status</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Estado</label>
               <select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                <option value="draft">Draft</option>
-                <option value="sent">Send to Client</option>
+                <option value="draft">Borrador</option>
+                <option value="sent">Enviar al cliente</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Due Date</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Fecha de vencimiento</label>
               <input type="date" value={form.dueDate} onChange={e => setForm({ ...form, dueDate: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Tax ($)</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Impuesto (EUR)</label>
               <input type="number" min="0" step="0.01" placeholder="0.00" value={form.tax} onChange={e => setForm({ ...form, tax: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-              <p className="text-xs text-muted-foreground mt-0.5">Enter in dollars (e.g. 5.00 = $5.00)</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Introduce en euros (p. ej. 5.00 = 5,00 €)</p>
             </div>
           </div>
 
           {/* Line items */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-foreground">Line Items</h3>
+              <h3 className="text-sm font-semibold text-foreground">Líneas de factura</h3>
               <button type="button" onClick={addItem}
                 className="flex items-center gap-1 text-xs text-primary hover:underline">
-                <span className="material-icons text-sm">add</span>Add Item
-              </button>
+                <span className="material-icons text-sm">add</span>Añadir elemento</button>
             </div>
             <div className="space-y-2">
               {items.map((item, idx) => (
                 <div key={idx} className="grid grid-cols-[1fr_80px_110px_36px] gap-2 items-center">
-                  <input type="text" required placeholder="Description" value={item.description}
+                  <input type="text" required placeholder="Descripción" value={item.description}
                     onChange={e => updateItem(idx, 'description', e.target.value)}
                     className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-                  <input type="number" min="1" placeholder="Qty" value={item.quantity}
+                  <input type="number" min="1" placeholder="Cant." value={item.quantity}
                     onChange={e => updateItem(idx, 'quantity', parseInt(e.target.value, 10) || 1)}
                     className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-                  <input type="number" min="0" step="0.01" placeholder="Price ($)" value={item.unitPrice}
+                  <input type="number" min="0" step="0.01" placeholder="Precio (EUR)" value={item.unitPrice}
                     onChange={e => updateItem(idx, 'unitPrice', parseFloat(e.target.value) || 0)}
                     className="px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
                   <button type="button" onClick={() => removeItem(idx)} disabled={items.length === 1}
@@ -146,7 +145,7 @@ export default function NewInvoicePage() {
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Notes</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Notas</label>
             <textarea rows={2} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })}
               className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
           </div>
@@ -156,17 +155,17 @@ export default function NewInvoicePage() {
             <div className="flex justify-between text-muted-foreground">
               <span>Subtotal</span><span>{formatCents(Math.round(subtotal * 100))}</span>
             </div>
-            {tax > 0 && <div className="flex justify-between text-muted-foreground"><span>Tax</span><span>{formatCents(tax)}</span></div>}
+            {tax > 0 && <div className="flex justify-between text-muted-foreground"><span>Impuesto</span><span>{formatCents(tax)}</span></div>}
             <div className="flex justify-between font-bold text-foreground pt-1 border-t border-border mt-1">
               <span>Total</span><span>{formatCents(Math.round(subtotal * 100) + tax)}</span>
             </div>
           </div>
 
           <div className="flex justify-end gap-3">
-            <Link href="/admin/portal-invoices" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancel</Link>
+            <Link href="/admin/portal-invoices" className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</Link>
             <button type="submit" disabled={saving}
-              className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors">
-              {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Creating...</> : 'Create Invoice'}
+              className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors">
+              {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Creando...</> : 'Crear factura'}
             </button>
           </div>
         </form>

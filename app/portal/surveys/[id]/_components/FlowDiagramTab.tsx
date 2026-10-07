@@ -40,7 +40,7 @@ function nodeHeight(page: FlowPage): number {
 }
 
 function truncateLabel(s: string, max = 48): string {
-  if (!s) return '(untitled)';
+  if (!s) return '(sin título)';
   if (s.length <= max) return s;
   return s.slice(0, max - 1) + '…';
 }
@@ -53,11 +53,11 @@ export default function FlowDiagramTab({ fields }: Props) {
     return (
       <div className="bg-card border border-border rounded-xl p-8 text-center space-y-3">
         <span className="material-icons text-4xl text-muted-foreground/50">account_tree</span>
-        <h3 className="font-semibold text-foreground">No flow to diagram</h3>
+        <h3 className="font-semibold text-foreground">No hay flujo que diagramar</h3>
         <p className="text-sm text-muted-foreground max-w-md mx-auto">
-          This survey has only one page — no flow to diagram. Add a{' '}
-          <span className="font-medium text-foreground">Page Break</span> on the Edit tab to split
-          questions across multiple pages and unlock skip-logic between them.
+          Esta encuesta tiene solo una página: no hay flujo que diagramar. Añade un{' '}
+          <span className="font-medium text-foreground">Salto de página</span> en la pestaña Editar
+          para dividir las preguntas en varias páginas y habilitar la lógica de salto entre ellas.
         </p>
       </div>
     );
@@ -81,17 +81,17 @@ export default function FlowDiagramTab({ fields }: Props) {
           <div>
             <h3 className="font-semibold text-foreground flex items-center gap-2">
               <span className="material-icons text-primary">account_tree</span>
-              Page Flow
+              Flujo de páginas
             </h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {graph.pages.length} pages, {graph.edges.length} connection
-              {graph.edges.length === 1 ? '' : 's'}
+              {graph.pages.length} páginas, {graph.edges.length} conexión
+              {graph.edges.length === 1 ? '' : 'es'}
               {graph.orphans.size > 0 && (
                 <>
                   {' '}
                   &middot;{' '}
                   <span className="text-red-600 dark:text-red-400 font-medium">
-                    {graph.orphans.size} unreachable
+                    {graph.orphans.size} sin acceso
                   </span>
                 </>
               )}
@@ -106,7 +106,7 @@ export default function FlowDiagramTab({ fields }: Props) {
             height={svgHeight}
             viewBox={`0 0 ${svgWidth} ${svgHeight}`}
             role="img"
-            aria-label="Survey flow diagram"
+            aria-label="Diagrama de flujo de la encuesta"
             className="mx-auto block"
           >
             <defs>
@@ -167,16 +167,15 @@ export default function FlowDiagramTab({ fields }: Props) {
             </span>
             <div className="text-sm text-red-700 dark:text-red-300">
               <p className="font-medium">
-                {graph.orphans.size} unreachable page{graph.orphans.size === 1 ? '' : 's'}
+                {graph.orphans.size} página{graph.orphans.size === 1 ? '' : 's'} inaccesible{graph.orphans.size === 1 ? '' : 's'}
               </p>
               <p className="mt-1 text-xs">
                 {Array.from(graph.orphans)
-                  .map((i) => `Page ${i + 1}`)
+                  .map((i) => `Página ${i + 1}`)
                   .join(', ')}{' '}
-                {graph.orphans.size === 1 ? 'has' : 'have'} no incoming edge — no respondent will
-                ever land on{' '}
-                {graph.orphans.size === 1 ? 'this page' : 'these pages'}. Check the goToPage rules
-                on the preceding page&apos;s select/radio fields.
+                {graph.orphans.size === 1 ? 'no tiene' : 'no tienen'} entradas — ningún encuestado llegará a{' '}
+                {graph.orphans.size === 1 ? 'esta página' : 'estas páginas'}. Revisa las reglas
+                goToPage de los campos select/radio de la página anterior.
               </p>
             </div>
           </div>
@@ -200,7 +199,7 @@ function Legend() {
             strokeWidth="1.5"
           />
         </svg>
-        Default Next
+        Siguiente por defecto
       </span>
       <span className="flex items-center gap-1.5">
         <svg width="22" height="10" aria-hidden="true">
@@ -214,7 +213,7 @@ function Legend() {
             strokeDasharray="4 3"
           />
         </svg>
-        Skip Logic
+        Lógica de salto
       </span>
     </div>
   );
@@ -257,7 +256,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
         className="fill-foreground"
         style={{ fontSize: '14px', fontWeight: 600 }}
       >
-        Page {page.index + 1}
+        Página {page.index + 1}
       </text>
       <text
         x={x + NODE_WIDTH - 16}
@@ -266,7 +265,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
         className="fill-muted-foreground"
         style={{ fontSize: '12px' }}
       >
-        {page.fields.length} question{page.fields.length === 1 ? '' : 's'}
+        {page.fields.length} pregunta{page.fields.length === 1 ? '' : 's'}
       </text>
 
       {/* Orphan badge */}
@@ -299,7 +298,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
             className="fill-red-700 dark:fill-red-300"
             style={{ fontSize: '11px', fontWeight: 500 }}
           >
-            Unreachable
+            Sin acceso
           </text>
         </g>
       )}
@@ -323,7 +322,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
           className="fill-muted-foreground italic"
           style={{ fontSize: '11px' }}
         >
-          +{overflow} more
+          +{overflow} más
         </text>
       )}
 
@@ -335,7 +334,7 @@ function PageNode({ page, x, y, isOrphan }: PageNodeProps) {
           className="fill-muted-foreground italic"
           style={{ fontSize: '12px' }}
         >
-          (no questions on this page)
+          (sin preguntas en esta página)
         </text>
       )}
     </g>

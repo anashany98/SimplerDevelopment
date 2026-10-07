@@ -41,8 +41,8 @@ export function DocsChrome({ nav, children }: { nav: NavGroup[]; children: React
           </button>
 
           <Link href="/" className="flex items-center gap-2.5">
-            <Image src="/iconLogo.png" alt="SimplerDevelopment" width={28} height={28} className="rounded" priority />
-            <span className="hidden font-semibold tracking-tight sm:inline">SimplerDevelopment</span>
+            <Image src="/iconLogo.png" alt="CRM AGENTS" width={28} height={28} className="rounded" priority />
+            <span className="hidden font-semibold tracking-tight sm:inline">CRM AGENTS</span>
             <span className="rounded-md border border-border px-1.5 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-muted-foreground">
               Docs
             </span>

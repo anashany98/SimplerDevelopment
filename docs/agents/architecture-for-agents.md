@@ -1,6 +1,6 @@
 # Architecture for Agents
 
-> **Purpose.** This document lets an AI coding agent (or a new human contributor) understand how SimplerDevelopment is structured in minutes. It covers the three audience trees, request lifecycle, tenancy model, data layer, auth, AI/RAG layer, and extension points. Read this before opening any code files. All facts are derived from authoritative in-repo sources; nothing is invented.
+> **Purpose.** This document lets an AI coding agent (or a new human contributor) understand how CRM AGENTS is structured in minutes. It covers the three audience trees, request lifecycle, tenancy model, data layer, auth, AI/RAG layer, and extension points. Read this before opening any code files. All facts are derived from authoritative in-repo sources; nothing is invented.
 
 **See also:** [`./repository-map.md`](./repository-map.md) · [`./ai-overview.md`](./ai-overview.md) · [`./api-index.md`](./api-index.md) · [`./tool-reference.md`](./tool-reference.md) · [`./glossary.md`](./glossary.md) · [`/llms.txt`](/llms.txt)
 
@@ -8,7 +8,7 @@
 
 ## 1. What this system is
 
-SimplerDevelopment is a **multi-tenant SaaS platform** with four integrated layers:
+CRM AGENTS is a **multi-tenant SaaS platform** with four integrated layers:
 
 | Layer | What it is |
 |---|---|

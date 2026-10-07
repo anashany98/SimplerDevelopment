@@ -195,14 +195,14 @@ export default function OrderDetailPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Status updated.');
+        setSuccess('Estado actualizado.');
         setStatusNote('');
         loadOrder();
       } else {
-        setError(data.message || 'Failed to update status.');
+        setError(data.message || 'No se pudo actualizar el estado.');
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
     } finally {
       setSaving(false);
     }
@@ -220,13 +220,13 @@ export default function OrderDetailPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Fulfillment updated.');
+        setSuccess('Preparación actualizada.');
         loadOrder();
       } else {
-        setError(data.message || 'Failed to update.');
+        setError(data.message || 'No se pudo actualizar.');
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
     } finally {
       setSaving(false);
     }
@@ -240,7 +240,7 @@ export default function OrderDetailPage() {
       const res = await fetch(`${base}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'shipped', note: trackingNumber ? `Tracking: ${trackingNumber}` : 'Marked as shipped' }),
+        body: JSON.stringify({ status: 'shipped', note: trackingNumber ? `Tracking: ${trackingNumber}` : 'Marcado como enviado' }),
       });
       const data = await res.json();
       if (data.success) {
@@ -251,13 +251,13 @@ export default function OrderDetailPage() {
             body: JSON.stringify({ trackingNumber, trackingUrl }),
           });
         }
-        setSuccess('Order marked as shipped.');
+        setSuccess('Pedido marcado como enviado.');
         loadOrder();
       } else {
-        setError(data.message || 'Failed to update.');
+        setError(data.message || 'No se pudo actualizar.');
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
     } finally {
       setSaving(false);
     }
@@ -274,12 +274,12 @@ export default function OrderDetailPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Notes saved.');
+        setSuccess('Notas guardadas.');
       } else {
-        setError(data.message || 'Failed to save notes.');
+        setError(data.message || 'No se pudieron guardar las notas.');
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
     } finally {
       setSaving(false);
     }
@@ -304,10 +304,10 @@ export default function OrderDetailPage() {
         setRatesShipmentId(data.data.shipmentId as string);
         if (sorted.length > 0) setSelectedRateId(sorted[0].id);
       } else {
-        setLabelError(data.message || 'Failed to compute rates.');
+        setLabelError(data.message || 'No se pudieron calcular las tarifas.');
       }
     } catch {
-      setLabelError('Failed to compute rates.');
+      setLabelError('No se pudieron calcular las tarifas.');
     } finally {
       setRatesLoading(false);
     }
@@ -325,24 +325,24 @@ export default function OrderDetailPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Label purchased.');
+        setSuccess('Etiqueta comprada.');
         setRates(null);
         setParcelSummary(null);
         setSelectedRateId('');
         setRatesShipmentId('');
         loadOrder();
       } else {
-        setLabelError(data.message || 'Failed to purchase label.');
+        setLabelError(data.message || 'No se pudo comprar la etiqueta.');
       }
     } catch {
-      setLabelError('Failed to purchase label.');
+      setLabelError('No se pudo comprar la etiqueta.');
     } finally {
       setLabelBuying(false);
     }
   };
 
   const refundLabel = async () => {
-    if (typeof window !== 'undefined' && !window.confirm('Request a refund for this shipping label? The label will be voided and removed from the order.')) {
+    if (typeof window !== 'undefined' && !window.confirm('¿Solicitar un reembolso de esta etiqueta de envío? La etiqueta se anulará y se quitará del pedido.')) {
       return;
     }
     setLabelRefunding(true);
@@ -351,13 +351,13 @@ export default function OrderDetailPage() {
       const res = await fetch(`${base}/orders/${orderId}/label`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Label refund requested.');
+        setSuccess('Reembolso de etiqueta solicitado.');
         loadOrder();
       } else {
-        setLabelError(data.message || 'Failed to refund label.');
+        setLabelError(data.message || 'No se pudo reembolsar la etiqueta.');
       }
     } catch {
-      setLabelError('Failed to refund label.');
+      setLabelError('No se pudo reembolsar la etiqueta.');
     } finally {
       setLabelRefunding(false);
     }
@@ -371,13 +371,13 @@ export default function OrderDetailPage() {
       const res = await fetch(`${base}/orders/${orderId}/printful/submit`, { method: 'POST' });
       const data = await res.json();
       if (data.success) {
-        setSuccess('Order submitted to Printful.');
+        setSuccess('Pedido enviado a Printful.');
         loadOrder();
       } else {
-        setPrintfulError(data.message || 'Failed to submit order to Printful.');
+        setPrintfulError(data.message || 'No se pudo enviar el pedido a Printful.');
       }
     } catch {
-      setPrintfulError('Failed to submit order to Printful.');
+      setPrintfulError('No se pudo enviar el pedido a Printful.');
     } finally {
       setPrintfulSubmitting(false);
     }
@@ -395,7 +395,7 @@ export default function OrderDetailPage() {
     return (
       <div className="max-w-4xl mx-auto text-center py-16">
         <span className="material-icons text-4xl text-muted-foreground/40">error_outline</span>
-        <p className="text-muted-foreground mt-2">Order not found.</p>
+        <p className="text-muted-foreground mt-2">Pedido no encontrado.</p>
       </div>
     );
   }
@@ -410,12 +410,10 @@ export default function OrderDetailPage() {
         href={`/portal/websites/${siteId}/store/orders`}
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        <span className="material-icons text-base">arrow_back</span>
-        Orders
-      </Link>
+        <span className="material-icons text-base">arrow_back</span>Pedidos</Link>
 
       <PortalPageHeader
-        eyebrow="Store"
+        eyebrow="Tienda"
         title={
           <span className="inline-flex items-center gap-3">
             {order.orderNumber}
@@ -428,7 +426,7 @@ export default function OrderDetailPage() {
             </span>
           </span>
         }
-        subtitle={new Date(order.createdAt).toLocaleString()}
+        subtitle={new Date(order.createdAt).toLocaleString('es-ES')}
       />
 
       {/* Messages */}
@@ -449,11 +447,11 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">swap_horiz</span>
-          Update Status
+          Actualizar estado
         </h2>
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
-            <label className="text-sm font-medium text-foreground">New Status</label>
+            <label className="text-sm font-medium text-foreground">Nuevo estado</label>
             <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)} className={pSelect}>
               {statusOptions.map((s) => (
                 <option key={s} value={s}>
@@ -463,8 +461,8 @@ export default function OrderDetailPage() {
             </select>
           </div>
           <div className="flex-1 space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Note (optional)</label>
-            <input value={statusNote} onChange={(e) => setStatusNote(e.target.value)} placeholder="Add a note..." className={pInput} />
+            <label className="text-sm font-medium text-foreground">Nota (opcional)</label>
+            <input value={statusNote} onChange={(e) => setStatusNote(e.target.value)} placeholder="Escribe una nota…" className={pInput} />
           </div>
           <button
             onClick={updateStatus}
@@ -472,7 +470,7 @@ export default function OrderDetailPage() {
             className={pBtnPrimary}
           >
             {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-            Update
+            Actualizar
           </button>
         </div>
       </div>
@@ -480,13 +478,13 @@ export default function OrderDetailPage() {
       {/* Customer + Addresses */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className={`${pCard} p-5 space-y-2`}>
-          <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Customer</h3>
+          <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Cliente</h3>
           <p className="text-sm font-medium text-foreground">{order.customerName}</p>
           <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
           {order.customerPhone && <p className="text-sm text-muted-foreground">{order.customerPhone}</p>}
         </div>
         <div className={`${pCard} p-5 space-y-2`}>
-          <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Shipping Address</h3>
+          <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Dirección de envío</h3>
           {shippingLines ? (
             shippingLines.map((line, i) => (
               <p key={i} className="text-sm text-foreground">
@@ -494,11 +492,11 @@ export default function OrderDetailPage() {
               </p>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">No shipping address</p>
+            <p className="text-sm text-muted-foreground">Sin dirección de envío</p>
           )}
         </div>
         <div className={`${pCard} p-5 space-y-2`}>
-          <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Billing Address</h3>
+          <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Dirección de facturación</h3>
           {billingLines ? (
             billingLines.map((line, i) => (
               <p key={i} className="text-sm text-foreground">
@@ -506,7 +504,7 @@ export default function OrderDetailPage() {
               </p>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">Same as shipping</p>
+            <p className="text-sm text-muted-foreground">Igual que el envío</p>
           )}
         </div>
       </div>
@@ -514,16 +512,16 @@ export default function OrderDetailPage() {
       {/* Order Items */}
       <div className={`${pCard} overflow-hidden`}>
         <div className="px-4 py-3 border-b border-border bg-muted/20">
-          <h2 className={pSectionTitle}>Order Items</h2>
+          <h2 className={pSectionTitle}>Artículos del pedido</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Product</th>
+                <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Producto</th>
                 <th className="px-4 py-2 text-xs font-medium text-muted-foreground">SKU</th>
-                <th className="px-4 py-2 text-xs font-medium text-muted-foreground text-right">Qty</th>
-                <th className="px-4 py-2 text-xs font-medium text-muted-foreground text-right">Unit Price</th>
+                <th className="px-4 py-2 text-xs font-medium text-muted-foreground text-right">Cant.</th>
+                <th className="px-4 py-2 text-xs font-medium text-muted-foreground text-right">Precio unitario</th>
                 <th className="px-4 py-2 text-xs font-medium text-muted-foreground text-right">Total</th>
               </tr>
             </thead>
@@ -536,7 +534,7 @@ export default function OrderDetailPage() {
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={item.design.thumbnailUrl}
-                          alt={item.design.name || 'Custom design'}
+                          alt={item.design.name || 'Diseño personalizado'}
                           className="w-12 h-12 rounded border border-border object-cover bg-white flex-shrink-0"
                         />
                       ) : item.design ? (
@@ -549,11 +547,11 @@ export default function OrderDetailPage() {
                         {item.variantName && <p className="text-xs text-muted-foreground">{item.variantName}</p>}
                         {item.design ? (
                           <p className="text-xs italic text-muted-foreground mt-0.5">
-                            Custom design: {item.design.name || 'Untitled design'}
+                            Diseño personalizado: {item.design.name || 'Sin título'}
                           </p>
                         ) : item.designId ? (
                           <p className="text-xs italic text-muted-foreground/70 mt-0.5">
-                            Design no longer available
+                            El diseño ya no está disponible
                           </p>
                         ) : null}
                       </div>
@@ -574,16 +572,16 @@ export default function OrderDetailPage() {
             <span className="text-foreground">{formatMoney(order.subtotalCents)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Shipping</span>
+            <span className="text-muted-foreground">Envío</span>
             <span className="text-foreground">{formatMoney(order.shippingCents)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Tax</span>
+            <span className="text-muted-foreground">Impuesto</span>
             <span className="text-foreground">{formatMoney(order.taxCents)}</span>
           </div>
           {order.discountCents > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Discount</span>
+              <span className="text-muted-foreground">Descuento</span>
               <span className="text-green-600">-{formatMoney(order.discountCents)}</span>
             </div>
           )}
@@ -598,15 +596,15 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">local_shipping</span>
-          Fulfillment
+          Preparación
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Tracking Number</label>
-            <input value={trackingNumber} onChange={(e) => setTrackingNumber(e.target.value)} placeholder="Enter tracking number" className={pInput} />
+            <label className="text-sm font-medium text-foreground">Número de rastreo</label>
+            <input value={trackingNumber} onChange={(e) => setTrackingNumber(e.target.value)} placeholder="Ingresa el número de rastreo" className={pInput} />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Tracking URL</label>
+            <label className="text-sm font-medium text-foreground">URL de rastreo</label>
             <input value={trackingUrl} onChange={(e) => setTrackingUrl(e.target.value)} placeholder="https://..." className={pInput} />
           </div>
         </div>
@@ -616,7 +614,7 @@ export default function OrderDetailPage() {
             disabled={saving}
             className={pBtnGhost}
           >
-            Save Tracking
+            Guardar rastreo
           </button>
           {order.status !== 'shipped' && order.status !== 'delivered' && (
             <button
@@ -625,7 +623,7 @@ export default function OrderDetailPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">local_shipping</span>
-              Mark as Shipped
+              Marcar como enviado
             </button>
           )}
         </div>
@@ -635,7 +633,7 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">label</span>
-          Shipping Label
+          Etiqueta de envío
         </h2>
 
         {labelError && (
@@ -651,19 +649,19 @@ export default function OrderDetailPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               {order.carrier && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Carrier</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Transportista</p>
                   <p className="text-foreground">{order.carrier}</p>
                 </div>
               )}
               {order.shippingMethod && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Service</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Servicio</p>
                   <p className="text-foreground">{order.shippingMethod}</p>
                 </div>
               )}
               {order.trackingNumber && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Tracking</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Rastreo</p>
                   {order.trackingUrl ? (
                     <a
                       href={order.trackingUrl}
@@ -680,13 +678,13 @@ export default function OrderDetailPage() {
               )}
               {order.labelPurchasedAt && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Purchased</p>
-                  <p className="text-foreground">{new Date(order.labelPurchasedAt).toLocaleString()}</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Comprado</p>
+                  <p className="text-foreground">{new Date(order.labelPurchasedAt).toLocaleString('es-ES')}</p>
                 </div>
               )}
               {order.labelCostCents != null && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Label Cost</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Costo en la etiqueta</p>
                   <p className="text-foreground">{formatMoney(order.labelCostCents)}</p>
                 </div>
               )}
@@ -699,7 +697,7 @@ export default function OrderDetailPage() {
                 className={pBtnPrimary}
               >
                 <span className="material-icons text-base">download</span>
-                View Label
+                Ver etiqueta
               </a>
               <button
                 onClick={refundLabel}
@@ -711,7 +709,7 @@ export default function OrderDetailPage() {
                 ) : (
                   <span className="material-icons text-base">cancel</span>
                 )}
-                Refund Label
+                Reembolsar etiqueta
               </button>
             </div>
           </div>
@@ -729,20 +727,20 @@ export default function OrderDetailPage() {
                 ) : (
                   <span className="material-icons text-base">calculate</span>
                 )}
-                Compute Rates
+                Calcular tarifas
               </button>
             )}
 
             {rates && parcelSummary && (
               <>
                 <div className="text-xs text-muted-foreground bg-muted/30 px-3 py-2 rounded-xl">
-                  <span className="font-medium">Parcel:</span>{' '}
+                  <span className="font-medium">Paquete:</span>{' '}
                   {parcelSummary.lengthIn} × {parcelSummary.widthIn} × {parcelSummary.heightIn} in,{' '}
                   {parcelSummary.weightOz} oz
                 </div>
 
                 {rates.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No rates returned for this shipment.</p>
+                  <p className="text-sm text-muted-foreground">No se devolvieron tarifas para este envío.</p>
                 ) : (
                   <div className="space-y-2">
                     {rates.map((r, idx) => {
@@ -773,13 +771,13 @@ export default function OrderDetailPage() {
                               {isCheapest && (
                                 <span className="inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
                                   <span className="material-icons text-[10px]">star</span>
-                                  Best value
+                                  Mejor precio
                                 </span>
                               )}
                             </div>
                             {r.estDeliveryDays != null && (
                               <p className="text-xs text-muted-foreground">
-                                Est. {r.estDeliveryDays} day{r.estDeliveryDays === 1 ? '' : 's'}
+                                Entrega estimada: {r.estDeliveryDays} día{r.estDeliveryDays === 1 ? '' : 's'}
                               </p>
                             )}
                           </div>
@@ -803,7 +801,7 @@ export default function OrderDetailPage() {
                     ) : (
                       <span className="material-icons text-base">shopping_cart</span>
                     )}
-                    Buy Label
+                    Comprar etiqueta
                   </button>
                   <button
                     onClick={computeRates}
@@ -811,7 +809,7 @@ export default function OrderDetailPage() {
                     className={pBtnSoft}
                   >
                     <span className="material-icons text-base">refresh</span>
-                    Refresh rates
+                    Actualizar tarifas
                   </button>
                 </div>
               </>
@@ -825,7 +823,7 @@ export default function OrderDetailPage() {
         <div className={`${pCard} p-6 space-y-4`}>
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">print</span>
-            Printful Fulfillment
+            Preparación en Printful
           </h2>
 
           {printfulError && (
@@ -839,23 +837,23 @@ export default function OrderDetailPage() {
             <div className="space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</p>
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
                       printfulStatusColors[order.printfulFulfillmentStatus || ''] || 'bg-muted text-muted-foreground'
                     }`}
                   >
-                    {order.printfulFulfillmentStatus || 'unknown'}
+                    {order.printfulFulfillmentStatus || 'desconocido'}
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Printful Order ID</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">ID de pedido en Printful</p>
                   <p className="text-foreground font-mono text-xs mt-1">#{order.printfulOrderId}</p>
                 </div>
                 {order.printfulSubmittedAt && (
                   <div>
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Submitted At</p>
-                    <p className="text-foreground mt-1">{new Date(order.printfulSubmittedAt).toLocaleString()}</p>
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Enviado el</p>
+                    <p className="text-foreground mt-1">{new Date(order.printfulSubmittedAt).toLocaleString('es-ES')}</p>
                   </div>
                 )}
               </div>
@@ -868,7 +866,7 @@ export default function OrderDetailPage() {
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">Not yet submitted to Printful.</p>
+              <p className="text-sm text-muted-foreground">Aún no se ha enviado a Printful.</p>
               {order.paymentStatus === 'paid' && (
                 <button
                   onClick={submitToPrintful}
@@ -880,7 +878,7 @@ export default function OrderDetailPage() {
                   ) : (
                     <span className="material-icons text-base">send</span>
                   )}
-                  Submit to Printful
+                  Enviar a Printful
                 </button>
               )}
             </div>
@@ -892,13 +890,13 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">sticky_note_2</span>
-          Internal Notes
+          Notas internas
         </h2>
         <textarea
           value={internalNotes}
           onChange={(e) => setInternalNotes(e.target.value)}
           rows={4}
-          placeholder="Add private notes about this order..."
+          placeholder="Agrega notas internas sobre este pedido…"
           className={pInput}
         />
         <button
@@ -906,7 +904,7 @@ export default function OrderDetailPage() {
           disabled={saving}
           className={pBtnGhost}
         >
-          Save Notes
+          Guardar notas
         </button>
       </div>
 
@@ -914,10 +912,10 @@ export default function OrderDetailPage() {
       <div className={`${pCard} p-6 space-y-4`}>
         <h2 className={`${pSectionTitle} flex items-center gap-2`}>
           <span className="material-icons text-lg text-muted-foreground">history</span>
-          Status History
+          Historial de estado
         </h2>
         {order.statusHistory.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No status changes recorded.</p>
+          <p className="text-sm text-muted-foreground">No hay cambios de estado registrados.</p>
         ) : (
           <div className="relative pl-6 space-y-4">
             <div className="absolute left-2 top-1 bottom-1 w-0.5 bg-border" />
@@ -933,7 +931,7 @@ export default function OrderDetailPage() {
                     >
                       {event.status}
                     </span>
-                    <span className="text-xs text-muted-foreground">{new Date(event.createdAt).toLocaleString()}</span>
+                    <span className="text-xs text-muted-foreground">{new Date(event.createdAt).toLocaleString('es-ES')}</span>
                   </div>
                   {event.note && <p className="text-sm text-muted-foreground mt-1">{event.note}</p>}
                 </div>

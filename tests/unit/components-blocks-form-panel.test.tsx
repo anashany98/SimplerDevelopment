@@ -123,13 +123,13 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('renders Button Text input with current value', () => {
     renderPanel(baseBtn);
-    const input = screen.getByPlaceholderText('Click me') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Haz clic aquí') as HTMLInputElement;
     expect(input.value).toBe('Click me');
   });
 
   it('updates text via Button Text input', () => {
     const { onChange } = renderPanel(baseBtn);
-    const input = screen.getByPlaceholderText('Click me') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Haz clic aquí') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Go Now' } });
     expect(onChange).toHaveBeenCalledWith({ text: 'Go Now' });
   });
@@ -143,14 +143,14 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('updates variant via select', () => {
     const { onChange } = renderPanel(baseBtn);
-    const select = screen.getByDisplayValue('Primary') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Primario') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'outline' } });
     expect(onChange).toHaveBeenCalledWith({ variant: 'outline' });
   });
 
   it('updates size via select', () => {
     const { onChange } = renderPanel(baseBtn);
-    const select = screen.getByDisplayValue('Medium') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Media') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'lg' } });
     expect(onChange).toHaveBeenCalledWith({ size: 'lg' });
   });
@@ -173,7 +173,7 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('updates icon field (collapses empty to undefined)', () => {
     const { onChange } = renderPanel({ ...baseBtn, icon: 'arrow_forward' });
-    const iconInput = screen.getByPlaceholderText('e.g. arrow_forward') as HTMLInputElement;
+    const iconInput = screen.getByPlaceholderText('p. ej. arrow_forward') as HTMLInputElement;
     expect(iconInput.value).toBe('arrow_forward');
     fireEvent.change(iconInput, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ icon: undefined });
@@ -181,21 +181,21 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('updates icon to non-empty value', () => {
     const { onChange } = renderPanel(baseBtn);
-    const iconInput = screen.getByPlaceholderText('e.g. arrow_forward') as HTMLInputElement;
+    const iconInput = screen.getByPlaceholderText('p. ej. arrow_forward') as HTMLInputElement;
     fireEvent.change(iconInput, { target: { value: 'star' } });
     expect(onChange).toHaveBeenCalledWith({ icon: 'star' });
   });
 
   it('updates hoverEffect via select', () => {
     const { onChange } = renderPanel(baseBtn);
-    const select = screen.getByDisplayValue('None') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Ninguno') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'lift' } });
     expect(onChange).toHaveBeenCalledWith({ hoverEffect: 'lift' });
   });
 
   it('updates presetId to a non-empty value', () => {
     const { onChange } = renderPanel(baseBtn);
-    const presetInput = screen.getByPlaceholderText('Preset ID from brand presets') as HTMLInputElement;
+    const presetInput = screen.getByPlaceholderText('ID de preset de los presets de marca') as HTMLInputElement;
     fireEvent.change(presetInput, { target: { value: 'brand-blue' } });
     expect(onChange).toHaveBeenCalledWith({ presetId: 'brand-blue' });
   });
@@ -209,24 +209,24 @@ describe('FormPanel — ButtonBlockSettings', () => {
 
   it('iconPosition select is disabled when no icon', () => {
     renderPanel({ ...baseBtn, icon: undefined });
-    const iconPos = screen.getByDisplayValue('Left of text') as HTMLSelectElement;
+    const iconPos = screen.getByDisplayValue('A la izquierda del texto') as HTMLSelectElement;
     expect(iconPos.disabled).toBe(true);
   });
 
   it('iconPosition select is enabled when icon set', () => {
     renderPanel({ ...baseBtn, icon: 'star' });
-    const iconPos = screen.getByDisplayValue('Left of text') as HTMLSelectElement;
+    const iconPos = screen.getByDisplayValue('A la izquierda del texto') as HTMLSelectElement;
     expect(iconPos.disabled).toBe(false);
   });
 
   it('defaults variant to primary when not set', () => {
     renderPanel({ ...baseBtn, variant: undefined });
-    expect(screen.getByDisplayValue('Primary')).toBeTruthy();
+    expect(screen.getByDisplayValue('Primario')).toBeTruthy();
   });
 
   it('defaults size to md when not set', () => {
     renderPanel({ ...baseBtn, size: undefined });
-    expect(screen.getByDisplayValue('Medium')).toBeTruthy();
+    expect(screen.getByDisplayValue('Media')).toBeTruthy();
   });
 });
 
@@ -250,48 +250,48 @@ describe('FormPanel — PopupBlockSettings', () => {
 
   it('renders headline RichTextEditable with value', () => {
     renderPanel(basePopup);
-    const rte = screen.getByTestId('rte-Modal headline') as HTMLTextAreaElement;
+    const rte = screen.getByTestId('rte-Titular del modal') as HTMLTextAreaElement;
     expect(rte.value).toBe('Subscribe');
   });
 
   it('updates headline via RichTextEditable', () => {
     const { onChange } = renderPanel(basePopup);
-    const rte = screen.getByTestId('rte-Modal headline');
+    const rte = screen.getByTestId('rte-Titular del modal');
     fireEvent.change(rte, { target: { value: 'New Headline' } });
     expect(onChange).toHaveBeenCalledWith({ headline: 'New Headline' });
   });
 
   it('updates body via RichTextEditable (collapses empty to undefined)', () => {
     const { onChange } = renderPanel(basePopup);
-    const rte = screen.getByTestId('rte-Body text — supports rich text');
+    const rte = screen.getByTestId('rte-Texto del cuerpo — admite texto enriquecido');
     fireEvent.change(rte, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ body: undefined });
   });
 
   it('updates ctaLabel input', () => {
     const { onChange } = renderPanel(basePopup);
-    const input = screen.getByPlaceholderText('Sign me up') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Quiero registrarme') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Join Us' } });
     expect(onChange).toHaveBeenCalledWith({ ctaLabel: 'Join Us' });
   });
 
   it('collapses empty ctaLabel to undefined', () => {
     const { onChange } = renderPanel(basePopup);
-    const input = screen.getByPlaceholderText('Sign me up') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Quiero registrarme') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ ctaLabel: undefined });
   });
 
   it('updates ctaUrl input', () => {
     const { onChange } = renderPanel(basePopup);
-    const input = screen.getByPlaceholderText('https:// or /go/<slug>') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('https:// o /go/<slug>') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'https://new.com' } });
     expect(onChange).toHaveBeenCalledWith({ ctaUrl: 'https://new.com' });
   });
 
   it('changes trigger via select', () => {
     const { onChange } = renderPanel(basePopup);
-    const select = screen.getByDisplayValue('Time delay') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Retardo de tiempo') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'scroll-percent' } });
     expect(onChange).toHaveBeenCalledWith({ trigger: 'scroll-percent' });
   });
@@ -334,7 +334,7 @@ describe('FormPanel — PopupBlockSettings', () => {
 
   it('changes frequency via select', () => {
     const { onChange } = renderPanel(basePopup);
-    const select = screen.getByDisplayValue('Once per session') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Una vez por sesión') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'always' } });
     expect(onChange).toHaveBeenCalledWith({ frequency: 'always' });
   });
@@ -348,7 +348,7 @@ describe('FormPanel — PopupBlockSettings', () => {
 
   it('defaults trigger to time-delay when not set', () => {
     renderPanel({ ...basePopup, trigger: undefined });
-    expect(screen.getByDisplayValue('Time delay')).toBeTruthy();
+    expect(screen.getByDisplayValue('Retardo de tiempo')).toBeTruthy();
   });
 
   it('defaults dismissable to true when not set', () => {
@@ -377,8 +377,8 @@ describe('FormPanel — SurveyBlockSettings', () => {
 
   it('renders title and description inputs with values', async () => {
     await act(async () => { renderPanel(baseSurvey); });
-    expect((screen.getByPlaceholderText('Take Our Survey') as HTMLInputElement).value).toBe('Take Our Survey');
-    expect((screen.getByPlaceholderText("We'd love to hear your feedback") as HTMLInputElement).value).toBe('We want feedback');
+    expect((screen.getByPlaceholderText('Responde nuestra encuesta') as HTMLInputElement).value).toBe('Take Our Survey');
+    expect((screen.getByPlaceholderText("Nos encantaría conocer tu opinión") as HTMLInputElement).value).toBe('We want feedback');
   });
 
   it('updates title input', async () => {
@@ -387,7 +387,7 @@ describe('FormPanel — SurveyBlockSettings', () => {
       const r = renderPanel(baseSurvey);
       onChange = r.onChange;
     });
-    const title = screen.getByPlaceholderText('Take Our Survey') as HTMLInputElement;
+    const title = screen.getByPlaceholderText('Responde nuestra encuesta') as HTMLInputElement;
     fireEvent.change(title, { target: { value: 'New Survey Title' } });
     expect(onChange!).toHaveBeenCalledWith({ title: 'New Survey Title' });
   });
@@ -439,10 +439,10 @@ describe('FormPanel — SurveyBlockSettings', () => {
 
   it('opens dropdown on search input focus', async () => {
     await act(async () => { renderPanel(baseSurvey); });
-    const searchInput = screen.getByPlaceholderText('Search surveys...');
+    const searchInput = screen.getByPlaceholderText('Buscar encuestas...');
     fireEvent.focus(searchInput);
     // dropdown container appears (even empty)
-    expect(screen.getByText('No surveys found')).toBeTruthy();
+    expect(screen.getByText('No se encontraron encuestas')).toBeTruthy();
   });
 
   it('populates dropdown with fetched surveys and allows selection', async () => {
@@ -457,7 +457,7 @@ describe('FormPanel — SurveyBlockSettings', () => {
       onChange = r.onChange;
     });
 
-    const searchInput = screen.getByPlaceholderText('Search surveys...');
+    const searchInput = screen.getByPlaceholderText('Buscar encuestas...');
     fireEvent.focus(searchInput);
 
     // survey item should appear
@@ -465,7 +465,7 @@ describe('FormPanel — SurveyBlockSettings', () => {
     fireEvent.click(btn);
     expect(onChange!).toHaveBeenCalledWith({ slug: 'nps-survey' });
     // dropdown closes after selection
-    expect(screen.queryByText('No surveys found')).toBeNull();
+    expect(screen.queryByText('No se encontraron encuestas')).toBeNull();
   });
 
   it('shows selected survey name when slug matches a fetched survey', async () => {
@@ -485,7 +485,7 @@ describe('FormPanel — SurveyBlockSettings', () => {
     mockFetchJson.mockResolvedValueOnce({ success: false });
     await act(async () => { renderPanel(baseSurvey); });
     // Should not throw; search input is present
-    expect(screen.getByPlaceholderText('Search surveys...')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Buscar encuestas...')).toBeTruthy();
   });
 });
 
@@ -518,7 +518,7 @@ describe('FormPanel — SurveyInputBlockSettings', () => {
 
   it('renders fieldLabel input and updates it', () => {
     const { onChange } = renderPanel(baseSurveyInput);
-    const input = screen.getByPlaceholderText('Question or label') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Pregunta o etiqueta') as HTMLInputElement;
     expect(input.value).toBe('What is your name?');
     fireEvent.change(input, { target: { value: 'Your email?' } });
     expect(onChange).toHaveBeenCalledWith({ fieldLabel: 'Your email?' });
@@ -526,7 +526,7 @@ describe('FormPanel — SurveyInputBlockSettings', () => {
 
   it('updates placeholder (collapses empty to undefined)', () => {
     const { onChange } = renderPanel({ ...baseSurveyInput, placeholder: 'Type here' });
-    const input = screen.getByPlaceholderText('Placeholder text (optional)') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Texto del marcador de posición (opcional)') as HTMLInputElement;
     expect(input.value).toBe('Type here');
     fireEvent.change(input, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ placeholder: undefined });
@@ -534,23 +534,23 @@ describe('FormPanel — SurveyInputBlockSettings', () => {
 
   it('does not render options editor for text field type', () => {
     renderPanel(baseSurveyInput);
-    expect(screen.queryByText('+ Add Option')).toBeNull();
+    expect(screen.queryByText('+ Añadir opción')).toBeNull();
   });
 
   it('shows options editor for select field type', () => {
     renderPanel({ ...baseSurveyInput, fieldType: 'select', options: ['Red', 'Blue'] });
-    expect(screen.getByText('+ Add Option')).toBeTruthy();
+    expect(screen.getByText('+ Añadir opción')).toBeTruthy();
     expect((screen.getAllByDisplayValue('Red')[0] as HTMLInputElement).value).toBe('Red');
   });
 
   it('shows options editor for radio field type', () => {
     renderPanel({ ...baseSurveyInput, fieldType: 'radio', options: [] });
-    expect(screen.getByText('+ Add Option')).toBeTruthy();
+    expect(screen.getByText('+ Añadir opción')).toBeTruthy();
   });
 
   it('adds an option when + Add Option clicked', () => {
     const { onChange } = renderPanel({ ...baseSurveyInput, fieldType: 'select', options: ['Yes'] });
-    fireEvent.click(screen.getByText('+ Add Option'));
+    fireEvent.click(screen.getByText('+ Añadir opción'));
     expect(onChange).toHaveBeenCalledWith({ options: ['Yes', ''] });
   });
 
@@ -578,14 +578,14 @@ describe('FormPanel — SurveyInputBlockSettings', () => {
 
   it('does not render slider config for non-slider field', () => {
     renderPanel(baseSurveyInput);
-    expect(screen.queryByText('Min')).toBeNull();
+    expect(screen.queryByText('Mín')).toBeNull();
   });
 
   it('shows slider config for slider field type', () => {
     renderPanel({ ...baseSurveyInput, fieldType: 'slider', min: 0, max: 100, step: 1 });
-    expect(screen.getByText('Min')).toBeTruthy();
-    expect(screen.getByText('Max')).toBeTruthy();
-    expect(screen.getByText('Step')).toBeTruthy();
+    expect(screen.getByText('Mín')).toBeTruthy();
+    expect(screen.getByText('Máx')).toBeTruthy();
+    expect(screen.getByText('Paso')).toBeTruthy();
   });
 
   it('updates slider min/max/step values', () => {
@@ -601,7 +601,7 @@ describe('FormPanel — SurveyInputBlockSettings', () => {
 
   it('shows options editor for checkbox field type', () => {
     renderPanel({ ...baseSurveyInput, fieldType: 'checkbox', options: [] });
-    expect(screen.getByText('+ Add Option')).toBeTruthy();
+    expect(screen.getByText('+ Añadir opción')).toBeTruthy();
   });
 });
 
@@ -650,7 +650,7 @@ describe('FormPanel — EmailHeaderBlockSettings', () => {
 
   it('changes alignment via select', () => {
     const { onChange } = renderPanel(baseEmailHeader);
-    const select = screen.getByDisplayValue('Center') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Centrado') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'left' } });
     expect(onChange).toHaveBeenCalledWith({ alignment: 'left' });
   });
@@ -763,7 +763,7 @@ describe('FormPanel — EmailFooterBlockSettings', () => {
 
   it('adds a new social link', () => {
     const { onChange } = renderPanel({ ...baseEmailFooter, socialLinks: [] });
-    fireEvent.click(screen.getByText('+ Add Social Link'));
+    fireEvent.click(screen.getByText('+ Añadir enlace social'));
     expect(onChange).toHaveBeenCalledWith({ socialLinks: [{ platform: '', url: '' }] });
   });
 });
@@ -783,13 +783,13 @@ describe('FormPanel — BookingMenuBlockSettings', () => {
 
   it('renders Section Title RichTextEditable with value', () => {
     renderPanel(baseBookingMenu);
-    const rte = screen.getByTestId('rte-Optional section title...') as HTMLTextAreaElement;
+    const rte = screen.getByTestId('rte-Título de sección opcional...') as HTMLTextAreaElement;
     expect(rte.value).toBe('Book a Session');
   });
 
   it('updates title via RichTextEditable (collapses empty to undefined)', () => {
     const { onChange } = renderPanel(baseBookingMenu);
-    const rte = screen.getByTestId('rte-Optional section title...');
+    const rte = screen.getByTestId('rte-Título de sección opcional...');
     fireEvent.change(rte, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ title: undefined });
     fireEvent.change(rte, { target: { value: 'New Title' } });
@@ -798,20 +798,20 @@ describe('FormPanel — BookingMenuBlockSettings', () => {
 
   it('updates description via RichTextEditable (collapses empty to undefined)', () => {
     const { onChange } = renderPanel(baseBookingMenu);
-    const rte = screen.getByTestId('rte-Optional description...');
+    const rte = screen.getByTestId('rte-Descripción opcional...');
     fireEvent.change(rte, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ description: undefined });
   });
 
   it('changes columns via select', () => {
     const { onChange } = renderPanel(baseBookingMenu);
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '4' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 4 });
   });
 
   it('defaults columns to 3 when not set', () => {
     renderPanel({ ...baseBookingMenu, columns: undefined });
-    expect(screen.getByDisplayValue('3 Columns')).toBeTruthy();
+    expect(screen.getByDisplayValue('3 columnas')).toBeTruthy();
   });
 });

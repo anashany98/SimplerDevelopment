@@ -22,7 +22,7 @@ export default function NewPitchDeckPage() {
 
   async function handleStartBlank() {
     if (!title.trim()) {
-      setError('Add a title above before starting a blank deck.');
+      setError('Agrega un título arriba antes de crear una presentación en blanco.');
       titleInputRef.current?.focus();
       return;
     }
@@ -39,13 +39,13 @@ export default function NewPitchDeckPage() {
       });
       const data = await res.json();
       if (!data.success) {
-        setError(data.message || 'Failed to create deck');
+        setError(data.message || 'No se pudo crear la presentación');
         setCreatingBlank(false);
         return;
       }
       router.push(`/portal/tools/pitch-decks/${data.data.id}`);
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       setCreatingBlank(false);
     }
   }
@@ -71,7 +71,7 @@ export default function NewPitchDeckPage() {
       });
       const createData = await createRes.json();
       if (!createData.success) {
-        setError(createData.message || 'Failed to create deck');
+        setError(createData.message || 'No se pudo crear la presentación');
         setLoading(false);
         setStep('idle');
         return;
@@ -96,7 +96,7 @@ export default function NewPitchDeckPage() {
 
       router.push(`/portal/tools/pitch-decks/${deckId}`);
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       setLoading(false);
       setStep('idle');
     }
@@ -104,23 +104,21 @@ export default function NewPitchDeckPage() {
 
   const stepMessages = {
     idle: '',
-    creating: 'Creating your deck...',
-    branding: 'Analyzing your website for branding...',
-    generating: 'AI is generating your slides...',
+    creating: 'Creando tu presentación…',
+    branding: 'Analizando tu sitio web para tu marca…',
+    generating: 'La IA está generando tus diapositivas…',
   };
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
         <Link href="/portal/tools/pitch-decks" className="hover:text-foreground inline-flex items-center gap-1 transition-colors">
-          <span className="material-icons text-base">arrow_back</span>
-          Back to Pitch Decks
-        </Link>
+          <span className="material-icons text-base">arrow_back</span>Volver a las presentaciones</Link>
       </div>
       <PortalPageHeader
-        eyebrow="Pitch Decks"
-        title="Create Pitch Deck"
-        subtitle="Describe what you need and let AI generate a professional pitch deck"
+        eyebrow="Presentaciones"
+        title="Crear presentación"
+        subtitle="Describe lo que necesitas y deja que la IA genere una presentación profesional"
       />
 
       <div className="grid sm:grid-cols-2 gap-4">
@@ -128,11 +126,9 @@ export default function NewPitchDeckPage() {
           <div>
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
               <span className="material-icons text-primary text-base">add_box</span>
-              Start blank
+              Empezar en blanco
             </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Skip generation. Add a title, hit start, build slides yourself in the editor.
-            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">Omitir generación. Agrega un título, pulsa iniciar y crea diapositivas en el editor.</p>
           </div>
           <button
             type="button"
@@ -143,12 +139,12 @@ export default function NewPitchDeckPage() {
             {creatingBlank ? (
               <>
                 <span className="material-icons animate-spin text-base">autorenew</span>
-                Creating...
+                Creando…
               </>
             ) : (
               <>
                 <span className="material-icons text-base">arrow_forward</span>
-                Start blank deck
+                Crear presentación en blanco
               </>
             )}
           </button>
@@ -157,11 +153,9 @@ export default function NewPitchDeckPage() {
           <div>
             <h2 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
               <span className="material-icons text-primary text-base">upload_file</span>
-              Already have HTML?
+              ¿Ya tienes HTML?
             </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Upload a single .html file and we&apos;ll wrap it in a one-slide deck.
-            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">Sube un archivo .html y lo convertiremos en una presentación de una diapositiva.</p>
           </div>
           <div className="self-start">
             <UploadHtmlDeckButton />
@@ -179,13 +173,13 @@ export default function NewPitchDeckPage() {
 
         <div className={`${pCard} p-5 space-y-4`}>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Deck Title</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Título de la presentación</label>
             <input
               ref={titleInputRef}
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Q1 2026 Investor Pitch"
+              placeholder="p. ej. Presentación para inversores Q1 2026"
               className={pInput}
               required
               disabled={loading || creatingBlank}
@@ -196,19 +190,17 @@ export default function NewPitchDeckPage() {
             <BrandingProfileSelector
               value={brandingProfileId}
               onChange={setBrandingProfileId}
-              label="Brand Profile"
+              label="Perfil de marca"
               allowNone
-              noneLabel="None"
+              noneLabel="Ninguno"
             />
-            <p className="text-xs text-muted-foreground mt-1">
-              Applies your saved brand colors, fonts, and messaging to style and write the deck content.
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">Aplica los colores, fuentes y mensajes de tu marca para diseñar y redactar el contenido de la presentación.</p>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">
-              Website URL
-              <span className="font-normal text-muted-foreground ml-1">(optional)</span>
+              URL del sitio web
+              <span className="font-normal text-muted-foreground ml-1">(opcional)</span>
             </label>
             <div className="relative">
               <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-lg">language</span>
@@ -223,27 +215,23 @@ export default function NewPitchDeckPage() {
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {brandingProfileId
-                ? 'Additional context will be pulled from this URL to supplement your brand profile.'
-                : 'We\'ll extract brand colors, fonts, and company info to customize the deck.'}
+                ? 'Se extraerá contexto adicional de esta URL para complementar tu perfil de marca.'
+                : 'Extraeremos los colores, las fuentes y la información de la empresa para personalizar la presentación.'}
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">
-              What should this pitch deck be about?
-            </label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">¿De qué debe tratar esta presentación?</label>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder={"e.g. Create a pitch deck for our financial advisory firm that highlights our AI-powered investment strategies, team expertise, track record, and why clients should choose us over traditional advisors."}
+              placeholder={"p. ej. Crea una presentación para nuestra asesoría financiera que destaque nuestras estrategias de inversión impulsadas por IA, la experiencia del equipo, nuestra trayectoria y por qué los clientes deberían elegirnos en lugar de asesores tradicionales."}
               rows={5}
               className={`${pInput} resize-none`}
               required
               disabled={loading}
             />
-            <p className="text-xs text-muted-foreground mt-1">
-              Be specific about your audience, key points, and tone. The more detail you give, the better the result.
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">Sé específico sobre tu audiencia, puntos clave y tono. Cuantos más detalles des, mejor será el resultado.</p>
           </div>
         </div>
 
@@ -260,7 +248,7 @@ export default function NewPitchDeckPage() {
           ) : (
             <>
               <span className="material-icons text-lg">auto_awesome</span>
-              Generate Pitch Deck
+              Generar presentación
             </>
           )}
         </button>

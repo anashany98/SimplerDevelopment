@@ -498,7 +498,7 @@ export default function NoteGraphView() {
           <span className="text-muted-foreground">Orphans only</span>
         </label>
 
-        <label className="inline-flex items-center gap-1.5 cursor-pointer select-none" title="Show CRM companies, contacts, deals, and meetings linked to your notes.">
+        <label className="inline-flex items-center gap-1.5 cursor-pointer select-none" title="Muestra empresas, contactos, negocios y reuniones del CRM vinculados a tus notas.">
           <input
             type="checkbox"
             checked={includeCrm}
@@ -563,7 +563,7 @@ export default function NoteGraphView() {
       >
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground pointer-events-none">
-            <span className="material-icons animate-spin mr-2 text-base">progress_activity</span>
+            <span className="material-icons animate-spin mr-2 text-base">autorenew</span>
             Loading graph…
           </div>
         )}

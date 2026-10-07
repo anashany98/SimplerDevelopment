@@ -76,7 +76,7 @@ interface LayoutProps {
 export async function generateMetadata({ params }: { params: Promise<{ domain: string }> }): Promise<Metadata> {
   const { domain } = await params;
   const site = await getClientWebsiteByDomain(domain);
-  if (!site) return { title: 'Site Not Found' };
+  if (!site) return { title: 'Sitio no encontrado' };
 
   if (!site.publicAccess) {
     return {
@@ -102,13 +102,13 @@ export async function generateMetadata({ params }: { params: Promise<{ domain: s
 
   const metadata: Metadata = {
     metadataBase: new URL(canonicalUrl),
-    // `absolute` prevents the root layout's `%s | SimplerDevelopment`
+    // `absolute` prevents the root layout's `%s | CRM AGENTS`
     // template from being applied to this site layout's title. Pages
     // override this with their own absolute title via generateMetadata.
     title: { absolute: site.name },
     description,
     // Explicitly reset agency-level fields from the root layout's defaultSEO
-    // so SimplerDevelopment branding never leaks into client sites.
+    // so CRM AGENTS branding never leaks into client sites.
     keywords: null,
     authors: null,
     creator: null,
@@ -297,7 +297,7 @@ export default async function ClientSiteLayout({ children, params }: LayoutProps
   // Standard layout with branded nav
   const navItems = await getClientSiteNavItems(site.id);
   // When the site is being accessed via the main app host (e.g. localhost:3000
-  // or the SimplerDevelopment portal domain), Next.js serves it under
+  // or the CRM AGENTS portal domain), Next.js serves it under
   // /sites/{domain}/... so all internal hrefs need that prefix. When the site
   // is reached via its own host (e.g. tenant.simplerdevelopment.com),
   // middleware rewrites internally and the public URLs are at the root.

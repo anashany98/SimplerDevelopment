@@ -91,10 +91,10 @@ interface Meeting {
 }
 
 const STATUS_LABELS: Record<Meeting['status'], { label: string; tone: string }> = {
-  draft: { label: 'Draft', tone: 'bg-muted text-muted-foreground' },
-  processing: { label: 'Processing…', tone: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
-  needs_review: { label: 'Needs review', tone: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
-  approved: { label: 'Approved', tone: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
+  draft: { label: 'Borrador', tone: 'bg-muted text-muted-foreground' },
+  processing: { label: 'Procesando…', tone: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
+  needs_review: { label: 'Pendiente de revisión', tone: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
+  approved: { label: 'Aprobado', tone: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
 };
 
 export default function BrainMeetingDetailPage() {
@@ -113,13 +113,13 @@ export default function BrainMeetingDetailPage() {
       const r = await fetch(`/api/portal/brain/communications/${meetingId}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load communication.');
+        setError(json.message || 'No se pudo cargar la comunicación.');
       } else {
         setMeeting(json.data);
         if (!opts?.keepError) setError(null);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -134,7 +134,7 @@ export default function BrainMeetingDetailPage() {
       const r = await fetch(`/api/portal/brain/communications/${meetingId}/process`, { method: 'POST' });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        const msg = json.message || 'Processing failed.';
+        const msg = json.message || 'No se pudo procesar.';
         // Refresh meeting state (status may have reset to draft, latestJob will
         // now reflect the failure) WITHOUT clobbering the just-set error message.
         await load({ keepError: true });
@@ -148,11 +148,11 @@ export default function BrainMeetingDetailPage() {
   };
 
   const deleteMeeting = async () => {
-    if (!confirm('Delete this communication? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar esta comunicación? Esta acción no se puede deshacer.')) return;
     const r = await fetch(`/api/portal/brain/communications/${meetingId}`, { method: 'DELETE' });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      setError(json.message || 'Failed to delete.');
+      setError(json.message || 'No se pudo eliminar.');
       return;
     }
     router.push('/portal/brain/communications');
@@ -161,16 +161,14 @@ export default function BrainMeetingDetailPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
     );
   }
   if (!meeting) {
     return (
       <div className="max-w-4xl mx-auto py-12">
         <div className="bg-destructive/10 border border-destructive/30 rounded-md p-3 text-sm text-destructive">
-          {error || 'Communication not found.'}
+          {error || 'Comunicación no encontrada.'}
         </div>
       </div>
     );
@@ -183,17 +181,17 @@ export default function BrainMeetingDetailPage() {
     <div className="max-w-4xl mx-auto py-8 space-y-6">
       <Link href="/portal/brain/communications" className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1">
         <span className="material-icons text-sm">arrow_back</span>
-        All communications
+        Todas las comunicaciones
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={meeting.title}
         subtitle={
           <span className="inline-flex items-center gap-2 flex-wrap">
             <span>{date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}</span>
             <span>·</span>
-            <span>via {meeting.source.replace(/_/g, ' ')}</span>
+            <span>vía {meeting.source.replace(/_/g, ' ')}</span>
             <span>·</span>
             <span>{meeting.confidentialityLevel}</span>
             <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${status.tone}`}>
@@ -227,8 +225,8 @@ export default function BrainMeetingDetailPage() {
                 className={pBtnPrimary}
               >
                 {processing
-                  ? <><span className="material-icons animate-spin text-base">progress_activity</span>Processing…</>
-                  : <><span className="material-icons text-base">auto_awesome</span>{meeting.aiSummary ? 'Re-process with AI' : 'Process with AI'}</>
+                  ? <><span className="material-icons animate-spin text-base">autorenew</span>Procesando…</>
+                  : <><span className="material-icons text-base">auto_awesome</span>{meeting.aiSummary ? 'Reprocesar con IA' : 'Procesar con IA'}</>
                 }
               </button>
             )}
@@ -238,13 +236,13 @@ export default function BrainMeetingDetailPage() {
                 className={pBtnGhost}
               >
                 <span className="material-icons text-base">reviews</span>
-                Review queue
+                Cola de revisión
               </Link>
             )}
             <button
               onClick={deleteMeeting}
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5 text-sm font-semibold text-foreground transition hover:border-destructive/40 hover:bg-destructive/10 hover:text-destructive"
-              aria-label="Delete communication"
+              aria-label="Eliminar comunicación"
             >
               <span className="material-icons text-base">delete</span>
             </button>
@@ -264,7 +262,7 @@ export default function BrainMeetingDetailPage() {
             <span className="material-icons text-destructive text-base">error_outline</span>
             <div className="min-w-0">
               <p className="font-medium text-destructive">
-                Last AI run failed ({meeting.latestJob.jobType.replace(/_/g, ' ')})
+                La última ejecución de IA falló ({meeting.latestJob.jobType.replace(/_/g, ' ')})
               </p>
               {meeting.latestJob.error && (
                 <p className="text-destructive/80 mt-0.5 text-xs break-words font-mono">
@@ -272,7 +270,7 @@ export default function BrainMeetingDetailPage() {
                 </p>
               )}
               <p className="text-muted-foreground text-xs mt-1">
-                Click {meeting.aiSummary ? '"Re-process with AI"' : '"Process with AI"'} to retry.
+                Haz clic en {meeting.aiSummary ? '"Reprocesar con IA"' : '"Procesar con IA"'} para reintentar.
               </p>
             </div>
           </div>
@@ -280,7 +278,7 @@ export default function BrainMeetingDetailPage() {
       )}
 
       {meeting.aiSummary && (
-        <Section title="AI summary" icon="auto_awesome">
+        <Section title="Resumen de IA" icon="auto_awesome">
           <p className="text-sm text-foreground whitespace-pre-wrap">{meeting.aiSummary}</p>
         </Section>
       )}
@@ -288,17 +286,17 @@ export default function BrainMeetingDetailPage() {
       {/* Email envelope — only shown for email-sourced notes. The worker
           captures From/To/sender on ingest into source_metadata. */}
       {meeting.source === 'email' && (meeting.sourceMetadata?.from || meeting.sourceMetadata?.to) && (
-        <Section title="Email" icon="mail">
+        <Section title="Correo" icon="mail">
           <dl className="text-sm space-y-1.5">
             {meeting.sourceMetadata.from && (
               <div className="flex gap-2">
-                <dt className="text-muted-foreground w-12 shrink-0">From</dt>
+                <dt className="text-muted-foreground w-12 shrink-0">De</dt>
                 <dd className="text-foreground break-all">{meeting.sourceMetadata.from}</dd>
               </div>
             )}
             {meeting.sourceMetadata.to && (
               <div className="flex gap-2">
-                <dt className="text-muted-foreground w-12 shrink-0">To</dt>
+                <dt className="text-muted-foreground w-12 shrink-0">Para</dt>
                 <dd className="text-foreground break-all">{meeting.sourceMetadata.to}</dd>
               </div>
             )}
@@ -307,7 +305,7 @@ export default function BrainMeetingDetailPage() {
       )}
 
       {meeting.participants.length > 0 && (
-        <Section title="Participants" icon="group">
+        <Section title="Participantes" icon="group">
           <div className="flex flex-wrap gap-2">
             {meeting.participants.map((p) => (
               <span key={p.id} className={pChip}>
@@ -324,7 +322,7 @@ export default function BrainMeetingDetailPage() {
           replies that don't re-attach files still expose the originals
           from earlier in the thread. */}
       {meeting.thread && meeting.thread.length > 1 ? (
-        <Section title={`Thread (${meeting.thread.length} messages)`} icon="forum">
+        <Section title={`Hilo (${meeting.thread.length} mensajes)`} icon="forum">
           <div className="space-y-3">
             {meeting.thread.map((seg) => {
               const segMeta = seg.sourceMetadata ?? null;
@@ -341,20 +339,18 @@ export default function BrainMeetingDetailPage() {
                   <header className="flex items-start justify-between gap-3 mb-3">
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-foreground break-all">
-                        {segMeta?.from || '(unknown sender)'}
+                        {segMeta?.from || '(remitente desconocido)'}
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {segDate.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
-                        {segMeta?.to ? <> · to <span className="break-all">{segMeta.to}</span></> : null}
+                        {segMeta?.to ? <> · para <span className="break-all">{segMeta.to}</span></> : null}
                       </p>
                     </div>
                     {!isCurrent && (
                       <Link
                         href={`/portal/brain/communications/${seg.id}`}
                         className="text-xs text-muted-foreground hover:text-primary inline-flex items-center gap-0.5 shrink-0"
-                      >
-                        Open
-                        <span className="material-icons text-sm">open_in_new</span>
+                      >Abiertos<span className="material-icons text-sm">open_in_new</span>
                       </Link>
                     )}
                   </header>
@@ -362,14 +358,14 @@ export default function BrainMeetingDetailPage() {
                   {body ? (
                     <pre className="text-xs text-foreground whitespace-pre-wrap font-mono bg-background/60 border border-border rounded-xl p-3 overflow-auto max-h-[400px]">{body}</pre>
                   ) : (
-                    <p className="text-xs text-muted-foreground italic">No body content.</p>
+                    <p className="text-xs text-muted-foreground italic">Sin contenido en el cuerpo.</p>
                   )}
 
                   {quoted && (
                     <details className="mt-2">
                       <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground inline-flex items-center gap-1">
                         <span className="material-icons text-sm">format_quote</span>
-                        Quoted reply
+                        Respuesta citada
                       </summary>
                       <pre className="text-xs text-muted-foreground/80 whitespace-pre-wrap font-mono bg-muted/30 border border-border rounded-xl p-3 mt-2 overflow-auto max-h-[200px]">{quoted}</pre>
                     </details>
@@ -379,7 +375,7 @@ export default function BrainMeetingDetailPage() {
                     <div className="mt-3 space-y-1.5">
                       <p className="text-xs font-medium text-muted-foreground inline-flex items-center gap-1">
                         <span className="material-icons text-sm">attach_file</span>
-                        Attachments ({attachments.length})
+                        Archivos adjuntos ({attachments.length})
                       </p>
                       <div className="space-y-1.5">
                         {attachments.map((a, idx) => (
@@ -420,7 +416,7 @@ export default function BrainMeetingDetailPage() {
                     <div className="mt-3 space-y-1.5">
                       <p className="text-xs font-medium text-muted-foreground inline-flex items-center gap-1">
                         <span className="material-icons text-sm">link</span>
-                        Links ({links.length})
+                        Enlaces ({links.length})
                       </p>
                       {links.map((l) => (
                         <a
@@ -443,7 +439,7 @@ export default function BrainMeetingDetailPage() {
       ) : (
         <>
           {(meeting.sourceMetadata?.attachments?.length ?? 0) > 0 && (
-            <Section title={`Attachments (${meeting.sourceMetadata!.attachments!.length})`} icon="attach_file">
+            <Section title={`Archivos adjuntos (${meeting.sourceMetadata!.attachments!.length})`} icon="attach_file">
               <div className="space-y-2">
                 {meeting.sourceMetadata!.attachments!.map((a, idx) => (
                   <div key={a.key} className="border border-border rounded-xl overflow-hidden bg-card">
@@ -480,7 +476,7 @@ export default function BrainMeetingDetailPage() {
           )}
 
           {(meeting.sourceMetadata?.links?.length ?? 0) > 0 && (
-            <Section title={`Links (${meeting.sourceMetadata!.links!.length})`} icon="link">
+            <Section title={`Enlaces (${meeting.sourceMetadata!.links!.length})`} icon="link">
               <div className="space-y-2">
                 {meeting.sourceMetadata!.links!.map((l) => (
                   <a
@@ -518,7 +514,7 @@ export default function BrainMeetingDetailPage() {
                         </p>
                       )}
                       <p className="text-[10px] text-muted-foreground/70 mt-1 truncate">
-                        {l.error ? `[failed: ${l.error}]` : (l.finalUrl || l.url)}
+                        {l.error ? `[falló: ${l.error}]` : (l.finalUrl || l.url)}
                       </p>
                     </div>
                   </a>
@@ -527,11 +523,11 @@ export default function BrainMeetingDetailPage() {
             </Section>
           )}
 
-          <Section title="Transcript" icon="description">
+          <Section title="Transcripción" icon="description">
             {meeting.transcript ? (
               <pre className="text-xs text-foreground whitespace-pre-wrap font-mono bg-muted/30 border border-border rounded-xl p-3 max-h-[600px] overflow-auto">{meeting.transcript}</pre>
             ) : (
-              <p className="text-sm text-muted-foreground italic">No transcript captured.</p>
+              <p className="text-sm text-muted-foreground italic">No se capturó ninguna transcripción.</p>
             )}
           </Section>
         </>

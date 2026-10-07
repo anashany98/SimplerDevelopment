@@ -50,11 +50,11 @@ interface TopicEntitiesResponse {
 }
 
 const ENTITY_TYPE_LABELS: Record<TopicEntityRow['entityType'], string> = {
-  note: 'Notes',
-  meeting: 'Meetings',
-  task: 'Tasks',
-  decision: 'Decisions',
-  relationship_overlay: 'Relationship overlays',
+  note: 'Notas',
+  meeting: 'Reuniones',
+  task: 'Tareas',
+  decision: 'Decisiones',
+  relationship_overlay: 'Relaciones',
 };
 
 const ENTITY_TYPE_ICONS: Record<TopicEntityRow['entityType'], string> = {
@@ -86,7 +86,7 @@ export default function BrainTopicsAdminPage() {
       const treeJson = await treeR.json().catch(() => ({}));
       const flatJson = await flatR.json().catch(() => ({}));
       if (!treeR.ok || !treeJson.success) {
-        throw new Error(treeJson?.message || `Failed to load tree (${treeR.status})`);
+        throw new Error(treeJson?.message || `No se pudo cargar el árbol (${treeR.status})`);
       }
       setTree(treeJson.data?.tree ?? []);
       if (flatR.ok && flatJson.success) {
@@ -94,7 +94,7 @@ export default function BrainTopicsAdminPage() {
         setFlat(items.map((t) => ({ id: t.id, name: t.name, path: t.path })));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -114,7 +114,7 @@ export default function BrainTopicsAdminPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      setError(json?.message || `Move failed (${r.status}).`);
+      setError(json?.message || `No se pudo mover (${r.status}).`);
       return;
     }
     await reload();
@@ -129,7 +129,7 @@ export default function BrainTopicsAdminPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      setError(json?.message || `Rename failed (${r.status}).`);
+      setError(json?.message || `No se pudo renombrar (${r.status}).`);
       return;
     }
     await reload();
@@ -141,7 +141,7 @@ export default function BrainTopicsAdminPage() {
     const r = await fetch(`/api/portal/brain/topics/${id}${qs}`, { method: 'DELETE' });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      setError(json?.message || `Delete failed (${r.status}).`);
+      setError(json?.message || `No se pudo eliminar (${r.status}).`);
       return;
     }
     if (selectedId === id) setSelectedId(null);
@@ -157,7 +157,7 @@ export default function BrainTopicsAdminPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      setError(json?.message || `Merge failed (${r.status}).`);
+      setError(json?.message || `No se pudo fusionar (${r.status}).`);
       return;
     }
     if (selectedId === sourceId) setSelectedId(targetId);
@@ -173,7 +173,7 @@ export default function BrainTopicsAdminPage() {
     });
     const json = await r.json().catch(() => ({}));
     if (!r.ok || !json.success) {
-      setError(json?.message || `Create failed (${r.status}).`);
+      setError(json?.message || `No se pudo crear (${r.status}).`);
       return;
     }
     await reload();
@@ -195,17 +195,17 @@ export default function BrainTopicsAdminPage() {
   return (
     <div className="max-w-7xl mx-auto py-6 px-4 space-y-4">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">account_tree</span>
-            Topics
+            Temas
           </span>
         }
         subtitle={
           loading
-            ? 'Loading…'
-            : `${totalTopics} ${totalTopics === 1 ? 'topic' : 'topics'} · drag to reorganize`
+            ? 'Cargando…'
+            : `${totalTopics} ${totalTopics === 1 ? 'tema' : 'temas'} · arrastra para reorganizar`
         }
         actions={
           <>
@@ -215,7 +215,7 @@ export default function BrainTopicsAdminPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add</span>
-              New topic
+              Nuevo tema
             </button>
             <button
               type="button"
@@ -223,7 +223,7 @@ export default function BrainTopicsAdminPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-base">file_download</span>
-              Import from tags
+              Importar desde etiquetas
             </button>
           </>
         }
@@ -243,12 +243,12 @@ export default function BrainTopicsAdminPage() {
         <div className={`lg:col-span-2 ${pCard} overflow-hidden`}>
           <div className="px-3 py-2 border-b border-border bg-muted/30 text-xs font-medium uppercase tracking-wider text-muted-foreground flex items-center gap-2">
             <span className="material-icons text-sm">account_tree</span>
-            Topic tree
+            Árbol de temas
           </div>
           {loading ? (
             <div className="p-8 text-center text-sm text-muted-foreground">
-              <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>
-              Loading topics…
+              <span className="material-icons animate-spin mr-2 align-middle">autorenew</span>
+              Cargando temas…
             </div>
           ) : (
             <div className="py-2">
@@ -265,7 +265,7 @@ export default function BrainTopicsAdminPage() {
                       else if (e.key === 'Escape') { setCreateRoot(false); setCreateRootValue(''); }
                     }}
                     onBlur={handleCreateRoot}
-                    placeholder="New root topic name…"
+                    placeholder="Nombre del tema raíz nuevo…"
                     className={`flex-1 ${pInput} py-1`}
                   />
                 </div>
@@ -273,23 +273,23 @@ export default function BrainTopicsAdminPage() {
               {tree.length === 0 && !createRoot ? (
                 <div className="py-12 text-center text-sm text-muted-foreground">
                   <span className="material-icons text-3xl text-muted-foreground/50 block mb-2">account_tree</span>
-                  <p className="mb-3">No topics yet.</p>
+                  <p className="mb-3">Aún no hay temas.</p>
                   <button
                     type="button"
                     onClick={() => { setCreateRoot(true); setCreateRootValue(''); }}
                     className={`${pBtnPrimary} text-xs px-3 py-1.5`}
                   >
                     <span className="material-icons text-sm">add</span>
-                    Create your first topic
+                    Crea tu primer tema
                   </button>
                   <p className="mt-2 text-xs">
-                    Or{' '}
+                    O{' '}
                     <button
                       type="button"
                       onClick={() => setImportOpen(true)}
                       className="underline text-primary hover:opacity-80"
                     >
-                      import from existing tags
+                      importa desde etiquetas existentes
                     </button>
                     .
                   </p>
@@ -319,7 +319,7 @@ export default function BrainTopicsAdminPage() {
             <div className="p-8 text-center">
               <span className="material-icons text-3xl text-muted-foreground/50 block mb-2">account_tree</span>
               <p className="text-sm text-muted-foreground">
-                Select a topic to see its details, or drag rows to reorganize your tree.
+                Selecciona un tema para ver sus detalles, o arrastra las filas para reorganizar tu árbol.
               </p>
             </div>
           ) : (
@@ -334,7 +334,7 @@ export default function BrainTopicsAdminPage() {
                 });
                 const json = await r.json().catch(() => ({}));
                 if (!r.ok || !json.success) {
-                  setError(json?.message || `Update failed (${r.status}).`);
+                  setError(json?.message || `No se pudo actualizar (${r.status}).`);
                   return false;
                 }
                 await reload();
@@ -394,7 +394,7 @@ function TopicDetailPanel({
       .then((json) => {
         if (cancelled) return;
         if (!json?.success) {
-          setError(json?.message || 'Failed to load topic.');
+          setError(json?.message || 'No se pudo cargar el tema.');
           return;
         }
         const t = json.data as BrainTopicWithBreadcrumb;
@@ -406,7 +406,7 @@ function TopicDetailPanel({
       })
       .catch((err) => {
         if (cancelled) return;
-        setError(err instanceof Error ? err.message : 'Network error');
+        setError(err instanceof Error ? err.message : 'Error de red');
       })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
@@ -429,9 +429,7 @@ function TopicDetailPanel({
   if (loading) {
     return (
       <div className="p-6 text-center text-sm text-muted-foreground">
-        <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>
-        Loading…
-      </div>
+        <span className="material-icons animate-spin mr-2 align-middle">autorenew</span>Cargando…</div>
     );
   }
 
@@ -440,7 +438,7 @@ function TopicDetailPanel({
       <div className="p-6 text-center text-sm">
         <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-3 text-destructive">
           <span className="material-icons text-base align-middle mr-1">error_outline</span>
-          {error ?? 'Topic not found.'}
+          {error ?? 'Tema no encontrado.'}
         </div>
       </div>
     );
@@ -482,14 +480,14 @@ function TopicDetailPanel({
             }}
             className="flex-1 min-w-0 text-base font-semibold bg-transparent border-0 px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-primary/40 rounded"
           />
-          {saving === 'name' && <span className="material-icons text-sm animate-spin text-muted-foreground">progress_activity</span>}
+          {saving === 'name' && <span className="material-icons text-sm animate-spin text-muted-foreground">autorenew</span>}
         </div>
         <div className="text-[11px] text-muted-foreground font-mono">{topic.path}</div>
       </div>
 
       <div className="px-4 py-3 space-y-3 text-sm flex-1 overflow-y-auto">
         <div>
-          <label className="text-xs font-medium text-muted-foreground block mb-1">Description</label>
+          <label className="text-xs font-medium text-muted-foreground block mb-1">Descripción</label>
           <textarea
             value={descDraft}
             onChange={(e) => setDescDraft(e.target.value)}
@@ -503,10 +501,10 @@ function TopicDetailPanel({
               if (!ok) setDescDraft(topic.description ?? '');
             }}
             rows={3}
-            placeholder="Optional — what does this topic cover?"
+            placeholder="Opcional — ¿qué abarca este tema?"
             className={`${pInput} resize-none`}
           />
-          {saving === 'desc' && <div className="text-[10px] text-muted-foreground mt-1"><span className="material-icons text-sm animate-spin align-middle">progress_activity</span> Saving…</div>}
+          {saving === 'desc' && <div className="text-[10px] text-muted-foreground mt-1"><span className="material-icons text-sm animate-spin align-middle">autorenew</span> Guardando…</div>}
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -545,7 +543,7 @@ function TopicDetailPanel({
             </div>
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground block mb-1">Icon</label>
+            <label className="text-xs font-medium text-muted-foreground block mb-1">Icono</label>
             <input
               type="text"
               value={iconDraft}
@@ -561,18 +559,18 @@ function TopicDetailPanel({
               placeholder="folder, sell, label…"
               className={`${pInput} py-1 text-xs`}
             />
-            <div className="text-[10px] text-muted-foreground mt-0.5">Material Icons name</div>
+            <div className="text-[10px] text-muted-foreground mt-0.5">Nombre de Material Icons</div>
           </div>
         </div>
 
         <div className="pt-2 border-t border-border">
           <div className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1">
             <span className="material-icons text-sm text-primary">attach_file</span>
-            Entities attached
-            {entitiesLoading && <span className="material-icons text-sm animate-spin text-muted-foreground">progress_activity</span>}
+            Entidades asociadas
+            {entitiesLoading && <span className="material-icons text-sm animate-spin text-muted-foreground">autorenew</span>}
           </div>
           {entities && entities.items.length === 0 && !entitiesLoading && (
-            <div className="text-xs text-muted-foreground italic px-1 py-2">No entities attached yet.</div>
+            <div className="text-xs text-muted-foreground italic px-1 py-2">Aún no hay entidades asociadas.</div>
           )}
           {entities && entities.items.length > 0 && (
             <div className="space-y-3">
@@ -593,7 +591,7 @@ function TopicDetailPanel({
                       ))}
                       {entities.byType[k].length > 50 && (
                         <li className="text-[11px] text-muted-foreground italic px-1">
-                          …and {entities.byType[k].length - 50} more
+                          …y {entities.byType[k].length - 50} más
                         </li>
                       )}
                     </ul>
@@ -611,7 +609,7 @@ function TopicDetailPanel({
           className="inline-flex items-center gap-1.5 rounded-xl border border-destructive/30 px-3 py-2 text-xs font-semibold text-destructive transition hover:bg-destructive/10"
         >
           <span className="material-icons text-sm">delete</span>
-          Delete topic
+          Eliminar tema
         </button>
       </div>
     </div>
@@ -653,7 +651,7 @@ function ImportFromTagsWizard({
       setReport(json.data as ImportTopicsFromTagsReport);
       if (!dryRun) setStep('done');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setBusy(false);
     }
@@ -672,25 +670,25 @@ function ImportFromTagsWizard({
         <div className="pointer-events-auto w-full max-w-2xl rounded-2xl border border-border bg-card shadow-xl flex flex-col max-h-[85vh]">
           <div className="px-4 py-3 border-b border-border flex items-center gap-2">
             <span className="material-icons text-base text-primary">file_download</span>
-            <h3 className="text-base font-semibold flex-1">Import topics from tags</h3>
+            <h3 className="text-base font-semibold flex-1">Importar temas desde etiquetas</h3>
             <button
               type="button"
               onClick={() => !busy && onClose()}
               disabled={busy}
               className="h-7 w-7 inline-flex items-center justify-center rounded hover:bg-accent disabled:opacity-50"
-              aria-label="Close"
+              aria-label="Cerrar"
             >
               <span className="material-icons text-base">close</span>
             </button>
           </div>
 
           <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-            <label className="text-xs text-muted-foreground">Tag prefix (optional)</label>
+            <label className="text-xs text-muted-foreground">Prefijo de etiqueta (opcional)</label>
             <input
               type="text"
               value={tagPrefix}
               onChange={(e) => setTagPrefix(e.target.value)}
-              placeholder="e.g. kb (leave empty for all)"
+              placeholder="p. ej. kb (dejar vacío para todas)"
               disabled={busy}
               className={`flex-1 ${pInput} py-1.5 text-xs`}
             />
@@ -701,11 +699,11 @@ function ImportFromTagsWizard({
               className={`${pBtnGhost} px-2 py-1.5 text-xs disabled:opacity-50`}
             >
               {busy && step === 'preview' ? (
-                <span className="material-icons text-sm animate-spin">progress_activity</span>
+                <span className="material-icons text-sm animate-spin">autorenew</span>
               ) : (
                 <span className="material-icons text-sm">refresh</span>
               )}
-              Preview
+              Vista previa
             </button>
           </div>
 
@@ -721,34 +719,34 @@ function ImportFromTagsWizard({
               <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-sm text-emerald-700 dark:text-emerald-300">
                 <div className="font-medium mb-1 flex items-center gap-1">
                   <span className="material-icons text-base">check_circle</span>
-                  Import complete
+                  Importación completada
                 </div>
                 <p className="text-xs">
-                  Created {report.topicsCreated} {report.topicsCreated === 1 ? 'topic' : 'topics'} and attached{' '}
-                  {report.notesAttached} {report.notesAttached === 1 ? 'note' : 'notes'}.
+                  Se crearon {report.topicsCreated} {report.topicsCreated === 1 ? 'tema' : 'temas'} y se asociaron{' '}
+                  {report.notesAttached} {report.notesAttached === 1 ? 'nota' : 'notas'}.
                 </p>
               </div>
             ) : !report ? (
               <div className="text-center py-8 text-muted-foreground">
-                <span className="material-icons animate-spin mr-2 align-middle">progress_activity</span>
-                Building preview…
+                <span className="material-icons animate-spin mr-2 align-middle">autorenew</span>
+                Generando vista previa…
               </div>
             ) : (
               <>
                 <div className="bg-muted/40 border border-border rounded-xl p-3 text-xs">
-                  <div className="font-medium text-foreground mb-1">Preview</div>
+                  <div className="font-medium text-foreground mb-1">Vista previa</div>
                   <p className="text-muted-foreground">
                     <strong className="text-foreground">{report.topicsCreated}</strong>{' '}
-                    {report.topicsCreated === 1 ? 'topic' : 'topics'} would be created (or matched if already
-                    present), with{' '}
-                    <strong className="text-foreground">{report.notesAttached}</strong> note attachments.
-                    Re-running is safe — duplicates are skipped.
+                    {report.topicsCreated === 1 ? 'tema' : 'temas'} se crearían (o se reutilizarían si ya
+                    existen), con{' '}
+                    <strong className="text-foreground">{report.notesAttached}</strong> notas asociadas.
+                    Volver a ejecutarlo es seguro — se omiten los duplicados.
                   </p>
                 </div>
 
                 {report.perTopic.length === 0 && (
                   <div className="text-center py-6 text-xs text-muted-foreground italic">
-                    No tags to import {tagPrefix.trim() ? `under prefix "${tagPrefix.trim()}"` : ''}.
+                    No hay etiquetas que importar {tagPrefix.trim() ? `bajo el prefijo "${tagPrefix.trim()}"` : ''}.
                   </div>
                 )}
 
@@ -757,9 +755,9 @@ function ImportFromTagsWizard({
                     <table className="w-full text-xs">
                       <thead className="bg-muted/50">
                         <tr className="text-left">
-                          <th className="px-2 py-1 font-medium">Topic path</th>
-                          <th className="px-2 py-1 font-medium text-right">Notes</th>
-                          <th className="px-2 py-1 font-medium">Status</th>
+                          <th className="px-2 py-1 font-medium">Ruta del tema</th>
+                          <th className="px-2 py-1 font-medium text-right">Notas</th>
+                          <th className="px-2 py-1 font-medium">Estado</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -774,7 +772,7 @@ function ImportFromTagsWizard({
                                 <span className="material-icons text-sm">
                                   {row.created ? 'add_circle' : 'check_circle'}
                                 </span>
-                                {row.created ? 'new' : 'exists'}
+                                {row.created ? 'nuevo' : 'existente'}
                               </span>
                             </td>
                           </tr>
@@ -794,9 +792,7 @@ function ImportFromTagsWizard({
                 onClick={onDone}
                 className={pBtnPrimary}
               >
-                <span className="material-icons text-sm">done</span>
-                Done
-              </button>
+                <span className="material-icons text-sm">done</span>Listo</button>
             ) : (
               <>
                 <button
@@ -804,9 +800,7 @@ function ImportFromTagsWizard({
                   onClick={onClose}
                   disabled={busy}
                   className={`${pBtnGhost} disabled:opacity-50`}
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
                 <button
                   type="button"
                   onClick={() => { setStep('confirm'); runImport(false); }}
@@ -814,11 +808,11 @@ function ImportFromTagsWizard({
                   className={`${pBtnPrimary} disabled:opacity-50 disabled:hover:translate-y-0`}
                 >
                   {busy && step === 'confirm' ? (
-                    <span className="material-icons text-sm animate-spin">progress_activity</span>
+                    <span className="material-icons text-sm animate-spin">autorenew</span>
                   ) : (
                     <span className="material-icons text-sm">file_download</span>
                   )}
-                  Run import
+                  Ejecutar importación
                 </button>
               </>
             )}

@@ -3,7 +3,7 @@
  * Smoke-test harness for the sd-* content-authoring skills.
  *
  * Spins up a Claude conversation with a SKILL.md loaded as the system prompt,
- * wires the local SimplerDevelopment MCP at http://localhost:3000/api/mcp as
+ * wires the local CRM AGENTS MCP at http://localhost:3000/api/mcp as
  * the agent's tool source, sends a synthetic user prompt, captures the final
  * text + tool-call trace, and asserts the audit-pass markers we shipped land
  * in real output:
@@ -135,7 +135,7 @@ async function fetchMcpToolList(apiKey: string): Promise<McpTool[]> {
   return result.tools ?? [];
 }
 
-// SimplerDevelopment's MCP wraps both successes and errors in a JSON-RPC
+// CRM AGENTS's MCP wraps both successes and errors in a JSON-RPC
 // success envelope: `{result: {content: [{type: 'text', text: '{...}'}]}}`.
 // An error response is the same shape but the inner JSON has an `error` key.
 // We unwrap to give the agent + assertions the actual entity shape, and we

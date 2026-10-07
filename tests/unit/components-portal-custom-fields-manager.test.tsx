@@ -135,8 +135,8 @@ describe('CustomFieldsManager — initial load', () => {
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
 
-    // Spinner uses material-icon text "progress_activity"
-    expect(screen.getByText('progress_activity')).toBeTruthy();
+    // Spinner uses material-icon text "autorenew"
+    expect(screen.getByText('autorenew')).toBeTruthy();
 
     // Resolve so component can clean up
     act(() => {
@@ -152,7 +152,7 @@ describe('CustomFieldsManager — initial load', () => {
   it('renders empty-state message when no fields returned', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() =>
-      expect(screen.getByText(/No fields defined for this content type yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
   });
 
@@ -174,10 +174,10 @@ describe('CustomFieldsManager — initial load', () => {
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() =>
-      expect(screen.getByText(/No fields defined for this content type yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
     // Loading spinner is gone — component handled the error without crashing
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 
   it('handles load failure (success:false with no message) without crashing', async () => {
@@ -187,9 +187,9 @@ describe('CustomFieldsManager — initial load', () => {
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() =>
-      expect(screen.getByText(/No fields defined for this content type yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 
   it('handles network error during load without crashing', async () => {
@@ -197,9 +197,9 @@ describe('CustomFieldsManager — initial load', () => {
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() =>
-      expect(screen.getByText(/No fields defined for this content type yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 
   it('handles non-Error thrown value during load without crashing', async () => {
@@ -207,9 +207,9 @@ describe('CustomFieldsManager — initial load', () => {
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() =>
-      expect(screen.getByText(/No fields defined for this content type yet/i)).toBeTruthy(),
+      expect(screen.getByText(/Aún no hay campos definidos para este tipo de contenido/i)).toBeTruthy(),
     );
-    expect(screen.queryByText('progress_activity')).toBeNull();
+    expect(screen.queryByText('autorenew')).toBeNull();
   });
 });
 
@@ -220,22 +220,22 @@ describe('CustomFieldsManager — initial load', () => {
 describe('CustomFieldsManager — Add Field form', () => {
   it('shows "Add Field" button when form is hidden', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => expect(screen.getByText('Add Field')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Añadir campo')).toBeTruthy());
   });
 
   it('opens form when "Add Field" button is clicked', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
-    expect(screen.getByText('New Field')).toBeTruthy();
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
+    expect(screen.getByText('Nuevo campo')).toBeTruthy();
   });
 
   it('auto-generates slug from name in add mode', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
-    const nameInput = screen.getByPlaceholderText('e.g. Author Name');
+    const nameInput = screen.getByPlaceholderText('p. ej. Nombre del autor');
     fireEvent.change(nameInput, { target: { value: 'My Field Name!' } });
 
     const slugInput = screen.getByPlaceholderText('author_name');
@@ -244,8 +244,8 @@ describe('CustomFieldsManager — Add Field form', () => {
 
   it('allows manual slug override', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
     const slugInput = screen.getByPlaceholderText('author_name');
     fireEvent.change(slugInput, { target: { value: 'custom_slug' } });
@@ -254,47 +254,47 @@ describe('CustomFieldsManager — Add Field form', () => {
 
   it('shows Options textarea only when fieldType is select', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
     // Not visible with default 'text' type
-    expect(screen.queryByText('Options (one per line)')).toBeNull();
+    expect(screen.queryByText('Opciones (una por línea)')).toBeNull();
 
     // Change to 'select'
     const typeSelect = screen.getByRole('combobox');
     fireEvent.change(typeSelect, { target: { value: 'select' } });
 
-    expect(screen.getByText('Options (one per line)')).toBeTruthy();
+    expect(screen.getByText('Opciones (una por línea)')).toBeTruthy();
   });
 
   it('hides Options textarea when fieldType changes away from select', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
     const typeSelect = screen.getByRole('combobox');
     fireEvent.change(typeSelect, { target: { value: 'select' } });
-    expect(screen.getByText('Options (one per line)')).toBeTruthy();
+    expect(screen.getByText('Opciones (una por línea)')).toBeTruthy();
 
     fireEvent.change(typeSelect, { target: { value: 'text' } });
-    expect(screen.queryByText('Options (one per line)')).toBeNull();
+    expect(screen.queryByText('Opciones (una por línea)')).toBeNull();
   });
 
   it('cancels form and returns to list view', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
-    expect(screen.getByText('New Field')).toBeTruthy();
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
+    expect(screen.getByText('Nuevo campo')).toBeTruthy();
 
-    fireEvent.click(screen.getByText('Cancel'));
-    await waitFor(() => expect(screen.queryByText('New Field')).toBeNull());
-    expect(screen.getByText('Add Field')).toBeTruthy();
+    fireEvent.click(screen.getByText('Cancelar'));
+    await waitFor(() => expect(screen.queryByText('Nuevo campo')).toBeNull());
+    expect(screen.getByText('Añadir campo')).toBeTruthy();
   });
 
   it('toggles the Required checkbox', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
     const checkbox = screen.getByRole('checkbox');
     expect((checkbox as HTMLInputElement).checked).toBe(false);
@@ -313,10 +313,10 @@ describe('CustomFieldsManager — Add Field form', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 
@@ -346,9 +346,9 @@ describe('CustomFieldsManager — Add Field form', () => {
         onChanged={onChanged}
       />,
     );
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 
@@ -367,9 +367,9 @@ describe('CustomFieldsManager — Add Field form', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 
@@ -387,9 +387,9 @@ describe('CustomFieldsManager — Add Field form', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 
@@ -398,7 +398,7 @@ describe('CustomFieldsManager — Add Field form', () => {
     });
 
     await waitFor(() =>
-      expect(screen.getByText('Failed to save custom field')).toBeTruthy(),
+      expect(screen.getByText('No se pudo guardar el campo personalizado')).toBeTruthy(),
     );
   });
 
@@ -409,9 +409,9 @@ describe('CustomFieldsManager — Add Field form', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 
@@ -419,7 +419,7 @@ describe('CustomFieldsManager — Add Field form', () => {
       fireEvent.submit(document.querySelector('form')!);
     });
 
-    await waitFor(() => expect(screen.getByText('Network error')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Error de red')).toBeTruthy());
   });
 
   it('submits select field with parsed options', async () => {
@@ -433,17 +433,17 @@ describe('CustomFieldsManager — Add Field form', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Status' },
     });
 
     const typeSelect = screen.getByRole('combobox');
     fireEvent.change(typeSelect, { target: { value: 'select' } });
 
-    fireEvent.change(screen.getByPlaceholderText(/Option 1/), {
+    fireEvent.change(screen.getByPlaceholderText(/Opción 1/), {
       target: { value: 'Draft\nPublished\n' },
     });
 
@@ -468,10 +468,10 @@ describe('CustomFieldsManager — Add Field form', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 
@@ -495,15 +495,15 @@ describe('CustomFieldsManager — Add Field form', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 
     act(() => { fireEvent.submit(document.querySelector('form')!); });
 
-    await waitFor(() => expect(screen.getByText('Saving…')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Guardando…')).toBeTruthy());
 
     act(() => {
       resolvePost!({ ok: true, json: () => Promise.resolve({ success: true }) });
@@ -521,11 +521,11 @@ describe('CustomFieldsManager — Edit Field form', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Author'));
 
-    const editBtn = screen.getByTitle('Edit');
+    const editBtn = screen.getByTitle('Editar');
     fireEvent.click(editBtn);
 
-    expect(screen.getByText('Edit Field')).toBeTruthy();
-    expect((screen.getByPlaceholderText('e.g. Author Name') as HTMLInputElement).value).toBe('Author');
+    expect(screen.getByText('Editar campo')).toBeTruthy();
+    expect((screen.getByPlaceholderText('p. ej. Nombre del autor') as HTMLInputElement).value).toBe('Author');
     expect((screen.getByPlaceholderText('author_name') as HTMLInputElement).value).toBe('author');
   });
 
@@ -534,10 +534,10 @@ describe('CustomFieldsManager — Edit Field form', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Author'));
 
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => screen.getByText('Edit Field'));
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => screen.getByText('Editar campo'));
 
-    const nameInput = screen.getByPlaceholderText('e.g. Author Name');
+    const nameInput = screen.getByPlaceholderText('p. ej. Nombre del autor');
     const slugInput = screen.getByPlaceholderText('author_name');
     fireEvent.change(nameInput, { target: { value: 'New Name Here' } });
 
@@ -550,11 +550,11 @@ describe('CustomFieldsManager — Edit Field form', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Status'));
 
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => screen.getByText('Edit Field'));
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => screen.getByText('Editar campo'));
 
     // The <label> has no htmlFor, so query by placeholder text
-    const optionsTextarea = screen.getByPlaceholderText(/Option 1/);
+    const optionsTextarea = screen.getByPlaceholderText(/Opción 1/);
     expect((optionsTextarea as HTMLTextAreaElement).value).toBe('Draft\nPublished');
   });
 
@@ -572,8 +572,8 @@ describe('CustomFieldsManager — Edit Field form', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Author'));
 
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => screen.getByText('Edit Field'));
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => screen.getByText('Editar campo'));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
@@ -589,8 +589,8 @@ describe('CustomFieldsManager — Edit Field form', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Author'));
 
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => expect(screen.getByText('Update Field')).toBeTruthy());
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => expect(screen.getByText('Actualizar campo')).toBeTruthy());
   });
 
   it('calls onChanged after successful update', async () => {
@@ -610,8 +610,8 @@ describe('CustomFieldsManager — Edit Field form', () => {
     );
     await waitFor(() => screen.getByText('Author'));
 
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => screen.getByText('Edit Field'));
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => screen.getByText('Editar campo'));
 
     await act(async () => {
       fireEvent.submit(document.querySelector('form')!);
@@ -631,9 +631,9 @@ describe('CustomFieldsManager — Delete', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Author'));
 
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
     expect(window.confirm).toHaveBeenCalledWith(
-      'Delete this custom field? All saved values for it will be lost.',
+      '¿Eliminar este campo personalizado? Se perderán todos los valores guardados.',
     );
   });
 
@@ -651,7 +651,7 @@ describe('CustomFieldsManager — Delete', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Author'));
 
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
     await waitFor(() => {
       expect(deleteUrl).toBe(`${ITEM}/${FIELD_TEXT.id}`);
@@ -674,7 +674,7 @@ describe('CustomFieldsManager — Delete', () => {
       />,
     );
     await waitFor(() => screen.getByText('Author'));
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
     await waitFor(() => expect(onChanged).toHaveBeenCalled());
   });
@@ -687,7 +687,7 @@ describe('CustomFieldsManager — Delete', () => {
     await waitFor(() => screen.getByText('Author'));
 
     const callsBefore = (global.fetch as ReturnType<typeof vi.fn>).mock.calls.length;
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
     // No additional fetch call after the initial load
     expect((global.fetch as ReturnType<typeof vi.fn>).mock.calls.length).toBe(callsBefore);
@@ -734,14 +734,14 @@ describe('CustomFieldsManager — container field types (repeater/group)', () =>
   it('shows sub-field count badge ("1 sub-field")', async () => {
     setupFetch([FIELD_REPEATER, CHILD_FIELD]);
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('1 sub-field'));
+    await waitFor(() => screen.getByText('1 subcampo'));
   });
 
   it('shows plural sub-fields badge for multiple children', async () => {
     const child2 = { ...CHILD_FIELD, id: 11, name: 'Label', slug: 'label' };
     setupFetch([FIELD_REPEATER, CHILD_FIELD, child2]);
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => expect(screen.getByText('2 sub-fields')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('2 subcampos')).toBeTruthy());
   });
 
   it('renders group field with folder icon', async () => {
@@ -757,8 +757,8 @@ describe('CustomFieldsManager — container field types (repeater/group)', () =>
     await waitFor(() => screen.getByText('Links'));
 
     // Click the "add" button on the repeater row (title="Add sub-field")
-    fireEvent.click(screen.getByTitle('Add sub-field'));
-    await waitFor(() => expect(screen.getByText('New Sub-field')).toBeTruthy());
+    fireEvent.click(screen.getByTitle('Añadir subcampo'));
+    await waitFor(() => expect(screen.getByText('Nuevo subcampo')).toBeTruthy());
   });
 
   it('filters out repeater/group from fieldType options when adding a sub-field', async () => {
@@ -766,8 +766,8 @@ describe('CustomFieldsManager — container field types (repeater/group)', () =>
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Links'));
 
-    fireEvent.click(screen.getByTitle('Add sub-field'));
-    await waitFor(() => screen.getByText('New Sub-field'));
+    fireEvent.click(screen.getByTitle('Añadir subcampo'));
+    await waitFor(() => screen.getByText('Nuevo subcampo'));
 
     const typeSelect = screen.getByRole('combobox') as HTMLSelectElement;
     const optionValues = Array.from(typeSelect.options).map((o) => o.value);
@@ -785,10 +785,10 @@ describe('CustomFieldsManager — container field types (repeater/group)', () =>
     fireEvent.click(screen.getByText('chevron_right'));
     await waitFor(() => screen.getByText('URL'));
 
-    const editBtns = screen.getAllByTitle('Edit');
+    const editBtns = screen.getAllByTitle('Editar');
     fireEvent.click(editBtns[editBtns.length - 1]); // child's edit
 
-    await waitFor(() => expect(screen.getByText('Edit Field')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Editar campo')).toBeTruthy());
     expect((screen.getByPlaceholderText('author_name') as HTMLInputElement).value).toBe('url');
   });
 
@@ -810,7 +810,7 @@ describe('CustomFieldsManager — container field types (repeater/group)', () =>
     fireEvent.click(screen.getByText('chevron_right'));
     await waitFor(() => screen.getByText('URL'));
 
-    const deleteBtns = screen.getAllByTitle('Delete');
+    const deleteBtns = screen.getAllByTitle('Eliminar');
     fireEvent.click(deleteBtns[deleteBtns.length - 1]); // child's delete
 
     await waitFor(() => {
@@ -864,8 +864,8 @@ describe('CustomFieldsManager — form supplementary fields', () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
     await waitFor(() => screen.getByText('Status'));
 
-    fireEvent.click(screen.getByTitle('Edit'));
-    await waitFor(() => screen.getByText('Edit Field'));
+    fireEvent.click(screen.getByTitle('Editar'));
+    await waitFor(() => screen.getByText('Editar campo'));
 
     const defaultInput = screen.getByDisplayValue('Draft');
     expect(defaultInput).toBeTruthy();
@@ -876,8 +876,8 @@ describe('CustomFieldsManager — form supplementary fields', () => {
 
   it('allows updating the Order number input', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
     const orderInput = screen.getByDisplayValue('0') as HTMLInputElement;
     fireEvent.change(orderInput, { target: { value: '5' } });
@@ -886,8 +886,8 @@ describe('CustomFieldsManager — form supplementary fields', () => {
 
   it('falls back to 0 for non-numeric order input', async () => {
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
     const orderInput = screen.getByDisplayValue('0') as HTMLInputElement;
     fireEvent.change(orderInput, { target: { value: 'abc' } });
@@ -905,10 +905,10 @@ describe('CustomFieldsManager — form supplementary fields', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
     // Leave defaultValue blank
@@ -933,10 +933,10 @@ describe('CustomFieldsManager — form supplementary fields', () => {
     }) as typeof global.fetch;
 
     render(<CustomFieldsManager collectionEndpoint={COLLECTION} itemEndpoint={ITEM} />);
-    await waitFor(() => screen.getByText('Add Field'));
-    fireEvent.click(screen.getByText('Add Field'));
+    await waitFor(() => screen.getByText('Añadir campo'));
+    fireEvent.click(screen.getByText('Añadir campo'));
 
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), {
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), {
       target: { value: 'Author' },
     });
 

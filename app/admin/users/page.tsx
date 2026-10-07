@@ -63,7 +63,7 @@ export default function UsersPage() {
       setEditingUser(null);
     } else {
       const data = await response.json();
-      alert(data.error || 'Failed to save user');
+      alert(data.error || 'No se pudo guardar el usuario');
     }
   };
 
@@ -80,7 +80,7 @@ export default function UsersPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+    if (!confirm('¿Seguro que quieres eliminar este usuario?')) return;
     const response = await fetch(`/api/users/${id}`, { method: 'DELETE' });
     if (response.ok) {
       fetchUsers();
@@ -97,7 +97,7 @@ export default function UsersPage() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">Users</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Usuarios</h1>
             <button
               onClick={() => {
                 setShowForm(!showForm);
@@ -106,7 +106,7 @@ export default function UsersPage() {
               }}
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
             >
-              {showForm ? 'Cancel' : 'Add User'}
+              {showForm ? 'Cancelar' : 'Añadir usuario'}
             </button>
           </div>
 
@@ -114,7 +114,7 @@ export default function UsersPage() {
             <form method="post" onSubmit={handleSubmit} className="bg-white shadow rounded-lg p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Name *</label>
+                  <label className="block text-sm font-medium text-gray-700">Nombre *</label>
                   <input
                     type="text"
                     required
@@ -124,7 +124,7 @@ export default function UsersPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email *</label>
+                  <label className="block text-sm font-medium text-gray-700">Correo *</label>
                   <input
                     type="email"
                     required
@@ -138,7 +138,7 @@ export default function UsersPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Password {editingUser ? '(leave blank to keep current)' : '*'}
+                    Contraseña {editingUser ? '(dejar en blanco para mantener la actual)' : '*'}
                   </label>
                   <input
                     type="password"
@@ -146,11 +146,11 @@ export default function UsersPage() {
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                    placeholder={editingUser ? 'Leave blank to keep current' : ''}
+                    placeholder={editingUser ? 'Dejar en blanco para mantener la actual' : ''}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Role *</label>
+                  <label className="block text-sm font-medium text-gray-700">Rol *</label>
                   <select
                     value={formData.role}
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
@@ -170,9 +170,7 @@ export default function UsersPage() {
                   onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                   className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
-                <label htmlFor="active" className="ml-2 block text-sm text-gray-700">
-                  Active
-                </label>
+                <label htmlFor="active" className="ml-2 block text-sm text-gray-700">Activo</label>
               </div>
 
               <div className="flex gap-2">
@@ -180,15 +178,13 @@ export default function UsersPage() {
                   type="submit"
                   className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
                 >
-                  {editingUser ? 'Update' : 'Create'} User
+                  {editingUser ? 'Actualizar' : 'Crear'} usuario
                 </button>
                 <button
                   type="button"
                   onClick={handleCancel}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
               </div>
             </form>
           )}
@@ -197,24 +193,14 @@ export default function UsersPage() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Correo</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Name
+                    Rol
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Email
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Role
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                    Created
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                    Actions
-                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Creado</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -245,7 +231,7 @@ export default function UsersPage() {
                             : 'bg-red-100 text-red-800'
                         }`}
                       >
-                        {user.active ? 'Active' : 'Inactive'}
+                        {user.active ? 'Activo' : 'Inactivo'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -255,22 +241,18 @@ export default function UsersPage() {
                       <button
                         onClick={() => handleEdit(user)}
                         className="text-blue-600 hover:text-blue-900"
-                      >
-                        Edit
-                      </button>
+                      >Editar</button>
                       <button
                         onClick={() => handleDelete(user.id)}
                         className="text-red-600 hover:text-red-900"
-                      >
-                        Delete
-                      </button>
+                      >Eliminar</button>
                     </td>
                   </tr>
                 ))}
                 {users.length === 0 && (
                   <tr>
                     <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
-                      No users yet. Create your first user to get started!
+                      Aún no hay usuarios. ¡Crea el primero para empezar!
                     </td>
                   </tr>
                 )}

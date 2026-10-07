@@ -628,7 +628,7 @@ test.describe('Bulk Approval — browser flow @security @ui', () => {
 
     // Switching to the Applied tab surfaces both.
     const tabs = page.locator('div.border-b.border-border button');
-    await tabs.filter({ hasText: 'Applied' }).click();
+    await tabs.filter({ hasText: 'Aplicados' }).click();
     await page.waitForLoadState('networkidle');
     for (const title of titles) {
       await expect(page.locator('p.line-clamp-2', { hasText: title }).first()).toBeVisible({ timeout: 15_000 });

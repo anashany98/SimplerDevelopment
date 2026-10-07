@@ -1,9 +1,9 @@
 ---
 name: simplerdev-test-gate-picker
-description: Choose the right SimplerDevelopment validation commands for a code change based on touched files, risk domains, and release target. Use after edits, before declaring work done, during reviews, before commits or pushes, or when the user asks "what tests should I run", "pick gates", "validate this", "CI locally", "is this enough testing", or when changes touch tenancy, data access, MCP tools, blocks, visual editor, auth, billing, migrations, AI/Brain, workers, or public routes.
+description: Choose the right CRM AGENTS validation commands for a code change based on touched files, risk domains, and release target. Use after edits, before declaring work done, during reviews, before commits or pushes, or when the user asks "what tests should I run", "pick gates", "validate this", "CI locally", "is this enough testing", or when changes touch tenancy, data access, MCP tools, blocks, visual editor, auth, billing, migrations, AI/Brain, workers, or public routes.
 ---
 
-# SimplerDev Test Gate Picker
+# CRM AGENTS Test Gate Picker
 
 Pick the smallest defensible validation set for the change. Do not recommend the full suite reflexively; match gates to risk.
 

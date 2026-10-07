@@ -1,69 +1,22 @@
-// WebChat adapter — reference implementation of the ChannelAdapter contract.
-// WebChat has no external provider; inbound events are the already-normalized
-// visitor messages from the widget, and outbound sends go to the widget's
-// realtime stream. Because the existing widget persists through the chat API,
-// this adapter is deliberately thin: it only normalizes payloads and hands
-// sends to an injected sender.
-
-import type {
-  ChannelAdapter,
-  ChannelCapabilities,
-  ChannelIdentity,
-  MediaAttachment,
-  NormalizedMessage,
-  OutboundMessageRequest,
-} from '../types';
-import { getCapabilities } from '../capabilities';
-
-export interface WebChatSendFn {
-  (request: OutboundMessageRequest): Promise<{ externalMessageId: string }>;
-}
-
-/** Raw visitor message as the widget produces it. */
-export interface WebChatInboundPayload {
-  connectionId: number;
-  conversationId?: number;
-  externalConversationId?: string;
-  externalMessageId?: string;
-  visitorId?: string;
-  text?: string;
-  media?: MediaAttachment[];
-  name?: string;
-  receivedAt?: string;
-}
+import { randomUUID } from 'node:crypto';
+import type { AdapterConnection, LegacyChannelAdapter as ChannelAdapter, ConnectInput, OutboundMessage } from '../types';
 
 export class WebChatAdapter implements ChannelAdapter {
-  readonly key = 'webchat' as const;
-  readonly capabilities: ChannelCapabilities;
-  private readonly sendFn: WebChatSendFn;
+  readonly channel = 'webchat' as const;
+  readonly provider = 'native';
 
-  constructor(sendFn: WebChatSendFn) {
-    this.capabilities = getCapabilities('webchat');
-    this.sendFn = sendFn;
+  async connect(input: ConnectInput) {
+    return [{ channel: this.channel, provider: this.provider, externalAccountId: `client:${input.clientId}`, credentials: {} }];
   }
-
-  async receiveEvent(payload: unknown): Promise<NormalizedMessage[]> {
-    const p = payload as WebChatInboundPayload;
-    if (!p || typeof p !== 'object') return [];
-    const identity: ChannelIdentity = { kind: 'webchat', value: p.visitorId ?? `visitor:${p.conversationId ?? 'unknown'}` };
-    const message: NormalizedMessage = {
-      channel: 'webchat',
-      provider: 'webchat',
-      connectionId: p.connectionId,
-      externalConversationId: p.externalConversationId,
-      externalMessageId: p.externalMessageId,
-      direction: 'inbound',
-      senderIdentity: identity,
-      messageType: p.media?.length ? (p.media[0].type as NormalizedMessage['messageType']) : 'text',
-      text: p.text ?? '',
-      media: p.media,
-      receivedAt: p.receivedAt ? new Date(p.receivedAt) : new Date(),
-      metadata: { visitorId: p.visitorId },
-    };
-    return [message];
+  async disconnect(_connection: AdapterConnection) {}
+  async refreshCredentials(connection: AdapterConnection) { return connection.credentials; }
+  verifyWebhook() { return false; }
+  async handleWebhook() { return { messages: [], statuses: [] }; }
+  async sendMessage(_connection: AdapterConnection, _message: OutboundMessage) {
+    return { externalMessageId: `webchat:${randomUUID()}`, status: 'sent' as const };
   }
-
-  async sendMessage(request: OutboundMessageRequest): Promise<{ externalMessageId: string }> {
-    return this.sendFn(request);
+  async uploadMedia() { return { externalId: `webchat:${randomUUID()}` }; }
+  getCapabilities() {
+    return { text: true, media: true, templates: false, readReceipts: false, typingIndicators: true, maxTextLength: 8_000, supportedMedia: ['image', 'file'] };
   }
 }

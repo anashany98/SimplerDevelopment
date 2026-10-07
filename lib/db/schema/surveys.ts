@@ -194,8 +194,8 @@ export const surveys = pgTable('surveys', {
   fields: json('fields').$type<SurveyFieldDef[]>().default([]),
   pages: json('pages').$type<SurveyPageDef[]>().default([{ title: 'Page 1' }]),
   // Appearance
-  thankYouTitle: varchar('thank_you_title', { length: 255 }).default('Thank you!'),
-  thankYouMessage: text('thank_you_message').default('Your response has been recorded.'),
+  thankYouTitle: varchar('thank_you_title', { length: 255 }).default('¡Gracias!'),
+  thankYouMessage: text('thank_you_message').default('Tu respuesta se ha registrado.'),
   redirectUrl: varchar('redirect_url', { length: 500 }),
   color: varchar('color', { length: 7 }).default('#2563eb'),
   brandingProfileId: integer('branding_profile_id').references(() => brandingProfiles.id, { onDelete: 'set null' }),
@@ -317,7 +317,7 @@ export const surveyWebhooks = pgTable('survey_webhooks', {
   secret: varchar('secret', { length: 64 }),
   events: json('events').$type<string[]>().notNull().default(['response.submitted']),
   enabled: boolean('enabled').default(true).notNull(),
-  // Delivery tracking — updated by the dispatcher after each attempt sequence.
+  // Delivery tracking — updated by the internal job worker after each attempt.
   lastFiredAt: timestamp('last_fired_at'),
   lastStatus: integer('last_status'),
   failureCount: integer('failure_count').default(0).notNull(),
@@ -328,16 +328,15 @@ export const surveyWebhooks = pgTable('survey_webhooks', {
 
 /**
  * Delivery audit log for survey webhooks. One row per HTTP attempt — multiple
- * rows per logical event when the dispatcher retries. The pair (webhookId,
- * createdAt) gives the timeline; `attempt` is 1..N within a single dispatch.
+ * rows per logical event when the internal job retries. The pair (webhookId,
+ * createdAt) gives the timeline; `attempt` is the one-based job attempt.
  */
 export const surveyWebhookDeliveries = pgTable('survey_webhook_deliveries', {
   id: serial('id').primaryKey(),
   webhookId: integer('webhook_id').notNull().references(() => surveyWebhooks.id, { onDelete: 'cascade' }),
   event: varchar('event', { length: 50 }).notNull(),
   attempt: integer('attempt').notNull().default(1),
-  // 'success' | 'failed' | 'pending' — `pending` reserved for the future
-  // BullMQ job pickup; today we only persist terminal states.
+  // Internal jobs persist terminal outcomes for each attempt that reached HTTP.
   status: varchar('status', { length: 20 }).notNull(),
   statusCode: integer('status_code'),
   requestBody: json('request_body').$type<Record<string, unknown>>(),

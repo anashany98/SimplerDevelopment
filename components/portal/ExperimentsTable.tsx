@@ -18,10 +18,10 @@ const STATUS_ICONS: Record<string, string> = {
 };
 
 const TARGET_LABEL: Record<string, { icon: string; label: string }> = {
-  post: { icon: 'web', label: 'Page' },
+  post: { icon: 'web', label: 'Página' },
   deck: { icon: 'slideshow', label: 'Pitch deck' },
-  survey: { icon: 'poll', label: 'Survey' },
-  email: { icon: 'mail', label: 'Email' },
+  survey: { icon: 'poll', label: 'Encuesta' },
+  email: { icon: 'mail', label: 'Correo' },
 };
 
 export interface ExperimentRow {
@@ -43,16 +43,16 @@ type StatusFilter = 'all' | 'running' | 'draft' | 'completed' | 'archived';
 type TargetFilter = 'all' | 'post' | 'deck';
 
 const STATUS_OPTIONS: ReadonlyArray<{ key: StatusFilter; label: string }> = [
-  { key: 'all', label: 'All' },
-  { key: 'running', label: 'Running' },
-  { key: 'draft', label: 'Draft' },
-  { key: 'completed', label: 'Completed' },
-  { key: 'archived', label: 'Archived' },
+  { key: 'all', label: 'Todos' },
+  { key: 'running', label: 'En ejecución' },
+  { key: 'draft', label: 'Borrador' },
+  { key: 'completed', label: 'Completado' },
+  { key: 'archived', label: 'Archivado' },
 ];
 
 const TARGET_OPTIONS: ReadonlyArray<{ key: TargetFilter; label: string }> = [
-  { key: 'all', label: 'All' },
-  { key: 'post', label: 'Pages' },
+  { key: 'all', label: 'Todos' },
+  { key: 'post', label: 'Páginas' },
   { key: 'deck', label: 'Pitch decks' },
 ];
 
@@ -104,7 +104,7 @@ export default function ExperimentsTable({ experiments }: { experiments: Experim
               onClick={() => setStatusFilter(opt.key)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 statusFilter === opt.key
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
             >
@@ -124,7 +124,7 @@ export default function ExperimentsTable({ experiments }: { experiments: Experim
               onClick={() => setTargetFilter(opt.key)}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                 targetFilter === opt.key
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
             >
@@ -159,10 +159,10 @@ export default function ExperimentsTable({ experiments }: { experiments: Experim
             <thead className="bg-muted/50 text-left text-xs uppercase text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Experiment</th>
-                <th className="px-4 py-3 font-medium">Type</th>
-                <th className="px-4 py-3 font-medium">Target</th>
+                <th className="px-4 py-3 font-medium">Tipo</th>
+                <th className="px-4 py-3 font-medium">Objetivo</th>
                 <th className="px-4 py-3 font-medium">Goal</th>
-                <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium">Estado</th>
                 <th className="px-4 py-3 font-medium">Started</th>
                 <th className="px-4 py-3" />
               </tr>
@@ -210,9 +210,7 @@ export default function ExperimentsTable({ experiments }: { experiments: Experim
                       <Link
                         href={`/portal/experiments/${exp.id}`}
                         className="text-sm text-primary hover:underline"
-                      >
-                        Open
-                      </Link>
+                      >Abierto</Link>
                     </td>
                   </tr>
                 );

@@ -20,7 +20,7 @@ const maxWidthPresets = [
 ];
 
 const spacingPresets = [
-  { value: '', label: 'None' },
+  { value: '', label: 'Ninguno' },
   { value: '0.5rem', label: '8px' },
   { value: '1rem', label: '16px' },
   { value: '1.5rem', label: '24px' },
@@ -78,7 +78,7 @@ export function PageSettingsPanel({ settings, onChange }: PageSettingsPanelProps
         {settings.backgroundImage && (
           <div className="grid grid-cols-2 gap-2 mt-2">
             <div>
-              <label className="block text-[10px] text-muted-foreground mb-1">Size</label>
+              <label className="block text-[10px] text-muted-foreground mb-1">Tamaño</label>
               <select
                 value={settings.backgroundSize || 'cover'}
                 onChange={(e) => onChange({ backgroundSize: e.target.value as PageSettings['backgroundSize'] })}
@@ -86,21 +86,21 @@ export function PageSettingsPanel({ settings, onChange }: PageSettingsPanelProps
               >
                 <option value="cover">Cover</option>
                 <option value="contain">Contain</option>
-                <option value="auto">Auto</option>
+                <option value="auto">Automático</option>
               </select>
             </div>
             <div>
-              <label className="block text-[10px] text-muted-foreground mb-1">Position</label>
+              <label className="block text-[10px] text-muted-foreground mb-1">Posición</label>
               <select
                 value={settings.backgroundPosition || 'center'}
                 onChange={(e) => onChange({ backgroundPosition: e.target.value })}
                 className="w-full text-xs rounded border border-border bg-background px-2 py-1 text-foreground"
               >
-                <option value="center">Center</option>
-                <option value="top">Top</option>
-                <option value="bottom">Bottom</option>
-                <option value="left">Left</option>
-                <option value="right">Right</option>
+                <option value="center">Centrado</option>
+                <option value="top">Arriba</option>
+                <option value="bottom">Abajo</option>
+                <option value="left">Izquierda</option>
+                <option value="right">Derecha</option>
               </select>
             </div>
           </div>
@@ -131,7 +131,7 @@ export function PageSettingsPanel({ settings, onChange }: PageSettingsPanelProps
         <label className="block text-xs font-medium text-foreground mb-1.5">Padding</label>
         <div className="grid grid-cols-2 gap-2">
           <div>
-            <label className="block text-[10px] text-muted-foreground mb-1">Top</label>
+            <label className="block text-[10px] text-muted-foreground mb-1">Arriba</label>
             <select
               value={settings.paddingTop || ''}
               onChange={(e) => onChange({ paddingTop: e.target.value || undefined })}
@@ -143,7 +143,7 @@ export function PageSettingsPanel({ settings, onChange }: PageSettingsPanelProps
             </select>
           </div>
           <div>
-            <label className="block text-[10px] text-muted-foreground mb-1">Bottom</label>
+            <label className="block text-[10px] text-muted-foreground mb-1">Abajo</label>
             <select
               value={settings.paddingBottom || ''}
               onChange={(e) => onChange({ paddingBottom: e.target.value || undefined })}
@@ -155,7 +155,7 @@ export function PageSettingsPanel({ settings, onChange }: PageSettingsPanelProps
             </select>
           </div>
           <div>
-            <label className="block text-[10px] text-muted-foreground mb-1">Left</label>
+            <label className="block text-[10px] text-muted-foreground mb-1">Izquierda</label>
             <select
               value={settings.paddingLeft || ''}
               onChange={(e) => onChange({ paddingLeft: e.target.value || undefined })}
@@ -167,7 +167,7 @@ export function PageSettingsPanel({ settings, onChange }: PageSettingsPanelProps
             </select>
           </div>
           <div>
-            <label className="block text-[10px] text-muted-foreground mb-1">Right</label>
+            <label className="block text-[10px] text-muted-foreground mb-1">Derecha</label>
             <select
               value={settings.paddingRight || ''}
               onChange={(e) => onChange({ paddingRight: e.target.value || undefined })}

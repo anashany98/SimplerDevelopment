@@ -14,6 +14,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { relativeTimeEs } from '@/lib/portal-utils';
 import { useRouter } from 'next/navigation';
 import { getRecentNoteIds, pushRecentNoteId } from '@/lib/brain/recent-notes';
 
@@ -226,7 +227,7 @@ export default function CommandPalette({
 
     if (trimmed) {
       if (searchResults.length > 0) {
-        out.push({ kind: 'header', id: 'h-results', label: 'Notes' });
+        out.push({ kind: 'header', id: 'h-results', label: 'Notas' });
         for (const n of searchResults) {
           out.push({ kind: 'note', id: `n-${n.id}`, note: n });
         }
@@ -335,11 +336,11 @@ export default function CommandPalette({
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search notes, or type > for actions…"
             className="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-muted-foreground"
-            aria-label="Search"
+            aria-label="Buscar"
           />
           {loading && (
             <span className="material-icons animate-spin text-sm text-muted-foreground">
-              progress_activity
+              autorenew
             </span>
           )}
           <kbd className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded border border-border text-muted-foreground bg-muted/50">
@@ -446,14 +447,5 @@ export default function CommandPalette({
 function formatRelative(iso: string): string {
   const then = new Date(iso).getTime();
   if (!Number.isFinite(then)) return '';
-  const now = Date.now();
-  const diff = Math.max(0, now - then);
-  const mins = Math.floor(diff / 60_000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 30) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString();
+  return relativeTimeEs(iso);
 }

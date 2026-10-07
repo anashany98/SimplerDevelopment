@@ -10,7 +10,7 @@ tags:
   - architecture
   - security
   - nextjs
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 ---
 
@@ -204,4 +204,4 @@ The critical invariants:
 
 ---
 
-**Ready to build on a platform where multi-tenant isolation is wired in from day one?** SimplerDevelopment ships with the isolation model, the regression gate, and the migration workflow already in place — no RLS configuration required. [Get started →](/)
+**Ready to build on a platform where multi-tenant isolation is wired in from day one?** CRM AGENTS ships with the isolation model, the regression gate, and the migration workflow already in place — no RLS configuration required. [Get started →](/)

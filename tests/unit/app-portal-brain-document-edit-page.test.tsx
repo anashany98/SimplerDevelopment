@@ -207,13 +207,13 @@ describe('BrainDocumentEditPage — loading state', () => {
   it('shows loading spinner while fetch is pending', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 
-  it('shows progress_activity icon in loading state', () => {
+  it('shows autorenew icon in loading state', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('progress_activity');
+    expect(container.textContent).toContain('autorenew');
   });
 });
 
@@ -274,7 +274,7 @@ describe('BrainDocumentEditPage — load error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -315,7 +315,7 @@ describe('BrainDocumentEditPage — load error state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // loadError is set to '' from json.message, so !data branch shows "Not found"
-      expect(container.textContent).toMatch(/not found|Couldn/i);
+      expect(container.textContent).toMatch(/No encontrado|No se pudo/i);
     });
   });
 });
@@ -326,7 +326,7 @@ describe('BrainDocumentEditPage — happy-path render', () => {
   it('renders "Edit draft" heading after load', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Edit draft');
+      expect(container.textContent).toContain('Editar borrador');
     });
   });
 
@@ -375,11 +375,11 @@ describe('BrainDocumentEditPage — happy-path render', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('SOP');
-      expect(container.textContent).toContain('Policy');
-      expect(container.textContent).toContain('Guide');
-      expect(container.textContent).toContain('Reference');
-      expect(container.textContent).toContain('Announcement');
-      expect(container.textContent).toContain('Other');
+      expect(container.textContent).toContain('Política');
+      expect(container.textContent).toContain('Guía');
+      expect(container.textContent).toContain('Referencia');
+      expect(container.textContent).toContain('Anuncio');
+      expect(container.textContent).toContain('Otra');
     });
   });
 
@@ -418,7 +418,7 @@ describe('BrainDocumentEditPage — happy-path render', () => {
       const allLinks = Array.from(
         container.querySelectorAll('a[href="/portal/brain/documents/1"]'),
       ) as HTMLAnchorElement[];
-      const viewLink = allLinks.find((l) => l.textContent?.includes('View'));
+      const viewLink = allLinks.find((l) => l.textContent?.includes('Ver'));
       expect(viewLink).toBeTruthy();
     });
   });
@@ -427,7 +427,7 @@ describe('BrainDocumentEditPage — happy-path render', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       );
       expect(btn).toBeTruthy();
     });
@@ -623,7 +623,7 @@ describe('BrainDocumentEditPage — publish button state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       ) as HTMLButtonElement;
       expect(btn).toBeTruthy();
       expect(btn.disabled).toBe(true);
@@ -634,7 +634,7 @@ describe('BrainDocumentEditPage — publish button state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       ) as HTMLButtonElement;
       expect(btn).toBeTruthy();
       expect(btn.disabled).toBe(false);
@@ -649,7 +649,7 @@ async function clickPublishButton(container: HTMLElement) {
   let publishBtn: HTMLButtonElement;
   await waitFor(() => {
     publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish') && !b.textContent?.includes('Publishing') && !(b as HTMLButtonElement).disabled,
+      (b) => b.textContent?.includes('Publicar') && !b.textContent?.includes('Publishing') && !(b as HTMLButtonElement).disabled,
     ) as HTMLButtonElement;
     expect(publishBtn).toBeTruthy();
   });
@@ -681,7 +681,7 @@ describe('BrainDocumentEditPage — publish flow', () => {
     const { container } = renderPage();
     await clickPublishButton(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Add some content before publishing');
+      expect(container.textContent).toContain('Añade contenido antes de publicar');
     });
   });
 
@@ -709,7 +709,7 @@ describe('BrainDocumentEditPage — publish flow', () => {
     const { container } = renderPage();
     await clickPublishButton(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Publish failed.');
+      expect(container.textContent).toContain('No se pudo publicar.');
     });
   });
 
@@ -740,14 +740,14 @@ describe('BrainDocumentEditPage — publish flow', () => {
     let publishBtn: HTMLButtonElement;
     await waitFor(() => {
       publishBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'publishPublish' ||
-               (b.textContent?.includes('Publish') && !(b as HTMLButtonElement).disabled),
+        (b) => b.textContent?.trim() === 'publishPublicar' ||
+               (b.textContent?.includes('Publicar') && !(b as HTMLButtonElement).disabled),
       ) as HTMLButtonElement;
       expect(publishBtn).toBeTruthy();
     });
     act(() => { fireEvent.click(publishBtn!); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Publishing…');
+      expect(container.textContent).toContain('Publicando…');
     });
   });
 });
@@ -776,7 +776,7 @@ describe('BrainDocumentEditPage — saved indicators', () => {
 
     // Wait for debounce (600ms) + savingTitle to flip to true
     await waitFor(
-      () => { expect(container.textContent).toContain('Saving'); },
+      () => { expect(container.textContent).toContain('Guardando'); },
       { timeout: 2000 },
     );
   });
@@ -796,7 +796,7 @@ describe('BrainDocumentEditPage — saved indicators', () => {
 
     // After successful PATCH, titleSavedAt is set and "Saved" / "cloud_done" appears
     await waitFor(
-      () => { expect(container.textContent).toMatch(/Saved|cloud_done/); },
+      () => { expect(container.textContent).toMatch(/Guardado|cloud_done/); },
       { timeout: 2000 },
     );
   });
@@ -821,7 +821,7 @@ describe('BrainDocumentEditPage — markdown editor', () => {
   it('renders "Changes save automatically" hint text', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Changes save automatically');
+      expect(container.textContent).toContain('Los cambios se guardan automáticamente');
     });
   });
 });

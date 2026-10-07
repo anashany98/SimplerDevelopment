@@ -19,12 +19,12 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
     try {
       const res = await fetch('/api/portal/settings/mfa/setup', { method: 'POST' });
       const data = await res.json();
-      if (!data.success) throw new Error(data.message ?? 'Could not start setup.');
+      if (!data.success) throw new Error(data.message ?? 'No se pudo iniciar la configuración.');
       setSecret(data.data.secret);
       setOtpauthUri(data.data.otpauthUri);
       setStage('enrolling');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong.');
+      setError(e instanceof Error ? e.message : 'Algo salió mal.');
     } finally {
       setBusy(false);
     }
@@ -40,13 +40,13 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
         body: JSON.stringify({ code }),
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.message ?? 'That code did not work.');
+      if (!data.success) throw new Error(data.message ?? 'Ese código no funcionó.');
       setStage('enabled');
       setCode('');
       setSecret('');
       setOtpauthUri('');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong.');
+      setError(e instanceof Error ? e.message : 'Algo salió mal.');
     } finally {
       setBusy(false);
     }
@@ -62,11 +62,11 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
         body: JSON.stringify({ password }),
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.message ?? 'Could not disable.');
+      if (!data.success) throw new Error(data.message ?? 'No se pudo desactivar.');
       setStage('idle');
       setPassword('');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong.');
+      setError(e instanceof Error ? e.message : 'Algo salió mal.');
     } finally {
       setBusy(false);
     }
@@ -82,14 +82,14 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-sm font-medium text-green-600">
             <span className="material-icons text-base">verified_user</span>
-            Two-factor authentication is on.
+            La autenticación en dos pasos está activada.
           </div>
-          <p className="text-sm text-muted-foreground">To turn it off, confirm your password.</p>
+          <p className="text-sm text-muted-foreground">Para desactivarlo, confirma tu contraseña.</p>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Your password"
+            placeholder="Tu contraseña"
             autoComplete="current-password"
             className="w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm"
           />
@@ -99,7 +99,7 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
               disabled={busy || !password}
               className="rounded-md border border-destructive px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 disabled:opacity-50"
             >
-              Disable 2FA
+              Desactivar 2FA
             </button>
           </div>
         </div>
@@ -111,7 +111,7 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
           disabled={busy}
           className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
         >
-          {busy ? 'Starting…' : 'Set up authenticator app'}
+          {busy ? 'Iniciando…' : 'Configurar app de autenticación'}
         </button>
       )}
 
@@ -119,16 +119,16 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
         <div className="space-y-4">
           <ol className="list-decimal space-y-3 pl-5 text-sm text-muted-foreground">
             <li>
-              In your authenticator app, add an account — scan the link below or enter this secret key manually:
+              En tu app de autenticación, añade una cuenta: escanea el enlace de abajo o introduce esta clave secreta manualmente:
               <div className="mt-2 select-all break-all rounded-md bg-muted px-3 py-2 font-mono text-xs text-foreground">
                 {secret}
               </div>
               <a href={otpauthUri} className="mt-1 inline-block text-xs font-medium text-primary hover:underline">
-                Open in authenticator app
+                Abrir en la app de autenticación
               </a>
             </li>
             <li>
-              Enter the 6-digit code your app shows:
+              Introduce el código de 6 dígitos que muestra tu app:
               <input
                 type="text"
                 inputMode="numeric"
@@ -146,15 +146,13 @@ export function MfaSettings({ initialEnabled }: { initialEnabled: boolean }) {
               disabled={busy || code.length !== 6}
               className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
             >
-              {busy ? 'Verifying…' : 'Verify & enable'}
+              {busy ? 'Verificando…' : 'Verificar y activar'}
             </button>
             <button
               onClick={() => { setStage('idle'); setCode(''); setError(''); }}
               disabled={busy}
               className="rounded-md border border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}

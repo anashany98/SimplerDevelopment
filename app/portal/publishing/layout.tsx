@@ -19,10 +19,10 @@ export default async function PublishingLayout({ children }: { children: React.R
           {/* This is the page-level h1 for every /portal/publishing/** route
               (bypasses <PortalPageHeader/>) — child route content must start
               its own headings at h2, not h3, or the outline skips a level. */}
-          <h1 className="text-2xl font-semibold">Publishing</h1>
+          <h1 className="text-2xl font-semibold">Publicaciones</h1>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            One workflow for every outbound channel — website, email, social,
-            decks, surveys, and bookings.
+            Un único flujo para cada canal de salida — web, email, redes,
+            decks, encuestas y reservas.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -31,7 +31,7 @@ export default async function PublishingLayout({ children }: { children: React.R
             className="inline-flex items-center gap-1.5 rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
           >
             <span className="material-icons text-base">add</span>
-            New card
+            Nueva tarjeta
           </Link>
         </div>
       </header>

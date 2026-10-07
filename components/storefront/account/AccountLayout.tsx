@@ -11,12 +11,12 @@ interface AccountLayoutProps {
 }
 
 const NAV_ITEMS = [
-  { href: '/account', label: 'Dashboard', icon: 'dashboard', exact: true },
-  { href: '/account/orders', label: 'Orders', icon: 'receipt_long' },
-  { href: '/account/designs', label: 'My Designs', icon: 'brush' },
-  { href: '/account/wishlist', label: 'Wishlist', icon: 'favorite' },
-  { href: '/account/support', label: 'Support', icon: 'support_agent' },
-  { href: '/account/profile', label: 'Profile', icon: 'person' },
+  { href: '/account', label: 'Panel', icon: 'dashboard', exact: true },
+  { href: '/account/orders', label: 'Pedidos', icon: 'receipt_long' },
+  { href: '/account/designs', label: 'Mis diseños', icon: 'brush' },
+  { href: '/account/wishlist', label: 'Lista de deseos', icon: 'favorite' },
+  { href: '/account/support', label: 'Soporte', icon: 'support_agent' },
+  { href: '/account/profile', label: 'Perfil', icon: 'person' },
 ];
 
 export function AccountLayout({ siteId, domain, children }: AccountLayoutProps) {
@@ -64,7 +64,7 @@ export function AccountLayout({ siteId, domain, children }: AccountLayoutProps) 
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors w-full"
             >
               <span className="material-icons text-lg" style={{ fontSize: '20px' }}>logout</span>
-              Sign Out
+              Cerrar sesión
             </button>
           </div>
         </aside>

@@ -11,6 +11,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
 
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
+
   const { id } = await params;
   const serviceId = parseInt(id, 10);
   const userId = parseInt(session.user.id, 10);
@@ -46,7 +50,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     lineItems = [{ price: svc.stripePriceId, quantity: 1 }];
   } else {
     const priceData: Record<string, unknown> = {
-      currency: 'usd',
+      currency: 'eur',
       unit_amount: svc.price,
       product_data: { name: svc.name, description: svc.description ?? undefined },
     };

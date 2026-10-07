@@ -109,7 +109,7 @@ export function HtmlRenderEditor({
   return (
     <>
       <SelectField
-        label="Width"
+        label="Ancho"
         value={(b.width as string) || 'full'}
         options={['full', 'contained']}
         onChange={(v) => onUpdate({ width: v } as Partial<Block>)}
@@ -121,9 +121,7 @@ export function HtmlRenderEditor({
       {fields.length > 0 && (
         <details open className="rounded border border-border">
           <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
-            <span className="material-icons text-sm">tune</span>
-            Content
-          </summary>
+            <span className="material-icons text-sm">tune</span>Contenido</summary>
           <HtmlRenderTabbedForm
             fields={fields}
             values={values}
@@ -143,22 +141,22 @@ export function HtmlRenderEditor({
         <details open={!loop?.postType} className="rounded border border-border">
           <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
             <span className="material-icons text-sm">dynamic_feed</span>
-            Loop source {loop?.postType ? `— ${loop.postType}` : ''}
+            Origen del bucle {loop?.postType ? `— ${loop.postType}` : ''}
             {hasLoopRegion && !loop?.postType && (
               <span
                 className="ml-auto text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/15 text-amber-700 dark:text-amber-300"
-                title={'Template has data-loop="posts" but no postType slug — at render time {{post.X}} placeholders will leak as literal text. Set a Post Type below.'}
+                title={'La plantilla tiene data-loop="posts" pero no un slug de tipo de contenido — al renderizar, los marcadores {{post.X}} aparecerán como texto literal. Define abajo un tipo de contenido.'}
               >
                 <span className="material-icons text-sm align-middle">warning</span>
-                {' '}unconfigured
+                {' '}sin configurar
               </span>
             )}
           </summary>
           <div className="p-3 space-y-3">
             {!hasLoopRegion && (
               <div className="rounded border border-amber-500/40 bg-amber-500/5 px-2 py-1.5 text-[11px] text-amber-900 dark:text-amber-100 leading-snug">
-                No <code className="font-mono">data-loop=&quot;posts&quot;</code> element in the template. Add{' '}
-                <code className="font-mono">data-loop=&quot;posts&quot;</code> to the element you want repeated.
+                No hay ningún <code className="font-mono">data-loop=&quot;posts&quot;</code> en la plantilla. Añade{' '}
+                <code className="font-mono">data-loop=&quot;posts&quot;</code> al elemento que quieras repetir.
               </div>
             )}
             {hasLoopRegion && !loop?.postType && (
@@ -166,30 +164,30 @@ export function HtmlRenderEditor({
                 <div className="flex items-start gap-1.5">
                   <span className="material-icons text-sm mt-0.5">warning</span>
                   <div>
-                    Template has a <code className="font-mono">data-loop=&quot;posts&quot;</code> region but no Post Type is selected.
-                    The renderer will emit the inner template with <code className="font-mono">{'{{post.X}}'}</code> placeholders
-                    left as literal text. Set the post type slug below to expand the loop.
+                    La plantilla tiene una región <code className="font-mono">data-loop=&quot;posts&quot;</code> pero no hay un tipo de contenido seleccionado.
+                    El renderizador emitirá la plantilla interna con los marcadores <code className="font-mono">{'{{post.X}}'}</code>
+                    como texto literal. Define abajo el slug del tipo de contenido para expandir el bucle.
                   </div>
                 </div>
               </div>
             )}
             <Field
-              label="Post type slug"
+              label="Slug del tipo de contenido"
               value={loop?.postType || ''}
               onChange={(v) => setLoop({ postType: v })}
             />
             <div className="grid grid-cols-2 gap-2">
-              <NumberField label="Limit" value={loop?.limit ?? 3} min={1} max={24} onChange={(v) => setLoop({ limit: v })} />
-              <SelectField label="Order" value={loop?.orderBy || 'recent'} options={['recent', 'oldest', 'title']} onChange={(v) => setLoop({ orderBy: v as HtmlRenderLoop['orderBy'] })} />
+              <NumberField label="Límite" value={loop?.limit ?? 3} min={1} max={24} onChange={(v) => setLoop({ limit: v })} />
+              <SelectField label="Pedido" value={loop?.orderBy || 'recent'} options={['recent', 'oldest', 'title']} onChange={(v) => setLoop({ orderBy: v as HtmlRenderLoop['orderBy'] })} />
             </div>
             <p className="text-[11px] text-muted-foreground leading-snug">
-              Inside the loop element use{' '}
+              Dentro del elemento del bucle usa{' '}
               <code className="bg-accent/40 px-1 rounded">{'{{post.title}}'}</code>,{' '}
               <code className="bg-accent/40 px-1 rounded">{'{{post.url}}'}</code>,{' '}
               <code className="bg-accent/40 px-1 rounded">{'{{post.coverImage}}'}</code>,{' '}
               <code className="bg-accent/40 px-1 rounded">{'{{post.excerpt}}'}</code>,{' '}
-              <code className="bg-accent/40 px-1 rounded">{'{{post.values.X}}'}</code>{' '}(read a value from the target post&apos;s html-render block), or{' '}
-              <code className="bg-accent/40 px-1 rounded">{'{{post.fields.X}}'}</code>{' '}(read a typed CMS custom field by its slug).
+              <code className="bg-accent/40 px-1 rounded">{'{{post.values.X}}'}</code>{' '}(lee un valor del bloque html-render del contenido de destino), o{' '}
+              <code className="bg-accent/40 px-1 rounded">{'{{post.fields.X}}'}</code>{' '}(lee un campo personalizado del CMS por su slug).
             </p>
             {loop && (
               <button
@@ -197,7 +195,7 @@ export function HtmlRenderEditor({
                 onClick={() => setLoop(null)}
                 className="text-xs text-destructive hover:underline"
               >
-                Disable loop (keep markup)
+                Desactivar bucle (conservar el marcado)
               </button>
             )}
           </div>
@@ -220,14 +218,14 @@ export function HtmlRenderEditor({
         <details className="rounded border border-border">
           <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
             <span className="material-icons text-sm">schema</span>
-            Field schema ({fields.length})
+            Esquema de campos ({fields.length})
             {orphans.length > 0 && (
               <span
                 className="ml-auto text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/15 text-amber-700 dark:text-amber-300"
-                title={`Referenced in the template but missing from the schema:\n  ${orphans.join('\n  ')}\n\nAdd matching fields below or remove the references from the HTML.`}
+                title={`Referenciados en la plantilla pero ausentes del esquema:\n  ${orphans.join('\n  ')}\n\nAñade los campos correspondientes abajo o elimina las referencias del HTML.`}
               >
                 <span className="material-icons text-sm align-middle">warning</span>
-                {' '}{orphans.length} undefined
+                {' '}{orphans.length} sin definir
               </span>
             )}
           </summary>
@@ -236,7 +234,7 @@ export function HtmlRenderEditor({
               <div className="flex items-start gap-1.5">
                 <span className="material-icons text-sm mt-0.5">warning</span>
                 <div className="flex-1">
-                  <span className="font-medium">Template references {orphans.length} undefined field{orphans.length === 1 ? '' : 's'}:</span>{' '}
+                  <span className="font-medium">La plantilla referencia {orphans.length} campo{orphans.length === 1 ? '' : 's'} sin definir:</span>{' '}
                   {orphans.map((name, i) => (
                     <span key={name}>
                       <code className="font-mono bg-amber-500/15 px-1 rounded">{name}</code>
@@ -244,7 +242,7 @@ export function HtmlRenderEditor({
                     </span>
                   ))}
                   <div className="mt-1 text-amber-800 dark:text-amber-200/80">
-                    Add fields below or remove references from the HTML — undefined references render as empty.
+                    Añade campos abajo o elimina referencias del HTML — las referencias sin definir se renderizan vacías.
                   </div>
                 </div>
               </div>
@@ -279,7 +277,7 @@ export function HtmlRenderEditor({
                     <div className="flex items-center gap-1.5">
                       <button
                         type="button"
-                        title="Drag to reorder"
+                        title="Arrastra para reordenar"
                         className="cursor-grab active:cursor-grabbing p-0.5 rounded text-muted-foreground/60 hover:bg-accent hover:text-foreground"
                         {...dragHandleProps}
                       >
@@ -292,18 +290,18 @@ export function HtmlRenderEditor({
                         ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300'
                         : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'
                     }`}
-                    title={usage === 0 ? 'No template references — add {{' + f.name + '}} or data-field="' + f.name + '" to use this field' : `Referenced ${usage}× in the template`}
+                    title={usage === 0 ? 'Sin referencias en la plantilla — añade {{' + f.name + '}} o data-field="' + f.name + '" para usar este campo' : `Referenciado ${usage}× en la plantilla`}
                   >
-                    {usage === 0 ? 'unused' : `${usage}×`}
+                    {usage === 0 ? 'sin usar' : `${usage}×`}
                   </span>
                   <button
                     type="button"
-                    title="Rename field key (also rewrites template references)"
+                    title="Renombrar la clave del campo (también reescribe las referencias de la plantilla)"
                     onClick={() => {
-                      const next = window.prompt(`Rename field key "${f.name}" to:`, f.name);
+                      const next = window.prompt(`Renombrar la clave del campo "${f.name}" a:`, f.name);
                       if (!next || next === f.name) return;
-                      if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(next)) { window.alert('Field keys must start with a letter/underscore and contain only letters, numbers, hyphens, or underscores.'); return; }
-                      if (fields.some(o => o.name === next)) { window.alert(`A field named "${next}" already exists.`); return; }
+                      if (!/^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(next)) { window.alert('Las claves de campo deben empezar por una letra o guion bajo y contener solo letras, números, guiones o guiones bajos.'); return; }
+                      if (fields.some(o => o.name === next)) { window.alert(`Ya existe un campo llamado "${next}".`); return; }
                       const newFields = fields.map((fld, idx) => idx === i ? { ...fld, name: next } : fld);
                       const newValues: HtmlRenderValues = { ...values };
                       if (f.name in newValues) {
@@ -320,7 +318,7 @@ export function HtmlRenderEditor({
                   </button>
                       <button
                         type="button"
-                        title="Delete field (also clears its value; you may want to remove the matching {{name}} or data-field from the template)"
+                        title="Eliminar campo (también borra su valor; quizá quieras quitar el {{name}} o data-field correspondiente de la plantilla)"
                         onClick={() => {
                           const next = fields.filter((_, idx) => idx !== i);
                           const nextValues = { ...values };
@@ -332,9 +330,9 @@ export function HtmlRenderEditor({
                         <span className="material-icons text-sm">delete_outline</span>
                       </button>
                     </div>
-                    <Field label="Label" value={f.label || ''} onChange={(val) => setField(i, { label: val })} />
+                    <Field label="Etiqueta" value={f.label || ''} onChange={(val) => setField(i, { label: val })} />
                 <SelectField
-                  label="Type"
+                  label="Tipo"
                   value={f.type}
                   options={['text', 'textarea', 'number', 'richtext', 'boolean', 'url', 'image', 'color', 'select', 'radio', 'date', 'datetime', 'link', 'post', 'array', 'group', 'tab']}
                   onChange={(val) => setField(i, { type: val as HtmlRenderField['type'] })}
@@ -347,7 +345,7 @@ export function HtmlRenderEditor({
                 )}
                 {(f.type === 'select' || f.type === 'radio') && (
                   <TextareaField
-                    label="Options (one per line)"
+                    label="Opciones (una por línea)"
                     value={(f.options || []).join('\n')}
                     onChange={(val) => setField(i, { options: val.split('\n').map((s) => s.trim()).filter(Boolean) })}
                     rows={3}
@@ -355,39 +353,39 @@ export function HtmlRenderEditor({
                 )}
                 {f.type === 'post' && (
                   <Field
-                    label="Restrict to post type (optional)"
+                    label="Restringir al tipo de contenido (opcional)"
                     value={f.postType || ''}
                     onChange={(val) => setField(i, { postType: val || undefined })}
                   />
                 )}
                 {f.type === 'number' && (
                   <div className="grid grid-cols-3 gap-2">
-                    <NumberField label="Min" value={f.min ?? 0} onChange={(v) => setField(i, { min: v })} />
-                    <NumberField label="Max" value={f.max ?? 0} onChange={(v) => setField(i, { max: v })} />
-                    <NumberField label="Step" value={f.step ?? 1} onChange={(v) => setField(i, { step: v })} />
+                    <NumberField label="Mín." value={f.min ?? 0} onChange={(v) => setField(i, { min: v })} />
+                    <NumberField label="Máx." value={f.max ?? 0} onChange={(v) => setField(i, { max: v })} />
+                    <NumberField label="Paso" value={f.step ?? 1} onChange={(v) => setField(i, { step: v })} />
                   </div>
                 )}
                 {f.type !== 'tab' && (
-                  <Field label="Default" value={f.default || ''} onChange={(val) => setField(i, { default: val })} />
+                  <Field label="Predeterminado" value={f.default || ''} onChange={(val) => setField(i, { default: val })} />
                 )}
-                <Field label="Help text" value={f.help || ''} onChange={(val) => setField(i, { help: val || undefined })} />
+                <Field label="Texto de ayuda" value={f.help || ''} onChange={(val) => setField(i, { help: val || undefined })} />
 
                 {/* Validation rules */}
                 {f.type !== 'tab' && f.type !== 'array' && f.type !== 'group' && (
                   <details className="border-t border-border pt-2">
-                    <summary className="cursor-pointer select-none text-[11px] font-medium text-muted-foreground hover:text-foreground">Validation</summary>
+                    <summary className="cursor-pointer select-none text-[11px] font-medium text-muted-foreground hover:text-foreground">Validación</summary>
                     <div className="pt-2 space-y-2">
-                      <CheckboxField label="Required" checked={f.required} onChange={(v) => setField(i, { required: v || undefined })} />
+                      <CheckboxField label="Obligatorio" checked={f.required} onChange={(v) => setField(i, { required: v || undefined })} />
                       {(f.type === 'text' || f.type === 'textarea' || f.type === 'richtext') && (
                         <div className="grid grid-cols-2 gap-2">
-                          <NumberField label="Min length" value={f.minLength ?? 0} onChange={(v) => setField(i, { minLength: v || undefined })} />
-                          <NumberField label="Max length" value={f.maxLength ?? 0} onChange={(v) => setField(i, { maxLength: v || undefined })} />
+                          <NumberField label="Longitud mínima" value={f.minLength ?? 0} onChange={(v) => setField(i, { minLength: v || undefined })} />
+                          <NumberField label="Longitud máxima" value={f.maxLength ?? 0} onChange={(v) => setField(i, { maxLength: v || undefined })} />
                         </div>
                       )}
                       {(f.type === 'text' || f.type === 'url') && (
-                        <Field label="Pattern (regex)" value={f.pattern || ''} onChange={(v) => setField(i, { pattern: v || undefined })} />
+                        <Field label="Patrón (regex)" value={f.pattern || ''} onChange={(v) => setField(i, { pattern: v || undefined })} />
                       )}
-                      <Field label="Custom error message" value={f.errorMessage || ''} onChange={(v) => setField(i, { errorMessage: v || undefined })} />
+                      <Field label="Mensaje de error personalizado" value={f.errorMessage || ''} onChange={(v) => setField(i, { errorMessage: v || undefined })} />
                     </div>
                   </details>
                 )}
@@ -396,11 +394,11 @@ export function HtmlRenderEditor({
                 {f.type !== 'tab' && (
                   <details className="border-t border-border pt-2">
                     <summary className="cursor-pointer select-none text-[11px] font-medium text-muted-foreground hover:text-foreground">
-                      Conditional logic{f.conditional ? ' (active)' : ''}
+                      Lógica condicional{f.conditional ? ' (activo)' : ''}
                     </summary>
                     <div className="pt-2 space-y-2">
                       <SelectField
-                        label="Show this field when"
+                        label="Mostrar este campo cuando"
                         value={f.conditional ? 'enabled' : 'always'}
                         options={['always', 'enabled']}
                         onChange={(v) => {
@@ -411,22 +409,22 @@ export function HtmlRenderEditor({
                       {f.conditional && (
                         <>
                           <SelectField
-                            label="Field"
+                            label="Campo"
                             value={f.conditional.field}
                             options={['', ...fields.filter(other => other.name !== f.name && other.type !== 'tab').map(other => other.name)]}
                             onChange={(v) => setField(i, { conditional: { ...f.conditional!, field: v } })}
                           />
                           <SelectField
-                            label="Operator"
+                            label="Operador"
                             value={f.conditional.operator}
                             options={['truthy', 'falsy', 'eq', 'neq', 'in', 'notIn']}
                             onChange={(v) => setField(i, { conditional: { ...f.conditional!, operator: v as HtmlRenderConditional['operator'] } })}
                           />
                           {(f.conditional.operator === 'eq' || f.conditional.operator === 'neq') && (
-                            <Field label="Value" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
+                            <Field label="Valor" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
                           )}
                           {(f.conditional.operator === 'in' || f.conditional.operator === 'notIn') && (
-                            <Field label="Values (pipe-delimited, e.g. a|b|c)" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
+                            <Field label="Valores (separados con |, p. ej. a|b|c)" value={f.conditional.value || ''} onChange={(v) => setField(i, { conditional: { ...f.conditional!, value: v } })} />
                           )}
                         </>
                       )}
@@ -459,17 +457,15 @@ export function HtmlRenderEditor({
           with the same editor for serious editing sessions. */}
       <details className="rounded border border-border">
         <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
-          <span className="material-icons text-sm">code</span>
-          HTML template
-        </summary>
+          <span className="material-icons text-sm">code</span>Plantilla HTML</summary>
         <div className="p-3 space-y-2">
           <HtmlTemplateEditor value={html} onChange={setHtml} />
           <p className="text-[11px] text-muted-foreground leading-snug">
-            <code className="bg-accent/40 px-1 rounded">{'{{name}}'}</code> for attribute/text substitution.{' '}
-            <code className="bg-accent/40 px-1 rounded">data-field=&quot;name&quot;</code> on an element to make its inner HTML editable inline.{' '}
-            <code className="bg-accent/40 px-1 rounded">data-repeat=&quot;name&quot;</code> repeats per array item.{' '}
-            <code className="bg-accent/40 px-1 rounded">data-group=&quot;name&quot;</code> wraps a single nested object.{' '}
-            Inside repeats/groups: <code className="bg-accent/40 px-1 rounded">{'{{name.subfield}}'}</code> +{' '}
+            <code className="bg-accent/40 px-1 rounded">{'{{name}}'}</code> para sustituir atributos/texto.{' '}
+            <code className="bg-accent/40 px-1 rounded">data-field=&quot;name&quot;</code> en un elemento para que su HTML interno sea editable en línea.{' '}
+            <code className="bg-accent/40 px-1 rounded">data-repeat=&quot;name&quot;</code> se repite por cada elemento del array.{' '}
+            <code className="bg-accent/40 px-1 rounded">data-group=&quot;name&quot;</code> envuelve un único objeto anidado.{' '}
+            Dentro de repeticiones/grupos: <code className="bg-accent/40 px-1 rounded">{'{{name.subfield}}'}</code> +{' '}
             <code className="bg-accent/40 px-1 rounded">data-field=&quot;subfield&quot;</code>.
           </p>
         </div>

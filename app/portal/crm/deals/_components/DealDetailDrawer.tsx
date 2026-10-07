@@ -147,7 +147,7 @@ export default function DealDetailDrawer({
       .filter((c) => c.companyId === cid)
       .map((c) => ({
         value: c.id,
-        label: `${c.firstName} ${c.lastName}`.trim() || `Contact #${c.id}`,
+        label: `${c.firstName} ${c.lastName}`.trim() || `Contacto #${c.id}`,
       }));
   }, [contacts, editForm.companyId]);
 
@@ -212,14 +212,14 @@ export default function DealDetailDrawer({
     const d = await api.updateDeal(deal.id, body);
     setEditSaving(false);
     if (!d.success) {
-      setEditError(d.message ?? 'Failed to save deal.');
+      setEditError(d.message ?? 'No se pudo guardar el negocio.');
       return;
     }
     onSaved();
   }
 
   async function handleDelete() {
-    if (!confirm('Delete this deal? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar este negocio? Esta acción no se puede deshacer.')) return;
     setDeleting(true);
     await api.deleteDeal(deal.id);
     setDeleting(false);
@@ -260,7 +260,7 @@ export default function DealDetailDrawer({
     const res = await api.postComment(deal.id, commentBody, commentFiles, replyingToId);
     setPostingComment(false);
     if (!res.ok) {
-      setEditError('Failed to post comment. Please try again.');
+      setEditError('No se pudo publicar el comentario. Inténtalo de nuevo.');
       return;
     }
     setCommentBody('');
@@ -368,7 +368,7 @@ export default function DealDetailDrawer({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-foreground">
-                {c.authorName || 'Unknown'}
+                {c.authorName || 'Desconocido'}
               </span>
               <span className="text-[10px] text-muted-foreground">
                 {new Date(c.createdAt).toLocaleString()}
@@ -376,7 +376,7 @@ export default function DealDetailDrawer({
               <button
                 onClick={() => handleDeleteComment(c.id)}
                 className="ml-auto opacity-0 group-hover:opacity-100 p-0.5 rounded text-muted-foreground hover:text-destructive transition-all"
-                title="Delete"
+                title="Eliminar"
               >
                 <span className="material-icons text-xs">delete</span>
               </button>
@@ -409,7 +409,7 @@ export default function DealDetailDrawer({
                 className="mt-1.5 flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors"
               >
                 <span className="material-icons text-xs">reply</span>
-                Reply
+                Responder
               </button>
             )}
           </div>
@@ -443,9 +443,9 @@ export default function DealDetailDrawer({
         <div className="flex border-b border-border shrink-0">
           {(
             [
-              ['details', 'edit', 'Details'],
-              ['artifacts', 'attach_file', 'Artifacts'],
-              ['comments', 'chat', 'Comments'],
+              ['details', 'edit', 'Detalles'],
+              ['artifacts', 'attach_file', 'Adjuntos'],
+              ['comments', 'chat', 'Comentarios'],
             ] as const
           ).map(([tab, icon, label]) => (
             <button
@@ -482,7 +482,7 @@ export default function DealDetailDrawer({
               )}
 
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Title</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Título</label>
                 <input
                   required
                   value={editForm.title}
@@ -493,7 +493,7 @@ export default function DealDetailDrawer({
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Value ($)</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Valor ($)</label>
                   <input
                     type="number"
                     step="0.01"
@@ -504,34 +504,34 @@ export default function DealDetailDrawer({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Priority</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Prioridad</label>
                   <select
                     value={editForm.priority}
                     onChange={(e) => setEditForm((f) => ({ ...f, priority: e.target.value }))}
                     className={inputClass}
                   >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+                    <option value="low">Baja</option>
+                    <option value="medium">Media</option>
+                    <option value="high">Alta</option>
                   </select>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Status</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Estado</label>
                   <select
                     value={editForm.status}
                     onChange={(e) => setEditForm((f) => ({ ...f, status: e.target.value }))}
                     className={inputClass}
                   >
-                    <option value="open">Open</option>
-                    <option value="won">Won</option>
-                    <option value="lost">Lost</option>
+                    <option value="open">Abierto</option>
+                    <option value="won">Ganado</option>
+                    <option value="lost">Perdido</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Expected Close</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Cierre previsto</label>
                   <input
                     type="date"
                     value={editForm.expectedCloseDate}
@@ -545,13 +545,13 @@ export default function DealDetailDrawer({
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="text-xs font-medium text-muted-foreground">Company</label>
+                  <label className="text-xs font-medium text-muted-foreground">Empresa</label>
                   <button
                     type="button"
                     onClick={() => setShowNewCompany((v) => !v)}
                     className="text-xs text-primary hover:underline"
                   >
-                    {showNewCompany ? 'Cancel' : '+ New Company'}
+                    {showNewCompany ? 'Cancelar' : '+ Nueva empresa'}
                   </button>
                 </div>
                 {showNewCompany ? (
@@ -559,7 +559,7 @@ export default function DealDetailDrawer({
                     <input
                       value={newCompanyName}
                       onChange={(e) => setNewCompanyName(e.target.value)}
-                      placeholder="Company name"
+                      placeholder="Nombre de la empresa"
                       className={inputClass}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
@@ -572,7 +572,7 @@ export default function DealDetailDrawer({
                       type="button"
                       onClick={handleCreateCompany}
                       disabled={creatingCompany}
-                      className="px-2 py-2 bg-primary text-primary-foreground rounded-lg text-sm shrink-0 hover:bg-primary/90 disabled:opacity-50"
+                      className="px-2 py-2 bg-foreground text-background rounded-lg text-sm shrink-0 hover:bg-foreground/90 disabled:opacity-50"
                     >
                       <span className="material-icons text-base">{creatingCompany ? 'refresh' : 'check'}</span>
                     </button>
@@ -589,7 +589,7 @@ export default function DealDetailDrawer({
                       }));
                       setCompanyLabel(opt ? opt.name : null);
                     }}
-                    placeholder="Select company…"
+                    placeholder="Selecciona empresa…"
                   />
                 )}
               </div>
@@ -598,7 +598,7 @@ export default function DealDetailDrawer({
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-xs font-medium text-muted-foreground">
                     Contact
-                    {editForm.companyId && <span className="text-primary ml-1">(filtered)</span>}
+                    {editForm.companyId && <span className="text-primary ml-1">(filtrado)</span>}
                   </label>
                   <button
                     type="button"
@@ -611,7 +611,7 @@ export default function DealDetailDrawer({
                     }}
                     className="text-xs text-primary hover:underline"
                   >
-                    {showNewContact ? 'Cancel' : '+ New Contact'}
+                    {showNewContact ? 'Cancelar' : '+ Nuevo contacto'}
                   </button>
                 </div>
                 {showNewContact ? (
@@ -620,13 +620,13 @@ export default function DealDetailDrawer({
                       <input
                         value={newContactFirst}
                         onChange={(e) => setNewContactFirst(e.target.value)}
-                        placeholder="First name *"
+                        placeholder="Nombre *"
                         className={inputClass}
                       />
                       <input
                         value={newContactLast}
                         onChange={(e) => setNewContactLast(e.target.value)}
-                        placeholder="Last name"
+                        placeholder="Apellido"
                         className={inputClass}
                       />
                     </div>
@@ -634,7 +634,7 @@ export default function DealDetailDrawer({
                       <input
                         value={newContactEmail}
                         onChange={(e) => setNewContactEmail(e.target.value)}
-                        placeholder="Email"
+                        placeholder="Correo electrónico"
                         type="email"
                         className={inputClass}
                         onKeyDown={(e) => {
@@ -648,7 +648,7 @@ export default function DealDetailDrawer({
                         type="button"
                         onClick={handleCreateContact}
                         disabled={creatingContact || !newContactFirst.trim()}
-                        className="px-2 py-2 bg-primary text-primary-foreground rounded-lg text-sm shrink-0 hover:bg-primary/90 disabled:opacity-50"
+                        className="px-2 py-2 bg-foreground text-background rounded-lg text-sm shrink-0 hover:bg-foreground/90 disabled:opacity-50"
                       >
                         <span className="material-icons text-base">
                           {creatingContact ? 'refresh' : 'check'}
@@ -658,8 +658,8 @@ export default function DealDetailDrawer({
                     {editForm.companyId && (
                       <p className="text-[10px] text-muted-foreground flex items-center gap-1">
                         <span className="material-icons text-[10px]">link</span>
-                        Will be assigned to{' '}
-                        {companyLabel ?? `company #${editForm.companyId}`}
+                        Se asignará a{' '}
+                        {companyLabel ?? `empresa #${editForm.companyId}`}
                       </p>
                     )}
                   </div>
@@ -675,9 +675,9 @@ export default function DealDetailDrawer({
                     onChange={(v) =>
                       setEditForm((f) => ({ ...f, contactId: v ? String(v.value) : '' }))
                     }
-                    placeholder={editForm.companyId ? 'Select contact…' : 'Select a company first'}
+                    placeholder={editForm.companyId ? 'Selecciona contacto…' : 'Primero selecciona una empresa'}
                     noOptionsMessage={() =>
-                      editForm.companyId ? 'No contacts at this company' : 'Select a company first'
+                      editForm.companyId ? 'No hay contactos en esta empresa' : 'Primero selecciona una empresa'
                     }
                     classNames={rsClassNames}
                     classNamePrefix="rs"
@@ -713,7 +713,7 @@ export default function DealDetailDrawer({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Stage</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Etapa</label>
                   <select
                     value={editForm.stageId}
                     onChange={(e) => setEditForm((f) => ({ ...f, stageId: e.target.value }))}
@@ -738,7 +738,7 @@ export default function DealDetailDrawer({
               {artifacts.filter((a) => a.pinned).length > 0 && (
                 <div className="pt-2 border-t border-border">
                   <p className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1">
-                    <span className="material-icons text-xs">push_pin</span> Pinned Artifacts
+                    <span className="material-icons text-xs">push_pin</span> Adjuntos fijados
                   </p>
                   <div className="space-y-1">
                     {artifacts
@@ -768,7 +768,7 @@ export default function DealDetailDrawer({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 text-xs text-foreground bg-accent/50 rounded-lg px-2 py-1.5 hover:bg-accent transition-colors"
-                            title="Open artifact"
+                            title="Abrir adjunto"
                           >
                             {inner}
                           </a>
@@ -787,7 +787,7 @@ export default function DealDetailDrawer({
 
               <div className="flex items-center justify-between pt-2 border-t border-border">
                 <p className="text-xs text-muted-foreground">
-                  Created {new Date(deal.createdAt).toLocaleDateString()}
+                  Creado {new Date(deal.createdAt).toLocaleDateString()}
                 </p>
                 <div className="flex gap-2">
                   <button
@@ -795,15 +795,15 @@ export default function DealDetailDrawer({
                     onClick={onClose}
                     className="px-4 py-2 text-sm font-medium text-foreground bg-accent rounded-lg hover:bg-accent/80 transition-colors"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                   <button
                     type="submit"
                     disabled={editSaving}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   >
                     {editSaving && <span className="material-icons animate-spin text-sm">refresh</span>}
-                    Save Changes
+                    Guardar cambios
                   </button>
                 </div>
               </div>
@@ -811,7 +811,7 @@ export default function DealDetailDrawer({
               <div className="pt-4 border-t border-border space-y-3">
                 <p className="text-sm font-medium text-foreground flex items-center gap-2">
                   <span className="material-icons text-base text-muted-foreground">tune</span>
-                  Custom Fields
+                  Campos personalizados
                 </p>
                 <CrmCustomFieldsPanel entityType="deal" entityId={deal.id} />
               </div>
@@ -822,13 +822,13 @@ export default function DealDetailDrawer({
           {panelTab === 'artifacts' && (
             <div className="p-6 space-y-4">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-foreground">Linked Artifacts</p>
+                <p className="text-sm font-medium text-foreground">Adjuntos vinculados</p>
                 <button
                   onClick={() => setShowArtifactPicker((p) => !p)}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 transition-colors"
                 >
                   <span className="material-icons text-sm">{showArtifactPicker ? 'close' : 'add'}</span>
-                  {showArtifactPicker ? 'Cancel' : 'Link Artifact'}
+                  {showArtifactPicker ? 'Cancelar' : 'Vincular adjunto'}
                 </button>
               </div>
 
@@ -839,11 +839,11 @@ export default function DealDetailDrawer({
                       onClick={() => setArtifactTypeFilter('')}
                       className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                         !artifactTypeFilter
-                          ? 'bg-primary text-primary-foreground'
+                          ? 'bg-foreground text-background'
                           : 'bg-accent text-foreground hover:bg-accent/80'
                       }`}
                     >
-                      All
+                      Todos
                     </button>
                     {Object.entries(ARTIFACT_LABELS).map(([type, label]) => (
                       <button
@@ -851,7 +851,7 @@ export default function DealDetailDrawer({
                         onClick={() => setArtifactTypeFilter(type)}
                         className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                           artifactTypeFilter === type
-                            ? 'bg-primary text-primary-foreground'
+                            ? 'bg-foreground text-background'
                             : 'bg-accent text-foreground hover:bg-accent/80'
                         }`}
                       >
@@ -892,8 +892,8 @@ export default function DealDetailDrawer({
                           ),
                       ).length === 0 && (
                       <p className="text-xs text-muted-foreground text-center py-4">
-                        No available artifacts
-                        {artifactTypeFilter ? ` of type "${ARTIFACT_LABELS[artifactTypeFilter]}"` : ''}
+                        No hay adjuntos disponibles
+                        {artifactTypeFilter ? ` del tipo "${ARTIFACT_LABELS[artifactTypeFilter]}"` : ''}
                       </p>
                     )}
                   </div>
@@ -909,9 +909,9 @@ export default function DealDetailDrawer({
                   <span className="material-icons text-3xl text-muted-foreground/50 block mb-2">
                     attach_file
                   </span>
-                  <p className="text-sm text-muted-foreground">No artifacts linked yet</p>
+                  <p className="text-sm text-muted-foreground">Aún no hay adjuntos vinculados</p>
                   <p className="text-xs text-muted-foreground">
-                    Link websites, campaigns, proposals, and more
+                    Vincula sitios web, campañas, propuestas y más
                   </p>
                 </div>
               ) : (
@@ -934,7 +934,7 @@ export default function DealDetailDrawer({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex-1 min-w-0 group"
-                            title="Open artifact"
+                            title="Abrir adjunto"
                           >
                             <p className="text-sm font-medium text-foreground truncate group-hover:text-primary group-hover:underline">
                               {a.displayTitle}
@@ -959,7 +959,7 @@ export default function DealDetailDrawer({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-1 rounded text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
-                            title="Open in new tab"
+                            title="Abrir en nueva pestaña"
                           >
                             <span className="material-icons text-sm">open_in_new</span>
                           </a>
@@ -971,7 +971,7 @@ export default function DealDetailDrawer({
                               ? 'text-primary hover:bg-primary/10'
                               : 'text-muted-foreground hover:bg-accent'
                           }`}
-                          title={a.pinned ? 'Unpin' : 'Pin'}
+                          title={a.pinned ? 'Quitar fijado' : 'Fijar'}
                         >
                           <span className="material-icons text-sm">
                             {a.pinned ? 'push_pin' : 'push_pin'}
@@ -980,7 +980,7 @@ export default function DealDetailDrawer({
                         <button
                           onClick={() => handleRemoveArtifact(a.id)}
                           className="p-1 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                          title="Remove"
+                          title="Quitar"
                         >
                           <span className="material-icons text-sm">close</span>
                         </button>
@@ -1000,13 +1000,13 @@ export default function DealDetailDrawer({
                   <div className="flex items-center justify-between bg-accent/50 rounded-lg px-3 py-1.5 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <span className="material-icons text-sm">reply</span>
-                      Replying to {replyingToComment?.authorName || 'comment'}
+                      Respondiendo a {replyingToComment?.authorName || 'comentario'}
                     </span>
                     <button
                       type="button"
                       onClick={cancelReply}
                       className="text-muted-foreground hover:text-foreground"
-                      title="Cancel reply"
+                      title="Cancelar respuesta"
                     >
                       <span className="material-icons text-sm">close</span>
                     </button>
@@ -1018,7 +1018,7 @@ export default function DealDetailDrawer({
                     value={commentBody}
                     onChange={(e) => handleCommentChange(e.target.value)}
                     onKeyDown={handleCommentKeyDown}
-                    placeholder="Add a comment... (@ to mention, Cmd+Enter to send)"
+                    placeholder="Añade un comentario... (@ para mencionar, Cmd+Enter para enviar)"
                     rows={3}
                     className={inputClass + ' resize-none'}
                   />
@@ -1038,7 +1038,7 @@ export default function DealDetailDrawer({
                         ))}
                       {mentionUsers.filter((u) => u.name?.toLowerCase().includes(mentionQuery))
                         .length === 0 && (
-                        <p className="px-3 py-2 text-xs text-muted-foreground">No matches</p>
+                        <p className="px-3 py-2 text-xs text-muted-foreground">Sin coincidencias</p>
                       )}
                     </div>
                   )}
@@ -1061,25 +1061,25 @@ export default function DealDetailDrawer({
                       className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <span className="material-icons text-sm">attach_file</span>
-                      Attach
+                      Adjuntar
                     </button>
                     {commentFiles.length > 0 && (
                       <span className="text-xs text-muted-foreground">
-                        {commentFiles.length} file{commentFiles.length > 1 ? 's' : ''}
+                        {commentFiles.length} archivo{commentFiles.length > 1 ? 's' : ''}
                       </span>
                     )}
                   </div>
                   <button
                     onClick={handlePostComment}
                     disabled={postingComment || (!commentBody.trim() && commentFiles.length === 0)}
-                    className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
                   >
                     {postingComment ? (
                       <span className="material-icons animate-spin text-sm">refresh</span>
                     ) : (
                       <span className="material-icons text-sm">send</span>
                     )}
-                    Send
+                    Enviar
                   </button>
                 </div>
                 {commentFiles.length > 0 && (
@@ -1113,7 +1113,7 @@ export default function DealDetailDrawer({
                     <span className="material-icons text-3xl text-muted-foreground/50 block mb-2">
                       chat_bubble_outline
                     </span>
-                    <p className="text-sm text-muted-foreground">No comments yet</p>
+                    <p className="text-sm text-muted-foreground">Aún no hay comentarios</p>
                   </div>
                 ) : (
                   rootComments.map((root) => (

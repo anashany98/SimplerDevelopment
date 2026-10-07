@@ -171,17 +171,20 @@ carry higher line floors than the project-wide 60%:
 | `lib/ai/**`          |   60%       |  61.1%   | Below the 70% target; backlog item to raise once more tests land |
 | `lib/billing/**`     |   25%       |  27.9%   | Small domain (333 lines); 25% floor avoids CI noise; backlog item to raise to 70% |
 
-## Pre-push auto-gates
+## Tenancy gate path coverage
 
-The pre-push hook inspects changed file paths and automatically adds the tenancy
-gate when any of the following are touched:
+CI inspects changed paths and runs the tenancy gate for product-source changes.
+It covers these roots because pages, services, and shared components can query
+tenant data outside API route handlers:
 
-- `lib/db/` (schema, migrations, query helpers)
-- `app/api/` (API route handlers)
-- `lib/active-client.ts` (tenant resolver)
+- `app/` (all route trees, including portal pages and API handlers)
+- `lib/` (database, auth, MCP, and product-domain services)
+- `drizzle/` (schema migrations)
+- `components/` (shared product components)
 
-When those paths appear in the push diff the hook runs `bun test:tenancy` in
-addition to the standard gate — no manual flag required.
+When those paths appear in a PR or push to `main`, GitHub Actions runs the
+tenancy gate. The local pre-push hook does not run it automatically; use
+`bun test:tenancy` or `scripts/ci-local.sh --tenancy` for an explicit local run.
 
 **No test DB configured?** The gate looks for `DATABASE_URL_TEST`, then falls
 back to `DATABASE_URL`. If neither is set it **soft-skips**: it prints a loud

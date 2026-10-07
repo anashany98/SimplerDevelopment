@@ -15,36 +15,36 @@ interface PreviewData {
 
 const FIELD_OPTIONS: Record<string, { value: string; label: string }[]> = {
   contact: [
-    { value: '', label: 'Skip' },
-    { value: 'firstName', label: 'First Name' },
-    { value: 'lastName', label: 'Last Name' },
-    { value: 'email', label: 'Email' },
-    { value: 'phone', label: 'Phone' },
-    { value: 'title', label: 'Job Title' },
-    { value: 'source', label: 'Source' },
-    { value: 'status', label: 'Status' },
-    { value: 'address', label: 'Address' },
-    { value: 'notes', label: 'Notes' },
+    { value: '', label: 'Omitir' },
+    { value: 'firstName', label: 'Nombre' },
+    { value: 'lastName', label: 'Apellidos' },
+    { value: 'email', label: 'Correo' },
+    { value: 'phone', label: 'Teléfono' },
+    { value: 'title', label: 'Puesto' },
+    { value: 'source', label: 'Origen' },
+    { value: 'status', label: 'Estado' },
+    { value: 'address', label: 'Dirección' },
+    { value: 'notes', label: 'Notas' },
   ],
   company: [
-    { value: '', label: 'Skip' },
-    { value: 'name', label: 'Name' },
-    { value: 'domain', label: 'Domain' },
-    { value: 'industry', label: 'Industry' },
-    { value: 'size', label: 'Size' },
-    { value: 'phone', label: 'Phone' },
-    { value: 'website', label: 'Website' },
-    { value: 'address', label: 'Address' },
-    { value: 'notes', label: 'Notes' },
+    { value: '', label: 'Omitir' },
+    { value: 'name', label: 'Nombre' },
+    { value: 'domain', label: 'Dominio' },
+    { value: 'industry', label: 'Sector' },
+    { value: 'size', label: 'Tamaño' },
+    { value: 'phone', label: 'Teléfono' },
+    { value: 'website', label: 'Sitio web' },
+    { value: 'address', label: 'Dirección' },
+    { value: 'notes', label: 'Notas' },
   ],
   deal: [
-    { value: '', label: 'Skip' },
-    { value: 'title', label: 'Title' },
-    { value: 'value', label: 'Value' },
-    { value: 'status', label: 'Status' },
-    { value: 'priority', label: 'Priority' },
-    { value: 'notes', label: 'Notes' },
-    { value: 'expectedCloseDate', label: 'Expected Close Date' },
+    { value: '', label: 'Omitir' },
+    { value: 'title', label: 'Título' },
+    { value: 'value', label: 'Valor' },
+    { value: 'status', label: 'Estado' },
+    { value: 'priority', label: 'Prioridad' },
+    { value: 'notes', label: 'Notas' },
+    { value: 'expectedCloseDate', label: 'Fecha prevista de cierre' },
   ],
 };
 
@@ -71,12 +71,12 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
       body: formData,
     });
     if (!res.ok) {
-      setError('Failed to upload file. Please try again.');
+      setError('No se pudo subir el archivo. Inténtalo de nuevo.');
       return;
     }
     const d = await res.json();
     if (!d.success) {
-      setError(d.message || 'Failed to preview file');
+      setError(d.message || 'No se pudo previsualizar el archivo');
       return;
     }
 
@@ -111,7 +111,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
     });
     const d = await res.json();
     if (!d.success) {
-      setError(d.message || 'Import failed');
+      setError(d.message || 'La importación falló');
       setStep('map');
       return;
     }
@@ -132,7 +132,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
 
     try {
       const res = await fetch(`/api/portal/crm/export?${params}`);
-      if (!res.ok) throw new Error('Export failed');
+      if (!res.ok) throw new Error('La exportación falló');
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -143,7 +143,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch {
-      setError('Export failed. Please try again.');
+      setError('La exportación falló. Inténtalo de nuevo.');
     }
     setExporting(false);
   }
@@ -172,15 +172,13 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
           ) : (
             <span className="material-icons text-base">download</span>
           )}
-          Export
+          Exportar
         </button>
         <button
           onClick={() => setShowImport(true)}
           className="flex items-center gap-2 px-3 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors"
         >
-          <span className="material-icons text-base">upload</span>
-          Import
-        </button>
+          <span className="material-icons text-base">upload</span>Importar</button>
       </div>
 
       {/* Import Modal */}
@@ -188,7 +186,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={reset}>
           <div className="bg-card border border-border rounded-xl w-full max-w-2xl mx-4 max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between p-5 border-b border-border">
-              <h3 className="font-semibold text-foreground">Import {entityType}s</h3>
+              <h3 className="font-semibold text-foreground">Importar {entityType}s</h3>
               <button onClick={reset} className="text-muted-foreground hover:text-foreground">
                 <span className="material-icons text-base">close</span>
               </button>
@@ -204,14 +202,14 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
 
               {step === 'upload' && (
                 <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">Upload a CSV file to import {entityType}s.</p>
+                  <p className="text-sm text-muted-foreground">Sube un archivo CSV para importar {entityType}s.</p>
                   <div
                     className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 transition-colors"
                     onClick={() => fileRef.current?.click()}
                   >
                     <span className="material-icons text-3xl text-muted-foreground mb-2 block">upload_file</span>
-                    <p className="text-sm font-medium text-foreground">Click to select CSV file</p>
-                    <p className="text-xs text-muted-foreground mt-1">or drag and drop</p>
+                    <p className="text-sm font-medium text-foreground">Haz clic para seleccionar un archivo CSV</p>
+                    <p className="text-xs text-muted-foreground mt-1">o arrastra y suelta</p>
                   </div>
                   <input
                     ref={fileRef}
@@ -228,7 +226,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
 
               {step === 'map' && preview && (
                 <div className="space-y-4">
-                  <p className="text-sm text-muted-foreground">Map CSV columns to {entityType} fields.</p>
+                  <p className="text-sm text-muted-foreground">Asigna las columnas del CSV a los campos de {entityType}.</p>
 
                   <div className="space-y-2">
                     {preview.headers.map(header => (
@@ -280,7 +278,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                         onChange={e => setSkipDuplicates(e.target.checked)}
                         className="rounded border-border"
                       />
-                      Skip duplicate emails
+                      Omitir correos duplicados
                     </label>
                   )}
 
@@ -288,16 +286,12 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                     <button
                       onClick={reset}
                       className="px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                     <button
                       onClick={handleImport}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
                     >
-                      <span className="material-icons text-sm">upload</span>
-                      Import
-                    </button>
+                      <span className="material-icons text-sm">upload</span>Importar</button>
                   </div>
                 </div>
               )}
@@ -305,7 +299,7 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
               {step === 'importing' && (
                 <div className="flex flex-col items-center py-8">
                   <span className="material-icons animate-spin text-primary text-3xl">refresh</span>
-                  <p className="text-sm text-muted-foreground mt-3">Importing {entityType}s...</p>
+                  <p className="text-sm text-muted-foreground mt-3">Importando {entityType}s...</p>
                 </div>
               )}
 
@@ -313,8 +307,8 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 border border-green-200 rounded-lg px-3 py-2">
                     <span className="material-icons text-base">check_circle</span>
-                    {result.imported} {entityType}(s) imported successfully.
-                    {result.skipped > 0 && ` ${result.skipped} skipped.`}
+                    {result.imported} {entityType}(s) importados correctamente.
+                    {result.skipped > 0 && ` ${result.skipped} omitidos.`}
                   </div>
 
                   {result.errors.length > 0 && (
@@ -328,10 +322,8 @@ export default function CrmImportExport({ entityType, currentFilters, onImportCo
                   <div className="flex justify-end">
                     <button
                       onClick={reset}
-                      className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-                    >
-                      Done
-                    </button>
+                      className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
+                    >Listo</button>
                   </div>
                 </div>
               )}

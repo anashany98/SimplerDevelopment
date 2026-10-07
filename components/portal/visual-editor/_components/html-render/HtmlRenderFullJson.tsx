@@ -54,7 +54,7 @@ export function HtmlRenderFullJson({
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      setError('Clipboard write failed — select the text and copy manually.');
+      setError('No se pudo escribir en el portapapeles — selecciona el texto y cópialo manualmente.');
     }
   };
 
@@ -62,13 +62,13 @@ export function HtmlRenderFullJson({
     setError(null);
     let parsed: unknown;
     try { parsed = JSON.parse(draft); }
-    catch (e) { setError('Invalid JSON: ' + (e instanceof Error ? e.message : 'parse failed')); return; }
-    if (!parsed || typeof parsed !== 'object') { setError('Payload must be a JSON object.'); return; }
+    catch (e) { setError('JSON no válido: ' + (e instanceof Error ? e.message : 'error de análisis')); return; }
+    if (!parsed || typeof parsed !== 'object') { setError('El contenido debe ser un objeto JSON.'); return; }
     const p = parsed as Record<string, unknown>;
-    if (typeof p.html !== 'string') { setError('Missing `html` (string).'); return; }
-    if (!Array.isArray(p.fields)) { setError('Missing `fields` (array).'); return; }
+    if (typeof p.html !== 'string') { setError('Falta `html` (cadena).'); return; }
+    if (!Array.isArray(p.fields)) { setError('Falta `fields` (array).'); return; }
     if (p.values && (typeof p.values !== 'object' || Array.isArray(p.values))) {
-      setError('`values` must be a plain object.'); return;
+      setError('`values` debe ser un objeto simple.'); return;
     }
     onApply({
       html: p.html,
@@ -82,13 +82,11 @@ export function HtmlRenderFullJson({
   return (
     <details className="rounded border border-border">
       <summary className="cursor-pointer select-none px-3 py-2 text-xs font-semibold text-foreground bg-accent/40 hover:bg-accent/60 flex items-center gap-1.5">
-        <span className="material-icons text-sm">data_object</span>
-        Full block JSON (export / import)
-      </summary>
+        <span className="material-icons text-sm">data_object</span>JSON completo del bloque (exportar / importar)</summary>
       <div className="p-3 space-y-2">
         <p className="text-[11px] text-muted-foreground leading-snug">
-          Includes the HTML template, field schema, loop, current values, and width — everything needed
-          to clone this block. Edit and Apply to overwrite the current block.
+          Incluye la plantilla HTML, el esquema de campos, el bucle, los valores actuales y el ancho — todo lo necesario
+          para clonar este bloque. Edita y pulsa Aplicar para sobrescribir el bloque actual.
         </p>
         <textarea
           value={draft}
@@ -108,7 +106,7 @@ export function HtmlRenderFullJson({
             className="inline-flex items-center gap-1.5 rounded border border-border px-2.5 py-1 text-xs hover:bg-accent"
           >
             <span className="material-icons text-sm">{copied ? 'check' : 'content_copy'}</span>
-            {copied ? 'Copied' : 'Copy JSON'}
+            {copied ? 'Copiado' : 'Copiar JSON'}
           </button>
           <button
             type="button"
@@ -116,18 +114,14 @@ export function HtmlRenderFullJson({
             disabled={!dirty}
             className="inline-flex items-center gap-1.5 rounded border border-border px-2.5 py-1 text-xs hover:bg-accent disabled:opacity-50"
           >
-            <span className="material-icons text-sm">restart_alt</span>
-            Reset
-          </button>
+            <span className="material-icons text-sm">restart_alt</span>Restablecer</button>
           <button
             type="button"
             onClick={handleApply}
             disabled={!dirty}
-            className="inline-flex items-center gap-1.5 rounded bg-primary text-primary-foreground px-2.5 py-1 text-xs hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 rounded bg-foreground text-background px-2.5 py-1 text-xs hover:bg-foreground/90 disabled:opacity-50"
           >
-            <span className="material-icons text-sm">play_arrow</span>
-            Apply
-          </button>
+            <span className="material-icons text-sm">play_arrow</span>Aplicar</button>
         </div>
       </div>
     </details>

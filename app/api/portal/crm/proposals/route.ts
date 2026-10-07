@@ -112,7 +112,7 @@ export async function POST(req: Request) {
       sections: body.sections || [],
       lineItems: body.lineItems || [],
       fees: body.fees || [],
-      currency: body.currency || 'USD',
+      currency: body.currency || 'EUR',
       validUntil: body.validUntil ? new Date(body.validUntil) : null,
       clientToken,
       accentColor: body.accentColor || '#2563eb',

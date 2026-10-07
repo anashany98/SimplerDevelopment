@@ -38,11 +38,11 @@ export default function PathVizTab({ projectId }: PathVizTabProps) {
         setCharts(res.data ?? []);
         setLoadState('ready');
       } else {
-        setErrorMessage(res?.message ?? 'Failed to load Dev Paths charts.');
+        setErrorMessage(res?.message ?? 'No se pudieron cargar los gráficos de Dev Paths.');
         setLoadState('error');
       }
     } catch {
-      setErrorMessage('Failed to load Dev Paths charts.');
+      setErrorMessage('No se pudieron cargar los gráficos de Dev Paths.');
       setLoadState('error');
     }
   }, [projectId]);
@@ -94,17 +94,17 @@ function Gallery({
         <div className="text-[10px] font-mono uppercase tracking-[.2em]" style={{ color: THEME.ink3 }}>
           Dev Paths
         </div>
-        <h2 className="text-lg font-semibold mt-1">Charts</h2>
+        <h2 className="text-lg font-semibold mt-1">Gráficos</h2>
         <p className="text-sm mt-1" style={{ color: THEME.ink2 }}>
-          Agent-authored path visualizations of the screens, APIs, schema, services, tests, jobs,
-          and infra being built for this project.
+          Visualizaciones de rutas creadas por agentes de las pantallas, APIs, esquema, servicios,
+          tests, trabajos e infraestructura que se están construyendo para este proyecto.
         </p>
       </div>
 
       {loadState === 'loading' && (
         <div className="py-16 text-center text-sm" style={{ color: THEME.ink3 }} data-testid="pathviz-loading">
-          <span className="material-icons text-3xl align-middle mr-2 animate-spin">progress_activity</span>
-          Loading charts…
+          <span className="material-icons text-3xl align-middle mr-2 animate-spin">autorenew</span>
+          Cargando gráficos…
         </div>
       )}
 
@@ -123,9 +123,7 @@ function Gallery({
             onClick={onRetry}
             className="text-xs font-mono px-3 py-1.5 rounded border"
             style={{ borderColor: THEME.lineBright, color: THEME.ink2 }}
-          >
-            Retry
-          </button>
+          >Reintentar</button>
         </div>
       )}
 
@@ -138,10 +136,10 @@ function Gallery({
           <span className="material-icons text-4xl" style={{ color: THEME.ink3 }}>
             device_hub
           </span>
-          <h3 className="font-semibold" style={{ color: THEME.ink }}>No charts yet</h3>
+          <h3 className="font-semibold" style={{ color: THEME.ink }}>Aún no hay gráficos</h3>
           <p className="text-sm max-w-md mx-auto" style={{ color: THEME.ink2 }}>
-            Agents create Dev Paths charts via MCP (<code className="font-mono">pathviz_create_chart</code>) as
-            they build out this project — check back once one starts working.
+            Los agentes crean gráficos de Dev Paths vía MCP (<code className="font-mono">pathviz_create_chart</code>) mientras
+            construyen este proyecto — vuelve a comprobarlo cuando alguno empiece a funcionar.
           </p>
         </div>
       )}
@@ -182,7 +180,7 @@ function ChartCard({ chart, onOpen }: { chart: PathVizChartSummary; onOpen: () =
               className="w-1.5 h-1.5 rounded-full inline-block"
               style={{ background: '#6EE86E', boxShadow: '0 0 6px #6EE86E' }}
             />
-            LIVE
+            EN VIVO
           </span>
         )}
       </div>
@@ -203,8 +201,8 @@ function ChartCard({ chart, onOpen }: { chart: PathVizChartSummary; onOpen: () =
       )}
 
       <div className="flex items-center gap-3 text-[10px] font-mono mt-auto pt-1" style={{ color: THEME.ink3 }}>
-        <span>{chart.nodeCount} nodes</span>
-        <span>{chart.edgeCount} edges</span>
+        <span>{chart.nodeCount} nodos</span>
+        <span>{chart.edgeCount} conexiones</span>
         <span className="ml-auto">{formatRelativeTime(chart.lastEventAt ?? chart.updatedAt)}</span>
       </div>
     </button>

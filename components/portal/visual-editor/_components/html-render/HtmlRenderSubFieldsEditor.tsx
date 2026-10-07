@@ -87,7 +87,7 @@ export function HtmlRenderSubFieldsEditor({
               type="button"
               onClick={() => removeSubField(si)}
               className="p-0.5 rounded text-destructive hover:bg-destructive/10"
-              title="Remove sub-field"
+              title="Quitar subcampo"
             >
               <span className="material-icons text-sm">delete_outline</span>
             </button>

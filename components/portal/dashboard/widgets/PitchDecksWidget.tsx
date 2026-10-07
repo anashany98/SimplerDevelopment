@@ -40,7 +40,7 @@ export default async function PitchDecksWidget({
 
       {recent.length === 0 ? (
         <div>
-          <p className="text-sm text-muted-foreground py-2 text-center">No pitch decks yet.</p>
+          <p className="text-sm text-muted-foreground py-2 text-center">Aún no hay presentaciones.</p>
           <div className="mt-3 text-center">
             <Link
               href="/portal/tools/pitch-decks"

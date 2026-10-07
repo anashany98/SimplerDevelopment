@@ -31,7 +31,7 @@ describe('normalizeLineItems', () => {
     const [li] = normalizeLineItems([{ id: 'a', description: 'x', unitPrice: 500 }]);
     expect(li.quantity).toBe(0);
     expect(Number.isNaN(lineItemTotal(li))).toBe(false);
-    expect(formatMoney(lineItemTotal(li))).toBe('$0.00');
+    expect(formatMoney(lineItemTotal(li))).toBe('0,00\u00A0€');
   });
 
   it('coerces numeric strings and rejects junk', () => {
@@ -56,19 +56,19 @@ describe('normalizeLineItems', () => {
     ]);
     // 2000 + 500 + 0 — the broken row contributes nothing rather than NaN.
     expect(sumLineItems(items)).toBe(2500);
-    expect(formatMoney(sumLineItems(items))).toBe('$25.00');
+    expect(formatMoney(sumLineItems(items))).toBe('25,00\u00A0€');
   });
 });
 
 describe('formatMoney', () => {
   it('refuses to render "$NaN" for a non-finite amount', () => {
-    expect(formatMoney(NaN)).toBe('$0.00');
-    expect(formatMoney(undefined as unknown as number)).toBe('$0.00');
-    expect(formatMoney(Infinity)).toBe('$0.00');
+    expect(formatMoney(NaN)).toBe('0,00\u00A0€');
+    expect(formatMoney(undefined as unknown as number)).toBe('0,00\u00A0€');
+    expect(formatMoney(Infinity)).toBe('0,00\u00A0€');
   });
 
   it('still formats real amounts correctly', () => {
-    expect(formatMoney(123456)).toBe('$1,234.56');
-    expect(formatMoney(0)).toBe('$0.00');
+    expect(formatMoney(123456)).toBe('1234,56\u00A0€');
+    expect(formatMoney(0)).toBe('0,00\u00A0€');
   });
 });

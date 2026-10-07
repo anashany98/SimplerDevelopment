@@ -1,6 +1,6 @@
 /**
  * VEQA scratch post seeder — temporary QA fixture for the Visual Editor QA Board.
- * Inserts ONE published page on site 2 (simplerdevelopment) seeded with one of each
+ * Inserts ONE published page on site 2 (CRM AGENTS) seeded with one of each
  * block type the Validating cards touch. Delete the row + this file when QA is done.
  *
  *   npx tsx scripts/seed-scratch-post.ts

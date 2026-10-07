@@ -88,7 +88,7 @@ export function CardComments({
           </div>
         ))}
         {comments.length === 0 && (
-          <p className="text-xs text-muted-foreground italic">No comments yet.</p>
+          <p className="text-xs text-muted-foreground italic">Aún no hay comentarios.</p>
         )}
       </div>
 
@@ -108,7 +108,7 @@ export function CardComments({
         <MentionTextarea
           value={commentBody}
           onChange={setCommentBody}
-          placeholder="Add a comment… type @ to mention, paste an image to attach"
+          placeholder="Añade un comentario… usa @ para mencionar, pega una imagen para adjuntarla"
           rows={3}
           users={mentionUsers}
           onFilePaste={file => uploadFile(file, true)}
@@ -119,7 +119,7 @@ export function CardComments({
             disabled={
               (!commentBody.trim() && pendingCommentFiles.length === 0) || submittingComment
             }
-            className="flex items-center gap-1.5 px-4 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
           >
             {submittingComment ? (
               <span className="material-icons text-sm animate-spin">refresh</span>

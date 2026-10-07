@@ -34,6 +34,8 @@ const eslintConfig = defineConfig([
     // Not first-party source — vendored skills, throwaway probes, generated artifacts:
     ".agents/**",
     ".claude/**",
+    ".freebuff/**",
+    ".fallow/**",
     ".planning/**",
     "playwright-report/**",
     "test-results/**",
@@ -53,7 +55,7 @@ const eslintConfig = defineConfig([
     // toolchains — not part of the Next app's production lint surface.
     "scripts/**",
     "sd-chat-mobile/**",
-    "simplerdevelopment-agents/**",
+    "examples/simplerdevelopment-agents/**",
     "extension/**",
     // Node CLI package with its own toolchain (tsc + tsup); the Next ruleset is wrong for it.
     "packages/cli/**",

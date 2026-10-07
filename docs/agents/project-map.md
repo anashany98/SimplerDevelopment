@@ -22,15 +22,15 @@ Before editing in any domain:
 | 5 | [Company Brain & AI (RAG)](#5-company-brain--ai-rag) | `app/portal/brain/` (23+ sub-routes) | `app/admin/portal-ai/`, `app/admin/ai-credits/` | `lib/brain/`, `lib/ai/` | `lib/db/schema/brain.ts` | `brain_*` (large surface), `ai_conversations_*`, `ai_credits_*` | Active — embedding pipeline is async |
 | 6 | [Projects, Tickets & Kanban](#6-projects-tickets--kanban) | `app/portal/projects/`, `app/portal/tickets/`, `app/portal/my-tasks/`, `app/portal/suggested-projects/` | `app/admin/portal-projects/`, `app/admin/portal-tickets/` | `lib/` (pm-*.ts files at root) | `lib/db/schema/pm.ts` | `kanban_*`, `sprints_*`, `projects_*`, `tickets_*`, `my_tasks_list`, `suggested_projects_*`, `team_*` (40+ tools) | Active — SLA business-hours not implemented |
 | 7 | [Bookings & Services](#7-bookings--services) | `app/portal/tools/booking/` | `app/admin/booking/` | `lib/booking/` | `lib/db/schema/sites.ts` (booking tables) | `booking_pages_*`, `bookings_*`, `gift_certificates_*`, `service_catalog_list`, `service_requests_*` (15 tools) | Active — quote flow has thin test coverage |
-| 8 | [Email & Campaigns](#8-email--campaigns) | `app/portal/email/` | `app/admin/email/` | `lib/email/` | `lib/db/schema/email.ts` | `email_lists*`, `email_subscribers_*`, `email_campaigns_*`, `email_templates_*`, `email_segments_*` (19 tools) | Active — no scheduled dispatcher cron |
-| 9 | [Storefront & Commerce](#9-storefront--commerce) | `app/portal/websites/[siteId]/store/` | `app/admin/portal-ecommerce/` | `lib/storefront/`, `lib/stripe/`, `lib/shipping/`, `lib/fulfillment/` | `lib/db/schema/store.ts` | `store_products_*`, `store_orders_*`, `store_customers_*`, `store_discounts_*`, `store_reviews_*`, `store_categories_*`, `store_customer_messages_*`, `store_settings_get` (25+ tools) | Active — checkout E2E missing; EasyPost/Printful have no integration tests |
+| 8 | [Email & Campaigns](#8-email--campaigns) | `app/portal/email/` | `app/admin/email/` | `lib/email/` | `lib/db/schema/email.ts` | `email_lists*`, `email_subscribers_*`, `email_campaigns_*`, `email_templates_*`, `email_segments_*` (19 tools) | Active — scheduled dispatcher runs from `app/api/cron/email-scheduled-send/route.ts` |
+| 9 | [Storefront & Commerce](#9-storefront--commerce) | `app/portal/websites/[siteId]/store/` | `app/admin/portal-ecommerce/` | `lib/storefront/`, `lib/stripe/`, `lib/shipping/`, `lib/fulfillment/` | `lib/db/schema/store.ts` | `store_products_*`, `store_orders_*`, `store_customers_*`, `store_discounts_*`, `store_reviews_*`, `store_categories_*`, `store_customer_messages_*`, `store_settings_get` (25+ tools) | Checkout and payment webhooks are disabled by `PAYMENTS_DISABLED`; EasyPost/Printful have no integration tests |
 | 10 | [Print Designer](#10-print-designer) | `app/sites/[domain]/design/[productSlug]/`, `app/sites/[domain]/designer/[productSlug]/` | — | `lib/designer/` | `lib/db/schema/productDesigner.ts` (new), `lib/db/schema/store.ts` (legacy) | None | Partial — fate decision (invest/defer/cut) open |
-| 11 | [Surveys](#11-surveys) | `app/portal/surveys/` | — | `lib/surveys/` | `lib/db/schema/surveys.ts` | `surveys_list`, `surveys_get`, `surveys_list_responses`, `surveys_create`, `surveys_update`, `surveys_fork` (6 tools) | Active — webhook dispatcher is fire-and-forget |
+| 11 | [Surveys](#11-surveys) | `app/portal/surveys/` | — | `lib/surveys/` | `lib/db/schema/surveys.ts` | `surveys_list`, `surveys_get`, `surveys_list_responses`, `surveys_create`, `surveys_update`, `surveys_fork` (6 tools) | Active — webhook dispatch and delivery use durable `internal_jobs` with retries and dead letters |
 | 12 | [Pitch Decks](#12-pitch-decks) | `app/portal/tools/pitch-decks/` | — | `lib/` (pitch-deck-*.ts files) | `lib/db/schema/cms.ts` (deck tables) | `decks_list`, `decks_get`, `decks_create`, `decks_update`, `decks_fork`, `decks_add_slide`, `decks_replace_slides`, `decks_delete`, `decks_upload_html*`, `decks_publish_*` (12 tools) | Active — A/B not wired into public viewer |
 | 13 | [E-Sign & Approvals](#13-e-sign--approvals) | `app/portal/approvals/` | `app/admin/approvals/` | `lib/esign/`, `lib/mcp/approvals.ts`, `lib/mcp/pending-changes.ts` | `lib/db/schema/approvals.ts` | `approvals_list`, `approvals_get`, `approvals_approve`, `approvals_reject` (4 tools) | Active — no contract template CRUD API |
 | 14 | [Automations & Workflows](#14-automations--workflows) | `app/portal/automations/` | `app/admin/automations/` | `lib/automation/`, `lib/workflows/` | `lib/db/schema/brain.ts` (automation_rules), `lib/db/schema/trigger-links.ts`, `lib/db/schema/workflows.ts` | `automations_list`, `automations_toggle`, `automations_create`, `automations_update`, `automations_delete` (5 tools) | Active — visual workflow engine on dev branch pending staging migration |
 | 15 | [Agency, Onboarding & Branding](#15-agency-onboarding--branding) | `app/portal/onboarding/`, `app/portal/branding/`, `app/portal/agency/` | `app/admin/clients/`, `app/admin/branding/` | `lib/agency/`, `lib/branding/`, `lib/onboarding/` | `lib/db/schema/cms.ts` (branding tables), `lib/db/schema/auth.ts` (tenant tables) | `branding_*`, `profile_get`, `profile_update`, `team_*`, `client_get`, `client_update` (13+ tools) | Active — Scale-tier only for white-label |
-| 16 | [Billing & Stripe](#16-billing--stripe) | `app/portal/settings/billing/`, `app/portal/settings/billing/plans/`, `app/portal/invoices/[id]/` | `app/admin/clients/[id]/plan/`, `app/admin/portal-invoices/`, `app/admin/subscriptions/`, `app/admin/ai-credits/` | `lib/billing/`, `lib/stripe/` | `lib/db/schema/billing.ts` | `invoices_list`, `invoices_get`, `ai_credits_balance`, `ai_credits_ledger` (4 tools) | Active — seat product requires per-env Stripe setup; monthly credit re-grant cron missing |
+| 16 | [Billing & Stripe](#16-billing--stripe) | `app/portal/settings/billing/`, `app/portal/settings/billing/plans/`, `app/portal/invoices/[id]/` | `app/admin/clients/[id]/plan/`, `app/admin/portal-invoices/`, `app/admin/subscriptions/`, `app/admin/ai-credits/` | `lib/billing/`, `lib/stripe/` | `lib/db/schema/billing.ts` | `invoices_list`, `invoices_get`, `ai_credits_balance`, `ai_credits_ledger` (4 tools) | Invoice and usage surfaces remain; customer charges and subscription payments are disabled by `PAYMENTS_DISABLED` |
 | 17 | [Auth & Security / MFA](#17-auth--security--mfa) | `app/portal/login/`, `/forgot-password/`, `/reset-password/`, `/invite/[token]/`, `/settings/security/`, `/settings/api-keys/` | `app/admin/login/`, `app/admin/users/` | `lib/auth.ts`, `lib/portal-auth.ts`, `lib/mcp-auth.ts`, `lib/crypto/`, `lib/totp.ts` | `lib/db/schema/auth.ts` | None (scope guards underpin all tools) | Active — TOTP/MFA shipped 2026-06-26; vault domain map is stale |
 | 18 | [Google, Microsoft & OAuth Integrations](#18-google-microsoft--oauth-integrations) | `app/portal/settings/integrations/`, `app/portal/integrations/api-keys/`, `app/oauth/authorize/` | `app/admin/oauth-clients/` | `lib/google/`, `lib/microsoft/`, `lib/oauth/` | `lib/db/schema/auth.ts` (token tables) | `integrations_list`, `integrations_revoke` (2 tools) | Active — org-level Google connection unpopulated; MS BYO-app deferred |
 | 19 | [AB Testing](#19-ab-testing) | `app/portal/experiments/` | — | `lib/ab/` | `lib/db/schema/ab.ts` | None | Active — deck/survey targets typed but not wired |
@@ -122,7 +122,7 @@ Before editing in any domain:
 
 **What it is:** Marketing email (campaigns, subscriber lists, segments, A/B subject lines, scheduling) + transactional email (booking, order, invite). Outbound via Resend; inbound via Cloudflare Email Worker (`workers/email-inbound/`).
 
-**⚠ Known stubs:** No automated scheduled-campaign dispatcher cron. `emailSegments.subscriberCount` cache not auto-refreshed. Soft-bounce suppression is an open TODO.
+**⚠ Known stubs:** `emailSegments.subscriberCount` cache not auto-refreshed. Soft-bounce suppression is an open TODO. Tenant campaigns enqueue durable sends through `internal_jobs`.
 
 ---
 
@@ -132,7 +132,7 @@ Before editing in any domain:
 
 **Public routes:** `app/sites/[domain]/` (product pages, cart, checkout, account)
 
-**⚠ Known stubs:** Checkout golden-path E2E missing. EasyPost and Printful have no integration tests.
+**⚠ Known stubs:** Checkout and payment webhooks are intentionally disabled while `PAYMENTS_DISABLED` is true. EasyPost and Printful have no integration tests.
 
 ---
 
@@ -150,7 +150,7 @@ Before editing in any domain:
 
 **Public route:** `app/s/[slug]/` (form renderer) and `app/s/[slug]/results/` (aggregate results).
 
-**⚠ Known stubs:** `maxResponses` gate has a documented race condition. Webhook dispatcher is fire-and-forget — BullMQ upgrade is Phase 4 TODO.
+**⚠ Known stubs:** `maxResponses` gate has a documented race condition. Webhook fan-out and each destination delivery are durably queued in `internal_jobs`; failed deliveries retry and eventually appear as dead letters.
 
 ---
 
@@ -192,11 +192,11 @@ Before editing in any domain:
 
 ### 16. Billing & Stripe
 
-**What it is:** All money — AI credits (grants, purchase, ledger), per-module à-la-carte subscriptions with volume discounts, per-seat pricing, Stripe Checkout/webhook, usage metering and rollup, usage alerts, invoice management, BYOK AI key management.
+**What it is:** Invoice and usage records, AI credit grants and ledger, entitlement views, usage metering and rollup, alerts, and BYOK AI key management. Customer charges, Stripe payment flows, and self-service subscription payments are currently disabled by `lib/billing/disabled.ts`; module access is not gated by paid subscription.
 
 **Coverage floor:** 70% on `lib/billing/`.
 
-**⚠ Known stubs:** Seat line item requires `scripts/billing/create-seat-product.ts` per environment (go-live dependency). Monthly credit re-grant cron missing. `usage_meters` (older) and `usage_meter_events` (newer) coexist.
+**⚠ Known stubs:** `usage_meters` (older) and `usage_meter_events` (newer) coexist. The monthly AI-credit grant cron is scheduled at `/api/cron/ai-credits-monthly-regrant`.
 
 ---
 

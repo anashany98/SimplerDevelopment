@@ -31,7 +31,7 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
     return (
       <div className={`${pCard} p-10 text-center`}>
         <span className="material-icons text-4xl text-muted-foreground/50 mb-2">travel_explore</span>
-        <p className="text-sm text-muted-foreground">No crawls yet. Run an audit to see results here.</p>
+        <p className="text-sm text-muted-foreground">Aún no hay rastreos. Ejecuta una auditoría para ver aquí los resultados.</p>
       </div>
     );
   }
@@ -41,8 +41,8 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
       <div className={`${pCard} p-6 flex items-start gap-3`}>
         <span className="material-icons text-destructive">error</span>
         <div>
-          <p className="font-semibold text-foreground text-sm">The last crawl failed</p>
-          <p className="text-sm text-muted-foreground mt-1">{run.error || 'Unknown error.'}</p>
+          <p className="font-semibold text-foreground text-sm">El último rastreo falló</p>
+          <p className="text-sm text-muted-foreground mt-1">{run.error || 'Error desconocido.'}</p>
         </div>
       </div>
     );
@@ -51,8 +51,8 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
   if (isRunActive(run.status) && run.pagesCrawled === 0) {
     return (
       <div className={`${pCard} p-10 text-center`}>
-        <span className="material-icons animate-spin text-3xl text-primary mb-2">progress_activity</span>
-        <p className="text-sm text-muted-foreground">Crawl in progress — results will appear as pages are fetched.</p>
+        <span className="material-icons animate-spin text-3xl text-primary mb-2">autorenew</span>
+        <p className="text-sm text-muted-foreground">Rastreo en curso — los resultados aparecerán a medida que se obtengan las páginas.</p>
       </div>
     );
   }
@@ -71,33 +71,33 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className={pCardPad}>
           <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{run.pagesCrawled}</p>
-          <p className="text-xs text-muted-foreground">Pages crawled</p>
+          <p className="text-xs text-muted-foreground">Páginas rastreadas</p>
         </div>
         <div className={pCardPad}>
           <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-red-600 dark:text-red-400">
             {run.criticalCount}
           </p>
-          <p className="text-xs text-muted-foreground">Critical issues</p>
+          <p className="text-xs text-muted-foreground">Problemas críticos</p>
         </div>
         <div className={pCardPad}>
           <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-yellow-600 dark:text-yellow-400">
             {run.warningCount}
           </p>
-          <p className="text-xs text-muted-foreground">Warnings</p>
+          <p className="text-xs text-muted-foreground">Advertencias</p>
         </div>
         <div className={pCardPad}>
           <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-blue-600 dark:text-blue-400">
             {run.noticeCount}
           </p>
-          <p className="text-xs text-muted-foreground">Notices</p>
+          <p className="text-xs text-muted-foreground">Avisos</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className={`${pCardPad} space-y-3`}>
-          <h3 className="font-display text-sm font-extrabold tracking-[-0.01em] text-foreground">Status codes</h3>
+          <h3 className="font-display text-sm font-extrabold tracking-[-0.01em] text-foreground">Códigos de estado</h3>
           {Object.keys(statusCodes).length === 0 ? (
-            <p className="text-xs text-muted-foreground">No data.</p>
+            <p className="text-xs text-muted-foreground">Sin datos.</p>
           ) : (
             Object.entries(statusCodes)
               .sort((a, b) => b[1] - a[1])
@@ -106,24 +106,24 @@ export function OverviewTab({ run }: { run: SeoRun | null }) {
         </div>
 
         <div className={`${pCardPad} space-y-3`}>
-          <h3 className="font-display text-sm font-extrabold tracking-[-0.01em] text-foreground">Crawl depth</h3>
+          <h3 className="font-display text-sm font-extrabold tracking-[-0.01em] text-foreground">Profundidad de rastreo</h3>
           {Object.keys(depthDist).length === 0 ? (
-            <p className="text-xs text-muted-foreground">No data.</p>
+            <p className="text-xs text-muted-foreground">Sin datos.</p>
           ) : (
             Object.entries(depthDist)
               .sort((a, b) => Number(a[0]) - Number(b[0]))
-              .map(([depth, count]) => <Bar key={depth} label={`Depth ${depth}`} count={count} total={depthTotal} />)
+              .map(([depth, count]) => <Bar key={depth} label={`Profundidad ${depth}`} count={count} total={depthTotal} />)
           )}
         </div>
 
         <div className={`${pCardPad} space-y-3 sm:col-span-2`}>
-          <h3 className="font-display text-sm font-extrabold tracking-[-0.01em] text-foreground">Indexability</h3>
+          <h3 className="font-display text-sm font-extrabold tracking-[-0.01em] text-foreground">Indexabilidad</h3>
           {indexTotal === 0 ? (
-            <p className="text-xs text-muted-foreground">No data.</p>
+            <p className="text-xs text-muted-foreground">Sin datos.</p>
           ) : (
             <>
               <Bar label="Indexable" count={indexable} total={indexTotal} />
-              <Bar label="Non-indexable" count={nonIndexable} total={indexTotal} />
+              <Bar label="No indexable" count={nonIndexable} total={indexTotal} />
             </>
           )}
         </div>

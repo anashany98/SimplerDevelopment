@@ -1,8 +1,8 @@
 @echo off
 rem
-rem SimplerDevelopment skills - Windows installer
+rem CRM AGENTS skills - Windows installer
 rem
-rem Double-click this file in Explorer to install the SimplerDevelopment
+rem Double-click this file in Explorer to install the CRM AGENTS
 rem Claude skills (sd-init, sd-create-page, sd-create-deck, etc.) into
 rem %USERPROFILE%\.claude\skills\. Works with Claude Desktop and Claude Code.
 rem
@@ -21,7 +21,7 @@ set "TMP_TGZ=%TEMP%\sd-skills-bundle.tgz"
 set "TMP_SHA=%TEMP%\sd-skills-bundle.tgz.sha256"
 
 echo.
-echo === SimplerDevelopment skills - Windows installer ===
+echo === CRM AGENTS skills - Windows installer ===
 echo.
 echo Target:        %SKILLS_DIR%
 echo Bundle source: %BUNDLE_URL%
@@ -109,7 +109,7 @@ echo    Add:
 echo.
 echo      {
 echo        "mcpServers": {
-echo          "simplerdevelopment": {
+echo          "crm-agents": {
 echo            "command": "npx",
 echo            "args": [
 echo              "-y", "mcp-remote",

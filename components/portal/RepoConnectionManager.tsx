@@ -52,11 +52,11 @@ export default function RepoConnectionManager({
       });
       const json = await res.json();
       if (json.success) {
-        setMessage('Repository connected.');
+        setMessage('Repositorio conectado.');
         setEditing(false);
         router.refresh();
       } else {
-        setMessage(json.message || 'Failed to save.');
+        setMessage(json.message || 'No se pudo guardar.');
       }
     } finally {
       setSaving(false);
@@ -81,11 +81,11 @@ export default function RepoConnectionManager({
         setRepoName('');
         setRepoUrl('');
         setBranch('main');
-        setMessage('Repository disconnected.');
+        setMessage('Repositorio desconectado.');
         setEditing(true);
         router.refresh();
       } else {
-        setMessage(json.message || 'Failed to disconnect.');
+        setMessage(json.message || 'No se pudo desconectar.');
       }
     } finally {
       setRemoving(false);
@@ -97,21 +97,19 @@ export default function RepoConnectionManager({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="material-icons text-muted-foreground text-lg">source</span>
-          <h3 className="font-semibold text-sm text-foreground">Repository Connection</h3>
+          <h3 className="font-semibold text-sm text-foreground">Conexión del repositorio</h3>
         </div>
         {connected && !editing && (
           <button
             onClick={() => setEditing(true)}
             className="text-xs text-primary hover:underline"
-          >
-            Edit
-          </button>
+          >Editar</button>
         )}
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Connect a GitHub repository to use your own codebase with the SimplerDevelopment SDK.
-        Without a repo, your site is served by the built-in rendering engine.
+        Conecta un repositorio de GitHub para usar tu propio código con el SDK de CRM AGENTS.
+        Sin un repositorio, tu sitio se sirve con el motor de renderizado integrado.
       </p>
 
       {/* Connected state (not editing) */}
@@ -133,12 +131,12 @@ export default function RepoConnectionManager({
               {initialBranch && (
                 <p className="text-xs text-muted-foreground mt-0.5">
                   <span className="material-icons text-[10px] align-middle mr-0.5">commit</span>
-                  Branch: <span className="font-mono">{initialBranch}</span>
+                  Rama: <span className="font-mono">{initialBranch}</span>
                 </p>
               )}
             </div>
             <span className="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-medium dark:bg-green-900/40 dark:text-green-300">
-              Connected
+              Conectado
             </span>
           </div>
 
@@ -152,7 +150,7 @@ export default function RepoConnectionManager({
             ) : (
               <span className="material-icons text-base">link_off</span>
             )}
-            {removing ? 'Disconnecting...' : 'Disconnect Repository'}
+            {removing ? 'Desconectando...' : 'Desconectar repositorio'}
           </button>
         </div>
       )}
@@ -161,20 +159,20 @@ export default function RepoConnectionManager({
       {editing && (
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Repository URL</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">URL del repositorio</label>
             <input
               value={repoUrl}
               onChange={e => handleRepoUrlChange(e.target.value)}
-              placeholder="https://github.com/your-org/your-repo"
+              placeholder="https://github.com/tu-org/tu-repo"
               className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-foreground outline-none focus:border-primary text-sm font-mono"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Paste the full GitHub URL. The repo name will be extracted automatically.
+              Pega la URL completa de GitHub. El nombre del repositorio se extraerá automáticamente.
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Repository name</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Nombre del repositorio</label>
             <input
               value={repoName}
               onChange={e => setRepoName(e.target.value)}
@@ -184,7 +182,7 @@ export default function RepoConnectionManager({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Deploy branch</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Rama de despliegue</label>
             <input
               value={branch}
               onChange={e => setBranch(e.target.value)}
@@ -197,25 +195,23 @@ export default function RepoConnectionManager({
             <button
               onClick={handleSave}
               disabled={saving || !repoName.trim()}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {saving ? 'Saving...' : connected ? 'Update Connection' : 'Connect Repository'}
+              {saving ? 'Guardando...' : connected ? 'Actualizar conexión' : 'Conectar repositorio'}
             </button>
             {connected && (
               <button
                 onClick={() => { setEditing(false); setRepoName(initialRepoName || ''); setRepoUrl(initialRepoUrl || ''); setBranch(initialBranch || 'main'); }}
                 className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             )}
           </div>
         </div>
       )}
 
       {message && (
-        <p className={`text-sm ${message.includes('connected') || message.includes('disconnected') ? 'text-green-600' : 'text-red-600'}`}>
+        <p className={`text-sm ${message.includes('connected') || message.includes('disconnected') || message.includes('conectado') ? 'text-green-600' : 'text-red-600'}`}>
           {message}
         </p>
       )}

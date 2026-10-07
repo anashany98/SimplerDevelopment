@@ -31,9 +31,8 @@ on:
   push:
     branches:
       - main
-  # On-demand: run the additive sync manually (e.g. right after hand-applying a
-  # non-additive migration, or to verify metro is in sync). Requires the
-  # PROD_DATABASE_URL secret to be set — otherwise the sync job skips cleanly.
+  # On-demand from main only: run the additive sync after a hand-applied
+  # migration or to verify production is in sync. Requires PROD_DATABASE_URL.
   workflow_dispatch: {}
 
 concurrency:
@@ -42,9 +41,8 @@ concurrency:
 
 jobs:
   # Secrets are not readable in a job-level `if`, so a cheap gate job exposes
-  # whether PROD_DATABASE_URL is configured. Deployments without a wired
-  # production DB (forks, the public org repo before setup) skip the sync
-  # cleanly instead of failing every push to main.
+  # whether PROD_DATABASE_URL is configured. A missing secret must fail the
+  # workflow so a green run cannot be mistaken for a completed schema sync.
   check-secret:
     name: Check prod DB secret
     runs-on: ubuntu-latest
@@ -55,11 +53,15 @@ jobs:
         env:
           PROD_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
         run: |
+          if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+            echo "::error::Production schema sync may only run from main."
+            exit 1
+          fi
           if [ -n "$PROD_DATABASE_URL" ]; then
             echo "configured=true" >> "$GITHUB_OUTPUT"
           else
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "PROD_DATABASE_URL secret not set — skipping prod schema sync."
+            echo "::error::PROD_DATABASE_URL secret is required for production schema sync."
+            exit 1
           fi
 
   sync:

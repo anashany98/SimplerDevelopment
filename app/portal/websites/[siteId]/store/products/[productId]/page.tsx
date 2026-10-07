@@ -446,11 +446,11 @@ export default function ProductEditPage() {
 
   const handleSave = async () => {
     if (!form.name.trim()) {
-      setError('Product name is required.');
+      setError('El nombre del producto es obligatorio.');
       return;
     }
     if (!form.slug.trim()) {
-      setError('Slug is required.');
+      setError('El slug es obligatorio.');
       return;
     }
 
@@ -491,15 +491,15 @@ export default function ProductEditPage() {
       });
       const data = await res.json();
       if (data.success) {
-        setSuccess(isNew ? 'Product created!' : 'Product saved!');
+        setSuccess(isNew ? '¡Producto creado!' : '¡Producto guardado!');
         if (isNew && data.data?.id) {
           router.replace(`/portal/websites/${siteId}/store/products/${data.data.id}`);
         }
       } else {
-        setError(data.message || 'Failed to save.');
+        setError(data.message || 'No se pudo guardar.');
       }
     } catch {
-      setError('Something went wrong.');
+      setError('Algo salió mal.');
     } finally {
       setSaving(false);
     }
@@ -515,30 +515,30 @@ export default function ProductEditPage() {
 
 
   const TABS = [
-    { id: 'details', label: 'Details' },
-    { id: 'pricing', label: 'Pricing' },
-    { id: 'inventory', label: 'Inventory' },
-    { id: 'shipping', label: 'Shipping' },
-    { id: 'print', label: 'Print' },
-    { id: 'images', label: 'Images' },
-    { id: 'organization', label: 'Organization' },
-    { id: 'variants', label: 'Variants' },
-    ...(!isNew ? [{ id: 'customization', label: 'Customization' }] : []),
-    { id: 'bulkPricing', label: 'Bulk Pricing' },
+    { id: 'details', label: 'Detalles' },
+    { id: 'pricing', label: 'Precios' },
+    { id: 'inventory', label: 'Inventario' },
+    { id: 'shipping', label: 'Envío' },
+    { id: 'print', label: 'Impresión' },
+    { id: 'images', label: 'Imágenes' },
+    { id: 'organization', label: 'Organización' },
+    { id: 'variants', label: 'Variantes' },
+    ...(!isNew ? [{ id: 'customization', label: 'Personalización' }] : []),
+    { id: 'bulkPricing', label: 'Precios por volumen' },
   ];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Store"
-        title={isNew ? 'New Product' : 'Edit Product'}
+        eyebrow="Tienda"
+        title={isNew ? 'Nuevo producto' : 'Editar producto'}
         subtitle={
           <Link
             href={`/portal/websites/${siteId}/store/products`}
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <span className="material-icons text-base">arrow_back</span>
-            Back to Products
+            Volver a los productos
           </Link>
         }
         actions={
@@ -548,7 +548,7 @@ export default function ProductEditPage() {
             className={pBtnPrimary}
           >
             {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-            {saving ? 'Saving...' : 'Save Product'}
+            {saving ? 'Guardando…' : 'Guardar producto'}
           </button>
         }
       />
@@ -561,10 +561,10 @@ export default function ProductEditPage() {
             className={pBtnGhost}
           >
             <span className="material-icons text-base">design_services</span>
-            Open Designer Setup
+            Abrir configuración del diseñador
           </Link>
           <span className="text-xs text-muted-foreground">
-            Configure styles, sides, and the asset library for the customer designer.
+            Configura los estilos, las caras y la biblioteca de recursos del diseñador para clientes.
           </span>
         </div>
       )}
@@ -606,12 +606,12 @@ export default function ProductEditPage() {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">info</span>
-            Basic Information
+            Información básica
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Name</label>
-              <input value={form.name} onChange={(e) => handleNameChange(e.target.value)} placeholder="Product name" className={pInput} />
+              <label className="text-sm font-medium text-foreground">Nombre</label>
+              <input value={form.name} onChange={(e) => handleNameChange(e.target.value)} placeholder="Nombre del producto" className={pInput} />
             </div>
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-foreground">Slug</label>
@@ -624,35 +624,35 @@ export default function ProductEditPage() {
             </div>
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Short Description</label>
+            <label className="text-sm font-medium text-foreground">Descripción breve</label>
             <input
               value={form.shortDescription}
               onChange={(e) => updateField('shortDescription', e.target.value)}
-              placeholder="Brief summary"
+              placeholder="Resumen breve"
               className={pInput}
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Description</label>
+            <label className="text-sm font-medium text-foreground">Descripción</label>
             <textarea
               value={form.description}
               onChange={(e) => updateField('description', e.target.value)}
-              placeholder="Full product description..."
+              placeholder="Descripción completa del producto…"
               rows={5}
               className={pInput}
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label htmlFor="product-status" className="text-sm font-medium text-foreground">Status</label>
+              <label htmlFor="product-status" className="text-sm font-medium text-foreground">Estado</label>
               <select id="product-status" value={form.status} onChange={(e) => updateField('status', e.target.value)} className={pSelect}>
-                <option value="draft">Draft</option>
-                <option value="active">Active</option>
-                <option value="archived">Archived</option>
+                <option value="draft">Borrador</option>
+                <option value="active">Activo</option>
+                <option value="archived">Archivado</option>
               </select>
             </div>
             <div className="space-y-1.5">
-              <label id="product-featured-label" className="text-sm font-medium text-foreground">Featured</label>
+              <label id="product-featured-label" className="text-sm font-medium text-foreground">Destacado</label>
               <div className="flex items-center gap-3 pt-1.5">
                 <button
                   type="button" role="switch" aria-checked={form.featured} aria-labelledby="product-featured-label"
@@ -667,7 +667,7 @@ export default function ProductEditPage() {
                     }`}
                   />
                 </button>
-                <span className="text-sm text-muted-foreground">{form.featured ? 'Yes' : 'No'}</span>
+                <span className="text-sm text-muted-foreground">{form.featured ? 'Sí' : 'No'}</span>
               </div>
             </div>
           </div>
@@ -678,12 +678,10 @@ export default function ProductEditPage() {
       {activeTab === 'pricing' && (
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
-            <span className="material-icons text-lg text-muted-foreground">payments</span>
-            Pricing
-          </h2>
+            <span className="material-icons text-lg text-muted-foreground">payments</span>Precios</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Price ($)</label>
+              <label className="text-sm font-medium text-foreground">Precio ($)</label>
               <input
                 type="number"
                 step="0.01"
@@ -695,7 +693,7 @@ export default function ProductEditPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Compare at Price ($)</label>
+              <label className="text-sm font-medium text-foreground">Precio comparativo ($)</label>
               <input
                 type="number"
                 step="0.01"
@@ -707,7 +705,7 @@ export default function ProductEditPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Cost Price ($)</label>
+              <label className="text-sm font-medium text-foreground">Precio de costo ($)</label>
               <input
                 type="number"
                 step="0.01"
@@ -726,21 +724,19 @@ export default function ProductEditPage() {
       {activeTab === 'inventory' && (
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
-            <span className="material-icons text-lg text-muted-foreground">inventory</span>
-            Inventory
-          </h2>
+            <span className="material-icons text-lg text-muted-foreground">inventory</span>Inventario</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-foreground">SKU</label>
               <input value={form.sku} onChange={(e) => updateField('sku', e.target.value)} placeholder="SKU-001" className={pInput} />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Barcode</label>
+              <label className="text-sm font-medium text-foreground">Código de barras</label>
               <input value={form.barcode} onChange={(e) => updateField('barcode', e.target.value)} placeholder="123456789" className={pInput} />
             </div>
           </div>
           <div className="space-y-1.5">
-            <label id="product-track-inventory-label" className="text-sm font-medium text-foreground">Track Inventory</label>
+            <label id="product-track-inventory-label" className="text-sm font-medium text-foreground">Seguir inventario</label>
             <div className="flex items-center gap-3 pt-1.5">
               <button
                 type="button" role="switch" aria-checked={form.trackInventory} aria-labelledby="product-track-inventory-label"
@@ -755,12 +751,12 @@ export default function ProductEditPage() {
                   }`}
                 />
               </button>
-              <span className="text-sm text-muted-foreground">{form.trackInventory ? 'Enabled' : 'Disabled'}</span>
+              <span className="text-sm text-muted-foreground">{form.trackInventory ? 'Activado' : 'Desactivado'}</span>
             </div>
           </div>
           {form.trackInventory && (
             <div className="space-y-1.5 max-w-xs">
-              <label className="text-sm font-medium text-foreground">Quantity</label>
+              <label className="text-sm font-medium text-foreground">Cantidad</label>
               <input
                 type="number"
                 min="0"
@@ -777,12 +773,10 @@ export default function ProductEditPage() {
       {activeTab === 'shipping' && (
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
-            <span className="material-icons text-lg text-muted-foreground">local_shipping</span>
-            Shipping
-          </h2>
+            <span className="material-icons text-lg text-muted-foreground">local_shipping</span>Envío</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Weight</label>
+              <label className="text-sm font-medium text-foreground">Peso</label>
               <input
                 type="number"
                 step="0.01"
@@ -794,12 +788,12 @@ export default function ProductEditPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="product-weight-unit" className="text-sm font-medium text-foreground">Weight Unit</label>
+              <label htmlFor="product-weight-unit" className="text-sm font-medium text-foreground">Unidad de peso</label>
               <select id="product-weight-unit" value={form.weightUnit} onChange={(e) => updateField('weightUnit', e.target.value)} className={pSelect}>
-                <option value="g">Grams (g)</option>
-                <option value="kg">Kilograms (kg)</option>
-                <option value="oz">Ounces (oz)</option>
-                <option value="lb">Pounds (lb)</option>
+                <option value="g">Gramos (g)</option>
+                <option value="kg">Kilogramos (kg)</option>
+                <option value="oz">Onzas (oz)</option>
+                <option value="lb">Libras (lb)</option>
               </select>
             </div>
           </div>
@@ -820,16 +814,14 @@ export default function ProductEditPage() {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className={`${pSectionTitle} flex items-center gap-2`}>
-              <span className="material-icons text-lg text-muted-foreground">photo_library</span>
-              Images
-            </h2>
+              <span className="material-icons text-lg text-muted-foreground">photo_library</span>Imágenes</h2>
             <button
               type="button"
               onClick={() => setShowMediaPicker(true)}
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add_photo_alternate</span>
-              Add from Media
+              Añadir desde medios
             </button>
           </div>
           {form.images.length > 0 ? (
@@ -847,7 +839,7 @@ export default function ProductEditPage() {
                           updateField('images', updated.map((img, idx) => ({ ...img, position: idx })));
                         }}
                         className="p-1.5 bg-white/90 rounded-full text-foreground hover:bg-white transition-colors"
-                        title="Move left"
+                        title="Mover a la izquierda"
                       >
                         <span className="material-icons text-lg">chevron_left</span>
                       </button>
@@ -868,14 +860,14 @@ export default function ProductEditPage() {
                           updateField('images', updated.map((img, idx) => ({ ...img, position: idx })));
                         }}
                         className="p-1.5 bg-white/90 rounded-full text-foreground hover:bg-white transition-colors"
-                        title="Move right"
+                        title="Mover a la derecha"
                       >
                         <span className="material-icons text-lg">chevron_right</span>
                       </button>
                     )}
                   </div>
                   <span className="absolute bottom-1 left-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded">
-                    {i === 0 ? 'Main' : `#${i + 1}`}
+                    {i === 0 ? 'Principal' : `#${i + 1}`}
                   </span>
                 </div>
               ))}
@@ -887,7 +879,7 @@ export default function ProductEditPage() {
               className="w-full rounded-2xl border-2 border-dashed border-border px-6 py-10 text-center hover:border-primary/50 transition-colors"
             >
               <span className="material-icons text-3xl text-muted-foreground/40 block mb-1">add_photo_alternate</span>
-              <span className="text-sm text-muted-foreground">Click to add images from the media library</span>
+              <span className="text-sm text-muted-foreground">Haz clic para agregar imágenes desde la biblioteca de medios</span>
             </button>
           )}
         </div>
@@ -898,7 +890,7 @@ export default function ProductEditPage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-card rounded-2xl shadow-xl max-w-5xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col">
             <div className="p-4 border-b border-border flex items-center justify-between">
-              <h2 className="text-lg font-bold text-foreground">Select Images</h2>
+              <h2 className="text-lg font-bold text-foreground">Seleccionar imágenes</h2>
               <button onClick={() => setShowMediaPicker(false)} className="p-1 hover:bg-muted rounded-lg transition-colors">
                 <span className="material-icons text-muted-foreground">close</span>
               </button>
@@ -908,7 +900,7 @@ export default function ProductEditPage() {
                 <span className="material-icons text-muted-foreground text-lg absolute left-3 top-1/2 -translate-y-1/2">search</span>
                 <input
                   type="text"
-                  placeholder="Search media..."
+                  placeholder="Buscar en medios…"
                   value={mediaSearch}
                   onChange={(e) => setMediaSearch(e.target.value)}
                   className={`${pInput} pl-10`}
@@ -920,7 +912,7 @@ export default function ProductEditPage() {
                 className={pBtnPrimary}
               >
                 <span className="material-icons text-base">upload</span>
-                Upload New
+                Subir nuevo
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-4">
@@ -931,7 +923,7 @@ export default function ProductEditPage() {
               ) : mediaItems.length === 0 ? (
                 <div className="text-center py-16 text-muted-foreground">
                   <span className="material-icons text-4xl text-muted-foreground/40 block mb-2">photo_library</span>
-                  No images found. Upload some to get started.
+                  No se encontraron imágenes. Sube algunas para empezar.
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -965,7 +957,7 @@ export default function ProductEditPage() {
                           <p className="text-xs text-muted-foreground truncate">{item.filename}</p>
                         </div>
                         {isSelected && (
-                          <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+                          <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-foreground text-background flex items-center justify-center">
                             <span className="material-icons text-sm">check</span>
                           </div>
                         )}
@@ -977,15 +969,13 @@ export default function ProductEditPage() {
             </div>
             <div className="p-4 border-t border-border flex items-center justify-between">
               <span className="text-sm text-muted-foreground">
-                {form.images.length} image{form.images.length !== 1 ? 's' : ''} selected
+                {form.images.length} {form.images.length !== 1 ? 'imágenes seleccionadas' : 'imagen seleccionada'}
               </span>
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(false)}
                 className={pBtnPrimary}
-              >
-                Done
-              </button>
+              >Listo</button>
             </div>
           </div>
         </div>
@@ -1008,13 +998,13 @@ export default function ProductEditPage() {
           <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
             <h2 className={`${pSectionTitle} flex items-center gap-2`}>
               <span className="material-icons text-lg text-muted-foreground">category</span>
-              Category &amp; Tags
+              Categoría y etiquetas
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label htmlFor="product-category" className="text-sm font-medium text-foreground">Category</label>
+                <label htmlFor="product-category" className="text-sm font-medium text-foreground">Categoría</label>
                 <select id="product-category" value={form.categoryId} onChange={(e) => updateField('categoryId', e.target.value)} className={pSelect}>
-                  <option value="">No category</option>
+                  <option value="">Sin categoría</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={String(cat.id)}>
                       {cat.name}
@@ -1023,14 +1013,14 @@ export default function ProductEditPage() {
                 </select>
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Tags</label>
+                <label className="text-sm font-medium text-foreground">Etiquetas</label>
                 <input
                   value={form.tags}
                   onChange={(e) => updateField('tags', e.target.value)}
                   placeholder="tag1, tag2, tag3"
                   className={pInput}
                 />
-                <p className="text-xs text-muted-foreground">Comma separated</p>
+                <p className="text-xs text-muted-foreground">Separados por comas</p>
               </div>
             </div>
           </div>
@@ -1044,27 +1034,27 @@ export default function ProductEditPage() {
             >
               <span className="font-semibold flex items-center gap-2">
                 <span className="material-icons text-lg text-muted-foreground">search</span>
-                SEO Settings
+                Ajustes SEO
               </span>
               <span className="material-icons text-muted-foreground">{showSeo ? 'expand_less' : 'expand_more'}</span>
             </button>
             {showSeo && (
               <div className="px-6 pb-6 space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">SEO Title</label>
+                  <label className="text-sm font-medium text-foreground">Título SEO</label>
                   <input
                     value={form.seoTitle}
                     onChange={(e) => updateField('seoTitle', e.target.value)}
-                    placeholder="Page title for search engines"
+                    placeholder="Título de la página para buscadores"
                     className={pInput}
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-foreground">SEO Description</label>
+                  <label className="text-sm font-medium text-foreground">Descripción SEO</label>
                   <textarea
                     value={form.seoDescription}
                     onChange={(e) => updateField('seoDescription', e.target.value)}
-                    placeholder="Meta description for search engines"
+                    placeholder="Meta descripción para buscadores"
                     rows={3}
                     className={pInput}
                   />
@@ -1080,20 +1070,18 @@ export default function ProductEditPage() {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">tune</span>
-            Options &amp; Variants
+            Opciones y variantes
           </h2>
           {/* Options */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-foreground">Options</label>
+              <label className="text-sm font-medium text-foreground">Opciones</label>
               <button
                 type="button"
                 onClick={addOption}
                 className={pBtnSoft}
               >
-                <span className="material-icons text-sm">add</span>
-                Add Option
-              </button>
+                <span className="material-icons text-sm">add</span>Añadir opción</button>
             </div>
             {form.options.map((opt, i) => (
               <div key={i} className="flex items-start gap-3 p-3 bg-muted/20 rounded-xl">
@@ -1101,7 +1089,7 @@ export default function ProductEditPage() {
                   <input
                     value={opt.name}
                     onChange={(e) => updateOption(i, 'name', e.target.value)}
-                    placeholder="Option name (e.g. Color, Size)"
+                    placeholder="Nombre de la opción (p. ej., Color, Tamaño)"
                     className={pInput}
                   />
                 </div>
@@ -1115,7 +1103,7 @@ export default function ProductEditPage() {
                         e.target.value.split(',').map((v) => v.trim()).filter(Boolean)
                       )
                     }
-                    placeholder="Values (comma separated, e.g. Red, Blue, Green)"
+                    placeholder="Valores (separados por comas, p. ej., Rojo, Azul, Verde)"
                     className={pInput}
                   />
                   {opt.values.length > 0 && (
@@ -1147,7 +1135,7 @@ export default function ProductEditPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-base">auto_awesome</span>
-              Generate Variants
+              Generar variantes
             </button>
           )}
 
@@ -1157,12 +1145,12 @@ export default function ProductEditPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-left">
-                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Variant</th>
+                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Variante</th>
                     <th className="px-3 py-2 text-xs font-medium text-muted-foreground">SKU</th>
-                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Price ($)</th>
-                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Quantity</th>
-                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Printful ID</th>
-                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Active</th>
+                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Precio ($)</th>
+                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Cantidad</th>
+                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">ID de Printful</th>
+                    <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Activo</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -1210,7 +1198,7 @@ export default function ProductEditPage() {
                           placeholder="—"
                           title={
                             variant.active && !variant.printfulVariantId
-                              ? 'No Printful ID — this variant cannot be fulfilled by Printful'
+                              ? 'Sin ID de Printful — Printful no puede preparar esta variante'
                               : undefined
                           }
                           className={`w-20 rounded-lg border bg-card px-2 py-1.5 text-xs text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 ${
@@ -1248,11 +1236,9 @@ export default function ProductEditPage() {
       {activeTab === 'customization' && !isNew && (
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
-            <span className="material-icons text-lg text-muted-foreground">brush</span>
-            Customization
-          </h2>
+            <span className="material-icons text-lg text-muted-foreground">brush</span>Personalización</h2>
           <div className="space-y-3">
-            <label className="text-sm font-medium text-foreground">Product design type</label>
+            <label className="text-sm font-medium text-foreground">Tipo de diseño del producto</label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <button
                 type="button"
@@ -1264,8 +1250,8 @@ export default function ProductEditPage() {
                 }`}
               >
                 <span className="material-icons text-lg block mb-1">inventory_2</span>
-                <span className="block text-sm font-medium">Standard product</span>
-                <span className="block text-xs mt-1">Sold as-is using product photos.</span>
+                <span className="block text-sm font-medium">Producto estándar</span>
+                <span className="block text-xs mt-1">Se vende tal cual, con las fotos del producto.</span>
               </button>
               <button
                 type="button"
@@ -1277,8 +1263,8 @@ export default function ProductEditPage() {
                 }`}
               >
                 <span className="material-icons text-lg block mb-1">brush</span>
-                <span className="block text-sm font-medium">Store-designed</span>
-                <span className="block text-xs mt-1">The store owns the artwork; customers buy the finished design.</span>
+                <span className="block text-sm font-medium">Diseñado por la tienda</span>
+                <span className="block text-xs mt-1">La tienda es dueña del arte; los clientes compran el diseño final.</span>
               </button>
               <button
                 type="button"
@@ -1290,12 +1276,12 @@ export default function ProductEditPage() {
                 }`}
               >
                 <span className="material-icons text-lg block mb-1">edit</span>
-                <span className="block text-sm font-medium">Customer-customizable</span>
-                <span className="block text-xs mt-1">Customers see the public designer and create their own version.</span>
+                <span className="block text-sm font-medium">Personalizable por el cliente</span>
+                <span className="block text-xs mt-1">Los clientes ven el diseñador público y crean su propia versión.</span>
               </button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Store-designed products can still use design/template records and rendered product images, but only customer-customizable products expose the storefront Customize button.
+              Los productos diseñados por la tienda pueden usar registros de diseño/plantilla e imágenes renderizadas del producto, pero solo los personalizables por el cliente muestran el botón Personalizar de la tienda.
             </p>
           </div>
           {form.designMode !== 'standard' && (
@@ -1311,9 +1297,9 @@ export default function ProductEditPage() {
                   <div className="flex items-start gap-3">
                     <span className="material-icons text-primary">design_services</span>
                     <div>
-                      <div className="text-sm font-semibold text-foreground">Edit this product&apos;s design</div>
+                      <div className="text-sm font-semibold text-foreground">Editar el diseño de este producto</div>
                       <div className="text-xs text-muted-foreground mt-1">
-                        Opens the same canvas editor customers use, in staff mode — load the saved layers, tweak them, save back to the same design row. Skips add-to-cart.
+                        Abre el mismo editor de lienzo que usan los clientes, pero en modo interno para el personal: carga las capas guardadas, ajústalas y guárdalas de nuevo en el mismo registro de diseño. Omite el añadir al carrito.
                       </div>
                     </div>
                   </div>
@@ -1324,12 +1310,12 @@ export default function ProductEditPage() {
                     className={`shrink-0 ${pBtnSoft}`}
                   >
                     <span className="material-icons text-base">open_in_new</span>
-                    Open in Designer
+                    Abrir en el diseñador
                   </a>
                 </div>
               )}
               <p className="text-xs text-muted-foreground mb-3">
-                Each surface (front/back/sleeve…) defines the printable area. Customer-customizable products use these in the public designer; store-designed products use them for store-authored templates and fulfillment.
+                Cada superficie (frontal/trasera/manga…) define el área imprimible. Los productos personalizables por el cliente las usan en el diseñador público; los diseñados por la tienda las usan para plantillas creadas por la tienda y la preparación de pedidos.
               </p>
               <ProductStylesPanel siteId={Number(siteId)} productId={Number(productId)} />
             </div>
@@ -1342,16 +1328,16 @@ export default function ProductEditPage() {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <h2 className={`${pSectionTitle} flex items-center gap-2`}>
             <span className="material-icons text-lg text-muted-foreground">price_change</span>
-            Bulk Pricing
+            Precios por volumen
           </h2>
           {form.bulkPricing.length > 0 && (
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Min Qty</th>
-                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Max Qty</th>
-                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Type</th>
-                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Amount</th>
+                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Cant. mín.</th>
+                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Cant. máx.</th>
+                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Tipo</th>
+                  <th className="px-3 py-2 text-xs font-medium text-muted-foreground">Monto</th>
                   <th className="px-3 py-2 text-xs font-medium text-muted-foreground w-10"></th>
                 </tr>
               </thead>
@@ -1375,7 +1361,7 @@ export default function ProductEditPage() {
                         onChange={(e) =>
                           updateBulkRule(i, 'maxQty', e.target.value ? parseInt(e.target.value) : null)
                         }
-                        placeholder="No limit"
+                        placeholder="Sin límite"
                         className="w-20 rounded-lg border border-border bg-card px-2 py-1.5 text-xs text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/15"
                       />
                     </td>
@@ -1385,8 +1371,8 @@ export default function ProductEditPage() {
                         onChange={(e) => updateBulkRule(i, 'type', e.target.value)}
                         className="px-2 py-1 rounded border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary/40"
                       >
-                        <option value="fixed">Fixed Price</option>
-                        <option value="percent_off">Percent Off</option>
+                        <option value="fixed">Precio fijo</option>
+                        <option value="percent_off">Porcentaje de descuento</option>
                       </select>
                     </td>
                     <td className="px-3 py-2">
@@ -1419,7 +1405,7 @@ export default function ProductEditPage() {
             className={pBtnSoft}
           >
             <span className="material-icons text-sm">add</span>
-            Add Rule
+            Añadir regla
           </button>
         </div>
       )}
@@ -1432,7 +1418,7 @@ export default function ProductEditPage() {
           className={pBtnPrimary}
         >
           {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-          {saving ? 'Saving...' : 'Save Product'}
+          {saving ? 'Guardando…' : 'Guardar producto'}
         </button>
       </div>
     </div>

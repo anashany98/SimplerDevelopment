@@ -5,7 +5,7 @@ import type { StepProps } from './types';
 import { obPrimaryBtn, obChipOn } from '../ob-styles';
 
 export function StepWelcome({ state, next }: StepProps) {
-  const firstName = state.prefill.name.split(' ')[0] || 'there';
+  const firstName = state.prefill.name.split(' ')[0] || '';
   return (
     <div className="text-center">
       <motion.div
@@ -16,17 +16,17 @@ export function StepWelcome({ state, next }: StepProps) {
       >
         <span className="material-icons" style={{ fontSize: 44 }}>waving_hand</span>
       </motion.div>
-      <h2 className="text-xl sm:text-2xl font-semibold">Hey {firstName}, welcome aboard.</h2>
+      <h2 className="text-xl sm:text-2xl font-semibold">Hola{firstName ? ` ${firstName}` : ''}, te damos la bienvenida.</h2>
       <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
-        We&apos;ll ask a handful of quick questions to tailor the platform — your brand, the tools you care about,
-        and how to connect Claude. About 2 minutes, then you&apos;re free to explore.
+        Te haremos unas preguntas rápidas para adaptar la plataforma a ti: tu marca, las herramientas que te
+        interesan y cómo conectar Claude. Son unos 2 minutos y luego podrás explorar libremente.
       </p>
 
       <ul className="mt-8 mx-auto max-w-md text-left space-y-3">
         {[
-          { icon: 'palette', label: 'Drop in your brand vibe' },
-          { icon: 'checklist', label: 'Pick what you want to use' },
-          { icon: 'auto_awesome', label: 'Hook up Claude in one click' },
+          { icon: 'palette', label: 'Define el estilo de tu marca' },
+          { icon: 'checklist', label: 'Elige qué quieres usar' },
+          { icon: 'auto_awesome', label: 'Conecta Claude en un clic' },
         ].map((row, i) => (
           <motion.li
             key={row.icon}
@@ -50,7 +50,7 @@ export function StepWelcome({ state, next }: StepProps) {
           data-testid="onboarding-welcome-start"
           className={obPrimaryBtn}
         >
-          Let&apos;s go
+          Empezar
           <span className="material-icons text-base transition group-hover:translate-x-0.5">arrow_forward</span>
         </button>
       </div>

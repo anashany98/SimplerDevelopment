@@ -132,7 +132,7 @@ describe('GET /api/surveys/[slug]/results', () => {
     // distinguish a private-results survey from a non-existent one.
     const json = (await res.json()) as { success: boolean; message?: string };
     expect(json.success).toBe(false);
-    expect(json.message).toMatch(/not found/i);
+    expect(json.message).toMatch(/no encontrada/i);
     expect(aggregateSurveyResultsMock).not.toHaveBeenCalled();
   });
 

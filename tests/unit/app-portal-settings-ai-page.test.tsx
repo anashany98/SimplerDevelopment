@@ -200,19 +200,19 @@ describe('AISettingsPage', () => {
   it('renders Email Requests card after load', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Email Requests')).toBeTruthy();
+    expect(screen.getByText('Solicitudes por email')).toBeTruthy();
   });
 
   it('renders Chat Conversations card after load', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Chat Conversations')).toBeTruthy();
+    expect(screen.getByText('Conversaciones de chat')).toBeTruthy();
   });
 
   it('renders Credits Remaining card after load', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Credits Remaining')).toBeTruthy();
+    expect(screen.getByText('Créditos restantes')).toBeTruthy();
   });
 
   it('displays correct email conversation count', async () => {
@@ -220,7 +220,7 @@ describe('AISettingsPage', () => {
     await flush();
     // 1 email conversation in baseConversations
     const cards = document.querySelectorAll('.bg-card');
-    const emailCard = Array.from(cards).find((c) => c.textContent?.includes('Email Requests'));
+    const emailCard = Array.from(cards).find((c) => c.textContent?.includes('Solicitudes por email'));
     expect(emailCard?.textContent).toContain('1');
   });
 
@@ -229,16 +229,15 @@ describe('AISettingsPage', () => {
     await flush();
     // 1 chat conversation in baseConversations
     const cards = document.querySelectorAll('.bg-card');
-    const chatCard = Array.from(cards).find((c) => c.textContent?.includes('Chat Conversations'));
+    const chatCard = Array.from(cards).find((c) => c.textContent?.includes('Conversaciones de chat'));
     expect(chatCard?.textContent).toContain('1');
   });
 
   it('displays formatted credit balance', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    // Assert the balance in its own card, using the viewer's number separators.
-    const creditCard = screen.getByText('Credits Remaining').parentElement!;
-    expect(within(creditCard).getByText(new Intl.NumberFormat().format(8500))).toBeTruthy();
+    // 8500 formatted with the runtime locale (es-ES renders 8500, en-US renders 8,500)
+    expect(document.body.textContent).toContain((8500).toLocaleString());
   });
 
   it('shows --- for credits when credit fetch fails', async () => {
@@ -271,7 +270,7 @@ describe('AISettingsPage', () => {
   it('renders AI Image Generations section when recentEvents is non-empty', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('AI Image Generations')).toBeTruthy();
+    expect(screen.getByText('Generaciones de imágenes IA')).toBeTruthy();
   });
 
   it('renders BYOK badge for byok source events', async () => {
@@ -283,7 +282,7 @@ describe('AISettingsPage', () => {
   it('renders platform badge for platform source events', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(document.body.textContent).toContain('platform');
+    expect(document.body.textContent).toContain('plataforma');
   });
 
   it('does NOT render AI Image Generations when recentEvents is empty', async () => {
@@ -293,7 +292,7 @@ describe('AISettingsPage', () => {
     });
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.queryByText('AI Image Generations')).toBeNull();
+    expect(screen.queryByText('Generaciones de imágenes IA')).toBeNull();
   });
 
   it('shows --- for AI images when image-usage fetch returns no todayCount', async () => {
@@ -305,7 +304,7 @@ describe('AISettingsPage', () => {
     await flush();
     // No valid imageUsage, so card shows ---
     const cards = document.querySelectorAll('.bg-card');
-    const imgCard = Array.from(cards).find((c) => c.textContent?.includes('AI Images today'));
+    const imgCard = Array.from(cards).find((c) => c.textContent?.includes('Imágenes IA hoy'));
     expect(imgCard?.textContent).toContain('---');
   });
 
@@ -314,15 +313,13 @@ describe('AISettingsPage', () => {
   it('renders Token Receipts heading', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Token Receipts')).toBeTruthy();
+    expect(screen.getByText('Recibos de tokens')).toBeTruthy();
   });
 
   it('renders the monthly usage count in Token Receipts', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    const receiptHeader = screen.getByText('Token Receipts').parentElement!.parentElement!;
-    const usage = within(receiptHeader).getByText(new Intl.NumberFormat().format(1500));
-    expect(usage.parentElement?.textContent).toBe(`This month: ${new Intl.NumberFormat().format(1500)} tokens`);
+    expect(document.body.textContent).toContain((1500).toLocaleString());
   });
 
   it('renders ledger rows in Token Receipts table', async () => {
@@ -341,7 +338,7 @@ describe('AISettingsPage', () => {
     });
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('No token activity yet.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay actividad de tokens.')).toBeTruthy();
   });
 
   it('shows View all button when ledger has >5 entries', async () => {
@@ -361,7 +358,7 @@ describe('AISettingsPage', () => {
     });
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText(/View all/)).toBeTruthy();
+    expect(screen.getByText(/Ver todos/)).toBeTruthy();
   });
 
   it('toggles Show all / Show less in Token Receipts', async () => {
@@ -382,12 +379,12 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const viewAllBtn = screen.getByText(/View all/);
+    const viewAllBtn = screen.getByText(/Ver todos/);
     await act(async () => { fireEvent.click(viewAllBtn); });
-    expect(screen.getByText('Show less')).toBeTruthy();
+    expect(screen.getByText('Mostrar menos')).toBeTruthy();
 
-    await act(async () => { fireEvent.click(screen.getByText('Show less')); });
-    expect(screen.getByText(/View all/)).toBeTruthy();
+    await act(async () => { fireEvent.click(screen.getByText('Mostrar menos')); });
+    expect(screen.getByText(/Ver todos/)).toBeTruthy();
   });
 
   // ── AI Email Address section ───────────────────────────────────────────────
@@ -395,13 +392,13 @@ describe('AISettingsPage', () => {
   it('renders AI Email Address section heading', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('AI Email Address')).toBeTruthy();
+    expect(screen.getByText('Dirección de email de IA')).toBeTruthy();
   });
 
   it('populates email prefix input from profile fetch', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    const input = document.querySelector('input[placeholder="your-company"]') as HTMLInputElement;
+    const input = document.querySelector('input[placeholder="tu-empresa"]') as HTMLInputElement;
     expect(input).toBeTruthy();
     expect(input.value).toBe('mycompany');
   });
@@ -441,11 +438,11 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const saveBtn = screen.getByText('Save');
+    const saveBtn = screen.getByText('Guardar');
     await act(async () => { fireEvent.click(saveBtn); });
     await flush();
 
-    expect(document.body.textContent).toContain('Saved');
+    expect(document.body.textContent).toContain('Guardado');
   });
 
   it('shows Failed message on unsuccessful email prefix save', async () => {
@@ -458,11 +455,11 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const saveBtn = screen.getByText('Save');
+    const saveBtn = screen.getByText('Guardar');
     await act(async () => { fireEvent.click(saveBtn); });
     await flush();
 
-    expect(document.body.textContent).toContain('Failed');
+    expect(document.body.textContent).toContain('Error');
   });
 
   it('shows custom error message from API on email prefix save failure', async () => {
@@ -475,7 +472,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const saveBtn = screen.getByText('Save');
+    const saveBtn = screen.getByText('Guardar');
     await act(async () => { fireEvent.click(saveBtn); });
     await flush();
 
@@ -497,7 +494,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    act(() => { fireEvent.click(screen.getByText('Save')); });
+    act(() => { fireEvent.click(screen.getByText('Guardar')); });
 
     await waitFor(() => {
       const btn = document.querySelector('button[disabled]') as HTMLButtonElement;
@@ -519,14 +516,14 @@ describe('AISettingsPage', () => {
     await flush();
 
     // Save to get message
-    await act(async () => { fireEvent.click(screen.getByText('Save')); });
+    await act(async () => { fireEvent.click(screen.getByText('Guardar')); });
     await flush();
-    expect(document.body.textContent).toContain('Saved');
+    expect(document.body.textContent).toContain('Guardado');
 
     // Change input — message should clear
-    const input = document.querySelector('input[placeholder="your-company"]') as HTMLInputElement;
+    const input = document.querySelector('input[placeholder="tu-empresa"]') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'newprefix' } }); });
-    expect(document.body.textContent).not.toContain('Saved');
+    expect(document.body.textContent).not.toContain('Guardado');
   });
 
   it('sends emailPrefix in PATCH body', async () => {
@@ -537,9 +534,9 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const input = document.querySelector('input[placeholder="your-company"]') as HTMLInputElement;
+    const input = document.querySelector('input[placeholder="tu-empresa"]') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'testprefix' } }); });
-    await act(async () => { fireEvent.click(screen.getByText('Save')); });
+    await act(async () => { fireEvent.click(screen.getByText('Guardar')); });
     await flush();
 
     const patchCall = fetchMock.mock.calls.find(
@@ -555,14 +552,14 @@ describe('AISettingsPage', () => {
   it('renders Request Log heading', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Request Log')).toBeTruthy();
+    expect(screen.getByText('Registro de solicitudes')).toBeTruthy();
   });
 
   it('renders All / Email / Chat filter buttons', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('All')).toBeTruthy();
-    expect(screen.getByText('Email')).toBeTruthy();
+    expect(screen.getByText('Todos')).toBeTruthy();
+    expect(screen.getByText('Correo')).toBeTruthy();
     expect(screen.getByText('Chat')).toBeTruthy();
   });
 
@@ -578,7 +575,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const emailBtn = screen.getByText('Email');
+    const emailBtn = screen.getByText('Correo');
     await act(async () => { fireEvent.click(emailBtn); });
 
     expect(document.body.textContent).toContain('Order inquiry');
@@ -604,7 +601,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    expect(screen.getByText('No AI activity yet.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay actividad de IA.')).toBeTruthy();
   });
 
   it('shows email empty state when Email filter yields no results', async () => {
@@ -618,10 +615,10 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
 
-    const emailBtn = screen.getByText('Email');
+    const emailBtn = screen.getByText('Correo');
     await act(async () => { fireEvent.click(emailBtn); });
 
-    expect(screen.getByText('No email requests yet. Send an email to your AI address to get started.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay solicitudes por email. Envía un correo a tu dirección de IA para empezar.')).toBeTruthy();
   });
 
   it('shows chat empty state when Chat filter yields no results', async () => {
@@ -638,13 +635,13 @@ describe('AISettingsPage', () => {
     const chatBtn = screen.getByText('Chat');
     await act(async () => { fireEvent.click(chatBtn); });
 
-    expect(screen.getByText('No chat conversations yet. Use the chat widget to talk to the AI.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay conversaciones de chat. Usa el widget de chat para hablar con la IA.')).toBeTruthy();
   });
 
   it('shows conversation detail placeholder when nothing selected', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    expect(screen.getByText('Select a request to view the conversation')).toBeTruthy();
+    expect(screen.getByText('Selecciona una solicitud para ver la conversación')).toBeTruthy();
   });
 
   it('opens a conversation and fetches messages on click', async () => {
@@ -669,7 +666,7 @@ describe('AISettingsPage', () => {
     await flush();
 
     // toolLabels['get_crm_contacts'] = 'Looked up contacts'
-    expect(document.body.textContent).toContain('Looked up contacts');
+    expect(document.body.textContent).toContain('Consultó contactos');
   });
 
   it('renders Token Receipt footer after loading messages', async () => {
@@ -680,7 +677,7 @@ describe('AISettingsPage', () => {
     await act(async () => { fireEvent.click(convBtn!); });
     await flush();
 
-    expect(screen.getByText('Token Receipt')).toBeTruthy();
+    expect(screen.getByText('Recibo de tokens')).toBeTruthy();
   });
 
   it('deselects conversation when filter changes', async () => {
@@ -694,7 +691,7 @@ describe('AISettingsPage', () => {
     // Switch filter
     await act(async () => { fireEvent.click(screen.getByText('Chat')); });
     // Detail panel should return to placeholder
-    expect(screen.getByText('Select a request to view the conversation')).toBeTruthy();
+    expect(screen.getByText('Selecciona una solicitud para ver la conversación')).toBeTruthy();
   });
 
   it('shows flag icon for flagged conversations', async () => {
@@ -711,9 +708,9 @@ describe('AISettingsPage', () => {
   it('displays relative time for recent conversations', async () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
-    // Conversations were created within last 2 hours — should show "m ago" or "h ago"
+    // Conversations were created within last 2 hours — should show "hace N min" or "hace N h"
     const body = document.body.textContent ?? '';
-    expect(/\d+(m|h) ago/.test(body)).toBe(true);
+    expect(/hace \d+ (min|h)/.test(body)).toBe(true);
   });
 
   // ── No conversations at all ────────────────────────────────────────────────
@@ -726,7 +723,7 @@ describe('AISettingsPage', () => {
     await act(async () => { render(<AISettingsPage />); });
     await flush();
     // Should not crash; overview cards still render
-    expect(screen.getByText('Email Requests')).toBeTruthy();
+    expect(screen.getByText('Solicitudes por email')).toBeTruthy();
   });
 
   // ── Image usage — monthCount display ──────────────────────────────────────

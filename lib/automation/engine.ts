@@ -6,7 +6,7 @@
  */
 
 import { db } from '@/lib/db';
-import { automationRules, automationLogs, brainPlaybooks } from '@/lib/db/schema';
+import { automationRules, automationLogs, brainPlaybooks, chatConversations } from '@/lib/db/schema';
 import type { AutomationCondition, AutomationAction, BrainPlaybookLinkEntityType } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { sql } from 'drizzle-orm';
@@ -166,7 +166,7 @@ export async function executeAction(
   if (action.delay && action.delay > 0 && ruleId != null) {
     try {
       const runAt = new Date(Date.now() + action.delay * 1000);
-      const { enqueueJob } = await import('@/lib/jobs');
+      const { enqueueJob } = await import('@/lib/jobs/queue');
       await enqueueJob({
         clientId,
         type: 'automation.delayed_action',
@@ -211,6 +211,70 @@ export async function executeAction(
       durationMs: 0,
     });
     return { tool: action.tool, params: resolvedParams, result: null, error: errorMsg };
+  }
+
+  // ─── Omnichannel actions ────────────────────────────────────────────────
+  // These reuse the durable outbox and tenant-scoped conversation model. The
+  // provider policy gate still runs inside queueOutboundMessage, so an
+  // automation cannot bypass consent or Meta's service window.
+  if (action.tool === 'send_message' || action.tool === 'send_template_message') {
+    try {
+      const conversationId = Number(resolvedParams.conversationId ?? payload.conversationId);
+      const body = typeof resolvedParams.text === 'string' ? resolvedParams.text : '';
+      if (!Number.isInteger(conversationId) || !body) throw new Error(`${action.tool}: conversationId and text are required`);
+      const { queueOutboundMessage, processOutboxItem } = await import('@/lib/channels/service');
+      const template = action.tool === 'send_template_message'
+        ? {
+            name: String(resolvedParams.templateName ?? ''),
+            language: String(resolvedParams.language ?? 'en'),
+            components: Array.isArray(resolvedParams.components) ? resolvedParams.components : undefined,
+          }
+        : undefined;
+      if (template && !template.name) throw new Error('send_template_message: templateName is required');
+      const queued = await queueOutboundMessage({
+        clientId, conversationId, actorUserId: userId || undefined, text: body, template,
+        purpose: resolvedParams.purpose === 'marketing' ? 'marketing' : resolvedParams.purpose === 'transactional' ? 'transactional' : 'support',
+        idempotencyKey: `automation:${ruleId ?? 'manual'}:${action.tool}:${String(payload.messageId ?? Date.now())}`,
+      });
+      void processOutboxItem(clientId, queued.outboxId).catch(() => {});
+      return { tool: action.tool, params: { ...resolvedParams, text: '[redacted]' }, result: queued };
+    } catch (err) {
+      return { tool: action.tool, params: { ...resolvedParams, text: '[redacted]' }, result: null, error: err instanceof Error ? err.message : String(err) };
+    }
+  }
+
+  if (['assign_conversation', 'close_conversation', 'reopen_conversation', 'set_ai_mode', 'add_conversation_tags'].includes(action.tool)) {
+    try {
+      const conversationId = Number(resolvedParams.conversationId ?? payload.conversationId);
+      if (!Number.isInteger(conversationId)) throw new Error(`${action.tool}: conversationId is required`);
+      const [existing] = await db.select().from(chatConversations).where(and(
+        eq(chatConversations.id, conversationId), eq(chatConversations.clientId, clientId),
+      )).limit(1);
+      if (!existing) throw new Error('Conversation not found');
+      const patch: Partial<typeof chatConversations.$inferInsert> = { updatedAt: new Date() };
+      if (action.tool === 'assign_conversation') {
+        const assignee = Number(resolvedParams.userId);
+        patch.assignedUserId = Number.isInteger(assignee) ? assignee : null;
+        patch.status = patch.assignedUserId ? 'assigned' : 'open';
+      } else if (action.tool === 'close_conversation') {
+        patch.status = 'closed'; patch.aiMode = 'closed'; patch.closedAt = new Date();
+      } else if (action.tool === 'reopen_conversation') {
+        patch.status = 'open'; patch.aiMode = 'hybrid'; patch.closedAt = null;
+      } else if (action.tool === 'set_ai_mode') {
+        const mode = String(resolvedParams.mode);
+        if (!['ai', 'human', 'paused', 'hybrid', 'closed'].includes(mode)) throw new Error('set_ai_mode: invalid mode');
+        patch.aiMode = mode;
+      } else {
+        const incoming = Array.isArray(resolvedParams.tags) ? resolvedParams.tags.map(String) : [];
+        patch.tags = [...new Set([...(existing.tags ?? []), ...incoming])].slice(0, 50);
+      }
+      const [updated] = await db.update(chatConversations).set(patch).where(and(
+        eq(chatConversations.id, conversationId), eq(chatConversations.clientId, clientId),
+      )).returning();
+      return { tool: action.tool, params: resolvedParams, result: updated };
+    } catch (err) {
+      return { tool: action.tool, params: resolvedParams, result: null, error: err instanceof Error ? err.message : String(err) };
+    }
   }
 
   // ─── fire_webhook ────────────────────────────────────────────────────────
@@ -550,7 +614,9 @@ async function processEvent(event: AutomationEvent): Promise<void> {
 
   // Phase 1a: wire live events to the visual workflow canvas.
   // `enqueueWorkflowRunsForTrigger` finds active workflows whose trigger matches
-  // and fires `runWorkflow` fire-and-forget per matched workflow.
+  // and enqueues durable runs for the cron worker (retries/backoff/DLQ apply).
+  // Live events MUST NOT call runWorkflow() directly — the sync DFS runner has
+  // no retries, no queue and no parallelism (see lib/workflows/runtime.ts).
   try {
     const workflowTrigger = mapEventToWorkflowTrigger(event);
     if (workflowTrigger) {

@@ -19,7 +19,7 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <select
           value={block.layout || 'hero'}
           onChange={(e) => onChange({ layout: e.target.value as HeroCtaBlock['layout'] })}
@@ -32,21 +32,21 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
 
       {/* Content Fields */}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Title" className="text-sm text-foreground" />
+          <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Título" className="text-sm text-foreground" />
         </div>
       </div>
       {isHero && (
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
           <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
             <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Optional subtitle" className="text-sm text-foreground" />
           </div>
         </div>
       )}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[60px]">
           <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} placeholder="Optional description" className="text-sm text-foreground" />
         </div>
@@ -55,11 +55,11 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
       <div className="space-y-3 pt-3 border-t border-border">
         <h4 className="text-sm font-semibold text-foreground">Primary Button</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
           <input type="text" value={block.primaryButtonText || ''} onChange={(e) => onChange({ primaryButtonText: e.target.value })} className={inputClass} placeholder="Get Started" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
           <input type="text" value={block.primaryButtonUrl || ''} onChange={(e) => onChange({ primaryButtonUrl: e.target.value })} className={inputClass} placeholder="/contact" />
         </div>
       </div>
@@ -67,12 +67,12 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
       <div className="space-y-3 pt-3 border-t border-border">
         <h4 className="text-sm font-semibold text-foreground">Secondary Button (optional)</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
-          <input type="text" value={block.secondaryButtonText || ''} onChange={(e) => onChange({ secondaryButtonText: e.target.value })} className={inputClass} placeholder="Optional" />
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
+          <input type="text" value={block.secondaryButtonText || ''} onChange={(e) => onChange({ secondaryButtonText: e.target.value })} className={inputClass} placeholder="Opcional" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
-          <input type="text" value={block.secondaryButtonUrl || ''} onChange={(e) => onChange({ secondaryButtonUrl: e.target.value })} className={inputClass} placeholder="Optional" />
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
+          <input type="text" value={block.secondaryButtonUrl || ''} onChange={(e) => onChange({ secondaryButtonUrl: e.target.value })} className={inputClass} placeholder="Opcional" />
         </div>
       </div>
 
@@ -82,10 +82,10 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
             <label className="block text-sm font-medium text-foreground mb-2">Background Image (optional)</label>
             {block.backgroundImage ? (
               <div className="space-y-2">
-                <img src={block.backgroundImage} alt="Background" className="w-full h-32 object-cover rounded border border-border" />
+                <img src={block.backgroundImage} alt="Fondo" className="w-full h-32 object-cover rounded border border-border" />
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setShowImagePicker(true)} className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90">Change Image</button>
-                  <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Remove</button>
+                  <button type="button" onClick={() => setShowImagePicker(true)} className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90">Change Image</button>
+                  <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Quitar</button>
                 </div>
               </div>
             ) : (
@@ -104,8 +104,8 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
                   <video src={block.backgroundVideo} controls className="w-full h-full" />
                 </div>
                 <div className="flex gap-2">
-                  <button type="button" onClick={() => setShowVideoPicker(true)} className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90">Change Video</button>
-                  <button type="button" onClick={() => onChange({ backgroundVideo: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Remove</button>
+                  <button type="button" onClick={() => setShowVideoPicker(true)} className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90">Change Video</button>
+                  <button type="button" onClick={() => onChange({ backgroundVideo: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Quitar</button>
                 </div>
               </div>
             ) : (
@@ -149,8 +149,8 @@ export function HeroCtaBlockSettings({ block, onChange, currentViewport }: { blo
             className={inputClass}
           >
             <option value="gradient">Gradient</option>
-            <option value="solid">Solid</option>
-            <option value="none">None</option>
+            <option value="solid">Sólido</option>
+            <option value="none">Ninguno</option>
           </select>
         </div>
       )}

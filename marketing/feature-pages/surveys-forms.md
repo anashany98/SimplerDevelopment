@@ -18,7 +18,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SimplerDevelopment Surveys & Forms",
+  "name": "CRM AGENTS Surveys & Forms",
   "applicationCategory": "BusinessApplication",
   "featureList": [
     "Multi-page, multi-field forms",
@@ -59,7 +59,7 @@ Agencies build client intake forms in one tool, track responses in a spreadsheet
 
 ## Solution
 
-SimplerDevelopment's survey module gives each client a multi-page form builder that is wired into the rest of their portal. A form submission can automatically create a deal in the CRM, trigger a post-submission email sequence, post to a webhook, and record a scored result — all without any manual work after the form is published.
+CRM AGENTS's survey module gives each client a multi-page form builder that is wired into the rest of their portal. A form submission can automatically create a deal in the CRM, trigger a post-submission email sequence, post to a webhook, and record a scored result — all without any manual work after the form is published.
 
 ---
 

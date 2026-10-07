@@ -67,45 +67,45 @@ function renderCard(
 describe('TrackingSettingsCard — render', () => {
   it('renders the card heading', () => {
     renderCard();
-    expect(screen.getByText('Tracking & Analytics')).toBeTruthy();
+    expect(screen.getByText('Seguimiento y analítica')).toBeTruthy();
   });
 
   it('renders the enable toggle with correct default aria-pressed (true when no config)', () => {
     renderCard();
-    const toggle = screen.getByRole('button', { name: /Toggle tracking/i });
+    const toggle = screen.getByRole('button', { name: /Activar seguimiento/i });
     expect(toggle.getAttribute('aria-pressed')).toBe('true');
   });
 
   it('renders aria-pressed=false when initialConfig.enabled is false', () => {
     renderCard({ enabled: false });
-    const toggle = screen.getByRole('button', { name: /Toggle tracking/i });
+    const toggle = screen.getByRole('button', { name: /Activar seguimiento/i });
     expect(toggle.getAttribute('aria-pressed')).toBe('false');
   });
 
   it('renders the save button', () => {
     renderCard();
-    expect(screen.getByRole('button', { name: /Save Tracking Settings/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i })).toBeTruthy();
   });
 
   it('save button is disabled when form is pristine', () => {
     renderCard();
-    const btn = screen.getByRole('button', { name: /Save Tracking Settings/i });
+    const btn = screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i });
     expect((btn as HTMLButtonElement).disabled).toBe(true);
   });
 
   it('renders Analytics & Tag Managers section heading', () => {
     renderCard();
-    expect(screen.getByText('Analytics & Tag Managers')).toBeTruthy();
+    expect(screen.getByText('Analítica y gestores de etiquetas')).toBeTruthy();
   });
 
   it('renders Search-engine verification section heading', () => {
     renderCard();
-    expect(screen.getByText('Search-engine verification')).toBeTruthy();
+    expect(screen.getByText('Verificación para buscadores')).toBeTruthy();
   });
 
   it('renders Advanced HTML toggle button', () => {
     renderCard();
-    expect(screen.getByRole('button', { name: /Advanced HTML/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /HTML avanzado/i })).toBeTruthy();
   });
 
   it('does not show advanced HTML fields by default', () => {
@@ -116,7 +116,7 @@ describe('TrackingSettingsCard — render', () => {
 
   it('shows advanced HTML textareas when expanded', () => {
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Advanced HTML/i }));
+    fireEvent.click(screen.getByRole('button', { name: /HTML avanzado/i }));
     // After expansion, textareas for custom head/body HTML appear
     const textareas = document.querySelectorAll('textarea');
     expect(textareas.length).toBeGreaterThan(0);
@@ -140,24 +140,24 @@ describe('TrackingSettingsCard — render', () => {
 describe('TrackingSettingsCard — enable toggle', () => {
   it('toggling enable makes form dirty (enables save button)', () => {
     renderCard();
-    const toggle = screen.getByRole('button', { name: /Toggle tracking/i });
+    const toggle = screen.getByRole('button', { name: /Activar seguimiento/i });
     fireEvent.click(toggle);
-    const saveBtn = screen.getByRole('button', { name: /Save Tracking Settings/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i });
     expect((saveBtn as HTMLButtonElement).disabled).toBe(false);
   });
 
   it('toggling twice returns to pristine (disables save button)', () => {
     renderCard();
-    const toggle = screen.getByRole('button', { name: /Toggle tracking/i });
+    const toggle = screen.getByRole('button', { name: /Activar seguimiento/i });
     fireEvent.click(toggle);
     fireEvent.click(toggle);
-    const saveBtn = screen.getByRole('button', { name: /Save Tracking Settings/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i });
     expect((saveBtn as HTMLButtonElement).disabled).toBe(true);
   });
 
   it('updates aria-pressed when toggled off', () => {
     renderCard();
-    const toggle = screen.getByRole('button', { name: /Toggle tracking/i });
+    const toggle = screen.getByRole('button', { name: /Activar seguimiento/i });
     fireEvent.click(toggle);
     expect(toggle.getAttribute('aria-pressed')).toBe('false');
   });
@@ -165,14 +165,14 @@ describe('TrackingSettingsCard — enable toggle', () => {
   it('shows suppressed-tracking description when disabled', () => {
     renderCard({ enabled: false });
     expect(
-      screen.getByText(/All tracking is suppressed/i),
+      screen.getByText(/Todo el seguimiento se suprime/i),
     ).toBeTruthy();
   });
 
   it('shows emitting description when enabled', () => {
     renderCard();
     expect(
-      screen.getByText(/Configured scripts and meta tags are emitted/i),
+      screen.getByText(/Los scripts y metaetiquetas configurados se emiten/i),
     ).toBeTruthy();
   });
 });
@@ -185,7 +185,7 @@ describe('TrackingSettingsCard — field edits', () => {
     renderCard();
     const input = screen.getByPlaceholderText('G-XXXXXXXXXX');
     fireEvent.change(input, { target: { value: 'G-ABC12345' } });
-    const saveBtn = screen.getByRole('button', { name: /Save Tracking Settings/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i });
     expect((saveBtn as HTMLButtonElement).disabled).toBe(false);
   });
 
@@ -194,7 +194,7 @@ describe('TrackingSettingsCard — field edits', () => {
     const input = screen.getByPlaceholderText('G-XXXXXXXXXX');
     fireEvent.change(input, { target: { value: 'INVALID' } });
     // save button must be disabled due to hasErrors
-    const saveBtn = screen.getByRole('button', { name: /Save Tracking Settings/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i });
     expect((saveBtn as HTMLButtonElement).disabled).toBe(true);
     // Error text visible
     expect(
@@ -207,7 +207,7 @@ describe('TrackingSettingsCard — field edits', () => {
     fireEvent.change(screen.getByPlaceholderText('G-XXXXXXXXXX'), {
       target: { value: 'BAD' },
     });
-    expect(screen.getByText(/Fix the errors above/i)).toBeTruthy();
+    expect(screen.getByText(/Corrige los errores de arriba/i)).toBeTruthy();
   });
 
   it('typing a valid GTM ID enables save', () => {
@@ -216,7 +216,7 @@ describe('TrackingSettingsCard — field edits', () => {
       target: { value: 'GTM-ABCD1234' },
     });
     expect(
-      (screen.getByRole('button', { name: /Save Tracking Settings/i }) as HTMLButtonElement).disabled,
+      (screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }) as HTMLButtonElement).disabled,
     ).toBe(false);
   });
 
@@ -252,21 +252,21 @@ describe('TrackingSettingsCard — field edits', () => {
   it('rawHtml with javascript: URL shows validation error', () => {
     renderCard();
     // Expand advanced section
-    fireEvent.click(screen.getByRole('button', { name: /Advanced HTML/i }));
+    fireEvent.click(screen.getByRole('button', { name: /HTML avanzado/i }));
     const textareas = document.querySelectorAll('textarea');
     expect(textareas.length).toBeGreaterThan(0);
     fireEvent.change(textareas[0], { target: { value: '<a href="javascript:alert(1)">x</a>' } });
-    expect(screen.getByText(/Cannot contain javascript:/i)).toBeTruthy();
+    expect(screen.getByText(/No puede contener URLs javascript:/i)).toBeTruthy();
   });
 
   it('valid rawHtml does not show error', () => {
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Advanced HTML/i }));
+    fireEvent.click(screen.getByRole('button', { name: /HTML avanzado/i }));
     const textareas = document.querySelectorAll('textarea');
     fireEvent.change(textareas[0], {
       target: { value: '<script src="https://cdn.example.com/a.js" async></script>' },
     });
-    expect(screen.queryByText(/Cannot contain javascript:/i)).toBeNull();
+    expect(screen.queryByText(/No puede contener URLs javascript:/i)).toBeNull();
   });
 });
 
@@ -280,9 +280,9 @@ describe('TrackingSettingsCard — save success', () => {
     );
     renderCard();
     // Make form dirty
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
@@ -297,12 +297,12 @@ describe('TrackingSettingsCard — save success', () => {
       makeFetchOk({ success: true, data: { enabled: true } }),
     );
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     await waitFor(() =>
-      expect(screen.getByText(/Tracking settings saved/i)).toBeTruthy(),
+      expect(screen.getByText(/Ajustes de seguimiento guardados/i)).toBeTruthy(),
     );
   });
 
@@ -311,9 +311,9 @@ describe('TrackingSettingsCard — save success', () => {
       makeFetchOk({ success: true, data: { enabled: true } }),
     );
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     await waitFor(() => expect(mockRouterRefresh).toHaveBeenCalled());
   });
@@ -324,13 +324,13 @@ describe('TrackingSettingsCard — save success', () => {
     );
     renderCard();
     // Toggle to enabled=false → dirty
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
-    await waitFor(() => screen.getByText(/Tracking settings saved/i));
+    await waitFor(() => screen.getByText(/Ajustes de seguimiento guardados/i));
     // After success the baseline is reset so form is clean again
-    const saveBtn = screen.getByRole('button', { name: /Save Tracking Settings/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i });
     expect((saveBtn as HTMLButtonElement).disabled).toBe(true);
   });
 
@@ -345,9 +345,9 @@ describe('TrackingSettingsCard — save success', () => {
     const input = screen.getByPlaceholderText('G-XXXXXXXXXX') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'g-normalized01' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
-    await waitFor(() => screen.getByText(/Tracking settings saved/i));
+    await waitFor(() => screen.getByText(/Ajustes de seguimiento guardados/i));
     expect(input.value).toBe('G-NORMALIZED01');
   });
 
@@ -359,7 +359,7 @@ describe('TrackingSettingsCard — save success', () => {
     const input = screen.getByPlaceholderText('G-XXXXXXXXXX');
     fireEvent.change(input, { target: { value: 'G-ABCDEF1234' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
     const [, init] = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0] as [string, RequestInit];
@@ -379,9 +379,9 @@ describe('TrackingSettingsCard — save error', () => {
       makeFetchOk({ success: false, message: 'Invalid pixel ID format.' }),
     );
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     await waitFor(() =>
       expect(screen.getByText('Invalid pixel ID format.')).toBeTruthy(),
@@ -391,35 +391,35 @@ describe('TrackingSettingsCard — save error', () => {
   it('shows fallback error message when success=false with no message', async () => {
     global.fetch = vi.fn(() => makeFetchOk({ success: false }));
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     await waitFor(() =>
-      expect(screen.getByText(/Failed to save tracking settings/i)).toBeTruthy(),
+      expect(screen.getByText(/No se pudieron guardar los ajustes de seguimiento/i)).toBeTruthy(),
     );
   });
 
   it('shows error message when fetch rejects (network error)', async () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('Network down')));
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     await waitFor(() =>
-      expect(screen.getByText(/Failed to save tracking settings/i)).toBeTruthy(),
+      expect(screen.getByText(/No se pudieron guardar los ajustes de seguimiento/i)).toBeTruthy(),
     );
   });
 
   it('does not call router.refresh() on error', async () => {
     global.fetch = vi.fn(() => makeFetchOk({ success: false }));
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
-    await waitFor(() => screen.getByText(/Failed to save tracking settings/i));
+    await waitFor(() => screen.getByText(/No se pudieron guardar los ajustes de seguimiento/i));
     expect(mockRouterRefresh).not.toHaveBeenCalled();
   });
 
@@ -431,7 +431,7 @@ describe('TrackingSettingsCard — save error', () => {
       target: { value: 'BADVALUE' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     // fetch should NOT have been called for the tracking PUT
     expect(global.fetch).not.toHaveBeenCalledWith(
@@ -445,7 +445,7 @@ describe('TrackingSettingsCard — save error', () => {
     renderCard();
     // Save button is disabled; clicking has no effect
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
     expect(global.fetch).not.toHaveBeenCalled();
   });
@@ -461,14 +461,14 @@ describe('TrackingSettingsCard — loading state', () => {
     global.fetch = vi.fn(() => pending);
 
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
 
     act(() => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
 
     await waitFor(() =>
-      expect(screen.getByText(/Saving\.\.\./i)).toBeTruthy(),
+      expect(screen.getByText(/Guardando\.\.\./i)).toBeTruthy(),
     );
 
     // Resolve to clean up
@@ -486,14 +486,14 @@ describe('TrackingSettingsCard — loading state', () => {
     global.fetch = vi.fn(() => pending);
 
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
 
     act(() => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
 
-    await waitFor(() => screen.getByText(/Saving\.\.\./i));
-    const saveBtn = screen.getByText(/Saving\.\.\./i).closest('button') as HTMLButtonElement;
+    await waitFor(() => screen.getByText(/Guardando\.\.\./i));
+    const saveBtn = screen.getByText(/Guardando\.\.\./i).closest('button') as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(true);
 
     act(() => {
@@ -514,18 +514,18 @@ describe('TrackingSettingsCard — message clearing', () => {
       makeFetchOk({ success: true, data: { enabled: true } }),
     );
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Save Tracking Settings/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i }));
     });
-    await waitFor(() => screen.getByText(/Tracking settings saved/i));
+    await waitFor(() => screen.getByText(/Ajustes de seguimiento guardados/i));
 
     // Now make another field change — the success message should clear
-    fireEvent.click(screen.getByRole('button', { name: /Toggle tracking/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Activar seguimiento/i }));
     fireEvent.change(screen.getByPlaceholderText('G-XXXXXXXXXX'), {
       target: { value: 'G-NEWVALUE12' },
     });
-    expect(screen.queryByText(/Tracking settings saved/i)).toBeNull();
+    expect(screen.queryByText(/Ajustes de seguimiento guardados/i)).toBeNull();
   });
 });
 
@@ -535,7 +535,7 @@ describe('TrackingSettingsCard — message clearing', () => {
 describe('TrackingSettingsCard — advanced HTML section', () => {
   it('toggles advanced section open and closed', () => {
     renderCard();
-    const advBtn = screen.getByRole('button', { name: /Advanced HTML/i });
+    const advBtn = screen.getByRole('button', { name: /HTML avanzado/i });
     expect(advBtn.getAttribute('aria-expanded')).toBe('false');
     fireEvent.click(advBtn);
     expect(advBtn.getAttribute('aria-expanded')).toBe('true');
@@ -545,7 +545,7 @@ describe('TrackingSettingsCard — advanced HTML section', () => {
 
   it('shows custom head/body textareas when advanced is open', () => {
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Advanced HTML/i }));
+    fireEvent.click(screen.getByRole('button', { name: /HTML avanzado/i }));
     const textareas = document.querySelectorAll('textarea');
     // Both custom head and body HTML textareas
     expect(textareas.length).toBeGreaterThanOrEqual(2);
@@ -553,7 +553,7 @@ describe('TrackingSettingsCard — advanced HTML section', () => {
 
   it('populates custom head HTML from initialConfig', () => {
     renderCard({ customHeadHtml: '<meta name="custom" />' });
-    fireEvent.click(screen.getByRole('button', { name: /Advanced HTML/i }));
+    fireEvent.click(screen.getByRole('button', { name: /HTML avanzado/i }));
     const textareas = document.querySelectorAll('textarea');
     const headTextarea = Array.from(textareas).find(
       (t) => (t as HTMLTextAreaElement).value.includes('<meta'),
@@ -564,12 +564,12 @@ describe('TrackingSettingsCard — advanced HTML section', () => {
 
   it('rawHtml field edit enables save button', () => {
     renderCard();
-    fireEvent.click(screen.getByRole('button', { name: /Advanced HTML/i }));
+    fireEvent.click(screen.getByRole('button', { name: /HTML avanzado/i }));
     const textareas = document.querySelectorAll('textarea');
     fireEvent.change(textareas[0], {
       target: { value: '<script src="https://cdn.example.com/a.js"></script>' },
     });
-    const saveBtn = screen.getByRole('button', { name: /Save Tracking Settings/i });
+    const saveBtn = screen.getByRole('button', { name: /Guardar ajustes de seguimiento/i });
     expect((saveBtn as HTMLButtonElement).disabled).toBe(false);
   });
 });

@@ -231,7 +231,7 @@ describe('GET /api/surveys/[slug]/results', () => {
     const res = await GET(new Request('http://x'), makeParams({ slug: 'missing' }));
     expect(res.status).toBe(404);
     const body = await res.json();
-    expect(body).toEqual({ success: false, message: 'Survey not found' });
+    expect(body).toEqual({ success: false, message: 'Encuesta no encontrada.' });
   });
 
   it('aggregates option counts for select / radio / checkbox fields', async () => {

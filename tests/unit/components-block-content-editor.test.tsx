@@ -170,14 +170,14 @@ afterEach(() => {
 describe('BlockContentEditor — heading block', () => {
   it('renders RichTextField for content', () => {
     const { container } = renderBlock({ id: 'h1', type: 'heading', order: 0, content: 'Hello' });
-    const rte = container.querySelector('[data-testid="rte-Content"]') as HTMLTextAreaElement;
+    const rte = container.querySelector('[data-testid="rte-Contenido"]') as HTMLTextAreaElement;
     expect(rte).toBeTruthy();
     expect(rte.value).toBe('Hello');
   });
 
   it('updates content via onChange', () => {
     const { container, onUpdate } = renderBlock({ id: 'h1', type: 'heading', order: 0, content: 'Hello' });
-    const rte = container.querySelector('[data-testid="rte-Content"]') as HTMLTextAreaElement;
+    const rte = container.querySelector('[data-testid="rte-Contenido"]') as HTMLTextAreaElement;
     fireEvent.change(rte, { target: { value: 'Updated' } });
     expect(onUpdate).toHaveBeenCalledWith({ content: 'Updated' });
   });
@@ -324,9 +324,9 @@ describe('BlockContentEditor — youtube + video', () => {
 describe('BlockContentEditor — hero block', () => {
   it('renders title, subtitle, description, CTAs and media pickers', () => {
     const { container } = renderBlock({ id: 'h1', type: 'hero', order: 0, title: 'T' });
-    expect(container.querySelector('[data-testid="rte-Title"]')).toBeTruthy();
-    expect(container.querySelector('[data-testid="rte-Subtitle"]')).toBeTruthy();
-    expect(container.querySelector('[data-testid="rte-Description"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Título"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Subtítulo"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Descripción"]')).toBeTruthy();
   });
 });
 
@@ -343,7 +343,7 @@ describe('BlockContentEditor — testimonial', () => {
     const { container } = renderBlock({
       id: 't1', type: 'testimonial', order: 0, quote: 'q', author: 'a',
     });
-    expect(container.querySelector('[data-testid="rte-Quote"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Cita"]')).toBeTruthy();
   });
 });
 
@@ -412,7 +412,7 @@ describe('BlockContentEditor — card-grid block', () => {
     fireEvent.click(addBtn!);
     const call = onUpdate.mock.calls[0][0];
     expect(call.cards).toHaveLength(1);
-    expect(call.cards[0].title).toBe('New card');
+    expect(call.cards[0].title).toBe('Nueva tarjeta');
   });
 
   it('updates iconSize as NumberField', () => {
@@ -486,7 +486,7 @@ describe('BlockContentEditor — services-grid', () => {
         { id: 'svc2', title: 'Svc Two', description: 'd', bullets: [] },
       ],
     });
-    expect(container.textContent).toContain('Bullets per service');
+    expect(container.textContent).toContain('Viñetas por servicio');
     expect(container.textContent).toContain('Svc One');
     expect(container.textContent).toContain('Svc Two');
   });
@@ -495,7 +495,7 @@ describe('BlockContentEditor — services-grid', () => {
     const { container } = renderBlock({
       id: 'sg1', type: 'services-grid', order: 0, services: [],
     });
-    expect(container.textContent).not.toContain('Bullets per service');
+    expect(container.textContent).not.toContain('Viñetas por servicio');
   });
 });
 
@@ -576,7 +576,7 @@ describe('BlockContentEditor — blog-posts / product-grid / featured-products /
 
   it('product-categories renders', () => {
     const { container } = renderBlock({ id: 'pc1', type: 'product-categories', order: 0 });
-    expect(container.textContent).toContain('Show Product Count');
+    expect(container.textContent).toContain('Mostrar cantidad de productos');
   });
 
   it('shopping-cart variant', () => {
@@ -689,7 +689,7 @@ describe('BlockContentEditor — booking-menu', () => {
 describe('BlockContentEditor — social-links', () => {
   it('renders empty state with add button and adds link', () => {
     const { container, onUpdate } = renderBlock({ id: 'sl1', type: 'social-links', order: 0, links: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Link'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir enlace'));
     fireEvent.click(addBtn!);
     expect(onUpdate).toHaveBeenCalledWith({ links: [{ platform: 'facebook', url: '' }] });
   });
@@ -735,7 +735,7 @@ describe('BlockContentEditor — social-links', () => {
   it('hides + Add Link when at 6 links', () => {
     const six = Array.from({ length: 6 }, (_, i) => ({ platform: 'facebook', url: `${i}` }));
     const { container } = renderBlock({ id: 'sl1', type: 'social-links', order: 0, links: six });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Link'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir enlace'));
     expect(addBtn).toBeUndefined();
   });
 });
@@ -747,7 +747,7 @@ describe('BlockContentEditor — social-links', () => {
 describe('BlockContentEditor — timeline', () => {
   it('adds + removes steps', () => {
     const { container, onUpdate } = renderBlock({ id: 'tl1', type: 'timeline', order: 0, steps: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].steps).toHaveLength(1);
   });
@@ -785,7 +785,7 @@ describe('BlockContentEditor — timeline', () => {
       id: 'tl1', type: 'timeline', order: 0,
       steps: [{ id: 'step-1', title: 't', description: 'd' }],
     });
-    const removeBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Remove');
+    const removeBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Quitar');
     fireEvent.click(removeBtn!);
     expect(onUpdate).toHaveBeenCalledWith({ steps: [] });
   });
@@ -794,7 +794,7 @@ describe('BlockContentEditor — timeline', () => {
 describe('BlockContentEditor — bento-grid', () => {
   it('adds card and updates span', () => {
     const { container, onUpdate } = renderBlock({ id: 'bg1', type: 'bento-grid', order: 0, cards: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].cards).toHaveLength(1);
   });
@@ -815,7 +815,7 @@ describe('BlockContentEditor — bento-grid', () => {
 describe('BlockContentEditor — team-showcase', () => {
   it('adds member', () => {
     const { container, onUpdate } = renderBlock({ id: 'ts1', type: 'team-showcase', order: 0, members: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].members).toHaveLength(1);
   });
@@ -826,8 +826,8 @@ describe('BlockContentEditor — team-showcase', () => {
       members: [{ id: 'm1', name: 'n', title: 't', photo: 'p', bio: 'b' }],
     });
     const inputs = container.querySelectorAll('input[type="text"]');
-    // last input on member row is specialties — find one with empty value & placeholder containing "Specialties"
-    const specInput = Array.from(inputs).find((i) => (i as HTMLInputElement).placeholder?.includes('Specialties')) as HTMLInputElement;
+    // last input on member row is specialties — find one with empty value & placeholder containing "Especialidades"
+    const specInput = Array.from(inputs).find((i) => (i as HTMLInputElement).placeholder?.includes('Especialidades')) as HTMLInputElement;
     fireEvent.change(specInput, { target: { value: 'a, b, c' } });
     const call = onUpdate.mock.calls[0][0];
     expect(call.members[0].specialties).toEqual(['a', 'b', 'c']);
@@ -837,7 +837,7 @@ describe('BlockContentEditor — team-showcase', () => {
 describe('BlockContentEditor — team-flip-grid', () => {
   it('adds and removes member', () => {
     const { container, onUpdate } = renderBlock({ id: 'tfg1', type: 'team-flip-grid', order: 0, members: [] });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Add');
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Añadir');
     fireEvent.click(addBtn!);
     const added = onUpdate.mock.calls[0][0];
     expect(added.members).toHaveLength(1);
@@ -850,8 +850,8 @@ describe('BlockContentEditor — site-footer', () => {
       id: 'sf1', type: 'site-footer', order: 0,
       logoUrl: 'x', wordmark: 'W', linkGroups: [{ label: 'PRODUCT', links: [{ label: 'Pricing', href: '/p' }] }],
     });
-    expect(container.textContent).toContain('Logo URL');
-    expect(container.textContent).toContain('Link Groups');
+    expect(container.textContent).toContain('URL del logotipo');
+    expect(container.textContent).toContain('Grupos de enlaces');
     expect(container.textContent).toContain('Copyright');
   });
 
@@ -876,7 +876,7 @@ describe('BlockContentEditor — site-footer', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sf1', type: 'site-footer', order: 0, linkGroups: [],
     });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Group'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir grupo'));
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].linkGroups).toHaveLength(1);
   });
@@ -885,7 +885,7 @@ describe('BlockContentEditor — site-footer', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sf1', type: 'site-footer', order: 0, socialLinks: [],
     });
-    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add Social'));
+    const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Añadir enlace social'));
     fireEvent.click(addBtn!);
     expect(onUpdate.mock.calls[0][0].socialLinks).toHaveLength(1);
   });
@@ -983,8 +983,8 @@ describe('BlockContentEditor — marquee block (MarqueeEditor)', () => {
       items: [{ id: 'mi-1', type: 'text', content: 'Hello' }],
       gradient: true,
     });
-    expect(container.textContent).toContain('Gradient Color');
-    expect(container.textContent).toContain('Gradient Width');
+    expect(container.textContent).toContain('Color del degradado');
+    expect(container.textContent).toContain('Ancho del degradado');
   });
 
   it('updates marquee direction', () => {
@@ -1046,8 +1046,8 @@ describe('BlockContentEditor — hero-slideshow (HeroSlideshowEditor)', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'slide-1', title: 'First' }],
     });
-    expect(container.textContent).toContain('Slides');
-    expect(container.querySelector('[data-testid="rte-Title"]')).toBeTruthy();
+    expect(container.textContent).toContain('Diapositivas');
+    expect(container.querySelector('[data-testid="rte-Título"]')).toBeTruthy();
   });
 
   it('adds slide', () => {
@@ -1065,7 +1065,7 @@ describe('BlockContentEditor — hero-slideshow (HeroSlideshowEditor)', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'slide-1', title: 'First' }],
     });
-    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Remove slide'));
+    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Eliminar diapositiva'));
     expect(rm).toBeUndefined();
   });
 
@@ -1074,7 +1074,7 @@ describe('BlockContentEditor — hero-slideshow (HeroSlideshowEditor)', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'slide-1', title: 'A' }, { id: 'slide-2', title: 'B' }],
     });
-    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Remove slide'));
+    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Eliminar diapositiva'));
     fireEvent.click(rm!);
     expect(onUpdate.mock.calls[0][0].slides).toHaveLength(1);
   });
@@ -1308,8 +1308,8 @@ describe('BlockContentEditor — ListEditor SortableListItem expansion', () => {
     expect(header).toBeTruthy();
     fireEvent.click(header!);
     // Now there should be two Field inputs (value, label) showing.
-    expect(container.textContent).toContain('Value');
-    expect(container.textContent).toContain('Label');
+    expect(container.textContent).toContain('Valor');
+    expect(container.textContent).toContain('Etiqueta');
   });
 
   it('expanded item: editing a field calls onItemChange', () => {
@@ -1339,10 +1339,10 @@ describe('BlockContentEditor — ListEditor SortableListItem expansion', () => {
       d.className.includes('cursor-pointer') && d.textContent?.includes('v'),
     );
     fireEvent.click(header!);
-    expect(container.textContent).toContain('Value');
+    expect(container.textContent).toContain('Valor');
     fireEvent.click(header!);
     // "Value" label disappears when collapsed
-    const valueLabels = Array.from(container.querySelectorAll('span')).filter((s) => s.textContent === 'Value');
+    const valueLabels = Array.from(container.querySelectorAll('span')).filter((s) => s.textContent === 'Valor');
     expect(valueLabels.length).toBe(0);
   });
 
@@ -1370,7 +1370,7 @@ describe('BlockContentEditor — ListEditor SortableListItem expansion', () => {
     );
     fireEvent.click(header!);
     // Icon picker mock has data-testid icon-picker-{label}
-    expect(container.querySelector('[data-testid="icon-picker-Icon"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="icon-picker-Ícono"]')).toBeTruthy();
     // textarea (description) should be present
     expect(container.querySelectorAll('textarea').length).toBeGreaterThan(0);
   });
@@ -1395,7 +1395,7 @@ describe('BlockContentEditor — ListEditor SortableListItem expansion', () => {
     const cardTwoHeader = headers.find((d) => d.textContent?.includes('Card Two'));
     fireEvent.click(cardTwoHeader!);
 
-    const colorInput = container.querySelector('[data-testid="color-Icon Color"]') as HTMLInputElement;
+    const colorInput = container.querySelector('[data-testid="color-Color del ícono"]') as HTMLInputElement;
     expect(colorInput).toBeTruthy();
     expect(colorInput.value).toBe('brand.accent');
 
@@ -1428,8 +1428,8 @@ describe('BlockContentEditor — ListEditor SortableListItem expansion', () => {
       id: 'st1', type: 'stats', order: 0,
       stats: [{ id: 's1', value: '', label: '' }], columns: 3,
     });
-    // header uses "Stat 1" fallback because first field is empty
-    expect(container.textContent).toContain('Stat 1');
+    // header uses "Estadística 1" fallback because first field is empty
+    expect(container.textContent).toContain('Estadística 1');
   });
 });
 
@@ -1621,7 +1621,7 @@ describe('BlockContentEditor — survey-results selected with fields', () => {
       id: 'sr1', type: 'survey-results', order: 0, surveySlug: 'feedback',
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Questions to display');
+      expect(container.textContent).toContain('Preguntas para mostrar');
     });
     expect(container.textContent).toContain('How likely?');
     expect(container.textContent).toContain('Other thoughts?');
@@ -1632,8 +1632,8 @@ describe('BlockContentEditor — survey-results selected with fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sr1', type: 'survey-results', order: 0, surveySlug: 'feedback', fieldIds: ['q1'],
     });
-    await waitFor(() => expect(container.textContent).toContain('Questions to display'));
-    const allBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'All');
+    await waitFor(() => expect(container.textContent).toContain('Preguntas para mostrar'));
+    const allBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Todos');
     fireEvent.click(allBtn!);
     expect(onUpdate).toHaveBeenCalledWith({ fieldIds: undefined });
   });
@@ -1643,7 +1643,7 @@ describe('BlockContentEditor — survey-results selected with fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sr1', type: 'survey-results', order: 0, surveySlug: 'feedback',
     });
-    await waitFor(() => expect(container.textContent).toContain('Questions to display'));
+    await waitFor(() => expect(container.textContent).toContain('Preguntas para mostrar'));
     const cb = container.querySelector('input[type="checkbox"][id="srfield-q1"]') as HTMLInputElement;
     fireEvent.click(cb);
     // unchecking q1 → fieldIds is ['q2']
@@ -1656,7 +1656,7 @@ describe('BlockContentEditor — survey-results selected with fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sr1', type: 'survey-results', order: 0, surveySlug: 'feedback',
     });
-    await waitFor(() => expect(container.textContent).toContain('Questions to display'));
+    await waitFor(() => expect(container.textContent).toContain('Preguntas para mostrar'));
     const selects = container.querySelectorAll('select');
     const layoutSel = Array.from(selects).find((s) =>
       (s as HTMLSelectElement).querySelector('option[value="tabbed"]'),
@@ -1699,7 +1699,7 @@ describe('BlockContentEditor — survey-results selected with fields', () => {
       id: 'sr1', type: 'survey-results', order: 0,
     });
     await waitFor(() => expect((globalThis as any).fetch).toHaveBeenCalled());
-    const accent = container.querySelector('[data-testid="color-Accent Color"]') as HTMLInputElement;
+    const accent = container.querySelector('[data-testid="color-Color de énfasis"]') as HTMLInputElement;
     fireEvent.change(accent, { target: { value: '#abc' } });
     expect(onUpdate).toHaveBeenCalledWith({ accentColor: '#abc' });
   });
@@ -1787,7 +1787,7 @@ describe('BlockContentEditor — site-footer inline edits', () => {
       id: 'sf1', type: 'site-footer', order: 0,
       linkGroups: [{ label: 'PRODUCT', links: [] }],
     });
-    const addLinkBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Link');
+    const addLinkBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === '+ Enlace');
     fireEvent.click(addLinkBtn!);
     const call = onUpdate.mock.calls[0][0];
     expect(call.linkGroups[0].links).toHaveLength(1);
@@ -1798,7 +1798,7 @@ describe('BlockContentEditor — site-footer inline edits', () => {
       id: 'sf1', type: 'site-footer', order: 0,
       linkGroups: [{ label: 'PRODUCT', links: [] }],
     });
-    const rmBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Remove group');
+    const rmBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Quitar grupo');
     fireEvent.click(rmBtn!);
     expect(onUpdate).toHaveBeenCalledWith({ linkGroups: [] });
   });
@@ -1890,14 +1890,14 @@ describe('BlockContentEditor — marquee item editing branches', () => {
 
   it('icon item shows icon name field', () => {
     // Same collapsed-by-default behavior as above, plus the icon-name field
-    // is now an IconPicker (mocked below with an `ip-input-Icon` testid),
+    // is now an IconPicker (mocked below with an `ip-input-Ícono` testid),
     // not a raw text Field.
     const { container, onUpdate } = renderBlock({
       id: 'mq1', type: 'marquee', order: 0,
       items: [{ id: 'mi-1', type: 'icon', content: 'star' }],
     });
     fireEvent.click(screen.getByText('ICON 1'));
-    const iconNameInput = container.querySelector('[data-testid="ip-input-Icon"]') as HTMLInputElement;
+    const iconNameInput = container.querySelector('[data-testid="ip-input-Ícono"]') as HTMLInputElement;
     expect(iconNameInput.value).toBe('star');
     fireEvent.change(iconNameInput, { target: { value: 'rocket' } });
     expect(onUpdate.mock.calls[0][0].items[0].content).toBe('rocket');
@@ -1908,7 +1908,7 @@ describe('BlockContentEditor — marquee item editing branches', () => {
       id: 'mq1', type: 'marquee', order: 0,
       items: [], gradient: true, gradientColor: 'white',
     });
-    const gradientColor = container.querySelector('[data-testid="color-Gradient Color"]') as HTMLInputElement;
+    const gradientColor = container.querySelector('[data-testid="color-Color del degradado"]') as HTMLInputElement;
     fireEvent.change(gradientColor, { target: { value: '#000' } });
     expect(onUpdate).toHaveBeenCalledWith({ gradientColor: '#000' });
   });
@@ -1953,7 +1953,7 @@ describe('BlockContentEditor — hero-slideshow extra paths', () => {
     );
     fireEvent.click(numBtns[1]);
     // Slide B title should now be in the title RTE
-    const rte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const rte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     expect(rte.value).toBe('Slide B');
   });
 
@@ -1995,12 +1995,12 @@ describe('BlockContentEditor — hero-slideshow extra paths', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'a', title: 'A' }],
     });
-    const arrow = container.querySelector('[data-testid="color-Arrow Color"]') as HTMLInputElement;
+    const arrow = container.querySelector('[data-testid="color-Color de las flechas"]') as HTMLInputElement;
     expect(arrow).toBeTruthy();
     fireEvent.change(arrow, { target: { value: '#abcdef' } });
     expect(onUpdate).toHaveBeenCalledWith({ arrowColor: '#abcdef' });
 
-    const dot = container.querySelector('[data-testid="color-Dot Color"]') as HTMLInputElement;
+    const dot = container.querySelector('[data-testid="color-Color de los puntos"]') as HTMLInputElement;
     fireEvent.change(dot, { target: { value: '#cccccc' } });
     expect(onUpdate).toHaveBeenCalledWith({ dotColor: '#cccccc' });
   });
@@ -2045,13 +2045,13 @@ describe('BlockContentEditor — section splitColor branches', () => {
       fireEvent.click(header);
     };
 
-    openStyleSection('Background');
+    openStyleSection('Fondo');
     fireEvent.click(screen.getByTestId('gradient-set-color'));
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ style: expect.objectContaining({ backgroundColor: '#abcdef' }) }),
     );
 
-    openStyleSection('Size');
+    openStyleSection('Tamaño');
     const maxWidth = screen.getAllByPlaceholderText('none')[0] as HTMLInputElement;
     fireEvent.change(maxWidth, { target: { value: '1200px' } });
     expect(onChange).toHaveBeenCalledWith(
@@ -2062,8 +2062,8 @@ describe('BlockContentEditor — section splitColor branches', () => {
       }),
     );
 
-    openStyleSection('Typography');
-    const textColor = container.querySelector('[data-testid="color-Text Color"]') as HTMLInputElement;
+    openStyleSection('Tipografía');
+    const textColor = container.querySelector('[data-testid="color-Color del texto"]') as HTMLInputElement;
     fireEvent.change(textColor, { target: { value: '#000' } });
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ style: expect.objectContaining({ color: '#000' }) }),
@@ -2142,8 +2142,8 @@ describe('BlockContentEditor — list edit / remove deeper', () => {
     const addBtn = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('+ Add'));
     fireEvent.click(addBtn!);
     const call = onUpdate.mock.calls[0][0];
-    expect(call.cards[0].frontTitle).toBe('New Card');
-    expect(call.cards[0].backText).toBe('Back side content');
+    expect(call.cards[0].frontTitle).toBe('Nueva tarjeta');
+    expect(call.cards[0].backText).toBe('Contenido del reverso');
   });
 });
 
@@ -2190,7 +2190,7 @@ describe('BlockContentEditor — timeline extra fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'tl1', type: 'timeline', order: 0, steps: [],
     });
-    const line = container.querySelector('[data-testid="color-Line Color"]') as HTMLInputElement;
+    const line = container.querySelector('[data-testid="color-Color de la línea"]') as HTMLInputElement;
     fireEvent.change(line, { target: { value: '#abc' } });
     expect(onUpdate).toHaveBeenCalledWith({ lineColor: '#abc' });
   });
@@ -2230,7 +2230,7 @@ describe('BlockContentEditor — bento-grid extra fields', () => {
       id: 'bg1', type: 'bento-grid', order: 0,
       cards: [{ id: 'c-1', title: 'T' }],
     });
-    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Remove');
+    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Quitar');
     fireEvent.click(rm!);
     expect(onUpdate).toHaveBeenCalledWith({ cards: [] });
   });
@@ -2260,7 +2260,7 @@ describe('BlockContentEditor — team-flip-grid extras', () => {
       id: 'tfg1', type: 'team-flip-grid', order: 0,
       members: [{ id: 'm1', name: 'N', title: 'T', photo: '', bio: '', question: '', answer: '' }],
     });
-    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Remove');
+    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Quitar');
     fireEvent.click(rm!);
     expect(onUpdate).toHaveBeenCalledWith({ members: [] });
   });
@@ -2272,7 +2272,7 @@ describe('BlockContentEditor — team-showcase remove member', () => {
       id: 'ts1', type: 'team-showcase', order: 0,
       members: [{ id: 'm1', name: 'A', title: 'T', photo: '', bio: '' }],
     });
-    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Remove');
+    const rm = Array.from(container.querySelectorAll('button')).find((b) => b.textContent === 'Quitar');
     fireEvent.click(rm!);
     expect(onUpdate).toHaveBeenCalledWith({ members: [] });
   });
@@ -2283,7 +2283,7 @@ describe('BlockContentEditor — team-showcase remove member', () => {
       members: [{ id: 'm1', name: 'A', title: 'T', photo: '', bio: '', specialties: ['x'] }],
     });
     const specInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (i) => (i as HTMLInputElement).placeholder?.includes('Specialties'),
+      (i) => (i as HTMLInputElement).placeholder?.includes('Especialidades'),
     ) as HTMLInputElement;
     fireEvent.change(specInput, { target: { value: '' } });
     expect(onUpdate.mock.calls[0][0].members[0].specialties).toBeUndefined();

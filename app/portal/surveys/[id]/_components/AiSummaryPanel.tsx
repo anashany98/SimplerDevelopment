@@ -51,9 +51,9 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
         const j = await r.json();
         if (cancelled) return;
         if (j.success) setData(j.data);
-        else setError(j.message || 'Failed to load summary');
+        else setError(j.message || 'No se pudo cargar el resumen');
       } catch {
-        if (!cancelled) setError('Failed to load summary');
+        if (!cancelled) setError('No se pudo cargar el resumen');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -73,9 +73,9 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
       );
       const j = await r.json();
       if (j.success) setData(j.data);
-      else setError(j.message || 'Failed to generate summary');
+      else setError(j.message || 'No se pudo generar el resumen');
     } catch {
-      setError('Failed to generate summary');
+      setError('No se pudo generar el resumen');
     } finally {
       setGenerating(false);
     }
@@ -84,8 +84,8 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
   if (loading) {
     return (
       <div className="bg-card border border-border rounded-xl p-5 flex items-center gap-2 text-sm text-muted-foreground">
-        <span className="material-icons text-base animate-spin">progress_activity</span>
-        Loading AI summary…
+        <span className="material-icons text-base animate-spin">autorenew</span>
+        Cargando resumen por IA…
       </div>
     );
   }
@@ -97,20 +97,20 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
         <div className="flex items-start gap-3">
           <span className="material-icons text-primary text-2xl">auto_awesome</span>
           <div className="flex-1">
-            <h4 className="font-semibold text-foreground text-sm">AI summary of text responses</h4>
+            <h4 className="font-semibold text-foreground text-sm">Resumen por IA de respuestas de texto</h4>
             <p className="text-xs text-muted-foreground mt-1">
-              Synthesizes themes, sentiment, and per-question takeaways from your free-text answers.
-              Email, phone, and URL substrings are stripped before sending to the model.
+              Sintetiza temas, sentimiento y conclusiones por pregunta a partir de tus respuestas de texto libre.
+              Se eliminan las cadenas de correo, teléfono y URL antes de enviar al modelo.
             </p>
           </div>
           <button
             type="button"
             onClick={() => generate(false)}
             disabled={generating}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50 shrink-0"
           >
             <span className="material-icons text-base">
-              {generating ? 'progress_activity' : 'auto_awesome'}
+              {generating ? 'autorenew' : 'auto_awesome'}
             </span>
             {generating ? 'Generating…' : 'Generate'}
           </button>
@@ -129,13 +129,13 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
         <div>
           <h4 className="font-semibold text-foreground text-sm flex items-center gap-2">
             <span className="material-icons text-primary text-lg">auto_awesome</span>
-            AI summary
+            Resumen por IA
             <span className={`text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full ${SENTIMENT_BADGE[data.sentiment]}`}>
               {data.sentiment}
             </span>
           </h4>
           <p className="text-xs text-muted-foreground mt-1">
-            Generated {new Date(data.generatedAt).toLocaleString()} · {data.responseCountAtGeneration} response{data.responseCountAtGeneration === 1 ? '' : 's'}
+            Generado {new Date(data.generatedAt).toLocaleString()} · {data.responseCountAtGeneration} respuesta{data.responseCountAtGeneration === 1 ? '' : 's'}
           </p>
         </div>
         <button
@@ -143,12 +143,12 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
           onClick={() => generate(true)}
           disabled={generating}
           className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-muted text-foreground rounded-lg text-xs font-medium hover:bg-muted/70 transition-colors disabled:opacity-50 shrink-0"
-          title={data.stale ? `${newResponses} new response${newResponses === 1 ? '' : 's'} since last generation` : 'Regenerate summary'}
+          title={data.stale ? `${newResponses} ${newResponses === 1 ? 'respuesta nueva' : 'respuestas nuevas'} desde la última generación` : 'Regenerar resumen'}
         >
           <span className={`material-icons text-base ${generating ? 'animate-spin' : ''}`}>
-            {generating ? 'progress_activity' : 'refresh'}
+            {generating ? 'autorenew' : 'refresh'}
           </span>
-          {generating ? 'Working…' : data.stale ? `Regenerate (+${newResponses})` : 'Regenerate'}
+          {generating ? 'Generando…' : data.stale ? `Regenerar (+${newResponses})` : 'Regenerar'}
         </button>
       </div>
 
@@ -158,7 +158,7 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
       {/* Themes */}
       {data.themes.length > 0 && (
         <div>
-          <p className="text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">Themes</p>
+          <p className="text-xs font-medium text-muted-foreground mb-1.5 uppercase tracking-wide">Temas</p>
           <div className="flex flex-wrap gap-1.5">
             {data.themes.map((t, i) => (
               <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-primary/10 text-primary">
@@ -172,11 +172,11 @@ export default function AiSummaryPanel({ surveyId }: { surveyId: number }) {
       {/* Per-question */}
       {data.perQuestion.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">By question</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Por pregunta</p>
           {data.perQuestion.map((q) => (
             <div key={q.fieldId} className="border border-border rounded-lg p-3">
               <p className="text-xs font-semibold text-foreground">
-                {q.label} <span className="font-normal text-muted-foreground">· {q.sampleCount} answer{q.sampleCount === 1 ? '' : 's'}</span>
+                {q.label} <span className="font-normal text-muted-foreground">· {q.sampleCount} respuesta{q.sampleCount === 1 ? '' : 's'}</span>
               </p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{q.summary}</p>
             </div>

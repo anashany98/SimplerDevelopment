@@ -11,14 +11,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       .where(and(eq(bookingPages.slug, slug), eq(bookingPages.active, true)))
       .limit(1);
 
-    if (!page) return NextResponse.json({ success: false, message: 'Booking page not found' }, { status: 404 });
-    if (!page.enableWaivers) return NextResponse.json({ success: false, message: 'Waivers are not enabled' }, { status: 400 });
+    if (!page) return NextResponse.json({ success: false, message: 'Página de reservas no encontrada.' }, { status: 404 });
+    if (!page.enableWaivers) return NextResponse.json({ success: false, message: 'Los consentimientos no están habilitados.' }, { status: 400 });
 
     const body = await req.json();
     const { bookingId, signerName, signerEmail, signatureData } = body;
 
     if (!bookingId || !signerName?.trim() || !signerEmail?.trim() || !signatureData) {
-      return NextResponse.json({ success: false, message: 'bookingId, signerName, signerEmail, and signatureData are required' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'Faltan datos obligatorios del consentimiento.' }, { status: 400 });
     }
 
     // Verify booking belongs to this page
@@ -26,7 +26,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       .where(and(eq(bookings.id, bookingId), eq(bookings.bookingPageId, page.id)))
       .limit(1);
 
-    if (!booking) return NextResponse.json({ success: false, message: 'Booking not found' }, { status: 404 });
+    if (!booking) return NextResponse.json({ success: false, message: 'Reserva no encontrada.' }, { status: 404 });
 
     // Get client IP
     const forwarded = req.headers.get('x-forwarded-for');

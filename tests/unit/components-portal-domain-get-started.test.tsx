@@ -38,7 +38,7 @@ describe('DomainGetStarted', () => {
 
   it('renders pre-credited progress — never 0 of N', async () => {
     render(<DomainGetStarted domainKey="crm" />);
-    await waitFor(() => expect(screen.getByText('1 of 4 steps complete')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('1 de 4 pasos completados')).toBeInTheDocument());
     expect(screen.queryByText(/^0 of /)).not.toBeInTheDocument();
   });
 
@@ -90,7 +90,7 @@ describe('GetStartedChecklist (auto-detected)', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     render(<GetStartedChecklist />);
-    await waitFor(() => expect(screen.getByText('1 of 4 steps complete')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('1 de 4 pasos completados')).toBeInTheDocument());
     expect(screen.getByText('25%')).toBeInTheDocument();
     // Manual check-off is gone — no toggle buttons on action rows.
     expect(screen.queryByRole('button', { name: /Mark ".*" complete/ })).not.toBeInTheDocument();

@@ -15,12 +15,9 @@ export default async function MetricAmountDueWidget({
     .from(invoices)
     .where(and(eq(invoices.clientId, clientId), eq(invoices.status, 'sent')));
 
+  const due = Number(result?.total ?? 0);
+
   return (
-    <MetricBlock
-      icon="attach_money"
-      color="text-green-600"
-      value={formatCents(Number(result?.total ?? 0))}
-      label="Amount Due"
-    />
+    <MetricBlock value={formatCents(due)} tone={due > 0 ? 'warn' : 'default'} />
   );
 }

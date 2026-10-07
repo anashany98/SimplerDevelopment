@@ -11,9 +11,22 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
+// The attachment route captures INBOUND_EMAIL_SECRET at module load, and a
+// dev's .env.local sets it. Clear it before the module imports below
+// (vi.hoisted runs first) so the "missing secret" case matches CI.
+vi.hoisted(() => {
+  delete process.env.INBOUND_EMAIL_SECRET;
+});
+
 // ---------------------------------------------------------------------------
 // Mocks
 // ---------------------------------------------------------------------------
+
+vi.mock('@/lib/email', () => ({
+  getEmailPlatformConfig: async () => ({
+    inboundSecret: process.env.INBOUND_EMAIL_SECRET ?? null,
+  }),
+}));
 
 const requireBrainEntitlementMock = vi.fn();
 vi.mock('@/lib/brain/entitlement', () => ({

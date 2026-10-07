@@ -37,23 +37,23 @@ export interface NavSection {
 export function getNavSections(): NavSection[] {
   return [
     {
-      label: 'Platform',
+      label: 'Plataforma',
       items: [
-        { href: '/admin', label: 'Dashboard', icon: 'space_dashboard' },
-        { href: '/admin/clients', label: 'Clients', icon: 'business' },
-        { href: '/admin/users', label: 'Staff', icon: 'badge' },
+        { href: '/admin', label: 'Panel', icon: 'space_dashboard' },
+        { href: '/admin/clients', label: 'Clientes', icon: 'business' },
+        { href: '/admin/users', label: 'Equipo', icon: 'badge' },
       ],
     },
     {
-      label: 'Services',
+      label: 'Servicios',
       items: [
         {
           href: '/admin/portal-websites',
-          label: 'Websites',
+          label: 'Webs',
           icon: 'language',
           subItems: [
-            { href: '/admin/branding', label: 'Branding', icon: 'palette' },
-            { href: '/admin/portal-hosting', label: 'Hosting & DNS', icon: 'cloud' },
+            { href: '/admin/branding', label: 'Marca', icon: 'palette' },
+            { href: '/admin/portal-hosting', label: 'Hosting y DNS', icon: 'cloud' },
           ],
         },
         { href: '/admin/portal-ecommerce', label: 'eCommerce', icon: 'shopping_cart' },
@@ -62,81 +62,82 @@ export function getNavSections(): NavSection[] {
           label: 'Email Marketing',
           icon: 'campaign',
           subItems: [
-            { href: '/admin/email/campaigns', label: 'Campaigns', icon: 'send' },
-            { href: '/admin/email/lists', label: 'Lists', icon: 'list' },
-            { href: '/admin/email/domains', label: 'Domains', icon: 'dns' },
+            { href: '/admin/email/campaigns', label: 'Campañas', icon: 'send' },
+            { href: '/admin/email/lists', label: 'Listas', icon: 'list' },
+            { href: '/admin/email/domains', label: 'Dominios', icon: 'dns' },
+            { href: '/admin/email/settings', label: 'Ajustes', icon: 'settings' },
           ],
         },
-        { href: '/admin/booking', label: 'Booking', icon: 'calendar_month' },
+        { href: '/admin/booking', label: 'Reservas', icon: 'calendar_month' },
       ],
     },
     {
-      label: 'Sales & CRM',
+      label: 'Ventas y CRM',
       items: [
-        { href: '/admin/crm', label: 'CRM Dashboard', icon: 'monitoring' },
-        { href: '/admin/crm/contacts', label: 'Contacts', icon: 'contacts' },
-        { href: '/admin/crm/companies', label: 'Companies', icon: 'apartment' },
-        { href: '/admin/crm/deals', label: 'Deals', icon: 'handshake' },
-        { href: '/admin/crm/proposals', label: 'Proposals', icon: 'description' },
-        { href: '/admin/crm/contracts', label: 'Contracts', icon: 'gavel' },
+        { href: '/admin/crm', label: 'Panel CRM', icon: 'insights' },
+        { href: '/admin/crm/contacts', label: 'Contactos', icon: 'contacts' },
+        { href: '/admin/crm/companies', label: 'Empresas', icon: 'apartment' },
+        { href: '/admin/crm/deals', label: 'Negocios', icon: 'handshake' },
+        { href: '/admin/crm/proposals', label: 'Propuestas', icon: 'description' },
+        { href: '/admin/crm/contracts', label: 'Contratos', icon: 'gavel' },
       ],
     },
     {
-      label: 'Operations',
+      label: 'Operaciones',
       items: [
-        { href: '/admin/approvals', label: 'Approvals', icon: 'inbox', badgeKey: 'approvals' },
+        { href: '/admin/approvals', label: 'Aprobaciones', icon: 'inbox', badgeKey: 'approvals' },
         {
           href: '/admin/portal-projects',
-          label: 'Projects',
+          label: 'Proyectos',
           icon: 'view_kanban',
           subItems: [
-            { href: '/admin/portal-suggested-projects', label: 'Project Market', icon: 'rocket_launch' },
-            { href: '/admin/portal-project-requests', label: 'Requests', icon: 'assignment_add' },
+            { href: '/admin/portal-suggested-projects', label: 'Mercado de proyectos', icon: 'rocket_launch' },
+            { href: '/admin/portal-project-requests', label: 'Solicitudes', icon: 'assignment_add' },
           ],
         },
-        { href: '/admin/portal-tickets', label: 'Support Tickets', icon: 'support_agent' },
-        { href: '/admin/automations', label: 'Automations', icon: 'bolt' },
-        { href: '/admin/agent-runs', label: 'Agent Runs', icon: 'network_node' },
-        { href: '/admin/system-health', label: 'System Health', icon: 'monitor_heart' },
-        { href: '/admin/oauth-clients', label: 'OAuth Clients', icon: 'key' },
+        { href: '/admin/portal-tickets', label: 'Tickets de soporte', icon: 'support_agent' },
+        { href: '/admin/automations', label: 'Automatizaciones', icon: 'bolt' },
+        { href: '/admin/agent-runs', label: 'Ejecuciones de agentes', icon: 'device_hub' },
+        { href: '/admin/system-health', label: 'Estado del sistema', icon: 'monitor_heart' },
+        { href: '/admin/oauth-clients', label: 'Clientes OAuth', icon: 'key' },
         ...(process.env.NODE_ENV === 'development'
           ? [{ href: '/admin/agentic-os', label: 'Agentic OS', icon: 'auto_awesome' }]
           : []),
-        { href: '/admin/portal-ai', label: 'AI Chat', icon: 'smart_toy' },
+        { href: '/admin/portal-ai', label: 'Chat IA', icon: 'smart_toy' },
       ],
     },
     {
-      label: 'Billing',
+      label: 'Facturación',
       items: [
-        { href: '/admin/portal-invoices', label: 'Invoices', icon: 'receipt_long' },
-        { href: '/admin/subscriptions', label: 'Subscriptions', icon: 'loyalty' },
-        { href: '/admin/ai-credits', label: 'AI Credits', icon: 'token' },
+        { href: '/admin/portal-invoices', label: 'Facturas', icon: 'receipt_long' },
+        { href: '/admin/subscriptions', label: 'Suscripciones', icon: 'loyalty' },
+        { href: '/admin/ai-credits', label: 'Créditos IA', icon: 'token' },
         {
           href: '/admin/portal-services',
-          label: 'Service Catalog',
+          label: 'Catálogo de servicios',
           icon: 'storefront',
           subItems: [
-            { href: '/admin/portal-service-requests', label: 'Service Requests', icon: 'assignment' },
+            { href: '/admin/portal-service-requests', label: 'Solicitudes de servicio', icon: 'assignment' },
           ],
         },
       ],
     },
     {
-      label: 'Content',
+      label: 'Contenido',
       items: [
         {
           href: '/admin/posts',
-          label: 'Posts',
+          label: 'Artículos',
           icon: 'article',
           subItems: [
-            { href: '/admin/content-calendar', label: 'Calendar', icon: 'calendar_month' },
-            { href: '/admin/post-types', label: 'Post Types', icon: 'category' },
-            { href: '/admin/categories', label: 'Categories', icon: 'folder' },
-            { href: '/admin/tags', label: 'Tags', icon: 'label' },
+            { href: '/admin/content-calendar', label: 'Calendario', icon: 'calendar_month' },
+            { href: '/admin/post-types', label: 'Tipos de contenido', icon: 'category' },
+            { href: '/admin/categories', label: 'Categorías', icon: 'folder' },
+            { href: '/admin/tags', label: 'Etiquetas', icon: 'label' },
           ],
         },
-        { href: '/admin/templates', label: 'Templates', icon: 'bookmark' },
-        { href: '/admin/media', label: 'Media', icon: 'perm_media' },
+        { href: '/admin/templates', label: 'Plantillas', icon: 'bookmark' },
+        { href: '/admin/media', label: 'Medios', icon: 'perm_media' },
       ],
     },
   ];
@@ -181,7 +182,7 @@ export interface Crumb {
 export function crumbsForPath(pathname: string): Crumb[] {
   const crumbs: Crumb[] = [{ label: 'Admin', href: '/admin' }];
   if (pathname === '/admin' || pathname === '/admin/') {
-    crumbs.push({ label: 'Dashboard', href: '/admin' });
+    crumbs.push({ label: 'Panel', href: '/admin' });
     return crumbs;
   }
 

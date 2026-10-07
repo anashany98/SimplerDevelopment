@@ -427,6 +427,12 @@ export const projectHandlers: Record<string, ProjectHandler> = {
     const [proj] = await db.select({ id: projects.id }).from(projects)
       .where(and(eq(projects.id, card.projectId), eq(projects.clientId, clientId)));
     if (!proj) return { error: 'Access denied' };
+    // The destination column must belong to the same project as the card.
+    const [destCol] = await db.select({ id: kanbanColumns.id, projectId: kanbanColumns.projectId })
+      .from(kanbanColumns).where(eq(kanbanColumns.id, destColId)).limit(1);
+    if (!destCol || destCol.projectId !== card.projectId) {
+      return { error: 'Destination column not found' };
+    }
     const [countRow] = await db.select({ c: sql<number>`count(*)::int` }).from(kanbanCards).where(eq(kanbanCards.columnId, destColId));
     await db.update(kanbanCards).set({ columnId: destColId, order: countRow?.c ?? 0, updatedAt: new Date() }).where(eq(kanbanCards.id, cardId));
     return { success: true, message: 'Card moved.' };

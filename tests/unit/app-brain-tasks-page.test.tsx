@@ -183,14 +183,14 @@ describe('BrainTasksAndReviewPage — tab shell', () => {
   it('renders Brain Tasks heading by default', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Brain Tasks');
+      expect(container.textContent).toContain('Tareas del cerebro');
     });
   });
 
   it('shows the tasks tab subtitle by default', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Tasks captured from communications');
+      expect(container.textContent).toContain('Tareas capturadas de las comunicaciones');
     });
   });
 
@@ -198,15 +198,15 @@ describe('BrainTasksAndReviewPage — tab shell', () => {
     searchParamsValue = new URLSearchParams('tab=review');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Review queue');
-      expect(container.textContent).toContain('Tasks, decisions, commitments');
+      expect(container.textContent).toContain('Cola de revisión');
+      expect(container.textContent).toContain('Tareas, decisiones, compromisos');
     });
   });
 
   it('clicks the Review queue tab and calls router.replace with tab=review', async () => {
     const { container } = renderPage();
     const buttons = Array.from(container.querySelectorAll('button')) as HTMLButtonElement[];
-    const reviewBtn = buttons.find((b) => b.textContent?.includes('Review queue'))!;
+    const reviewBtn = buttons.find((b) => b.textContent?.includes('Cola de revisión'))!;
     fireEvent.click(reviewBtn);
     await waitFor(() => {
       expect(replaceMock).toHaveBeenCalled();
@@ -220,8 +220,8 @@ describe('BrainTasksAndReviewPage — tab shell', () => {
     const { container } = renderPage();
     const buttons = Array.from(container.querySelectorAll('button')) as HTMLButtonElement[];
     // Find the first "Tasks" button (the tab button)
-    const tasksBtn = buttons.find((b) => /^\s*checklist\s*Tasks/.test(b.textContent || ''))
-      ?? buttons.find((b) => b.textContent?.trim() === 'Tasks' || b.textContent?.includes('Tasks'));
+    const tasksBtn = buttons.find((b) => /^\s*checklist\s*Tareas/.test(b.textContent || ''))
+      ?? buttons.find((b) => b.textContent?.trim() === 'Tareas' || b.textContent?.includes('Tareas'));
     fireEvent.click(tasksBtn!);
     await waitFor(() => {
       expect(replaceMock).toHaveBeenCalled();
@@ -267,7 +267,7 @@ describe('BrainTasksAndReviewPage — tab shell', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Brain Tasks');
+      expect(container.textContent).toContain('Tareas del cerebro');
     });
   });
 });
@@ -285,7 +285,7 @@ describe('Tasks tab — loading / error states', () => {
       return makeRes({ success: true, data: { items: [], meetings: {} } });
     });
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
     // Resolve so we don't leak
     resolveTasks(makeRes({ success: true, data: [] }));
   });
@@ -293,10 +293,10 @@ describe('Tasks tab — loading / error states', () => {
   it('renders all 4 status columns once loaded', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Open');
-      expect(container.textContent).toContain('In Progress');
-      expect(container.textContent).toContain('Blocked');
-      expect(container.textContent).toContain('Done');
+      expect(container.textContent).toContain('Abiertos');
+      expect(container.textContent).toContain('En progreso');
+      expect(container.textContent).toContain('Bloqueado');
+      expect(container.textContent).toContain('Listo');
     });
   });
 
@@ -304,7 +304,7 @@ describe('Tasks tab — loading / error states', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const placeholders = Array.from(container.querySelectorAll('div')).filter((d) =>
-        d.textContent === 'No tasks',
+        d.textContent === 'Sin tareas',
       );
       expect(placeholders.length).toBeGreaterThan(0);
     });
@@ -380,7 +380,7 @@ describe('Tasks tab — loading / error states', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('compliance');
+      expect(container.textContent).toContain('cumplimiento');
     });
   });
 
@@ -406,7 +406,7 @@ describe('Tasks tab — loading / error states', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('on board');
+      expect(container.textContent).toContain('en el tablero');
     });
   });
 
@@ -447,7 +447,7 @@ describe('Tasks tab — loading / error states', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote');
+      expect(container.textContent).toContain('Promover');
     });
   });
 
@@ -462,7 +462,7 @@ describe('Tasks tab — loading / error states', () => {
     await waitFor(() => {
       expect(container.textContent).toContain('Task 1');
     });
-    expect(container.textContent).not.toContain('Promote');
+    expect(container.textContent).not.toContain('Promover');
   });
 });
 
@@ -496,14 +496,14 @@ describe('PromoteModal', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote');
+      expect(container.textContent).toContain('Promover');
     });
     const promoteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Promote') && !b.textContent?.includes('Promote to project'),
+      b.textContent?.includes('Promover') && !b.textContent?.includes('Promote to project'),
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
   });
 
@@ -520,14 +520,14 @@ describe('PromoteModal', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote');
+      expect(container.textContent).toContain('Promover');
     });
     const promoteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Promote' || /^view_kanban\s*Promote/.test(b.textContent || ''),
+      b.textContent?.trim() === 'Promover' || /^view_kanban\s*Promover/.test(b.textContent || ''),
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Loading projects');
+      expect(container.textContent).toContain('Cargando proyectos');
     });
     resolveTargets(makeRes({ success: true, data: [] }));
   });
@@ -536,14 +536,14 @@ describe('PromoteModal', () => {
     setupWithTask([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote');
+      expect(container.textContent).toContain('Promover');
     });
     const promoteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Promote'),
+      b.textContent?.includes('Promover'),
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('No active projects to promote into');
+      expect(container.textContent).toContain('No hay proyectos activos en los que promover');
     });
   });
 
@@ -562,18 +562,18 @@ describe('PromoteModal', () => {
       expect(container.textContent).toContain('Task 1');
     });
     const promoteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Promote'),
+      b.textContent?.includes('Promover'),
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Promote to project board');
+      expect(container.textContent).not.toContain('Promover al tablero de proyecto');
     });
   });
 
@@ -589,10 +589,10 @@ describe('PromoteModal', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote');
+      expect(container.textContent).toContain('Promover');
     });
     const promoteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Promote'),
+      b.textContent?.includes('Promover'),
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
@@ -613,15 +613,15 @@ describe('PromoteModal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Task 1'));
     const promoteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Promote'),
+      b.textContent?.includes('Promover'),
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
     // Click the modal's "Promote" button (the submit one)
     const modalPromoteBtn = Array.from(container.querySelectorAll('button')).filter((b) =>
-      b.textContent?.includes('Promote') && b.textContent !== 'Promote to project board',
+      b.textContent?.includes('Promover') && b.textContent !== 'Promover al tablero de proyecto',
     ).pop() as HTMLButtonElement;
     fireEvent.click(modalPromoteBtn);
     await waitFor(() => {
@@ -652,14 +652,14 @@ describe('PromoteModal', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Task 1'));
     const promoteBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Promote'),
+      b.textContent?.includes('Promover'),
     ) as HTMLButtonElement;
     fireEvent.click(promoteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Promote to project board');
+      expect(container.textContent).toContain('Promover al tablero de proyecto');
     });
     const modalPromoteBtn = Array.from(container.querySelectorAll('button')).filter((b) =>
-      b.textContent?.includes('Promote') && b.textContent !== 'Promote to project board',
+      b.textContent?.includes('Promover') && b.textContent !== 'Promover al tablero de proyecto',
     ).pop() as HTMLButtonElement;
     fireEvent.click(modalPromoteBtn);
     await waitFor(() => {
@@ -856,9 +856,9 @@ describe('Review tab — basic rendering', () => {
     setupReview([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Pending');
-      expect(container.textContent).toContain('Approved');
-      expect(container.textContent).toContain('Rejected');
+      expect(container.textContent).toContain('Pendiente');
+      expect(container.textContent).toContain('Aprobado');
+      expect(container.textContent).toContain('Rechazado');
     });
   });
 
@@ -866,7 +866,7 @@ describe('Review tab — basic rendering', () => {
     setupReview([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All clear');
+      expect(container.textContent).toContain('Todo en orden');
     });
   });
 
@@ -874,7 +874,7 @@ describe('Review tab — basic rendering', () => {
     setupReview([]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Nothing pending review');
+      expect(container.textContent).toContain('Nada pendiente de revisión');
     });
   });
 
@@ -910,7 +910,7 @@ describe('Review tab — basic rendering', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('2');
-      expect(container.textContent).toContain('pending');
+      expect(container.textContent).toContain('pendientes');
     });
   });
 
@@ -930,7 +930,7 @@ describe('Review tab — basic rendering', () => {
     ]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Other sources');
+      expect(container.textContent).toContain('Otros orígenes');
     });
   });
 
@@ -938,10 +938,10 @@ describe('Review tab — basic rendering', () => {
     setupReview([makeReviewItem(1, { status: 'approved' })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Pending');
+      expect(container.textContent).toContain('Pendiente');
     });
     const approvedBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Approved',
+      b.textContent?.trim() === 'Aprobado',
     ) as HTMLButtonElement;
     fireEvent.click(approvedBtn);
     await waitFor(() => {
@@ -974,12 +974,12 @@ describe('Review tab — actions', () => {
   // pBtnGhost + destructive override now uses hover:text-destructive (was hover:bg-destructive).
   function findItemApprove(container: HTMLElement): HTMLButtonElement {
     return Array.from(container.querySelectorAll('button')).find((b) =>
-      b.className.includes('bg-foreground') && b.textContent?.includes('Approve'),
+      b.className.includes('bg-foreground') && b.textContent?.includes('Aprobar'),
     ) as HTMLButtonElement;
   }
   function findItemReject(container: HTMLElement): HTMLButtonElement {
     return Array.from(container.querySelectorAll('button')).find((b) =>
-      b.className.includes('hover:text-destructive') && b.textContent?.includes('Reject'),
+      b.className.includes('hover:text-destructive') && b.textContent?.includes('Rechazar'),
     ) as HTMLButtonElement;
   }
 
@@ -1061,16 +1061,16 @@ describe('Review tab — actions', () => {
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     // Click the "Select all pending" checkbox
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     expect(selectAll).toBeTruthy();
     fireEvent.click(selectAll);
     await waitFor(() => {
-      expect(container.textContent).toContain('selected');
+      expect(container.textContent).toContain('seleccionados');
     });
     // Click "Approve <n>" bulk button
     const bulkApprove = Array.from(container.querySelectorAll('button')).find((b) =>
-      /Approve\s+\d/.test(b.textContent || ''),
+      /Aprobar\s+\d/.test(b.textContent || ''),
     ) as HTMLButtonElement;
     fireEvent.click(bulkApprove);
     await waitFor(() => {
@@ -1084,13 +1084,13 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const itemCheckbox = container.querySelector(
-      'input[aria-label="Select item"]',
+      'input[aria-label="Seleccionar elemento"]',
     ) as HTMLInputElement;
     expect(itemCheckbox).toBeTruthy();
     fireEvent.click(itemCheckbox);
     await waitFor(() => {
       // The bulk row appears with "1 selected" or just "Reject 1"
-      expect(container.textContent).toMatch(/Reject\s+1/);
+      expect(container.textContent).toMatch(/Rechazar\s+1/);
     });
   });
 
@@ -1099,13 +1099,13 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     fireEvent.click(selectAll);
     fireEvent.click(selectAll);
     await waitFor(() => {
       // No selection means no "Reject N" button
-      expect(container.textContent).not.toMatch(/Reject\s+\d/);
+      expect(container.textContent).not.toMatch(/Rechazar\s+\d/);
     });
   });
 
@@ -1114,14 +1114,14 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     fireEvent.click(selectAll);
     await waitFor(() => {
-      expect(container.textContent).toMatch(/Reject\s+\d/);
+      expect(container.textContent).toMatch(/Rechazar\s+\d/);
     });
     const bulkReject = Array.from(container.querySelectorAll('button')).find((b) =>
-      /Reject\s+\d/.test(b.textContent || ''),
+      /Rechazar\s+\d/.test(b.textContent || ''),
     ) as HTMLButtonElement;
     fireEvent.click(bulkReject);
     await waitFor(() => {
@@ -1158,11 +1158,11 @@ describe('Review tab — actions', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Item 1'));
     const selectAll = container.querySelector(
-      'input[aria-label="Select all pending items"]',
+      'input[aria-label="Seleccionar todos los elementos pendientes"]',
     ) as HTMLInputElement;
     fireEvent.click(selectAll);
     const bulkApprove = Array.from(container.querySelectorAll('button')).find((b) =>
-      /Approve\s+\d/.test(b.textContent || ''),
+      /Aprobar\s+\d/.test(b.textContent || ''),
     ) as HTMLButtonElement;
     fireEvent.click(bulkApprove);
     await waitFor(() => {
@@ -1197,7 +1197,7 @@ describe('Review tab — proposed types and payload details', () => {
   it('describes a task with no title as "Untitled task"', async () => {
     setupReviewItems([makeReviewItem(1, { proposedType: 'task', proposedPayload: {} })]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Untitled task'));
+    await waitFor(() => expect(container.textContent).toContain('Tarea sin título'));
   });
 
   it('describes a decision', async () => {
@@ -1257,7 +1257,7 @@ describe('Review tab — proposed types and payload details', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('#42');
-      expect(container.textContent).toContain('status → lead');
+      expect(container.textContent).toContain('estado → lead');
       expect(container.textContent).toContain('profile');
     });
   });
@@ -1275,7 +1275,7 @@ describe('Review tab — proposed types and payload details', () => {
     setupReviewItems([makeReviewItem(1, { proposedType: 'crm_deal_link', proposedPayload: { dealId: 7, rationale: 'related' } })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Link to deal #7');
+      expect(container.textContent).toContain('Vincular a negocio #7');
       expect(container.textContent).toContain('related');
     });
   });
@@ -1299,7 +1299,7 @@ describe('Review tab — proposed types and payload details', () => {
       proposedPayload: { companyId: 11, candidateCompanyIds: [11] },
     })]);
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Link to company #11'));
+    await waitFor(() => expect(container.textContent).toContain('Vincular a empresa #11'));
   });
 
   it('describes a crm_company_link with multiple candidates', async () => {
@@ -1309,7 +1309,7 @@ describe('Review tab — proposed types and payload details', () => {
     })]);
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Pick a company');
+      expect(container.textContent).toContain('Elige una empresa');
       expect(container.textContent).toContain('#11');
     });
   });
@@ -1348,13 +1348,13 @@ describe('Review tab — proposed types and payload details', () => {
     });
     const { container } = renderPage();
     // Switch to Approved tab so this status filter matches
-    await waitFor(() => expect(container.textContent).toContain('Pending'));
+    await waitFor(() => expect(container.textContent).toContain('Pendiente'));
     const approvedTab = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Approved',
+      b.textContent?.trim() === 'Aprobado',
     ) as HTMLButtonElement;
     fireEvent.click(approvedTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Approved');
+      expect(container.textContent).toContain('Aprobado');
     });
   });
 
@@ -1367,13 +1367,13 @@ describe('Review tab — proposed types and payload details', () => {
       return makeRes({ success: true, data: [] });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Pending'));
+    await waitFor(() => expect(container.textContent).toContain('Pendiente'));
     const rejTab = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Rejected',
+      b.textContent?.trim() === 'Rechazado',
     ) as HTMLButtonElement;
     fireEvent.click(rejTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Rejected');
+      expect(container.textContent).toContain('Rechazado');
     });
   });
 
@@ -1386,13 +1386,13 @@ describe('Review tab — proposed types and payload details', () => {
       return makeRes({ success: true, data: [] });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Pending'));
+    await waitFor(() => expect(container.textContent).toContain('Pendiente'));
     const allTab = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'All',
+      b.textContent?.trim() === 'Todos',
     ) as HTMLButtonElement;
     fireEvent.click(allTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Edited');
+      expect(container.textContent).toContain('Editado');
     });
   });
 });

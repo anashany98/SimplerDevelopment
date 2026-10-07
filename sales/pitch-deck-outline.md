@@ -15,7 +15,7 @@ note: Outline only. Speaker notes are brief prompts, not scripts. No invented me
 
 ## Slide 1 — Title
 
-**Headline:** SimplerDevelopment — The All-In-One Agency Platform
+**Headline:** CRM AGENTS — The All-In-One Agency Platform
 
 **Content beats:**
 - Platform tagline (TBD per marketing)
@@ -86,7 +86,7 @@ note: Outline only. Speaker notes are brief prompts, not scripts. No invented me
 **Headline:** 450 MCP Tools — Connect Any AI Agent to the Full Platform
 
 **Content beats:**
-- SimplerDevelopment is a first-class MCP server: `POST /api/mcp` exposes 450 tools across all platform domains
+- CRM AGENTS is a first-class MCP server: `POST /api/mcp` exposes 450 tools across all platform domains
 - Covers: brain (156 tools), kanban (39), CRM (34), store (28), email (20), decks (13), CMS (10), and more
 - AI coding agents (Claude, etc.) can operate across the entire platform through a single authenticated endpoint
 - Scoped credentials: issue a key that can read CRM but cannot send email; or propose Brain notes but not approve them
@@ -198,7 +198,7 @@ note: Outline only. Speaker notes are brief prompts, not scripts. No invented me
 
 **Content beats:**
 - The shift to AI-agent workflows is already underway. Tools that cannot be controlled via MCP will require custom integration work per integration.
-- SimplerDevelopment ships 450 MCP tools today, locked by automated tests so the surface doesn't regress.
+- CRM AGENTS ships 450 MCP tools today, locked by automated tests so the surface doesn't regress.
 - The approval-link pattern lets buyers experiment with agentic workflows without giving AI agents unilateral write access — a requirement for enterprise buyers not yet ready for full automation.
 - Apache 2.0 licensing means no vendor lock-in risk; buyers who self-host own their deployment.
 

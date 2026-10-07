@@ -217,7 +217,7 @@ export default function EnvironmentPanel({
               <span className={`w-1.5 h-1.5 rounded-full ${
                 env.name === 'production' ? 'bg-green-500' : 'bg-amber-500'
               }`} />
-              {env.name === 'production' ? 'Production' : 'Staging'}
+              {env.name === 'production' ? 'Producción' : 'Preproducción'}
             </button>
           ))}
         </div>
@@ -229,7 +229,7 @@ export default function EnvironmentPanel({
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <span className="material-icons text-sm">open_in_new</span>
-            Preview URL
+            URL de vista previa
           </a>
         )}
       </div>
@@ -244,12 +244,12 @@ export default function EnvironmentPanel({
           <button
             onClick={handleSync}
             disabled={syncing || vars.length === 0}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
           >
             <span className={`material-icons text-sm ${syncing ? 'animate-spin' : ''}`}>
               {syncing ? 'refresh' : 'cloud_upload'}
             </span>
-            {syncing ? 'Syncing...' : `Sync to Vercel${unsyncedCount > 0 ? ` (${unsyncedCount})` : ''}`}
+            {syncing ? 'Sincronizando...' : `Sincronizar con Vercel${unsyncedCount > 0 ? ` (${unsyncedCount})` : ''}`}
           </button>
           <button
             onClick={handleBackup}
@@ -257,7 +257,7 @@ export default function EnvironmentPanel({
             className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-xs font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50"
           >
             <span className="material-icons text-sm">{backingUp ? 'hourglass_empty' : 'backup'}</span>
-            {backingUp ? 'Creating...' : 'Create Backup'}
+            {backingUp ? 'Creando...' : 'Crear copia de seguridad'}
           </button>
           {otherEnv && (
             <button
@@ -266,7 +266,7 @@ export default function EnvironmentPanel({
               className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-xs font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-50"
             >
               <span className="material-icons text-sm">{copying ? 'hourglass_empty' : 'content_copy'}</span>
-              {copying ? 'Copying...' : `Copy from ${otherEnv.name === 'production' ? 'Production' : 'Staging'}`}
+              {copying ? 'Copiando...' : `Copiar desde ${otherEnv.name === 'production' ? 'Producción' : 'Preproducción'}`}
             </button>
           )}
         </div>
@@ -275,11 +275,11 @@ export default function EnvironmentPanel({
         <div className="space-y-3">
           <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-base text-muted-foreground">vpn_key</span>
-            Environment Variables
+            Variables de entorno
           </h4>
 
           {loading ? (
-            <p className="text-xs text-muted-foreground py-4 text-center">Loading...</p>
+            <p className="text-xs text-muted-foreground py-4 text-center">Cargando...</p>
           ) : (
             <>
               {/* Var list */}
@@ -315,7 +315,7 @@ export default function EnvironmentPanel({
                           </span>
                           <div className="flex items-center gap-0.5 shrink-0">
                             {!v.syncedToVercel && (
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1" title="Not synced" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1" title="Sin sincronizar" />
                             )}
                             <button onClick={() => toggleVisible(v.id)} className="p-1 text-muted-foreground hover:text-foreground">
                               <span className="material-icons text-sm">
@@ -341,23 +341,23 @@ export default function EnvironmentPanel({
                 <input
                   value={newKey}
                   onChange={e => setNewKey(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))}
-                  placeholder="KEY_NAME"
+                  placeholder="NOMBRE_CLAVE"
                   className="px-3 py-2 bg-background border border-border rounded-lg text-xs font-mono outline-none focus:border-primary transition-colors w-40"
                   onKeyDown={e => e.key === 'Enter' && handleAddVar()}
                 />
                 <input
                   value={newValue}
                   onChange={e => setNewValue(e.target.value)}
-                  placeholder="value"
+                  placeholder="valor"
                   className="px-3 py-2 bg-background border border-border rounded-lg text-xs font-mono outline-none focus:border-primary transition-colors flex-1"
                   onKeyDown={e => e.key === 'Enter' && handleAddVar()}
                 />
                 <button
                   onClick={handleAddVar}
                   disabled={adding || !newKey.trim()}
-                  className="px-3 py-2 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                  className="px-3 py-2 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                 >
-                  {adding ? 'Adding...' : 'Add'}
+                  {adding ? 'Añadiendo...' : 'Añadir'}
                 </button>
               </div>
             </>
@@ -368,7 +368,7 @@ export default function EnvironmentPanel({
         <div className="space-y-3">
           <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <span className="material-icons text-base text-muted-foreground">backup</span>
-            Backups
+            Copias de seguridad
           </h4>
 
           {backups.length > 0 ? (
@@ -385,13 +385,13 @@ export default function EnvironmentPanel({
                     className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-foreground border border-border rounded-md hover:bg-muted transition-colors disabled:opacity-50"
                   >
                     <span className="material-icons text-sm">{restoringId === b.id ? 'hourglass_empty' : 'restore'}</span>
-                    {restoringId === b.id ? 'Restoring...' : 'Restore'}
+                    {restoringId === b.id ? 'Restaurando...' : 'Restaurar'}
                   </button>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-xs text-muted-foreground text-center py-3">No backups yet.</p>
+            <p className="text-xs text-muted-foreground text-center py-3">Aún no hay copias de seguridad.</p>
           )}
         </div>
       </div>

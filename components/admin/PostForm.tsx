@@ -77,29 +77,29 @@ export default function PostForm({ post, mode }: PostFormProps) {
 
   // Block types for visual editor
   const blockTypes: Array<{ type: BlockType; label: string; icon: string; category: string; description: string }> = [
-    { type: 'heading', label: 'Heading', icon: '📝', category: 'Basic', description: 'Add a title or heading' },
-    { type: 'text', label: 'Text', icon: '📄', category: 'Basic', description: 'Plain paragraph text' },
-    { type: 'button', label: 'Button', icon: '🔘', category: 'Basic', description: 'Add a call-to-action button' },
-    { type: 'quote', label: 'Quote', icon: '💬', category: 'Basic', description: 'Add a quotation' },
-    { type: 'image', label: 'Image', icon: '🖼️', category: 'Media', description: 'Insert an image' },
-    { type: 'youtube', label: 'YouTube', icon: '📺', category: 'Media', description: 'Embed a YouTube video' },
-    { type: 'video', label: 'Video', icon: '🎬', category: 'Media', description: 'Embed a video file' },
-    { type: 'code', label: 'Code', icon: '💻', category: 'Media', description: 'Display code snippet' },
-    { type: 'spacer', label: 'Spacer', icon: '↕️', category: 'Layout', description: 'Add vertical space' },
-    { type: 'divider', label: 'Divider', icon: '➖', category: 'Layout', description: 'Add a horizontal line' },
-    { type: 'columns', label: 'Columns', icon: '📊', category: 'Layout', description: 'Display content in columns' },
-    { type: 'accordion', label: 'Accordion', icon: '📑', category: 'Layout', description: 'Collapsible content sections' },
-    { type: 'tabs', label: 'Tabs', icon: '🗂️', category: 'Layout', description: 'Tabbed content sections' },
-    { type: 'section', label: 'Section', icon: '📦', category: 'Layout', description: 'Container wrapper with styling' },
-    { type: 'hero', label: 'Hero', icon: '🎯', category: 'Components', description: 'Hero section with CTA' },
-    { type: 'services-grid', label: 'Services', icon: '📦', category: 'Components', description: 'Grid of services' },
-    { type: 'cta', label: 'Call to Action', icon: '📢', category: 'Components', description: 'CTA section' },
-    { type: 'card-grid', label: 'Card Grid', icon: '🎴', category: 'Components', description: 'Grid of cards' },
-    { type: 'stats', label: 'Stats', icon: '📈', category: 'Components', description: 'Statistics display' },
-    { type: 'testimonial', label: 'Testimonial', icon: '⭐', category: 'Components', description: 'Customer testimonial' },
-    { type: 'featured-content', label: 'Featured Content', icon: '✨', category: 'Components', description: 'Featured content with image' },
-    { type: 'blog-posts', label: 'Blog Posts', icon: '📰', category: 'Components', description: 'Display blog posts' },
-    { type: 'gallery', label: 'Gallery', icon: '🖼️', category: 'Media', description: 'Image gallery with lightbox' },
+    { type: 'heading', label: 'Encabezado', icon: '📝', category: 'Básico', description: 'Añade un título o encabezado' },
+    { type: 'text', label: 'Texto', icon: '📄', category: 'Básico', description: 'Texto de párrafo simple' },
+    { type: 'button', label: 'Botón', icon: '🔘', category: 'Básico', description: 'Añade un botón de llamada a la acción' },
+    { type: 'quote', label: 'Cita', icon: '💬', category: 'Básico', description: 'Añade una cita' },
+    { type: 'image', label: 'Imagen', icon: '🖼️', category: 'Multimedia', description: 'Inserta una imagen' },
+    { type: 'youtube', label: 'YouTube', icon: '📺', category: 'Multimedia', description: 'Incrusta un vídeo de YouTube' },
+    { type: 'video', label: 'Vídeo', icon: '🎬', category: 'Multimedia', description: 'Incrusta un archivo de vídeo' },
+    { type: 'code', label: 'Código', icon: '💻', category: 'Multimedia', description: 'Muestra un fragmento de código' },
+    { type: 'spacer', label: 'Espaciador', icon: '↕️', category: 'Diseño', description: 'Añadir espacio vertical' },
+    { type: 'divider', label: 'Divisor', icon: '➖', category: 'Diseño', description: 'Añade una línea horizontal' },
+    { type: 'columns', label: 'Columnas', icon: '📊', category: 'Diseño', description: 'Muestra contenido en columnas' },
+    { type: 'accordion', label: 'Acordeón', icon: '📑', category: 'Diseño', description: 'Secciones de contenido plegables' },
+    { type: 'tabs', label: 'Pestañas', icon: '🗂️', category: 'Diseño', description: 'Secciones de contenido con pestañas' },
+    { type: 'section', label: 'Sección', icon: '📦', category: 'Diseño', description: 'Contenedor con estilos' },
+    { type: 'hero', label: 'Hero', icon: '🎯', category: 'Componentes', description: 'Sección hero con llamada a la acción' },
+    { type: 'services-grid', label: 'Servicios', icon: '📦', category: 'Componentes', description: 'Cuadrícula de servicios' },
+    { type: 'cta', label: 'Llamada a la acción', icon: '📢', category: 'Componentes', description: 'Sección de llamada a la acción' },
+    { type: 'card-grid', label: 'Cuadrícula de tarjetas', icon: '🎴', category: 'Componentes', description: 'Cuadrícula de tarjetas' },
+    { type: 'stats', label: 'Estadísticas', icon: '📈', category: 'Componentes', description: 'Muestra de estadísticas' },
+    { type: 'testimonial', label: 'Testimonio', icon: '⭐', category: 'Componentes', description: 'Testimonio de cliente' },
+    { type: 'featured-content', label: 'Contenido destacado', icon: '✨', category: 'Componentes', description: 'Contenido destacado con imagen' },
+    { type: 'blog-posts', label: 'Entradas del blog', icon: '📰', category: 'Componentes', description: 'Muestra entradas del blog' },
+    { type: 'gallery', label: 'Galería', icon: '🖼️', category: 'Multimedia', description: 'Galería de imágenes con visor ampliado' },
   ];
 
   // Parse existing content to blocks or initialize empty
@@ -261,10 +261,10 @@ export default function PostForm({ post, mode }: PostFormProps) {
         router.refresh();
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to save post');
+        alert(data.error || 'No se pudo guardar la entrada');
       }
     } catch (error) {
-      alert('An error occurred');
+      alert('Se ha producido un error');
     } finally {
       setLoading(false);
     }
@@ -338,7 +338,7 @@ export default function PostForm({ post, mode }: PostFormProps) {
             onChange={(e) => setCustomFieldValues({ ...customFieldValues, [field.slug]: e.target.value })}
             className={commonClasses}
           >
-            <option value="">Select an option...</option>
+            <option value="">Selecciona una opción...</option>
             {field.options?.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -382,7 +382,7 @@ export default function PostForm({ post, mode }: PostFormProps) {
             onChange={(e) => setCustomFieldValues({ ...customFieldValues, [field.slug]: e.target.value })}
             className={commonClasses}
           >
-            <option value="">Select a user...</option>
+            <option value="">Selecciona un usuario...</option>
             {users.map((user) => (
               <option key={user.id} value={user.id.toString()}>
                 {user.name} ({user.email})
@@ -454,7 +454,7 @@ export default function PostForm({ post, mode }: PostFormProps) {
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 className="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary font-mono text-sm"
-                placeholder="Post content (supports HTML/Markdown)"
+                placeholder="Contenido de la entrada (admite HTML/Markdown)"
               />
             </div>
           )}
@@ -466,17 +466,15 @@ export default function PostForm({ post, mode }: PostFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? 'Saving...' : mode === 'create' ? 'Create Post' : 'Update Post'}
+          {loading ? 'Guardando...' : mode === 'create' ? 'Crear entrada' : 'Actualizar entrada'}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
           className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-        >
-          Cancel
-        </button>
+        >Cancelar</button>
       </div>
     </form>
   );

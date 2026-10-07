@@ -411,6 +411,22 @@ function seedStage(overrides: Partial<Record<string, unknown>> = {}): Record<str
   return row;
 }
 
+function seedCompany(overrides: Partial<Record<string, unknown>> = {}): Record<string, unknown> {
+  const row: Record<string, unknown> = {
+    id: state.nextId.crmCompanies++,
+    clientId: 10,
+    name: 'Acme Inc',
+    domain: 'acme.com',
+    industry: 'Tech',
+    size: '11-50',
+    phone: null,
+    notes: null,
+    ...overrides,
+  };
+  state.crmCompanies.push(row);
+  return row;
+}
+
 function seedDeal(overrides: Partial<Record<string, unknown>> = {}): Record<string, unknown> {
   const row: Record<string, unknown> = {
     id: state.nextId.crmDeals++,
@@ -559,6 +575,74 @@ describe('create_crm_deal', () => {
     const deal = state.crmDeals.find((d) => d.id === res.dealId)!;
     expect(deal.priority).toBe('medium');
   });
+
+  it('rejects a contact that belongs to another client', async () => {
+    seedPipeline({ id: 1, clientId: 10 });
+    seedStage({ id: 1, pipelineId: 1 });
+    seedContact({ id: 7, clientId: 99 });
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.create_crm_deal(
+      { title: 'Cross-tenant', pipeline_id: 1, stage_id: 1, contact_id: 7 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Contact not found' });
+    expect(state.crmDeals).toHaveLength(0);
+  });
+
+  it('accepts a contact owned by the client', async () => {
+    seedPipeline({ id: 1, clientId: 10 });
+    seedStage({ id: 1, pipelineId: 1 });
+    seedContact({ id: 7, clientId: 10 });
+    const { crmHandlers } = await importModule();
+    const res = (await crmHandlers.create_crm_deal(
+      { title: 'Owned', pipeline_id: 1, stage_id: 1, contact_id: 7 },
+      10,
+      1,
+    )) as Record<string, unknown>;
+    expect(res.success).toBe(true);
+    expect(state.crmDeals[0].contactId).toBe(7);
+  });
+
+  it('rejects a company that belongs to another client', async () => {
+    seedPipeline({ id: 1, clientId: 10 });
+    seedStage({ id: 1, pipelineId: 1 });
+    seedCompany({ id: 9, clientId: 99 });
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.create_crm_deal(
+      { title: 'Cross-tenant', pipeline_id: 1, stage_id: 1, company_id: 9 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Company not found' });
+    expect(state.crmDeals).toHaveLength(0);
+  });
+
+  it('rejects a pipeline that belongs to another client', async () => {
+    seedPipeline({ id: 5, clientId: 99 });
+    seedStage({ id: 1, pipelineId: 5 });
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.create_crm_deal(
+      { title: 'Cross-tenant', pipeline_id: 5 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Pipeline not found' });
+    expect(state.crmDeals).toHaveLength(0);
+  });
+
+  it('rejects a stage that does not belong to the chosen pipeline', async () => {
+    seedPipeline({ id: 1, clientId: 10 });
+    seedStage({ id: 2, pipelineId: 999 });
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.create_crm_deal(
+      { title: 'Wrong stage', pipeline_id: 1, stage_id: 2 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Stage not found' });
+    expect(state.crmDeals).toHaveLength(0);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -660,6 +744,43 @@ describe('log_crm_activity', () => {
     const { crmHandlers } = await importModule();
     await crmHandlers.log_crm_activity({ type: 'note', title: 'General note' }, 10, 1);
     expect(state.crmContacts[0].lastContactedAt).toBeNull();
+  });
+
+  it('rejects a contact that belongs to another client and writes nothing', async () => {
+    seedContact({ id: 1, clientId: 99, lastContactedAt: null });
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.log_crm_activity(
+      { type: 'call', title: 'Cross-tenant', contact_id: 1 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Contact not found' });
+    expect(state.crmActivities).toHaveLength(0);
+    expect(state.crmContacts[0].lastContactedAt).toBeNull();
+  });
+
+  it('rejects a deal that belongs to another client and writes nothing', async () => {
+    seedDeal({ id: 1, clientId: 99 });
+    const { crmHandlers } = await importModule();
+    const res = await crmHandlers.log_crm_activity(
+      { type: 'call', title: 'Cross-tenant', deal_id: 1 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Deal not found' });
+    expect(state.crmActivities).toHaveLength(0);
+  });
+
+  it('accepts a deal owned by the client', async () => {
+    seedDeal({ id: 1, clientId: 10 });
+    const { crmHandlers } = await importModule();
+    const res = (await crmHandlers.log_crm_activity(
+      { type: 'call', title: 'On deal', deal_id: 1 },
+      10,
+      1,
+    )) as Record<string, unknown>;
+    expect(res.success).toBe(true);
+    expect(state.crmActivities[0].dealId).toBe(1);
   });
 });
 

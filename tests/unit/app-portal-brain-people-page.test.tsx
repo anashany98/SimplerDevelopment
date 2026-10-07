@@ -170,14 +170,14 @@ describe('BrainPeoplePage — shell', () => {
   it('renders the "People" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('People');
+      expect(container.textContent).toContain('Personas');
     });
   });
 
   it('renders the subtitle about internal team', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('internal team');
+      expect(container.textContent).toContain('equipo interno');
     });
   });
 
@@ -186,17 +186,17 @@ describe('BrainPeoplePage — shell', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/brain/people/new"]');
       expect(link).toBeTruthy();
-      expect(link?.textContent).toContain('New person');
+      expect(link?.textContent).toContain('Nueva persona');
     });
   });
 
   it('renders all four status tabs', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Active');
-      expect(container.textContent).toContain('Inactive');
-      expect(container.textContent).toContain('Departed');
-      expect(container.textContent).toContain('All');
+      expect(container.textContent).toContain('Activo');
+      expect(container.textContent).toContain('Inactivo');
+      expect(container.textContent).toContain('Baja');
+      expect(container.textContent).toContain('Todos');
     });
   });
 
@@ -206,7 +206,7 @@ describe('BrainPeoplePage — shell', () => {
       const select = container.querySelector('select') as HTMLSelectElement;
       expect(select).toBeTruthy();
       const opts = Array.from(select.options).map((o) => o.text);
-      expect(opts).toContain('All org units');
+      expect(opts).toContain('Todas las unidades');
     });
   });
 
@@ -214,7 +214,7 @@ describe('BrainPeoplePage — shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const input = container.querySelector(
-        'input[placeholder*="Search by name"]',
+        'input[placeholder*="Buscar por nombre"]',
       );
       expect(input).toBeTruthy();
     });
@@ -225,7 +225,7 @@ describe('BrainPeoplePage — loading state', () => {
   it('shows a loading indicator while fetch is in flight', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -242,21 +242,21 @@ describe('BrainPeoplePage — empty state', () => {
   it('shows "No people on file yet." when the list is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No people on file yet.');
+      expect(container.textContent).toContain('Aún no hay personas registradas.');
     });
   });
 
   it('shows the "Add person" CTA in the empty state', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Add person');
+      expect(container.textContent).toContain('Añadir persona');
     });
   });
 
   it('the empty-state "Add person" link points to /portal/brain/people/new', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No people on file yet.');
+      expect(container.textContent).toContain('Aún no hay personas registradas.');
     });
     const link = container.querySelector('a[href="/portal/brain/people/new"]');
     expect(link).toBeTruthy();
@@ -299,7 +299,7 @@ describe('BrainPeoplePage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load people.');
+      expect(container.textContent).toContain('No se pudo cargar a las personas.');
     });
   });
 
@@ -326,7 +326,7 @@ describe('BrainPeoplePage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -378,7 +378,7 @@ describe('BrainPeoplePage — list rendering', () => {
     });
     // Pagination controls appear when hasNextPage is true
     const nextBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Next'),
+      b.textContent?.includes('Siguiente'),
     );
     expect(nextBtn).toBeTruthy();
     expect((nextBtn as HTMLButtonElement).disabled).toBe(false);
@@ -448,11 +448,11 @@ describe('BrainPeoplePage — expertise tag filter', () => {
   it('renders an "All" chip to clear the tag filter', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Expertise:');
+      expect(container.textContent).toContain('Especialidad:');
     });
     // There should be an "All" chip
     const allChips = Array.from(container.querySelectorAll('button')).filter((b) =>
-      b.textContent?.trim() === 'All',
+      b.textContent?.trim() === 'Todos',
     );
     expect(allChips.length).toBeGreaterThanOrEqual(1);
   });
@@ -484,7 +484,7 @@ describe('BrainPeoplePage — expertise tag filter', () => {
     // The "All" expertise chip is the small pill-shaped button, not the status tab.
     // With expertiseTagId=1, the "All" pill should have active (primary) styling.
     const allChips = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.trim() === 'All',
+      (b) => b.textContent?.trim() === 'Todos',
     );
     // The expertise "All" chip is the one in the expertise row (has rounded-full class)
     const allExpertiseChip = allChips.find((b) =>
@@ -511,7 +511,7 @@ describe('BrainPeoplePage — expertise tag filter', () => {
     await waitFor(() => {
       expect(container.querySelector('[data-testid="person-card-1"]')).toBeTruthy();
     });
-    expect(container.textContent).not.toContain('Expertise:');
+    expect(container.textContent).not.toContain('Especialidad:');
   });
 
   it('handles non-fatal failure fetching expertise tags', async () => {
@@ -550,9 +550,9 @@ describe('BrainPeoplePage — status tabs', () => {
   it('default status is "active" when no URL param', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      // The "Active" tab should have primary styling (bg-primary class)
+      // The "Active" tab should have primary styling (bg-foreground class)
       const activeBtns = Array.from(container.querySelectorAll('button')).filter((b) =>
-        b.textContent?.includes('Active') && b.className.includes('bg-primary'),
+        b.textContent?.includes('Activo') && b.className.includes('bg-foreground'),
       );
       expect(activeBtns.length).toBeGreaterThanOrEqual(1);
     });
@@ -560,9 +560,9 @@ describe('BrainPeoplePage — status tabs', () => {
 
   it('clicking Inactive tab calls router.replace with status=inactive', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('People'));
+    await waitFor(() => expect(container.textContent).toContain('Personas'));
     const inactiveTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Inactive',
+      (b) => b.textContent?.trim() === 'Inactivo',
     ) as HTMLButtonElement;
     fireEvent.click(inactiveTab);
     await waitFor(() => {
@@ -574,9 +574,9 @@ describe('BrainPeoplePage — status tabs', () => {
 
   it('clicking Departed tab calls router.replace with status=departed', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('People'));
+    await waitFor(() => expect(container.textContent).toContain('Personas'));
     const departedTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Departed',
+      (b) => b.textContent?.trim() === 'Baja',
     ) as HTMLButtonElement;
     fireEvent.click(departedTab);
     await waitFor(() => {
@@ -589,11 +589,11 @@ describe('BrainPeoplePage — status tabs', () => {
   it('clicking All tab calls router.replace (the status tab fires setParam)', async () => {
     searchParamsValue = new URLSearchParams('status=inactive');
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('People'));
+    await waitFor(() => expect(container.textContent).toContain('Personas'));
     replaceMock.mockReset();
     // The "All" status tab is in the inline-flex rounded-md group (no rounded-full class)
     const allTabs = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.trim() === 'All',
+      (b) => b.textContent?.trim() === 'Todos',
     );
     const statusAllTab = allTabs.find((b) => !b.className.includes('rounded-full')) as HTMLButtonElement;
     expect(statusAllTab).toBeTruthy();
@@ -607,7 +607,7 @@ describe('BrainPeoplePage — status tabs', () => {
     searchParamsValue = new URLSearchParams('status=bogus');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('People');
+      expect(container.textContent).toContain('Personas');
     });
     // Should have fetched with status=active (the fallback)
     const calls = fetchMock.mock.calls.map((c) => String(c[0]));
@@ -641,10 +641,10 @@ describe('BrainPeoplePage — status tabs', () => {
 describe('BrainPeoplePage — search', () => {
   it('typing in the search box updates URL via router.replace after debounce', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('People'));
+    await waitFor(() => expect(container.textContent).toContain('Personas'));
     vi.useFakeTimers();
     const searchInput = container.querySelector(
-      'input[placeholder*="Search by name"]',
+      'input[placeholder*="Buscar por nombre"]',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(searchInput, { target: { value: 'alice' } });
@@ -661,10 +661,10 @@ describe('BrainPeoplePage — search', () => {
   it('clearing the search removes the q param from URL', async () => {
     searchParamsValue = new URLSearchParams('q=alice');
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('People'));
+    await waitFor(() => expect(container.textContent).toContain('Personas'));
     vi.useFakeTimers();
     const searchInput = container.querySelector(
-      'input[placeholder*="Search by name"]',
+      'input[placeholder*="Buscar por nombre"]',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(searchInput, { target: { value: '' } });
@@ -681,7 +681,7 @@ describe('BrainPeoplePage — search', () => {
   it('does not call router.replace if searchInput equals searchParam (no-op)', async () => {
     searchParamsValue = new URLSearchParams('q=alice');
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('People'));
+    await waitFor(() => expect(container.textContent).toContain('Personas'));
     replaceMock.mockReset();
     // No change to searchInput — debounce guard should prevent router.replace
     await act(async () => { await Promise.resolve(); });
@@ -701,7 +701,7 @@ describe('BrainPeoplePage — pagination', () => {
     });
     // 2 people (< 25) + no query param page > 1 → pagination not shown
     const nextBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Next'),
+      b.textContent?.includes('Siguiente'),
     );
     expect(nextBtn).toBeUndefined();
   });
@@ -713,7 +713,7 @@ describe('BrainPeoplePage — pagination', () => {
       expect(container.querySelector('[data-testid="person-card-1"]')).toBeTruthy();
     });
     const prevBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Prev'),
+      b.textContent?.includes('Anterior'),
     );
     expect(prevBtn).toBeTruthy();
   });
@@ -732,7 +732,7 @@ describe('BrainPeoplePage — pagination', () => {
       expect(container.querySelector('[data-testid="person-card-1"]')).toBeTruthy();
     });
     const prevBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Prev'),
+      b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     expect(prevBtn?.disabled).toBe(true);
   });
@@ -750,7 +750,7 @@ describe('BrainPeoplePage — pagination', () => {
       expect(container.querySelector('[data-testid="person-card-1"]')).toBeTruthy();
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Next'),
+      (b) => b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     fireEvent.click(nextBtn);
     await waitFor(() => {
@@ -767,7 +767,7 @@ describe('BrainPeoplePage — pagination', () => {
       expect(container.querySelector('[data-testid="person-card-1"]')).toBeTruthy();
     });
     const prevBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Prev'),
+      b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     fireEvent.click(prevBtn);
     await waitFor(() => {
@@ -789,7 +789,7 @@ describe('BrainPeoplePage — pagination', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2');
+      expect(container.textContent).toContain('Página 2');
     });
   });
 

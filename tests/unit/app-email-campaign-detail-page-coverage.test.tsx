@@ -251,7 +251,7 @@ describe('PortalCampaignDetailPage — initial render', () => {
     );
     const params = { id: '1' } as unknown as Promise<{ id: string }>;
     const { container } = render(<PortalCampaignDetailPage params={params} />);
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
     await act(async () => { resolve(makeCampaignRes()); });
   });
 
@@ -262,7 +262,7 @@ describe('PortalCampaignDetailPage — initial render', () => {
     const params = { id: '999' } as unknown as Promise<{ id: string }>;
     render(<PortalCampaignDetailPage params={params} />);
     await waitFor(() => {
-      expect(screen.getByText(/Campaign not found/i)).toBeTruthy();
+      expect(screen.getByText(/Campaña no encontrada/i)).toBeTruthy();
     });
   });
 
@@ -275,7 +275,7 @@ describe('PortalCampaignDetailPage — initial render', () => {
   it('renders status badge with correct label', async () => {
     const { container } = await renderPage();
     const spans = Array.from(container.querySelectorAll('span'));
-    const badge = spans.find(s => s.textContent === 'draft');
+    const badge = spans.find(s => s.textContent === 'Borrador');
     expect(badge).toBeTruthy();
     expect(badge?.className).toContain('bg-muted');
   });
@@ -288,9 +288,9 @@ describe('PortalCampaignDetailPage — initial render', () => {
 
   it('renders tabs: overview, content, sends', async () => {
     const { container } = await renderPage();
-    expect(container.textContent).toContain('overview');
-    expect(container.textContent).toContain('content');
-    expect(container.textContent).toContain('sends');
+    expect(container.textContent).toContain('Resumen');
+    expect(container.textContent).toContain('Contenido');
+    expect(container.textContent).toContain('Envíos');
   });
 
   it('renders overview fields (From, Reply-To, List)', async () => {
@@ -307,17 +307,17 @@ describe('PortalCampaignDetailPage — initial render', () => {
 
   it('renders Edit button for draft campaigns', async () => {
     await renderPage();
-    expect(screen.getByText('Edit')).toBeTruthy();
+    expect(screen.getByText('Editar')).toBeTruthy();
   });
 
   it('renders Send Now button for draft campaigns', async () => {
     await renderPage();
-    expect(screen.getByText('Send Now')).toBeTruthy();
+    expect(screen.getByText('Enviar ahora')).toBeTruthy();
   });
 
   it('does not render Edit button for sent campaigns', async () => {
     await renderPage({ status: 'sent', totalSent: 100, totalOpened: 40, totalClicked: 10, totalBounced: 5 });
-    expect(screen.queryByText('Edit')).toBeNull();
+    expect(screen.queryByText('Editar')).toBeNull();
   });
 });
 
@@ -335,8 +335,15 @@ describe('PortalCampaignDetailPage — statusColor map', () => {
   for (const [status, expectedClass] of cases) {
     it(`status "${status}" renders with class ${expectedClass}`, async () => {
       await renderPage({ status, totalSent: 100, totalOpened: 50, totalClicked: 10, totalBounced: 2 });
+      const LABELS: Record<string, string> = {
+        scheduled: 'Programada',
+        sending: 'Enviando…',
+        ab_testing: 'Test A/B',
+        sent: 'Enviada',
+        cancelled: 'Cancelada',
+      };
       const spans = Array.from(document.querySelectorAll('span'));
-      const badge = spans.find(s => s.textContent === status);
+      const badge = spans.find(s => s.textContent === (LABELS[status] ?? status));
       expect(badge?.className).toContain(expectedClass);
     });
   }
@@ -378,7 +385,7 @@ describe('PortalCampaignDetailPage — stats panel', () => {
     const { container } = await renderPage({ status: 'draft' });
     // "Sent" stat card label shouldn't appear (Send Now button might but not the stat label)
     const statLabels = Array.from(container.querySelectorAll('.bg-card .text-xs'));
-    expect(statLabels.some(el => el.textContent === 'Sent')).toBe(false);
+    expect(statLabels.some(el => el.textContent === 'Enviados')).toBe(false);
   });
 });
 
@@ -387,23 +394,23 @@ describe('PortalCampaignDetailPage — stats panel', () => {
 describe('PortalCampaignDetailPage — tab switching', () => {
   it('clicking "content" tab renders html content preview', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('content'));
-    expect(container.textContent).toContain('Email Preview');
+    fireEvent.click(screen.getByText('Contenido'));
+    expect(container.textContent).toContain('Vista previa del correo');
   });
 
   it('clicking "sends" tab renders the send log', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
-    expect(container.textContent).toContain('Send Log');
+    fireEvent.click(screen.getByText('Envíos'));
+    expect(container.textContent).toContain('Registro de envíos');
     expect(container.textContent).toContain('alice@example.com');
   });
 
   it('clicking "overview" tab returns to overview content', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('content'));
-    fireEvent.click(screen.getByText('overview'));
-    expect(container.textContent).toContain('From');
-    expect(container.textContent).toContain('Reply-To');
+    fireEvent.click(screen.getByText('Contenido'));
+    fireEvent.click(screen.getByText('Resumen'));
+    expect(container.textContent).toContain('Remitente');
+    expect(container.textContent).toContain('Correo de respuesta');
   });
 });
 
@@ -412,14 +419,14 @@ describe('PortalCampaignDetailPage — tab switching', () => {
 describe('PortalCampaignDetailPage — sends tab', () => {
   it('renders recipient emails in sends table', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     expect(container.textContent).toContain('alice@example.com');
     expect(container.textContent).toContain('bob@example.com');
   });
 
   it('renders recipient name when available', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     expect(container.textContent).toContain('Alice');
   });
 
@@ -433,13 +440,13 @@ describe('PortalCampaignDetailPage — sends tab', () => {
     const params = { id: '1' } as unknown as Promise<{ id: string }>;
     render(<PortalCampaignDetailPage params={params} />);
     await waitFor(() => screen.getByText('My Campaign'));
-    fireEvent.click(screen.getByText('sends'));
-    expect(screen.getByText(/No sends recorded yet/i)).toBeTruthy();
+    fireEvent.click(screen.getByText('Envíos'));
+    expect(screen.getByText(/Aún no hay envíos registrados/i)).toBeTruthy();
   });
 
   it('renders check_circle icons for sent/opened sends', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     const checks = Array.from(container.querySelectorAll('.material-icons')).filter(
       el => el.textContent === 'check_circle',
     );
@@ -448,7 +455,7 @@ describe('PortalCampaignDetailPage — sends tab', () => {
 
   it('renders error icon for bounced send', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('sends'));
+    fireEvent.click(screen.getByText('Envíos'));
     const errorIcons = Array.from(container.querySelectorAll('.material-icons')).filter(
       el => el.textContent === 'error',
     );
@@ -461,34 +468,34 @@ describe('PortalCampaignDetailPage — sends tab', () => {
 describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
   it('clicking Edit opens the edit form with current subject', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Edit'));
-    expect(container.textContent).toContain('Edit Content');
+    fireEvent.click(screen.getByText('Editar'));
+    expect(container.textContent).toContain('Editar contenido');
   });
 
   it('edit form shows subject and preview text inputs', async () => {
     await renderPage();
-    fireEvent.click(screen.getByText('Edit'));
+    fireEvent.click(screen.getByText('Editar'));
     await waitFor(() => {
-      expect(screen.getByText('Subject *')).toBeTruthy();
-      expect(screen.getByText('Preview Text')).toBeTruthy();
+      expect(screen.getByText('Asunto *')).toBeTruthy();
+      expect(screen.getByText('Texto de vista previa')).toBeTruthy();
     });
   });
 
   it('clicking Cancel closes the edit form', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Edit'));
-    await waitFor(() => expect(container.textContent).toContain('Edit Content'));
-    fireEvent.click(screen.getByText('Cancel'));
+    fireEvent.click(screen.getByText('Editar'));
+    await waitFor(() => expect(container.textContent).toContain('Editar contenido'));
+    fireEvent.click(screen.getByText('Cancelar'));
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit Content');
+      expect(container.textContent).not.toContain('Editar contenido');
     });
   });
 
   it('clicking Save Changes calls PATCH and closes edit mode on success', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Edit'));
-    await waitFor(() => expect(screen.getByText('Save Changes')).toBeTruthy());
-    fireEvent.click(screen.getByText('Save Changes'));
+    fireEvent.click(screen.getByText('Editar'));
+    await waitFor(() => expect(screen.getByText('Guardar cambios')).toBeTruthy());
+    fireEvent.click(screen.getByText('Guardar cambios'));
     await waitFor(() => {
       const patchCall = fetchMock.mock.calls.find(
         ([u, init]) => typeof u === 'string' && u.includes('/api/portal/email/campaigns/') && init?.method === 'PATCH',
@@ -496,7 +503,7 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
       expect(patchCall).toBeTruthy();
     });
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Edit Content');
+      expect(container.textContent).not.toContain('Editar contenido');
     });
   });
 
@@ -508,9 +515,9 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
       return defaultFetch(url, init);
     });
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Edit'));
-    await waitFor(() => expect(screen.getByText('Save Changes')).toBeTruthy());
-    fireEvent.click(screen.getByText('Save Changes'));
+    fireEvent.click(screen.getByText('Editar'));
+    await waitFor(() => expect(screen.getByText('Guardar cambios')).toBeTruthy());
+    fireEvent.click(screen.getByText('Guardar cambios'));
     await waitFor(() => {
       expect(container.textContent).toContain('Save failed error');
     });
@@ -524,19 +531,19 @@ describe('PortalCampaignDetailPage — edit flow (HTML content)', () => {
       return defaultFetch(url, init);
     });
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Edit'));
-    await waitFor(() => expect(screen.getByText('Save Changes')).toBeTruthy());
-    fireEvent.click(screen.getByText('Save Changes'));
+    fireEvent.click(screen.getByText('Editar'));
+    await waitFor(() => expect(screen.getByText('Guardar cambios')).toBeTruthy());
+    fireEvent.click(screen.getByText('Guardar cambios'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Save failed');
+      expect(container.textContent).toContain('No se pudo guardar');
     });
   });
 
   it('content tab shows textarea for HTML content in non-block mode', async () => {
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Edit'));
-    await waitFor(() => expect(container.textContent).toContain('Edit Content'));
-    fireEvent.click(screen.getByText('content'));
+    fireEvent.click(screen.getByText('Editar'));
+    await waitFor(() => expect(container.textContent).toContain('Editar contenido'));
+    fireEvent.click(screen.getByText('Contenido'));
     const textareas = container.querySelectorAll('textarea');
     expect(textareas.length).toBeGreaterThan(0);
   });
@@ -555,7 +562,7 @@ describe('PortalCampaignDetailPage — edit flow (block content)', () => {
 
   it('renders VisualEditorShell in block edit mode', async () => {
     const { container } = await renderPage(blockCampaign);
-    fireEvent.click(screen.getByText('Edit'));
+    fireEvent.click(screen.getByText('Editar'));
     await waitFor(() => {
       expect(container.querySelector('[data-testid="visual-editor-shell"]')).toBeTruthy();
     });
@@ -563,22 +570,22 @@ describe('PortalCampaignDetailPage — edit flow (block content)', () => {
 
   it('renders Preview toggle button in block edit mode', async () => {
     await renderPage(blockCampaign);
-    fireEvent.click(screen.getByText('Edit'));
+    fireEvent.click(screen.getByText('Editar'));
     await waitFor(() => {
-      expect(screen.getByText('Preview')).toBeTruthy();
+      expect(screen.getByText('Vista previa')).toBeTruthy();
     });
   });
 
   it('clicking Preview toggles the email preview pane', async () => {
     const { container } = await renderPage(blockCampaign);
-    fireEvent.click(screen.getByText('Edit'));
-    await waitFor(() => expect(screen.getByText('Preview')).toBeTruthy());
-    fireEvent.click(screen.getByText('Preview'));
+    fireEvent.click(screen.getByText('Editar'));
+    await waitFor(() => expect(screen.getByText('Vista previa')).toBeTruthy());
+    fireEvent.click(screen.getByText('Vista previa'));
     await waitFor(() => {
       expect(container.querySelector('[data-testid="email-preview-pane"]')).toBeTruthy();
     });
     // Toggle off
-    fireEvent.click(screen.getByText('Preview'));
+    fireEvent.click(screen.getByText('Vista previa'));
     await waitFor(() => {
       expect(container.querySelector('[data-testid="email-preview-pane"]')).toBeNull();
     });
@@ -586,7 +593,7 @@ describe('PortalCampaignDetailPage — edit flow (block content)', () => {
 
   it('renders "Send test" button when draft + block content', async () => {
     await renderPage(blockCampaign);
-    expect(screen.getByText('Send test')).toBeTruthy();
+    expect(screen.getByText('Enviar prueba')).toBeTruthy();
   });
 });
 
@@ -596,7 +603,7 @@ describe('PortalCampaignDetailPage — send campaign', () => {
   it('does not send when confirm is cancelled', async () => {
     confirmMock.mockReturnValue(false);
     await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     expect(fetchMock.mock.calls.filter(
       ([u, init]) => typeof u === 'string' && u.includes('/send') && init?.method === 'POST',
     ).length).toBe(0);
@@ -605,10 +612,10 @@ describe('PortalCampaignDetailPage — send campaign', () => {
   it('calls send endpoint and shows the queued banner on confirm (PUX-046)', async () => {
     confirmMock.mockReturnValue(true);
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Queued');
-      expect(container.textContent).toContain('95 subscribers in the background');
+      expect(container.textContent).toContain('En cola');
+      expect(container.textContent).toContain('95 suscriptores en segundo plano');
     });
   });
 
@@ -621,9 +628,9 @@ describe('PortalCampaignDetailPage — send campaign', () => {
       return defaultFetch(url, init);
     });
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     await waitFor(() => {
-      expect(container.textContent).toContain('sending to 100 subscribers');
+      expect(container.textContent).toContain('enviando a 100 suscriptores');
       expect(container.textContent).not.toContain('Sent successfully');
     });
   });
@@ -637,7 +644,7 @@ describe('PortalCampaignDetailPage — send campaign', () => {
       return defaultFetch(url, init);
     });
     await renderPage();
-    fireEvent.click(screen.getByText('Send Now'));
+    fireEvent.click(screen.getByText('Enviar ahora'));
     await waitFor(() => {
       expect(alertMock).toHaveBeenCalledWith('Send error!');
     });
@@ -645,7 +652,7 @@ describe('PortalCampaignDetailPage — send campaign', () => {
 
   it('Send Now also renders for scheduled campaigns', async () => {
     await renderPage({ status: 'scheduled' });
-    expect(screen.getByText('Send Now')).toBeTruthy();
+    expect(screen.getByText('Enviar ahora')).toBeTruthy();
   });
 
   it.each(['partial', 'failed'])('can resume a %s campaign without enabling content edits', async status => {
@@ -700,24 +707,24 @@ describe('PortalCampaignDetailPage — send test email', () => {
   it('shows "Test sent to" banner on success', async () => {
     makeBlockCampaignMock();
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Test sent to me@example.com');
+      expect(container.textContent).toContain('Prueba enviada a me@example.com');
     });
   });
 
   it('closing the test result banner clears it', async () => {
     makeBlockCampaignMock();
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
-    await waitFor(() => expect(container.textContent).toContain('Test sent to'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
+    await waitFor(() => expect(container.textContent).toContain('Prueba enviada a'));
     // Find the close button in the blue banner
     const closeBtns = Array.from(container.querySelectorAll('button')).filter(b =>
       b.querySelector('.material-icons')?.textContent === 'close',
     );
     fireEvent.click(closeBtns[0]);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Test sent to');
+      expect(container.textContent).not.toContain('Prueba enviada a');
     });
   });
 
@@ -726,25 +733,25 @@ describe('PortalCampaignDetailPage — send test email', () => {
       makeRes({ success: true, data: { testSent: { ok: false, to: 'fail@example.com' } } }),
     );
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Test failed to send to fail@example.com');
+      expect(container.textContent).toContain('No se pudo enviar la prueba a fail@example.com');
     });
   });
 
   it('shows "Test rendered" when testSent data is absent', async () => {
     makeBlockCampaignMock(() => makeRes({ success: true, data: {} }));
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('Test rendered (no recipient)');
+      expect(container.textContent).toContain('Prueba renderizada (sin destinatario)');
     });
   });
 
   it('shows error message when preview API fails', async () => {
     makeBlockCampaignMock(() => makeRes({ success: false, message: 'Preview error' }));
     const { container } = await renderPage();
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
       expect(container.textContent).toContain('Preview error');
     });
@@ -757,9 +764,9 @@ describe('PortalCampaignDetailPage — send test email', () => {
       useBlockEditor: true,
     };
     const { container } = await renderPage(noblockCampaign as Partial<typeof baseCampaign>);
-    fireEvent.click(screen.getByText('Send test'));
+    fireEvent.click(screen.getByText('Enviar prueba'));
     await waitFor(() => {
-      expect(container.textContent).toContain('No blocks to render');
+      expect(container.textContent).toContain('No hay bloques que renderizar');
     });
   });
 });
@@ -771,7 +778,7 @@ describe('PortalCampaignDetailPage — toggleUseBlockEditor', () => {
     const { container } = await renderPage({ useBlockEditor: false });
     // Overview tab should show the switch button
     const switchBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Switch to block builder'),
+      b.textContent?.includes('Cambiar a constructor de bloques'),
     );
     expect(switchBtn).toBeTruthy();
     fireEvent.click(switchBtn!);
@@ -788,7 +795,7 @@ describe('PortalCampaignDetailPage — toggleUseBlockEditor', () => {
   it('clicking Switch to template calls PATCH with useBlockEditor: false', async () => {
     const { container } = await renderPage({ useBlockEditor: true });
     const switchBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Switch to template'),
+      b.textContent?.includes('Cambiar a plantilla'),
     );
     expect(switchBtn).toBeTruthy();
     fireEvent.click(switchBtn!);
@@ -826,7 +833,7 @@ describe('PortalCampaignDetailPage — overview tab fields', () => {
     const { container } = await renderPage({ sentAt: '2025-06-01T12:00:00Z', status: 'sent', totalSent: 50, totalOpened: 10, totalClicked: 5, totalBounced: 1 });
     // Should show some date string (locale-dependent, but not "—")
     const sentAtRow = Array.from(container.querySelectorAll('.flex.px-5.py-3.gap-4')).find(
-      el => el.textContent?.includes('Sent At'),
+      el => el.textContent?.includes('Enviado el'),
     );
     expect(sentAtRow?.textContent).not.toContain('—');
   });
@@ -866,7 +873,7 @@ describe('PortalCampaignDetailPage — branding defaults', () => {
 describe('PortalCampaignDetailPage — content tab (non-edit)', () => {
   it('shows sanitized html content in the preview pane', async () => {
     const { container } = await renderPage({ htmlContent: '<p>Hello from HTML</p>' });
-    fireEvent.click(screen.getByText('content'));
+    fireEvent.click(screen.getByText('Contenido'));
     expect(container.innerHTML).toContain('Hello from HTML');
   });
 });

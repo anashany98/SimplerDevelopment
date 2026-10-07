@@ -103,7 +103,7 @@ describe('OAuthClientsManager — initial load', () => {
     let resolveLoad!: (v: unknown) => void;
     global.fetch = vi.fn().mockReturnValue(new Promise(r => { resolveLoad = r; }));
     render(<OAuthClientsManager />);
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
     await act(async () => {
       resolveLoad({ json: async () => ({ success: true, data: [] }) });
     });
@@ -112,8 +112,8 @@ describe('OAuthClientsManager — initial load', () => {
   it('renders heading and subheading defaults', async () => {
     global.fetch = mockLoadSuccess([]);
     await renderAndWait();
-    expect(screen.getByText('OAuth apps')).toBeInTheDocument();
-    expect(screen.getByText(/Register OAuth apps/)).toBeInTheDocument();
+    expect(screen.getByText('Aplicaciones OAuth')).toBeInTheDocument();
+    expect(screen.getByText(/Registra aplicaciones OAuth/)).toBeInTheDocument();
   });
 
   it('renders custom heading and subheading', async () => {
@@ -132,7 +132,7 @@ describe('OAuthClientsManager — initial load', () => {
   it('shows empty state message when no clients', async () => {
     global.fetch = mockLoadSuccess([]);
     await renderAndWait();
-    expect(screen.getByText(/No OAuth apps yet/)).toBeInTheDocument();
+    expect(screen.getByText(/Aún no hay aplicaciones OAuth/)).toBeInTheDocument();
   });
 
   it('shows error message on load failure', async () => {
@@ -150,7 +150,7 @@ describe('OAuthClientsManager — initial load', () => {
   it('shows generic string when non-Error thrown', async () => {
     global.fetch = vi.fn().mockRejectedValue('oops');
     await renderAndWait();
-    expect(screen.getByText('Failed to load OAuth apps')).toBeInTheDocument();
+    expect(screen.getByText('No se pudieron cargar las aplicaciones OAuth')).toBeInTheDocument();
   });
 });
 
@@ -194,8 +194,8 @@ describe('OAuthClientsManager — client list', () => {
   it('renders Rotate secret and Delete buttons per row', async () => {
     global.fetch = mockLoadSuccess([makeClient()]);
     await renderAndWait();
-    expect(screen.getByText('Rotate secret')).toBeInTheDocument();
-    expect(screen.getByText('Delete')).toBeInTheDocument();
+    expect(screen.getByText('Rotar secreto')).toBeInTheDocument();
+    expect(screen.getByText('Eliminar')).toBeInTheDocument();
   });
 
   it('renders multiple clients', async () => {
@@ -222,36 +222,36 @@ describe('OAuthClientsManager — create form', () => {
   async function openCreateForm() {
     global.fetch = mockLoadSuccess([]);
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
+    fireEvent.click(screen.getByText('Nueva aplicación'));
   }
 
   it('shows create form on New app click', async () => {
     await openCreateForm();
-    expect(screen.getByPlaceholderText('e.g. My Integration App')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('p. ej. Mi aplicación de integración')).toBeInTheDocument();
   });
 
   it('hides create form on Cancel', async () => {
     await openCreateForm();
-    fireEvent.click(screen.getByText('Cancel'));
-    expect(screen.queryByPlaceholderText('e.g. My Integration App')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('Cancelar'));
+    expect(screen.queryByPlaceholderText('p. ej. Mi aplicación de integración')).not.toBeInTheDocument();
   });
 
   it('shows validation error when app name empty', async () => {
     await openCreateForm();
-    fireEvent.click(screen.getByText('Create app'));
+    fireEvent.click(screen.getByText('Crear aplicación'));
     await waitFor(() => {
-      expect(screen.getByText('App name is required')).toBeInTheDocument();
+      expect(screen.getByText('El nombre de la aplicación es obligatorio')).toBeInTheDocument();
     });
   });
 
   it('shows validation error when redirect URI empty', async () => {
     await openCreateForm();
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), {
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), {
       target: { value: 'Test App' },
     });
-    fireEvent.click(screen.getByText('Create app'));
+    fireEvent.click(screen.getByText('Crear aplicación'));
     await waitFor(() => {
-      expect(screen.getByText('At least one redirect URI is required')).toBeInTheDocument();
+      expect(screen.getByText('Se requiere al menos un URI de redirección')).toBeInTheDocument();
     });
   });
 
@@ -267,16 +267,16 @@ describe('OAuthClientsManager — create form', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) }); // reload
     global.fetch = createFetch;
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
+    fireEvent.click(screen.getByText('Nueva aplicación'));
 
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), {
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), {
       target: { value: 'New Integration' },
     });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://myapp.com/callback' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => {
       const callArgs = createFetch.mock.calls[1];
@@ -299,16 +299,16 @@ describe('OAuthClientsManager — create form', () => {
       })
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) });
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://example.com/cb' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => {
-      expect(screen.getByText(/Save these credentials now/)).toBeInTheDocument();
+      expect(screen.getByText(/Guarda estas credenciales ahora/)).toBeInTheDocument();
       expect(screen.getByText('secret123')).toBeInTheDocument();
     });
   });
@@ -324,16 +324,16 @@ describe('OAuthClientsManager — create form', () => {
       })
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) });
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'PKCE App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'PKCE App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://example.com/cb' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => {
-      expect(screen.getByText('Public client created — copy your client_id below')).toBeInTheDocument();
+      expect(screen.getByText('Cliente público creado: copia tu client_id abajo')).toBeInTheDocument();
     });
   });
 
@@ -348,17 +348,17 @@ describe('OAuthClientsManager — create form', () => {
       })
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) });
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'PKCE App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'PKCE App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://example.com/cb' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
-    await waitFor(() => screen.getByText('Done'));
-    fireEvent.click(screen.getByText('Done'));
-    expect(screen.queryByText('Public client created — copy your client_id below')).not.toBeInTheDocument();
+    await waitFor(() => screen.getByText('Hecho'));
+    fireEvent.click(screen.getByText('Hecho'));
+    expect(screen.queryByText('Cliente público creado: copia tu client_id abajo')).not.toBeInTheDocument();
   });
 
   it('shows create error on server failure', async () => {
@@ -368,13 +368,13 @@ describe('OAuthClientsManager — create form', () => {
         json: async () => ({ success: false, message: 'Duplicate name' }),
       });
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://x.com/cb' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => {
       expect(screen.getByText('Duplicate name')).toBeInTheDocument();
@@ -386,13 +386,13 @@ describe('OAuthClientsManager — create form', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) })
       .mockRejectedValueOnce(new Error('Network error'));
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://x.com/cb' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => {
       expect(screen.getByText('Network error')).toBeInTheDocument();
@@ -401,24 +401,24 @@ describe('OAuthClientsManager — create form', () => {
 
   it('can add up to 5 redirect URIs', async () => {
     await openCreateForm();
-    const addBtn = screen.getByText('Add another URI');
+    const addBtn = screen.getByText('Añadir otro URI');
     fireEvent.click(addBtn);
     fireEvent.click(addBtn);
     fireEvent.click(addBtn);
     fireEvent.click(addBtn);
     // After 5 URIs added, the button disappears
-    expect(screen.queryByText('Add another URI')).not.toBeInTheDocument();
+    expect(screen.queryByText('Añadir otro URI')).not.toBeInTheDocument();
   });
 
   it('can remove a redirect URI when more than one exists', async () => {
     await openCreateForm();
-    fireEvent.click(screen.getByText('Add another URI'));
+    fireEvent.click(screen.getByText('Añadir otro URI'));
     // After adding, there are 2 remove buttons
-    const removeBtns = screen.getAllByLabelText('Remove URI');
+    const removeBtns = screen.getAllByLabelText('Quitar URI');
     expect(removeBtns.length).toBe(2);
     // Remove one — back to 1 URI, so Remove buttons disappear
     fireEvent.click(removeBtns[0]);
-    expect(screen.queryAllByLabelText('Remove URI').length).toBe(0);
+    expect(screen.queryAllByLabelText('Quitar URI').length).toBe(0);
   });
 
   it('can change auth method to PKCE', async () => {
@@ -437,8 +437,8 @@ describe('OAuthClientsManager — create form', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) });
     global.fetch = createFetch;
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://x.com/cb' },
     });
@@ -446,7 +446,7 @@ describe('OAuthClientsManager — create form', () => {
       target: { value: 'https://mysite.com' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => {
       const body = JSON.parse(createFetch.mock.calls[1][1].body);
@@ -463,13 +463,13 @@ describe('OAuthClientsManager — create form', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) });
     global.fetch = createFetch;
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://x.com/cb' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => {
       const body = JSON.parse(createFetch.mock.calls[1][1].body);
@@ -483,15 +483,15 @@ describe('OAuthClientsManager — create form', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) })
       .mockReturnValueOnce(new Promise(r => { resolveCreate = r; }));
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://x.com/cb' },
     });
     act(() => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
-    expect(await screen.findByText('Creating…')).toBeInTheDocument();
+    expect(await screen.findByText('Creando…')).toBeInTheDocument();
     await act(async () => {
       resolveCreate({ json: async () => ({ success: false, message: 'err' }) });
     });
@@ -499,8 +499,8 @@ describe('OAuthClientsManager — create form', () => {
 
   it('New app button toggles form off if already open', async () => {
     await openCreateForm();
-    fireEvent.click(screen.getByText('New app'));
-    expect(screen.queryByPlaceholderText('e.g. My Integration App')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    expect(screen.queryByPlaceholderText('p. ej. Mi aplicación de integración')).not.toBeInTheDocument();
   });
 });
 
@@ -526,7 +526,7 @@ describe('OAuthClientsManager — rotate secret', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [toApiRow(makeClient())] }) });
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Rotate secret'));
+      fireEvent.click(screen.getByText('Rotar secreto'));
     });
     await waitFor(() => {
       expect(screen.getByText('rotated_secret')).toBeInTheDocument();
@@ -538,7 +538,7 @@ describe('OAuthClientsManager — rotate secret', () => {
     const fetchFn = vi.fn().mockResolvedValue({ json: async () => ({ success: true, data: [toApiRow(makeClient())] }) });
     global.fetch = fetchFn;
     await renderAndWait();
-    fireEvent.click(screen.getByText('Rotate secret'));
+    fireEvent.click(screen.getByText('Rotar secreto'));
     await waitFor(() => {
       // Only the initial load call, no PATCH
       const patchCalls = fetchFn.mock.calls.filter((c) => {
@@ -557,7 +557,7 @@ describe('OAuthClientsManager — rotate secret', () => {
       });
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Rotate secret'));
+      fireEvent.click(screen.getByText('Rotar secreto'));
     });
     await waitFor(() => {
       expect(screen.getByText('Rotate failed')).toBeInTheDocument();
@@ -570,7 +570,7 @@ describe('OAuthClientsManager — rotate secret', () => {
       .mockRejectedValueOnce(new Error('Patch error'));
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Rotate secret'));
+      fireEvent.click(screen.getByText('Rotar secreto'));
     });
     await waitFor(() => {
       expect(screen.getByText('Patch error')).toBeInTheDocument();
@@ -596,10 +596,10 @@ describe('OAuthClientsManager — delete client', () => {
     global.fetch = fetchFn;
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
     });
     await waitFor(() => {
-      expect(screen.getByText(/No OAuth apps yet/)).toBeInTheDocument();
+      expect(screen.getByText(/Aún no hay aplicaciones OAuth/)).toBeInTheDocument();
     });
   });
 
@@ -608,7 +608,7 @@ describe('OAuthClientsManager — delete client', () => {
     const fetchFn = vi.fn().mockResolvedValue({ json: async () => ({ success: true, data: [toApiRow(makeClient())] }) });
     global.fetch = fetchFn;
     await renderAndWait();
-    fireEvent.click(screen.getByText('Delete'));
+    fireEvent.click(screen.getByText('Eliminar'));
     await waitFor(() => {
       const deleteCalls = fetchFn.mock.calls.filter((c) => {
         const opts = c[1] as { method?: string } | undefined;
@@ -624,7 +624,7 @@ describe('OAuthClientsManager — delete client', () => {
       .mockResolvedValueOnce({ json: async () => ({ success: false, message: 'Delete failed' }) });
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
     });
     await waitFor(() => {
       expect(screen.getByText('Delete failed')).toBeInTheDocument();
@@ -637,7 +637,7 @@ describe('OAuthClientsManager — delete client', () => {
       .mockRejectedValueOnce(new Error('Delete error'));
     await renderAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
     });
     await waitFor(() => {
       expect(screen.getByText('Delete error')).toBeInTheDocument();
@@ -667,16 +667,16 @@ describe('OAuthClientsManager — clipboard copy', () => {
       })
       .mockResolvedValueOnce({ json: async () => ({ success: true, data: [] }) });
     await renderAndWait();
-    fireEvent.click(screen.getByText('New app'));
-    fireEvent.change(screen.getByPlaceholderText('e.g. My Integration App'), { target: { value: 'App' } });
+    fireEvent.click(screen.getByText('Nueva aplicación'));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Mi aplicación de integración'), { target: { value: 'App' } });
     fireEvent.change(screen.getByPlaceholderText('https://example.com/oauth/callback'), {
       target: { value: 'https://x.com/cb' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByText('Create app'));
+      fireEvent.click(screen.getByText('Crear aplicación'));
     });
     await waitFor(() => screen.getByText('copy_this_id'));
-    const copyBtns = screen.getAllByText('Copy');
+    const copyBtns = screen.getAllByText('Copiar');
     fireEvent.click(copyBtns[0]);
     expect(writeText).toHaveBeenCalledWith('copy_this_id');
   });

@@ -1,7 +1,7 @@
 /**
  * SD Chat — shared API types
  *
- * Mirrors the shape returned by the SimplerDevelopment portal at
+ * Mirrors the shape returned by the CRM AGENTS portal at
  * `/api/portal/me` and the deep-link callback from `/portal/mobile-auth`.
  */
 

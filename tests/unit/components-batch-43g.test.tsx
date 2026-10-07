@@ -102,7 +102,7 @@ describe('SurveyInputBlockRender', () => {
   it('renders a select preview with a dropdown chevron for fieldType="select"', () => {
     const block: any = { id: 'b4', type: 'survey-input', fieldType: 'select' };
     const { container } = render(<SurveyInputBlockRender block={block} />);
-    expect(container.textContent).toContain('Select...');
+    expect(container.textContent).toContain('Seleccionar...');
     expect(container.querySelector('.material-icons')?.textContent).toBe(
       'arrow_drop_down',
     );
@@ -245,7 +245,7 @@ describe('StatusSection', () => {
     const { container } = render(
       <StatusSection formData={makePost()} setFormData={setFormData} />,
     );
-    expect(container.textContent).toContain('Status');
+    expect(container.textContent).toContain('Estado');
     const select = container.querySelector('select') as HTMLSelectElement;
     expect(select).toBeTruthy();
     expect(select.value).toBe('draft');

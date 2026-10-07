@@ -28,7 +28,7 @@ export default function ResponseAnalytics({ survey, responses, stats }: Props) {
       <div className="space-y-6">
         <div className="bg-card border border-border rounded-xl p-10 text-center">
           <span className="material-icons text-4xl text-muted-foreground/50">bar_chart</span>
-          <p className="text-muted-foreground mt-2 text-sm">No responses to analyze yet</p>
+          <p className="text-muted-foreground mt-2 text-sm">Aún no hay respuestas para analizar</p>
         </div>
       </div>
     );
@@ -61,17 +61,17 @@ export default function ResponseAnalytics({ survey, responses, stats }: Props) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-          <p className="text-xs text-muted-foreground">Total Responses</p>
+          <p className="text-xs text-muted-foreground">Total de respuestas</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">{stats.completed}</p>
-          <p className="text-xs text-muted-foreground">Completed</p>
+          <p className="text-xs text-muted-foreground">Completado</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">
             {stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0}%
           </p>
-          <p className="text-xs text-muted-foreground">Completion Rate</p>
+          <p className="text-xs text-muted-foreground">Tasa de finalización</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-foreground">{stats.withEmail}</p>

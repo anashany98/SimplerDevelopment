@@ -23,19 +23,17 @@ export function MenuSettings({ branding, onChange, siteId }: Props) {
         <MediaPicker
           value={branding.logoUrl}
           onChange={(url) => onChange({ logoUrl: url })}
-          label="Site Logo"
+          label="Logotipo del sitio"
           apiEndpoint={`/api/portal/cms/websites/${siteId}/media`}
         />
         <div className="mt-2">
-          <label className="block text-xs font-medium text-muted-foreground mb-1">
-            Logo Alt Text
-          </label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Texto alternativo del logotipo</label>
           <input
             type="text"
             value={branding.logoAlt}
             onChange={(e) => onChange({ logoAlt: e.target.value })}
             className="w-full px-3 py-1.5 rounded-md border border-border bg-background text-sm text-foreground"
-            placeholder="Company name"
+            placeholder="Nombre de la empresa"
           />
         </div>
       </div>
@@ -44,21 +42,21 @@ export function MenuSettings({ branding, onChange, siteId }: Props) {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
           <span className="material-icons text-base">palette</span>
-          Brand Colors
+          Colores de marca
         </h3>
         <div className="space-y-3">
           <ColorField
-            label="Primary"
+            label="Primario"
             value={branding.primaryColor}
             onChange={(v) => onChange({ primaryColor: v })}
           />
           <ColorField
-            label="Secondary"
+            label="Secundario"
             value={branding.secondaryColor}
             onChange={(v) => onChange({ secondaryColor: v })}
           />
           <ColorField
-            label="Accent"
+            label="Acento"
             value={branding.accentColor}
             onChange={(v) => onChange({ accentColor: v })}
           />
@@ -69,16 +67,16 @@ export function MenuSettings({ branding, onChange, siteId }: Props) {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
           <span className="material-icons text-base">format_color_fill</span>
-          Navigation Colors
+          Colores de navegación
         </h3>
         <div className="space-y-3">
           <ColorField
-            label="Background"
+            label="Fondo"
             value={branding.navBackground}
             onChange={(v) => onChange({ navBackground: v })}
           />
           <ColorField
-            label="Text"
+            label="Texto"
             value={branding.navTextColor}
             onChange={(v) => onChange({ navTextColor: v })}
           />
@@ -89,16 +87,16 @@ export function MenuSettings({ branding, onChange, siteId }: Props) {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-1.5">
           <span className="material-icons text-base">web</span>
-          Site Colors
+          Colores del sitio
         </h3>
         <div className="space-y-3">
           <ColorField
-            label="Background"
+            label="Fondo"
             value={branding.backgroundColor}
             onChange={(v) => onChange({ backgroundColor: v })}
           />
           <ColorField
-            label="Text"
+            label="Texto"
             value={branding.textColor}
             onChange={(v) => onChange({ textColor: v })}
           />

@@ -52,9 +52,7 @@ export default function PlaybooksListPage() {
 function ListFallback() {
   return (
     <div className="flex items-center justify-center py-16 text-muted-foreground">
-      <span className="material-icons animate-spin mr-2">progress_activity</span>
-      Loading…
-    </div>
+      <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
   );
 }
 
@@ -139,7 +137,7 @@ function PlaybooksListContent() {
       const r = await fetch(`/api/portal/brain/playbooks?${params.toString()}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load playbooks');
+        setError(json.message || 'No se pudieron cargar los playbooks');
         setItems([]);
         setHasMore(false);
         return;
@@ -157,7 +155,7 @@ function PlaybooksListContent() {
       arr.sort();
       if (arr.length !== categories.length) setCategories(arr);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -174,18 +172,18 @@ function PlaybooksListContent() {
     <div className="space-y-4">
       <div className="sticky top-[var(--portal-header-height,3.5rem)] z-10 bg-background -mx-4 sm:mx-0 px-4 sm:px-0 pt-1 pb-3 border-b border-border">
         <PortalPageHeader
-          eyebrow="Brain"
+          eyebrow="Cerebro de empresa"
           title={<span className="flex items-center gap-2"><span className="material-icons text-primary">play_circle</span>Playbooks</span>}
-          subtitle="Repeatable, multi-step processes. Onboarding, renewals, incident response — define once, run many times."
+          subtitle="Procesos repetibles de varios pasos. Incorporaciones, renovaciones, respuesta a incidentes: defínelos una vez y ejecútalos muchas veces."
           actions={
             <div className="flex items-center gap-2">
               <Link href="/portal/brain/playbook-runs" className={pBtnGhost}>
                 <span className="material-icons text-base">playlist_play</span>
-                View runs
+                Ver ejecuciones
               </Link>
               <Link href="/portal/brain/playbooks/new" className={pBtnPrimary}>
                 <span className="material-icons text-base">add</span>
-                New playbook
+                Nuevo playbook
               </Link>
             </div>
           }
@@ -196,7 +194,7 @@ function PlaybooksListContent() {
         <div className="mt-3 flex items-center gap-1 overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           {STATUS_FILTERS.map((s) => {
             const active = status === s;
-            const label = s === 'all' ? 'All' : playbookStatusChip(s as BrainPlaybookStatus).label;
+            const label = s === 'all' ? 'Todos' : playbookStatusChip(s as BrainPlaybookStatus).label;
             return (
               <button
                 key={s}
@@ -217,10 +215,10 @@ function PlaybooksListContent() {
         {/* Secondary filters */}
         <div className="mt-2 flex items-center gap-2 flex-wrap text-xs">
           <div className="inline-flex items-center gap-1">
-            <span className="text-muted-foreground">Trigger:</span>
+            <span className="text-muted-foreground">Disparador:</span>
             {(['all', ...PLAYBOOK_TRIGGER_KINDS] as TriggerFilter[]).map((k) => {
               const active = triggerKindParam === k;
-              const label = k === 'all' ? 'All' : playbookTriggerKindChip(k).label;
+              const label = k === 'all' ? 'Todos' : playbookTriggerKindChip(k).label;
               return (
                 <button
                   key={k}
@@ -239,24 +237,24 @@ function PlaybooksListContent() {
           </div>
 
           <select
-            aria-label="Filter by category"
+            aria-label="Filtrar por categoría"
             value={categoryParam}
             onChange={(e) => setParam({ category: e.target.value || null })}
             className="px-2 py-1 rounded-xl border border-border bg-card text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary"
           >
-            <option value="">All categories</option>
+            <option value="">Todas las categorías</option>
             {categories.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>
 
           <select
-            aria-label="Filter by owner"
+            aria-label="Filtrar por responsable"
             value={ownerIdParam ?? ''}
             onChange={(e) => setParam({ ownerId: e.target.value || null })}
             className="px-2 py-1 rounded-xl border border-border bg-card text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary"
           >
-            <option value="">Any owner</option>
+            <option value="">Todos los responsables</option>
             {team.map((m) => (
               <option key={m.userId} value={m.userId}>{m.name || m.email}</option>
             ))}
@@ -270,9 +268,7 @@ function PlaybooksListContent() {
               }
               className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 text-muted-foreground hover:text-foreground"
             >
-              <span className="material-icons text-sm">close</span>
-              Clear
-            </button>
+              <span className="material-icons text-sm">close</span>Limpiar</button>
           )}
         </div>
       </div>
@@ -291,16 +287,16 @@ function PlaybooksListContent() {
           <span className="material-icons text-5xl text-muted-foreground mb-2 block">
             play_circle
           </span>
-          <p className="text-foreground text-sm font-medium">No playbooks yet.</p>
+          <p className="text-foreground text-sm font-medium">Aún no hay playbooks.</p>
           <p className="text-muted-foreground text-xs mt-1 mb-4 max-w-md mx-auto">
-            Define your first repeatable process — onboarding, renewals, incident response.
+            Define tu primer proceso repetible: incorporaciones, renovaciones, respuesta a incidentes.
           </p>
           <Link
             href="/portal/brain/playbooks/new"
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            New playbook
+            Nuevo playbook
           </Link>
         </div>
       ) : (
@@ -319,9 +315,7 @@ function PlaybooksListContent() {
             onClick={() => setParam({ offset: String(Math.max(0, offset - PAGE_SIZE)) })}
             className={`${pBtnGhost} disabled:opacity-30 disabled:pointer-events-none`}
           >
-            <span className="material-icons text-base">chevron_left</span>
-            Previous
-          </button>
+            <span className="material-icons text-base">chevron_left</span>Anterior</button>
           <span className="text-xs text-muted-foreground">
             {offset + 1}–{offset + items.length}
           </span>
@@ -330,9 +324,7 @@ function PlaybooksListContent() {
             disabled={!hasMore}
             onClick={() => setParam({ offset: String(offset + PAGE_SIZE) })}
             className={`${pBtnGhost} disabled:opacity-30 disabled:pointer-events-none`}
-          >
-            Next
-            <span className="material-icons text-base">chevron_right</span>
+          >Siguiente<span className="material-icons text-base">chevron_right</span>
           </button>
         </div>
       )}

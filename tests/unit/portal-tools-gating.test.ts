@@ -31,6 +31,7 @@ const GATE_MATRIX = [
   'publish_page',
   // Outbound sends
   'send_crm_proposal',
+  'send_inbox_message',
   // Authority / access changes
   'invite_team_member',
   // Financial / billable commitments
@@ -40,6 +41,7 @@ const GATE_MATRIX = [
   // persistent automation rule can grant itself ongoing unattended reach.
   'create_automation',
   'toggle_automation',
+  'return_inbox_conversation_to_ai',
   // Deal records — the "critical deal record" an injection would target.
   'create_crm_deal',
   'update_crm_deal',
@@ -56,11 +58,13 @@ describe('portal-tool gating classifier', () => {
     for (const name of [
       'publish_page',
       'send_crm_proposal',
+      'send_inbox_message',
       'invite_team_member',
       'pay_invoice',
       'request_service',
       'create_automation',
       'toggle_automation',
+      'return_inbox_conversation_to_ai',
       'create_crm_deal',
       'update_crm_deal',
     ]) {
@@ -69,16 +73,7 @@ describe('portal-tool gating classifier', () => {
   });
 
   it('passes benign, reversible edits and reads through', () => {
-    for (const name of [
-      'update_block_by_id',
-      'update_page_blocks',
-      'update_page_metadata',
-      'create_website_page',
-      'get_page_content',
-      'create_crm_contact',
-      'log_crm_activity',
-      'create_support_ticket',
-    ]) {
+    for (const name of ['update_block_by_id', 'update_page_blocks', 'update_page_metadata', 'create_website', 'create_website_page', 'get_page_content', 'create_crm_contact', 'log_crm_activity', 'create_support_ticket']) {
       expect(isApprovalRequired(name)).toBe(false);
     }
   });
@@ -106,7 +101,7 @@ describe('portal-tool gating classifier', () => {
  * catching new writes, not a classifier. Anything it catches must land in one
  * of the two buckets below.
  */
-const MUTATING_VERB = /^(create|update|delete|move|send|publish|invite|request|toggle|log|reply|add)_/;
+const MUTATING_VERB = /^(create|update|delete|move|send|publish|invite|request|toggle|log|reply|add|assign|take|pause|return|close)_/;
 
 /**
  * Mutating tools reviewed against the gate matrix and judged benign: reversible,
@@ -116,21 +111,45 @@ const MUTATING_VERB = /^(create|update|delete|move|send|publish|invite|request|t
  */
 const REVIEWED_BENIGN = new Set([
   // Draft/content edits — reversible, not publicly visible until publish_page
-  'create_website_page', 'create_website_category', 'create_website_tag',
-  'update_page_blocks', 'update_block_by_id', 'update_page_metadata',
-  'create_booking_page', 'update_booking_page',
-  'create_pitch_deck', 'update_pitch_deck_slide',
-  'create_survey', 'update_survey',
+  'create_website',
+  'create_website_page',
+  'create_website_category',
+  'create_website_tag',
+  'update_page_blocks',
+  'update_block_by_id',
+  'update_page_metadata',
+  'create_booking_page',
+  'update_booking_page',
+  'create_pitch_deck',
+  'update_pitch_deck_slide',
+  'create_survey',
+  'update_survey',
   // CRM records — data entry, not the deal records the gate matrix protects
-  'create_crm_contact', 'update_crm_contact', 'create_crm_company',
-  'log_crm_activity', 'create_crm_proposal',
+  'create_crm_contact',
+  'update_crm_contact',
+  'create_crm_company',
+  'log_crm_activity',
+  'create_crm_proposal',
   // Email — authoring only; the outbound send is a separate, gated action
-  'create_email_campaign', 'update_email_campaign',
-  'add_email_subscriber', 'create_email_segment',
+  'create_email_campaign',
+  'update_email_campaign',
+  'add_email_subscriber',
+  'create_email_segment',
   // Internal collaboration — visible only inside the workspace
-  'add_card_comment', 'create_project_card', 'update_project_card', 'move_project_card',
-  'create_support_ticket', 'reply_to_ticket',
-  'request_suggested_project', 'update_profile',
+  'add_card_comment',
+  'create_project_card',
+  'update_project_card',
+  'move_project_card',
+  'create_support_ticket',
+  'reply_to_ticket',
+  // Inbox — reversible internal ownership/state changes; outbound send and
+  // returning automation authority to AI remain gated separately.
+  'assign_inbox_conversation',
+  'take_over_inbox_conversation',
+  'pause_inbox_ai',
+  'close_inbox_conversation',
+  'request_suggested_project',
+  'update_profile',
 ]);
 
 describe('gate-matrix completeness', () => {

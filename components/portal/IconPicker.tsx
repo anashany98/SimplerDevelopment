@@ -53,7 +53,7 @@ interface IconPickerProps {
   label?: string;
 }
 
-export function IconPicker({ value, onChange, label = 'Icon' }: IconPickerProps) {
+export function IconPicker({ value, onChange, label = 'Icono' }: IconPickerProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   // Starts populated on a reopen — the index is cached at module scope.
@@ -119,7 +119,7 @@ export function IconPicker({ value, onChange, label = 'Icon' }: IconPickerProps)
             <span className="material-icons text-lg text-muted-foreground/50 shrink-0">add_circle_outline</span>
           )}
           <span className={`flex-1 truncate ${value ? 'text-foreground' : 'text-muted-foreground'}`}>
-            {value ? iconLabel(currentReactName) : 'Choose icon...'}
+            {value ? iconLabel(currentReactName) : 'Elegir icono...'}
           </span>
           {value && (
             <button
@@ -143,7 +143,7 @@ export function IconPicker({ value, onChange, label = 'Icon' }: IconPickerProps)
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search icons..."
+              placeholder="Buscar iconos..."
               className="w-full px-2.5 py-1.5 text-sm rounded border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
@@ -151,9 +151,9 @@ export function IconPicker({ value, onChange, label = 'Icon' }: IconPickerProps)
           {/* Icon grid */}
           <div className="overflow-y-auto p-2" style={{ maxHeight: '260px' }}>
             {icons.length === 0 ? (
-              <p className="text-xs text-muted-foreground text-center py-4">Loading icons&hellip;</p>
+              <p className="text-xs text-muted-foreground text-center py-4">Cargando iconos&hellip;</p>
             ) : filtered.length === 0 ? (
-              <p className="text-xs text-muted-foreground text-center py-4">No icons match &ldquo;{search}&rdquo;</p>
+              <p className="text-xs text-muted-foreground text-center py-4">Ningún icono coincide con &ldquo;{search}&rdquo;</p>
             ) : (
               <div className="grid grid-cols-6 gap-1">
                 {filtered.map(({ name, Component }) => (

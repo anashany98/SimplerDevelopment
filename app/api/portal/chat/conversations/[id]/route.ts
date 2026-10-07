@@ -6,7 +6,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { chatConversations, chatMessages } from '@/lib/db/schema';
+import { channelAiRuns, chatConversations, chatMessages } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
 import { and, asc, eq } from 'drizzle-orm';
 import { publishConversationUpdate } from '@/lib/chat/realtime';
@@ -37,7 +37,18 @@ export async function GET(_req: Request, { params }: Ctx) {
     .from(chatMessages)
     .where(eq(chatMessages.conversationId, conversationId))
     .orderBy(asc(chatMessages.occurredAt));
-  return NextResponse.json({ success: true, data: { conversation: result.conversation, messages } });
+  const aiRuns = await db.select({
+    id: channelAiRuns.id,
+    messageId: channelAiRuns.messageId,
+    status: channelAiRuns.status,
+    decision: channelAiRuns.decision,
+    provider: channelAiRuns.provider,
+    model: channelAiRuns.model,
+    completedAt: channelAiRuns.completedAt,
+  }).from(channelAiRuns).where(and(
+    eq(channelAiRuns.conversationId, conversationId), eq(channelAiRuns.clientId, result.client.id),
+  )).orderBy(asc(channelAiRuns.createdAt));
+  return NextResponse.json({ success: true, data: { conversation: result.conversation, messages, aiRuns } });
 }
 
 export async function PATCH(req: Request, { params }: Ctx) {
@@ -60,10 +71,24 @@ export async function PATCH(req: Request, { params }: Ctx) {
     patch.status = 'open';
   } else if (body.action === 'close') {
     patch.status = 'closed';
+    patch.aiMode = 'closed';
     patch.closedAt = new Date();
   } else if (body.action === 'reopen') {
     patch.status = result.conversation.assignedUserId ? 'assigned' : 'open';
+    patch.aiMode = 'hybrid';
     patch.closedAt = null;
+  } else if (body.action === 'ai-takeover') {
+    patch.aiMode = 'ai';
+  } else if (body.action === 'human-takeover') {
+    patch.aiMode = 'human';
+    patch.assignedUserId = userId;
+    patch.status = 'assigned';
+  } else if (body.action === 'pause-ai') {
+    patch.aiMode = 'paused';
+  } else if (body.action === 'set-priority' && ['low', 'normal', 'high', 'urgent'].includes(body.priority)) {
+    patch.priority = body.priority;
+  } else if (body.action === 'set-team' && (body.team === null || typeof body.team === 'string')) {
+    patch.team = body.team?.slice(0, 100) ?? null;
   } else {
     return NextResponse.json({ success: false, message: 'Unknown action' }, { status: 400 });
   }

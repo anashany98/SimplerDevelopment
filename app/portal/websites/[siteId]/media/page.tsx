@@ -86,7 +86,7 @@ export default function PortalMediaPage() {
       .then(res => {
         if (res.success) {
           setMedia(res.data);
-          setTotal(res.pagination.total);
+          setTotal(res.pagination?.total ?? 0);
           if (res.brandingProfiles) setBrandingProfiles(res.brandingProfiles);
         }
       })
@@ -140,10 +140,10 @@ export default function PortalMediaPage() {
         load();
       } else {
         const data = await res.json();
-        alert(data.message || 'Upload failed');
+        alert(data.message || 'Error al subir');
       }
     } catch {
-      alert('Upload failed');
+      alert('Error al subir');
     } finally {
       setUploading(false);
     }
@@ -180,7 +180,7 @@ export default function PortalMediaPage() {
       const res = await fetch(`${versionsBase}/${detail.id}/replace`, { method: 'POST', body: fd });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        alert(json.message || 'Replace failed');
+        alert(json.message || 'Error al reemplazar');
         return;
       }
       setDetail({
@@ -199,10 +199,10 @@ export default function PortalMediaPage() {
 
   const handleRestoreVersion = async (versionId: number) => {
     if (!detail) return;
-    if (!confirm('Restore this version? The current file will be moved into history.')) return;
+    if (!confirm('¿Restaurar esta versión? El archivo actual se moverá al historial.')) return;
     const res = await fetch(`${versionsBase}/${detail.id}/versions/${versionId}/restore`, { method: 'POST' });
     if (!res.ok) {
-      alert('Restore failed');
+      alert('Error al restaurar');
       return;
     }
     const json = await res.json();
@@ -239,7 +239,7 @@ export default function PortalMediaPage() {
   };
 
   const handleDeleteMedia = async () => {
-    if (!detail || !confirm('Delete this file?')) return;
+    if (!detail || !confirm('¿Eliminar este archivo?')) return;
     await fetch(`${base}/${detail.id}`, { method: 'DELETE' });
     setDetail(null);
     load();
@@ -254,23 +254,21 @@ export default function PortalMediaPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Media Library</h1>
-          <p className="text-muted-foreground text-sm mt-1">Upload and manage images, videos, and documents.</p>
+          <h1 className="text-2xl font-bold text-foreground">Biblioteca de medios</h1>
+          <p className="text-muted-foreground text-sm mt-1">Sube y gestiona imágenes, videos y documentos.</p>
         </div>
         <button
           onClick={() => setShowUpload(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
-          <span className="material-icons text-base">cloud_upload</span>
-          Upload
-        </button>
+          <span className="material-icons text-base">cloud_upload</span>Subir</button>
       </div>
 
       {/* Filters */}
       <div className="bg-card border border-border rounded-xl p-4 space-y-3">
         <input
           type="text"
-          placeholder="Search by filename, alt text, or caption..."
+          placeholder="Buscar por nombre de archivo, texto alternativo o descripción…"
           value={search}
           onChange={e => { setSearch(e.target.value); setOffset(0); }}
           className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -282,7 +280,7 @@ export default function PortalMediaPage() {
               onClick={() => { setFilter(type); setOffset(0); }}
               className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                 filter === type
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-accent text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -295,11 +293,11 @@ export default function PortalMediaPage() {
               onChange={e => { setProfileFilter(e.target.value); setOffset(0); }}
               className="ml-auto px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
-              <option value="">All Brands</option>
+              <option value="">Todas las marcas</option>
               {brandingProfiles.map(p => (
                 <option key={p.id} value={String(p.id)}>{p.name}</option>
               ))}
-              <option value="unassigned">Unassigned</option>
+              <option value="unassigned">Sin asignar</option>
             </select>
           )}
         </div>
@@ -314,7 +312,7 @@ export default function PortalMediaPage() {
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-4xl text-muted-foreground/40">perm_media</span>
           <p className="text-sm text-muted-foreground mt-2">
-            {search || filter !== 'all' || profileFilter ? 'No media matches your filters.' : 'No media yet. Upload your first file.'}
+            {search || filter !== 'all' || profileFilter ? 'Ningún medio coincide con tus filtros.' : 'Aún no hay medios. Sube tu primer archivo.'}
           </p>
         </div>
       ) : (
@@ -354,16 +352,14 @@ export default function PortalMediaPage() {
         </div>
       )}
 
-      {/* Pagination */}
+      {/* Págination */}
       {total > limit && (
         <div className="flex justify-center items-center gap-3">
           <button
             disabled={offset === 0}
             onClick={() => setOffset(Math.max(0, offset - limit))}
             className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-40 hover:bg-accent transition-colors"
-          >
-            Previous
-          </button>
+          >Anterior</button>
           <span className="text-xs text-muted-foreground">
             {offset + 1}–{Math.min(offset + limit, total)} of {total}
           </span>
@@ -371,9 +367,7 @@ export default function PortalMediaPage() {
             disabled={offset + limit >= total}
             onClick={() => setOffset(offset + limit)}
             className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-40 hover:bg-accent transition-colors"
-          >
-            Next
-          </button>
+          >Siguiente</button>
         </div>
       )}
 
@@ -383,7 +377,7 @@ export default function PortalMediaPage() {
           <div className="bg-card rounded-xl shadow-2xl max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="p-6 space-y-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-foreground">Upload Media</h2>
+                <h2 className="text-lg font-bold text-foreground">Subir medios</h2>
                 <button onClick={() => setShowUpload(false)} className="text-muted-foreground hover:text-foreground">
                   <span className="material-icons">close</span>
                 </button>
@@ -401,14 +395,14 @@ export default function PortalMediaPage() {
               >
                 <input ref={fileInputRef} type="file" className="hidden" onChange={e => e.target.files?.[0] && selectFile(e.target.files[0])} />
                 {preview ? (
-                  <img src={preview} alt="Preview" className="max-h-40 mx-auto rounded-lg" />
+                  <img src={preview} alt="Vista previa" className="max-h-40 mx-auto rounded-lg" />
                 ) : (
                   <>
                     <span className="material-icons text-4xl text-muted-foreground">cloud_upload</span>
                     <p className="text-sm font-medium text-foreground mt-2">
-                      {selectedFile ? selectedFile.name : 'Drop files here or click to browse'}
+                      {selectedFile ? selectedFile.name : 'Suelta los archivos aquí o haz clic para explorar'}
                     </p>
-                    {!selectedFile && <p className="text-xs text-muted-foreground mt-1">Images, videos, and documents</p>}
+                    {!selectedFile && <p className="text-xs text-muted-foreground mt-1">Imágenes, videos y documentos</p>}
                   </>
                 )}
               </div>
@@ -416,21 +410,21 @@ export default function PortalMediaPage() {
               {selectedFile && (
                 <>
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Alt Text</label>
+                    <label className="text-sm font-medium text-foreground">Texto alternativo</label>
                     <input
                       value={uploadAlt}
                       onChange={e => setUploadAlt(e.target.value)}
-                      placeholder="Describe the image"
+                      placeholder="Describe la imagen"
                       className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Caption</label>
+                    <label className="text-sm font-medium text-foreground">Leyenda</label>
                     <textarea
                       value={uploadCaption}
                       onChange={e => setUploadCaption(e.target.value)}
                       rows={2}
-                      placeholder="Optional caption"
+                      placeholder="Leyenda opcional"
                       className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
                     />
                   </div>
@@ -438,17 +432,15 @@ export default function PortalMediaPage() {
                     <button
                       onClick={handleUpload}
                       disabled={uploading}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                     >
                       {uploading && <span className="material-icons text-base animate-spin">refresh</span>}
-                      {uploading ? 'Uploading...' : 'Upload'}
+                      {uploading ? 'Subiendo…' : 'Subir'}
                     </button>
                     <button
                       onClick={() => setShowUpload(false)}
                       className="px-4 py-2.5 text-sm font-medium text-foreground border border-border rounded-lg hover:bg-accent transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                   </div>
                 </>
               )}
@@ -463,7 +455,7 @@ export default function PortalMediaPage() {
           <div className="bg-card rounded-xl shadow-2xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="p-6 space-y-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-foreground">Media Details</h2>
+                <h2 className="text-lg font-bold text-foreground">Detalles del medio</h2>
                 <button onClick={() => setDetail(null)} className="text-muted-foreground hover:text-foreground">
                   <span className="material-icons">close</span>
                 </button>
@@ -480,18 +472,18 @@ export default function PortalMediaPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
-                <div><span className="font-medium">Filename:</span> {detail.filename}</div>
-                <div><span className="font-medium">Type:</span> {detail.mimeType}</div>
-                <div><span className="font-medium">Size:</span> {formatBytes(detail.fileSize)}</div>
-                {detail.width && detail.height && <div><span className="font-medium">Dimensions:</span> {detail.width} x {detail.height}</div>}
-                <div><span className="font-medium">Uploaded:</span> {new Date(detail.createdAt).toLocaleDateString()}</div>
-                {detail.brandingProfileName && <div><span className="font-medium">Brand:</span> {detail.brandingProfileName}</div>}
+                <div><span className="font-medium">Archivo:</span> {detail.filename}</div>
+                <div><span className="font-medium">Tipo:</span> {detail.mimeType}</div>
+                <div><span className="font-medium">Tamaño:</span> {formatBytes(detail.fileSize)}</div>
+                {detail.width && detail.height && <div><span className="font-medium">Dimensiones:</span> {detail.width} x {detail.height}</div>}
+                <div><span className="font-medium">Subido:</span> {new Date(detail.createdAt).toLocaleDateString()}</div>
+                {detail.brandingProfileName && <div><span className="font-medium">Marca:</span> {detail.brandingProfileName}</div>}
               </div>
 
               {editMode ? (
                 <div className="space-y-3 pt-2">
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Alt Text</label>
+                    <label className="text-sm font-medium text-foreground">Texto alternativo</label>
                     <input
                       value={editAlt}
                       onChange={e => setEditAlt(e.target.value)}
@@ -499,7 +491,7 @@ export default function PortalMediaPage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">Caption</label>
+                    <label className="text-sm font-medium text-foreground">Leyenda</label>
                     <textarea
                       value={editCaption}
                       onChange={e => setEditCaption(e.target.value)}
@@ -511,22 +503,20 @@ export default function PortalMediaPage() {
                     <button
                       onClick={handleSaveDetail}
                       disabled={savingDetail}
-                      className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                      className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
                     >
-                      {savingDetail ? 'Saving...' : 'Save'}
+                      {savingDetail ? 'Guardando…' : 'Guardar'}
                     </button>
                     <button
                       onClick={() => setEditMode(false)}
                       className="px-4 py-2 text-sm text-foreground border border-border rounded-lg hover:bg-accent transition-colors"
-                    >
-                      Cancel
-                    </button>
+                    >Cancelar</button>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-1 text-sm">
-                  {detail.alt && <p><span className="font-medium">Alt:</span> {detail.alt}</p>}
-                  {detail.caption && <p><span className="font-medium">Caption:</span> {detail.caption}</p>}
+                  {detail.alt && <p><span className="font-medium">Texto alternativo:</span> {detail.alt}</p>}
+                  {detail.caption && <p><span className="font-medium">Leyenda:</span> {detail.caption}</p>}
                 </div>
               )}
 
@@ -543,7 +533,7 @@ export default function PortalMediaPage() {
                 />
                 <button
                   onClick={() => copyUrl(detail.url)}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
                 >
                   <span className="material-icons text-base">content_copy</span>
                   Copy URL
@@ -554,7 +544,7 @@ export default function PortalMediaPage() {
                   className="flex items-center gap-1.5 px-4 py-2 text-sm text-foreground border border-border rounded-lg hover:bg-accent disabled:opacity-50 transition-colors"
                 >
                   <span className="material-icons text-base">{replacing ? 'refresh' : 'upload_file'}</span>
-                  {replacing ? 'Replacing…' : 'Replace File'}
+                  {replacing ? 'Replacing…' : 'Reemplazar archivo'}
                 </button>
                 {!editMode && (
                   <button
@@ -567,9 +557,7 @@ export default function PortalMediaPage() {
                 <button
                   onClick={handleDeleteMedia}
                   className="ml-auto px-4 py-2 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 transition-colors"
-                >
-                  Delete
-                </button>
+                >Eliminar</button>
               </div>
 
               <div className="pt-3 border-t border-border">
@@ -587,7 +575,7 @@ export default function PortalMediaPage() {
                 {versionsOpen && (
                   <div className="mt-3 space-y-2">
                     {versions.length === 0 ? (
-                      <p className="text-xs text-muted-foreground">No prior versions yet. Replace the file to start a history.</p>
+                      <p className="text-xs text-muted-foreground">Aún no hay versiones anteriores. Reemplaza el archivo para iniciar un historial.</p>
                     ) : (
                       versions.map((v) => (
                         <div key={v.id} className="flex items-center gap-3 px-3 py-2 rounded-lg border border-border bg-background">
@@ -603,15 +591,11 @@ export default function PortalMediaPage() {
                             target="_blank"
                             rel="noopener"
                             className="text-xs text-muted-foreground hover:text-foreground"
-                          >
-                            View
-                          </a>
+                          >Ver</a>
                           <button
                             onClick={() => handleRestoreVersion(v.id)}
                             className="text-xs px-2 py-1 rounded border border-border hover:bg-accent transition-colors"
-                          >
-                            Restore
-                          </button>
+                          >Restaurar</button>
                         </div>
                       ))
                     )}

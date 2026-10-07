@@ -76,7 +76,7 @@ export default function MediaGrid({ media, onUpdate }: MediaGridProps) {
 
       {media.length === 0 && (
         <div className="text-center py-12 text-muted-foreground">
-          No media found. Upload some files to get started!
+          No se encontraron medios. Sube archivos para empezar.
         </div>
       )}
 

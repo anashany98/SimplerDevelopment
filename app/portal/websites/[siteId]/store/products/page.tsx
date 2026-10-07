@@ -101,7 +101,7 @@ export default function ProductsListPage() {
   };
 
   const bulkDelete = async () => {
-    if (!confirm(`Delete ${selected.size} product(s)? This cannot be undone.`)) return;
+    if (!confirm(`¿Eliminar ${selected.size} producto(s)? Esta acción no se puede deshacer.`)) return;
     setBulkLoading(true);
     try {
       await fetch(`${base}/products/bulk`, {
@@ -136,25 +136,25 @@ export default function ProductsListPage() {
   };
 
   const tabs = [
-    { label: 'All', value: 'all' },
-    { label: 'Active', value: 'active' },
-    { label: 'Draft', value: 'draft' },
-    { label: 'Archived', value: 'archived' },
+    { label: 'Todos', value: 'all' },
+    { label: 'Activo', value: 'active' },
+    { label: 'Borrador', value: 'draft' },
+    { label: 'Archivado', value: 'archived' },
   ];
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Store"
-        title="Products"
-        subtitle="Manage your store products and inventory."
+        eyebrow="Tienda"
+        title="Productos"
+        subtitle="Gestiona los productos y el inventario de tu tienda."
         actions={
           <Link
             href={`/portal/websites/${siteId}/store/products/new`}
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            Add Product
+            Nuevo producto
           </Link>
         }
       />
@@ -169,7 +169,7 @@ export default function ProductsListPage() {
               onClick={() => { setStatusFilter(tab.value); setPage(1); }}
               className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
                 statusFilter === tab.value
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
             >
@@ -187,17 +187,17 @@ export default function ProductsListPage() {
             <input
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              placeholder="Search products..."
+              placeholder="Buscar productos…"
               className={`${pInput} pl-10`}
             />
           </div>
           <select
-            aria-label="Filter by category"
+            aria-label="Filtrar por categoría"
             value={categoryFilter}
             onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2.5 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">All Categories</option>
+            <option value="">Todas las categorías</option>
             {categories.map((cat) => (
               <option key={cat.id} value={String(cat.id)}>
                 {cat.name}
@@ -210,41 +210,35 @@ export default function ProductsListPage() {
       {/* Bulk actions */}
       {selected.size > 0 && (
         <div className="flex items-center gap-3 p-3 bg-accent/50 border border-border rounded-xl">
-          <span className="text-sm text-foreground font-medium">{selected.size} selected</span>
+          <span className="text-sm text-foreground font-medium">{selected.size} seleccionados</span>
           <button
             onClick={() => bulkChangeStatus('active')}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 transition-colors disabled:opacity-50"
           >
-            Set Active
+            Activar
           </button>
           <button
             onClick={() => bulkChangeStatus('draft')}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 transition-colors disabled:opacity-50"
           >
-            Set Draft
+            Pasar a borrador
           </button>
           <button
             onClick={() => bulkChangeStatus('archived')}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-400 transition-colors disabled:opacity-50"
-          >
-            Archive
-          </button>
+          >Archivar</button>
           <button
             onClick={bulkDelete}
             disabled={bulkLoading}
             className="px-3 py-1 text-xs font-medium rounded-md bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 transition-colors disabled:opacity-50"
-          >
-            Delete
-          </button>
+          >Eliminar</button>
           <button
             onClick={() => setSelected(new Set())}
             className="ml-auto text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Clear
-          </button>
+          >Limpiar</button>
         </div>
       )}
 
@@ -256,11 +250,11 @@ export default function ProductsListPage() {
       ) : products.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-10 flex flex-col items-center text-center">
           <span className="material-icons text-4xl text-muted-foreground/40 mb-2">inventory_2</span>
-          <h2 className="font-semibold text-foreground mb-1">No products found</h2>
+          <h2 className="font-semibold text-foreground mb-1">No se encontraron productos</h2>
           <p className="text-sm text-muted-foreground mb-4">
             {search || statusFilter !== 'all' || categoryFilter
-              ? 'Try adjusting your filters.'
-              : 'Add your first product to start selling.'}
+              ? 'Prueba a ajustar tus filtros.'
+              : 'Agrega tu primer producto para empezar a vender.'}
           </p>
           {!search && statusFilter === 'all' && !categoryFilter && (
             <Link
@@ -268,7 +262,7 @@ export default function ProductsListPage() {
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add</span>
-              Add Product
+              Nuevo producto
             </Link>
           )}
         </div>
@@ -281,18 +275,18 @@ export default function ProductsListPage() {
                   <th className="px-4 py-3 w-10">
                     <input
                       type="checkbox"
-                      aria-label="Select all products"
+                      aria-label="Seleccionar todos los productos"
                       checked={selected.size === products.length && products.length > 0}
                       onChange={toggleAll}
                       className="rounded border-border"
                     />
                   </th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground w-14">Image</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Name</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Status</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Price</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Inventory</th>
-                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Category</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground w-14">Imagen</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Nombre</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Estado</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Precio</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Inventario</th>
+                  <th className="px-4 py-3 text-xs font-medium text-muted-foreground">Categoría</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -305,7 +299,7 @@ export default function ProductsListPage() {
                     <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
-                        aria-label={`Select ${product.name}`}
+                        aria-label={`Seleccionar ${product.name}`}
                         checked={selected.has(product.id)}
                         onChange={() => toggleSelect(product.id)}
                         className="rounded border-border"
@@ -346,7 +340,7 @@ export default function ProductsListPage() {
                       )}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
-                      {product.trackInventory ? product.quantity : <span className="text-xs">Not tracked</span>}
+                      {product.trackInventory ? product.quantity : <span className="text-xs">Sin seguimiento</span>}
                     </td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {product.category?.name || <span className="text-muted-foreground/50">--</span>}
@@ -359,7 +353,7 @@ export default function ProductsListPage() {
         </div>
       )}
 
-      {/* Pagination */}
+      {/* Págination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <button
@@ -370,7 +364,7 @@ export default function ProductsListPage() {
             <span className="material-icons text-lg">chevron_left</span>
           </button>
           <span className="text-sm text-muted-foreground">
-            Page {page} of {totalPages}
+            Página {page} de {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}

@@ -158,7 +158,7 @@ describe('IframePreview', () => {
     const props = baseProps();
     props.blocks = [];
     const { getByText } = render(<IframePreview {...props} />);
-    expect(getByText('No blocks on this page')).toBeTruthy();
+    expect(getByText('No hay bloques en esta página')).toBeTruthy();
   });
 
   it('hides the empty-state overlay in preview mode even with no blocks', () => {
@@ -166,7 +166,7 @@ describe('IframePreview', () => {
     props.blocks = [];
     props.previewMode = true;
     const { queryByText } = render(<IframePreview {...props} />);
-    expect(queryByText('No blocks on this page')).toBeNull();
+    expect(queryByText('No hay bloques en esta página')).toBeNull();
   });
 
   it('uses tablet viewport dimensions when viewport is tablet', () => {
@@ -204,7 +204,7 @@ describe('IframePreview', () => {
   it('wires zoom in / out / reset buttons', () => {
     const props = baseProps();
     const { getByTitle } = render(<IframePreview {...props} />);
-    fireEvent.click(getByTitle('Zoom in'));
+    fireEvent.click(getByTitle('Acercar'));
     fireEvent.click(getByTitle('Zoom out'));
     fireEvent.click(getByTitle('Reset zoom'));
     expect(props.zoomIn).toHaveBeenCalledTimes(1);
@@ -223,7 +223,7 @@ describe('IframePreview', () => {
     const props = baseProps();
     props.zoomLevel = 200;
     const { getByTitle } = render(<IframePreview {...props} />);
-    expect((getByTitle('Zoom in') as HTMLButtonElement).disabled).toBe(true);
+    expect((getByTitle('Acercar') as HTMLButtonElement).disabled).toBe(true);
   });
 
   it('does not render the external-drag overlay when externalDragType is null', () => {
@@ -375,7 +375,7 @@ describe('PostSettingsModal', () => {
   it('flips published flag and stamps publishedAt when toggled on', () => {
     const props = baseProps();
     const { getByLabelText } = render(<PostSettingsModal {...props} />);
-    fireEvent.click(getByLabelText('Published'));
+    fireEvent.click(getByLabelText('Publicado'));
     const call = props.onFormDataChange.mock.calls[0][0];
     expect(call.published).toBe(true);
     expect(typeof call.publishedAt).toBe('string');
@@ -386,7 +386,7 @@ describe('PostSettingsModal', () => {
     props.formData.published = true;
     props.formData.publishedAt = '2026-01-01T00:00:00.000Z';
     const { getByLabelText } = render(<PostSettingsModal {...props} />);
-    fireEvent.click(getByLabelText('Published'));
+    fireEvent.click(getByLabelText('Publicado'));
     expect(props.onFormDataChange).toHaveBeenCalledWith({ published: false, publishedAt: null });
   });
 
@@ -416,7 +416,7 @@ describe('PostSettingsModal', () => {
   it('invokes onClose when the backdrop or Close button is clicked', () => {
     const props = baseProps();
     const { container, getByText } = render(<PostSettingsModal {...props} />);
-    fireEvent.click(getByText('Close'));
+    fireEvent.click(getByText('Cerrar'));
     expect(props.onClose).toHaveBeenCalledTimes(1);
     // Backdrop is the first fixed inset element.
     const backdrop = container.querySelector('.bg-black\\/50') as HTMLElement;
@@ -616,7 +616,7 @@ describe('LayerItem', () => {
         onUpdate={vi.fn()}
       />
     );
-    fireEvent.click(getByTitle('Delete'));
+    fireEvent.click(getByTitle('Eliminar'));
     expect(onDelete).toHaveBeenCalledWith('b-1');
   });
 

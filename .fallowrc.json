@@ -3,6 +3,7 @@
   "ignorePatterns": [
     ".qa-reports/**",
     "scripts/**",
+    "sd-chat-mobile/**",
     "docs/marketing/**",
     "drizzle/**",
     "vault/**",

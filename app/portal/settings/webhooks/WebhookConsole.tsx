@@ -46,9 +46,9 @@ const SOURCE_ICON: Record<WebhookSource, string> = {
 };
 
 const SOURCE_LABEL: Record<WebhookSource, string> = {
-  project: 'Project',
-  survey: 'Survey',
-  site: 'Site',
+  project: 'Proyecto',
+  survey: 'Encuesta',
+  site: 'Sitio',
 };
 
 function truncateUrl(url: string, max = 48): string {
@@ -62,17 +62,17 @@ function formatStatus(status: number | null): string {
 }
 
 function formatRelative(iso: string | null): string {
-  if (!iso) return 'Never';
+  if (!iso) return 'Nunca';
   const date = new Date(iso);
   const diffMs = Date.now() - date.getTime();
   const sec = Math.round(diffMs / 1000);
-  if (sec < 60) return `${sec}s ago`;
+  if (sec < 60) return `hace ${sec} s`;
   const min = Math.round(sec / 60);
-  if (min < 60) return `${min}m ago`;
+  if (min < 60) return `hace ${min} min`;
   const hr = Math.round(min / 60);
-  if (hr < 24) return `${hr}h ago`;
+  if (hr < 24) return `hace ${hr} h`;
   const day = Math.round(hr / 24);
-  if (day < 30) return `${day}d ago`;
+  if (day < 30) return `hace ${day} d`;
   return date.toLocaleDateString();
 }
 
@@ -113,7 +113,7 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
 
   async function handleRotate(r: UnifiedWebhookRow) {
     const key = rowKey(r);
-    if (!confirm(`Rotate the signing secret for this ${SOURCE_LABEL[r.source].toLowerCase()} webhook?\nAny consumer that doesn't update will start failing signature checks immediately.`)) {
+    if (!confirm(`¿Rotar el secreto de firma de este webhook de ${SOURCE_LABEL[r.source].toLowerCase()}?\nCualquier consumidor que no lo actualice empezará a fallar las comprobaciones de firma de inmediato.`)) {
       return;
     }
     setRotatingId(key);
@@ -135,7 +135,7 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
     } catch (err) {
       setRotateError((prev) => ({
         ...prev,
-        [key]: err instanceof Error ? err.message : 'Rotate failed',
+        [key]: err instanceof Error ? err.message : 'No se pudo rotar',
       }));
     } finally {
       setRotatingId(null);
@@ -179,14 +179,14 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
                 onClick={() => setSourceFilter(s)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md transition-colors ${
                   active
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {s !== 'all' && (
                   <span className="material-icons text-sm">{SOURCE_ICON[s as WebhookSource]}</span>
                 )}
-                {s === 'all' ? 'All sources' : SOURCE_LABEL[s as WebhookSource]}
+                {s === 'all' ? 'Todas las fuentes' : SOURCE_LABEL[s as WebhookSource]}
               </button>
             );
           })}
@@ -202,11 +202,11 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
                 onClick={() => setStatusFilter(s)}
                 className={`px-2.5 py-1 text-xs rounded-md capitalize transition-colors ${
                   active
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {s === 'all' ? 'Any status' : s}
+                {s === 'all' ? 'Cualquier estado' : s === 'enabled' ? 'Activos' : 'Inactivos'}
               </button>
             );
           })}
@@ -222,11 +222,11 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
           }`}
         >
           <span className="material-icons text-sm">error_outline</span>
-          Failing only
+          Solo con errores
         </button>
 
         <span className="text-xs text-muted-foreground ml-auto">
-          {filtered.length} of {rows.length}
+          {filtered.length} de {rows.length}
         </span>
       </div>
 
@@ -234,17 +234,17 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
       {rows.length === 0 && (
         <div className="border border-border bg-card rounded-xl p-8 flex flex-col items-center text-center">
           <span className="material-icons text-5xl text-muted-foreground mb-3">webhook</span>
-          <h3 className="font-semibold text-foreground mb-1">No webhooks configured</h3>
+          <h3 className="font-semibold text-foreground mb-1">No hay webhooks configurados</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Create webhooks from inside individual projects, surveys, or sites. They&apos;ll show up
-            here automatically.
+            Crea webhooks desde cada proyecto, encuesta o sitio. Aparecerán
+            aquí automáticamente.
           </p>
         </div>
       )}
 
       {rows.length > 0 && filtered.length === 0 && (
         <div className="border border-border bg-card rounded-xl p-6 text-sm text-muted-foreground text-center">
-          No webhooks match the current filters.
+          Ningún webhook coincide con los filtros actuales.
         </div>
       )}
 
@@ -255,11 +255,11 @@ export default function WebhookConsole({ rows }: { rows: UnifiedWebhookRow[] }) 
           <table className="w-full min-w-[760px] text-sm">
             <thead className="bg-muted/40">
               <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-3 py-2 font-medium">Source</th>
+                <th className="px-3 py-2 font-medium">Fuente</th>
                 <th className="px-3 py-2 font-medium">URL</th>
-                <th className="px-3 py-2 font-medium">Events</th>
-                <th className="px-3 py-2 font-medium">Status</th>
-                <th className="px-3 py-2 font-medium">Last delivery</th>
+                <th className="px-3 py-2 font-medium">Eventos</th>
+                <th className="px-3 py-2 font-medium">Estado</th>
+                <th className="px-3 py-2 font-medium">Última entrega</th>
                 <th className="px-3 py-2 font-medium" />
               </tr>
             </thead>
@@ -342,7 +342,7 @@ function FragmentRow({
             <button
               type="button"
               onClick={onCopy}
-              title="Copy URL"
+              title="Copiar URL"
               className="text-muted-foreground hover:text-foreground"
             >
               <span className="material-icons text-base">
@@ -351,13 +351,13 @@ function FragmentRow({
             </button>
           </div>
           <div className="text-xs text-muted-foreground mt-0.5 font-mono">
-            secret …{r.secretLast4 ?? '----'}
+            secreto …{r.secretLast4 ?? '----'}
           </div>
         </td>
         <td className="px-3 py-3">
           <div className="flex flex-wrap gap-1 max-w-[20ch]">
             {r.events.length === 0 ? (
-              <span className="text-xs text-muted-foreground">all</span>
+              <span className="text-xs text-muted-foreground">todos</span>
             ) : (
               r.events.slice(0, 3).map((e) => (
                 <span
@@ -384,12 +384,12 @@ function FragmentRow({
             <span className="material-icons text-sm">
               {r.enabled ? 'check_circle' : 'pause_circle'}
             </span>
-            {r.enabled ? 'Enabled' : 'Disabled'}
+            {r.enabled ? 'Activo' : 'Inactivo'}
           </span>
           {r.failing && (
             <div className="mt-1 inline-flex items-center gap-1 text-[11px] text-destructive">
               <span className="material-icons text-sm">error</span>
-              Failing
+              Con errores
             </div>
           )}
         </td>
@@ -406,10 +406,10 @@ function FragmentRow({
               onClick={onRotate}
               disabled={rotating}
               className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded border border-border hover:bg-muted disabled:opacity-50 transition-colors"
-              title="Generate a new HMAC signing secret"
+              title="Generar un nuevo secreto de firma HMAC"
             >
               <span className="material-icons text-sm">key</span>
-              {rotating ? 'Rotating…' : 'Rotate secret'}
+              {rotating ? 'Rotando…' : 'Rotar secreto'}
             </button>
             <button
               type="button"
@@ -417,7 +417,7 @@ function FragmentRow({
               className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded border border-border hover:bg-muted transition-colors"
             >
               <span className="material-icons text-sm">{isOpen ? 'expand_less' : 'history'}</span>
-              {isOpen ? 'Hide' : 'Deliveries'}
+              {isOpen ? 'Ocultar' : 'Entregas'}
             </button>
           </div>
         </td>
@@ -430,7 +430,7 @@ function FragmentRow({
               <div className="border border-amber-500/40 bg-amber-500/10 rounded-md p-3 text-xs">
                 <div className="flex items-center gap-1.5 font-medium text-amber-800 dark:text-amber-300">
                   <span className="material-icons text-base">warning</span>
-                  New signing secret — copy it now. We never display it again.
+                  Nuevo secreto de firma: cópialo ahora. No volveremos a mostrarlo.
                 </div>
                 <code className="block mt-2 p-2 rounded bg-background border border-border font-mono break-all">
                   {rotated}
@@ -469,28 +469,28 @@ function DeliveriesPanel({
     return (
       <div className="text-xs text-muted-foreground flex items-center gap-1.5">
         <span className="material-icons text-base">info</span>
-        Delivery log is not yet recorded for this source. {/* TODO: wire survey + site delivery
+        El registro de entregas aún no está disponible para esta fuente. {/* TODO: wire survey + site delivery
         history once those tables are added. */}
       </div>
     );
   }
   if (deliveries === 'loading' || deliveries === undefined) {
-    return <div className="text-xs text-muted-foreground">Loading deliveries…</div>;
+    return <div className="text-xs text-muted-foreground">Cargando entregas…</div>;
   }
   if (deliveries === 'error') {
-    return <div className="text-xs text-destructive">Failed to load deliveries.</div>;
+    return <div className="text-xs text-destructive">No se pudieron cargar las entregas.</div>;
   }
   if (deliveries.length === 0) {
-    return <div className="text-xs text-muted-foreground">No delivery attempts recorded yet.</div>;
+    return <div className="text-xs text-muted-foreground">Aún no se han registrado intentos de entrega.</div>;
   }
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-xs">
         <thead>
           <tr className="text-left text-muted-foreground">
-            <th className="py-1 pr-3 font-medium">When</th>
-            <th className="py-1 pr-3 font-medium">Event</th>
-            <th className="py-1 pr-3 font-medium">Status</th>
+            <th className="py-1 pr-3 font-medium">Cuándo</th>
+            <th className="py-1 pr-3 font-medium">Evento</th>
+            <th className="py-1 pr-3 font-medium">Estado</th>
             <th className="py-1 font-medium">Error</th>
           </tr>
         </thead>

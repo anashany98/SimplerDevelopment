@@ -171,7 +171,7 @@ export async function POST(req: Request) {
       companyId: body.companyId || null,
       title: body.title.trim(),
       value: body.value != null ? body.value : null,
-      currency: body.currency || 'USD',
+      currency: body.currency || 'EUR',
       status: body.status || 'open',
       priority: body.priority || 'medium',
       expectedCloseDate: body.expectedCloseDate ? new Date(body.expectedCloseDate) : null,
@@ -183,7 +183,7 @@ export async function POST(req: Request) {
     })
     .returning();
 
-  emitEvent('crm.deal.created', client.id, userId, { id: deal.id, title: deal.title, value: deal.value, status: deal.status, stageId: deal.stageId, contactId: deal.contactId });
+  await emitEvent('crm.deal.created', client.id, userId, { id: deal.id, title: deal.title, value: deal.value, status: deal.status, stageId: deal.stageId, contactId: deal.contactId });
 
   return NextResponse.json({ success: true, data: deal }, { status: 201 });
 }

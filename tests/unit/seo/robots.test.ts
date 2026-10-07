@@ -101,7 +101,7 @@ describe('parseRobotsTxt — user-agent group selection', () => {
     User-agent: *
     Disallow: /private
 
-    User-agent: SimplerDevelopmentBot
+    User-agent: CRMAgentsBot
     Disallow: /bot-only
     Allow: /private
   `);
@@ -119,7 +119,7 @@ describe('parseRobotsTxt — user-agent group selection', () => {
     expect(robots.isAllowed('https://example.com/bot-only', 'curl/8.0')).toBe(true);
   });
 
-  it('defaults to SimplerDevelopmentBot when no UA is passed', () => {
+  it('defaults to CRMAgentsBot when no UA is passed', () => {
     expect(robots.isAllowed('https://example.com/bot-only')).toBe(false);
   });
 

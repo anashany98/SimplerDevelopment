@@ -45,11 +45,11 @@ function fmtMinutes(mins: number): string {
 }
 
 const STATUS_LABEL: Record<string, string> = {
-  open: 'Open',
-  in_progress: 'In Progress',
-  waiting_on_customer: 'Waiting on Customer',
-  resolved: 'Resolved',
-  closed: 'Closed',
+  open: 'Abierto',
+  in_progress: 'En curso',
+  waiting_on_customer: 'Esperando al cliente',
+  resolved: 'Resuelto',
+  closed: 'Cerrado',
 };
 
 const PRIORITY_COLOR: Record<string, string> = {
@@ -94,7 +94,7 @@ function EmptyState({ message }: { message: string }) {
 
 // Inline SVG bar chart — two series (opened / resolved) per day.
 function VolumeTrendChart({ trend }: { trend: TrendDay[] }) {
-  if (trend.length === 0) return <EmptyState message="No ticket volume data yet." />;
+  if (trend.length === 0) return <EmptyState message="Aún no hay datos de volumen de tickets." />;
 
   const W = 720;
   const H = 200;
@@ -118,7 +118,7 @@ function VolumeTrendChart({ trend }: { trend: TrendDay[] }) {
 
   return (
     <div className={`${pCard} p-4`}>
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Ticket volume trend">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Tendencia de volumen de tickets">
         {/* Grid lines + y labels */}
         {yTicks.map((t) => (
           <g key={`y-${t}`}>
@@ -153,7 +153,7 @@ function VolumeTrendChart({ trend }: { trend: TrendDay[] }) {
                 fill="hsl(var(--primary, 222 47% 51%))"
                 fillOpacity="0.85"
               >
-                <title>{d.date}: {d.opened} opened</title>
+                <title>{d.date}: {d.opened} abiertos</title>
               </rect>
               {/* resolved bar */}
               <rect
@@ -164,7 +164,7 @@ function VolumeTrendChart({ trend }: { trend: TrendDay[] }) {
                 fill="currentColor"
                 fillOpacity="0.25"
               >
-                <title>{d.date}: {d.resolved} resolved</title>
+                <title>{d.date}: {d.resolved} resueltos</title>
               </rect>
             </g>
           );
@@ -187,12 +187,10 @@ function VolumeTrendChart({ trend }: { trend: TrendDay[] }) {
       <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground mt-2">
         <span className="flex items-center gap-1.5">
           <span className="inline-block w-3 h-3 bg-primary rounded-sm opacity-85" />
-          Opened
+          Abiertos
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 bg-current rounded-sm opacity-25" />
-          Resolved
-        </span>
+          <span className="inline-block w-3 h-3 bg-current rounded-sm opacity-25" />Resuelto</span>
       </div>
     </div>
   );
@@ -208,7 +206,7 @@ function BreakdownBars({
   total: number;
   colorMap?: Record<string, string>;
 }) {
-  if (entries.length === 0) return <EmptyState message="No data." />;
+  if (entries.length === 0) return <EmptyState message="Sin datos." />;
   return (
     <div className={`${pCard} p-4 space-y-3`}>
       {entries.map(({ label, value }) => {
@@ -253,10 +251,10 @@ export default function TicketReportsPage() {
         if (json.success) {
           setData(json.data as ReportData);
         } else {
-          setError(json.message ?? 'Failed to load report data.');
+          setError(json.message ?? 'No se pudieron cargar los datos del informe.');
         }
       } catch {
-        if (!cancelled) setError('Network error loading report data.');
+        if (!cancelled) setError('Error de red al cargar los datos del informe.');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -282,13 +280,13 @@ export default function TicketReportsPage() {
     <div className="space-y-6 max-w-5xl">
       {/* Header + nav */}
       <PortalPageHeader
-        eyebrow="Support"
-        title="Help-Desk Reports"
-        subtitle="Response times, resolution stats, and ticket volume for your support queue."
+        eyebrow="Soporte"
+        title="Informes de soporte"
+        subtitle="Tiempos de respuesta, estadísticas de resolución y volumen de tickets de tu cola de soporte."
         actions={
           <Link href="/portal/tickets" className={pBtnGhost}>
             <span className="material-icons text-base">arrow_back</span>
-            All Tickets
+            Todos los tickets
           </Link>
         }
       />
@@ -304,7 +302,7 @@ export default function TicketReportsPage() {
         <span
           className="px-4 py-2 text-sm font-medium text-foreground border-b-2 border-primary -mb-px"
         >
-          Reports
+          Informes
         </span>
       </nav>
 
@@ -327,59 +325,59 @@ export default function TicketReportsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <StatCard
               icon="confirmation_number"
-              label="Total Tickets"
+              label="Tickets totales"
               value={data.totalTickets}
             />
             <StatCard
               icon="inbox"
-              label="Open"
+              label="Abierto"
               value={data.openCount}
               sub={
                 data.awaitingFirstResponse > 0
-                  ? `${data.awaitingFirstResponse} awaiting first reply`
+                  ? `${data.awaitingFirstResponse} pendientes de primera respuesta`
                   : undefined
               }
             />
             <StatCard
               icon="check_circle"
-              label="Resolved / Closed"
+              label="Resueltos / Cerrados"
               value={data.closedCount}
             />
             <StatCard
               icon="pending_actions"
-              label="Awaiting Reply"
+              label="Pendientes de respuesta"
               value={data.awaitingFirstResponse}
-              sub="open with no staff response yet"
+              sub="abiertos sin respuesta del equipo todavía"
             />
           </div>
 
           {/* ── Response-time cards ────────────────────────────────────────── */}
           <section>
-            <h2 className={`${pSectionTitle} mb-1`}>Response Times</h2>
+            <h2 className={`${pSectionTitle} mb-1`}>Tiempos de respuesta</h2>
             <p className="text-sm text-muted-foreground mb-3">
-              Measured from ticket creation to first staff reply / resolution.
-              Based on {data.firstResponse.sampleSize} responded and{' '}
-              {data.resolution.sampleSize} resolved tickets.
+              Medido desde la creación del ticket hasta la primera respuesta del equipo / la resolución.
+              Basado en {data.firstResponse.sampleSize} tickets respondidos y{' '}
+              {data.resolution.sampleSize} resueltos.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <StatCard
                 icon="reply"
-                label="Median First Response"
+                label="Primera respuesta mediana"
                 value={fmtMinutes(data.firstResponse.medianMinutes)}
               />
               <StatCard
-                icon="avg_pace"
-                label="Avg First Response"
+                icon="speed"
+                label="Primera respuesta promedio"
                 value={fmtMinutes(data.firstResponse.avgMinutes)}
               />
               <StatCard
                 icon="timer"
-                label="Median Resolution"
+                label="Resolución mediana"
                 value={fmtMinutes(data.resolution.medianMinutes)}
               />
               <StatCard
                 icon="schedule"
-                label="Avg Resolution"
+                label="Resolución promedio"
                 value={fmtMinutes(data.resolution.avgMinutes)}
               />
             </div>
@@ -389,22 +387,22 @@ export default function TicketReportsPage() {
           <section>
             <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
               <div>
-                <h2 className={`${pSectionTitle}`}>Ticket Volume</h2>
+                <h2 className={`${pSectionTitle}`}>Volumen de tickets</h2>
                 <p className="text-sm text-muted-foreground">
-                  Tickets opened vs. resolved per day over the last {data.days} days.
+                  Tickets abiertos vs. resueltos por día en los últimos {data.days} días.
                 </p>
               </div>
               <select
-                aria-label="Report time range"
+                aria-label="Rango temporal del informe"
                 value={days}
                 onChange={(e) => setDays(parseInt(e.target.value, 10))}
                 className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 w-auto"
               >
-                <option value={7}>Last 7 days</option>
-                <option value={14}>Last 14 days</option>
-                <option value={30}>Last 30 days</option>
-                <option value={60}>Last 60 days</option>
-                <option value={90}>Last 90 days</option>
+                <option value={7}>Últimos 7 días</option>
+                <option value={14}>Últimos 14 días</option>
+                <option value={30}>Últimos 30 días</option>
+                <option value={60}>Últimos 60 días</option>
+                <option value={90}>Últimos 90 días</option>
               </select>
             </div>
             <VolumeTrendChart trend={data.volumeTrend} />
@@ -412,8 +410,8 @@ export default function TicketReportsPage() {
 
           {/* ── Status breakdown ──────────────────────────────────────────── */}
           <section>
-            <h2 className={`${pSectionTitle} mb-1`}>By Status</h2>
-            <p className="text-sm text-muted-foreground mb-3">All-time ticket counts per status.</p>
+            <h2 className={`${pSectionTitle} mb-1`}>Por estado</h2>
+            <p className="text-sm text-muted-foreground mb-3">Total de tickets por estado.</p>
             <BreakdownBars
               entries={statusEntries}
               total={data.totalTickets}
@@ -422,9 +420,9 @@ export default function TicketReportsPage() {
 
           {/* ── Priority breakdown (open only) ────────────────────────────── */}
           <section>
-            <h2 className={`${pSectionTitle} mb-1`}>Open Tickets by Priority</h2>
+            <h2 className={`${pSectionTitle} mb-1`}>Tickets abiertos por prioridad</h2>
             <p className="text-sm text-muted-foreground mb-3">
-              Distribution of currently-open tickets across priority levels.
+              Distribución de los tickets abiertos actualmente por nivel de prioridad.
             </p>
             <BreakdownBars
               entries={priorityEntries}

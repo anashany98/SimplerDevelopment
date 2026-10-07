@@ -679,6 +679,38 @@ describe('move_project_card', () => {
     const card = state.kanbanCards.find((c) => c.id === 1)!;
     expect(card.columnId).toBe(2);
   });
+
+  it('rejects a destination column that belongs to a different project', async () => {
+    seedProject({ id: 1, clientId: 10 });
+    seedProject({ id: 2, clientId: 10 });
+    seedColumn({ id: 1, projectId: 1, name: 'To Do' });
+    seedColumn({ id: 5, projectId: 2, name: 'Foreign Column' });
+    seedCard({ id: 1, projectId: 1, columnId: 1 });
+    const { projectHandlers } = await importModule();
+    const res = await projectHandlers.move_project_card(
+      { card_id: 1, column_id: 5 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Destination column not found' });
+    const card = state.kanbanCards.find((c) => c.id === 1)!;
+    expect(card.columnId).toBe(1);
+  });
+
+  it('rejects a destination column that does not exist', async () => {
+    seedProject({ id: 1, clientId: 10 });
+    seedColumn({ id: 1, projectId: 1, name: 'To Do' });
+    seedCard({ id: 1, projectId: 1, columnId: 1 });
+    const { projectHandlers } = await importModule();
+    const res = await projectHandlers.move_project_card(
+      { card_id: 1, column_id: 404 },
+      10,
+      1,
+    );
+    expect(res).toEqual({ error: 'Destination column not found' });
+    const card = state.kanbanCards.find((c) => c.id === 1)!;
+    expect(card.columnId).toBe(1);
+  });
 });
 
 // ---------------------------------------------------------------------------

@@ -53,14 +53,14 @@ export default function ImpersonationBanner() {
   return (
     <div
       role="status"
-      aria-label="Impersonation active"
+      aria-label="Suplantación activa"
       className="sticky top-0 z-50 w-full bg-amber-500 text-amber-950 border-b border-amber-700 shadow-sm"
     >
       <div className="flex items-center justify-between gap-3 px-4 py-2 text-sm font-medium">
         <div className="flex items-center gap-2 min-w-0">
           <span className="material-icons text-base">visibility</span>
           <span className="truncate">
-            You are impersonating <strong>{status.clientCompany}</strong>
+            Estás suplantando a <strong>{status.clientCompany}</strong>
           </span>
         </div>
         <button
@@ -70,7 +70,7 @@ export default function ImpersonationBanner() {
           className="shrink-0 inline-flex items-center gap-1 px-3 py-1 rounded-md bg-amber-900 text-amber-50 hover:bg-amber-950 disabled:opacity-50"
         >
           <span className="material-icons text-base">logout</span>
-          {stopping ? 'Stopping…' : 'Stop impersonating'}
+          {stopping ? 'Deteniendo…' : 'Dejar de suplantar'}
         </button>
       </div>
     </div>

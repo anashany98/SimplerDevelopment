@@ -161,7 +161,7 @@ const solution = await fetchOneEntry({
     ],
     "featured": true,
     "order": 1,
-    "metaTitle": "Design Automation Services | SimplerDevelopment",
+    "metaTitle": "Design Automation Services | CRM AGENTS",
     "metaDescription": "Automate your design workflow with our expert services",
     "ogImage": "https://cdn.builder.io/api/v1/image/assets/.../og123",
     "publishedDate": "2026-01-13T00:00:00.000Z"
@@ -454,7 +454,7 @@ const page = await fetchOneEntry({
   "id": "page123",
   "name": "About Us",
   "data": {
-    "title": "About SimplerDevelopment",
+    "title": "About CRM AGENTS",
     "blocks": [
       {
         "@type": "@builder.io/sdk:Element",
@@ -466,7 +466,7 @@ const page = await fetchOneEntry({
         }
       }
     ],
-    "metaTitle": "About Us | SimplerDevelopment",
+    "metaTitle": "About Us | CRM AGENTS",
     "metaDescription": "Learn about our mission and team",
     "ogImage": "https://cdn.builder.io/api/v1/image/assets/.../about-og"
   }
@@ -715,7 +715,7 @@ export const mockSolution = {
     slug: 'test-solution',
     description: 'A test solution',
     content: '<p>Test content</p>',
-    metaTitle: 'Test Solution | SimplerDevelopment',
+    metaTitle: 'Test Solution | CRM AGENTS',
   },
 };
 

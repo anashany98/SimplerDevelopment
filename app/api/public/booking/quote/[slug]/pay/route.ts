@@ -5,6 +5,9 @@ import { eq, and, ne } from 'drizzle-orm';
 import crypto from 'crypto';
 
 export async function POST(req: Request, { params }: { params: Promise<{ slug: string }> }) {
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   try {
     const { slug } = await params;
 
@@ -12,10 +15,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
       .where(and(eq(bookingQuotes.slug, slug), eq(bookingQuotes.status, 'pending')))
       .limit(1);
 
-    if (!quote) return NextResponse.json({ success: false, message: 'Quote not found or already paid' }, { status: 404 });
+    if (!quote) return NextResponse.json({ success: false, message: 'Presupuesto no encontrado o ya pagado.' }, { status: 404 });
 
     if (quote.expiresAt && new Date() > quote.expiresAt) {
-      return NextResponse.json({ success: false, message: 'This quote has expired' }, { status: 410 });
+      return NextResponse.json({ success: false, message: 'Este presupuesto ha caducado.' }, { status: 410 });
     }
 
     const Stripe = (await import('stripe')).default;
@@ -23,7 +26,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
 
     let stripeParams: Parameters<typeof stripe.paymentIntents.create>[0] = {
       amount: quote.price,
-      currency: 'usd',
+      currency: 'eur',
       metadata: {
         type: 'booking_quote',
         quoteId: String(quote.id),
@@ -46,7 +49,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
         const applicationFee = Math.round(quote.price * (platformFeePercent / 100));
         stripeParams = {
           ...stripeParams,
-          currency: store.currency?.toLowerCase() || 'usd',
+          currency: store.currency?.toLowerCase() || 'eur',
           application_fee_amount: applicationFee,
           transfer_data: { destination: store.stripeAccountId },
         };

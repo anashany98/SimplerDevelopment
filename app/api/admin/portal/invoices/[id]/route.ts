@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { invoices, invoiceItems, clients, users } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
 async function requireStaff() {
   const session = await auth();
@@ -55,11 +55,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       if (clientRow?.userEmail) {
         const baseUrl = process.env.NEXTAUTH_URL || 'https://app.simplerdevelopment.com';
         const invoiceLink = `${baseUrl}/portal/invoices/${invoiceId}`;
-        const from = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+        const from = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
         const invoiceNumber = invoice?.number ?? existing.number;
 
         await resend.emails.send({
-          from: `Simpler Development Billing <${from}>`,
+          from: `CRM AGENTS Billing <${from}>`,
           to: clientRow.userEmail,
           subject: `Invoice ${invoiceNumber} is ready`,
           html: `<!DOCTYPE html>
@@ -75,7 +75,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
               <h2 style="margin:0 0 16px;font-size:20px;color:#111827;">Invoice ${invoiceNumber} is ready</h2>
               <p style="margin:0 0 20px;font-size:15px;color:#374151;">
                 Hi${clientRow.userName ? ` ${clientRow.userName}` : ''},<br /><br />
-                Your invoice <strong>${invoiceNumber}</strong> from Simpler Development is ready to view and pay online.
+                Your invoice <strong>${invoiceNumber}</strong> from CRM AGENTS is ready to view and pay online.
               </p>
               <a href="${invoiceLink}" style="display:inline-block;padding:12px 24px;background:#6366f1;color:#ffffff;text-decoration:none;border-radius:6px;font-size:15px;font-weight:600;">View &amp; Pay Invoice</a>
               <p style="margin:24px 0 0;font-size:13px;color:#6b7280;">
@@ -85,7 +85,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
           </tr>
           <tr>
             <td style="padding:16px 40px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;">
-              <p style="margin:0;font-size:12px;color:#9ca3af;">Powered by SimplerDevelopment</p>
+              <p style="margin:0;font-size:12px;color:#9ca3af;">Powered by CRM AGENTS</p>
             </td>
           </tr>
         </table>

@@ -18,6 +18,10 @@ import Stripe from 'stripe';
 export async function POST(req: Request) {
   const auth = await authorizePortal({ action: 'admin', scope: 'billing:write' });
   if (isAuthError(auth)) return auth.response;
+
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   const { client } = auth;
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;

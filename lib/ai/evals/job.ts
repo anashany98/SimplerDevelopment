@@ -14,7 +14,7 @@
  */
 import { db } from '@/lib/db';
 import { evalRuns, evalCaseResults, type EvalRunTrigger } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { getSuite } from './suites';
 import { getPromptVersionBody } from '@/lib/ai/prompt-registry';
 import { loadCasesFromDb } from './cases';
@@ -44,6 +44,44 @@ export async function enqueueEvalRun(args: {
     })
     .returning({ id: evalRuns.id });
   return row.id;
+}
+
+/**
+ * Atomically enqueue a scheduled eval only when its fire window has not already
+ * been handled. The transaction-scoped advisory lock serializes overlapping
+ * cron ticks per prompt, closing the select-then-insert race without a schema
+ * migration or a global lock.
+ */
+export async function enqueueScheduledEvalRun(args: {
+  suiteId: string;
+  promptId: number;
+  promptVersionId: number;
+  scheduledFireAt: Date;
+}): Promise<number | null> {
+  return db.transaction(async (tx) => {
+    await tx.execute(sql`SELECT pg_advisory_xact_lock(${0x4556414c}, ${args.promptId})`);
+
+    const [last] = await tx
+      .select({ createdAt: evalRuns.createdAt })
+      .from(evalRuns)
+      .where(and(eq(evalRuns.promptId, args.promptId), eq(evalRuns.trigger, 'schedule')))
+      .orderBy(desc(evalRuns.createdAt))
+      .limit(1);
+
+    if (last && last.createdAt >= args.scheduledFireAt) return null;
+
+    const [row] = await tx
+      .insert(evalRuns)
+      .values({
+        suiteId: args.suiteId,
+        promptId: args.promptId,
+        promptVersionId: args.promptVersionId,
+        trigger: 'schedule',
+        status: 'queued',
+      })
+      .returning({ id: evalRuns.id });
+    return row.id;
+  });
 }
 
 async function markFailed(runId: number, message: string): Promise<void> {

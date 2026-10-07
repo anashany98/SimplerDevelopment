@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     createdBy: userId,
   }).returning();
 
-  emitEvent('survey.created', client.id, userId, { id: survey.id, title: survey.title, slug: survey.slug });
+  await emitEvent('survey.created', client.id, userId, { id: survey.id, title: survey.title, slug: survey.slug });
 
   return NextResponse.json({ success: true, data: survey }, { status: 201 });
 }

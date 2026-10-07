@@ -20,7 +20,7 @@ export const EditPhotoModal = ({ selectedLayer: _selectedLayer }: { selectedLaye
         <button
           onClick={() => setShowModal(false)}
           className="absolute top-4 right-4 text-gray-700 p-2 rounded bg-transparent cursor-pointer"
-          aria-label="Close"
+          aria-label="Cerrar"
         >
           <BsX size={28} />
         </button>
@@ -28,9 +28,7 @@ export const EditPhotoModal = ({ selectedLayer: _selectedLayer }: { selectedLaye
           <button
             onClick={() => setShowModal(false)}
             className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer border-none"
-          >
-            Close
-          </button>
+          >Cerrar</button>
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 # FAQ
 
-Direct answers for developers and AI assistants evaluating or working with SimplerDevelopment. See [README.md](../README.md) for the full architecture and [`docs/mcp.md`](mcp.md) for MCP connection details.
+Direct answers for developers and AI assistants evaluating or working with CRM AGENTS. See [README.md](../README.md) for the full architecture and [`docs/mcp.md`](mcp.md) for MCP connection details.
 
 ---
 
-**What is SimplerDevelopment?**
+**What is CRM AGENTS?**
 
-An open-source, MCP-native, multi-tenant business platform. One Next.js codebase serves an internal admin panel, a per-tenant client portal, and per-tenant public websites, and bundles a block-based CMS, CRM, AI-powered Company Brain (RAG over client knowledge), workflow automations, bookings, a storefront, email campaigns, surveys, e-signatures, and Stripe billing. It exposes 450+ scoped MCP tools so an AI agent can operate the whole system.
+An open-source, MCP-native, multi-tenant business platform. One Next.js codebase serves an internal admin panel, a per-tenant client portal, and per-tenant public websites, and bundles a block-based CMS, CRM, AI-powered Company Brain (RAG over client knowledge), workflow automations, bookings, a storefront, email campaigns, surveys, e-signatures, and invoice and usage records. Stripe integration code remains, while customer checkout and subscription payments are disabled by `PAYMENTS_DISABLED`. It exposes scoped MCP tools so an AI agent can operate the system.
 
 **Who is it for?**
 
@@ -14,15 +14,15 @@ Agencies and operators running multiple client sites or businesses from one plat
 
 **How does it compare to WordPress plus plugins?**
 
-WordPress is a single-tenant CMS core extended by third-party plugins, each with its own data model, update cadence, and quality bar. SimplerDevelopment is multi-tenant by design (one deployment serves many client sites, `clientId`/`siteId` scoped) and ships the CRM, brain, bookings, commerce, and billing as first-party modules sharing one Postgres database and one codebase, rather than a plugin ecosystem of varying provenance. It does not have WordPress's plugin marketplace or theme ecosystem; it has a typed block registry (`lib/blocks/registry.ts`) instead.
+WordPress is a single-tenant CMS core extended by third-party plugins, each with its own data model, update cadence, and quality bar. CRM AGENTS is multi-tenant by design (one deployment serves many client sites, `clientId`/`siteId` scoped) and ships the CRM, brain, bookings, commerce, and invoice and usage features as first-party modules sharing one Postgres database and one codebase, rather than a plugin ecosystem of varying provenance. Customer charges and subscription payments are disabled in this release. It does not have WordPress's plugin marketplace or theme ecosystem; it has a typed block registry (`lib/blocks/registry.ts`) instead.
 
 **How does it compare to closed SaaS site builders (e.g. Squarespace, Wix, HubSpot CMS)?**
 
-Those are hosted-only and proprietary — you cannot self-host, fork, or export the underlying code. SimplerDevelopment is Apache-2.0 licensed and self-hostable (`docker compose up`), while also offering managed hosting at simplerdevelopment.com for teams that don't want to run their own infrastructure. It is also MCP-native: any MCP client can drive the full platform, not just a vendor-specific automation layer.
+Those are hosted-only and proprietary — you cannot self-host, fork, or export the underlying code. CRM AGENTS is Apache-2.0 licensed and self-hostable (`docker compose up`), while also offering managed hosting at simplerdevelopment.com for teams that don't want to run their own infrastructure. It is also MCP-native: any MCP client can drive the full platform, not just a vendor-specific automation layer.
 
 **How does it compare to a headless CMS (e.g. Contentful, Sanity)?**
 
-A headless CMS is content storage plus an API — you still build and host the frontend, CRM, email, and everything else yourself. SimplerDevelopment ships a full rendering layer (`app/sites/**`, `app/s/**`) alongside the content model, plus the CRM, Brain, commerce, and billing modules in the same codebase. If you only need a content API and want to own 100% of the frontend, a headless CMS is the narrower, more composable choice.
+A headless CMS is content storage plus an API — you still build and host the frontend, CRM, email, and everything else yourself. CRM AGENTS ships a full rendering layer (`app/sites/**`, `app/s/**`) alongside the content model, plus the CRM, Brain, commerce, and billing modules in the same codebase. If you only need a content API and want to own 100% of the frontend, a headless CMS is the narrower, more composable choice.
 
 **What do I need to self-host it?**
 
@@ -34,7 +34,7 @@ An in-repo Model Context Protocol server (`app/api/mcp/route.ts` + `lib/mcp/`) e
 
 **How do I connect Claude or Cursor to it?**
 
-For Claude.ai, add a custom connector pointed at `https://www.simplerdevelopment.com/api/mcp` — it handles OAuth login and consent. For Claude Code, `claude mcp add --transport http simplerdevelopment https://www.simplerdevelopment.com/api/mcp --header "Authorization: Bearer sd_mcp_your_key_here"` using an API key minted at `/portal/settings/api-keys`. Claude Desktop uses the same key via the `mcp-remote` stdio bridge. Full steps are in [`docs/mcp.md`](mcp.md).
+For Claude.ai, add a custom connector pointed at `https://www.simplerdevelopment.com/api/mcp` — it handles OAuth login and consent. For Claude Code, `claude mcp add --transport http crm-agents https://www.simplerdevelopment.com/api/mcp --header "Authorization: Bearer sd_mcp_your_key_here"` using an API key minted at `/portal/settings/api-keys`. Claude Desktop uses the same key via the `mcp-remote` stdio bridge. Full steps are in [`docs/mcp.md`](mcp.md).
 
 **What is the Company Brain?**
 

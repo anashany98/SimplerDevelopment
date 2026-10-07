@@ -135,7 +135,7 @@ export default function MediaPicker({
             <button
               type="button"
               onClick={() => setShowPicker(true)}
-              className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+              className="px-3 py-1 text-sm bg-foreground text-background rounded-md hover:bg-foreground/90"
             >
               Change
             </button>
@@ -143,9 +143,7 @@ export default function MediaPicker({
               type="button"
               onClick={() => onChange('')}
               className="px-3 py-1 text-sm bg-card border border-border rounded-md hover:bg-accent"
-            >
-              Remove
-            </button>
+            >Quitar</button>
           </div>
         </div>
       ) : (
@@ -182,21 +180,21 @@ export default function MediaPicker({
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Buscar..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
                 <button
                   onClick={() => setShowUpload(true)}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                  className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90"
                 >
                   Upload New
                 </button>
               </div>
 
               {loading ? (
-                <div className="text-center py-12 text-muted-foreground">Loading…</div>
+                <div className="text-center py-12 text-muted-foreground">Cargando…</div>
               ) : media.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
                   No media found. Upload some files to get started!
@@ -240,9 +238,7 @@ export default function MediaPicker({
                       disabled={!canPrev}
                       onClick={() => setOffset(Math.max(0, offset - PAGE_SIZE))}
                       className="px-3 py-1.5 text-sm border border-border rounded-md text-foreground bg-card disabled:opacity-40 disabled:cursor-not-allowed hover:bg-accent transition-colors"
-                    >
-                      Previous
-                    </button>
+                    >Anterior</button>
                     <span className="px-3 py-1.5 text-sm text-muted-foreground">
                       Page {page} / {totalPages}
                     </span>
@@ -251,9 +247,7 @@ export default function MediaPicker({
                       disabled={!canNext}
                       onClick={() => setOffset(offset + PAGE_SIZE)}
                       className="px-3 py-1.5 text-sm border border-border rounded-md text-foreground bg-card disabled:opacity-40 disabled:cursor-not-allowed hover:bg-accent transition-colors"
-                    >
-                      Next
-                    </button>
+                    >Siguiente</button>
                   </div>
                 </div>
               )}

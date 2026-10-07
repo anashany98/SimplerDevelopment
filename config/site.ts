@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: 'SimplerDevelopment',
+  name: 'CRM AGENTS',
   description:
     'The all-in-one business platform with a brain: 19 integrated tools — websites, CRM, email, booking, projects and an AI that runs them for you.',
   url: 'https://simplerdevelopment.com',

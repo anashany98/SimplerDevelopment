@@ -4,18 +4,18 @@ import { clients, clientMembers, users, aiConversations, aiMessages, brainProfil
 import { eq, sql } from 'drizzle-orm';
 import { completeAgentLoop, anthropicToolsToToolSet } from '@/lib/ai/agent-loop';
 import { PORTAL_TOOLS, executePortalTool, isApprovalRequired, unattendedRefusal } from '@/lib/ai/portal-tools';
-import { hasCredits } from '@/lib/ai-credits';
-import { resend } from '@/lib/email';
+import { hasCredits, deductCredits } from '@/lib/ai-credits';
+import { resend, getConfiguredFromEmail, getEmailPlatformConfig } from '@/lib/email';
 import { processBrainMeeting } from '@/lib/brain/process-meeting';
 import { resolveClientApiKey } from '@/lib/ai/resolve-client-key';
 import { checkAiPlanGate } from '@/lib/ai/plan-gate';
 
-// Shared secret between CF Worker and this endpoint. Validated per-request
-// (not at module load) so `next build` can collect page data without the
-// env var set in the build environment.
-const INBOUND_SECRET = process.env.INBOUND_EMAIL_SECRET;
+// Shared secret between the CF Worker and this endpoint. Resolved per-request
+// from the platform email config (admin setting → INBOUND_EMAIL_SECRET) so
+// `next build` can collect page data without the env var set, and admins can
+// rotate it from Admin → Email → Ajustes.
 
-const SYSTEM_PROMPT = `You are a helpful AI assistant for Simpler Development. A client is contacting you via email. You have access to tools that query and modify their portal data — projects, invoices, tickets, websites, email campaigns, booking pages, pitch decks, CRM, and more.
+const SYSTEM_PROMPT = `You are a helpful AI assistant for CRM AGENTS. A client is contacting you via email. You have access to tools that query and modify their portal data — projects, invoices, tickets, websites, email campaigns, booking pages, pitch decks, CRM, and more.
 
 Always use the appropriate tool before answering — never guess or make up data.
 
@@ -38,7 +38,7 @@ Interpret edit requests literally but sensibly. "Add '!' to homepage hero" means
 - Be professional and friendly.
 - Content edits you make are saved as revisions and can be rolled back. Some higher-risk actions are NOT available over email and must be done by a signed-in user in the portal: publishing a page live, sending emails or proposals, paying invoices or requesting paid services, inviting team members, and creating or changing CRM deals. If asked to do one of these, briefly explain it must be done in the portal and give the relevant portal URL — do not attempt it.
 - Tasks that truly need the visual UI (uploading new images, designing email templates from scratch, pixel-level layout work) — let them know and point to the portal.
-- Format currency as dollars (e.g. $1,200.00)
+- Format currency in euros with Spanish conventions (e.g. 1.200,00 €)
 - Do not use markdown headers — use plain text with line breaks.`;
 
 interface InboundAttachment {
@@ -57,12 +57,16 @@ interface InboundPayload {
   body: string;
   messageId?: string;
   attachments?: InboundAttachment[];
+  // Receiving server's Authentication-Results header, forwarded by the mail
+  // Worker when available — used to reject failed SPF/DKIM senders.
+  authResults?: string;
 }
 
 export async function POST(req: Request) {
+  const { inboundSecret: INBOUND_SECRET } = await getEmailPlatformConfig();
   if (!INBOUND_SECRET || INBOUND_SECRET === 'sd-inbound-secret-change-me') {
     return NextResponse.json(
-      { error: 'INBOUND_EMAIL_SECRET env var is required and must not be the placeholder.' },
+      { error: 'INBOUND_EMAIL_SECRET is required and must not be the placeholder (set it in Admin → Email → Ajustes or as an env var).' },
       { status: 500 },
     );
   }
@@ -72,6 +76,21 @@ export async function POST(req: Request) {
     // Verify shared secret
     if (payload.secret !== INBOUND_SECRET) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Sender authentication (best effort). The shared secret proves the request
+    // came from the mail Worker - NOT that the `From` header is authentic (From
+    // is spoofable). When the Worker forwards the receiving server's
+    // Authentication-Results, refuse explicit SPF/DKIM failures; with
+    // INBOUND_REQUIRE_SENDER_AUTH=1 also refuse anything without a pass.
+    const authResults = typeof payload.authResults === 'string' ? payload.authResults : '';
+    if (/(?:^|[;\s])(?:spf|dkim)\s*=\s*(?:fail|softfail|temperror|permerror)/i.test(authResults)) {
+      console.warn(`[inbound] Rejected email from ${payload.from} to ${payload.to} - sender auth failed: ${authResults.slice(0, 120)}`);
+      return NextResponse.json({ status: 'rejected', reason: 'sender authentication failed' });
+    }
+    if (process.env.INBOUND_REQUIRE_SENDER_AUTH === '1' && !/(?:spf|dkim)\s*=\s*pass/i.test(authResults)) {
+      console.warn(`[inbound] Rejected email from ${payload.from} to ${payload.to} - no passing SPF/DKIM (strict mode)`);
+      return NextResponse.json({ status: 'rejected', reason: 'sender authentication required' });
     }
 
     const { from, to, subject, body: emailBody, messageId, attachments = [] } = payload;
@@ -146,7 +165,7 @@ export async function POST(req: Request) {
     const gate = await checkAiPlanGate({ clientId: client.id, provider: 'anthropic' });
     if (!gate.allowed) {
       await resend.emails.send({
-        from: `Simpler Development <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
+        from: `CRM AGENTS <${(await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com'}>`,
         to: senderEmail,
         subject: `Re: ${subject}`,
         text: gate.message ?? 'AI access is not available on the current plan.',
@@ -164,7 +183,7 @@ export async function POST(req: Request) {
       if (!canProceed) {
         // Send a reply saying they're out of credits
         await resend.emails.send({
-          from: `Simpler Development <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`,
+          from: `CRM AGENTS <${(await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com'}>`,
           to: senderEmail,
           subject: `Re: ${subject}`,
           text: `Your AI credits are depleted. Please purchase more credits or enable pay-as-you-go at https://simplerdevelopment.com/portal/dashboard, or add a BYOK key at https://simplerdevelopment.com/portal/integrations/api-keys, to continue using the email assistant.`,
@@ -256,7 +275,7 @@ export async function POST(req: Request) {
     const totalTokens = totalInputTokens + totalOutputTokens;
 
     // Send reply via Resend
-    const replyFrom = `${client.company || 'Simpler Development'} AI <${process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com'}>`;
+    const replyFrom = `${client.company || 'CRM AGENTS'} AI <${(await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com'}>`;
 
     await resend.emails.send({
       from: replyFrom,

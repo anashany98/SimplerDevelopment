@@ -143,14 +143,14 @@ describe('BrainGlossaryListPage — shell', () => {
   it('renders the Glossary heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Glossary');
+      expect(container.textContent).toContain('Glosario');
     });
   });
 
   it('renders the subtitle text', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Tenant-specific terminology');
+      expect(container.textContent).toContain('Terminología específica del cliente');
     });
   });
 
@@ -166,7 +166,7 @@ describe('BrainGlossaryListPage — shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const buttons = Array.from(container.querySelectorAll('button'));
-      const bulkBtn = buttons.find(b => b.textContent?.includes('Bulk import'));
+      const bulkBtn = buttons.find(b => b.textContent?.includes('Importar en bloque'));
       expect(bulkBtn).toBeTruthy();
     });
   });
@@ -174,9 +174,9 @@ describe('BrainGlossaryListPage — shell', () => {
   it('renders the status filter pills (active / deprecated / all)', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('active');
-      expect(container.textContent).toContain('deprecated');
-      expect(container.textContent).toContain('all');
+      expect(container.textContent).toContain('Activos');
+      expect(container.textContent).toContain('Obsoletos');
+      expect(container.textContent).toContain('Todos');
     });
   });
 
@@ -197,7 +197,7 @@ describe('BrainGlossaryListPage — loading state', () => {
     // Never resolve so we stay in loading state
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -207,7 +207,7 @@ describe('BrainGlossaryListPage — empty state', () => {
   it('shows "No glossary terms yet." when list is empty with no filters', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No glossary terms yet.');
+      expect(container.textContent).toContain('Aún no hay términos en el glosario.');
     });
   });
 
@@ -215,7 +215,7 @@ describe('BrainGlossaryListPage — empty state', () => {
     searchParamsValue = new URLSearchParams('search=foo');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No matching terms.');
+      expect(container.textContent).toContain('No hay términos que coincidan.');
     });
   });
 
@@ -223,7 +223,7 @@ describe('BrainGlossaryListPage — empty state', () => {
     searchParamsValue = new URLSearchParams('category=Auth');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No matching terms.');
+      expect(container.textContent).toContain('No hay términos que coincidan.');
     });
   });
 
@@ -231,14 +231,14 @@ describe('BrainGlossaryListPage — empty state', () => {
     searchParamsValue = new URLSearchParams('status=deprecated');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No matching terms.');
+      expect(container.textContent).toContain('No hay términos que coincidan.');
     });
   });
 
   it('shows "Start by adding your most-confused acronym." copy on vanilla empty state', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('most-confused acronym');
+      expect(container.textContent).toContain('más dudas genera');
     });
   });
 
@@ -246,7 +246,7 @@ describe('BrainGlossaryListPage — empty state', () => {
     searchParamsValue = new URLSearchParams('search=whatever');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Try clearing filters');
+      expect(container.textContent).toContain('Prueba a quitar los filtros');
     });
   });
 
@@ -297,7 +297,7 @@ describe('BrainGlossaryListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load glossary');
+      expect(container.textContent).toContain('No se pudo cargar el glosario');
     });
   });
 
@@ -323,7 +323,7 @@ describe('BrainGlossaryListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 
@@ -336,8 +336,8 @@ describe('BrainGlossaryListPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn");
-      expect(container.textContent).toContain('load glossary');
+      expect(container.textContent).toContain('No se pudo');
+      expect(container.textContent).toContain('cargar el glosario');
     });
   });
 });
@@ -385,7 +385,7 @@ describe('BrainGlossaryListPage — term list', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Uncategorized');
+      expect(container.textContent).toContain('Sin categoría');
     });
   });
 
@@ -405,7 +405,7 @@ describe('BrainGlossaryListPage — term list', () => {
       const text = container.textContent ?? '';
       const authIdx = text.indexOf('Auth');
       const billingIdx = text.indexOf('Billing');
-      const uncatIdx = text.indexOf('Uncategorized');
+      const uncatIdx = text.indexOf('Sin categoría');
       expect(authIdx).toBeLessThan(billingIdx);
       expect(billingIdx).toBeLessThan(uncatIdx);
     });
@@ -493,7 +493,7 @@ describe('BrainGlossaryListPage — pagination', () => {
     setupManyTerms();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of 2');
+      expect(container.textContent).toContain('Página 1 de 2');
     });
   });
 
@@ -501,7 +501,7 @@ describe('BrainGlossaryListPage — pagination', () => {
     setupManyTerms();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('50 terms');
+      expect(container.textContent).toContain('50 términos');
     });
   });
 
@@ -510,7 +510,7 @@ describe('BrainGlossaryListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const prevBtn = Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.includes('Prev'),
+        b.textContent?.includes('Anterior'),
       ) as HTMLButtonElement;
       expect(prevBtn?.disabled).toBe(true);
     });
@@ -520,10 +520,10 @@ describe('BrainGlossaryListPage — pagination', () => {
     setupManyTerms();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of 2');
+      expect(container.textContent).toContain('Página 1 de 2');
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Next'),
+        b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     fireEvent.click(nextBtn);
     await waitFor(() => {
@@ -538,10 +538,10 @@ describe('BrainGlossaryListPage — pagination', () => {
     setupManyTerms();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2 of 2');
+      expect(container.textContent).toContain('Página 2 de 2');
     });
     const nextBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Next'),
+        b.textContent?.includes('Siguiente'),
     ) as HTMLButtonElement;
     expect(nextBtn?.disabled).toBe(true);
   });
@@ -551,10 +551,10 @@ describe('BrainGlossaryListPage — pagination', () => {
     setupManyTerms();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2 of 2');
+      expect(container.textContent).toContain('Página 2 de 2');
     });
     const prevBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Prev'),
+      b.textContent?.includes('Anterior'),
     ) as HTMLButtonElement;
     fireEvent.click(prevBtn);
     await waitFor(() => {
@@ -575,7 +575,7 @@ describe('BrainGlossaryListPage — pagination', () => {
     await waitFor(() => {
       expect(container.querySelector('[data-testid="term-card-1"]')).toBeTruthy();
     });
-    expect(container.textContent).not.toContain('Page 1 of');
+    expect(container.textContent).not.toContain('Página 1 de');
   });
 
   it('shows "1 term" (singular) when total is exactly 1', async () => {
@@ -590,7 +590,7 @@ describe('BrainGlossaryListPage — pagination', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // "26 terms" — just confirm plural form is used for 26
-      expect(container.textContent).toContain('26 terms');
+      expect(container.textContent).toContain('26 términos');
     });
   });
 });
@@ -601,10 +601,10 @@ describe('BrainGlossaryListPage — filters', () => {
   it('clicking the "deprecated" status pill calls router.replace with status=deprecated', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('deprecated');
+      expect(container.textContent).toContain('Obsoletos');
     });
     const depBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'deprecated',
+      b.textContent?.trim() === 'Obsoletos',
     ) as HTMLButtonElement;
     fireEvent.click(depBtn);
     await waitFor(() => {
@@ -618,10 +618,10 @@ describe('BrainGlossaryListPage — filters', () => {
     searchParamsValue = new URLSearchParams('status=deprecated');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('active');
+      expect(container.textContent).toContain('Activos');
     });
     const activeBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'active',
+      b.textContent?.trim() === 'Activos',
     ) as HTMLButtonElement;
     fireEvent.click(activeBtn);
     await waitFor(() => {
@@ -635,10 +635,10 @@ describe('BrainGlossaryListPage — filters', () => {
   it('clicking the "all" status pill calls router.replace with status=all', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('all');
+      expect(container.textContent).toContain('Todos');
     });
     const allBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'all',
+      b.textContent?.trim() === 'Todos',
     ) as HTMLButtonElement;
     fireEvent.click(allBtn);
     await waitFor(() => {
@@ -773,10 +773,10 @@ describe('BrainGlossaryListPage — bulk import modal', () => {
   it('clicking "Bulk import" opens the modal', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Bulk import');
+      expect(container.textContent).toContain('Importar en bloque');
     });
     const bulkBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Bulk import'),
+      b.textContent?.includes('Importar en bloque'),
     ) as HTMLButtonElement;
     fireEvent.click(bulkBtn);
     await waitFor(() => {
@@ -787,10 +787,10 @@ describe('BrainGlossaryListPage — bulk import modal', () => {
   it('onClose callback from modal closes it', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Bulk import');
+      expect(container.textContent).toContain('Importar en bloque');
     });
     const bulkBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Bulk import'),
+      b.textContent?.includes('Importar en bloque'),
     ) as HTMLButtonElement;
     fireEvent.click(bulkBtn);
     await waitFor(() => {
@@ -813,14 +813,14 @@ describe('BrainGlossaryListPage — bulk import modal', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Bulk import');
+      expect(container.textContent).toContain('Importar en bloque');
     });
     // Count only glossary list calls (excluding limit=100 categories fetch) before the reload.
     const glossaryListCallsBefore = fetchMock.mock.calls.filter(c =>
       String(c[0]).includes('/api/portal/brain/glossary') && !String(c[0]).includes('limit=100'),
     ).length;
     const bulkBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.includes('Bulk import'),
+      b.textContent?.includes('Importar en bloque'),
     ) as HTMLButtonElement;
     fireEvent.click(bulkBtn);
     await waitFor(() => {
@@ -855,7 +855,7 @@ describe('BrainGlossaryListPage — non-fatal side-effect fetch failures', () =>
     const { container } = renderPage();
     await waitFor(() => {
       // Page still renders without crashing
-      expect(container.textContent).toContain('Glossary');
+      expect(container.textContent).toContain('Glosario');
     });
   });
 
@@ -871,7 +871,7 @@ describe('BrainGlossaryListPage — non-fatal side-effect fetch failures', () =>
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Glossary');
+      expect(container.textContent).toContain('Glosario');
     });
   });
 
@@ -887,7 +887,7 @@ describe('BrainGlossaryListPage — non-fatal side-effect fetch failures', () =>
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Glossary');
+      expect(container.textContent).toContain('Glosario');
     });
   });
 });
@@ -904,7 +904,7 @@ describe('BrainGlossaryListPage — URL-param driven fetch', () => {
         .filter(u => u.includes('/api/portal/brain/glossary') && !u.includes('limit=100'));
       expect(glossaryCalls.some(u => u.includes('status=deprecated'))).toBe(true);
     });
-    expect(container.textContent).toContain('Glossary');
+    expect(container.textContent).toContain('Glosario');
   });
 
   it('does NOT pass status param when status=all (fetches without filter)', async () => {
@@ -917,7 +917,7 @@ describe('BrainGlossaryListPage — URL-param driven fetch', () => {
       // status=all means fetch ALL, so `status` param should be absent from the list call
       expect(glossaryCalls.some(u => !u.includes('status='))).toBe(true);
     });
-    expect(container.textContent).toContain('Glossary');
+    expect(container.textContent).toContain('Glosario');
   });
 
   it('passes search param to the list fetch', async () => {
@@ -929,7 +929,7 @@ describe('BrainGlossaryListPage — URL-param driven fetch', () => {
         .filter(u => u.includes('/api/portal/brain/glossary') && !u.includes('limit=100'));
       expect(glossaryCalls.some(u => u.includes('search=API'))).toBe(true);
     });
-    expect(container.textContent).toContain('Glossary');
+    expect(container.textContent).toContain('Glosario');
   });
 
   it('passes ownerId param to the list fetch', async () => {
@@ -941,6 +941,6 @@ describe('BrainGlossaryListPage — URL-param driven fetch', () => {
         .filter(u => u.includes('/api/portal/brain/glossary') && !u.includes('limit=100'));
       expect(glossaryCalls.some(u => u.includes('ownerId=42'))).toBe(true);
     });
-    expect(container.textContent).toContain('Glossary');
+    expect(container.textContent).toContain('Glosario');
   });
 });

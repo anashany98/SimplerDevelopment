@@ -4,7 +4,7 @@ import { getPortalClient } from '@/lib/portal-client';
 import { db } from '@/lib/db';
 import { crmContacts, crmActivities, crmEmailMessages } from '@/lib/db/schema';
 import { and, eq } from 'drizzle-orm';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 import { crmEntitlementError } from '@/lib/crm/entitlement';
 
 export async function POST(
@@ -63,8 +63,8 @@ export async function POST(
     );
 
   // Send email via Resend
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
-  const senderName = client.company || 'Simpler Development';
+  const fromEmail = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
+  const senderName = client.company || 'CRM AGENTS';
 
   try {
     const result = await resend.emails.send({

@@ -87,16 +87,6 @@ vi.mock('@/lib/brain/embedding-extractors', () => ({
   }),
 }));
 
-// We mock the relative path used inside embeddings.ts's dynamic imports
-// (`await import('./embedding-extractors')`). Vitest resolves it relative to
-// the source file, so this absolute alias also needs covering.
-vi.mock('./embedding-extractors', () => ({
-  extractContentForEntity: vi.fn(async (clientId: number, type: string, id: number) => {
-    if (state.extractorImpl) return state.extractorImpl(clientId, type, id);
-    return { text: '', found: false };
-  }),
-}));
-
 // Helper to install a fake fetch returning a configurable OpenAI response.
 function installFetchMock(opts: {
   vectors?: number[][];
@@ -117,7 +107,7 @@ function installFetchMock(opts: {
         async json() { return {}; },
       } as unknown as Response;
     }
-    const vectors = opts.vectors ?? body.input.map(() => [0.1, 0.2, 0.3]);
+    const vectors = opts.vectors ?? body.input.map(() => Array.from({ length: 768 }, () => 0.1));
     const data = body.input.map((_text, idx) => ({ embedding: vectors[idx], index: idx }));
     const totalTokens = opts.totalTokens ?? body.input.reduce((s, t) => s + Math.ceil(t.length / 4), 0);
     return {
@@ -141,6 +131,7 @@ beforeEach(() => {
   state.recordAiUsageCalls.length = 0;
   state.resolveClientKeyImpl = null;
   delete process.env.OPENAI_API_KEY;
+  delete process.env.EMBEDDINGS_DIM;
 });
 
 afterEach(() => {
@@ -248,6 +239,7 @@ describe('embedText', () => {
     expect(out[0].tokens).toBe(12);
     const callInit = fetchFn.mock.calls[0][1] as RequestInit;
     expect((callInit.headers as Record<string, string>).Authorization).toBe('Bearer sk-env-test');
+    expect(JSON.parse(callInit.body as string)).toMatchObject({ dimensions: 768 });
     // recordAiUsage should NOT have been called for env-key path (no clientId).
     expect(state.recordAiUsageCalls).toHaveLength(0);
   });
@@ -318,6 +310,7 @@ describe('embedEntity', () => {
     // One execute call: the DELETE.
     expect(state.execCalls).toHaveLength(1);
     expect(state.execCalls[0].kind).toBe('execute');
+    expect(state.execCalls[0].values).toContain(1);
     expect(state.execCalls[0].values).toContain('note');
     expect(state.execCalls[0].values).toContain(5);
   });
@@ -343,6 +336,21 @@ describe('embedEntity', () => {
     expect(txExecs.length).toBeGreaterThanOrEqual(2);
     expect(res.tokens).toBeGreaterThan(0);
   });
+
+  it('rejects a provider vector with the wrong storage dimension before changing rows', async () => {
+    installFetchMock({ vectors: [[0.1, 0.2, 0.3]] });
+    const { embedEntity } = await importModule();
+
+    await expect(embedEntity({
+      clientId: 7,
+      entityType: 'note',
+      entityId: 100,
+      content: 'content that produces one chunk',
+    })).rejects.toThrow(/dimensions do not match/i);
+
+    expect(state.txCalls).toBe(0);
+    expect(state.execCalls).toHaveLength(0);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -352,11 +360,12 @@ describe('embedEntity', () => {
 describe('removeEmbeddings', () => {
   it('runs a single DELETE against brain_embeddings with the right binds', async () => {
     const { removeEmbeddings } = await importModule();
-    await removeEmbeddings('post', 314);
+    await removeEmbeddings(9, 'post', 314);
     expect(state.execCalls).toHaveLength(1);
     expect(state.execCalls[0].kind).toBe('execute');
     expect(state.execCalls[0].values).toContain('post');
     expect(state.execCalls[0].values).toContain(314);
+    expect(state.execCalls[0].values).toContain(9);
   });
 });
 

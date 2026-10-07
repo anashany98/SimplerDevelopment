@@ -98,7 +98,12 @@ export const aiMessages = pgTable('ai_messages', {
   conversationId: integer('conversation_id').notNull().references(() => aiConversations.id, { onDelete: 'cascade' }),
   role: varchar('role', { length: 20 }).notNull(), // user, assistant
   content: text('content').notNull(),
-  toolCalls: json('tool_calls').$type<{ name: string; input: Record<string, unknown>; result: unknown }[]>(),
+  toolCalls: json('tool_calls').$type<{
+    agentId?: string;
+    name: string;
+    input: Record<string, unknown>;
+    result: unknown;
+  }[]>(),
   injectedBy: integer('injected_by').references(() => users.id, { onDelete: 'set null' }),
   inputTokens: integer('input_tokens').default(0).notNull(),
   outputTokens: integer('output_tokens').default(0).notNull(),

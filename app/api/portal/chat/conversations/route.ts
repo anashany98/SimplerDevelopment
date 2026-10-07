@@ -10,7 +10,7 @@ import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { chatConversations } from '@/lib/db/schema';
 import { getPortalClient } from '@/lib/portal-client';
-import { and, desc, eq, SQL } from 'drizzle-orm';
+import { and, desc, eq, ilike, or, SQL } from 'drizzle-orm';
 
 export async function GET(req: Request) {
   const session = await auth();
@@ -23,6 +23,10 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const status = url.searchParams.get('status');
   const assignee = url.searchParams.get('assignee');
+  const channel = url.searchParams.get('channel');
+  const priority = url.searchParams.get('priority');
+  const aiMode = url.searchParams.get('aiMode');
+  const search = url.searchParams.get('q')?.trim();
   const limit = Math.min(Math.max(Number.parseInt(url.searchParams.get('limit') || '50', 10) || 50, 1), 200);
   const offset = Math.max(Number.parseInt(url.searchParams.get('offset') || '0', 10) || 0, 0);
 
@@ -34,6 +38,22 @@ export async function GET(req: Request) {
     filters.push(eq(chatConversations.assignedUserId, userId));
   } else if (assignee && /^\d+$/.test(assignee)) {
     filters.push(eq(chatConversations.assignedUserId, Number.parseInt(assignee, 10)));
+  }
+  if (channel && ['whatsapp', 'instagram', 'messenger', 'webchat', 'email'].includes(channel)) {
+    filters.push(eq(chatConversations.channel, channel));
+  }
+  if (priority && ['low', 'normal', 'high', 'urgent'].includes(priority)) {
+    filters.push(eq(chatConversations.priority, priority));
+  }
+  if (aiMode && ['ai', 'human', 'paused', 'hybrid', 'closed'].includes(aiMode)) {
+    filters.push(eq(chatConversations.aiMode, aiMode));
+  }
+  if (search) {
+    filters.push(or(
+      ilike(chatConversations.visitorName, `%${search.slice(0, 100)}%`),
+      ilike(chatConversations.visitorEmail, `%${search.slice(0, 100)}%`),
+      ilike(chatConversations.externalConversationId, `%${search.slice(0, 100)}%`),
+    )!);
   }
 
   const data = await db

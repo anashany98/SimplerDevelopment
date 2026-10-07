@@ -167,7 +167,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     .where(eq(surveys.id, surveyId))
     .returning();
 
-  emitEvent('survey.updated', client.id, userId, { id: updated.id, title: updated.title, status: updated.status });
+  await emitEvent('survey.updated', client.id, userId, { id: updated.id, title: updated.title, status: updated.status });
 
   return NextResponse.json({ success: true, data: updated });
 }
@@ -193,7 +193,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
 
   await db.delete(surveys).where(eq(surveys.id, surveyId));
 
-  emitEvent('survey.deleted', client.id, userId, { id: surveyId, title: existing.title });
+  await emitEvent('survey.deleted', client.id, userId, { id: surveyId, title: existing.title });
 
   return NextResponse.json({ success: true });
 }

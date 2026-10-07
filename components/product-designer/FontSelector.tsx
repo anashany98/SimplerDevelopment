@@ -113,7 +113,7 @@ export const FontSelector = ({ text, onChange }: { text?: any; onChange: (k: str
       {open && (
         <div className="absolute left-0 right-0 mt-1 max-h-64 overflow-auto rounded border border-gray-200 bg-white shadow-lg">
           {loading && options.length === 0 ? (
-            <div className="px-3 py-2 text-sm text-gray-500">Loading…</div>
+            <div className="px-3 py-2 text-sm text-gray-500">Cargando…</div>
           ) : options.length === 0 ? (
             <div className="px-3 py-2 text-sm text-gray-500">No fonts found</div>
           ) : (

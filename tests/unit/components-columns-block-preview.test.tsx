@@ -487,7 +487,7 @@ describe('ColumnsBlockPreview — settings panel', () => {
     const block = makeBlock();
     render(<ColumnsBlockPreview block={block} isSelected={true} onChange={onChange} />);
     fireEvent.click(screen.getAllByTitle('Column settings')[0]);
-    const select = screen.getByDisplayValue('None') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Ninguno') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'md' } });
     const payload = onChange.mock.calls.at(-1)![0];
     expect(payload.columns[0].padding).toBe('md');
@@ -498,7 +498,7 @@ describe('ColumnsBlockPreview — settings panel', () => {
     const block = makeBlock();
     render(<ColumnsBlockPreview block={block} isSelected={true} onChange={onChange} />);
     fireEvent.click(screen.getAllByTitle('Column settings')[0]);
-    const select = screen.getByDisplayValue('Top') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Arriba') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'center' } });
     const payload = onChange.mock.calls.at(-1)![0];
     expect(payload.columns[0].verticalAlign).toBe('center');
@@ -541,7 +541,7 @@ describe('ColumnsBlockPreview — settings panel', () => {
     });
     render(<ColumnsBlockPreview block={block} isSelected={true} onChange={onChange} />);
     fireEvent.click(screen.getAllByTitle('Column settings')[0]);
-    const clearBtn = screen.getByText('Clear');
+    const clearBtn = screen.getByText('Limpiar');
     fireEvent.click(clearBtn);
     const payload = onChange.mock.calls.at(-1)![0];
     expect(payload.columns[0].backgroundColor).toBeUndefined();

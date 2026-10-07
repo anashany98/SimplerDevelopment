@@ -1,0 +1,2 @@
+ALTER TABLE "surveys" ALTER COLUMN "thank_you_title" SET DEFAULT '¡Gracias!';--> statement-breakpoint
+ALTER TABLE "surveys" ALTER COLUMN "thank_you_message" SET DEFAULT 'Tu respuesta se ha registrado.';

@@ -19,7 +19,7 @@ export default async function BrainAgentPage() {
             <span className="material-icons text-primary text-lg">psychology</span>
           </div>
           <div>
-            <h1 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground leading-tight">Brain Agent</h1>
+            <h1 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground leading-tight">Agente del cerebro</h1>
             <p className="text-sm text-muted-foreground">
               Ask anything about your company knowledge base
             </p>

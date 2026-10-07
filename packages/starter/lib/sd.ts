@@ -1,5 +1,5 @@
 /**
- * The SimplerDevelopment client, configured from the environment.
+ * The CRM AGENTS client, configured from the environment.
  *
  * SERVER ONLY. `SD_API_KEY` is a secret and is deliberately NOT prefixed with
  * `NEXT_PUBLIC_`, so it is undefined in the browser. Importing this module from
@@ -23,7 +23,7 @@ function required(name: string, value: string | undefined): string {
   if (!value) {
     throw new Error(
       `[starter] Missing ${name}. Copy .env.example to .env.local and fill it in — ` +
-        'the site id and API key both come from the SimplerDevelopment portal.',
+        'the site id and API key both come from the CRM AGENTS portal.',
     );
   }
   return value;

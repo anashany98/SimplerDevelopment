@@ -9,6 +9,7 @@
 // inline `style`, not Tailwind theme tokens.
 
 import type { PathVizClaim, PathVizNodeStatus } from './types';
+import { relativeTimeEs } from '@/lib/portal-utils';
 
 // ─── Base surface palette (mockup :root) ───────────────────────────────────
 
@@ -132,18 +133,10 @@ export const LANE_BY_KIND: Record<string, number> = {
 export const LANE_LABELS = ['UI · Tests', 'API', 'Jobs · Infra', 'Data · Services'] as const;
 
 export function formatRelativeTime(iso: string | null): string {
-  if (!iso) return 'no activity yet';
+  if (!iso) return 'sin actividad';
   const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return 'no activity yet';
-  const diffMs = Date.now() - then;
-  const diffSec = Math.max(0, Math.round(diffMs / 1000));
-  if (diffSec < 60) return `${diffSec}s ago`;
-  const diffMin = Math.round(diffSec / 60);
-  if (diffMin < 60) return `${diffMin}m ago`;
-  const diffHr = Math.round(diffMin / 60);
-  if (diffHr < 24) return `${diffHr}h ago`;
-  const diffDay = Math.round(diffHr / 24);
-  return `${diffDay}d ago`;
+  if (Number.isNaN(then)) return 'sin actividad';
+  return relativeTimeEs(iso);
 }
 
 /** LIVE badge threshold — matches the spec's "lastEventAt < 2 min" rule. */

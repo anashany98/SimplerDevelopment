@@ -343,7 +343,7 @@ export default function GlossaryTermForm({
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <span className="block text-xs font-medium text-muted-foreground mb-1">Status</span>
+          <span className="block text-xs font-medium text-muted-foreground mb-1">Estado</span>
           <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-1">
             {(['active', 'deprecated'] as const).map(s => (
               <button
@@ -352,7 +352,7 @@ export default function GlossaryTermForm({
                 onClick={() => set('status', s)}
                 className={`flex-1 px-3 py-1.5 rounded-md text-sm font-medium capitalize transition-colors ${
                   value.status === s
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
@@ -363,9 +363,7 @@ export default function GlossaryTermForm({
         </div>
 
         <div>
-          <label htmlFor="gl-category" className="block text-xs font-medium text-muted-foreground mb-1">
-            Category
-          </label>
+          <label htmlFor="gl-category" className="block text-xs font-medium text-muted-foreground mb-1">Categoría</label>
           <input
             id="gl-category"
             type="text"
@@ -383,8 +381,7 @@ export default function GlossaryTermForm({
       </div>
 
       <div>
-        <label htmlFor="gl-owner" className="block text-xs font-medium text-muted-foreground mb-1">
-          Owner <span className="text-[10px] text-muted-foreground/70 font-normal">(canonical contact)</span>
+        <label htmlFor="gl-owner" className="block text-xs font-medium text-muted-foreground mb-1">Propietario<span className="text-[10px] text-muted-foreground/70 font-normal">(canonical contact)</span>
         </label>
         {users.length > 0 ? (
           <select
@@ -446,7 +443,7 @@ export default function GlossaryTermForm({
             <div className="absolute z-10 mt-1 left-0 right-0 max-h-60 overflow-y-auto bg-popover border border-border rounded-lg shadow-md">
               {relatedSearching && (
                 <div className="px-3 py-2 text-xs text-muted-foreground flex items-center gap-2">
-                  <span className="material-icons text-base animate-spin">progress_activity</span>
+                  <span className="material-icons text-base animate-spin">autorenew</span>
                   Searching…
                 </div>
               )}
@@ -479,17 +476,15 @@ export default function GlossaryTermForm({
             type="button"
             onClick={onCancel}
             className="px-4 py-2 text-sm font-medium rounded-md border border-border text-foreground hover:bg-accent"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         )}
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           {submitting
-            ? <><span className="material-icons text-base animate-spin">progress_activity</span>Saving…</>
+            ? <><span className="material-icons text-base animate-spin">autorenew</span>Saving…</>
             : <><span className="material-icons text-base">save</span>{mode === 'create' ? 'Create term' : 'Save changes'}</>
           }
         </button>

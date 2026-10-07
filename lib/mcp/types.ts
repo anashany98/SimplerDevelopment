@@ -83,21 +83,24 @@ export function extractRows<T = Record<string, unknown>>(result: unknown): T[] {
 /**
  * Surface the actual Postgres error message (code 42703 "column does not
  * exist" and friends) in the MCP tool envelope. Drizzle wraps pg errors in
- * DrizzleQueryError whose `.message` is the rendered SQL + params; the real
- * server message lives on `.cause.message`. Returning only the SQL string
+ * DrizzleQueryError whose `.message` is the rendered SQL + bound params; the
+ * real server message lives on `.cause.message`. Returning only the SQL string
  * hides the root cause and makes schema drift look like an opaque failure.
+ *
+ * The envelope is deliberately narrow — only `error`, `pgMessage` and `pgCode`
+ * cross the boundary. `drizzleMessage` (rendered SQL + params) and
+ * `cause.detail` (which can echo column/row values) leak internal schema and
+ * query internals to EXTERNAL agent clients, so they are dropped. The root
+ * cause we actually need is `cause.message`.
  */
 export function dbErrorEnvelope(err: unknown, tool: string): ToolEnvelope {
   const e = err as {
-    message?: string;
-    cause?: { message?: string; code?: string; detail?: string };
+    cause?: { message?: string; code?: string };
   };
   const payload = {
     error: `${tool} failed`,
     pgMessage: e.cause?.message,
     pgCode: e.cause?.code,
-    pgDetail: e.cause?.detail,
-    drizzleMessage: e.message,
   };
   return {
     content: [{ type: 'text' as const, text: JSON.stringify(payload, null, 2) }],

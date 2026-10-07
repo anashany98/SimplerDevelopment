@@ -40,7 +40,7 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
     try {
       const r = await fetch(base);
       const j = await r.json();
-      if (!j.success) throw new Error(j.message ?? 'Failed to load colourways');
+      if (!j.success) throw new Error(j.message ?? 'No se pudieron cargar los colores');
       setStyles(j.data ?? []);
       setError(null);
     } catch (e) {
@@ -60,7 +60,7 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
       body: JSON.stringify(body),
     });
     const j = await r.json().catch(() => ({}));
-    if (!j.success) { setError(j.message ?? 'Save failed'); void load(); }
+    if (!j.success) { setError(j.message ?? 'No se pudo guardar'); void load(); }
   };
 
   const add = async () => {
@@ -72,7 +72,7 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
       body: JSON.stringify({ name, order: styles.length }),
     });
     const j = await r.json().catch(() => ({}));
-    if (!j.success) { setError(j.message ?? 'Could not add colourway'); return; }
+    if (!j.success) { setError(j.message ?? 'No se pudo añadir el color'); return; }
     setNewName('');
     await load();
     if (j.data?.id) setOpenId(j.data.id);
@@ -96,7 +96,7 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
     ]);
   };
 
-  if (loading) return <p className="text-sm text-muted-foreground">Loading colourways…</p>;
+  if (loading) return <p className="text-sm text-muted-foreground">Cargando colores…</p>;
 
   const unmapped = styles.filter((s) => s.active && s.printfulVariantId == null).length;
 
@@ -109,14 +109,13 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
       {unmapped > 0 && (
         <p className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm">
           <span className="material-icons align-middle text-base">warning</span>{' '}
-          {unmapped} active colourway{unmapped === 1 ? '' : 's'} without a Printful variant ID — orders containing{' '}
-          {unmapped === 1 ? 'it' : 'them'} cannot be sent for fulfilment.
+          {unmapped} color{unmapped === 1 ? '' : 'es'} activo{unmapped === 1 ? '' : 's'} sin un ID de variante de Printful — los pedidos que {unmapped === 1 ? 'lo' : 'los'} incluyan no se pueden enviar a producción.
         </p>
       )}
 
       {styles.length === 0 && (
         <p className="text-sm text-muted-foreground">
-          No colourways yet. Add one (e.g. “Black”), then upload a mockup for each side you want customers to print on.
+          Aún no hay colores. Añade uno (p. ej. “Negro”) y luego sube un mockup para cada cara en la que quieras que se imprima.
         </p>
       )}
 
@@ -129,15 +128,15 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
             </button>
 
             <input value={s.name} onChange={(e) => save(s.id, { name: e.target.value })}
-              className="w-40 rounded-md border border-border bg-background px-2 py-1 text-sm" aria-label="Colourway name" />
+              className="w-40 rounded-md border border-border bg-background px-2 py-1 text-sm" aria-label="Nombre del color" />
 
             <input type="color" value={s.colorHex ?? '#000000'} onChange={(e) => save(s.id, { colorHex: e.target.value })}
-              className="h-8 w-10 cursor-pointer rounded border border-border bg-background" aria-label="Swatch colour" title="Swatch colour" />
+              className="h-8 w-10 cursor-pointer rounded border border-border bg-background" aria-label="Color de la muestra" title="Color de la muestra" />
 
             <label className="flex items-center gap-1 text-xs text-muted-foreground">
-              Printful variant
+              Variante de Printful
               <input
-                type="number" min={1} placeholder="unmapped"
+                type="number" min={1} placeholder="sin asignar"
                 value={s.printfulVariantId ?? ''}
                 onChange={(e) => save(s.id, { printfulVariantId: e.target.value === '' ? null : Number(e.target.value) })}
                 className={`w-28 rounded-md border bg-background px-2 py-1 text-sm ${
@@ -147,20 +146,18 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
             </label>
 
             <label className="flex items-center gap-1 text-xs text-muted-foreground">
-              <input type="checkbox" checked={s.active} onChange={(e) => save(s.id, { active: e.target.checked })} />
-              Active
-            </label>
+              <input type="checkbox" checked={s.active} onChange={(e) => save(s.id, { active: e.target.checked })} />Activo</label>
 
             <div className="ml-auto flex items-center gap-1">
-              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Move up"
+              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Mover arriba"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_upward</span>
               </button>
-              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === styles.length - 1} title="Move down"
+              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === styles.length - 1} title="Mover abajo"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_downward</span>
               </button>
-              <button type="button" onClick={() => remove(s.id)} title="Remove colourway and its print surfaces"
+              <button type="button" onClick={() => remove(s.id)} title="Eliminar este color y sus superficies de impresión"
                 className="rounded-md border border-destructive/40 p-1 text-destructive">
                 <span className="material-icons text-base">delete</span>
               </button>
@@ -180,12 +177,12 @@ export function ProductStylesPanel({ siteId, productId }: { siteId: number; prod
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void add(); } }}
-          placeholder="New colourway, e.g. Black"
+          placeholder="Nuevo color, p. ej. Negro"
           className="w-56 rounded-md border border-border bg-background px-2 py-1 text-sm"
         />
         <button type="button" onClick={() => void add()} disabled={!newName.trim()}
           className="inline-flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-sm disabled:opacity-40">
-          <span className="material-icons text-base">add</span> Add colourway
+          <span className="material-icons text-base">add</span> Añadir color
         </button>
       </div>
     </div>

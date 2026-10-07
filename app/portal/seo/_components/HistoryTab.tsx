@@ -12,7 +12,7 @@ export function HistoryTab({ runs }: { runs: SeoRun[] }) {
     return (
       <div className={`${pCard} p-10 text-center`}>
         <span className="material-icons text-4xl text-muted-foreground/50 mb-2">history</span>
-        <p className="text-sm text-muted-foreground">No crawl history yet.</p>
+        <p className="text-sm text-muted-foreground">Aún no hay historial de rastreo.</p>
       </div>
     );
   }
@@ -22,13 +22,13 @@ export function HistoryTab({ runs }: { runs: SeoRun[] }) {
       <table className="w-full text-sm">
         <thead className="border-b border-border">
           <tr>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Date</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Status</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Pages</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Score</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Critical</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Warning</th>
-            <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Notice</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Fecha</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Estado</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Páginas</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Puntuación</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Críticos</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Advertencias</th>
+          <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">Avisos</th>
           </tr>
         </thead>
         <tbody>

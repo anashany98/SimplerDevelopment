@@ -27,9 +27,9 @@ import { db } from '@/lib/db';
 import { surveys, clients, users, clientMembers } from '@/lib/db/schema';
 import { and, eq, inArray } from 'drizzle-orm';
 import { onEvent, type AutomationEvent } from './event-bus';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+
 const BASE_URL = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://simplerdevelopment.com';
 
 interface SurveyResponsePayload {
@@ -173,14 +173,15 @@ async function handleSurveyResponseSubmitted(event: AutomationEvent): Promise<vo
 </html>`;
 
   try {
+    const fromEmail = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
     await resend.emails.send({
-      from: FROM_EMAIL,
+      from: fromEmail,
       to: recipients,
       subject,
       html,
       // Reply-To carries the respondent, so hitting reply on a "new response"
-      // notification reaches the customer instead of the no-reply sender that
-      // FROM_EMAIL points at. Only set when a real address was captured:
+      // notification reaches the customer instead of the no-reply sender the
+      // from address points at. Only set when a real address was captured:
       // `respondent` above falls back to the literal string 'Anonymous', and
       // handing that to Resend as a Reply-To would be an invalid header.
       ...(payload.respondentEmail ? { replyTo: payload.respondentEmail } : {}),

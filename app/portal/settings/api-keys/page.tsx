@@ -86,13 +86,13 @@ export default function ApiKeysPage() {
       <OAuthClientsManager />
 
       <div className={`${pCard} p-4 space-y-2 text-sm`}>
-        <h3 className="font-display font-extrabold tracking-[-0.01em]">Connect to Claude</h3>
+        <h3 className="font-display font-extrabold tracking-[-0.01em]">Conectar con Claude</h3>
         <p className="text-muted-foreground">MCP endpoint:</p>
         <code className="block p-2 bg-muted rounded text-xs break-all">
           {origin}/api/mcp
         </code>
         <p className="text-muted-foreground mt-2">
-          Claude.ai web users can paste this URL into <strong>Settings → Connectors → Add custom connector</strong> with no API key.
+          Claude.ai web users can paste this URL into <strong>Configuración → Conectores → Añadir conector personalizado</strong> with no API key.
           For Claude Desktop, Claude Code, and ChatGPT, generate a key above and send it as{' '}
           <code className="text-xs">Authorization: Bearer sd_mcp_…</code>.
           See the <a href="/portal/brain/ask" className="text-primary underline">Connect AI</a> page for full setup instructions.

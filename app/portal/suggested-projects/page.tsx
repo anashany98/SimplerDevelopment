@@ -8,13 +8,13 @@ import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pChip, pSectionTitle } from '@/components/portal/portal-ui';
 
 const categoryLabel: Record<string, string> = {
-  website: 'Website',
-  ecommerce: 'E-Commerce',
-  mobile: 'Mobile App',
-  maintenance: 'Maintenance',
+  website: 'Sitio web',
+  ecommerce: 'Comercio electrónico',
+  mobile: 'App móvil',
+  maintenance: 'Mantenimiento',
   branding: 'Branding',
-  development: 'Development',
-  other: 'Other',
+  development: 'Desarrollo',
+  other: 'Otro',
 };
 
 const categoryIcon: Record<string, string> = {
@@ -31,7 +31,7 @@ const categoryIcon: Record<string, string> = {
 const categoryOrder = ['website', 'ecommerce', 'mobile', 'development', 'maintenance', 'branding', 'other'];
 
 function formatCents(cents: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(cents / 100);
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(cents / 100);
 }
 
 export default async function SuggestedProjectsPage() {
@@ -68,16 +68,16 @@ export default async function SuggestedProjectsPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-10">
       <PortalPageHeader
-        eyebrow="Suggestions"
-        title="Suggested Projects"
-        subtitle="Ideas we think would be a great fit for you."
+        eyebrow="Sugerencias"
+        title="Proyectos sugeridos"
+        subtitle="Ideas que creemos que serían ideales para ti."
       />
 
       {categories.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">rocket_launch</span>
-          <h2 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No suggestions yet</h2>
-          <p className="mt-2 text-sm text-muted-foreground">Check back soon — we&apos;ll add tailored recommendations for you.</p>
+          <h2 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Aún no hay sugerencias</h2>
+          <p className="mt-2 text-sm text-muted-foreground">Vuelve pronto — agregaremos recomendaciones personalizadas para ti.</p>
         </div>
       ) : (
         categories.map((category) => (
@@ -124,9 +124,9 @@ export default async function SuggestedProjectsPage() {
                   <div className="mt-auto pt-2 flex items-center justify-between gap-2 border-t border-border">
                     <div>
                       <p className="text-base font-display font-extrabold tracking-[-0.02em] text-foreground">
-                        {item.estimatedPrice ? `~${formatCents(item.estimatedPrice)}` : 'Quote on request'}
+                        {item.estimatedPrice ? `~${formatCents(item.estimatedPrice)}` : 'Cotización a solicitud'}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">Estimated · billed hourly</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Estimado · facturación por hora</p>
                       {item.estimatedTimeline && (
                         <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                           <span className="material-icons text-xs">schedule</span>
@@ -134,9 +134,7 @@ export default async function SuggestedProjectsPage() {
                         </p>
                       )}
                     </div>
-                    <span className="flex items-center gap-1 text-xs text-primary font-medium group-hover:underline">
-                      View details
-                      <span className="material-icons text-sm">arrow_forward</span>
+                    <span className="flex items-center gap-1 text-xs text-primary font-medium group-hover:underline">Ver detalles<span className="material-icons text-sm">arrow_forward</span>
                     </span>
                   </div>
                 </Link>

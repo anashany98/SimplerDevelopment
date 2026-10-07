@@ -29,13 +29,13 @@ function fmtAge(iso: string | null): string {
   const ms = Date.now() - new Date(iso).getTime();
   if (ms < 0) return new Date(iso).toLocaleString();
   const s = Math.round(ms / 1000);
-  if (s < 60) return `${s}s ago`;
+  if (s < 60) return `hace ${s}s`;
   const m = Math.round(s / 60);
-  if (m < 60) return `${m}m ago`;
+  if (m < 60) return `hace ${m}m`;
   const h = Math.round(m / 60);
-  if (h < 48) return `${h}h ago`;
+  if (h < 48) return `hace ${h}h`;
   const d = Math.round(h / 24);
-  return `${d}d ago`;
+  return `hace ${d}d`;
 }
 
 function passRateBadgeClass(rate: number): string {
@@ -134,9 +134,9 @@ export default function PromptEvalsPage() {
       .then((r) => r.json())
       .then((d) => {
         if (d.success) setPrompts(d.data ?? []);
-        else setErr(d.message ?? 'Failed to load');
+        else setErr(d.message ?? 'No se pudo cargar');
       })
-      .catch((e) => setErr(e instanceof Error ? e.message : 'Failed to load'))
+      .catch((e) => setErr(e instanceof Error ? e.message : 'No se pudo cargar'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -144,9 +144,9 @@ export default function PromptEvalsPage() {
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Prompt Evals</h1>
+          <h1 className="text-2xl font-bold text-foreground">Evaluaciones de prompts</h1>
           <p className="text-muted-foreground text-sm mt-0.5">
-            Leaderboard of all registered prompts and their latest evaluation results.
+            Clasificación de todos los prompts registrados y sus últimos resultados de evaluación.
           </p>
         </div>
         <Link
@@ -154,7 +154,7 @@ export default function PromptEvalsPage() {
           className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border border-border bg-card text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
         >
           <span className="material-icons text-base leading-none">attach_money</span>
-          Cost view
+          Vista de costes
         </Link>
       </div>
 
@@ -166,9 +166,9 @@ export default function PromptEvalsPage() {
 
       {!loading && prompts.length > 0 && (
         <p className="text-xs text-muted-foreground">
-          {prompts.length} prompt{prompts.length !== 1 ? 's' : ''} registered
+          {prompts.length} prompt{prompts.length !== 1 ? 's' : ''} registrado{prompts.length !== 1 ? 's' : ''}
           {' · '}
-          {prompts.filter((p) => p.latestRun != null).length} with runs
+          {prompts.filter((p) => p.latestRun != null).length} con ejecuciones
         </p>
       )}
 
@@ -179,7 +179,7 @@ export default function PromptEvalsPage() {
       ) : prompts.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center text-muted-foreground text-sm">
           <span className="material-icons text-4xl text-muted-foreground/50 block mb-2">quiz</span>
-          No prompts registered yet.
+          Aún no hay prompts registrados.
         </div>
       ) : (
         <div className="bg-card border border-border rounded-xl overflow-hidden">
@@ -201,14 +201,14 @@ export default function PromptEvalsPage() {
                     </button>
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Active Ver.
+                    Ver. activa
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     <button
                       onClick={() => handleSort('passRate')}
                       className="inline-flex items-center gap-1 cursor-pointer select-none hover:text-foreground transition-colors"
                     >
-                      Pass Rate
+                      Tasa de éxito
                       {sortKey === 'passRate' && (
                         <span className="material-icons text-sm leading-none">
                           {sortDir === 'asc' ? 'arrow_upward' : 'arrow_downward'}
@@ -217,17 +217,17 @@ export default function PromptEvalsPage() {
                     </button>
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Trend
+                    Tendencia
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Last Run Status
+                    Estado de la última ejecución
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     <button
                       onClick={() => handleSort('lastRun')}
                       className="inline-flex items-center gap-1 cursor-pointer select-none hover:text-foreground transition-colors"
                     >
-                      Last Run
+                      Última ejecución
                       {sortKey === 'lastRun' && (
                         <span className="material-icons text-sm leading-none">
                           {sortDir === 'asc' ? 'arrow_upward' : 'arrow_downward'}
@@ -268,7 +268,7 @@ export default function PromptEvalsPage() {
                           </span>
                         ) : (
                           <span className="inline-flex items-center text-xs px-2 py-0.5 rounded-full font-medium border bg-gray-100 text-gray-500 border-gray-200">
-                            No run
+                            Sin ejecuciones
                           </span>
                         )}
                       </Link>

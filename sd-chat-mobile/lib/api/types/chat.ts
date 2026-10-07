@@ -1,7 +1,7 @@
 /**
  * SD Chat — chat types
  *
- * Mirrors the rows returned by the SimplerDevelopment portal at
+ * Mirrors the rows returned by the CRM AGENTS portal at
  * `/api/portal/ai/conversations` (list) and `/api/portal/ai/conversations/[id]`
  * (detail). Shapes match the Drizzle table definitions in
  * `lib/db/schema/billing.ts` (`ai_conversations` + `ai_messages`).

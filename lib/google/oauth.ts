@@ -13,7 +13,7 @@ export interface GoogleConnectionLike {
 }
 
 /**
- * The OAuth client credentials used to mint a flow. SimplerDevelopment supports two tiers:
+ * The OAuth client credentials used to mint a flow. CRM AGENTS supports two tiers:
  *
  *   Standard tier  — no Workspace OAuth at all (MX-based email tracking).
  *   Enterprise tier — every tenant has their own GCP project + OAuth client. Credentials
@@ -33,7 +33,7 @@ export interface GoogleOAuthCredentials {
 }
 
 /**
- * Read platform-level (SD-owned) credentials from env vars. Use this for SimplerDevelopment's
+ * Read platform-level (SD-owned) credentials from env vars. Use this for CRM AGENTS's
  * own dogfood flow only. Per-tenant callers should resolve credentials from
  * google_workspace_tenant_credentials by siteId instead.
  */

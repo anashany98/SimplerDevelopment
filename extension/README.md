@@ -1,6 +1,6 @@
-# SimplerDevelopment Brain — Chrome Extension
+# CRM AGENTS Brain — Chrome Extension
 
-A Manifest V3 Chrome extension that turns any browser tab into a capture surface for your SimplerDevelopment Company Brain + CRM.
+A Manifest V3 Chrome extension that turns any browser tab into a capture surface for your CRM AGENTS Company Brain + CRM.
 
 - One-click capture of the current page with AI summary and tag suggestions
 - Detected-entity chips: every person/company the AI extracts gets a "+ Contact" / "+ Company" pill — instant CRM creation. Already-in-CRM matches link straight to the portal record
@@ -18,7 +18,7 @@ A Manifest V3 Chrome extension that turns any browser tab into a capture surface
 ## Prerequisites
 
 - Node.js 20+ and npm 10+ (the parent monorepo uses bun, but this folder is standalone npm)
-- A SimplerDevelopment portal you can sign into
+- A CRM AGENTS portal you can sign into
 - Chrome / Chromium / Edge / Brave (any MV3-capable browser)
 
 ## Install
@@ -60,7 +60,7 @@ Strict TypeScript, React 19, no emit.
 2. Open `chrome://extensions`
 3. Enable **Developer mode** (top right)
 4. Click **Load unpacked** and pick the `extension/dist/` folder
-5. Pin "SimplerDevelopment Brain" to your toolbar
+5. Pin "CRM AGENTS Brain" to your toolbar
 
 ## First-run setup
 

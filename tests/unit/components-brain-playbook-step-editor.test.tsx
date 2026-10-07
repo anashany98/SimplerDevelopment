@@ -340,7 +340,7 @@ describe('PlaybookStepEditor — StepConfigForm kind=note', () => {
     // Note kind has a Title input and a Body textarea
     const labels = Array.from(document.querySelectorAll('span.text-\\[11px\\]'));
     const texts = labels.map((l) => l.textContent ?? '');
-    expect(texts.some((t) => t === 'Title')).toBe(true);
+    expect(texts.some((t) => t === 'Título')).toBe(true);
     expect(texts.some((t) => t.includes('Body'))).toBe(true);
   });
 
@@ -698,21 +698,21 @@ describe('PlaybookStepEditor — effect re-sync on step prop change', () => {
 });
 
 describe('PlaybookStepEditor — kindChip label in config header', () => {
-  it('renders "Task config" label for task kind', () => {
+  it('renders "Configuración de tarea" label for task kind', () => {
     const props = makeProps({ kind: 'task' });
     const { container } = render(<PlaybookStepEditor {...props} />);
-    expect(container.textContent).toContain('Task config');
+    expect(container.textContent).toContain('Configuración de tarea');
   });
 
-  it('renders "Note config" label for note kind', () => {
+  it('renders "Configuración de nota" label for note kind', () => {
     const props = makeProps({ kind: 'note' });
     const { container } = render(<PlaybookStepEditor {...props} />);
-    expect(container.textContent).toContain('Note config');
+    expect(container.textContent).toContain('Configuración de nota');
   });
 
-  it('renders "Branch config" label for branch kind', () => {
+  it('renders "Configuración de bifurcación" label for branch kind', () => {
     const props = makeProps({ kind: 'branch' });
     const { container } = render(<PlaybookStepEditor {...props} />);
-    expect(container.textContent).toContain('Branch config');
+    expect(container.textContent).toContain('Configuración de bifurcación');
   });
 });

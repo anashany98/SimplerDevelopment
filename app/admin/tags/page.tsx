@@ -56,7 +56,7 @@ export default function TagsPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure?')) return;
+    if (!confirm('¿Seguro?')) return;
     await fetch(`/api/tags/${id}`, { method: 'DELETE' });
     fetchTags();
   };
@@ -65,23 +65,23 @@ export default function TagsPage() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">Tags</h1>
+          <h1 className="text-3xl font-bold text-foreground">Etiquetas</h1>
           <button
             onClick={() => {
               setShowForm(!showForm);
               setEditingTag(null);
               setFormData({ name: '', slug: '' });
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
-            {showForm ? 'Cancel' : 'Add Tag'}
+            {showForm ? 'Cancelar' : 'Añadir etiqueta'}
           </button>
         </div>
 
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-card border border-border shadow rounded-lg p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-foreground">Name *</label>
+              <label className="block text-sm font-medium text-foreground">Nombre *</label>
               <input
                 type="text"
                 required
@@ -103,9 +103,9 @@ export default function TagsPage() {
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
               >
-                {editingTag ? 'Update' : 'Create'} Tag
+                {editingTag ? 'Actualizar' : 'Crear'} etiqueta
               </button>
               <button
                 type="button"
@@ -115,9 +115,7 @@ export default function TagsPage() {
                   setFormData({ name: '', slug: '' });
                 }}
                 className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           </form>
         )}
@@ -126,15 +124,11 @@ export default function TagsPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Name
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -150,22 +144,18 @@ export default function TagsPage() {
                     <button
                       onClick={() => handleEdit(tag)}
                       className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Edit
-                    </button>
+                    >Editar</button>
                     <button
                       onClick={() => handleDelete(tag.id)}
                       className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                    >
-                      Delete
-                    </button>
+                    >Eliminar</button>
                   </td>
                 </tr>
               ))}
               {tags.length === 0 && (
                 <tr>
                   <td colSpan={3} className="px-6 py-12 text-center text-muted-foreground">
-                    No tags yet. Create your first tag to get started!
+                    Aún no hay etiquetas. ¡Crea la primera para empezar!
                   </td>
                 </tr>
               )}

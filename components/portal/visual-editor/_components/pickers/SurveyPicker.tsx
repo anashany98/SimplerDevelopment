@@ -51,19 +51,19 @@ export function SurveyPicker({ value, onChange }: { value: string; onChange: (v:
         <input type="text" value={open ? search : value || ''}
           onChange={(e) => { setSearch(e.target.value); if (!open) onChange(e.target.value); }}
           onFocus={() => setOpen(true)}
-          placeholder={loading ? 'Loading...' : 'Search surveys...'}
+          placeholder={loading ? 'Cargando...' : 'Buscar encuestas...'}
           className="mt-1 block w-full rounded border border-border px-2.5 py-1.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary" />
       )}
       {open && (
         <div className="absolute z-50 mt-1 w-full max-h-60 overflow-y-auto rounded-lg border border-border bg-card shadow-lg">
           {!selected && (
             <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search surveys..." autoFocus
+              placeholder="Buscar encuestas..." autoFocus
               className="sticky top-0 w-full border-b border-border px-3 py-2 text-sm bg-card focus:outline-none" />
           )}
           {filtered.length === 0 ? (
             <div className="px-3 py-4 text-xs text-muted-foreground text-center">
-              {loading ? 'Loading...' : surveys.length === 0 ? 'No surveys found' : 'No matches'}
+              {loading ? 'Cargando...' : surveys.length === 0 ? 'No surveys found' : 'No matches'}
             </div>
           ) : (
             filtered.map(s => (

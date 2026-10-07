@@ -87,7 +87,7 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
     });
     const data = await res.json();
     setSaving(false);
-    if (!data.success) { setError(data.message ?? 'Save failed'); return; }
+    if (!data.success) { setError(data.message ?? 'Error al guardar'); return; }
     setTemplate(data.data);
   }
 
@@ -99,14 +99,14 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
     const id = `block-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     const base = { id, order, type };
     switch (type) {
-      case 'text': return { ...base, type: 'text', content: 'Start writing...', alignment: 'left', size: 'base' };
-      case 'heading': return { ...base, type: 'heading', content: 'Heading', level: 2, alignment: 'left' };
+      case 'text': return { ...base, type: 'text', content: 'Empieza a escribir…', alignment: 'left', size: 'base' };
+      case 'heading': return { ...base, type: 'heading', content: 'Título', level: 2, alignment: 'left' };
       case 'image': return { ...base, type: 'image', url: '', alt: '', width: 'full', alignment: 'center' };
-      case 'button': return { ...base, type: 'button', text: 'Click Here', url: '', variant: 'primary', size: 'md', alignment: 'center' };
+      case 'button': return { ...base, type: 'button', text: 'Haz clic aquí', url: '', variant: 'primary', size: 'md', alignment: 'center' };
       case 'spacer': return { ...base, type: 'spacer', height: 'md' };
       case 'divider': return { ...base, type: 'divider', lineStyle: 'solid' };
       case 'columns': return { ...base, type: 'columns', columns: [{ id: `col-${Date.now()}-1`, width: 50, blocks: [] }, { id: `col-${Date.now()}-2`, width: 50, blocks: [] }], gap: 'md' };
-      case 'quote': return { ...base, type: 'quote', content: 'Quote text...', author: '' };
+      case 'quote': return { ...base, type: 'quote', content: 'Cita de texto…', author: '' };
       case 'section': return { ...base, type: 'section', blocks: [] };
       case 'social-links': return { ...base, type: 'social-links', links: [], alignment: 'center' };
       case 'email-header': return { ...base, type: 'email-header', alignment: 'center' };
@@ -116,7 +116,7 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
   }
 
   if (loading) return <div className="flex items-center justify-center py-20"><span className="material-icons animate-spin text-3xl text-muted-foreground">autorenew</span></div>;
-  if (!template) return <div className="p-6 text-muted-foreground text-sm">Template not found.</div>;
+  if (!template) return <div className="p-6 text-muted-foreground text-sm">Plantilla no encontrada.</div>;
 
   const inputClass = 'w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15';
 
@@ -124,9 +124,9 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
     { id: 'visual', label: 'Visual', icon: 'dashboard' },
     { id: 'html', label: 'HTML', icon: 'code' },
     { id: 'variables', label: 'Variables', icon: 'data_object' },
-    { id: 'preview', label: 'Preview', icon: 'email' },
-    { id: 'settings', label: 'Settings', icon: 'settings' },
-    { id: 'branding', label: 'Branding', icon: 'palette' },
+    { id: 'preview', label: 'Vista previa', icon: 'email' },
+    { id: 'settings', label: 'Ajustes', icon: 'settings' },
+    { id: 'branding', label: 'Marca', icon: 'palette' },
     { id: 'event', label: 'Event', icon: 'bolt' },
   ];
 
@@ -135,18 +135,16 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
       {/* Header */}
       <div>
         <Link href={`/portal/websites/${siteId}/email`} className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-3">
-          <span className="material-icons text-base">arrow_back</span>
-          Email Templates
-        </Link>
+          <span className="material-icons text-base">arrow_back</span>Plantillas de email</Link>
         <PortalPageHeader
-          eyebrow="Email"
+          eyebrow="Correo"
           title={name}
           subtitle={
             <span className="flex items-center gap-2 text-xs">
               <span className="font-mono bg-muted px-1.5 py-0.5 rounded">{template.event}</span>
-              {template.isRequired && <span className="text-amber-600 dark:text-amber-400">Required</span>}
+              {template.isRequired && <span className="text-amber-600 dark:text-amber-400">Obligatorio</span>}
               <span>·</span>
-              <span className={enabled ? 'text-green-600' : 'text-muted-foreground'}>{enabled ? 'Active' : 'Disabled'}</span>
+              <span className={enabled ? 'text-green-600' : 'text-muted-foreground'}>{enabled ? 'Activo' : 'Desactivado'}</span>
             </span>
           }
           actions={
@@ -156,7 +154,7 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
               className={`${pBtnPrimary} disabled:opacity-40`}
             >
               {saving ? <span className="material-icons animate-spin text-base">autorenew</span> : <span className="material-icons text-base">save</span>}
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? 'Guardando…' : 'Guardar'}
             </button>
           }
         />
@@ -216,8 +214,8 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
       {activeTab === 'html' && (
         <div className="bg-card border border-border rounded-2xl overflow-hidden">
           <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-foreground">HTML Content</h3>
-            <p className="text-xs text-muted-foreground">Use %%variableName%% for dynamic content</p>
+            <h3 className="text-sm font-semibold text-foreground">Contenido HTML</h3>
+            <p className="text-xs text-muted-foreground">Usa %%variableName%% para contenido dinámico</p>
           </div>
           <div className="p-5">
             <textarea
@@ -225,7 +223,7 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
               onChange={e => setHtmlContent(e.target.value)}
               rows={28}
               className={`${inputClass} font-mono text-xs`}
-              placeholder={`<h1>Hello %%firstName%%,</h1>\n<p>Your order %%orderNumber%% has been confirmed.</p>`}
+              placeholder={`<h1>Hola %%firstName%%,</h1>\n<p>Tu pedido %%orderNumber%% ha sido confirmado.</p>`}
             />
           </div>
         </div>
@@ -234,7 +232,7 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
       {activeTab === 'variables' && (
         <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
           <div>
-            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Available Variables</h2>
+            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Variables disponibles</h2>
             <p className="text-sm text-muted-foreground mt-1">
               Click any variable to copy it to your clipboard, then paste it into the visual editor or HTML content.
               Variables are replaced with real data when the email is sent.
@@ -269,10 +267,10 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
       {activeTab === 'settings' && (
         <div className="max-w-2xl space-y-6">
           <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
-            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Template Settings</h2>
+            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Ajustes de la plantilla</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1.5">Template Name</label>
+                <label className="block text-sm font-medium text-foreground mb-1.5">Nombre de la plantilla</label>
                 <input value={name} onChange={e => setName(e.target.value)} className={inputClass} />
               </div>
               <div>
@@ -298,8 +296,8 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${enabled ? 'translate-x-6' : 'translate-x-1'}`} />
                   </button>
                   <div>
-                    <span id="template-enabled-label" className="text-sm font-medium text-foreground">Enabled</span>
-                    <p className="text-xs text-muted-foreground">When disabled, this email won&apos;t be sent even when the event fires.</p>
+                    <span id="template-enabled-label" className="text-sm font-medium text-foreground">Activado</span>
+                    <p className="text-xs text-muted-foreground">Si se desactiva, este email no se enviará aunque se dispare el evento.</p>
                   </div>
                 </label>
               </div>
@@ -311,7 +309,7 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
       {activeTab === 'branding' && (
         <div className="max-w-2xl space-y-6">
           <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
-            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Branding Profile</h2>
+            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Perfil de marca</h2>
             <p className="text-sm text-muted-foreground">
               Select a branding profile to apply colors, fonts, and logo to this email template.
             </p>
@@ -322,12 +320,12 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
               noneLabel="No branding"
             />
             <div className="bg-muted/50 rounded-xl p-4 text-xs text-muted-foreground space-y-1">
-              <p>When a branding profile is applied:</p>
+              <p>Cuando se aplica un perfil de marca:</p>
               <ul className="list-disc pl-4 space-y-0.5">
-                <li>Email header block uses the profile logo</li>
-                <li>Buttons use the primary color</li>
-                <li>Headings use the heading font and text color</li>
-                <li>Footer uses the company name</li>
+                <li>El bloque de encabezado del email usa el logotipo del perfil</li>
+                <li>Los botones usan el color primario</li>
+                <li>Los títulos usan la fuente de títulos y el color de texto</li>
+                <li>El pie de página usa el nombre de la empresa</li>
               </ul>
             </div>
           </div>
@@ -337,30 +335,30 @@ export default function WebsiteEmailTemplatePage({ params }: { params: Promise<{
       {activeTab === 'event' && eventDef && (
         <div className="max-w-2xl space-y-6">
           <div className="bg-card border border-border rounded-2xl p-6 space-y-4">
-            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Event Details</h2>
+            <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground">Detalles del evento</h2>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Event Name</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre del evento</label>
                 <p className="text-sm text-foreground font-medium">{eventDef.name}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Event Code</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Código del evento</label>
                 <p className="text-sm font-mono text-foreground bg-muted px-3 py-1.5 rounded-xl inline-block">{eventDef.event}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Description</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción</label>
                 <p className="text-sm text-foreground">{eventDef.description}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Category</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Categoría</label>
                 <p className="text-sm text-foreground capitalize">{eventDef.category}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Required</label>
-                <p className="text-sm text-foreground">{eventDef.isRequired ? 'Yes — this template cannot be deleted' : 'No — optional template'}</p>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Obligatorio</label>
+                <p className="text-sm text-foreground">{eventDef.isRequired ? 'Sí — esta plantilla no se puede eliminar' : 'No — plantilla opcional'}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Available Variables</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Variables disponibles</label>
                 <p className="text-sm text-foreground">{eventDef.variables.length} variables available for this event</p>
               </div>
             </div>

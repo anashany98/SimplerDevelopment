@@ -1,13 +1,13 @@
-# API Index — SimplerDevelopment
+# API Index — CRM AGENTS
 
-> **Audience:** humans and AI agents integrating with the SimplerDevelopment platform.
+> **Audience:** humans and AI agents integrating with the CRM AGENTS platform.
 > **Sibling docs:** [Architecture](./architecture-for-agents.md) · [AI Overview](./ai-overview.md) · [Repository Map](./repository-map.md) · [Tool Reference](./tool-reference.md) · [Workflow Reference](./workflow-reference.md) · [SDK Reference](./sdk.md) · [Glossary](./glossary.md) · [/llms.txt](/llms.txt)
 
 ---
 
 ## Overview
 
-SimplerDevelopment exposes four distinct API surfaces. They are **not** interchangeable — each targets a different caller and uses a different auth model. Pick the right surface before building.
+CRM AGENTS exposes four distinct API surfaces. They are **not** interchangeable — each targets a different caller and uses a different auth model. Pick the right surface before building.
 
 | Surface | Base path | Auth | Who it is for |
 |---|---|---|---|

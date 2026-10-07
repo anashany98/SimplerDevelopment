@@ -205,34 +205,28 @@ export function validateSchedule(input: unknown): ScheduleValidation {
 
 // ─── describeSchedule ──────────────────────────────────────────────────────
 
-const DAYS_OF_WEEK = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
-
-function ordinal(n: number): string {
-  const s = ['th', 'st', 'nd', 'rd'];
-  const v = n % 100;
-  return n + (s[(v - 20) % 10] || s[v] || s[0]);
-}
+const DAYS_OF_WEEK = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
 // Human-readable schedule summary for UI badges and previews.
-//   "Daily at 09:30 UTC"
-//   "Mondays at 09:30 UTC"
-//   "1st of each month at 09:30 UTC"
-//   "Custom: */15 * * * *"
+//   "Cada día a las 09:30 UTC"
+//   "Lunes a las 09:30 UTC"
+//   "1 de cada mes a las 09:30 UTC"
+//   "Personalizado: */15 * * * *"
 export function describeSchedule(schedule: AutomationSchedule): string {
   switch (schedule.cadence) {
     case 'daily':
-      return `Daily at ${schedule.time ?? '??:??'} UTC`;
+      return `Cada día a las ${schedule.time ?? '??:??'} UTC`;
     case 'weekly': {
-      const day = schedule.dayOfWeek != null ? DAYS_OF_WEEK[schedule.dayOfWeek] : 'Unknown day';
-      return `${day} at ${schedule.time ?? '??:??'} UTC`;
+      const day = schedule.dayOfWeek != null ? DAYS_OF_WEEK[schedule.dayOfWeek] : 'Día desconocido';
+      return `${day} a las ${schedule.time ?? '??:??'} UTC`;
     }
     case 'monthly': {
-      const day = schedule.dayOfMonth != null ? ordinal(schedule.dayOfMonth) : '?';
-      return `${day} of each month at ${schedule.time ?? '??:??'} UTC`;
+      const day = schedule.dayOfMonth != null ? String(schedule.dayOfMonth) : '?';
+      return `${day} de cada mes a las ${schedule.time ?? '??:??'} UTC`;
     }
     case 'cron':
-      return `Custom: ${schedule.cronExpression ?? '?'}`;
+      return `Personalizado: ${schedule.cronExpression ?? '?'}`;
     default:
-      return 'Unknown schedule';
+      return 'Programación desconocida';
   }
 }

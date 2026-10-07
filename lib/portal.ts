@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth';
 import { getPortalClient as resolveClient } from '@/lib/portal-client';
 
-export { formatCents, invoiceStatusColor, ticketStatusColor, priorityColor } from '@/lib/portal-utils';
+export { formatCents, invoiceStatusColor, ticketStatusColor, priorityColor, ticketStatusLabel, ticketPriorityLabel } from '@/lib/portal-utils';
 
 export function invoiceStatusLabel(status: string) {
   if (status === 'sent') return 'Owed';

@@ -67,8 +67,8 @@ export default function BrainNoteDetailPage() {
       const r = await fetch(`/api/portal/brain/knowledge/${noteId}`);
       const json = await r.json().catch(() => ({}));
       if (!r.ok || !json.success) {
-        if (r.status === 404) setError('Note not found.');
-        else setError(json.message || `Failed to load (HTTP ${r.status}).`);
+        if (r.status === 404) setError('Nota no encontrada.');
+        else setError(json.message || `No se pudo cargar (HTTP ${r.status}).`);
         setLoading(false);
         return;
       }
@@ -78,7 +78,7 @@ export default function BrainNoteDetailPage() {
       setBody(n.body ?? '');
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ export default function BrainNoteDetailPage() {
   const save = useCallback(async (): Promise<boolean> => {
     if (Number.isNaN(noteId)) return false;
     if (!title.trim()) {
-      setError('Title is required.');
+      setError('El título es obligatorio.');
       return false;
     }
     setSaveState('saving');
@@ -107,7 +107,7 @@ export default function BrainNoteDetailPage() {
       });
       const json = await r.json().catch(() => ({}));
       if (!r.ok || !json.success) {
-        setError(json.message || `Save failed (HTTP ${r.status}).`);
+        setError(json.message || `No se pudo guardar (HTTP ${r.status}).`);
         setSaveState('error');
         return false;
       }
@@ -116,7 +116,7 @@ export default function BrainNoteDetailPage() {
       setError(null);
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
       setSaveState('error');
       return false;
     }
@@ -161,7 +161,7 @@ export default function BrainNoteDetailPage() {
     const r = await fetch('/api/portal/brain/knowledge', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: 'Untitled', body: '' }),
+      body: JSON.stringify({ title: 'Sin título', body: '' }),
     });
     const json = await r.json().catch(() => ({}));
     if (r.ok && json.success && json.data?.id) {
@@ -186,26 +186,26 @@ export default function BrainNoteDetailPage() {
     if (r.ok && json.success) {
       setNote(json.data as BrainNote);
     } else {
-      setError(json.message || 'Update failed.');
+      setError(json.message || 'No se pudo actualizar.');
     }
   }, [noteId]);
 
   const handleDelete = useCallback(async () => {
     if (Number.isNaN(noteId) || !note) return;
-    if (!confirm(`Delete "${note.title}"? This can't be undone.`)) return;
+    if (!confirm(`¿Eliminar "${note.title}"? No se puede deshacer.`)) return;
     const r = await fetch(`/api/portal/brain/knowledge/${noteId}`, { method: 'DELETE' });
     const json = await r.json().catch(() => ({}));
     if (r.ok && json.success) {
       router.push('/portal/brain/knowledge');
     } else {
-      setError(json.message || 'Delete failed.');
+      setError(json.message || 'No se pudo eliminar.');
     }
   }, [noteId, note, router]);
 
   if (Number.isNaN(noteId)) {
     return (
       <div className="max-w-4xl mx-auto py-12 text-center text-muted-foreground">
-        Invalid note id.
+        Id de nota no válido.
       </div>
     );
   }
@@ -213,8 +213,8 @@ export default function BrainNoteDetailPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto py-16 flex items-center justify-center gap-2 text-muted-foreground">
-        <span className="material-icons animate-spin">progress_activity</span>
-        Loading note…
+        <span className="material-icons animate-spin">autorenew</span>
+        Cargando nota…
       </div>
     );
   }
@@ -223,15 +223,13 @@ export default function BrainNoteDetailPage() {
     return (
       <div className="max-w-4xl mx-auto py-12 space-y-3">
         <div className="bg-destructive/10 border border-destructive/30 rounded-md p-4 text-sm text-destructive">
-          {error ?? 'Note not found.'}
+          {error ?? 'Nota no encontrada.'}
         </div>
         <Link
           href="/portal/brain/knowledge"
           className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent"
         >
-          <span className="material-icons text-base">arrow_back</span>
-          Back to knowledge
-        </Link>
+          <span className="material-icons text-base">arrow_back</span>Volver al conocimiento</Link>
       </div>
     );
   }
@@ -246,16 +244,16 @@ export default function BrainNoteDetailPage() {
           className="inline-flex items-center gap-1 px-2.5 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent"
         >
           <span className="material-icons text-base">arrow_back</span>
-          Knowledge
+          Conocimiento
         </button>
         <div className="flex-1 min-w-0">
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Untitled note"
+            placeholder="Nota sin título"
             className="w-full text-xl font-semibold bg-transparent border-0 border-b border-transparent focus:border-primary/50 px-1 py-1 focus:outline-none"
-            aria-label="Note title"
+            aria-label="Título de la nota"
           />
         </div>
         <SaveStatus state={saveState} dirty={dirty} />
@@ -263,11 +261,9 @@ export default function BrainNoteDetailPage() {
           type="button"
           onClick={() => save()}
           disabled={!dirty || saveState === 'saving'}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
-          <span className="material-icons text-base">save</span>
-          Save
-        </button>
+          <span className="material-icons text-base">save</span>Guardar</button>
         <NoteActionButtons
           note={note}
           onPatch={patchMeta}
@@ -333,8 +329,8 @@ function SaveStatus({
   if (state === 'saving') {
     return (
       <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-        <span className="material-icons animate-spin text-sm">progress_activity</span>
-        Saving…
+        <span className="material-icons animate-spin text-sm">autorenew</span>
+        Guardando…
       </span>
     );
   }
@@ -342,7 +338,7 @@ function SaveStatus({
     return (
       <span className="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
         <span className="material-icons text-sm">check_circle</span>
-        Saved
+        Guardado
       </span>
     );
   }
@@ -355,7 +351,7 @@ function SaveStatus({
     );
   }
   if (dirty) {
-    return <span className="text-xs text-muted-foreground">Unsaved changes</span>;
+    return <span className="text-xs text-muted-foreground">Cambios sin guardar</span>;
   }
   return null;
 }
@@ -369,9 +365,9 @@ function PanelTabs({
 }): ReactNode {
   const tabs: Array<{ id: SidePanel; icon: string; label: string }> = useMemo(
     () => [
-      { id: 'outline', icon: 'segment', label: 'Outline' },
-      { id: 'backlinks', icon: 'link', label: 'Backlinks' },
-      { id: 'fields', icon: 'tune', label: 'Fields' },
+      { id: 'outline', icon: 'segment', label: 'Esquema' },
+      { id: 'backlinks', icon: 'link', label: 'Retroenlaces' },
+      { id: 'fields', icon: 'tune', label: 'Campos' },
     ],
     [],
   );

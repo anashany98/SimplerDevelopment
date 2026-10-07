@@ -81,10 +81,10 @@ export default function PortalSnapshotsPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        flashError(data.message || 'Export failed');
+        flashError(data.message || 'Error al exportar');
         return;
       }
-      flashSuccess('Snapshot created');
+      flashSuccess('Instantánea creada');
       setShowCreate(false);
       setCreateSiteId('');
       setCreateName('');
@@ -96,16 +96,16 @@ export default function PortalSnapshotsPage() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm('Delete this snapshot? This cannot be undone.')) return;
+    if (!confirm('¿Eliminar esta instantánea? Esta acción no se puede deshacer.')) return;
     setBusy(true);
     try {
       const res = await fetch(`/api/portal/snapshots/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        flashError(data.message || 'Delete failed');
+        flashError(data.message || 'Error al eliminar');
         return;
       }
-      flashSuccess('Snapshot deleted');
+      flashSuccess('Instantánea eliminada');
       await fetchData();
     } finally {
       setBusy(false);
@@ -130,13 +130,13 @@ export default function PortalSnapshotsPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        flashError(data.message || 'Import failed');
+        flashError(data.message || 'Error al importar');
         return;
       }
       const conflictCount = data.data?.conflicts?.length ?? 0;
       flashSuccess(
-        `Imported ${data.data?.postsCreated ?? 0} posts into site #${data.data?.siteId}` +
-          (conflictCount > 0 ? ` (${conflictCount} slug conflicts resolved)` : ''),
+        `Se importaron ${data.data?.postsCreated ?? 0} publicaciones en la web #${data.data?.siteId}` +
+          (conflictCount > 0 ? ` (${conflictCount} conflictos de slug resueltos)` : ''),
       );
       setImportingForSnapshot(null);
       setImportTargetSiteId('new');
@@ -150,8 +150,8 @@ export default function PortalSnapshotsPage() {
   if (loading) {
     return (
       <div className="max-w-5xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading snapshots...
+        <span className="material-icons animate-spin mr-2">autorenew</span>
+        Cargando instantáneas...
       </div>
     );
   }
@@ -159,17 +159,15 @@ export default function PortalSnapshotsPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6 p-6">
       <PortalPageHeader
-        eyebrow="History"
-        title="Site snapshots"
-        subtitle="Clone configured websites — export blocks, posts, navigation, custom code, and post types as a portable bundle, then import into a new or existing site."
+        eyebrow="Historial"
+        title="Instantáneas de webs"
+        subtitle="Clona webs configuradas — exporta bloques, publicaciones, navegación, código personalizado y tipos de contenido como un paquete portátil, y luego impórtalo en una web nueva o existente."
         actions={
           <button
             onClick={() => setShowCreate((s) => !s)}
             className={pBtnPrimary}
           >
-            <span className="material-icons text-base">add</span>
-            Create snapshot
-          </button>
+            <span className="material-icons text-base">add</span>Crear instantánea</button>
         }
       />
 
@@ -190,34 +188,34 @@ export default function PortalSnapshotsPage() {
 
       {showCreate && (
         <div className={`${pCard} p-4 space-y-3`}>
-          <h2 className={pSectionTitle}>Create snapshot from a site</h2>
+          <h2 className={pSectionTitle}>Crear instantánea desde una web</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Source site</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Web de origen</label>
               <select
                 value={createSiteId}
                 onChange={(e) => setCreateSiteId(e.target.value ? parseInt(e.target.value, 10) : '')}
                 className={pSelect}
               >
-                <option value="">— Select a site —</option>
+                <option value="">— Selecciona una web —</option>
                 {websites.map((w) => (
                   <option key={w.id} value={w.id}>{w.name}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Snapshot name (optional)</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre de la instantánea (opcional)</label>
               <input
                 type="text"
                 value={createName}
                 onChange={(e) => setCreateName(e.target.value)}
-                placeholder="e.g. Acme Marketing Site v1"
+                placeholder="p. ej. Web de marketing de Acme v1"
                 className={pInput}
               />
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Description (optional)</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción (opcional)</label>
             <textarea
               value={createDescription}
               onChange={(e) => setCreateDescription(e.target.value)}
@@ -229,15 +227,13 @@ export default function PortalSnapshotsPage() {
             <button
               onClick={() => setShowCreate(false)}
               className={pBtnGhost}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               onClick={handleCreate}
               disabled={!createSiteId || creating}
               className={pBtnPrimary}
             >
-              {creating ? 'Creating…' : 'Create snapshot'}
+              {creating ? 'Creando…' : 'Crear instantánea'}
             </button>
           </div>
         </div>
@@ -246,25 +242,25 @@ export default function PortalSnapshotsPage() {
       {snapshots.length === 0 ? (
         <div className={`${pCard} text-center py-12`}>
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">photo_library</span>
-          <p className="text-muted-foreground text-sm">No snapshots yet.</p>
-          <p className="text-muted-foreground text-xs mt-1">Create your first to clone a site.</p>
+          <p className="text-muted-foreground text-sm">Aún no hay instantáneas.</p>
+          <p className="text-muted-foreground text-xs mt-1">Crea la primera para clonar una web.</p>
         </div>
       ) : (
         <div className={`${pCard} overflow-x-auto -mx-4 sm:mx-0`}>
           <table className="w-full text-sm min-w-[640px]">
             <thead className="bg-muted/50 text-muted-foreground">
               <tr>
-                <th className="text-left font-medium px-4 py-2.5">Name</th>
-                <th className="text-left font-medium px-4 py-2.5">Source site</th>
-                <th className="text-left font-medium px-4 py-2.5">Created</th>
-                <th className="text-right font-medium px-4 py-2.5">Actions</th>
+                <th className="text-left font-medium px-4 py-2.5">Nombre</th>
+                <th className="text-left font-medium px-4 py-2.5">Web de origen</th>
+                <th className="text-left font-medium px-4 py-2.5">Creado</th>
+                <th className="text-right font-medium px-4 py-2.5">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {snapshots.map((s) => {
                 const source = s.sourceSiteId
-                  ? websites.find((w) => w.id === s.sourceSiteId)?.name ?? `Site #${s.sourceSiteId}`
-                  : 'Uploaded';
+                  ? websites.find((w) => w.id === s.sourceSiteId)?.name ?? `Web #${s.sourceSiteId}`
+                  : 'Subida';
                 return (
                   <tr key={s.id} className="border-t border-border">
                     <td className="px-4 py-3">
@@ -282,11 +278,9 @@ export default function PortalSnapshotsPage() {
                         <a
                           href={`/api/portal/snapshots/${s.id}/download`}
                           className="inline-flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1 text-xs font-semibold text-foreground transition hover:border-foreground/25 hover:shadow-sm"
-                          title="Download JSON"
+                          title="Descargar JSON"
                         >
-                          <span className="material-icons text-base">download</span>
-                          Download
-                        </a>
+                          <span className="material-icons text-base">download</span>Descargar</a>
                         <button
                           onClick={() => {
                             setImportingForSnapshot(s);
@@ -294,21 +288,17 @@ export default function PortalSnapshotsPage() {
                             setImportNewName(s.name);
                           }}
                           className="inline-flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1 text-xs font-semibold text-foreground transition hover:border-foreground/25 hover:shadow-sm disabled:opacity-50"
-                          title="Import this snapshot"
+                          title="Importar esta instantánea"
                           disabled={busy}
                         >
-                          <span className="material-icons text-base">file_download</span>
-                          Import
-                        </button>
+                          <span className="material-icons text-base">file_download</span>Importar</button>
                         <button
                           onClick={() => handleDelete(s.id)}
                           className="inline-flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 disabled:opacity-50"
-                          title="Delete snapshot"
+                          title="Eliminar instantánea"
                           disabled={busy}
                         >
-                          <span className="material-icons text-base">delete</span>
-                          Delete
-                        </button>
+                          <span className="material-icons text-base">delete</span>Eliminar</button>
                       </div>
                     </td>
                   </tr>
@@ -329,13 +319,12 @@ export default function PortalSnapshotsPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div>
-              <h2 className="text-base font-semibold text-foreground">Import snapshot</h2>
-              <p className="text-xs text-muted-foreground mt-1">
-                Apply <span className="font-medium text-foreground">{importingForSnapshot.name}</span> to a site.
+              <h2 className="text-base font-semibold text-foreground">Importar instantánea</h2>
+              <p className="text-xs text-muted-foreground mt-1">Aplicar<span className="font-medium text-foreground">{importingForSnapshot.name}</span> en una web.
               </p>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Target</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Objetivo</label>
               <select
                 value={importTargetSiteId === 'new' ? 'new' : String(importTargetSiteId)}
                 onChange={(e) => {
@@ -344,15 +333,15 @@ export default function PortalSnapshotsPage() {
                 }}
                 className={pSelect}
               >
-                <option value="new">— Create a new site —</option>
+                <option value="new">— Crear una web nueva —</option>
                 {websites.map((w) => (
-                  <option key={w.id} value={w.id}>{w.name} (overlay)</option>
+                  <option key={w.id} value={w.id}>{w.name} (superposición)</option>
                 ))}
               </select>
             </div>
             {importTargetSiteId === 'new' && (
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">New site name</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Nuevo nombre del sitio</label>
                 <input
                   type="text"
                   value={importNewName}
@@ -364,9 +353,8 @@ export default function PortalSnapshotsPage() {
             {importTargetSiteId !== 'new' && (
               <div className="flex items-start gap-2 p-3 rounded-md bg-amber-50 border border-amber-200 text-amber-900 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-200 text-xs">
                 <span className="material-icons text-base">warning</span>
-                <span>
-                  Posts with conflicting slugs will be suffixed <code>-imported-N</code>. Existing
-                  navigation will be replaced. Existing posts are kept.
+                <span>Las publicaciones con slugs en conflicto tendrán un sufijo<code>-imported-N</code>. La navegación
+                  existente se reemplazará. Las publicaciones existentes se conservan.
                 </span>
               </div>
             )}
@@ -375,15 +363,13 @@ export default function PortalSnapshotsPage() {
                 onClick={() => setImportingForSnapshot(null)}
                 disabled={busy}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 onClick={handleImport}
                 disabled={busy}
                 className={pBtnPrimary}
               >
-                {busy ? 'Importing…' : 'Import'}
+                {busy ? 'Importando…' : 'Importar'}
               </button>
             </div>
           </div>

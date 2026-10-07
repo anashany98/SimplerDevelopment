@@ -9,7 +9,7 @@
 ## What this installer is
 
 A real Windows `.msi` (not the `.bat` script) that installs the
-SimplerDevelopment Claude skills bundle into `%USERPROFILE%\.claude\skills\`.
+CRM AGENTS Claude skills bundle into `%USERPROFILE%\.claude\skills\`.
 Replaces the awkward `.bat` flow — no SmartScreen scariness (when signed),
 no terminal window, no `right-click → Run anyway` dance.
 
@@ -110,7 +110,7 @@ The .msi runs on Windows 10 build 17763+ and Windows 11. To test:
    default — we deliberately used WiX's minimal UI). Install completes
    silently.
 5. Verify: `%USERPROFILE%\.claude\skills\sd-init\SKILL.md` exists.
-6. Uninstall via Settings → Apps → "SimplerDevelopment Skills" → Uninstall.
+6. Uninstall via Settings → Apps → "CRM AGENTS Skills" → Uninstall.
 
 ## Shipping the .msi
 

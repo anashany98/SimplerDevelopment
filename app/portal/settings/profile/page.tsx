@@ -44,7 +44,7 @@ export default function ProfileSettingsPage() {
       const data = await res.json();
       setMessage({ type: data.success ? 'success' : 'error', text: data.message });
     } catch {
-      setMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
+      setMessage({ type: 'error', text: 'Algo salió mal. Inténtalo de nuevo.' });
     } finally {
       setSaving(false);
     }
@@ -63,11 +63,11 @@ export default function ProfileSettingsPage() {
       <form method="post" onSubmit={handleSubmit} className="space-y-6">
         {/* Account info */}
         <div className={`${pCard} p-6 space-y-5`}>
-          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Account Information</h2>
+          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Información de la cuenta</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label htmlFor="profile-full-name" className="text-sm font-medium text-foreground">Full Name</label>
+              <label htmlFor="profile-full-name" className="text-sm font-medium text-foreground">Nombre completo</label>
               <input
                 id="profile-full-name"
                 name="name"
@@ -78,7 +78,7 @@ export default function ProfileSettingsPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="profile-email" className="text-sm font-medium text-foreground">Email</label>
+              <label htmlFor="profile-email" className="text-sm font-medium text-foreground">Correo</label>
               <input
                 id="profile-email"
                 name="email"
@@ -94,11 +94,11 @@ export default function ProfileSettingsPage() {
 
         {/* Company info */}
         <div className={`${pCard} p-6 space-y-5`}>
-          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Company Information</h2>
+          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Información de la empresa</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Company Name</label>
+              <label className="text-sm font-medium text-foreground">Nombre de la empresa</label>
               <input
                 name="company"
                 value={form.company}
@@ -108,7 +108,7 @@ export default function ProfileSettingsPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Phone</label>
+              <label className="text-sm font-medium text-foreground">Teléfono</label>
               <input
                 name="phone"
                 value={form.phone}
@@ -120,7 +120,7 @@ export default function ProfileSettingsPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Website</label>
+            <label className="text-sm font-medium text-foreground">Web</label>
             <input
               name="website"
               value={form.website}
@@ -131,7 +131,7 @@ export default function ProfileSettingsPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Address</label>
+            <label className="text-sm font-medium text-foreground">Dirección</label>
             <textarea
               name="address"
               value={form.address}
@@ -163,7 +163,7 @@ export default function ProfileSettingsPage() {
             className={pBtnPrimary}
           >
             {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-            {saving ? 'Saving…' : 'Save Changes'}
+            {saving ? 'Guardando…' : 'Guardar cambios'}
           </button>
         </div>
       </form>
@@ -188,11 +188,11 @@ function ChangePasswordSection() {
     setMessage(null);
 
     if (newPassword.length < 8) {
-      setMessage({ type: 'error', text: 'New password must be at least 8 characters.' });
+      setMessage({ type: 'error', text: 'La nueva contraseña debe tener al menos 8 caracteres.' });
       return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage({ type: 'error', text: 'New passwords do not match.' });
+      setMessage({ type: 'error', text: 'Las nuevas contraseñas no coinciden.' });
       return;
     }
 
@@ -210,10 +210,10 @@ function ChangePasswordSection() {
         setNewPassword('');
         setConfirmPassword('');
       } else {
-        setMessage({ type: 'error', text: data.error || 'Something went wrong.' });
+        setMessage({ type: 'error', text: data.error || 'Algo salió mal.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
+      setMessage({ type: 'error', text: 'Algo salió mal. Inténtalo de nuevo.' });
     } finally {
       setSaving(false);
     }
@@ -223,19 +223,19 @@ function ChangePasswordSection() {
     <form method="post" onSubmit={handleSubmit} className="space-y-6">
       <div className={`${pCard} p-6 space-y-5`}>
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Change Password</h2>
+          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Cambiar contraseña</h2>
           <button
             type="button"
             onClick={() => setShowPasswords(!showPasswords)}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
           >
             <span className="material-icons text-sm">{showPasswords ? 'visibility_off' : 'visibility'}</span>
-            {showPasswords ? 'Hide' : 'Show'}
+            {showPasswords ? 'Ocultar' : 'Mostrar'}
           </button>
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-sm font-medium text-foreground">Current Password</label>
+          <label className="text-sm font-medium text-foreground">Contraseña actual</label>
           <input
             type={showPasswords ? 'text' : 'password'}
             value={currentPassword}
@@ -248,7 +248,7 @@ function ChangePasswordSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">New Password</label>
+            <label className="text-sm font-medium text-foreground">Nueva contraseña</label>
             <input
               type={showPasswords ? 'text' : 'password'}
               value={newPassword}
@@ -256,12 +256,12 @@ function ChangePasswordSection() {
               required
               minLength={8}
               autoComplete="new-password"
-              placeholder="At least 8 characters"
+              placeholder="Al menos 8 caracteres"
               className={pInput}
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Confirm New Password</label>
+            <label className="text-sm font-medium text-foreground">Confirmar nueva contraseña</label>
             <input
               type={showPasswords ? 'text' : 'password'}
               value={confirmPassword}
@@ -269,7 +269,7 @@ function ChangePasswordSection() {
               required
               minLength={8}
               autoComplete="new-password"
-              placeholder="Confirm password"
+              placeholder="Confirmar contraseña"
               className={pInput}
             />
           </div>
@@ -296,7 +296,7 @@ function ChangePasswordSection() {
           className={pBtnPrimary}
         >
           {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-          {saving ? 'Updating…' : 'Update Password'}
+          {saving ? 'Actualizando…' : 'Actualizar contraseña'}
         </button>
       </div>
     </form>
@@ -337,12 +337,12 @@ function PortalSubdomainSection() {
       if (data.success) {
         setDefaultWebsiteId(websiteId);
         const site = websites.find(w => w.id === websiteId);
-        setMessage({ type: 'success', text: `Portal subdomain set to ${site?.subdomain}.simplerdevelopment.com` });
+        setMessage({ type: 'success', text: `Subdominio del portal establecido en ${site?.subdomain} · CRM AGENTS` });
       } else {
-        setMessage({ type: 'error', text: data.error || 'Something went wrong.' });
+        setMessage({ type: 'error', text: data.error || 'Algo salió mal.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Something went wrong.' });
+      setMessage({ type: 'error', text: 'Algo salió mal.' });
     } finally {
       setSaving(false);
     }
@@ -355,11 +355,11 @@ function PortalSubdomainSection() {
     <div className="space-y-6">
       <div className={`${pCard} p-6 space-y-5`}>
         <div>
-          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Portal Subdomain</h2>
+          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Subdominio del portal</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Choose which website determines your portal URL.
+            Elige qué web determina la URL de tu portal.
             {activeSubdomain && (
-              <> Your portal is at <strong>{activeSubdomain}.simplerdevelopment.com/portal</strong></>
+              <> Tu portal está en <strong>{activeSubdomain} · CRM AGENTS /portal</strong></>
             )}
           </p>
         </div>
@@ -385,7 +385,7 @@ function PortalSubdomainSection() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="text-sm font-medium text-foreground block truncate">{site.name}</span>
-                  <span className="text-xs text-muted-foreground">{site.subdomain}.simplerdevelopment.com</span>
+                  <span className="text-xs text-muted-foreground">{site.subdomain} · CRM AGENTS</span>
                 </div>
                 {isSelected && (
                   <span className="material-icons text-primary text-base shrink-0">check_circle</span>
@@ -444,12 +444,12 @@ function DefaultPortalSection() {
       const data = await res.json();
       if (data.success) {
         setDefaultClientId(clientId);
-        setMessage({ type: 'success', text: 'Default portal updated.' });
+        setMessage({ type: 'success', text: 'Portal predeterminado actualizado.' });
       } else {
-        setMessage({ type: 'error', text: data.error || 'Something went wrong.' });
+        setMessage({ type: 'error', text: data.error || 'Algo salió mal.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Something went wrong.' });
+      setMessage({ type: 'error', text: 'Algo salió mal.' });
     } finally {
       setSaving(false);
     }
@@ -459,8 +459,8 @@ function DefaultPortalSection() {
     <div className="space-y-6">
       <div className={`${pCard} p-6 space-y-5`}>
         <div>
-          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Default Portal</h2>
-          <p className="text-sm text-muted-foreground mt-1">Choose which portal you sign in to by default.</p>
+          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Portal predeterminado</h2>
+          <p className="text-sm text-muted-foreground mt-1">Elige el portal al que accedes de forma predeterminada.</p>
         </div>
 
         <div className="space-y-2">
@@ -485,7 +485,7 @@ function DefaultPortalSection() {
               <div className="flex-1 min-w-0">
                 <span className="text-sm font-medium text-foreground block truncate">{portal.company}</span>
                 {portal.subdomain && (
-                  <span className="text-xs text-muted-foreground">{portal.subdomain}.simplerdevelopment.com</span>
+                  <span className="text-xs text-muted-foreground">{portal.subdomain} · CRM AGENTS</span>
                 )}
               </div>
               {defaultClientId === portal.clientId && (

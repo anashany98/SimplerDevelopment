@@ -1,7 +1,7 @@
 /**
  * SD Chat — user / workspace / profile types
  *
- * Mirrors the shapes returned by the SimplerDevelopment portal:
+ * Mirrors the shapes returned by the CRM AGENTS portal:
  *  - `GET  /api/portal/me`                → { user, client }
  *  - `GET  /api/portal/clients`           → { clients: ClientMembership[], activeClientId }
  *  - `GET  /api/portal/settings/profile`  → ProfilePayload

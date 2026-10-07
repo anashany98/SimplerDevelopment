@@ -105,7 +105,11 @@ export async function checkGroundedness(
         },
       ],
       tools: [GRADE_TOOL],
-      tool_choice: { type: 'tool', name: 'grade' },
+      // Named tool_choice ({type:'tool'}) is rejected by local OpenAI servers
+      // (LM Studio: "Invalid tool_choice type: 'object'") — the 400 dropped
+      // every answer into the fail-closed catch (score 0, uncertain). With
+      // GRADE_TOOL as the only tool, 'any' forces exactly this call.
+      tool_choice: { type: 'any' },
     });
 
     for (const block of response.content) {
@@ -124,7 +128,11 @@ export async function checkGroundedness(
       }
     }
 
-    return unverified();
+    // Fail CLOSED: the API call succeeded but returned no `grade` tool_use
+    // block, so we have no verdict. Treat it like the catch path below —
+    // surface the "I don't know" disclaimer rather than optimistically passing
+    // an unverified answer through as grounded.
+    return { confidence: 0, grounded: false, sources: [], uncertain: true };
   } catch {
     // Fail CLOSED: if the grounder call throws (network error, API failure,
     // unparseable response, etc.) we must NOT silently pass the answer through

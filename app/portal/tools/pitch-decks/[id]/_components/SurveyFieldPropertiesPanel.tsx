@@ -18,20 +18,20 @@ export interface SurveyFieldForPanel {
 const SURVEY_FIELD_TYPES = [
   { value: 'text', label: 'Short Text', icon: 'short_text' },
   { value: 'textarea', label: 'Long Text', icon: 'notes' },
-  { value: 'email', label: 'Email', icon: 'email' },
-  { value: 'phone', label: 'Phone', icon: 'phone' },
+  { value: 'email', label: 'Correo', icon: 'email' },
+  { value: 'phone', label: 'Teléfono', icon: 'phone' },
   { value: 'url', label: 'URL', icon: 'link' },
-  { value: 'number', label: 'Number', icon: 'tag' },
-  { value: 'date', label: 'Date', icon: 'calendar_today' },
+  { value: 'number', label: 'Número', icon: 'tag' },
+  { value: 'date', label: 'Fecha', icon: 'calendar_today' },
   { value: 'select', label: 'Dropdown', icon: 'arrow_drop_down_circle' },
   { value: 'radio', label: 'Single Choice', icon: 'radio_button_checked' },
   { value: 'checkbox', label: 'Multi Choice', icon: 'check_box' },
   { value: 'toggle', label: 'Toggle', icon: 'toggle_on' },
   { value: 'rating', label: 'Rating', icon: 'star' },
   { value: 'slider', label: 'Slider', icon: 'tune' },
-  { value: 'heading', label: 'Heading', icon: 'title' },
-  { value: 'image', label: 'Image', icon: 'image' },
-  { value: 'video', label: 'Video', icon: 'movie' },
+  { value: 'heading', label: 'Encabezado', icon: 'title' },
+  { value: 'image', label: 'Imagen', icon: 'image' },
+  { value: 'video', label: 'Vídeo', icon: 'movie' },
 ];
 
 const HAS_OPTIONS = ['select', 'radio', 'checkbox'];
@@ -60,7 +60,7 @@ export function SurveyFieldPropertiesPanel({ field, surveyId: _surveyId, onUpdat
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">Field Type</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo de campo</label>
         <select
           value={field.type}
           onChange={(e) => onUpdate({ type: e.target.value })}
@@ -73,7 +73,7 @@ export function SurveyFieldPropertiesPanel({ field, surveyId: _surveyId, onUpdat
       </div>
 
       <div className="flex items-center justify-between">
-        <label className="text-xs font-medium text-muted-foreground">Required</label>
+        <label className="text-xs font-medium text-muted-foreground">Obligatorio</label>
         <button
           type="button"
           onClick={() => onUpdate({ required: !field.required })}
@@ -85,13 +85,13 @@ export function SurveyFieldPropertiesPanel({ field, surveyId: _surveyId, onUpdat
 
       {field.type !== 'heading' && field.type !== 'image' && field.type !== 'video' && (
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Placeholder</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Marcador de posición</label>
           <input
             type="text"
             value={field.placeholder || ''}
             onChange={(e) => onUpdate({ placeholder: e.target.value })}
             className="w-full px-3 py-1.5 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-            placeholder="Enter placeholder text..."
+            placeholder="Ingresa texto de marcador…"
           />
         </div>
       )}
@@ -122,7 +122,7 @@ export function SurveyFieldPropertiesPanel({ field, surveyId: _surveyId, onUpdat
 
       {HAS_OPTIONS.includes(field.type) && (
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Options</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Opciones</label>
           <div className="space-y-1.5">
             {(field.options || []).map((opt, i) => (
               <div key={i} className="flex items-center gap-1.5">
@@ -154,9 +154,7 @@ export function SurveyFieldPropertiesPanel({ field, surveyId: _surveyId, onUpdat
               onClick={() => onUpdate({ options: [...(field.options || []), `Option ${(field.options || []).length + 1}`] })}
               className="w-full flex items-center justify-center gap-1 px-2 py-1.5 border border-dashed border-border rounded text-xs text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
             >
-              <span className="material-icons text-sm">add</span>
-              Add Option
-            </button>
+              <span className="material-icons text-sm">add</span>Agregar opción</button>
           </div>
         </div>
       )}
@@ -196,9 +194,7 @@ export function SurveyFieldPropertiesPanel({ field, surveyId: _surveyId, onUpdat
       <div className="bg-accent/30 rounded-lg p-2.5 mt-4">
         <div className="flex items-start gap-1.5">
           <span className="material-icons text-xs text-emerald-500 mt-0.5">sync</span>
-          <p className="text-[10px] text-muted-foreground">
-            Changes sync to the survey record automatically. The survey is the source of truth.
-          </p>
+          <p className="text-[10px] text-muted-foreground">Los cambios se sincronizan con el registro de la encuesta automáticamente. La encuesta es la fuente de verdad.</p>
         </div>
       </div>
     </div>

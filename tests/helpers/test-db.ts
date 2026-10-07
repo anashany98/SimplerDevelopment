@@ -251,10 +251,20 @@ export async function buildTemplateDatabase(opts?: { quiet?: boolean }): Promise
 
     const dir = path.resolve(__dirname, '../../drizzle');
     const journal = JSON.parse(fs.readFileSync(path.join(dir, 'meta/_journal.json'), 'utf8'));
-    // Use the production journal, fail on any migration error, and never heal
-    // drift with schema push. Missing migrations must fail the suite.
+    // Mirror `db:migrate`: apply the production journal and every unjournaled
+    // 9xxx migration. These manual migrations carry schema changes that are
+    // intentionally outside Drizzle's snapshot chain; omitting them makes the
+    // test template diverge from a normally booted app (for example, missing
+    // clients.ai_chat_requires_approval).
     await migrate(drizzle(tpl), { migrationsFolder: dir });
-    migrationCount = journal.entries.length;
+    const registered = new Set(journal.entries.map((entry: { tag: string }) => `${entry.tag}.sql`));
+    const manualFiles = fs.readdirSync(dir)
+      .filter((file) => /^9\d{3}.*\.sql$/.test(file) && !registered.has(file))
+      .sort();
+    for (const file of manualFiles) {
+      await tpl.unsafe(fs.readFileSync(path.join(dir, file), 'utf8'));
+    }
+    migrationCount = journal.entries.length + manualFiles.length;
   } finally {
     await tpl.end({ timeout: 5 });
   }

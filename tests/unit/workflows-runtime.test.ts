@@ -35,6 +35,7 @@ interface MockState {
   workflowRuns: Array<Record<string, unknown>>;
   workflowStepLogs: Array<Record<string, unknown>>;
   emailTemplates: Array<Record<string, unknown>>;
+  emailLists: Array<Record<string, unknown>>;
   emailSubscriberInserts: Array<Record<string, unknown>>;
   fetchCalls: Array<{ url: string; body: unknown }>;
 }
@@ -44,6 +45,7 @@ const state: MockState = {
   workflowRuns: [],
   workflowStepLogs: [],
   emailTemplates: [],
+  emailLists: [],
   emailSubscriberInserts: [],
   fetchCalls: [],
 };
@@ -54,6 +56,7 @@ const TABLES = {
   workflowRuns: { __table: 'workflowRuns' },
   workflowStepLogs: { __table: 'workflowStepLogs' },
   emailTemplates: { __table: 'emailTemplates' },
+  emailLists: { __table: 'emailLists' },
   emailSubscribers: { __table: 'emailSubscribers' },
   kanbanCards: { __table: 'kanbanCards' },
   kanbanColumns: { __table: 'kanbanColumns' },
@@ -129,6 +132,11 @@ vi.mock('@/lib/db', () => {
           const found = id != null ? state.emailTemplates.find((t) => (t as { id: number }).id === id) : null;
           return Promise.resolve(found ? [found] : []);
         }
+        if (table.__table === 'emailLists') {
+          const id = extractEqValue(pendingFilter);
+          const found = id != null ? state.emailLists.find((t) => (t as { id: number }).id === id) : null;
+          return Promise.resolve(found ? [found] : []);
+        }
         // No projects/columns/etc. in fixture — return empty so create_task is skipped.
         return Promise.resolve([]);
       },
@@ -198,6 +206,8 @@ function extractEqValue(filter: unknown): number | null {
 }
 
 beforeEach(() => {
+  // A dev's .env.local sets EMAIL_TRANSPORT=mailpit; this suite mocks Resend.
+  delete process.env.EMAIL_TRANSPORT;
   state.workflows.length = 0;
   state.workflowRuns.length = 0;
   state.workflowStepLogs.length = 0;
@@ -416,6 +426,7 @@ describe('runWorkflow — add_to_list action', () => {
     const { runWorkflow } = await import('@/lib/workflows/runtime');
 
     seedWorkflow(400, ADD_TO_LIST_GRAPH);
+    state.emailLists.push({ id: 7, clientId: 1 }); // the list must belong to the client
 
     const result = await runWorkflow(
       400,

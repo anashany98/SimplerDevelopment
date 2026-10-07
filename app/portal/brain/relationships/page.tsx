@@ -40,26 +40,26 @@ const PRIORITY_TONE: Record<RelationshipListRow['overlay']['priority'], string> 
 
 type View = 'all' | 'prospects' | 'stale';
 const VIEWS: { key: View; label: string; icon: string }[] = [
-  { key: 'all', label: 'All', icon: 'group_work' },
-  { key: 'prospects', label: 'Prospects', icon: 'person_search' },
-  { key: 'stale', label: 'Stale', icon: 'schedule' },
+  { key: 'all', label: 'Todos', icon: 'group_work' },
+  { key: 'prospects', label: 'Prospectos', icon: 'person_search' },
+  { key: 'stale', label: 'Sin seguimiento', icon: 'schedule' },
 ];
 
 const VIEW_HEADER: Record<View, { title: string; icon: string; subtitle: string }> = {
   all: {
-    title: 'Relationships',
+    title: 'Relaciones',
     icon: 'group_work',
-    subtitle: 'Brain-tracked relationships layered over your CRM companies and deals.',
+    subtitle: 'Relaciones seguidas por el Brain, superpuestas a tus empresas y negocios del CRM.',
   },
   prospects: {
-    title: 'Prospects',
+    title: 'Prospectos',
     icon: 'person_search',
-    subtitle: 'Relationships flagged as prospects — early-stage opportunities you’re cultivating.',
+    subtitle: 'Relaciones marcadas como prospectos: oportunidades en fase temprana que estás cultivando.',
   },
   stale: {
-    title: 'Stale relationships',
+    title: 'Relaciones sin seguimiento',
     icon: 'schedule',
-    subtitle: 'Overdue for follow-up, based on each one’s configured stale-after threshold.',
+    subtitle: 'Pendientes de seguimiento, según el umbral sin seguimiento configurado en cada una.',
   },
 };
 
@@ -98,13 +98,13 @@ export default function BrainRelationshipsPage() {
       const r = await fetch(`/api/portal/brain/relationships?${params.toString()}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load.');
+        setError(json.message || 'No se pudo cargar.');
       } else {
         setRows(json.data);
         setError(null);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -131,15 +131,15 @@ export default function BrainRelationshipsPage() {
 
   const header = VIEW_HEADER[view];
   const emptyCopy = view === 'stale'
-    ? { icon: 'check_circle', title: 'No stale relationships.', hint: 'Set a stale-after threshold on any relationship to start tracking neglect.' }
+    ? { icon: 'check_circle', title: 'No hay relaciones sin seguimiento.', hint: 'Configura un umbral sin seguimiento en cualquier relación para empezar a detectar el abandono.' }
     : view === 'prospects'
-      ? { icon: 'person_search', title: 'No prospects yet.', hint: 'Tag a relationship as type "prospect" to surface it here.' }
-      : { icon: 'group_work', title: 'No relationships yet.', hint: 'Pick a CRM company or deal to start tracking it as a Brain relationship.' };
+      ? { icon: 'person_search', title: 'Aún no hay prospectos.', hint: 'Etiqueta una relación con el tipo "prospect" para que aparezca aquí.' }
+      : { icon: 'group_work', title: 'Aún no hay relaciones.', hint: 'Elige una empresa u oportunidad del CRM para empezar a seguirla como relación del Brain.' };
 
   return (
     <div className="max-w-5xl mx-auto py-8 space-y-6">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={<span className="flex items-center gap-2"><span className="material-icons text-primary">{header.icon}</span>{header.title}</span>}
         subtitle={header.subtitle}
         actions={
@@ -147,9 +147,7 @@ export default function BrainRelationshipsPage() {
             onClick={() => setShowCreate(true)}
             className={pBtnPrimary}
           >
-            <span className="material-icons text-base">add</span>
-            New relationship
-          </button>
+            <span className="material-icons text-base">add</span>Nueva relación</button>
         }
       />
 
@@ -177,25 +175,25 @@ export default function BrainRelationshipsPage() {
       </div>
 
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-xs text-muted-foreground">Filter:</span>
+        <span className="text-xs text-muted-foreground">Filtrar:</span>
         <select
-          aria-label="Filter by priority" value={priorityFilter}
+          aria-label="Filtrar por prioridad" value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value)}
           className={pSelect}
         >
-          <option value="">All priorities</option>
+          <option value="">Todas las prioridades</option>
           <option value="critical">Critical</option>
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
+          <option value="high">Alta</option>
+          <option value="medium">Media</option>
+          <option value="low">Baja</option>
         </select>
         {types.length > 0 && (
           <select
-            aria-label="Filter by type" value={typeFilter}
+            aria-label="Filtrar por tipo" value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
             className={pSelect}
           >
-            <option value="">All types</option>
+            <option value="">Todos los tipos</option>
             {types.map((t) => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
           </select>
         )}
@@ -203,9 +201,7 @@ export default function BrainRelationshipsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       ) : sorted.length === 0 ? (
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">{emptyCopy.icon}</span>
@@ -216,9 +212,7 @@ export default function BrainRelationshipsPage() {
               onClick={() => setShowCreate(true)}
               className={pBtnPrimary}
             >
-              <span className="material-icons text-base">add</span>
-              New relationship
-            </button>
+              <span className="material-icons text-base">add</span>Nueva relación</button>
           )}
         </div>
       ) : view === 'all' ? (
@@ -322,13 +316,13 @@ function RelationshipRow({ row }: { row: RelationshipListRow }) {
           {lastTouch && (
             <>
               <span>·</span>
-              <span>last touched {lastTouch.toLocaleDateString()} ({days}d ago)</span>
+              <span>último contacto {lastTouch.toLocaleDateString()} (hace {days}d)</span>
             </>
           )}
           {row.overlay.staleAfterDays && (
             <>
               <span>·</span>
-              <span>stale after {row.overlay.staleAfterDays}d</span>
+              <span>sin seguimiento tras {row.overlay.staleAfterDays}d</span>
             </>
           )}
           {row.openTaskCount > 0 && (
@@ -385,7 +379,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to create.');
+        setError(json.message || 'No se pudo crear.');
         return;
       }
       onCreated(json.data.id);
@@ -398,9 +392,9 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-card border border-border rounded-2xl shadow-xl max-w-lg w-full p-5 space-y-4 max-h-[90vh] overflow-auto">
         <div>
-          <h3 className="text-base font-semibold text-foreground">New relationship</h3>
+          <h3 className="text-base font-semibold text-foreground">Nueva relación</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Choose an existing CRM company or deal to track as a Brain relationship.
+            Elige una empresa u oportunidad del CRM para seguirla como relación del Brain.
           </p>
         </div>
 
@@ -414,7 +408,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search CRM companies or deals…"
+              placeholder="Buscar empresas u oportunidades del CRM…"
               className={pInput}
               autoFocus
             />
@@ -422,7 +416,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
               <div className="space-y-3 max-h-80 overflow-auto">
                 {suggestions.companies.length > 0 && (
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Companies</div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Empresas</div>
                     <div className="space-y-1">
                       {suggestions.companies.map((c) => (
                         <button
@@ -440,7 +434,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
                             <span className="truncate">{c.name}</span>
                             {c.industry && <span className="text-xs text-muted-foreground truncate">· {c.industry}</span>}
                           </span>
-                          {c.hasOverlay && <span className="text-xs text-muted-foreground flex-shrink-0">already tracked</span>}
+                          {c.hasOverlay && <span className="text-xs text-muted-foreground flex-shrink-0">ya en seguimiento</span>}
                         </button>
                       ))}
                     </div>
@@ -448,7 +442,7 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
                 )}
                 {suggestions.deals.length > 0 && (
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-1">Deals</div>
+                    <div className="text-xs font-medium text-muted-foreground mb-1">Oportunidades</div>
                     <div className="space-y-1">
                       {suggestions.deals.map((d) => (
                         <button
@@ -466,14 +460,14 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
                             <span className="truncate">{d.title}</span>
                             {d.companyName && <span className="text-xs text-muted-foreground truncate">· {d.companyName}</span>}
                           </span>
-                          {d.hasOverlay && <span className="text-xs text-muted-foreground flex-shrink-0">already tracked</span>}
+                          {d.hasOverlay && <span className="text-xs text-muted-foreground flex-shrink-0">ya en seguimiento</span>}
                         </button>
                       ))}
                     </div>
                   </div>
                 )}
                 {suggestions.companies.length === 0 && suggestions.deals.length === 0 && (
-                  <p className="text-xs text-muted-foreground py-4 text-center">No matches.</p>
+                  <p className="text-xs text-muted-foreground py-4 text-center">Sin resultados.</p>
                 )}
               </div>
             )}
@@ -485,28 +479,28 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
                 <span className="material-icons text-base text-muted-foreground">{picked.type === 'company' ? 'business' : 'handshake'}</span>
                 <span className="text-sm font-medium text-foreground truncate">{picked.name}</span>
               </div>
-              <button onClick={() => setPicked(null)} className="text-xs text-muted-foreground hover:text-foreground">Change</button>
+              <button onClick={() => setPicked(null)} className="text-xs text-muted-foreground hover:text-foreground">Cambiar</button>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Relationship type</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Tipo de relación</label>
               <input
                 type="text"
                 value={relationshipType}
                 onChange={(e) => setRelationshipType(e.target.value)}
-                placeholder="e.g. household, prospect, referral_partner"
+                placeholder="p. ej., hogar, prospecto, partner_de_referencias"
                 className={pInput}
               />
             </div>
             <div>
-              <label htmlFor="new-relationship-priority" className="block text-xs font-medium text-muted-foreground mb-1">Priority</label>
+              <label htmlFor="new-relationship-priority" className="block text-xs font-medium text-muted-foreground mb-1">Prioridad</label>
               <select
                 id="new-relationship-priority" value={priority}
                 onChange={(e) => setPriority(e.target.value as typeof priority)}
                 className={pSelect}
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+                <option value="low">Baja</option>
+                <option value="medium">Media</option>
+                <option value="high">Alta</option>
                 <option value="critical">Critical</option>
               </select>
             </div>
@@ -514,15 +508,15 @@ function CreateRelationshipModal({ onClose, onCreated }: { onClose: () => void; 
         )}
 
         <div className="flex items-center justify-end gap-2 pt-2">
-          <button onClick={onClose} className={pBtnGhost}>Cancel</button>
+          <button onClick={onClose} className={pBtnGhost}>Cancelar</button>
           <button
             onClick={submit}
             disabled={!picked || submitting}
             className={pBtnPrimary}
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Creating…</>
-              : <>Create relationship</>
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Creando…</>
+              : <>Crear relación</>
             }
           </button>
         </div>

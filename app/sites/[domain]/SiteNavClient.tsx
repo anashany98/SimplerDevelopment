@@ -544,7 +544,7 @@ export function SiteNavClient({
             onClick={() => setMenuOpen(!menuOpen)}
             className="flex flex-col"
             style={{ gap: '5px', padding: '6px' }}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
             {[0, 1, 2].map((i) => (
               <span

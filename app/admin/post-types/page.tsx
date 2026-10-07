@@ -98,7 +98,7 @@ export default function PostTypesPage() {
       setEditingPostType(null);
     } else {
       const data = await response.json();
-      alert(data.error || 'Failed to save post type');
+      alert(data.error || 'No se pudo guardar el tipo de contenido');
     }
   };
 
@@ -115,7 +115,7 @@ export default function PostTypesPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure? This will delete all custom fields associated with this post type.')) return;
+    if (!confirm('¿Seguro? Esto eliminará todos los campos personalizados asociados a este tipo de contenido.')) return;
     const response = await fetch(`/api/post-types/${id}`, { method: 'DELETE' });
     if (response.ok) {
       fetchPostTypes();
@@ -126,16 +126,16 @@ export default function PostTypesPage() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">Post Types</h1>
+          <h1 className="text-3xl font-bold text-foreground">Tipos de contenido</h1>
           <button
             onClick={() => {
               setShowForm(true);
               setEditingPostType(null);
               setFormData({ name: '', slug: '', description: '', icon: 'article', active: true });
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
-            Add Post Type
+            Añadir tipo de contenido
           </button>
         </div>
 
@@ -150,7 +150,7 @@ export default function PostTypesPage() {
             >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-foreground">
-                  {editingPostType ? 'Edit Post Type' : 'Add Post Type'}
+                  {editingPostType ? 'Editar tipo de contenido' : 'Añadir tipo de contenido'}
                 </h2>
                 <button
                   onClick={handleCancel}
@@ -165,7 +165,7 @@ export default function PostTypesPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-foreground">Name *</label>
+                    <label className="block text-sm font-medium text-foreground">Nombre *</label>
                     <input
                       type="text"
                       required
@@ -193,7 +193,7 @@ export default function PostTypesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground">Description</label>
+                  <label className="block text-sm font-medium text-foreground">Descripción</label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -203,7 +203,7 @@ export default function PostTypesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Icon *</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Icono *</label>
                   <div className="grid grid-cols-8 gap-2">
                     {materialIcons.map((iconName) => (
                       <button
@@ -230,25 +230,21 @@ export default function PostTypesPage() {
                     onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                     className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                   />
-                  <label htmlFor="active" className="ml-2 block text-sm text-foreground">
-                    Active
-                  </label>
+                  <label htmlFor="active" className="ml-2 block text-sm text-foreground">Activo</label>
                 </div>
 
                 <div className="flex gap-2 pt-4">
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+                    className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
                   >
-                    {editingPostType ? 'Update' : 'Create'} Post Type
+                    {editingPostType ? 'Actualizar' : 'Crear'} tipo de contenido
                   </button>
                   <button
                     type="button"
                     onClick={handleCancel}
                     className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-                  >
-                    Cancel
-                  </button>
+                  >Cancelar</button>
                 </div>
               </form>
             </div>
@@ -259,21 +255,13 @@ export default function PostTypesPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Icon
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Name
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Icono</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Estado</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -299,7 +287,7 @@ export default function PostTypesPage() {
                           : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                       }`}
                     >
-                      {postType.active ? 'Active' : 'Inactive'}
+                      {postType.active ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm space-x-2">
@@ -307,27 +295,23 @@ export default function PostTypesPage() {
                       href={`/admin/post-types/${postType.id}/fields`}
                       className="text-primary hover:text-primary/80"
                     >
-                      Fields
+                      Campos
                     </Link>
                     <button
                       onClick={() => handleEdit(postType)}
                       className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Edit
-                    </button>
+                    >Editar</button>
                     <button
                       onClick={() => handleDelete(postType.id)}
                       className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                    >
-                      Delete
-                    </button>
+                    >Eliminar</button>
                   </td>
                 </tr>
               ))}
               {postTypes.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
-                    No post types yet. Create your first post type to get started!
+                    Aún no hay tipos de contenido. ¡Crea el primero para empezar!
                   </td>
                 </tr>
               )}

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { formatMoney } from '@/lib/utils/money';
 import { db } from '@/lib/db';
 import { giftCertificates, clientWebsites, storeSettings } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
@@ -14,6 +15,9 @@ function generateCertCode(): string {
 }
 
 export async function POST(req: Request) {
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
   try {
     const body = await req.json();
     const {
@@ -29,7 +33,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: 'websiteId is required' }, { status: 400 });
     }
     if (!amount || amount < 100) {
-      return NextResponse.json({ success: false, message: 'Minimum amount is $1.00' }, { status: 400 });
+      return NextResponse.json({ success: false, message: `Minimum amount is ${formatMoney(100)}` }, { status: 400 });
     }
     if (!purchaserName?.trim() || !purchaserEmail?.trim()) {
       return NextResponse.json({ success: false, message: 'Purchaser name and email are required' }, { status: 400 });
@@ -81,7 +85,7 @@ export async function POST(req: Request) {
 
     let stripeParams: Parameters<typeof stripe.paymentIntents.create>[0] = {
       amount,
-      currency: 'usd',
+      currency: 'eur',
       metadata: {
         type: 'gift_certificate',
         giftCertificateId: String(cert.id),
@@ -96,7 +100,7 @@ export async function POST(req: Request) {
 
       stripeParams = {
         ...stripeParams,
-        currency: store.currency?.toLowerCase() || 'usd',
+        currency: store.currency?.toLowerCase() || 'eur',
         application_fee_amount: applicationFee,
         transfer_data: { destination: store.stripeAccountId },
       };

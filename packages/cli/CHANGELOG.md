@@ -7,7 +7,7 @@ All notable changes to `@simplerdevelopment/cli` are documented in this file. Fo
 Initial published release.
 
 ### Added
-- `simpler` CLI: manifest-driven, JSON-first client for the SimplerDevelopment portal's MCP tool surface (451-tool parity at release).
+- `simpler` CLI: manifest-driven, JSON-first client for the CRM AGENTS portal's MCP tool surface (451-tool parity at release).
 - Generated `<domain> <action>` commands for every MCP tool (e.g. `posts_list` → `simpler posts list`), plus built-ins: `auth login|status|logout`, `manifest`, `doctor`, `call <tool_name>`, `mcp parity`, `version`, `help`.
 - Config resolution across flags, `SIMPLER_API_URL`/`SIMPLER_API_KEY` (and `SD_MCP_URL`/`SD_MCP_API_KEY`) env vars, `./.simpler.json`, and `~/.simpler/config.json`.
 - `--dry-run` argument validation/preview and `--yes`-gated confirmation for destructive commands.

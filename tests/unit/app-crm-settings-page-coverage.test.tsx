@@ -153,15 +153,15 @@ describe('CrmSettingsPage — tab navigation', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     expect(container.textContent).toContain('Pipelines');
-    expect(container.textContent).toContain('Tags');
-    expect(container.textContent).toContain('Custom Fields');
-    expect(container.textContent).toContain('Automations');
+    expect(container.textContent).toContain('Etiquetas');
+    expect(container.textContent).toContain('Campos personalizados');
+    expect(container.textContent).toContain('Automatizaciones');
   });
 
   it('shows pipelines panel by default', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
-    expect(container.textContent).toContain('Manage your deal pipelines');
+    expect(container.textContent).toContain('Gestiona tus pipelines de negocios y sus etapas.');
   });
 
   it('switches to Tags tab on click', async () => {
@@ -169,18 +169,18 @@ describe('CrmSettingsPage — tab navigation', () => {
     await waitForLoaded(container);
     // Tab buttons include a material-icon span, so use includes not exact match
     const tagsBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Tags') && !b.textContent?.includes('Custom'),
+      b.textContent?.includes('Etiquetas') && !b.textContent?.includes('Custom'),
     ) as HTMLButtonElement;
     expect(tagsBtn).toBeTruthy();
     fireEvent.click(tagsBtn);
-    expect(container.textContent).toContain('Manage tags for organizing contacts');
+    expect(container.textContent).toContain('Gestiona las etiquetas para organizar tus contactos.');
   });
 
   it('switches to Custom Fields tab on click', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const cfBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Custom Fields'),
+      b.textContent?.includes('Campos personalizados'),
     ) as HTMLButtonElement;
     expect(cfBtn).toBeTruthy();
     fireEvent.click(cfBtn);
@@ -191,7 +191,7 @@ describe('CrmSettingsPage — tab navigation', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const autoBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Automations'),
+      b.textContent?.includes('Automatizaciones'),
     ) as HTMLButtonElement;
     expect(autoBtn).toBeTruthy();
     fireEvent.click(autoBtn);
@@ -206,7 +206,7 @@ describe('CrmSettingsPage — pipelines tab', () => {
     setupEmpty();
     const { container } = renderPage();
     await waitForLoaded(container);
-    expect(container.textContent).toContain('No pipelines yet');
+    expect(container.textContent).toContain('Aún no hay pipelines');
   });
 
   it('renders pipeline name from API', async () => {
@@ -218,7 +218,7 @@ describe('CrmSettingsPage — pipelines tab', () => {
   it('renders stage count badge on pipeline row', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
-    expect(container.textContent).toContain('2 stages');
+    expect(container.textContent).toContain('2 etapas');
   });
 
   it('renders pipeline with 1 stage using singular label', async () => {
@@ -234,8 +234,8 @@ describe('CrmSettingsPage — pipelines tab', () => {
     });
     const { container } = renderPage();
     await waitForLoaded(container);
-    expect(container.textContent).toContain('1 stage');
-    expect(container.textContent).not.toContain('1 stages');
+    expect(container.textContent).toContain('1 etapa');
+    expect(container.textContent).not.toContain('1 etapas');
   });
 
   it('expands pipeline stages on header click', async () => {
@@ -272,7 +272,7 @@ describe('CrmSettingsPage — pipeline rename', () => {
   it('clicking edit (pencil) icon enters rename mode', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
-    const editBtn = container.querySelector('button[title="Rename"]') as HTMLButtonElement;
+    const editBtn = container.querySelector('button[title="Renombrar"]') as HTMLButtonElement;
     fireEvent.click(editBtn);
     const input = container.querySelector('input') as HTMLInputElement;
     expect(input).toBeTruthy();
@@ -282,15 +282,15 @@ describe('CrmSettingsPage — pipeline rename', () => {
   it('clicking Cancel exits rename mode without saving', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
-    const editBtn = container.querySelector('button[title="Rename"]') as HTMLButtonElement;
+    const editBtn = container.querySelector('button[title="Renombrar"]') as HTMLButtonElement;
     fireEvent.click(editBtn);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
       expect(container.textContent).toContain('Sales');
-      expect(container.querySelector('button[title="Rename"]')).toBeTruthy();
+      expect(container.querySelector('button[title="Renombrar"]')).toBeTruthy();
     });
     const putCalls = fetchMock.mock.calls.filter((c) => c[1]?.method === 'PUT');
     expect(putCalls).toHaveLength(0);
@@ -307,12 +307,12 @@ describe('CrmSettingsPage — pipeline rename', () => {
     });
     const { container } = renderPage();
     await waitForLoaded(container);
-    const editBtn = container.querySelector('button[title="Rename"]') as HTMLButtonElement;
+    const editBtn = container.querySelector('button[title="Renombrar"]') as HTMLButtonElement;
     fireEvent.click(editBtn);
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Renamed Pipeline' } });
     const saveBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Save',
+      b.textContent?.trim() === 'Guardar',
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -332,7 +332,7 @@ describe('CrmSettingsPage — pipeline rename', () => {
     });
     const { container } = renderPage();
     await waitForLoaded(container);
-    const editBtn = container.querySelector('button[title="Rename"]') as HTMLButtonElement;
+    const editBtn = container.querySelector('button[title="Renombrar"]') as HTMLButtonElement;
     fireEvent.click(editBtn);
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Enter Renamed' } });
@@ -346,13 +346,13 @@ describe('CrmSettingsPage — pipeline rename', () => {
   it('pressing Escape cancels rename without saving', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
-    const editBtn = container.querySelector('button[title="Rename"]') as HTMLButtonElement;
+    const editBtn = container.querySelector('button[title="Renombrar"]') as HTMLButtonElement;
     fireEvent.click(editBtn);
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Should not save' } });
     fireEvent.keyDown(input, { key: 'Escape' });
     await waitFor(() => {
-      expect(container.querySelector('button[title="Rename"]')).toBeTruthy();
+      expect(container.querySelector('button[title="Renombrar"]')).toBeTruthy();
     });
     const putCalls = fetchMock.mock.calls.filter((c) => c[1]?.method === 'PUT');
     expect(putCalls).toHaveLength(0);
@@ -361,7 +361,7 @@ describe('CrmSettingsPage — pipeline rename', () => {
   it('empty rename input does not call PUT', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
-    const editBtn = container.querySelector('button[title="Rename"]') as HTMLButtonElement;
+    const editBtn = container.querySelector('button[title="Renombrar"]') as HTMLButtonElement;
     fireEvent.click(editBtn);
     const input = container.querySelector('input') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '' } });
@@ -386,7 +386,7 @@ describe('CrmSettingsPage — pipeline delete', () => {
     });
     const { container } = renderPage();
     await waitForLoaded(container);
-    const deleteBtn = container.querySelector('button[title="Delete"]') as HTMLButtonElement;
+    const deleteBtn = container.querySelector('button[title="Eliminar"]') as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
       const delCalls = fetchMock.mock.calls.filter((c) => c[1]?.method === 'DELETE');
@@ -398,7 +398,7 @@ describe('CrmSettingsPage — pipeline delete', () => {
     vi.stubGlobal('confirm', vi.fn(() => false));
     const { container } = renderPage();
     await waitForLoaded(container);
-    const deleteBtn = container.querySelector('button[title="Delete"]') as HTMLButtonElement;
+    const deleteBtn = container.querySelector('button[title="Eliminar"]') as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await new Promise((r) => setTimeout(r, 30));
     const delCalls = fetchMock.mock.calls.filter((c) => c[1]?.method === 'DELETE');
@@ -416,10 +416,10 @@ describe('CrmSettingsPage — pipeline delete', () => {
     });
     const { container } = renderPage();
     await waitForLoaded(container);
-    const deleteBtn = container.querySelector('button[title="Delete"]') as HTMLButtonElement;
+    const deleteBtn = container.querySelector('button[title="Eliminar"]') as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('No pipelines yet');
+      expect(container.textContent).toContain('Aún no hay pipelines');
     });
   });
 
@@ -441,10 +441,10 @@ describe('CrmSettingsPage — pipeline delete', () => {
     fireEvent.click(expandBtn);
     await waitFor(() => expect(container.textContent).toContain('Prospect'));
     // Now delete
-    const deleteBtn = container.querySelector('button[title="Delete"]') as HTMLButtonElement;
+    const deleteBtn = container.querySelector('button[title="Eliminar"]') as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('No pipelines yet');
+      expect(container.textContent).toContain('Aún no hay pipelines');
     });
   });
 });
@@ -456,7 +456,7 @@ describe('CrmSettingsPage — create pipeline', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const submitBtn = Array.from(container.querySelectorAll('button[type="submit"]')).find((b) =>
-      b.textContent?.includes('Create Pipeline'),
+      b.textContent?.includes('Crear pipeline'),
     ) as HTMLButtonElement;
     expect(submitBtn.disabled).toBe(true);
   });
@@ -465,11 +465,11 @@ describe('CrmSettingsPage — create pipeline', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const input = container.querySelector(
-      'input[placeholder="New pipeline name..."]',
+      'input[placeholder="Nombre del nuevo pipeline..."]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Marketing' } });
     const submitBtn = Array.from(container.querySelectorAll('button[type="submit"]')).find((b) =>
-      b.textContent?.includes('Create Pipeline'),
+      b.textContent?.includes('Crear pipeline'),
     ) as HTMLButtonElement;
     expect(submitBtn.disabled).toBe(false);
   });
@@ -488,7 +488,7 @@ describe('CrmSettingsPage — create pipeline', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const input = container.querySelector(
-      'input[placeholder="New pipeline name..."]',
+      'input[placeholder="Nombre del nuevo pipeline..."]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Marketing' } });
     const form = input.closest('form') as HTMLFormElement;
@@ -515,7 +515,7 @@ describe('CrmSettingsPage — create pipeline', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const input = container.querySelector(
-      'input[placeholder="New pipeline name..."]',
+      'input[placeholder="Nombre del nuevo pipeline..."]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Marketing' } });
     const form = input.closest('form') as HTMLFormElement;
@@ -529,7 +529,7 @@ describe('CrmSettingsPage — create pipeline', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const input = container.querySelector(
-      'input[placeholder="New pipeline name..."]',
+      'input[placeholder="Nombre del nuevo pipeline..."]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: '   ' } });
     const form = input.closest('form') as HTMLFormElement;
@@ -577,7 +577,7 @@ describe('CrmSettingsPage — stage management', () => {
     await waitForLoaded(container);
     await expandPipeline(container);
     const stageNameInput = container.querySelector(
-      'input[placeholder="e.g. Proposal"]',
+      'input[placeholder="p. ej. Propuesta"]',
     ) as HTMLInputElement;
     expect(stageNameInput).toBeTruthy();
   });
@@ -587,7 +587,7 @@ describe('CrmSettingsPage — stage management', () => {
     await waitForLoaded(container);
     await expandPipeline(container);
     const addBtn = Array.from(container.querySelectorAll('button[type="submit"]')).find((b) =>
-      b.textContent?.includes('Add'),
+      b.textContent?.includes('Añadir'),
     ) as HTMLButtonElement;
     expect(addBtn.disabled).toBe(true);
   });
@@ -605,7 +605,7 @@ describe('CrmSettingsPage — stage management', () => {
     await waitForLoaded(container);
     await expandPipeline(container);
     const stageNameInput = container.querySelector(
-      'input[placeholder="e.g. Proposal"]',
+      'input[placeholder="p. ej. Propuesta"]',
     ) as HTMLInputElement;
     fireEvent.change(stageNameInput, { target: { value: 'Closed' } });
     const form = stageNameInput.closest('form') as HTMLFormElement;
@@ -631,7 +631,7 @@ describe('CrmSettingsPage — stage management', () => {
     await waitForLoaded(container);
     await expandPipeline(container);
     const stageNameInput = container.querySelector(
-      'input[placeholder="e.g. Proposal"]',
+      'input[placeholder="p. ej. Propuesta"]',
     ) as HTMLInputElement;
     fireEvent.change(stageNameInput, { target: { value: 'Closed Won' } });
     const form = stageNameInput.closest('form') as HTMLFormElement;
@@ -780,7 +780,7 @@ describe('CrmSettingsPage — stage management', () => {
 describe('CrmSettingsPage — tags tab', () => {
   async function switchToTags(container: HTMLElement) {
     const tagsBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Tags') && !b.textContent?.includes('Custom'),
+      b.textContent?.includes('Etiquetas') && !b.textContent?.includes('Custom'),
     ) as HTMLButtonElement;
     expect(tagsBtn).toBeTruthy();
     fireEvent.click(tagsBtn);
@@ -791,7 +791,7 @@ describe('CrmSettingsPage — tags tab', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     await switchToTags(container);
-    expect(container.textContent).toContain('No tags yet');
+    expect(container.textContent).toContain('Aún no hay etiquetas');
   });
 
   it('renders tag name from API', async () => {
@@ -806,7 +806,7 @@ describe('CrmSettingsPage — tags tab', () => {
     await waitForLoaded(container);
     await switchToTags(container);
     const addBtn = Array.from(container.querySelectorAll('button[type="submit"]')).find((b) =>
-      b.textContent?.includes('Add Tag'),
+      b.textContent?.includes('Añadir etiqueta'),
     ) as HTMLButtonElement;
     expect(addBtn.disabled).toBe(true);
   });
@@ -948,7 +948,7 @@ describe('CrmSettingsPage — tags tab', () => {
     ) as HTMLButtonElement;
     fireEvent.click(tagDeleteBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('No tags yet');
+      expect(container.textContent).toContain('Aún no hay etiquetas');
     });
   });
 
@@ -974,7 +974,7 @@ describe('CrmSettingsPage — custom fields tab', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const cfBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Custom Fields'),
+      b.textContent?.includes('Campos personalizados'),
     ) as HTMLButtonElement;
     fireEvent.click(cfBtn);
     expect(container.querySelector('[data-testid="crm-custom-fields-admin"]')).toBeTruthy();
@@ -988,24 +988,24 @@ describe('CrmSettingsPage — automations tab', () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const autoBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Automations'),
+      b.textContent?.includes('Automatizaciones'),
     ) as HTMLButtonElement;
     expect(autoBtn).toBeTruthy();
     fireEvent.click(autoBtn);
     const el = container.querySelector('[data-testid="product-automation-settings"]');
     expect(el).toBeTruthy();
-    expect(el?.textContent).toContain('CRM Automations');
+    expect(el?.textContent).toContain('Automatizaciones del CRM');
   });
 
   it('renders automation description text', async () => {
     const { container } = renderPage();
     await waitForLoaded(container);
     const autoBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Automations'),
+      b.textContent?.includes('Automatizaciones'),
     ) as HTMLButtonElement;
     expect(autoBtn).toBeTruthy();
     fireEvent.click(autoBtn);
-    expect(container.textContent).toContain('Automate follow-ups');
+    expect(container.textContent).toContain('Automatiza seguimientos');
   });
 });
 
@@ -1020,6 +1020,6 @@ describe('CrmSettingsPage — API response fallbacks', () => {
     });
     const { container } = renderPage();
     await waitForLoaded(container);
-    expect(container.textContent).toContain('No pipelines yet');
+    expect(container.textContent).toContain('Aún no hay pipelines');
   });
 });

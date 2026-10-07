@@ -27,6 +27,7 @@ const APP_HOSTNAMES = new Set([
   'localhost:3001',
   'localhost:3005',
   'localhost:3100',
+  'localhost:4001',
   '127.0.0.1',
   '127.0.0.1:3000',
   '127.0.0.1:3100',
@@ -55,6 +56,10 @@ function isAppHostname(host: string): boolean {
   if (host.endsWith('.vercel.app')) return true;
   // Legacy Railway default domains — kept for any lingering deployments
   if (host.endsWith('.up.railway.app')) return true;
+  // Cloudflare tunnels — ephemeral/dev exposure so remote MCP clients
+  // (Claude / ChatGPT connectors) and OAuth discovery can reach the app without
+  // a permanent domain. Mirrors the .vercel.app allowance above.
+  if (host.endsWith('.trycloudflare.com')) return true;
   return false;
 }
 
@@ -378,6 +383,19 @@ export async function middleware(req: NextRequest) {
     // QAD-044: persist the A/B visitor id for public-site renders served on the
     // app host (e.g. staging where marketing + client sites share a hostname).
     ensureVisitorCookie(req, response);
+    // Path-based browsing (/sites/<domain>/… on the app host — preview iframes,
+    // approval previews, white-label/dev hosts): remember the site's internal
+    // base so the root fallback route can re-prefix the site's root-relative
+    // links (/shop, /cart, …) that would otherwise 404 against the app root.
+    // Host-based renders don't need this — their links are already correct.
+    if (siteDomain) {
+      response.cookies.set('sd_site_base', `/sites/${siteDomain}`, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 2,
+      });
+    }
     return response;
   }
 

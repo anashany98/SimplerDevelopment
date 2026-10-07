@@ -41,6 +41,12 @@ function outgoingValues(input: OutboxInput): typeof channelOutbox.$inferInsert {
     recipientIdentity: { ...input.recipientIdentity },
     messageType: input.messageType, body: input.body,
     media: input.media ? [...input.media] : null,
+    payload: {
+      recipientIdentity: { ...input.recipientIdentity },
+      messageType: input.messageType,
+      body: input.body ?? null,
+      media: input.media ? [...input.media] : null,
+    },
     idempotencyKey: input.idempotencyKey ?? null,
     status: 'processing', attempts: 1, nextAttemptAt: new Date(Date.now() + 60_000),
   };

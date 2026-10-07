@@ -78,57 +78,57 @@ describe('DynamicPanel — dispatcher', () => {
 
   it('dispatches blog-posts blocks', () => {
     renderPanel({ id: 'bp1', type: 'blog-posts', title: '', description: '', postType: '', columns: 3 });
-    expect(screen.getByPlaceholderText('Leave empty for all posts')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Déjalo vacío para todos los posts')).toBeTruthy();
   });
 
   it('dispatches card-grid blocks', () => {
     renderPanel({ id: 'cg1', type: 'card-grid', columns: 3 });
-    expect(screen.getByText('Number of Columns')).toBeTruthy();
+    expect(screen.getByText('Número de columnas')).toBeTruthy();
   });
 
   it('dispatches featured-content blocks', () => {
     renderPanel({ id: 'fc1', type: 'featured-content', title: 'T', description: '' });
-    expect(screen.getByPlaceholderText('Button text...')).toBeTruthy();
+    expect(screen.getByPlaceholderText('Texto del botón...')).toBeTruthy();
   });
 
   it('dispatches accordion blocks', () => {
     renderPanel({ id: 'ac1', type: 'accordion', title: '', items: [] });
-    expect(screen.getByText(/Use the controls in the editor/)).toBeTruthy();
+    expect(screen.getByText(/Usa los controles del editor/)).toBeTruthy();
   });
 
   it('dispatches product-grid blocks', () => {
     renderPanel({ id: 'pg1', type: 'product-grid' });
-    expect(screen.getByText('Sort By')).toBeTruthy();
+    expect(screen.getByText('Ordenar por')).toBeTruthy();
   });
 
   it('dispatches featured-products blocks', () => {
     renderPanel({ id: 'fp1', type: 'featured-products' });
-    expect(screen.getByText('Badge Text')).toBeTruthy();
+    expect(screen.getByText('Texto de la insignia')).toBeTruthy();
   });
 
   it('dispatches product-categories blocks', () => {
     renderPanel({ id: 'pc1', type: 'product-categories' });
-    expect(screen.getByText('Layout')).toBeTruthy();
+    expect(screen.getByText('Diseño')).toBeTruthy();
   });
 
   it('dispatches shopping-cart blocks', () => {
     renderPanel({ id: 'sc1', type: 'shopping-cart' });
-    expect(screen.getByText('Cart Style')).toBeTruthy();
+    expect(screen.getByText('Estilo del carrito')).toBeTruthy();
   });
 
   it('dispatches store-banner blocks', () => {
     renderPanel({ id: 'sb1', type: 'store-banner', title: 'Sale' });
-    expect(screen.getByText('Discount Code')).toBeTruthy();
+    expect(screen.getByText('Código de descuento')).toBeTruthy();
   });
 
   it('dispatches product-detail blocks', () => {
     renderPanel({ id: 'pd1', type: 'product-detail' });
-    expect(screen.getByText('Product Slug')).toBeTruthy();
+    expect(screen.getByText('Slug del producto')).toBeTruthy();
   });
 
   it('dispatches tabs blocks', () => {
     renderPanel({ id: 'tb1', type: 'tabs', tabs: [] });
-    expect(screen.getByText('+ Add Tab')).toBeTruthy();
+    expect(screen.getByText('+ Añadir pestaña')).toBeTruthy();
   });
 });
 
@@ -151,13 +151,13 @@ describe('DynamicPanel — BlogPostsBlockSettings', () => {
 
   it('renders title RichTextEditable with value', () => {
     renderPanel(baseBlogPosts);
-    const rte = screen.getByTestId('rte-Section title...') as HTMLTextAreaElement;
+    const rte = screen.getByTestId('rte-Título de sección...') as HTMLTextAreaElement;
     expect(rte.value).toBe('Latest News');
   });
 
   it('updates title via RichTextEditable (collapses empty to undefined)', () => {
     const { onChange } = renderPanel(baseBlogPosts);
-    const rte = screen.getByTestId('rte-Section title...');
+    const rte = screen.getByTestId('rte-Título de sección...');
     fireEvent.change(rte, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ title: undefined });
     fireEvent.change(rte, { target: { value: 'News' } });
@@ -166,21 +166,21 @@ describe('DynamicPanel — BlogPostsBlockSettings', () => {
 
   it('updates description via RichTextEditable', () => {
     const { onChange } = renderPanel(baseBlogPosts);
-    const rte = screen.getByTestId('rte-Section description...');
+    const rte = screen.getByTestId('rte-Descripción de sección...');
     fireEvent.change(rte, { target: { value: 'New desc' } });
     expect(onChange).toHaveBeenCalledWith({ description: 'New desc' });
   });
 
   it('updates postType input', () => {
     const { onChange } = renderPanel(baseBlogPosts);
-    const input = screen.getByPlaceholderText('Leave empty for all posts') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Déjalo vacío para todos los posts') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'category' } });
     expect(onChange).toHaveBeenCalledWith({ postType: 'category' });
   });
 
   it('updates categorySlug input', () => {
     const { onChange } = renderPanel(baseBlogPosts);
-    const input = screen.getByPlaceholderText('e.g. company-news') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('p. ej. noticias-de-empresa') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'updates' } });
     expect(onChange).toHaveBeenCalledWith({ categorySlug: 'updates' });
   });
@@ -201,7 +201,7 @@ describe('DynamicPanel — BlogPostsBlockSettings', () => {
 
   it('updates columns via select (parses to int)', () => {
     const { onChange } = renderPanel(baseBlogPosts);
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '2' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 2 });
   });
@@ -236,26 +236,26 @@ describe('DynamicPanel — CardGridBlockSettings', () => {
 
   it('renders title RichTextEditable with value', () => {
     renderPanel(baseCardGrid);
-    expect((screen.getByTestId('rte-Section title...') as HTMLTextAreaElement).value).toBe('Our Services');
+    expect((screen.getByTestId('rte-Título de sección...') as HTMLTextAreaElement).value).toBe('Our Services');
   });
 
   it('updates columns via select', () => {
     const { onChange } = renderPanel(baseCardGrid);
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '4' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 4 });
   });
 
   it('updates description via RichTextEditable', () => {
     const { onChange } = renderPanel(baseCardGrid);
-    const rte = screen.getByTestId('rte-Section description...');
+    const rte = screen.getByTestId('rte-Descripción de sección...');
     fireEvent.change(rte, { target: { value: 'Updated' } });
     expect(onChange).toHaveBeenCalledWith({ description: 'Updated' });
   });
 
   it('defaults columns to 3 when not set', () => {
     renderPanel({ ...baseCardGrid, columns: undefined });
-    expect(screen.getByDisplayValue('3 Columns')).toBeTruthy();
+    expect(screen.getByDisplayValue('3 columnas')).toBeTruthy();
   });
 
   describe('per-card icon color', () => {
@@ -269,21 +269,21 @@ describe('DynamicPanel — CardGridBlockSettings', () => {
 
     it('renders a collapsible entry per card', () => {
       renderPanel(cardGridWithCards);
-      expect(screen.getByText('Card 1 — Card One')).toBeTruthy();
-      expect(screen.getByText('Card 2 — Card Two')).toBeTruthy();
+      expect(screen.getByText('Tarjeta 1 — Card One')).toBeTruthy();
+      expect(screen.getByText('Tarjeta 2 — Card Two')).toBeTruthy();
     });
 
     it('expands a card to reveal its icon color control, pre-filled with the current value', () => {
       renderPanel(cardGridWithCards);
-      fireEvent.click(screen.getByText('Card 2 — Card Two'));
-      const input = screen.getByTestId('color-Icon Color') as HTMLInputElement;
+      fireEvent.click(screen.getByText('Tarjeta 2 — Card Two'));
+      const input = screen.getByTestId('color-Color del icono') as HTMLInputElement;
       expect(input.value).toBe('#ff0000');
     });
 
     it('updates the target card iconColor while leaving other cards untouched', () => {
       const { onChange } = renderPanel(cardGridWithCards);
-      fireEvent.click(screen.getByText('Card 1 — Card One'));
-      const input = screen.getByTestId('color-Icon Color');
+      fireEvent.click(screen.getByText('Tarjeta 1 — Card One'));
+      const input = screen.getByTestId('color-Color del icono');
       fireEvent.change(input, { target: { value: '#00ff00' } });
       expect(onChange).toHaveBeenCalledWith({
         cards: [
@@ -313,12 +313,12 @@ describe('DynamicPanel — FeaturedContentBlockSettings', () => {
 
   it('renders title RichTextEditable with value', () => {
     renderPanel(baseFeatured);
-    expect((screen.getByTestId('rte-Title...') as HTMLTextAreaElement).value).toBe('About Us');
+    expect((screen.getByTestId('rte-Título...') as HTMLTextAreaElement).value).toBe('About Us');
   });
 
   it('updates button text input', () => {
     const { onChange } = renderPanel(baseFeatured);
-    const inputs = screen.getAllByPlaceholderText('Button text...') as HTMLInputElement[];
+    const inputs = screen.getAllByPlaceholderText('Texto del botón...') as HTMLInputElement[];
     fireEvent.change(inputs[0], { target: { value: 'Learn More' } });
     expect(onChange).toHaveBeenCalledWith({ buttonText: 'Learn More' });
   });
@@ -332,44 +332,44 @@ describe('DynamicPanel — FeaturedContentBlockSettings', () => {
 
   it('changes imagePosition via select', () => {
     const { onChange } = renderPanel(baseFeatured);
-    const select = screen.getByDisplayValue('Right') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Derecha') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'left' } });
     expect(onChange).toHaveBeenCalledWith({ imagePosition: 'left' });
   });
 
   it('shows click-to-select button when no imageUrl', () => {
     renderPanel(baseFeatured);
-    expect(screen.getByText('Click to select image')).toBeTruthy();
+    expect(screen.getByText('Haz clic para seleccionar una imagen')).toBeTruthy();
   });
 
   it('opens media picker when select-image button clicked', () => {
     renderPanel(baseFeatured);
-    expect(screen.queryByTestId('media-picker-Select Featured Image')).toBeNull();
-    fireEvent.click(screen.getByText('Click to select image'));
-    expect(screen.getByTestId('media-picker-Select Featured Image')).toBeTruthy();
+    expect(screen.queryByTestId('media-picker-Seleccionar imagen destacada')).toBeNull();
+    fireEvent.click(screen.getByText('Haz clic para seleccionar una imagen'));
+    expect(screen.getByTestId('media-picker-Seleccionar imagen destacada')).toBeTruthy();
   });
 
   it('selecting media closes picker and emits imageUrl', () => {
     const { onChange } = renderPanel(baseFeatured);
-    fireEvent.click(screen.getByText('Click to select image'));
-    const mpInput = screen.getByTestId('mp-input-Select Featured Image') as HTMLInputElement;
+    fireEvent.click(screen.getByText('Haz clic para seleccionar una imagen'));
+    const mpInput = screen.getByTestId('mp-input-Seleccionar imagen destacada') as HTMLInputElement;
     fireEvent.change(mpInput, { target: { value: 'https://img.com/photo.jpg' } });
     expect(onChange).toHaveBeenCalledWith({ imageUrl: 'https://img.com/photo.jpg' });
-    expect(screen.queryByTestId('media-picker-Select Featured Image')).toBeNull();
+    expect(screen.queryByTestId('media-picker-Seleccionar imagen destacada')).toBeNull();
   });
 
   it('shows Change Image and Remove buttons when imageUrl set', () => {
     const { onChange } = renderPanel({ ...baseFeatured, imageUrl: 'https://img.com/existing.jpg' });
-    expect(screen.getByText('Change Image')).toBeTruthy();
-    const removeBtn = screen.getByText('Remove');
+    expect(screen.getByText('Cambiar imagen')).toBeTruthy();
+    const removeBtn = screen.getByText('Quitar');
     fireEvent.click(removeBtn);
     expect(onChange).toHaveBeenCalledWith({ imageUrl: '' });
   });
 
   it('opens media picker via Change Image button', () => {
     renderPanel({ ...baseFeatured, imageUrl: 'https://img.com/existing.jpg' });
-    fireEvent.click(screen.getByText('Change Image'));
-    expect(screen.getByTestId('media-picker-Select Featured Image')).toBeTruthy();
+    fireEvent.click(screen.getByText('Cambiar imagen'));
+    expect(screen.getByTestId('media-picker-Seleccionar imagen destacada')).toBeTruthy();
   });
 });
 
@@ -387,27 +387,27 @@ describe('DynamicPanel — AccordionBlockSettings', () => {
 
   it('renders section title RichTextEditable with value', () => {
     renderPanel(baseAccordion);
-    const rte = screen.getByTestId('rte-Frequently Asked Questions') as HTMLTextAreaElement;
+    const rte = screen.getByTestId('rte-Preguntas frecuentes') as HTMLTextAreaElement;
     expect(rte.value).toBe('FAQ');
   });
 
   it('updates title via RichTextEditable', () => {
     const { onChange } = renderPanel(baseAccordion);
-    const rte = screen.getByTestId('rte-Frequently Asked Questions');
+    const rte = screen.getByTestId('rte-Preguntas frecuentes');
     fireEvent.change(rte, { target: { value: 'Common Questions' } });
     expect(onChange).toHaveBeenCalledWith({ title: 'Common Questions' });
   });
 
   it('collapses empty title to undefined', () => {
     const { onChange } = renderPanel(baseAccordion);
-    const rte = screen.getByTestId('rte-Frequently Asked Questions');
+    const rte = screen.getByTestId('rte-Preguntas frecuentes');
     fireEvent.change(rte, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ title: undefined });
   });
 
   it('shows instruction text about editor controls', () => {
     renderPanel(baseAccordion);
-    expect(screen.getByText(/Use the controls in the editor/)).toBeTruthy();
+    expect(screen.getByText(/Usa los controles del editor/)).toBeTruthy();
   });
 });
 
@@ -433,7 +433,7 @@ describe('DynamicPanel — ProductGridBlockSettings', () => {
 
   it('updates sort via select', () => {
     const { onChange } = renderPanel(baseProductGrid);
-    const select = screen.getByDisplayValue('Newest') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Más recientes') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'price_asc' } });
     expect(onChange).toHaveBeenCalledWith({ sort: 'price_asc' });
   });
@@ -447,7 +447,7 @@ describe('DynamicPanel — ProductGridBlockSettings', () => {
 
   it('updates columns select', () => {
     const { onChange } = renderPanel(baseProductGrid);
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '4' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 4 });
   });
@@ -485,7 +485,7 @@ describe('DynamicPanel — ProductGridBlockSettings', () => {
 
   it('updates categorySlug input', () => {
     const { onChange } = renderPanel(baseProductGrid);
-    const input = screen.getByPlaceholderText('Leave empty for all products') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Déjalo vacío para todos los productos') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'apparel' } });
     expect(onChange).toHaveBeenCalledWith({ categorySlug: 'apparel' });
   });
@@ -505,7 +505,7 @@ describe('DynamicPanel — FeaturedProductsBlockSettings', () => {
     columns: 4,
     showPrice: true,
     showBadge: true,
-    badgeText: 'Featured',
+    badgeText: 'Destacado',
     buttonText: 'Shop Now',
   };
 
@@ -518,14 +518,14 @@ describe('DynamicPanel — FeaturedProductsBlockSettings', () => {
 
   it('updates columns', () => {
     const { onChange } = renderPanel(baseFeaturedProducts);
-    const select = screen.getByDisplayValue('4 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('4 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '2' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 2 });
   });
 
   it('updates badgeText input', () => {
     const { onChange } = renderPanel(baseFeaturedProducts);
-    const input = screen.getByDisplayValue('Featured') as HTMLInputElement;
+    const input = screen.getByDisplayValue('Destacado') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Best Seller' } });
     expect(onChange).toHaveBeenCalledWith({ badgeText: 'Best Seller' });
   });
@@ -572,24 +572,24 @@ describe('DynamicPanel — ProductCategoriesBlockSettings', () => {
 
   it('changes layout via select', () => {
     const { onChange } = renderPanel(baseProductCategories);
-    const select = screen.getByDisplayValue('Grid') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Cuadrícula') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'list' } });
     expect(onChange).toHaveBeenCalledWith({ layout: 'list' });
   });
 
   it('shows columns selector when layout is grid', () => {
     renderPanel(baseProductCategories);
-    expect(screen.getByDisplayValue('3 Columns')).toBeTruthy();
+    expect(screen.getByDisplayValue('3 columnas')).toBeTruthy();
   });
 
   it('hides columns selector when layout is list', () => {
     renderPanel({ ...baseProductCategories, layout: 'list' });
-    expect(screen.queryByText('Columns')).toBeNull();
+    expect(screen.queryByText('Columnas')).toBeNull();
   });
 
   it('updates columns select', () => {
     const { onChange } = renderPanel(baseProductCategories);
-    const select = screen.getByDisplayValue('3 Columns') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('3 columnas') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: '4' } });
     expect(onChange).toHaveBeenCalledWith({ columns: 4 });
   });
@@ -621,27 +621,27 @@ describe('DynamicPanel — ShoppingCartBlockSettings', () => {
     type: 'shopping-cart',
     variant: 'full',
     showSubtotal: true,
-    checkoutButtonText: 'Proceed to Checkout',
-    emptyCartMessage: 'Your cart is empty',
+    checkoutButtonText: 'Ir a pagar',
+    emptyCartMessage: 'Tu carrito está vacío',
   };
 
   it('changes cart style via select', () => {
     const { onChange } = renderPanel(baseCart);
-    const select = screen.getByDisplayValue('Full Cart') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Carrito completo') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'mini' } });
     expect(onChange).toHaveBeenCalledWith({ variant: 'mini' });
   });
 
   it('updates checkoutButtonText input', () => {
     const { onChange } = renderPanel(baseCart);
-    const input = screen.getByDisplayValue('Proceed to Checkout') as HTMLInputElement;
+    const input = screen.getByDisplayValue('Ir a pagar') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Checkout Now' } });
     expect(onChange).toHaveBeenCalledWith({ checkoutButtonText: 'Checkout Now' });
   });
 
   it('updates emptyCartMessage input', () => {
     const { onChange } = renderPanel(baseCart);
-    const input = screen.getByDisplayValue('Your cart is empty') as HTMLInputElement;
+    const input = screen.getByDisplayValue('Tu carrito está vacío') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Nothing here yet' } });
     expect(onChange).toHaveBeenCalledWith({ emptyCartMessage: 'Nothing here yet' });
   });
@@ -656,7 +656,7 @@ describe('DynamicPanel — ShoppingCartBlockSettings', () => {
 
   it('defaults variant to full when not set', () => {
     renderPanel({ ...baseCart, variant: undefined });
-    expect(screen.getByDisplayValue('Full Cart')).toBeTruthy();
+    expect(screen.getByDisplayValue('Carrito completo')).toBeTruthy();
   });
 });
 
@@ -688,7 +688,7 @@ describe('DynamicPanel — ProductDetailBlockSettings', () => {
 
   it('changes layout via select', () => {
     const { onChange } = renderPanel(baseProductDetail);
-    const select = screen.getByDisplayValue('Standard (2 column)') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Estándar (2 columnas)') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'wide' } });
     expect(onChange).toHaveBeenCalledWith({ layout: 'wide' });
   });
@@ -735,19 +735,19 @@ describe('DynamicPanel — StoreBannerBlockSettings', () => {
 
   it('renders title RichTextEditable with value', () => {
     renderPanel(baseStoreBanner);
-    expect((screen.getByTestId('rte-Banner title...') as HTMLTextAreaElement).value).toBe('Big Sale');
+    expect((screen.getByTestId('rte-Título del banner...') as HTMLTextAreaElement).value).toBe('Big Sale');
   });
 
   it('updates title via RichTextEditable', () => {
     const { onChange } = renderPanel(baseStoreBanner);
-    const rte = screen.getByTestId('rte-Banner title...');
+    const rte = screen.getByTestId('rte-Título del banner...');
     fireEvent.change(rte, { target: { value: 'Flash Sale' } });
     expect(onChange).toHaveBeenCalledWith({ title: 'Flash Sale' });
   });
 
   it('updates subtitle via RichTextEditable (collapses empty)', () => {
     const { onChange } = renderPanel(baseStoreBanner);
-    const rte = screen.getByTestId('rte-Subtitle...');
+    const rte = screen.getByTestId('rte-Subtítulo...');
     fireEvent.change(rte, { target: { value: '' } });
     expect(onChange).toHaveBeenCalledWith({ subtitle: undefined });
   });
@@ -775,32 +775,32 @@ describe('DynamicPanel — StoreBannerBlockSettings', () => {
 
   it('changes backgroundStyle via select', () => {
     const { onChange } = renderPanel(baseStoreBanner);
-    const select = screen.getByDisplayValue('Gradient') as HTMLSelectElement;
+    const select = screen.getByDisplayValue('Degradado') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'solid' } });
     expect(onChange).toHaveBeenCalledWith({ backgroundStyle: 'solid' });
   });
 
   it('updates accentColor via TokenColorPicker', () => {
     const { onChange } = renderPanel(baseStoreBanner);
-    const colorInput = screen.getByTestId('color-Accent Color') as HTMLInputElement;
+    const colorInput = screen.getByTestId('color-Color de acento') as HTMLInputElement;
     fireEvent.change(colorInput, { target: { value: '#6366f1' } });
     expect(onChange).toHaveBeenCalledWith({ accentColor: '#6366f1' });
   });
 
   it('hides background image picker when backgroundStyle is not image', () => {
     renderPanel(baseStoreBanner);
-    expect(screen.queryByText('Choose Image')).toBeNull();
+    expect(screen.queryByText('Elegir imagen')).toBeNull();
   });
 
   it('shows Choose Image button when backgroundStyle is image', () => {
     renderPanel({ ...baseStoreBanner, backgroundStyle: 'image', backgroundImage: '' });
-    expect(screen.getByText('Choose Image')).toBeTruthy();
+    expect(screen.getByText('Elegir imagen')).toBeTruthy();
   });
 
   it('opens media picker when Choose Image clicked', () => {
     renderPanel({ ...baseStoreBanner, backgroundStyle: 'image', backgroundImage: '' });
-    fireEvent.click(screen.getByText('Choose Image'));
-    expect(screen.getByTestId('media-picker-Select Banner Image')).toBeTruthy();
+    fireEvent.click(screen.getByText('Elegir imagen'));
+    expect(screen.getByTestId('media-picker-Seleccionar imagen del banner')).toBeTruthy();
   });
 
   it('shows Change/Remove buttons when backgroundImage set', () => {
@@ -809,20 +809,20 @@ describe('DynamicPanel — StoreBannerBlockSettings', () => {
       backgroundStyle: 'image',
       backgroundImage: 'https://img.com/bg.jpg',
     });
-    expect(screen.getByText('Change')).toBeTruthy();
-    const removeBtn = screen.getByText('Remove');
+    expect(screen.getByText('Cambiar')).toBeTruthy();
+    const removeBtn = screen.getByText('Quitar');
     fireEvent.click(removeBtn);
     expect(onChange).toHaveBeenCalledWith({ backgroundImage: '' });
   });
 
   it('selects background image via media picker', () => {
     const { onChange } = renderPanel({ ...baseStoreBanner, backgroundStyle: 'image', backgroundImage: '' });
-    fireEvent.click(screen.getByText('Choose Image'));
-    const mpInput = screen.getByTestId('mp-input-Select Banner Image') as HTMLInputElement;
+    fireEvent.click(screen.getByText('Elegir imagen'));
+    const mpInput = screen.getByTestId('mp-input-Seleccionar imagen del banner') as HTMLInputElement;
     fireEvent.change(mpInput, { target: { value: 'https://img.com/new-bg.jpg' } });
     expect(onChange).toHaveBeenCalledWith({ backgroundImage: 'https://img.com/new-bg.jpg' });
     // picker closes
-    expect(screen.queryByTestId('media-picker-Select Banner Image')).toBeNull();
+    expect(screen.queryByTestId('media-picker-Seleccionar imagen del banner')).toBeNull();
   });
 
   it('updates countdownDate input', () => {
@@ -867,7 +867,7 @@ describe('DynamicPanel — TabsBlockSettings', () => {
 
   it('removes a tab when delete button clicked', () => {
     const { onChange } = renderPanel(baseTabs);
-    const deleteBtns = screen.getAllByTitle('Remove tab');
+    const deleteBtns = screen.getAllByTitle('Eliminar pestaña');
     fireEvent.click(deleteBtns[0]);
     expect(onChange).toHaveBeenCalledWith({
       tabs: [{ id: 'tab-2', label: 'Details', blocks: [] }],
@@ -876,25 +876,25 @@ describe('DynamicPanel — TabsBlockSettings', () => {
 
   it('adds a new tab when + Add Tab clicked', () => {
     const { onChange } = renderPanel(baseTabs);
-    fireEvent.click(screen.getByText('+ Add Tab'));
+    fireEvent.click(screen.getByText('+ Añadir pestaña'));
     const calls = (onChange as any).mock.calls;
     const lastCall = calls[calls.length - 1][0];
     expect(lastCall.tabs).toHaveLength(3);
-    expect(lastCall.tabs[2]).toMatchObject({ label: 'New Tab', blocks: [] });
+    expect(lastCall.tabs[2]).toMatchObject({ label: 'Nueva pestaña', blocks: [] });
     expect(typeof lastCall.tabs[2].id).toBe('string');
   });
 
   it('adds first tab from empty state', () => {
     const { onChange } = renderPanel({ ...baseTabs, tabs: [] });
-    fireEvent.click(screen.getByText('+ Add Tab'));
+    fireEvent.click(screen.getByText('+ Añadir pestaña'));
     const calls = (onChange as any).mock.calls;
     const lastCall = calls[calls.length - 1][0];
     expect(lastCall.tabs).toHaveLength(1);
-    expect(lastCall.tabs[0]).toMatchObject({ label: 'New Tab', blocks: [] });
+    expect(lastCall.tabs[0]).toMatchObject({ label: 'Nueva pestaña', blocks: [] });
   });
 
   it('shows instruction text', () => {
     renderPanel(baseTabs);
-    expect(screen.getByText(/Edit each tab/)).toBeTruthy();
+    expect(screen.getByText(/Edita el contenido de cada pestaña/)).toBeTruthy();
   });
 });

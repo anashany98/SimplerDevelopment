@@ -3,9 +3,9 @@
     - generic [ref=e3]:
       - button "menu" [ref=e4]:
         - generic [ref=e5]: menu
-      - link "Simpler Development" [ref=e6] [cursor=pointer]:
+      - link "CRM AGENTS" [ref=e6] [cursor=pointer]:
         - /url: /portal
-        - generic [ref=e7]: Simpler Development
+        - generic [ref=e7]: CRM AGENTS
     - complementary [ref=e8]:
       - generic [ref=e9]:
         - generic [ref=e10]:

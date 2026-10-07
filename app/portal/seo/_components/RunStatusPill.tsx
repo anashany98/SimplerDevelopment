@@ -2,28 +2,28 @@ import type { SeoRunStatus } from './types';
 
 const CONFIG: Record<SeoRunStatus, { label: string; classes: string; icon: string; spin?: boolean }> = {
   queued: {
-    label: 'Queued',
+    label: 'En cola',
     classes: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
     icon: 'schedule',
   },
   running: {
-    label: 'Running',
+    label: 'En ejecución',
     classes: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    icon: 'progress_activity',
+    icon: 'autorenew',
     spin: true,
   },
   succeeded: {
-    label: 'Succeeded',
+    label: 'Exitoso',
     classes: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
     icon: 'check_circle',
   },
   failed: {
-    label: 'Failed',
+    label: 'Fallido',
     classes: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
     icon: 'error',
   },
   cancelled: {
-    label: 'Cancelled',
+    label: 'Cancelado',
     classes: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
     icon: 'cancel',
   },

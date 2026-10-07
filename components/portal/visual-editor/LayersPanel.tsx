@@ -59,7 +59,7 @@ function LayerItemComponent({
     block.tabs.forEach((tab) => children.push({ label: tab.label, blocks: tab.blocks || [] }));
   }
   if (block.type === 'section' && block.blocks) {
-    children.push({ label: 'Content', blocks: block.blocks });
+    children.push({ label: 'Contenido', blocks: block.blocks });
   }
   if (block.type === 'accordion' && block.items) {
     block.items.forEach((item) => children.push({ label: item.title, blocks: [] }));
@@ -126,20 +126,20 @@ function LayerItemComponent({
           <span
             className="truncate flex-1"
             onDoubleClick={(e) => { e.stopPropagation(); setRenameValue(block.label || previewText || block.type); setRenaming(true); }}
-            title="Double-click to rename"
+            title="Doble clic para renombrar"
           >
             {block.label || previewText || block.type}
           </span>
         )}
         {block.required ? (
-          <span className="material-icons text-xs text-muted-foreground/30 shrink-0" title="Required">lock</span>
+          <span className="material-icons text-xs text-muted-foreground/30 shrink-0" title="Obligatorio">lock</span>
         ) : (
           <button
             type="button"
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => { e.stopPropagation(); onDelete(block.id); }}
             className="p-0.5 rounded hover:bg-destructive/10 text-muted-foreground/30 hover:text-destructive opacity-0 group-hover/layer:opacity-100 transition-all shrink-0 relative z-10"
-            title="Delete"
+            title="Eliminar"
           ><span className="material-icons text-xs">close</span></button>
         )}
       </div>

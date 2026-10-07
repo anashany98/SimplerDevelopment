@@ -53,9 +53,7 @@ export default function InitiativesListPage() {
 function ListFallback() {
   return (
     <div className="flex items-center justify-center py-16 text-muted-foreground">
-      <span className="material-icons animate-spin mr-2">progress_activity</span>
-      Loading…
-    </div>
+      <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
   );
 }
 
@@ -86,7 +84,7 @@ function InitiativesListContent() {
         if (v === null || v === undefined || v === '') params.delete(k);
         else params.set(k, v);
       }
-      // Any filter change resets pagination.
+      // Any filter change resets págination.
       if (!Object.prototype.hasOwnProperty.call(next, 'offset')) params.delete('offset');
       const qs = params.toString();
       router.replace(qs ? `?${qs}` : '?', { scroll: false });
@@ -141,7 +139,7 @@ function InitiativesListContent() {
       const r = await fetch(`/api/portal/brain/initiatives?${params.toString()}`);
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load initiatives');
+        setError(json.message || 'No se pudieron cargar las iniciativas');
         setItems([]);
         setHasMore(false);
         return;
@@ -150,7 +148,7 @@ function InitiativesListContent() {
       setHasMore(all.length > PAGE_SIZE);
       setItems(all.slice(0, PAGE_SIZE));
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Network error');
+      setError(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -165,13 +163,13 @@ function InitiativesListContent() {
       {/* Sticky header */}
       <div className="sticky top-[var(--portal-header-height,3.5rem)] z-10 bg-background -mx-4 sm:mx-0 px-4 sm:px-0 pt-1 pb-3 border-b border-border">
         <PortalPageHeader
-          eyebrow="Company Brain"
-          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">flag</span>Initiatives</span>}
-          subtitle="Multi-quarter efforts. Bundle goals, tasks, decisions, notes, and meetings under one banner."
+          eyebrow="Cerebro de empresa"
+          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">flag</span>Iniciativas</span>}
+          subtitle="Esfuerzos de varios trimestres. Agrupa objetivos, tareas, decisiones, notas y reuniones bajo un mismo paraguas."
           actions={
             <Link href="/portal/brain/initiatives/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New initiative
+              Nueva iniciativa
             </Link>
           }
           className="mb-0 pb-3"
@@ -181,7 +179,7 @@ function InitiativesListContent() {
         <div className="mt-3 flex items-center gap-1 overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           {STATUS_FILTERS.map((s) => {
             const active = status === s;
-            const label = s === 'all' ? 'All' : initiativeStatusChip(s as BrainInitiativeStatus).label;
+            const label = s === 'all' ? 'Todas' : initiativeStatusChip(s as BrainInitiativeStatus).label;
             return (
               <button
                 key={s}
@@ -202,24 +200,24 @@ function InitiativesListContent() {
         {/* Secondary filter row */}
         <div className="mt-2 flex items-center gap-2 flex-wrap text-xs">
           <select
-            aria-label="Filter by priority"
+            aria-label="Filtrar por prioridad"
             value={priorityParam ?? ''}
             onChange={(e) => setParam({ priority: e.target.value || null })}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">All priorities</option>
+            <option value="">Todas las prioridades</option>
             {INITIATIVE_PRIORITIES.map((p) => (
               <option key={p} value={p}>{initiativePriorityChip(p).label}</option>
             ))}
           </select>
 
           <select
-            aria-label="Filter by owner"
+            aria-label="Filtrar por responsable"
             value={ownerIdParam ?? ''}
             onChange={(e) => setParam({ ownerId: e.target.value || null })}
             className="appearance-none rounded-xl border border-border bg-card px-3.5 py-2 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">Any owner</option>
+            <option value="">Cualquier responsable</option>
             {team.map((m) => (
               <option key={m.userId} value={m.userId}>{m.name || m.email}</option>
             ))}
@@ -232,11 +230,11 @@ function InitiativesListContent() {
               onChange={(e) => setParam({ hasOpenGoals: e.target.checked ? 'true' : null })}
               className="h-3.5 w-3.5 rounded border-border accent-primary"
             />
-            Has open goals
+            Con objetivos abiertos
           </label>
 
           <label className="inline-flex items-center gap-1.5 text-muted-foreground">
-            target before
+            con objetivo antes de
             <input
               type="date"
               value={targetDateBeforeParam}
@@ -256,9 +254,7 @@ function InitiativesListContent() {
               })}
               className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 text-muted-foreground hover:text-foreground"
             >
-              <span className="material-icons text-sm">close</span>
-              Clear
-            </button>
+              <span className="material-icons text-sm">close</span>Limpiar</button>
           )}
         </div>
       </div>
@@ -276,16 +272,16 @@ function InitiativesListContent() {
       ) : items.length === 0 ? (
         <div className="text-center py-16 bg-card border border-border rounded-2xl">
           <span className="material-icons text-5xl text-muted-foreground mb-2 block">flag</span>
-          <p className="text-foreground text-sm font-medium">No initiatives yet.</p>
+          <p className="text-foreground text-sm font-medium">Aún no hay iniciativas.</p>
           <p className="text-muted-foreground text-xs mt-1 mb-4">
-            Kick off your first cross-functional effort.
+            Empieza tu primer esfuerzo interfuncional.
           </p>
           <Link
             href="/portal/brain/initiatives/new"
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            New initiative
+            Nueva iniciativa
           </Link>
         </div>
       ) : (
@@ -296,7 +292,7 @@ function InitiativesListContent() {
         </div>
       )}
 
-      {/* Pagination */}
+      {/* Págination */}
       {!loading && (offset > 0 || hasMore) && (
         <div className="flex items-center justify-between pt-2">
           <button
@@ -305,9 +301,7 @@ function InitiativesListContent() {
             onClick={() => setParam({ offset: String(Math.max(0, offset - PAGE_SIZE)) })}
             className={pBtnGhost + " disabled:opacity-30 disabled:pointer-events-none"}
           >
-            <span className="material-icons text-base">chevron_left</span>
-            Previous
-          </button>
+            <span className="material-icons text-base">chevron_left</span>Anterior</button>
           <span className="text-xs text-muted-foreground">
             {offset + 1}–{offset + items.length}
           </span>
@@ -316,9 +310,7 @@ function InitiativesListContent() {
             disabled={!hasMore}
             onClick={() => setParam({ offset: String(offset + PAGE_SIZE) })}
             className={pBtnGhost + " disabled:opacity-30 disabled:pointer-events-none"}
-          >
-            Next
-            <span className="material-icons text-base">chevron_right</span>
+          >Siguiente<span className="material-icons text-base">chevron_right</span>
           </button>
         </div>
       )}

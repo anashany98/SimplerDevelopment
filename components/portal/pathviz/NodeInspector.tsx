@@ -86,7 +86,7 @@ export default function NodeInspector({
           type="button"
           onClick={onClose}
           data-testid="pathviz-inspector-close"
-          aria-label="Close inspector"
+          aria-label="Cerrar inspector"
           className="text-sm"
           style={{ color: THEME.ink3 }}
         >
@@ -95,7 +95,7 @@ export default function NodeInspector({
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        <Section title="Status">
+        <Section title="Estado">
           <div className="flex items-center gap-2.5">
             <div className="flex gap-[3px]" data-testid="pathviz-status-ring">
               {segments.map((seg, i) => (
@@ -120,27 +120,27 @@ export default function NodeInspector({
           )}
         </Section>
 
-        <Section title="Identity">
+        <Section title="Identidad">
           <div className="space-y-1">
-            <KV label="Kind" value={node.kind} />
-            <KV label="Route" value={node.routePath ?? '—'} />
-            <KV label="File" value={node.filePath ?? '—'} />
-            <KV label="Parent" value={parentLabel ?? (node.parentNodeId != null ? String(node.parentNodeId) : '—')} />
+            <KV label="Tipo" value={node.kind} />
+            <KV label="Ruta" value={node.routePath ?? '—'} />
+            <KV label="Archivo" value={node.filePath ?? '—'} />
+            <KV label="Padre" value={parentLabel ?? (node.parentNodeId != null ? String(node.parentNodeId) : '—')} />
           </div>
         </Section>
 
         {hasDeclaredState && (
-          <Section title="Declared state">
+          <Section title="Estado declarado">
             <div className="space-y-1">
-              {node.meta.state !== undefined && <KV label="State" value={renderMetaValue(node.meta.state)} />}
-              {node.meta.stores !== undefined && <KV label="Store" value={renderMetaValue(node.meta.stores)} />}
+              {node.meta.state !== undefined && <KV label="Estado" value={renderMetaValue(node.meta.state)} />}
+              {node.meta.stores !== undefined && <KV label="Tienda" value={renderMetaValue(node.meta.stores)} />}
               {node.meta.props !== undefined && <KV label="Props" value={renderMetaValue(node.meta.props)} />}
             </div>
           </Section>
         )}
 
         {node.meta.calls !== undefined && (
-          <Section title="External calls">
+          <Section title="Llamadas externas">
             <div
               className="font-mono text-[10.5px] px-2 py-1.5 rounded border"
               style={{ borderColor: THEME.line, color: THEME.ink2, background: THEME.surface }}
@@ -151,9 +151,9 @@ export default function NodeInspector({
           </Section>
         )}
 
-        <Section title="Claims">
+        <Section title="Reclamos">
           {claims.length === 0 ? (
-            <p className="text-xs" style={{ color: THEME.ink3 }}>No active claims on this node.</p>
+            <p className="text-xs" style={{ color: THEME.ink3 }}>No hay reclamos activos en este nodo.</p>
           ) : (
             <div className="space-y-2" data-testid="pathviz-claims-list">
               {contested && (
@@ -162,7 +162,7 @@ export default function NodeInspector({
                   style={{ borderColor: '#ECA83D88', color: '#ECA83D' }}
                   data-testid="pathviz-contested-banner"
                 >
-                  Contested — {claims.length} agents
+                  En disputa — {claims.length} agentes
                 </div>
               )}
               {claims.map((claim) => {
@@ -196,7 +196,7 @@ export default function NodeInspector({
         </Section>
 
         {notes != null && notes.length > 0 && (
-          <Section title={`Notes (${notes.length})`}>
+          <Section title={`Notas (${notes.length})`}>
             <div className="space-y-2" data-testid="pathviz-notes-thread">
               {notes.map((n, i) => (
                 <div key={i} className="flex items-start gap-2">
@@ -206,7 +206,7 @@ export default function NodeInspector({
                   />
                   <div className="min-w-0">
                     <div className="text-[10px] font-mono" style={{ color: THEME.ink3 }}>
-                      <b style={{ color: THEME.ink2 }}>{n.agentLabel ?? 'unknown'}</b> · {fmtClock(n.atMs)}
+                      <b style={{ color: THEME.ink2 }}>{n.agentLabel ?? 'desconocido'}</b> · {fmtClock(n.atMs)}
                     </div>
                     <p className="text-[11px] break-words" style={{ color: THEME.ink2 }}>{n.text}</p>
                   </div>
@@ -217,7 +217,7 @@ export default function NodeInspector({
         )}
 
         {statusHistory != null && statusHistory.length > 0 && (
-          <Section title="Status history">
+          <Section title="Historial de estado">
             <div className="space-y-1" data-testid="pathviz-status-history">
               {[...statusHistory].reverse().slice(0, 10).map((h, i) => {
                 const hInfo = STATUS_INFO[h.status];

@@ -57,25 +57,25 @@ export default function EmailDashboardPage() {
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Email Marketing</h1>
-          <p className="text-muted-foreground mt-1">Manage campaigns, subscriber lists, and analytics.</p>
+          <h1 className="text-2xl font-bold text-foreground">Marketing por email</h1>
+          <p className="text-muted-foreground mt-1">Gestiona campañas, listas de suscriptores y analíticas.</p>
         </div>
         <Link
           href="/admin/email/campaigns/new"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
-          New Campaign
+          Nueva campaña
         </Link>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Subscribers', value: totalSubscribers, icon: 'group' },
-          { label: 'Lists', value: lists.length, icon: 'list' },
-          { label: 'Campaigns Sent', value: sentCampaigns.length, icon: 'send' },
-          { label: 'Avg Open Rate', value: `${avgOpenRate}%`, icon: 'open_in_new' },
+          { label: 'Suscriptores totales', value: totalSubscribers, icon: 'group' },
+          { label: 'Listas', value: lists.length, icon: 'list' },
+          { label: 'Campañas enviadas', value: sentCampaigns.length, icon: 'send' },
+          { label: 'Tasa de apertura media', value: `${avgOpenRate}%`, icon: 'open_in_new' },
         ].map(stat => (
           <div key={stat.label} className="bg-card border border-border rounded-lg p-4">
             <div className="flex items-center gap-2 text-muted-foreground mb-1">
@@ -93,8 +93,8 @@ export default function EmailDashboardPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-2xl text-primary">list_alt</span>
             <div>
-              <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Subscriber Lists</p>
-              <p className="text-sm text-muted-foreground">{loading ? '…' : `${lists.length} list${lists.length !== 1 ? 's' : ''}, ${totalSubscribers} subscribers`}</p>
+              <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Listas de suscriptores</p>
+              <p className="text-sm text-muted-foreground">{loading ? '…' : `${lists.length} lista${lists.length !== 1 ? 's' : ''}, ${totalSubscribers} suscriptores`}</p>
             </div>
           </div>
         </Link>
@@ -102,8 +102,8 @@ export default function EmailDashboardPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-2xl text-primary">campaign</span>
             <div>
-              <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Campaigns</p>
-              <p className="text-sm text-muted-foreground">{loading ? '…' : `${campaigns.length} total, ${sentCampaigns.length} sent`}</p>
+              <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Campañas</p>
+              <p className="text-sm text-muted-foreground">{loading ? '…' : `${campaigns.length} en total, ${sentCampaigns.length} enviadas`}</p>
             </div>
           </div>
         </Link>
@@ -111,8 +111,8 @@ export default function EmailDashboardPage() {
           <div className="flex items-center gap-3">
             <span className="material-icons text-2xl text-primary">domain</span>
             <div>
-              <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Sending Domains</p>
-              <p className="text-sm text-muted-foreground">Verify &amp; manage domains</p>
+              <p className="font-semibold text-foreground group-hover:text-primary transition-colors">Dominios de envío</p>
+              <p className="text-sm text-muted-foreground">Verifica y gestiona dominios</p>
             </div>
           </div>
         </Link>
@@ -121,16 +121,16 @@ export default function EmailDashboardPage() {
       {/* Recent campaigns */}
       <div className="bg-card border border-border rounded-lg overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <h2 className="font-semibold text-foreground">Recent Campaigns</h2>
-          <Link href="/admin/email/campaigns" className="text-sm text-primary hover:underline">View all</Link>
+          <h2 className="font-semibold text-foreground">Campañas recientes</h2>
+          <Link href="/admin/email/campaigns" className="text-sm text-primary hover:underline">Ver todo</Link>
         </div>
         {loading ? (
-          <p className="p-6 text-muted-foreground text-sm">Loading…</p>
+          <p className="p-6 text-muted-foreground text-sm">Cargando…</p>
         ) : campaigns.length === 0 ? (
           <div className="p-10 text-center">
             <span className="material-icons text-3xl text-muted-foreground mb-2 block">campaign</span>
-            <p className="text-muted-foreground text-sm">No campaigns yet.</p>
-            <Link href="/admin/email/campaigns/new" className="mt-3 inline-block text-sm text-primary hover:underline">Create your first campaign</Link>
+            <p className="text-muted-foreground text-sm">Aún no hay campañas.</p>
+            <Link href="/admin/email/campaigns/new" className="mt-3 inline-block text-sm text-primary hover:underline">Crea tu primera campaña</Link>
           </div>
         ) : (
           <div className="divide-y divide-border">
@@ -143,7 +143,7 @@ export default function EmailDashboardPage() {
                 <div className="flex items-center gap-4">
                   {c.status === 'sent' && (
                     <span className="text-xs text-muted-foreground">
-                      {c.totalSent > 0 ? Math.round(c.totalOpened / c.totalSent * 100) : 0}% open
+                      {c.totalSent > 0 ? Math.round(c.totalOpened / c.totalSent * 100) : 0}% abiertos
                     </span>
                   )}
                   <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[c.status] ?? 'bg-gray-100 text-gray-700'}`}>

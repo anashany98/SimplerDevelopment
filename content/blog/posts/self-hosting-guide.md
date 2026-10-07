@@ -1,7 +1,7 @@
 ---
-title: "Self-Hosting SimplerDevelopment: Postgres, pgvector, and Bun"
+title: "Self-Hosting CRM AGENTS: Postgres, pgvector, and Bun"
 slug: "self-hosting-simplerdevelopment"
-description: "Step-by-step guide to running SimplerDevelopment yourself — Postgres with pgvector, environment variables, Drizzle migrations, and production deployment checklist."
+description: "Step-by-step guide to running CRM AGENTS yourself — Postgres with pgvector, environment variables, Drizzle migrations, and production deployment checklist."
 date: 2026-06-27
 tags:
   - self-hosting
@@ -10,11 +10,11 @@ tags:
   - drizzle-orm
   - next-js
   - bun
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 seo:
-  title: "Self-Hosting SimplerDevelopment: Postgres, pgvector, and Bun"
-  description: "Step-by-step guide to running SimplerDevelopment yourself — Postgres with pgvector, environment variables, Drizzle migrations, and production deployment checklist."
+  title: "Self-Hosting CRM AGENTS: Postgres, pgvector, and Bun"
+  description: "Step-by-step guide to running CRM AGENTS yourself — Postgres with pgvector, environment variables, Drizzle migrations, and production deployment checklist."
   keywords:
     - self-host Next.js SaaS
     - Postgres pgvector self-hosting
@@ -25,7 +25,7 @@ seo:
     - DATABASE_URL
 ---
 
-SimplerDevelopment is Apache-2.0 licensed and built to run anywhere that can serve a Next.js application and connect to a Postgres database. This guide covers everything you need to go from `git clone` to a running production instance: the non-negotiable infrastructure prerequisites, how to wire the required environment variables, the Drizzle migration workflow, and the deployment options that work today.
+CRM AGENTS is Apache-2.0 licensed and built to run anywhere that can serve a Next.js application and connect to a Postgres database. This guide covers everything you need to go from `git clone` to a running production instance: the non-negotiable infrastructure prerequisites, how to wire the required environment variables, the Drizzle migration workflow, and the deployment options that work today.
 
 The platform is not a toy project. The codebase is approximately 357k lines (app 157k / lib 81k / components 119k), and it supports three distinct audience trees from a single Next.js build: an internal admin panel, a per-tenant client portal, and per-tenant public websites. Provision and plan accordingly.
 

@@ -118,10 +118,10 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
           }
           setSelectedOptions(defaults);
         } else {
-          setError(json.message || 'Product not found');
+          setError(json.message || 'Producto no encontrado');
         }
       } catch {
-        setError('Failed to load product');
+        setError('No se pudo cargar el producto');
       } finally {
         setLoading(false);
       }
@@ -196,14 +196,14 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
       });
       const json = await res.json();
       if (json.success) {
-        setCartMessage({ type: 'success', text: 'Added to cart!' });
+        setCartMessage({ type: 'success', text: '¡Añadido al carrito!' });
         // Dispatch custom event for cart icon widgets to update
         window.dispatchEvent(new CustomEvent('cart-updated'));
       } else {
-        setCartMessage({ type: 'error', text: json.message || 'Failed to add to cart' });
+        setCartMessage({ type: 'error', text: json.message || 'No se pudo añadir al carrito' });
       }
     } catch {
-      setCartMessage({ type: 'error', text: 'Something went wrong' });
+      setCartMessage({ type: 'error', text: 'Algo salió mal' });
     } finally {
       setAddingToCart(false);
       setTimeout(() => setCartMessage(null), 4000);
@@ -237,11 +237,11 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
         <span className="material-icons text-6xl text-muted-foreground/30 mb-4 block">error_outline</span>
-        <h1 className="text-2xl font-bold mb-2">Product Not Found</h1>
-        <p className="text-muted-foreground mb-6">{error || 'This product does not exist or is no longer available.'}</p>
+        <h1 className="text-2xl font-bold mb-2">Producto no encontrado</h1>
+        <p className="text-muted-foreground mb-6">{error || 'Este producto no existe o ya no está disponible.'}</p>
         <Link href="/shop" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
           <span className="material-icons text-sm">arrow_back</span>
-          Back to Shop
+          Volver a la tienda
         </Link>
       </div>
     );
@@ -251,7 +251,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
     <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
-        <Link href="/shop" className="hover:text-foreground transition-colors">Shop</Link>
+        <Link href="/shop" className="hover:text-foreground transition-colors">Tienda</Link>
         <span className="material-icons text-xs">chevron_right</span>
         {product.category && (
           <>
@@ -282,7 +282,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
             )}
             {comparePrice && comparePrice > currentPrice && (
               <div className="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1.5 rounded-full">
-                {Math.round((1 - currentPrice / comparePrice) * 100)}% OFF
+                {Math.round((1 - currentPrice / comparePrice) * 100)}% DTO
               </div>
             )}
           </div>
@@ -334,7 +334,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
             )}
             {activeBulkPrice && (
               <span className="text-sm bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-medium">
-                Bulk discount applied
+                Descuento por volumen aplicado
               </span>
             )}
           </div>
@@ -350,16 +350,16 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
               <>
                 <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
                 <span className="text-sm font-medium text-green-700 dark:text-green-400">
-                  In Stock
+                  En stock
                   {product.trackInventory && maxStock <= 10 && (
-                    <span className="text-muted-foreground font-normal"> — Only {maxStock} left</span>
+                    <span className="text-muted-foreground font-normal"> — Solo quedan {maxStock}</span>
                   )}
                 </span>
               </>
             ) : (
               <>
                 <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                <span className="text-sm font-medium text-red-600 dark:text-red-400">Out of Stock</span>
+                <span className="text-sm font-medium text-red-600 dark:text-red-400">Agotado</span>
               </>
             )}
           </div>
@@ -418,7 +418,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
             <div className="border border-border rounded-lg p-4 bg-muted/5">
               <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
                 <span className="material-icons text-base">local_offer</span>
-                Bulk Pricing
+                Precios por volumen
               </h3>
               <div className="space-y-1">
                 {product.bulkPricing.map((rule) => (
@@ -430,14 +430,14 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
                   >
                     <span>
                       {rule.minQuantity}
-                      {rule.maxQuantity ? `–${rule.maxQuantity}` : '+'} units
+                      {rule.maxQuantity ? `–${rule.maxQuantity}` : '+'} unidades
                     </span>
                     <span>
                       {rule.discountType === 'percent'
-                        ? `${rule.discountValue}% off`
+                        ? `${rule.discountValue}% de descuento`
                         : rule.discountType === 'fixed_price'
                           ? formatMoney(rule.price)
-                          : `${formatMoney(rule.discountValue)} off`}
+                          : `${formatMoney(rule.discountValue)} de descuento`}
                     </span>
                   </div>
                 ))}
@@ -448,7 +448,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
           {/* Quantity + Add to Cart */}
           <div className="border-t border-border pt-6 space-y-4">
             <div className="flex items-center gap-4">
-              <label className="text-sm font-semibold">Quantity</label>
+              <label className="text-sm font-semibold">Cantidad</label>
               <div className="flex items-center border border-border rounded-lg overflow-hidden">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -484,7 +484,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
                 className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-xl hover:bg-primary/90 transition-colors"
               >
                 <span className="material-icons text-xl">brush</span>
-                Customize this product
+                Personalizar este producto
               </Link>
             )}
 
@@ -500,16 +500,16 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
               {addingToCart ? (
                 <>
                   <span className="material-icons animate-spin text-xl">refresh</span>
-                  Adding...
+                  Añadiendo...
                 </>
               ) : !inStock ? (
-                'Out of Stock'
+                'Agotado'
               ) : product.variants.length > 0 && !matchedVariant ? (
-                'Select Options'
+                'Selecciona opciones'
               ) : (
                 <>
                   <span className="material-icons text-xl">shopping_cart</span>
-                  {product.designable ? 'Buy as-is' : 'Add to Cart'} — {formatMoney(effectivePrice * quantity)}
+                  {product.designable ? 'Comprar tal cual' : 'Añadir al carrito'} — {formatMoney(effectivePrice * quantity)}
                 </>
               )}
             </button>
@@ -529,7 +529,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
                 {cartMessage.text}
                 {cartMessage.type === 'success' && (
                   <Link href="/cart" className="ml-auto underline hover:no-underline">
-                    View Cart
+                    Ver carrito
                   </Link>
                 )}
               </div>
@@ -547,7 +547,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
               )}
               {product.tags && product.tags.length > 0 && (
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-medium text-foreground">Tags:</span>
+                  <span className="font-medium text-foreground">Etiquetas:</span>
                   {product.tags.map((tag) => (
                     <span key={tag} className="px-2 py-0.5 bg-muted rounded-full text-xs">{tag}</span>
                   ))}
@@ -561,7 +561,7 @@ export function ProductPage({ siteId, productSlug }: ProductPageProps) {
       {/* Full Description */}
       {product.description && (
         <div className="mt-16 border-t border-border pt-12">
-          <h2 className="text-2xl font-bold mb-6">Description</h2>
+          <h2 className="text-2xl font-bold mb-6">Descripción</h2>
           <div
             className="prose prose-lg dark:prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: product.description }}

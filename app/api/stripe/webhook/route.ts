@@ -14,6 +14,10 @@ import {
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
+  // Billing removed — payments are disabled. Acknowledge Stripe, process nothing.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(200);
+
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 

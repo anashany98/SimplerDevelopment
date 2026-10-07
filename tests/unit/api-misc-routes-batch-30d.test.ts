@@ -41,6 +41,7 @@ vi.mock('@/lib/email', () => ({
       send: (...args: unknown[]) => resendSendMock(...args),
     },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 // portal-auth — mock authorizePortal to pass through (esign entitlement granted)
@@ -811,13 +812,13 @@ describe('POST /api/portal/crm/contracts/[id]/send', () => {
       expect(body.success).toBe(true);
       expect(body.data.status).toBe('sent');
       expect(body.data.signerCount).toBe(2);
-      expect(body.data.contractUrl).toBe('https://test.example/contract/CLIENT_TOK');
+      expect(body.data.contractUrl).toBe('https://test.example/contract/t1');
       expect(resendSendMock).toHaveBeenCalledTimes(2);
 
       const firstCallArgs = resendSendMock.mock.calls[0][0];
       expect(firstCallArgs.from).toBe('Acme <noreply@test.example>');
       expect(firstCallArgs.to).toBe('alice@x.com');
-      expect(firstCallArgs.subject).toBe('Contract for your signature: Project SOW');
+      expect(firstCallArgs.subject).toBe('Contrato pendiente de tu firma: Project SOW');
       expect(firstCallArgs.html).toContain('https://test.example/contract/t1');
       expect(firstCallArgs.html).toContain('Project SOW');
       expect(firstCallArgs.html).toContain('Quick summary');
@@ -867,10 +868,10 @@ describe('POST /api/portal/crm/contracts/[id]/send', () => {
       );
       expect(res.status).toBe(200);
       const body = await res.json();
-      expect(body.data.contractUrl).toBe('https://simplerdevelopment.com/contract/CT');
+      expect(body.data.contractUrl).toBe('https://simplerdevelopment.com/contract/tok');
       expect(resendSendMock).toHaveBeenCalledTimes(1);
       const args = resendSendMock.mock.calls[0][0];
-      expect(args.from).toBe('Simpler Development <noreply@simplerdevelopment.com>');
+      expect(args.from).toBe('CRM AGENTS <noreply@simplerdevelopment.com>');
       // No summary block expected since summary is empty string
       expect(args.html).not.toContain('<p style="margin:8px 0 0;color:#64748b;font-size:14px;">');
     } finally {

@@ -33,9 +33,9 @@ export function generateSEO({
   const metaDescription = description || siteConfig.description;
 
   const metadata: Metadata = {
-    // `absolute` opts out of the root layout's `%s | SimplerDevelopment`
+    // `absolute` opts out of the root layout's `%s | CRM AGENTS`
     // template; metaTitle already carries the brand suffix, so without this
-    // the template would apply a second time (e.g. "About Us | SimplerDevelopment | SimplerDevelopment").
+    // the template would apply a second time (e.g. "About Us | CRM AGENTS | CRM AGENTS").
     title: { absolute: metaTitle },
     description: metaDescription,
     keywords: siteConfig.keywords,
@@ -59,7 +59,7 @@ export function generateSEO({
       title: metaTitle,
       description: metaDescription,
       images: [ogImage],
-      creator: '@simplerdevelopment',
+      creator: siteConfig.name,
     },
     alternates: {
       canonical: url,

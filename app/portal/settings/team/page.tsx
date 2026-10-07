@@ -9,7 +9,7 @@ interface Member {
   name: string;
   email: string;
   role: string;
-  isOwner: boolean;
+  isPropietario: boolean;
   isCurrentUser: boolean;
   joinedAt: string;
 }
@@ -22,9 +22,9 @@ interface InviteResult {
 }
 
 const ROLES = [
-  { value: 'admin', label: 'Admin', description: 'Can invite members, change roles, manage projects' },
-  { value: 'member', label: 'Member', description: 'Can view and collaborate on projects' },
-  { value: 'viewer', label: 'Viewer', description: 'Read-only access to projects and invoices' },
+  { value: 'admin', label: 'Administrador', description: 'Puede invitar miembros, cambiar roles y gestionar proyectos' },
+  { value: 'member', label: 'Miembro', description: 'Puede ver y colaborar en proyectos' },
+  { value: 'viewer', label: 'Lector', description: 'Acceso de solo lectura a proyectos y facturas' },
 ] as const;
 
 const roleBadgeClass: Record<string, string> = {
@@ -83,14 +83,14 @@ export default function SettingsTeamPage() {
         setInviteError(data.message);
       }
     } catch {
-      setInviteError('Something went wrong.');
+      setInviteError('Algo salió mal.');
     } finally {
       setInviting(false);
     }
   };
 
   const handleRemove = async (memberId: number) => {
-    if (!confirm('Remove this team member?')) return;
+    if (!confirm('¿Eliminar a este miembro del equipo?')) return;
     setRemovingId(memberId);
     try {
       const res = await fetch(`/api/portal/team/${memberId}`, { method: 'DELETE' });
@@ -129,12 +129,12 @@ export default function SettingsTeamPage() {
       {/* Members list */}
       <div className={`${pCard} overflow-hidden`}>
         <div className="px-6 py-4 border-b border-border">
-          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Team Members</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">{members.length} member{members.length !== 1 ? 's' : ''}</p>
+          <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Miembros del equipo</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">{members.length} miembro{members.length !== 1 ? 's' : ''}</p>
         </div>
 
         {members.length === 0 ? (
-          <div className="px-6 py-10 text-center text-sm text-muted-foreground">No team members yet.</div>
+          <div className="px-6 py-10 text-center text-sm text-muted-foreground">Aún no hay miembros del equipo.</div>
         ) : (
           <ul className="divide-y divide-border">
             {members.map(m => (
@@ -145,7 +145,7 @@ export default function SettingsTeamPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">
                     {m.name}
-                    {m.isCurrentUser && <span className="ml-2 text-xs text-muted-foreground">(you)</span>}
+                    {m.isCurrentUser && <span className="ml-2 text-xs text-muted-foreground">(tú)</span>}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">{m.email}</p>
                 </div>
@@ -166,17 +166,17 @@ export default function SettingsTeamPage() {
                   </div>
                 ) : (
                   <button
-                    onClick={() => canManage && !m.isOwner && !m.isCurrentUser ? setEditingRoleId(m.memberId) : undefined}
-                    disabled={!canManage || m.isOwner || m.isCurrentUser}
-                    className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${roleBadgeClass[m.isOwner ? 'owner' : m.role] ?? roleBadgeClass.member} ${
-                      canManage && !m.isOwner && !m.isCurrentUser ? 'cursor-pointer hover:ring-2 hover:ring-primary/30 transition-shadow' : ''
+                    onClick={() => canManage && !m.isPropietario && !m.isCurrentUser ? setEditingRoleId(m.memberId) : undefined}
+                    disabled={!canManage || m.isPropietario || m.isCurrentUser}
+                    className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${roleBadgeClass[m.isPropietario ? 'owner' : m.role] ?? roleBadgeClass.member} ${
+                      canManage && !m.isPropietario && !m.isCurrentUser ? 'cursor-pointer hover:ring-2 hover:ring-primary/30 transition-shadow' : ''
                     }`}
                   >
-                    {m.isOwner ? 'Owner' : m.role}
+                    {m.isPropietario ? 'Propietario' : m.role}
                   </button>
                 )}
 
-                {canManage && !m.isCurrentUser && !m.isOwner && (
+                {canManage && !m.isCurrentUser && !m.isPropietario && (
                   <button
                     onClick={() => handleRemove(m.memberId)}
                     disabled={removingId === m.memberId}
@@ -198,14 +198,14 @@ export default function SettingsTeamPage() {
       {canManage && (
         <div className={`${pCard} p-6 space-y-4`}>
           <div>
-            <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Invite a Team Member</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">They will receive login credentials to access this portal.</p>
+            <h2 className="text-base font-display font-extrabold tracking-[-0.01em] text-foreground">Invitar a un miembro del equipo</h2>
+            <p className="text-xs text-muted-foreground mt-0.5">Recibirá las credenciales para acceder a este portal.</p>
           </div>
 
           <form onSubmit={handleInvite} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Full Name</label>
+                <label className="text-sm font-medium text-foreground">Nombre completo</label>
                 <input
                   value={inviteForm.name}
                   onChange={e => { setInviteForm(p => ({ ...p, name: e.target.value })); setInviteError(''); }}
@@ -215,7 +215,7 @@ export default function SettingsTeamPage() {
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-foreground">Email</label>
+                <label className="text-sm font-medium text-foreground">Correo</label>
                 <input
                   type="email"
                   value={inviteForm.email}
@@ -250,7 +250,7 @@ export default function SettingsTeamPage() {
               >
                 {inviting && <span className="material-icons text-base animate-spin">refresh</span>}
                 <span className="material-icons text-base">person_add</span>
-                {inviting ? 'Adding...' : 'Add Member'}
+                {inviting ? 'Añadiendo...' : 'Añadir miembro'}
               </button>
             </div>
           </form>
@@ -263,10 +263,10 @@ export default function SettingsTeamPage() {
           <div className="flex items-start gap-3">
             <span className="material-icons text-green-600 text-xl mt-0.5">check_circle</span>
             <div className="space-y-2 flex-1">
-              <p className="text-sm font-medium text-green-800 dark:text-green-300">{inviteResult.name} has been added.</p>
+              <p className="text-sm font-medium text-green-800 dark:text-green-300">{inviteResult.name} se ha añadido.</p>
               {inviteResult.isNewUser && inviteResult.tempPassword && (
                 <div className="space-y-1">
-                  <p className="text-xs text-green-700 dark:text-green-400">Share these credentials (shown once):</p>
+                  <p className="text-xs text-green-700 dark:text-green-400">Comparte estas credenciales (solo se muestran una vez):</p>
                   <div className="bg-white dark:bg-black/20 border border-green-200 dark:border-green-700 rounded-lg p-3 space-y-1 font-mono text-xs text-green-900 dark:text-green-200">
                     <p><span className="font-semibold">Email:</span> {inviteResult.email}</p>
                     <p><span className="font-semibold">Password:</span> {inviteResult.tempPassword}</p>
@@ -274,7 +274,7 @@ export default function SettingsTeamPage() {
                 </div>
               )}
               {!inviteResult.isNewUser && (
-                <p className="text-xs text-green-700 dark:text-green-400">They can sign in with their existing credentials.</p>
+                <p className="text-xs text-green-700 dark:text-green-400">Puede iniciar sesión con sus credenciales actuales.</p>
               )}
             </div>
             <button onClick={() => setInviteResult(null)} className="text-green-600 hover:text-green-800"><span className="material-icons text-base">close</span></button>
@@ -285,7 +285,7 @@ export default function SettingsTeamPage() {
       {!canManage && (
         <div className={`${pCard} p-5 text-center`}>
           <span className="material-icons text-muted-foreground text-2xl mb-2">lock</span>
-          <p className="text-sm text-muted-foreground">Only owners and admins can manage team members.</p>
+          <p className="text-sm text-muted-foreground">Solo los propietarios y administradores pueden gestionar los miembros del equipo.</p>
         </div>
       )}
     </div>

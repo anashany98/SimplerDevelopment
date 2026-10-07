@@ -20,10 +20,10 @@ interface UrlSuggestionGroups {
 }
 
 const SUGGESTION_GROUP_META: Array<{ key: keyof UrlSuggestionGroups; icon: string; label: string }> = [
-  { key: 'posts', icon: 'description', label: 'Pages' },
+  { key: 'posts', icon: 'description', label: 'Páginas' },
   { key: 'decks', icon: 'slideshow', label: 'Pitch Decks' },
   { key: 'bookings', icon: 'event', label: 'Booking Pages' },
-  { key: 'proposals', icon: 'request_quote', label: 'Proposals' },
+  { key: 'proposals', icon: 'request_quote', label: 'Propuestas' },
 ];
 
 function filterSuggestions(items: UrlSuggestion[], q: string): UrlSuggestion[] {
@@ -97,7 +97,7 @@ export function HtmlRenderUrlAutocomplete({
           value={value || ''}
           onChange={(e) => { onChange(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
-          placeholder="https:// or pick a link below"
+          placeholder="https:// o elige un enlace de abajo"
           className="mt-1 block w-full rounded border border-border px-2.5 py-1.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary"
         />
       </label>

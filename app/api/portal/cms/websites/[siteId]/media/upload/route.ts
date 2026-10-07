@@ -7,7 +7,12 @@ import { uploadToS3 } from '@/lib/s3/upload';
 import { getImageDimensions } from '@/lib/media/image-dimensions';
 
 const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE || '10485760'); // 10MB
-const ALLOWED_TYPES = process.env.ALLOWED_FILE_TYPES?.split(',') || [];
+// Empty/whitespace counts as "no allowlist": a bare `ALLOWED_FILE_TYPES=` in a
+// .env would otherwise yield `['']` and reject every upload.
+const ALLOWED_TYPES = (process.env.ALLOWED_FILE_TYPES ?? '')
+  .split(',')
+  .map((type) => type.trim())
+  .filter(Boolean);
 
 export async function POST(req: Request, { params }: { params: Promise<{ siteId: string }> }) {
   const session = await auth();

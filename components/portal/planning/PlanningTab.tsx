@@ -163,7 +163,7 @@ export default function PlanningTab({ projectId, projectKey, canEdit, isStaff, c
   }
 
   async function deleteSprint(sprintId: number) {
-    if (!confirm('Delete this sprint? Cards will return to backlog.')) return;
+    if (!confirm('¿Eliminar este sprint? Las tarjetas volverán al backlog.')) return;
     const res = await fetch(`/api/portal/sprints/${sprintId}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.success) {
@@ -252,10 +252,10 @@ export default function PlanningTab({ projectId, projectKey, canEdit, isStaff, c
         {viewMode === 'planner' && canEdit && (
           <button
             onClick={() => setShowCreateForm(v => !v)}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-base">add</span>
-            New Sprint
+            Nuevo sprint
           </button>
         )}
       </div>
@@ -263,7 +263,7 @@ export default function PlanningTab({ projectId, projectKey, canEdit, isStaff, c
       {viewMode === 'roadmap' ? (
         <ProjectRoadmapTab projectId={projectId} projectKey={projectKey} />
       ) : loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading sprints…</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando sprints…</div>
       ) : (
         <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={() => setActiveDrag(null)}>
           <div className="space-y-4">
@@ -283,9 +283,9 @@ export default function PlanningTab({ projectId, projectKey, canEdit, isStaff, c
                 {sprints.length === 0 && !showCreateForm && (
                   <div className="bg-card border border-border rounded-xl p-12 text-center">
                     <span className="material-icons text-5xl text-muted-foreground">sprint</span>
-                    <h3 className="mt-4 font-semibold text-foreground">No sprints yet</h3>
+                    <h3 className="mt-4 font-semibold text-foreground">Aún no hay sprints</h3>
                     <p className="mt-2 text-sm text-muted-foreground">
-                      {canEdit ? 'Create a sprint to start planning work.' : 'No sprints have been set up for this project yet.'}
+                      {canEdit ? 'Crea un sprint para empezar a planificar el trabajo.' : 'Todavía no se ha configurado ningún sprint para este proyecto.'}
                     </p>
                   </div>
                 )}

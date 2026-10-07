@@ -80,7 +80,7 @@ async function renderAndSettle(
   render(<EnvironmentPanel siteId={siteId} environments={environments} />);
   // wait for loading to clear (generous timeout: under multi-file parallel load
   // the default 1s waitFor budget can be exceeded by fetch-resolve + re-render)
-  await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull(), { timeout: 5000 });
+  await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull(), { timeout: 5000 });
 }
 
 // ===========================================================================
@@ -90,7 +90,7 @@ async function renderAndSettle(
 describe('EnvironmentPanel — initial render', () => {
   it('renders without crashing', async () => {
     await renderAndSettle();
-    expect(screen.getByText('Production')).toBeInTheDocument();
+    expect(screen.getByText('Producción')).toBeInTheDocument();
   });
 
   it('shows Loading... while fetch is in flight', () => {
@@ -98,15 +98,15 @@ describe('EnvironmentPanel — initial render', () => {
     const pending = new Promise<any>(res => { resolve = res; });
     global.fetch = vi.fn(() => pending) as any;
     render(<EnvironmentPanel siteId={1} environments={bothEnvs} />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Cargando...')).toBeInTheDocument();
     // resolve to avoid act() warning
     act(() => { resolve!({ ok: true, json: () => Promise.resolve({ success: true, data: [] }) }); });
   });
 
   it('renders both environment tabs', async () => {
     await renderAndSettle();
-    expect(screen.getByText('Production')).toBeInTheDocument();
-    expect(screen.getByText('Staging')).toBeInTheDocument();
+    expect(screen.getByText('Producción')).toBeInTheDocument();
+    expect(screen.getByText('Preproducción')).toBeInTheDocument();
   });
 
   it('defaults to production environment when present', async () => {
@@ -118,41 +118,41 @@ describe('EnvironmentPanel — initial render', () => {
   it('defaults to first env when no production env exists', async () => {
     const customEnvs = [{ id: 5, name: 'staging', vercelTarget: 'preview', previewUrl: null }];
     render(<EnvironmentPanel siteId={99} environments={customEnvs} />);
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
     expect((global.fetch as any).mock.calls.some((c: any[]) => c[0].includes('/environments/5/'))).toBe(true);
   });
 
   it('shows preview URL link when activeEnv has previewUrl', async () => {
     await renderAndSettle();
-    const link = screen.getByRole('link', { name: /Preview URL/i });
+    const link = screen.getByRole('link', { name: /URL de vista previa/i });
     expect(link).toHaveAttribute('href', 'https://prod.example.com');
   });
 
   it('does not render preview URL link when activeEnv has no previewUrl', async () => {
     // Switch to staging (no previewUrl) by rendering staging only
     render(<EnvironmentPanel siteId={99} environments={[stagingEnv]} />);
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
-    expect(screen.queryByRole('link', { name: /Preview URL/i })).toBeNull();
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
+    expect(screen.queryByRole('link', { name: /URL de vista previa/i })).toBeNull();
   });
 
   it('renders Environment Variables heading', async () => {
     await renderAndSettle();
-    expect(screen.getByText('Environment Variables')).toBeInTheDocument();
+    expect(screen.getByText('Variables de entorno')).toBeInTheDocument();
   });
 
   it('renders Backups heading', async () => {
     await renderAndSettle();
-    expect(screen.getByText('Backups')).toBeInTheDocument();
+    expect(screen.getByText('Copias de seguridad')).toBeInTheDocument();
   });
 
   it('shows "No backups yet." when backup list is empty', async () => {
     await renderAndSettle();
-    expect(screen.getByText('No backups yet.')).toBeInTheDocument();
+    expect(screen.getByText('Aún no hay copias de seguridad.')).toBeInTheDocument();
   });
 
   it('shows Add button for new env var form', async () => {
     await renderAndSettle();
-    expect(screen.getByRole('button', { name: /Add/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Añadir/i })).toBeInTheDocument();
   });
 
   it('fetches vars and backups for the active env on mount', async () => {
@@ -197,7 +197,7 @@ describe('EnvironmentPanel — env var list', () => {
     expect(screen.queryByText('plaintext')).toBeNull();
 
     const eyeBtn = screen.getByTitle
-      ? screen.queryByTitle('Not synced') // not the right thing
+      ? screen.queryByTitle('Sin sincronizar') // not the right thing
       : null;
 
     // Find the visibility toggle via material icon text
@@ -233,7 +233,7 @@ describe('EnvironmentPanel — env var list', () => {
     global.fetch = makeDefaultFetch([v]);
     await renderAndSettle();
     // The amber dot has title="Not synced"
-    const dot = document.querySelector('[title="Not synced"]');
+    const dot = document.querySelector('[title="Sin sincronizar"]');
     expect(dot).not.toBeNull();
   });
 
@@ -241,21 +241,21 @@ describe('EnvironmentPanel — env var list', () => {
     const v = makeVar({ key: 'SYNCED', value: 'val', syncedToVercel: true });
     global.fetch = makeDefaultFetch([v]);
     await renderAndSettle();
-    expect(document.querySelector('[title="Not synced"]')).toBeNull();
+    expect(document.querySelector('[title="Sin sincronizar"]')).toBeNull();
   });
 
   it('shows unsynced count in Sync button when vars are unsynced', async () => {
     const v = makeVar({ key: 'K', value: 'v', syncedToVercel: false });
     global.fetch = makeDefaultFetch([v]);
     await renderAndSettle();
-    expect(screen.getByText(/Sync to Vercel \(1\)/)).toBeInTheDocument();
+    expect(screen.getByText(/Sincronizar con Vercel \(1\)/)).toBeInTheDocument();
   });
 
   it('shows Sync to Vercel without count when all synced', async () => {
     const v = makeVar({ key: 'K', value: 'v', syncedToVercel: true });
     global.fetch = makeDefaultFetch([v]);
     await renderAndSettle();
-    expect(screen.getByText('Sync to Vercel')).toBeInTheDocument();
+    expect(screen.getByText('Sincronizar con Vercel')).toBeInTheDocument();
   });
 });
 
@@ -263,21 +263,21 @@ describe('EnvironmentPanel — env var list', () => {
 describe('EnvironmentPanel — add var', () => {
   it('Add button is disabled when key input is empty', async () => {
     await renderAndSettle();
-    const addBtn = screen.getByRole('button', { name: 'Add' });
+    const addBtn = screen.getByRole('button', { name: 'Añadir' });
     expect(addBtn).toBeDisabled();
   });
 
   it('Add button enables when key is typed', async () => {
     await renderAndSettle();
-    const keyInput = screen.getByPlaceholderText('KEY_NAME');
+    const keyInput = screen.getByPlaceholderText('NOMBRE_CLAVE');
     fireEvent.change(keyInput, { target: { value: 'MY_KEY' } });
-    const addBtn = screen.getByRole('button', { name: 'Add' });
+    const addBtn = screen.getByRole('button', { name: 'Añadir' });
     expect(addBtn).not.toBeDisabled();
   });
 
   it('key input uppercases and strips non-alphanumeric/_', async () => {
     await renderAndSettle();
-    const keyInput = screen.getByPlaceholderText('KEY_NAME') as HTMLInputElement;
+    const keyInput = screen.getByPlaceholderText('NOMBRE_CLAVE') as HTMLInputElement;
     fireEvent.change(keyInput, { target: { value: 'hello-world 123' } });
     // The onChange strips non [A-Z0-9_] after toUpperCase — 'HELLOWORLD123'
     // (jsdom sets the value from onChange's replacement)
@@ -299,13 +299,13 @@ describe('EnvironmentPanel — add var', () => {
     }) as any;
 
     await renderAndSettle();
-    const keyInput = screen.getByPlaceholderText('KEY_NAME');
-    const valInput = screen.getByPlaceholderText('value');
+    const keyInput = screen.getByPlaceholderText('NOMBRE_CLAVE');
+    const valInput = screen.getByPlaceholderText('valor');
     fireEvent.change(keyInput, { target: { value: 'NEW_KEY' } });
     fireEvent.change(valInput, { target: { value: 'myvalue' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir' }));
     });
 
     await waitFor(() => expect(fetchCallCount).toBeGreaterThan(0));
@@ -321,9 +321,9 @@ describe('EnvironmentPanel — add var', () => {
     }) as any;
 
     await renderAndSettle();
-    fireEvent.change(screen.getByPlaceholderText('KEY_NAME'), { target: { value: 'DUPE' } });
+    fireEvent.change(screen.getByPlaceholderText('NOMBRE_CLAVE'), { target: { value: 'DUPE' } });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir' }));
     });
 
     await waitFor(() => expect(screen.getByText('Key already exists')).toBeInTheDocument());
@@ -331,7 +331,7 @@ describe('EnvironmentPanel — add var', () => {
 
   it('does not POST when key is empty (whitespace only)', async () => {
     await renderAndSettle();
-    const addBtn = screen.getByRole('button', { name: 'Add' });
+    const addBtn = screen.getByRole('button', { name: 'Añadir' });
     // disabled when key is empty — click is a no-op
     fireEvent.click(addBtn);
     const postCalls = (global.fetch as any).mock.calls.filter(
@@ -348,10 +348,10 @@ describe('EnvironmentPanel — add var', () => {
     }) as any;
 
     await renderAndSettle();
-    fireEvent.change(screen.getByPlaceholderText('KEY_NAME'), { target: { value: 'ENTER_KEY' } });
+    fireEvent.change(screen.getByPlaceholderText('NOMBRE_CLAVE'), { target: { value: 'ENTER_KEY' } });
 
     await act(async () => {
-      fireEvent.keyDown(screen.getByPlaceholderText('KEY_NAME'), { key: 'Enter' });
+      fireEvent.keyDown(screen.getByPlaceholderText('NOMBRE_CLAVE'), { key: 'Enter' });
     });
 
     await waitFor(() => {
@@ -532,14 +532,14 @@ describe('EnvironmentPanel — sync action', () => {
   it('Sync to Vercel button is disabled when no vars', async () => {
     global.fetch = makeDefaultFetch([]);
     await renderAndSettle();
-    const syncBtn = screen.getByRole('button', { name: /Sync to Vercel/i });
+    const syncBtn = screen.getByRole('button', { name: /Sincronizar con Vercel/i });
     expect(syncBtn).toBeDisabled();
   });
 
   it('Sync to Vercel button is enabled when vars exist', async () => {
     global.fetch = makeDefaultFetch([makeVar()]);
     await renderAndSettle();
-    const syncBtn = screen.getByRole('button', { name: /Sync to Vercel/i });
+    const syncBtn = screen.getByRole('button', { name: /Sincronizar con Vercel/i });
     expect(syncBtn).not.toBeDisabled();
   });
 
@@ -552,7 +552,7 @@ describe('EnvironmentPanel — sync action', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Sync to Vercel/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Sincronizar con Vercel/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Synced!')).toBeInTheDocument());
@@ -567,7 +567,7 @@ describe('EnvironmentPanel — sync action', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Sync to Vercel/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Sincronizar con Vercel/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Sync failed')).toBeInTheDocument());
@@ -578,7 +578,7 @@ describe('EnvironmentPanel — sync action', () => {
 describe('EnvironmentPanel — backup action', () => {
   it('renders Create Backup button', async () => {
     await renderAndSettle();
-    expect(screen.getByRole('button', { name: /Create Backup/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Crear copia de seguridad/i })).toBeInTheDocument();
   });
 
   it('POSTs to /backup and shows success message', async () => {
@@ -591,7 +591,7 @@ describe('EnvironmentPanel — backup action', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create Backup/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear copia de seguridad/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Backup created')).toBeInTheDocument());
@@ -607,7 +607,7 @@ describe('EnvironmentPanel — backup action', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create Backup/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear copia de seguridad/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Backup failed')).toBeInTheDocument());
@@ -634,7 +634,7 @@ describe('EnvironmentPanel — backup action', () => {
     }) as any;
 
     await renderAndSettle();
-    expect(screen.getByRole('button', { name: /Restore/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Restaurar/i })).toBeInTheDocument();
   });
 });
 
@@ -651,7 +651,7 @@ describe('EnvironmentPanel — restore action', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Restore/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Restaurar/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Restored!')).toBeInTheDocument());
@@ -668,7 +668,7 @@ describe('EnvironmentPanel — restore action', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Restore/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Restaurar/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Restore failed')).toBeInTheDocument());
@@ -679,13 +679,13 @@ describe('EnvironmentPanel — restore action', () => {
 describe('EnvironmentPanel — copy from other environment', () => {
   it('shows Copy from Staging button when two envs exist and prod is active', async () => {
     await renderAndSettle();
-    expect(screen.getByRole('button', { name: /Copy from Staging/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Copiar desde Preproducción/i })).toBeInTheDocument();
   });
 
   it('does not show Copy button when only one env exists', async () => {
     render(<EnvironmentPanel siteId={99} environments={onlyProd} />);
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
-    expect(screen.queryByRole('button', { name: /Copy from/i })).toBeNull();
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
+    expect(screen.queryByRole('button', { name: /Copiar desde/i })).toBeNull();
   });
 
   it('POSTs to /copy and shows success message', async () => {
@@ -697,7 +697,7 @@ describe('EnvironmentPanel — copy from other environment', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Copy from Staging/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Copiar desde Preproducción/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Copied!')).toBeInTheDocument());
@@ -712,7 +712,7 @@ describe('EnvironmentPanel — copy from other environment', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Copy from Staging/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Copiar desde Preproducción/i }));
     });
 
     await waitFor(() => expect(screen.getByText('Copy failed')).toBeInTheDocument());
@@ -721,9 +721,9 @@ describe('EnvironmentPanel — copy from other environment', () => {
   it('shows Copy from Production when staging is active', async () => {
     // Render prod + staging, then click the Staging tab to make staging active
     await renderAndSettle();
-    await act(async () => { fireEvent.click(screen.getByText('Staging')); });
-    await waitFor(() => expect(screen.queryByText('Loading...')).toBeNull());
-    expect(screen.getByRole('button', { name: /Copy from Production/i })).toBeInTheDocument();
+    await act(async () => { fireEvent.click(screen.getByText('Preproducción')); });
+    await waitFor(() => expect(screen.queryByText('Cargando...')).toBeNull());
+    expect(screen.getByRole('button', { name: /Copiar desde Producción/i })).toBeInTheDocument();
   });
 });
 
@@ -732,7 +732,7 @@ describe('EnvironmentPanel — environment switching', () => {
   it('clicking Staging tab switches the active environment', async () => {
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByText('Staging'));
+      fireEvent.click(screen.getByText('Preproducción'));
     });
 
     await waitFor(() => {
@@ -758,7 +758,7 @@ describe('EnvironmentPanel — environment switching', () => {
     expect(screen.getByText('mysecret')).toBeInTheDocument();
 
     // switch env — re-mounts loadData, resets visibleIds
-    await act(async () => { fireEvent.click(screen.getByText('Staging')); });
+    await act(async () => { fireEvent.click(screen.getByText('Preproducción')); });
     await waitFor(() => expect(screen.queryByText('mysecret')).toBeNull());
   });
 
@@ -779,7 +779,7 @@ describe('EnvironmentPanel — environment switching', () => {
     expect(document.querySelector('input[value="val"]')).not.toBeNull();
 
     // switch env
-    await act(async () => { fireEvent.click(screen.getByText('Staging')); });
+    await act(async () => { fireEvent.click(screen.getByText('Preproducción')); });
     await waitFor(() => expect(document.querySelector('input[value="val"]')).toBeNull());
   });
 });
@@ -794,8 +794,8 @@ describe('EnvironmentPanel — error and success message display', () => {
     }) as any;
 
     await renderAndSettle();
-    fireEvent.change(screen.getByPlaceholderText('KEY_NAME'), { target: { value: 'X' } });
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Add' })); });
+    fireEvent.change(screen.getByPlaceholderText('NOMBRE_CLAVE'), { target: { value: 'X' } });
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Añadir' })); });
     await waitFor(() => {
       const errorEl = screen.getByText('Server error');
       expect(errorEl.tagName).toBe('P');
@@ -812,7 +812,7 @@ describe('EnvironmentPanel — error and success message display', () => {
 
     await renderAndSettle();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Sync to Vercel/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Sincronizar con Vercel/i }));
     });
     await waitFor(() => {
       const el = screen.getByText('All synced');

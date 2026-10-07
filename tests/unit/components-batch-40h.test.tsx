@@ -55,12 +55,9 @@ vi.mock('@/hooks/useTheme', () => ({
 // elementStyles helper — return empty object (covers branch where styles absent)
 vi.mock('@/lib/utils/elementStyles', () => ({
   getElementCSS: (_styles: any, _el: string) => ({}),
-}));
-
-// ---------------------------------------------------------------------------
+}));// ---------------------------------------------------------------------------
 // Imports under test
 // ---------------------------------------------------------------------------
-import { AnimatedText } from '@/components/ui/AnimatedText';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { Accordion, AccordionItem } from '@/components/ui/Accordion';
 import { MarqueeBlockRender } from '@/components/blocks/render/MarqueeBlockRender';
@@ -68,55 +65,6 @@ import { MarqueeBlockRender } from '@/components/blocks/render/MarqueeBlockRende
 beforeEach(() => {
   themeState.resolvedTheme = 'light';
   themeState.toggleTheme = vi.fn();
-});
-
-// ---------------------------------------------------------------------------
-// AnimatedText
-// ---------------------------------------------------------------------------
-describe('AnimatedText', () => {
-  it('renders each letter as its own motion span', () => {
-    const { container } = render(<AnimatedText text="Hi" />);
-    const spans = container.querySelectorAll('[data-motion="span"]');
-    expect(spans).toHaveLength(2);
-    expect(container.textContent).toBe('Hi');
-  });
-
-  it('replaces spaces with non-breaking spaces', () => {
-    const { container } = render(<AnimatedText text="A B" />);
-    const spans = container.querySelectorAll('[data-motion="span"]');
-    expect(spans).toHaveLength(3);
-    // middle span is a non-breaking space
-    expect(spans[1].textContent).toBe(' ');
-  });
-
-  it('applies the supplied className to the wrapper span', () => {
-    const { container } = render(<AnimatedText text="X" className="my-class" />);
-    const wrapper = container.querySelector('span.my-class');
-    expect(wrapper).toBeTruthy();
-  });
-
-  it('falls back to no className when none supplied', () => {
-    const { container } = render(<AnimatedText text="X" />);
-    // outer wrapper span is the first child
-    const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper.tagName).toBe('SPAN');
-    expect(wrapper.className).toBe('');
-  });
-
-  it('emits a non-trivial animate prop when hovered', () => {
-    const { container } = render(<AnimatedText text="A" isHovered />);
-    const span = container.querySelector('[data-motion="span"]') as HTMLElement;
-    const animate = span.getAttribute('data-animate');
-    expect(animate).toContain('y');
-    // when hovered, y is an array [0, -8, 0]
-    expect(animate).toContain('-8');
-  });
-
-  it('emits a static animate when not hovered', () => {
-    const { container } = render(<AnimatedText text="A" isHovered={false} />);
-    const span = container.querySelector('[data-motion="span"]') as HTMLElement;
-    expect(span.getAttribute('data-animate')).toBe(JSON.stringify({ y: 0 }));
-  });
 });
 
 // ---------------------------------------------------------------------------

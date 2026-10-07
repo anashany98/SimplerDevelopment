@@ -157,7 +157,7 @@ function SignatureCanvas({ onSave, accentColor }: { onSave: (dataUrl: string) =>
         />
         {!hasDrawn && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <p className="text-gray-400 text-sm">Draw your signature here</p>
+            <p className="text-gray-400 text-sm">Dibuja tu firma aquí</p>
           </div>
         )}
       </div>
@@ -166,9 +166,7 @@ function SignatureCanvas({ onSave, accentColor }: { onSave: (dataUrl: string) =>
           type="button"
           onClick={clearCanvas}
           className="px-3 py-1.5 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          Clear
-        </button>
+        >Limpiar</button>
         {hasDrawn && (
           <button
             type="button"
@@ -176,7 +174,7 @@ function SignatureCanvas({ onSave, accentColor }: { onSave: (dataUrl: string) =>
             className="px-3 py-1.5 text-sm text-white rounded-lg transition-colors"
             style={{ backgroundColor: accentColor }}
           >
-            Use This Signature
+            Usar esta firma
           </button>
         )}
       </div>
@@ -231,7 +229,7 @@ export default function PublicProposalPage() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="inline-block w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin mb-4" />
-          <p className="text-gray-500 text-sm">Loading proposal...</p>
+          <p className="text-gray-500 text-sm">Cargando propuesta...</p>
         </div>
       </div>
     );
@@ -246,8 +244,8 @@ export default function PublicProposalPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-gray-900 mb-2">Proposal Not Found</h1>
-          <p className="text-gray-500 text-sm">This proposal may have been removed or the link is invalid.</p>
+          <h1 className="text-xl font-semibold text-gray-900 mb-2">Propuesta no encontrada</h1>
+          <p className="text-gray-500 text-sm">Esta propuesta puede haberse eliminado o el enlace no es válido.</p>
         </div>
       </div>
     );
@@ -290,11 +288,11 @@ export default function PublicProposalPage() {
 
   async function handleAccept() {
     if (!signatureName.trim()) {
-      setActionError('Please enter your full name.');
+      setActionError('Introduce tu nombre completo.');
       return;
     }
     if (!signatureData) {
-      setActionError('Please draw your signature.');
+      setActionError('Dibuja tu firma.');
       return;
     }
     setAccepting(true);
@@ -307,7 +305,7 @@ export default function PublicProposalPage() {
     const d = await res.json();
     setAccepting(false);
     if (!d.success) {
-      setActionError(d.message ?? 'Failed to accept proposal.');
+      setActionError(d.message ?? 'No se pudo aceptar la propuesta.');
       return;
     }
     loadProposal();
@@ -324,7 +322,7 @@ export default function PublicProposalPage() {
     const d = await res.json();
     setDeclining(false);
     if (!d.success) {
-      setActionError(d.message ?? 'Failed to decline proposal.');
+      setActionError(d.message ?? 'No se pudo rechazar la propuesta.');
       return;
     }
     setShowDeclineModal(false);
@@ -345,9 +343,9 @@ export default function PublicProposalPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>
-              This proposal was accepted on{' '}
-              {proposal.acceptedAt ? new Date(proposal.acceptedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
-              {proposal.signatureName ? ` by ${proposal.signatureName}` : ''}
+              Esta propuesta fue aceptada el{' '}
+              {proposal.acceptedAt ? new Date(proposal.acceptedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+              {proposal.signatureName ? ` por ${proposal.signatureName}` : ''}
             </span>
           </div>
         </div>
@@ -359,8 +357,8 @@ export default function PublicProposalPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>
-              This proposal was declined on{' '}
-              {proposal.declinedAt ? new Date(proposal.declinedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+              Esta propuesta fue rechazada el{' '}
+              {proposal.declinedAt ? new Date(proposal.declinedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
             </span>
           </div>
         </div>
@@ -371,7 +369,7 @@ export default function PublicProposalPage() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span>This proposal has expired.</span>
+            <span>Esta propuesta ha caducado.</span>
           </div>
         </div>
       )}
@@ -381,11 +379,11 @@ export default function PublicProposalPage() {
         {/* Header */}
         <header className="mb-10">
           {proposal.logoUrl && (
-            <img src={proposal.logoUrl} alt="Company logo" className="h-12 object-contain mb-6" />
+            <img src={proposal.logoUrl} alt="Logotipo de la empresa" className="h-12 object-contain mb-6" />
           )}
           {proposal.coverImageUrl && (
             <div className="mb-8 rounded-xl overflow-hidden shadow-sm">
-              <img src={proposal.coverImageUrl} alt="Cover" className="w-full h-64 object-cover" />
+              <img src={proposal.coverImageUrl} alt="Portada" className="w-full h-64 object-cover" />
             </div>
           )}
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ color: accent }}>
@@ -396,9 +394,9 @@ export default function PublicProposalPage() {
           )}
           {(contactName || proposal.companyName) && (
             <p className="text-sm text-gray-500">
-              Prepared for{' '}
+              Preparada para{' '}
               <span className="font-medium text-gray-700">{contactName}</span>
-              {contactName && proposal.companyName ? ' at ' : ''}
+              {contactName && proposal.companyName ? ' en ' : ''}
               {proposal.companyName && <span className="font-medium text-gray-700">{proposal.companyName}</span>}
             </p>
           )}
@@ -411,8 +409,8 @@ export default function PublicProposalPage() {
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Valid until {new Date(proposal.validUntil).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-              {daysLeft !== null && daysLeft <= 7 && daysLeft > 0 && ` (${daysLeft} day${daysLeft === 1 ? '' : 's'} remaining)`}
+              Válida hasta el {new Date(proposal.validUntil).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+              {daysLeft !== null && daysLeft <= 7 && daysLeft > 0 && ` (${daysLeft} ${daysLeft === 1 ? 'día restante' : 'días restantes'})`}
             </div>
           )}
         </header>
@@ -443,15 +441,15 @@ export default function PublicProposalPage() {
               {section.type === 'pricing' && allLineItems.length > 0 && (
                 <div className="rounded-xl border border-gray-200 overflow-hidden bg-white shadow-sm">
                   <div className="px-6 py-4 border-b border-gray-200" style={{ backgroundColor: accent + '0a' }}>
-                    <h3 className="text-lg font-semibold text-gray-900">Pricing</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Precios</h3>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-gray-200 bg-gray-50">
-                          <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
-                          <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Qty</th>
-                          <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Unit Price</th>
+                          <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Descripción</th>
+                          <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Cant.</th>
+                          <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Precio unitario</th>
                           <th className="text-right px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
                         </tr>
                       </thead>
@@ -471,7 +469,7 @@ export default function PublicProposalPage() {
                           <>
                             <tr>
                               <td colSpan={4} className="px-6 py-3 bg-gray-50">
-                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Optional Items</span>
+                                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Artículos opcionales</span>
                               </td>
                             </tr>
                             {optionalItems.map(li => (
@@ -513,7 +511,7 @@ export default function PublicProposalPage() {
                         {computedFees.map(f => (
                           <tr key={f.id}>
                             <td colSpan={3} className="px-6 py-2 text-right text-sm text-gray-600">
-                              {f.label || 'Fee'}{f.type === 'percent' ? ` (${f.amount}%)` : ''}
+                              {f.label || 'Tarifa'}{f.type === 'percent' ? ` (${f.amount}%)` : ''}
                             </td>
                             <td className="px-6 py-2 text-right text-gray-900">{fmtCurrency(f.computed)}</td>
                           </tr>
@@ -529,7 +527,7 @@ export default function PublicProposalPage() {
               )}
               {section.type === 'terms' && section.content && (
                 <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Terms &amp; Conditions</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">Términos y condiciones</h3>
                   <div className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{section.content}</div>
                 </div>
               )}
@@ -537,24 +535,24 @@ export default function PublicProposalPage() {
                 <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                   {proposal.status === 'accepted' && proposal.signatureName ? (
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Signature</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Firma</h3>
                       <div className="flex items-center gap-2 text-green-600 text-sm">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Signed by {proposal.signatureName}
+                        Firmado por {proposal.signatureName}
                         {proposal.signedAt && (
                           <span className="text-gray-500 ml-1">
-                            on {new Date(proposal.signedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            el {new Date(proposal.signedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
                           </span>
                         )}
                       </div>
                     </div>
                   ) : canAct ? (
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-gray-900">Accept &amp; Sign</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Aceptar y firmar</h3>
                       <p className="text-sm text-gray-600">
-                        By signing below, you agree to the terms outlined in this proposal.
+                        Al firmar abajo, aceptas los términos descritos en esta propuesta.
                       </p>
 
                       {actionError && (
@@ -567,29 +565,29 @@ export default function PublicProposalPage() {
                       )}
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre completo</label>
                         <input
                           value={signatureName}
                           onChange={e => setSignatureName(e.target.value)}
-                          placeholder="Enter your full name"
+                          placeholder="Introduce tu nombre completo"
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent"
                           style={{ '--tw-ring-color': accent } as React.CSSProperties}
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Signature</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Firma</label>
                         {signatureData ? (
                           <div className="space-y-2">
                             <div className="border border-gray-200 rounded-lg p-2 bg-white">
-                              <img src={signatureData} alt="Your signature" className="max-h-24" />
+                              <img src={signatureData} alt="Tu firma" className="max-h-24" />
                             </div>
                             <button
                               type="button"
                               onClick={() => setSignatureData('')}
                               className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
                             >
-                              Re-draw signature
+                              Volver a dibujar la firma
                             </button>
                           </div>
                         ) : (
@@ -607,23 +605,23 @@ export default function PublicProposalPage() {
                           {accepting ? (
                             <span className="flex items-center justify-center gap-2">
                               <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                              Accepting...
+                              Aceptando...
                             </span>
                           ) : (
-                            'Accept Proposal'
+                            'Aceptar propuesta'
                           )}
                         </button>
                         <button
                           onClick={() => setShowDeclineModal(true)}
                           className="py-3 px-6 rounded-lg border border-gray-300 text-gray-700 font-medium text-sm hover:bg-gray-50 transition-colors"
                         >
-                          Decline
+                          Rechazar
                         </button>
                       </div>
                     </div>
                   ) : (
                     <div className="text-center py-4 text-gray-500 text-sm">
-                      {proposal.status === 'declined' ? 'This proposal was declined.' : 'This proposal is no longer available for signing.'}
+                      {proposal.status === 'declined' ? 'Esta propuesta fue rechazada.' : 'Esta propuesta ya no está disponible para firmar.'}
                     </div>
                   )}
                 </div>
@@ -635,9 +633,9 @@ export default function PublicProposalPage() {
         {/* If no signature section exists but proposal can be acted on, show action buttons */}
         {canAct && !sectionsList.some(s => s.type === 'signature') && (
           <div className="mt-10 bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Accept &amp; Sign</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Aceptar y firmar</h3>
             <p className="text-sm text-gray-600">
-              By signing below, you agree to the terms outlined in this proposal.
+              Al firmar abajo, aceptas los términos descritos en esta propuesta.
             </p>
 
             {actionError && (
@@ -650,29 +648,29 @@ export default function PublicProposalPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre completo</label>
               <input
                 value={signatureName}
                 onChange={e => setSignatureName(e.target.value)}
-                placeholder="Enter your full name"
+                placeholder="Introduce tu nombre completo"
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent"
                 style={{ '--tw-ring-color': accent } as React.CSSProperties}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Signature</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Firma</label>
               {signatureData ? (
                 <div className="space-y-2">
                   <div className="border border-gray-200 rounded-lg p-2 bg-white">
-                    <img src={signatureData} alt="Your signature" className="max-h-24" />
+                    <img src={signatureData} alt="Tu firma" className="max-h-24" />
                   </div>
                   <button
                     type="button"
                     onClick={() => setSignatureData('')}
                     className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
                   >
-                    Re-draw signature
+                    Volver a dibujar la firma
                   </button>
                 </div>
               ) : (
@@ -690,17 +688,17 @@ export default function PublicProposalPage() {
                 {accepting ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Accepting...
+                    Aceptando...
                   </span>
                 ) : (
-                  'Accept Proposal'
+                  'Aceptar propuesta'
                 )}
               </button>
               <button
                 onClick={() => setShowDeclineModal(true)}
                 className="py-3 px-6 rounded-lg border border-gray-300 text-gray-700 font-medium text-sm hover:bg-gray-50 transition-colors"
               >
-                Decline
+                Rechazar
               </button>
             </div>
           </div>
@@ -721,17 +719,17 @@ export default function PublicProposalPage() {
       {showDeclineModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 max-w-md w-full shadow-xl space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Decline Proposal</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Rechazar propuesta</h3>
             <p className="text-sm text-gray-600">
-              Are you sure you want to decline this proposal? You can optionally provide a reason.
+              ¿Seguro que quieres rechazar esta propuesta? Puedes indicar un motivo (opcional).
             </p>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Reason (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Motivo (opcional)</label>
               <textarea
                 value={declineReason}
                 onChange={e => setDeclineReason(e.target.value)}
                 rows={3}
-                placeholder="Let us know why you are declining..."
+                placeholder="Cuéntanos por qué la rechazas..."
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 resize-none"
               />
             </div>
@@ -739,15 +737,13 @@ export default function PublicProposalPage() {
               <button
                 onClick={() => setShowDeclineModal(false)}
                 className="px-4 py-2.5 text-sm text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
               <button
                 onClick={handleDecline}
                 disabled={declining}
                 className="px-6 py-2.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
               >
-                {declining ? 'Declining...' : 'Decline Proposal'}
+                {declining ? 'Rechazando...' : 'Rechazar propuesta'}
               </button>
             </div>
           </div>

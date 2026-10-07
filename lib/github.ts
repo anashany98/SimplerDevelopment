@@ -17,7 +17,7 @@ function getAppOctokit() {
 }
 
 /**
- * Create a new repo from the template repo under the simplerdevelopment org.
+ * Create a new repo from the template repo under the CRM AGENTS org.
  */
 export async function createRepoFromTemplate(
   newRepoName: string,

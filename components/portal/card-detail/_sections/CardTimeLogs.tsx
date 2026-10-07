@@ -95,7 +95,7 @@ export function CardTimeLogs({
             <button
               onClick={logTime}
               disabled={loggingTime || (!timeHours && !timeMinutesInput)}
-              className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded text-xs font-medium hover:bg-primary/90 disabled:opacity-50"
+              className="flex items-center gap-1 px-3 py-1.5 bg-foreground text-background rounded text-xs font-medium hover:bg-foreground/90 disabled:opacity-50"
             >
               {loggingTime && <span className="material-icons text-xs animate-spin">refresh</span>}
               Log
@@ -103,9 +103,7 @@ export function CardTimeLogs({
             <button
               onClick={() => setShowTimeForm(false)}
               className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}
@@ -131,7 +129,7 @@ export function CardTimeLogs({
           ))}
         </div>
       ) : (
-        <p className="text-xs text-muted-foreground italic">No time logged yet.</p>
+        <p className="text-xs text-muted-foreground italic">Aún no hay tiempo registrado.</p>
       )}
     </div>
   );

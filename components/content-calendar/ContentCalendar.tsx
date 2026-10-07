@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { slugify } from '@/lib/publishing/slug';
+import { calendarStatusLabel, postTypeLabel } from '@/lib/portal-utils';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -69,14 +70,14 @@ function isToday(d: Date) {
 }
 
 function formatMonthYear(d: Date) {
-  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return d.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
 }
 
 function formatWeekRange(d: Date) {
   const s = startOfWeek(d);
   const e = endOfWeek(d);
   const fmt = (x: Date) =>
-    x.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    x.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
   return `${fmt(s)} - ${fmt(e)}, ${e.getFullYear()}`;
 }
 
@@ -124,12 +125,7 @@ const STATUS_COLORS: Record<string, { bg: string; text: string; dot: string }> =
   },
 };
 
-const POST_TYPE_ICONS: Record<string, string> = {
-  blog: 'article',
-  page: 'description',
-  'case-study': 'work',
-  landing: 'web',
-};
+const POST_TYPE_ICONS: Record<string, string> = { blog: 'article', page: 'description', 'case-study': 'work', landing: 'web' };
 
 // ---------------------------------------------------------------------------
 // Schedule Modal
@@ -165,7 +161,7 @@ function ScheduleModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Schedule Post</h3>
+          <h3 className="text-lg font-semibold text-foreground">Programar entrada</h3>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <span className="material-icons">close</span>
           </button>
@@ -176,7 +172,7 @@ function ScheduleModal({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-1">
-              Publish Date & Time
+              Fecha y hora de publicación
             </label>
             <input
               type="datetime-local"
@@ -193,12 +189,12 @@ function ScheduleModal({
               onChange={(e) => setPublish(e.target.checked)}
               className="rounded border-border"
             />
-            <span className="text-sm text-foreground">Published</span>
+            <span className="text-sm text-foreground">Publicado</span>
           </label>
 
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="material-icons text-sm">info</span>
-            Set a future date with published unchecked to schedule for later.
+            Define una fecha futura con «Publicado» desmarcado para programarla.
           </div>
         </div>
 
@@ -206,9 +202,7 @@ function ScheduleModal({
           <button
             onClick={onClose}
             className="px-4 py-2 text-sm rounded-md border border-border text-foreground hover:bg-accent"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           {dateVal && (
             <button
               onClick={async () => {
@@ -220,7 +214,7 @@ function ScheduleModal({
               disabled={saving}
               className="px-4 py-2 text-sm rounded-md border border-yellow-300 dark:border-yellow-700 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
             >
-              Unschedule
+              Desprogramar
             </button>
           )}
           <button
@@ -228,7 +222,7 @@ function ScheduleModal({
             disabled={saving}
             className="px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            {saving ? 'Saving...' : 'Save'}
+            {saving ? 'Guardando…' : 'Guardar'}
           </button>
         </div>
       </div>
@@ -263,8 +257,8 @@ function CreatePostModal({
   const slug = slugify(title);
 
   const handleCreate = async () => {
-    if (!title.trim()) { setError('Title is required'); return; }
-    if (!websiteId) { setError('Website ID missing'); return; }
+    if (!title.trim()) { setError('El título es obligatorio'); return; }
+    if (!websiteId) { setError('Falta el ID del sitio web'); return; }
     setSaving(true);
     setError('');
 
@@ -283,7 +277,7 @@ function CreatePostModal({
     const json = await res.json();
 
     if (!json.success) {
-      setError(json.message || 'Failed to create post');
+      setError(json.message || 'No se pudo crear la entrada');
       setSaving(false);
       return;
     }
@@ -310,14 +304,14 @@ function CreatePostModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Schedule New Post</h3>
+          <h3 className="text-lg font-semibold text-foreground">Programar nueva entrada</h3>
           <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <span className="material-icons">close</span>
           </button>
         </div>
 
         <p className="text-sm text-muted-foreground mb-4">
-          {date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+          {date.toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
         </p>
 
         {error && (
@@ -328,12 +322,12 @@ function CreatePostModal({
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Título</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Post title"
+              placeholder="Título de la entrada"
               autoFocus
               className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               onKeyDown={(e) => { if (e.key === 'Enter' && title.trim()) handleCreate(); }}
@@ -344,21 +338,21 @@ function CreatePostModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Post Type</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Tipo de entrada</label>
             <select
               value={postType}
               onChange={(e) => setPostType(e.target.value)}
               className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="blog">Blog Post</option>
-              <option value="page">Page</option>
-              <option value="case-study">Case Study</option>
-              <option value="landing">Landing Page</option>
+              <option value="blog">Entrada de blog</option>
+              <option value="page">Página</option>
+              <option value="case-study">Caso de estudio</option>
+              <option value="landing">Landing page</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Scheduled Date & Time</label>
+            <label className="block text-sm font-medium text-foreground mb-1">Fecha y hora programada</label>
             <input
               type="datetime-local"
               value={scheduledAt}
@@ -374,21 +368,19 @@ function CreatePostModal({
             className="px-4 py-2 text-sm rounded-md border border-border text-foreground hover:bg-accent inline-flex items-center gap-1"
           >
             <span className="material-icons text-sm">open_in_new</span>
-            Full Editor
+            Editor completo
           </a>
           <div className="flex gap-2">
             <button
               onClick={onClose}
               className="px-4 py-2 text-sm rounded-md border border-border text-foreground hover:bg-accent"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               onClick={handleCreate}
               disabled={saving || !title.trim()}
               className="px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
             >
-              {saving ? 'Creating...' : 'Create & Schedule'}
+              {saving ? 'Creando…' : 'Crear y programar'}
             </button>
           </div>
         </div>
@@ -424,7 +416,7 @@ function PostCard({
         draggable
         onDragStart={(e) => onDragStart(e, post)}
         className={`flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-medium truncate cursor-grab active:cursor-grabbing ${colors.bg} ${colors.text}`}
-        title={`${post.title} (${post.status})`}
+        title={`${post.title} (${calendarStatusLabel(post.status)})`}
       >
         <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${colors.dot}`} />
         <span className="truncate">{post.title}</span>
@@ -443,14 +435,14 @@ function PostCard({
       <div className="flex-1 min-w-0">
         <p className={`text-xs font-medium truncate ${colors.text}`}>{post.title}</p>
         <p className="text-[10px] text-muted-foreground mt-0.5">
-          {post.postType} &middot; {post.status}
+          {postTypeLabel(post.postType)} &middot; {calendarStatusLabel(post.status)}
         </p>
       </div>
       <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={(e) => { e.stopPropagation(); onScheduleClick(post); }}
           className="p-0.5 rounded hover:bg-accent"
-          title="Schedule"
+          title="Programar"
         >
           <span className="material-icons text-sm text-muted-foreground">schedule</span>
         </button>
@@ -458,7 +450,7 @@ function PostCard({
           href={editHref}
           onClick={(e) => e.stopPropagation()}
           className="p-0.5 rounded hover:bg-accent"
-          title="Edit"
+          title="Editar"
         >
           <span className="material-icons text-sm text-muted-foreground">edit</span>
         </Link>
@@ -574,7 +566,7 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
     filteredPosts.filter((p) => isSameDay(new Date(p.date), day));
 
   const days = view === 'month' ? getDaysInMonthView(currentDate) : getDaysInWeekView(currentDate);
-  const weekDayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const weekDayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
   const totalPosts = posts.length;
   const publishedCount = posts.filter((p) => p.status === 'published').length;
@@ -587,9 +579,9 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: 'Total', value: totalPosts, icon: 'library_books', color: 'text-foreground' },
-          { label: 'Published', value: publishedCount, icon: 'check_circle', color: 'text-green-500' },
-          { label: 'Scheduled', value: scheduledCount, icon: 'schedule', color: 'text-blue-500' },
-          { label: 'Drafts', value: draftCount, icon: 'edit_note', color: 'text-yellow-500' },
+          { label: 'Publicadas', value: publishedCount, icon: 'check_circle', color: 'text-green-500' },
+          { label: 'Programadas', value: scheduledCount, icon: 'schedule', color: 'text-blue-500' },
+          { label: 'Borradores', value: draftCount, icon: 'edit_note', color: 'text-yellow-500' },
         ].map((stat) => (
           <div key={stat.label} className="bg-card border border-border rounded-lg p-3 flex items-center gap-3">
             <span className={`material-icons text-2xl ${stat.color}`}>{stat.icon}</span>
@@ -622,28 +614,26 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
           <button
             onClick={goToday}
             className="ml-2 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-accent text-foreground"
-          >
-            Today
-          </button>
+          >Hoy</button>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
           <select
-            aria-label="Filter by status" value={filterStatus}
+            aria-label="Filtrar por estado" value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             className="px-2 py-1.5 text-xs rounded-md border border-border bg-background text-foreground"
           >
-            <option value="all">All Statuses</option>
-            <option value="published">Published</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="draft">Draft</option>
+            <option value="all">Todos los estados</option>
+            <option value="published">Publicado</option>
+            <option value="scheduled">Programado</option>
+            <option value="draft">Borrador</option>
           </select>
           <select
-            aria-label="Filter by post type" value={filterType}
+            aria-label="Filtrar por tipo de entrada" value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
             className="px-2 py-1.5 text-xs rounded-md border border-border bg-background text-foreground"
           >
-            <option value="all">All Types</option>
+            <option value="all">Todos los tipos</option>
             {postTypes.map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
@@ -659,7 +649,7 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
                     : 'bg-background text-foreground hover:bg-accent'
                 }`}
               >
-                {v}
+                {v === 'month' ? 'Mes' : 'Semana'}
               </button>
             ))}
           </div>
@@ -681,8 +671,8 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
 
         {loading ? (
           <div className="flex items-center justify-center py-24 text-muted-foreground">
-            <span className="material-icons animate-spin mr-2">progress_activity</span>
-            Loading calendar...
+            <span className="material-icons animate-spin mr-2">autorenew</span>
+            Cargando calendario…
           </div>
         ) : (
           <div className={`grid grid-cols-7 ${view === 'week' ? 'min-h-[400px]' : ''}`}>
@@ -741,7 +731,7 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
                         ))}
                         {dayPosts.length > 3 && (
                           <p className="text-[10px] text-muted-foreground pl-1">
-                            +{dayPosts.length - 3} more
+                            +{dayPosts.length - 3} más
                           </p>
                         )}
                       </>
@@ -769,12 +759,12 @@ export default function ContentCalendar({ websiteId, basePath, siteId }: Content
         {Object.entries(STATUS_COLORS).map(([status, colors]) => (
           <div key={status} className="flex items-center gap-1.5">
             <span className={`w-2.5 h-2.5 rounded-full ${colors.dot}`} />
-            <span className="capitalize">{status}</span>
+            <span>{calendarStatusLabel(status)}</span>
           </div>
         ))}
         <span className="ml-auto flex items-center gap-1">
           <span className="material-icons text-sm">drag_indicator</span>
-          Drag posts to reschedule
+          Arrastra las entradas para reprogramarlas
         </span>
       </div>
 

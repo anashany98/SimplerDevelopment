@@ -47,13 +47,13 @@ export async function upsertContactByEmail(args: UpsertContactByEmailArgs): Prom
   const email = args.email.trim().toLowerCase();
   if (!email) throw new Error('upsertContactByEmail: email is required');
 
-  const [existing] = await db.select({ id: crmContacts.id }).from(crmContacts)
-    .where(and(eq(crmContacts.clientId, args.clientId), eq(crmContacts.email, email)))
-    .limit(1);
-  if (existing) return { contactId: existing.id, created: false };
-
   const { firstName, lastName } = parseDisplayName(args.displayName, email);
-  const [created] = await db.insert(crmContacts).values({
+  // Atomic upsert backed by crm_contacts_client_email_unique_idx (clientId,
+  // email). onConflictDoNothing avoids the SELECT-then-INSERT race where two
+  // concurrent callers both miss the SELECT and insert duplicate rows. The
+  // returning clause is empty on conflict, so fall back to a SELECT to
+  // resolve the pre-existing row (still tenant-scoped).
+  const [inserted] = await db.insert(crmContacts).values({
     clientId: args.clientId,
     companyId: args.companyId ?? null,
     firstName,
@@ -61,7 +61,30 @@ export async function upsertContactByEmail(args: UpsertContactByEmailArgs): Prom
     email,
     source: args.source ?? 'email',
     attribution: args.attribution ?? null,
-  }).returning({ id: crmContacts.id });
+  }).onConflictDoNothing({ target: [crmContacts.clientId, crmContacts.email] }).returning({ id: crmContacts.id });
+  if (inserted) return { contactId: inserted.id, created: true };
 
-  return { contactId: created.id, created: true };
+  const [existing] = await db.select({ id: crmContacts.id }).from(crmContacts)
+    .where(and(eq(crmContacts.clientId, args.clientId), eq(crmContacts.email, email)))
+    .limit(1);
+  if (existing) return { contactId: existing.id, created: false };
+
+  // Extremely narrow window: row deleted between INSERT conflict and SELECT.
+  // Retry once via a second insert attempt rather than throwing a confusing
+  // "not found" to the caller.
+  const [retried] = await db.insert(crmContacts).values({
+    clientId: args.clientId,
+    companyId: args.companyId ?? null,
+    firstName,
+    lastName,
+    email,
+    source: args.source ?? 'email',
+    attribution: args.attribution ?? null,
+  }).onConflictDoNothing({ target: [crmContacts.clientId, crmContacts.email] }).returning({ id: crmContacts.id });
+  if (retried) return { contactId: retried.id, created: true };
+  const [reread] = await db.select({ id: crmContacts.id }).from(crmContacts)
+    .where(and(eq(crmContacts.clientId, args.clientId), eq(crmContacts.email, email)))
+    .limit(1);
+  if (!reread) throw new Error('upsertContactByEmail: contact vanished after conflict resolution');
+  return { contactId: reread.id, created: false };
 }

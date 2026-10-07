@@ -77,9 +77,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
           disabled={isLoading}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <BsTrash size={14} />
-          Clear
-        </button>
+          <BsTrash size={14} />Limpiar</button>
         
         <button
           onClick={onAddToCart}

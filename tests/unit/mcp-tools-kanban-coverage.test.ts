@@ -275,9 +275,7 @@ vi.mock('@/lib/google/tenant-credentials', () => ({
   getTenantWorkspaceCredentialsByClientId: vi.fn(async () => null),
 }));
 
-vi.mock('../pending-changes', () => ({ stageOrApply: vi.fn(async () => ({})) }));
 vi.mock('@/lib/mcp/pending-changes', () => ({ stageOrApply: vi.fn(async () => ({})) }));
-vi.mock('../blocks-schema', () => ({ BLOCKS_SCHEMA_REFERENCE: {} }));
 vi.mock('@/lib/mcp/blocks-schema', () => ({ BLOCKS_SCHEMA_REFERENCE: {} }));
 
 vi.mock('@/lib/security/assert-owned', () => {
@@ -306,9 +304,6 @@ vi.mock('next/cache', () => ({
 
 vi.mock('@/lib/portal-auth', () => ({ hasServiceAccess: vi.fn(async () => true) }));
 
-vi.mock('../projections', () => ({
-  postProjection: {}, deckProjection: {}, campaignProjection: {},
-}));
 vi.mock('@/lib/mcp/projections', () => ({
   postProjection: {}, deckProjection: {}, campaignProjection: {},
 }));

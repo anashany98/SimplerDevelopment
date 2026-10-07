@@ -30,6 +30,18 @@ vi.mock('@/lib/ai/audit', () => ({
   recordAiUsage: (args: unknown) => recordAiUsageMock(args),
 }));
 
+// The attachment signing secret now resolves via the platform email config
+// (DB → env) per call — mock it so tests stay hermetic (no real DB).
+vi.mock('@/lib/email', () => ({
+  getEmailPlatformConfig: async () => ({
+    inboundSecret: process.env.INBOUND_EMAIL_SECRET ?? null,
+    resendApiKey: null,
+    fromEmail: '',
+    transport: 'resend',
+    webhookSecret: null,
+  }),
+}));
+
 // Module-level constants (INBOUND_SECRET, ATTACHMENT_WORKER_URL) are baked
 // in at import-time, so we must set env BEFORE the dynamic import below.
 process.env.INBOUND_EMAIL_SECRET = process.env.INBOUND_EMAIL_SECRET || 'test-secret';

@@ -27,6 +27,7 @@ export const PORTAL_DOMAINS = [
   'pitch_decks',
   'booking',
   'team',
+  'inbox',
   'crm',
   'surveys',
   'automations',
@@ -88,6 +89,7 @@ export const TOOL_DOMAIN: Record<string, PortalDomain | 'navigation'> = {
   get_website_tags: 'cms',
   get_website_media: 'cms',
   get_my_hosted_sites: 'cms',
+  create_website: 'cms',
   create_website_page: 'cms',
   publish_page: 'cms',
   create_website_category: 'cms',
@@ -129,6 +131,17 @@ export const TOOL_DOMAIN: Record<string, PortalDomain | 'navigation'> = {
 
   // navigation (baseline, never router-selected)
   navigate_to: 'navigation',
+
+  // unified inbox / WhatsApp / social channels
+  get_inbox_channels: 'inbox',
+  get_inbox_conversations: 'inbox',
+  get_inbox_conversation: 'inbox',
+  send_inbox_message: 'inbox',
+  assign_inbox_conversation: 'inbox',
+  take_over_inbox_conversation: 'inbox',
+  pause_inbox_ai: 'inbox',
+  return_inbox_conversation_to_ai: 'inbox',
+  close_inbox_conversation: 'inbox',
 
   // crm
   get_crm_contacts: 'crm',
@@ -177,7 +190,8 @@ export function toolsForDomains(
   if (selected.length === 0) return allTools;
   const want = new Set<string>(selected);
   return allTools.filter(
-    (t) => BASELINE_TOOL_NAMES.has(t.name) || want.has(TOOL_DOMAIN[t.name] ?? ''),
+    (t) =>
+      BASELINE_TOOL_NAMES.has(t.name) || want.has(TOOL_DOMAIN[t.name] ?? ''),
   );
 }
 

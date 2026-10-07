@@ -11,7 +11,7 @@ sources:
   - marketing/feature-pages/
 ---
 
-# SimplerDevelopment — Customer Onboarding Journey
+# CRM AGENTS — Customer Onboarding Journey
 
 This document describes the onboarding experience for a new client tenant: what the 8-step wizard covers, the first-value milestones a client hits along the way, and what ongoing platform access looks like after the wizard is complete.
 

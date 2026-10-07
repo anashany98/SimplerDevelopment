@@ -142,7 +142,7 @@ describe('ContractSigningPage', () => {
     setFetchHandler(() => jsonResponse({ success: false, message: 'Invalid contract token' }));
     renderPage('bad-token');
     await flushEffects();
-    expect(screen.getByText('Contract Not Found')).toBeTruthy();
+    expect(screen.getByText('Contrato no encontrado')).toBeTruthy();
     expect(screen.getByText('Invalid contract token')).toBeTruthy();
   });
 
@@ -150,14 +150,14 @@ describe('ContractSigningPage', () => {
     setFetchHandler(() => jsonResponse({ success: false }));
     renderPage();
     await flushEffects();
-    expect(screen.getByText('Contract not found')).toBeTruthy();
+    expect(screen.getByText('No se encontró el contrato')).toBeTruthy();
   });
 
   it('renders network failure state when fetch rejects', async () => {
     global.fetch = vi.fn(() => Promise.reject(new Error('network down'))) as any;
     renderPage();
     await flushEffects();
-    expect(screen.getByText('Failed to load contract')).toBeTruthy();
+    expect(screen.getByText('No se pudo cargar el contrato')).toBeTruthy();
   });
 
   it('renders contract header, signers, clauses, pricing and footer', async () => {
@@ -171,21 +171,17 @@ describe('ContractSigningPage', () => {
     const logo = container.querySelector('img');
     expect(logo?.getAttribute('src')).toBe('https://logo.test/l.png');
     // Signers - statuses
-    expect(screen.getByText('Signed')).toBeTruthy();
-    expect(screen.getByText('Declined')).toBeTruthy();
-    expect(screen.getByText('Viewed')).toBeTruthy();
-    expect(screen.getByText('Pending')).toBeTruthy();
+    expect(screen.getByText('Firmado')).toBeTruthy();
+    expect(screen.getByText('Rechazado')).toBeTruthy();
+    expect(screen.getByText('Visto')).toBeTruthy();
+    expect(screen.getByText('Pendiente')).toBeTruthy();
     // Clauses
     expect(screen.getByText('1. Confidentiality')).toBeTruthy();
     expect(screen.getByText('2. Optional clause')).toBeTruthy();
-    // Pricing - subtotal = 100000 + 2*50000 = 200000 cents = $2,000.00
-    // tax = 10% of 200000 = 20000 cents = $200.00; flat = 5000 cents = $50.00
-    // total = 200000 + 20000 + 5000 = 225000 cents = $2,250.00
-    // Keep the independently calculated total; only separators follow the viewer's locale.
-    const expectedTotal = '$' + new Intl.NumberFormat(undefined, {
-      minimumFractionDigits: 2, maximumFractionDigits: 2,
-    }).format(2250);
-    expect(container.querySelector('tfoot tr:last-child td:last-child')?.textContent).toBe(expectedTotal);
+    // Pricing - subtotal = 100000 + 2*50000 = 200000 cents = 2.000,00 €
+    // tax = 10% of 200000 = 20000 cents = 200,00 €; flat = 5000 cents = 50,00 €
+    // total = 200000 + 20000 + 5000 = 225000 cents = 2.250,00 €
+    expect(screen.getByText('2250,00 €')).toBeTruthy();
     // Footer
     expect(screen.getByText('Footer text here')).toBeTruthy();
   });
@@ -197,9 +193,9 @@ describe('ContractSigningPage', () => {
     setFetchHandler(() => jsonResponse({ success: true, data: contract }));
     renderPage();
     await flushEffects();
-    expect(screen.getByText('You have signed this contract.')).toBeTruthy();
+    expect(screen.getByText('Has firmado este contrato.')).toBeTruthy();
     // Signature section must NOT render when already signed
-    expect(screen.queryByText('Sign Contract')).toBeNull();
+    expect(screen.queryByText('Firmar contrato')).toBeNull();
   });
 
   it('shows "You have declined this contract" when signer.status === "declined"', async () => {
@@ -209,8 +205,8 @@ describe('ContractSigningPage', () => {
     setFetchHandler(() => jsonResponse({ success: true, data: contract }));
     renderPage();
     await flushEffects();
-    expect(screen.getByText('You have declined this contract.')).toBeTruthy();
-    expect(screen.queryByText('Sign Contract')).toBeNull();
+    expect(screen.getByText('Has rechazado este contrato.')).toBeTruthy();
+    expect(screen.queryByText('Firmar contrato')).toBeNull();
   });
 
   it('shows fully-executed banner when contract.status === "fully_executed"', async () => {
@@ -218,23 +214,23 @@ describe('ContractSigningPage', () => {
     setFetchHandler(() => jsonResponse({ success: true, data: contract }));
     renderPage();
     await flushEffects();
-    expect(screen.getByText(/fully executed/i)).toBeTruthy();
+    expect(screen.getByText(/totalmente formalizado/i)).toBeTruthy();
   });
 
   it('disables sign button until name + signature captured', async () => {
     setFetchHandler(() => jsonResponse({ success: true, data: makeContract() }));
     renderPage();
     await flushEffects();
-    const signBtn = screen.getByRole('button', { name: /Sign Contract/i }) as HTMLButtonElement;
+    const signBtn = screen.getByRole('button', { name: /Firmar contrato/i }) as HTMLButtonElement;
     expect(signBtn.disabled).toBe(true);
 
     // Add name only — still disabled (signature missing)
-    const nameInput = screen.getByPlaceholderText('Enter your full name') as HTMLInputElement;
+    const nameInput = screen.getByPlaceholderText('Introduce tu nombre completo') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
     expect(signBtn.disabled).toBe(true);
 
     // Capture signature
-    fireEvent.click(screen.getByText('Use This Signature'));
+    fireEvent.click(screen.getByText('Usar esta firma'));
     expect(signBtn.disabled).toBe(false);
   });
 
@@ -243,11 +239,11 @@ describe('ContractSigningPage', () => {
     renderPage();
     await flushEffects();
 
-    const nameInput = screen.getByPlaceholderText('Enter your full name') as HTMLInputElement;
+    const nameInput = screen.getByPlaceholderText('Introduce tu nombre completo') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
-    fireEvent.click(screen.getByText('Use This Signature'));
+    fireEvent.click(screen.getByText('Usar esta firma'));
 
-    const signBtn = screen.getByRole('button', { name: /Sign Contract/i });
+    const signBtn = screen.getByRole('button', { name: /Firmar contrato/i });
     // Spy on the POST — should NOT be invoked until clause is accepted
     let postCalled = false;
     setFetchHandler((url, init) => {
@@ -286,29 +282,29 @@ describe('ContractSigningPage', () => {
     await flushEffects();
 
     // Accept the required clause
-    const requiredCheckbox = screen.getByLabelText(/I accept this clause/);
+    const requiredCheckbox = screen.getByLabelText(/Acepto esta cláusula/);
     fireEvent.click(requiredCheckbox);
 
     // Fill out signature
-    fireEvent.change(screen.getByPlaceholderText('Enter your full name'), { target: { value: 'Jane Doe' } });
-    fireEvent.click(screen.getByText('Use This Signature'));
+    fireEvent.change(screen.getByPlaceholderText('Introduce tu nombre completo'), { target: { value: 'Jane Doe' } });
+    fireEvent.click(screen.getByText('Usar esta firma'));
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Sign Contract/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Firmar contrato/i }));
     });
     await flushEffects();
 
     expect(postBody).toEqual({ action: 'sign', signatureName: 'Jane Doe', signatureData: 'data:image/png;base64,SIG' });
     expect(reloadCalled).toBe(true);
     // After sign, "You have signed" banner should show
-    await waitFor(() => expect(screen.getByText('You have signed this contract.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Has firmado este contrato.')).toBeTruthy());
   });
 
   it('toggles clause acceptance off and back on (Set delete branch)', async () => {
     setFetchHandler(() => jsonResponse({ success: true, data: makeContract() }));
     renderPage();
     await flushEffects();
-    const cb = screen.getByLabelText(/I accept this clause/) as HTMLInputElement;
+    const cb = screen.getByLabelText(/Acepto esta cláusula/) as HTMLInputElement;
     expect(cb.checked).toBe(false);
     fireEvent.click(cb);
     expect(cb.checked).toBe(true);
@@ -323,7 +319,7 @@ describe('ContractSigningPage', () => {
     // The button is disabled in the DOM, but force-call by clicking directly
     // (we already cover the disabled-state in another test). Force the early
     // return by leaving name empty.
-    const signBtn = screen.getByRole('button', { name: /Sign Contract/i }) as HTMLButtonElement;
+    const signBtn = screen.getByRole('button', { name: /Firmar contrato/i }) as HTMLButtonElement;
     // jsdom click() bypasses the disabled attribute? It does NOT for buttons,
     // so removing the disabled attribute to exercise the early return branch:
     signBtn.removeAttribute('disabled');
@@ -348,28 +344,28 @@ describe('ContractSigningPage', () => {
     renderPage();
     await flushEffects();
 
-    fireEvent.click(screen.getByRole('button', { name: /^Decline$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Rechazar$/i }));
     // Modal visible (heading h3 — disambiguates from the button label)
-    expect(screen.getByRole('heading', { name: /^Decline Contract$/i })).toBeTruthy();
-    fireEvent.change(screen.getByPlaceholderText(/Reason for declining/), {
+    expect(screen.getByRole('heading', { name: /^Rechazar contrato$/i })).toBeTruthy();
+    fireEvent.change(screen.getByPlaceholderText(/Motivo del rechazo/), {
       target: { value: 'Terms unacceptable' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /^Decline Contract$/i }));
+      fireEvent.click(screen.getByRole('button', { name: /^Rechazar contrato$/i }));
     });
     await flushEffects();
     expect(postBody).toEqual({ action: 'decline', reason: 'Terms unacceptable' });
-    expect(screen.getByText('You have declined this contract.')).toBeTruthy();
+    expect(screen.getByText('Has rechazado este contrato.')).toBeTruthy();
   });
 
   it('closes decline modal when Cancel is clicked', async () => {
     setFetchHandler(() => jsonResponse({ success: true, data: makeContract() }));
     renderPage();
     await flushEffects();
-    fireEvent.click(screen.getByRole('button', { name: /^Decline$/i }));
-    expect(screen.getByRole('heading', { name: /^Decline Contract$/i })).toBeTruthy();
-    fireEvent.click(screen.getByRole('button', { name: /^Cancel$/i }));
-    expect(screen.queryByRole('heading', { name: /^Decline Contract$/i })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /^Rechazar$/i }));
+    expect(screen.getByRole('heading', { name: /^Rechazar contrato$/i })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /^Cancelar$/i }));
+    expect(screen.queryByRole('heading', { name: /^Rechazar contrato$/i })).toBeNull();
   });
 
   it('exercises canvas drawing handlers (mouse + touch) without throwing', async () => {
@@ -398,11 +394,11 @@ describe('ContractSigningPage', () => {
     renderPage();
     await flushEffects();
     // Capture first
-    fireEvent.click(screen.getByText('Use This Signature'));
-    expect(screen.getByText('Signature captured')).toBeTruthy();
+    fireEvent.click(screen.getByText('Usar esta firma'));
+    expect(screen.getByText('Firma capturada')).toBeTruthy();
     // Then clear
-    fireEvent.click(screen.getByText('Clear'));
-    expect(screen.queryByText('Signature captured')).toBeNull();
+    fireEvent.click(screen.getByText('Limpiar'));
+    expect(screen.queryByText('Firma capturada')).toBeNull();
   });
 
   it('renders without a logo, summary, or footer when those fields are null', async () => {
@@ -421,7 +417,7 @@ describe('ContractSigningPage', () => {
     renderPage();
     await flushEffects();
     // Pricing section should NOT render
-    expect(screen.queryByText('Pricing')).toBeNull();
+    expect(screen.queryByText('Precios')).toBeNull();
   });
 
   it('uses default accent color when accentColor is empty string', async () => {
@@ -442,15 +438,15 @@ describe('ContractSigningPage', () => {
     renderPage();
     await flushEffects();
     // Accept required clause + name + sig
-    fireEvent.click(screen.getByLabelText(/I accept this clause/));
-    fireEvent.change(screen.getByPlaceholderText('Enter your full name'), { target: { value: 'Jane Doe' } });
-    fireEvent.click(screen.getByText('Use This Signature'));
+    fireEvent.click(screen.getByLabelText(/Acepto esta cláusula/));
+    fireEvent.change(screen.getByPlaceholderText('Introduce tu nombre completo'), { target: { value: 'Jane Doe' } });
+    fireEvent.click(screen.getByText('Usar esta firma'));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Sign Contract/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Firmar contrato/i }));
     });
     await flushEffects();
     // No signed banner
-    expect(screen.queryByText('You have signed this contract.')).toBeNull();
+    expect(screen.queryByText('Has firmado este contrato.')).toBeNull();
   });
 
   it('handles decline API failure gracefully (modal stays open, no banner)', async () => {
@@ -460,12 +456,12 @@ describe('ContractSigningPage', () => {
     });
     renderPage();
     await flushEffects();
-    fireEvent.click(screen.getByRole('button', { name: /^Decline$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Rechazar$/i }));
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /^Decline Contract$/i }));
+      fireEvent.click(screen.getByRole('button', { name: /^Rechazar contrato$/i }));
     });
     await flushEffects();
-    expect(screen.queryByText('You have declined this contract.')).toBeNull();
+    expect(screen.queryByText('Has rechazado este contrato.')).toBeNull();
   });
 
   it('renders Sign Contract section only when canSign === true (no clauses path)', async () => {
@@ -474,14 +470,14 @@ describe('ContractSigningPage', () => {
     renderPage();
     await flushEffects();
     // Signing UI still shows when no clauses (no required-clause gate to fail)
-    expect(screen.getByRole('button', { name: /Sign Contract/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Firmar contrato/i })).toBeTruthy();
   });
 
   it('handles signature save when canvas ref is present', async () => {
     setFetchHandler(() => jsonResponse({ success: true, data: makeContract() }));
     renderPage();
     await flushEffects();
-    fireEvent.click(screen.getByText('Use This Signature'));
+    fireEvent.click(screen.getByText('Usar esta firma'));
     expect(HTMLCanvasElement.prototype.toDataURL).toHaveBeenCalled();
   });
 });

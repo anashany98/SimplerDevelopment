@@ -257,7 +257,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/name/i);
+    expect((await res.json()).message).toMatch(/nombre es obligatorio/i);
   });
 
   it('rejects whitespace-only name (400)', async () => {
@@ -276,7 +276,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/email/i);
+    expect((await res.json()).message).toMatch(/correo electrónico es obligatorio/i);
   });
 
   it('rejects missing startTime (400)', async () => {
@@ -286,7 +286,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/start time/i);
+    expect((await res.json()).message).toMatch(/hora de inicio es obligatoria/i);
   });
 
   it('rejects unparseable startTime (400)', async () => {
@@ -296,7 +296,7 @@ describe('POST — request validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/invalid start time/i);
+    expect((await res.json()).message).toMatch(/hora de inicio no válida/i);
   });
 });
 
@@ -308,7 +308,7 @@ describe('POST — scheduling window validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/no longer available/i);
+    expect((await res.json()).message).toMatch(/ya no está disponible/i);
   });
 
   it('rejects slots beyond maxAdvanceDays (400)', async () => {
@@ -319,7 +319,7 @@ describe('POST — scheduling window validation', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/too far in advance/i);
+    expect((await res.json()).message).toMatch(/demasiado lejos en el futuro/i);
   });
 });
 
@@ -364,7 +364,7 @@ describe('POST — 1:1 individual booking (free)', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/no longer available/i);
+    expect((await res.json()).message).toMatch(/ya no está disponible/i);
   });
 
   it('returns 409 when the exclusive-slot unique index rejects a racing insert (23505)', async () => {
@@ -379,7 +379,7 @@ describe('POST — 1:1 individual booking (free)', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/no longer available/i);
+    expect((await res.json()).message).toMatch(/ya no está disponible/i);
   });
 
   it('trims guest name/email/phone and stores them on the booking', async () => {
@@ -439,7 +439,7 @@ describe('POST — legacy maxGuests capacity mode', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/spots remaining/i);
+    expect((await res.json()).message).toMatch(/plazas disponibles/i);
   });
 
   it('treats null groupSize as 1 when counting against maxGuests', async () => {
@@ -478,7 +478,7 @@ describe('POST — group bookings', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/match seat count/i);
+    expect((await res.json()).message).toMatch(/coincidir con las plazas/i);
   });
 
   it('rejects when an attendee is missing name/email', async () => {
@@ -497,7 +497,7 @@ describe('POST — group bookings', () => {
       makeParams(),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/name and email/i);
+    expect((await res.json()).message).toMatch(/nombre y correo electrónico/i);
   });
 
   it('rejects when capacity helper reports the slot is full', async () => {
@@ -513,7 +513,7 @@ describe('POST — group bookings', () => {
       makeParams(),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/seats remaining/i);
+    expect((await res.json()).message).toMatch(/plazas para esta franja/i);
   });
 
   it('inserts one attendee row per seat when no explicit attendees passed (legacy widget)', async () => {
@@ -584,13 +584,16 @@ describe('POST — add-ons', () => {
     expect((bookingInsert.values as { subtotal: number }).subtotal).toBe(0);
   });
 
-  it('adds the add-on price * quantity to subtotal and inserts selected_add_ons', async () => {
+  // Payments were removed (PAYMENTS_DISABLED) — a booking page that carries a
+  // non-zero price would require a charge, so it is rejected outright with 403
+  // before any add-on write. (The add-on *lookup* still runs so the route knows
+  // the total, but nothing is persisted.) These assertions capture that.
+  it('rejects a paid booking even with add-ons (total stays > 0)', async () => {
     selectQueue.push([basePage({ enableAddOns: true, price: 5000 })]);
     selectQueue.push([]); // conflict check
     selectQueue.push([{ id: 11, name: 'Workbook', price: 1500, maxQuantity: 5, active: true, source: 'manual' }]);
-    insertReturns.push([{ id: 1 }]);
 
-    await POST(
+    const res = await POST(
       makeReq({
         name: 'A',
         email: 'a@b.com',
@@ -599,22 +602,17 @@ describe('POST — add-ons', () => {
       }),
       makeParams(),
     );
-    const bookingInsert = insertCalls[0];
-    expect((bookingInsert.values as { subtotal: number }).subtotal).toBe(5000 + 1500 * 2);
-
-    const addOnInsert = insertCalls.find(c =>
-      Array.isArray(c.values) && (c.values as Array<{ addOnId?: number }>)[0]?.addOnId === 11,
-    );
-    expect(addOnInsert).toBeTruthy();
+    expect(res.status).toBe(403);
+    // No booking, attendee or selected-add-on rows are written.
+    expect(insertCalls.length).toBe(0);
   });
 
-  it('clamps quantity to 1..maxQuantity', async () => {
+  it('rejects a paid booking regardless of add-on quantity clamping', async () => {
     selectQueue.push([basePage({ enableAddOns: true })]);
     selectQueue.push([]);
     selectQueue.push([{ id: 11, name: 'X', price: 100, maxQuantity: 3, active: true, source: 'manual' }]);
-    insertReturns.push([{ id: 1 }]);
 
-    await POST(
+    const res = await POST(
       makeReq({
         name: 'A',
         email: 'a@b.com',
@@ -623,69 +621,13 @@ describe('POST — add-ons', () => {
       }),
       makeParams(),
     );
-    expect((insertCalls[0].values as { subtotal: number }).subtotal).toBe(100 * 3);
-  });
-
-  it('skips add-ons that do not resolve (no matching row)', async () => {
-    selectQueue.push([basePage({ enableAddOns: true, price: 1000 })]);
-    selectQueue.push([]); // conflict
-    selectQueue.push([]); // add-on lookup → no match
-    insertReturns.push([{ id: 1 }]);
-
-    await POST(
-      makeReq({
-        name: 'A',
-        email: 'a@b.com',
-        startTime: futureIso(),
-        addOns: [{ addOnId: 999, quantity: 1 }],
-      }),
-      makeParams(),
-    );
-    expect((insertCalls[0].values as { subtotal: number }).subtotal).toBe(1000);
-  });
-
-  it('resolves linked product price when add-on source=product', async () => {
-    selectQueue.push([basePage({ enableAddOns: true })]);
-    selectQueue.push([]); // conflict
-    selectQueue.push([{ id: 11, name: 'Old', price: 100, maxQuantity: 5, active: true, source: 'product', productId: 42, variantId: null }]);
-    selectQueue.push([{ id: 42, name: 'T-Shirt', price: 2500 }]); // product
-    insertReturns.push([{ id: 1 }]);
-
-    await POST(
-      makeReq({
-        name: 'A',
-        email: 'a@b.com',
-        startTime: futureIso(),
-        addOns: [{ addOnId: 11, quantity: 1 }],
-      }),
-      makeParams(),
-    );
-    expect((insertCalls[0].values as { subtotal: number }).subtotal).toBe(2500);
-  });
-
-  it('uses variant price when present on a product-linked add-on', async () => {
-    selectQueue.push([basePage({ enableAddOns: true })]);
-    selectQueue.push([]); // conflict
-    selectQueue.push([{ id: 11, name: 'X', price: 100, maxQuantity: 5, active: true, source: 'product', productId: 42, variantId: 7 }]);
-    selectQueue.push([{ id: 42, name: 'T-Shirt', price: 2500 }]);
-    selectQueue.push([{ id: 7, price: 3300 }]);
-    insertReturns.push([{ id: 1 }]);
-
-    await POST(
-      makeReq({
-        name: 'A',
-        email: 'a@b.com',
-        startTime: futureIso(),
-        addOns: [{ addOnId: 11, quantity: 1 }],
-      }),
-      makeParams(),
-    );
-    expect((insertCalls[0].values as { subtotal: number }).subtotal).toBe(3300);
+    expect(res.status).toBe(403);
+    expect(insertCalls.length).toBe(0);
   });
 });
 
 describe('POST — discount codes', () => {
-  it('applies a percent discount (amount stored in basis-points * 100, ie 1000 = 10%)', async () => {
+  it('rejects a paid booking even with a discount that leaves a remainder', async () => {
     selectQueue.push([basePage({ price: 10000, enableDiscountCodes: true, websiteId: 50 })]);
     selectQueue.push([]); // conflict
     selectQueue.push([{
@@ -699,16 +641,14 @@ describe('POST — discount codes', () => {
       usedCount: 0,
       minOrderAmount: null,
     }]);
-    insertReturns.push([{ id: 1 }]);
 
-    await POST(
+    const res = await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), discountCode: 'save10' }),
       makeParams(),
     );
-    const v = insertCalls[0].values as { subtotal: number; discountTotal: number; total: number; discountCode: string };
-    expect(v.subtotal).toBe(10000);
-    expect(v.discountTotal).toBe(1000); // 10000 * (1000/10000) = 1000
-    expect(v.discountCode).toBe('SAVE10');
+    // 10% of 10000 = 9000 remaining → paid → blocked before any write.
+    expect(res.status).toBe(403);
+    expect(insertCalls.length).toBe(0);
   });
 
   it('applies a fixed_amount discount and caps it at subtotal', async () => {
@@ -736,88 +676,35 @@ describe('POST — discount codes', () => {
     expect(v.total).toBe(0);
   });
 
-  it('falls back to clientWebsites lookup when page.websiteId is null', async () => {
-    selectQueue.push([basePage({ price: 1000, enableDiscountCodes: true, websiteId: null })]);
-    selectQueue.push([]); // conflict
-    selectQueue.push([{ id: 999 }]); // clientWebsites lookup
-    selectQueue.push([]); // discount lookup → not found
-    insertReturns.push([{ id: 1 }]);
-
-    await POST(
-      makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), discountCode: 'NOPE' }),
-      makeParams(),
-    );
-    const v = insertCalls[0].values as { discountTotal: number; discountCode: string | null };
-    expect(v.discountTotal).toBe(0);
-    expect(v.discountCode).toBeNull();
-  });
-
-  it('ignores expired discount codes', async () => {
+  it('rejects a paid booking when no valid discount zeros the total', async () => {
     selectQueue.push([basePage({ price: 1000, enableDiscountCodes: true, websiteId: 50 })]);
-    selectQueue.push([]);
+    selectQueue.push([]); // conflict
     selectQueue.push([{
-      code: 'EXPIRED',
-      discountType: 'percent',
-      amount: 5000,
-      active: true,
+      code: 'EXPIRED', discountType: 'percent', amount: 5000, active: true,
       startsAt: null,
-      expiresAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // yesterday
-      maxUses: null,
-      usedCount: 0,
-      minOrderAmount: null,
+      expiresAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // yesterday → invalid
+      maxUses: null, usedCount: 0, minOrderAmount: null,
     }]);
-    insertReturns.push([{ id: 1 }]);
 
-    await POST(
+    const res = await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), discountCode: 'expired' }),
       makeParams(),
     );
-    expect((insertCalls[0].values as { discountTotal: number }).discountTotal).toBe(0);
-  });
-
-  it('ignores codes that have reached maxUses', async () => {
-    selectQueue.push([basePage({ price: 1000, enableDiscountCodes: true, websiteId: 50 })]);
-    selectQueue.push([]);
-    selectQueue.push([{
-      code: 'CAPPED', discountType: 'percent', amount: 1000, active: true,
-      startsAt: null, expiresAt: null, maxUses: 5, usedCount: 5, minOrderAmount: null,
-    }]);
-    insertReturns.push([{ id: 1 }]);
-    await POST(
-      makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), discountCode: 'CAPPED' }),
-      makeParams(),
-    );
-    expect((insertCalls[0].values as { discountTotal: number }).discountTotal).toBe(0);
-  });
-
-  it('ignores codes when subtotal is below minOrderAmount', async () => {
-    selectQueue.push([basePage({ price: 100, enableDiscountCodes: true, websiteId: 50 })]);
-    selectQueue.push([]);
-    selectQueue.push([{
-      code: 'BIG', discountType: 'percent', amount: 1000, active: true,
-      startsAt: null, expiresAt: null, maxUses: null, usedCount: 0, minOrderAmount: 5000,
-    }]);
-    insertReturns.push([{ id: 1 }]);
-    await POST(
-      makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), discountCode: 'BIG' }),
-      makeParams(),
-    );
-    expect((insertCalls[0].values as { discountTotal: number }).discountTotal).toBe(0);
+    // 1000 remains → paid → blocked.
+    expect(res.status).toBe(403);
+    expect(insertCalls.length).toBe(0);
   });
 });
 
 describe('POST — gift certificates', () => {
-  it('applies a gift cert against the post-discount balance and records redemption', async () => {
+  it('rejects a paid booking when a gift cert only covers part of the total', async () => {
     selectQueue.push([basePage({ price: 10000, enableGiftCertificates: true })]);
     selectQueue.push([]); // conflict
     selectQueue.push([{
       id: 33, code: 'GIFT100', remainingAmount: 3000, status: 'active', clientId: 7,
     }]);
-    insertReturns.push([{ id: 999 }]); // booking
-    // Redemption flow re-fetches the cert
-    selectQueue.push([{ id: 33, remainingAmount: 3000 }]);
 
-    await POST(
+    const res = await POST(
       makeReq({
         name: 'A',
         email: 'a@b.com',
@@ -826,17 +713,10 @@ describe('POST — gift certificates', () => {
       }),
       makeParams(),
     );
-    const v = insertCalls[0].values as { giftCertificateAmount: number; giftCertificateCode: string; total: number };
-    expect(v.giftCertificateAmount).toBe(3000);
-    expect(v.giftCertificateCode).toBe('GIFT100');
-    expect(v.total).toBe(7000);
-
-    // gift cert update + redemption insert should both have happened
-    expect(updateCalls.some(u => (u.values as { remainingAmount?: number }).remainingAmount === 0)).toBe(true);
-    expect(insertCalls.some(c =>
-      typeof c.values === 'object' && c.values !== null
-      && (c.values as { context?: string }).context === 'booking',
-    )).toBe(true);
+    // 10000 - 3000 = 7000 remains → paid → blocked, no certificate redemption.
+    expect(res.status).toBe(403);
+    expect(insertCalls.length).toBe(0);
+    expect(updateCalls.length).toBe(0);
   });
 
   it('marks a fully-drained gift cert as fully_redeemed', async () => {
@@ -857,110 +737,83 @@ describe('POST — gift certificates', () => {
     expect(giftUpdate).toBeTruthy();
   });
 
-  it('does not apply a gift cert when remainingAmount is 0', async () => {
+  it('rejects a paid booking when a gift cert adds no value (remainingAmount 0)', async () => {
     selectQueue.push([basePage({ price: 1000, enableGiftCertificates: true })]);
     selectQueue.push([]);
     selectQueue.push([{ id: 33, code: 'G', remainingAmount: 0, status: 'active', clientId: 7 }]);
-    insertReturns.push([{ id: 1 }]);
-    await POST(
+
+    const res = await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), giftCertificateCode: 'G' }),
       makeParams(),
     );
-    expect((insertCalls[0].values as { giftCertificateAmount: number }).giftCertificateAmount).toBe(0);
+    // Nothing zeroes the 1000 price → paid → blocked.
+    expect(res.status).toBe(403);
+    expect(insertCalls.length).toBe(0);
   });
 });
 
-describe('POST — paid booking flow (Stripe)', () => {
-  it('creates a Stripe PaymentIntent and returns clientSecret when total > 0', async () => {
+describe('POST — paid booking flow (payments disabled)', () => {
+  // Billing was removed (PAYMENTS_DISABLED=true in lib/billing/disabled.ts):
+  // any booking whose total would be > 0 is rejected with a clean 403 BEFORE
+  // any write, so no Strip intent, no booking row, and no discount/gift-cert
+  // usage is ever recorded. Free bookings (total 0) are unaffected.
+  it('rejects a paid booking (total > 0) with 403 "Payments are disabled."', async () => {
     selectQueue.push([basePage({ price: 5000 })]);
     selectQueue.push([]); // conflict
-    insertReturns.push([{ id: 700 }]); // booking
+    selectQueue.push([{ id: 1 }]); // booking insert would never be reached
 
     const res = await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso() }),
       makeParams(),
     );
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.data.clientSecret).toBe('pi_test_123_secret_abc');
-    expect(body.data.paymentStatus).toBe('pending');
-    expect(paymentIntentsCreate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        amount: 5000,
-        currency: 'usd',
-        metadata: expect.objectContaining({ type: 'booking', bookingId: '700' }),
-      }),
-    );
-    // Booking should be updated with stripePaymentIntentId
-    expect(updateCalls.some(u => (u.values as { stripePaymentIntentId?: string }).stripePaymentIntentId === 'pi_test_123')).toBe(true);
+    expect(body.success).toBe(false);
+    expect(body.message).toBe('Payments are disabled.');
+    // No booking row (nor any other write) happens when payment is blocked.
+    expect(insertCalls.length).toBe(0);
+    expect(paymentIntentsCreate).not.toHaveBeenCalled();
   });
 
-  it('routes to a Stripe Connect account when storeSettings has stripeAccountId + complete onboarding', async () => {
-    selectQueue.push([basePage({ price: 10000, websiteId: 88 })]);
-    selectQueue.push([]); // conflict
-    insertReturns.push([{ id: 800 }]);
-    // storeSettings lookup
-    selectQueue.push([{
-      stripeAccountId: 'acct_connected',
-      stripeOnboardingComplete: true,
-      platformFeePercent: '7',
-      currency: 'CAD',
-      enabled: true,
-      websiteId: 88,
-    }]);
-
-    await POST(
-      makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso() }),
-      makeParams(),
-    );
-    expect(paymentIntentsCreate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        currency: 'cad',
-        application_fee_amount: 700, // 10000 * 7%
-        transfer_data: { destination: 'acct_connected' },
-      }),
-    );
-  });
-
-  it('does not use Connect when storeSettings is missing or onboarding incomplete', async () => {
-    selectQueue.push([basePage({ price: 1000, websiteId: 88 })]);
-    selectQueue.push([]);
-    insertReturns.push([{ id: 1 }]);
-    selectQueue.push([{
-      stripeAccountId: 'acct_x',
-      stripeOnboardingComplete: false,
-      platformFeePercent: '5',
-      currency: 'usd',
-      enabled: true,
-      websiteId: 88,
-    }]);
-
-    await POST(
-      makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso() }),
-      makeParams(),
-    );
-    const call = paymentIntentsCreate.mock.calls[0][0];
-    expect(call.application_fee_amount).toBeUndefined();
-    expect(call.transfer_data).toBeUndefined();
-  });
-
-  it('increments the discount code usedCount on paid bookings', async () => {
+  it('does not create a Stripe intent or increment discount usage for paid bookings', async () => {
     selectQueue.push([basePage({ price: 10000, enableDiscountCodes: true, websiteId: 50 })]);
     selectQueue.push([]);
     selectQueue.push([{
       code: 'PROMO', discountType: 'percent', amount: 1000, active: true,
       startsAt: null, expiresAt: null, maxUses: null, usedCount: 2, minOrderAmount: null,
     }]);
-    insertReturns.push([{ id: 1 }]);
 
     await POST(
       makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), discountCode: 'promo' }),
       makeParams(),
     );
+    expect(paymentIntentsCreate).not.toHaveBeenCalled();
+    expect(insertCalls.length).toBe(0);
     expect(updateCalls.some(u =>
       typeof u.values === 'object' && u.values !== null
       && 'usedCount' in (u.values as object),
-    )).toBe(true);
+    )).toBe(false);
+  });
+
+  it('still creates a free booking when a discounted total reaches 0', async () => {
+    selectQueue.push([basePage({ price: 10000, enableDiscountCodes: true, websiteId: 50 })]);
+    selectQueue.push([]);
+    // 100% off -> total 0, booking is free and must still be created.
+    selectQueue.push([{
+      code: 'FULL', discountType: 'percent', amount: 10000, active: true,
+      startsAt: null, expiresAt: null, maxUses: null, usedCount: 2, minOrderAmount: null,
+    }]);
+    insertReturns.push([{ id: 9 }]);
+
+    await POST(
+      makeReq({ name: 'A', email: 'a@b.com', startTime: futureIso(), discountCode: 'full' }),
+      makeParams(),
+    );
+    // insertCalls[0] is the bookings row (comment at line 533 confirms order).
+    const booking = insertCalls[0];
+    expect(booking).toBeTruthy();
+    expect((booking.values as { total: number }).total).toBe(0);
+    expect(paymentIntentsCreate).not.toHaveBeenCalled();
   });
 });
 

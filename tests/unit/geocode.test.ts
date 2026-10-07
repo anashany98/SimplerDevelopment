@@ -67,7 +67,7 @@ describe('lib/geocode', () => {
       expect(url).toContain('limit=1');
       expect(init.method).toBe('GET');
       const headers = init.headers as Record<string, string>;
-      expect(headers['User-Agent']).toMatch(/SimplerDevelopmentCRM/);
+      expect(headers['User-Agent']).toMatch(/CRM-AGENTS-Geocoder/);
       expect(headers.Accept).toBe('application/json');
       expect(init.signal).toBeDefined();
     });

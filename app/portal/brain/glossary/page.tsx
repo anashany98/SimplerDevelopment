@@ -16,7 +16,7 @@
  *   - Sticky header (title + "New term" CTA + "Bulk import" CTA opening the modal).
  *   - Body grouped by category (collapsible sections, alphabetical within;
  *     uncategorized rows fall into a final "Uncategorized" group).
- *   - Pagination 25/page.
+ *   - Págination 25/page.
  *
  * Empty state: Material Icon `menu_book` + "No glossary terms yet…" copy.
  */
@@ -81,7 +81,7 @@ export default function BrainGlossaryListPage() {
       else next.set(k, v);
     }
     // Filter changes reset page to 1 — caller passes `page: null` explicitly if
-    // they're just paginating.
+    // they're just páginating.
     const qs = next.toString();
     router.replace(`/portal/brain/glossary${qs ? `?${qs}` : ''}`, { scroll: false });
   }, [router, searchParams]);
@@ -140,13 +140,13 @@ export default function BrainGlossaryListPage() {
       const r = await fetch(`/api/portal/brain/glossary?${qs.toString()}`);
       const json: ListResponse = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load glossary.');
+        setError(json.message || 'No se pudo cargar el glosario.');
       } else {
         setItems(json.data?.items ?? []);
         setTotal(json.data?.total ?? 0);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -174,15 +174,15 @@ export default function BrainGlossaryListPage() {
   const groups = useMemo(() => {
     const map = new Map<string, GlossaryTermCardData[]>();
     for (const item of items) {
-      const key = item.category?.trim() || 'Uncategorized';
+      const key = item.category?.trim() || 'Sin categoría';
       const arr = map.get(key) ?? [];
       arr.push(item);
       map.set(key, arr);
     }
-    // Sort group keys: real categories alpha first, "Uncategorized" last.
+    // Sort group keys: real categories alpha first, "Sin categoría" last.
     const sorted = Array.from(map.entries()).sort(([a], [b]) => {
-      if (a === 'Uncategorized') return 1;
-      if (b === 'Uncategorized') return -1;
+      if (a === 'Sin categoría') return 1;
+      if (b === 'Sin categoría') return -1;
       return a.localeCompare(b);
     });
     // Each group's items are already alpha-sorted by term server-side.
@@ -194,24 +194,22 @@ export default function BrainGlossaryListPage() {
   return (
     <div className="max-w-5xl mx-auto py-6 px-4 space-y-5">
       <PortalPageHeader
-        eyebrow="Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">menu_book</span>
-            Glossary
+            Glosario
           </span>
         }
-        subtitle="Tenant-specific terminology. Used by Ask, AI suggestions, and inline references."
+        subtitle="Terminología específica del cliente. La usan Preguntar, las sugerencias de IA y las referencias en línea."
         actions={
           <>
             <button type="button" onClick={() => setBulkOpen(true)} className={pBtnGhost}>
               <span className="material-icons text-base">upload</span>
-              Bulk import
+              Importar en bloque
             </button>
             <Link href="/portal/brain/glossary/new" className={pBtnPrimary}>
-              <span className="material-icons text-base">add</span>
-              New term
-            </Link>
+              <span className="material-icons text-base">add</span>Nuevo término</Link>
           </>
         }
       />
@@ -219,7 +217,7 @@ export default function BrainGlossaryListPage() {
       {/* Filters */}
       <div className="grid sm:grid-cols-4 gap-3 items-end">
         <div className="sm:col-span-1">
-          <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Status</span>
+          <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Estado</span>
           <div className="flex items-center gap-1 bg-background border border-border rounded-md p-0.5">
             {(['active', 'deprecated', 'all'] as const).map(s => (
               <button
@@ -228,50 +226,44 @@ export default function BrainGlossaryListPage() {
                 onClick={() => updateParams({ status: s === 'active' ? null : s, page: null })}
                 className={`flex-1 px-2 py-1 rounded text-xs font-medium capitalize transition-colors ${
                   statusParam === s
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
-                {s}
+                {s === 'active' ? 'Activos' : s === 'deprecated' ? 'Obsoletos' : 'Todos'}
               </button>
             ))}
           </div>
         </div>
 
         <div>
-          <label htmlFor="gl-cat-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Category
-          </label>
+          <label htmlFor="gl-cat-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Categoría</label>
           <select
             id="gl-cat-f"
             value={categoryParam}
             onChange={e => updateParams({ category: e.target.value || null, page: null })}
             className={pSelect}
           >
-            <option value="">All categories</option>
+            <option value="">Todas las categorías</option>
             {categories.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
 
         <div>
-          <label htmlFor="gl-owner-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Owner
-          </label>
+          <label htmlFor="gl-owner-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Propietario</label>
           <select
             id="gl-owner-f"
             value={ownerParam}
             onChange={e => updateParams({ ownerId: e.target.value || null, page: null })}
             className={pSelect}
           >
-            <option value="">All owners</option>
-            {users.map(u => <option key={u.id} value={u.id}>{u.name ?? `User #${u.id}`}</option>)}
+            <option value="">Todos los propietarios</option>
+            {users.map(u => <option key={u.id} value={u.id}>{u.name ?? `Usuario #${u.id}`}</option>)}
           </select>
         </div>
 
         <div>
-          <label htmlFor="gl-search" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Search
-          </label>
+          <label htmlFor="gl-search" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Buscar</label>
           <div className="relative">
             <span className="material-icons absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground text-base pointer-events-none">search</span>
             <input
@@ -279,7 +271,7 @@ export default function BrainGlossaryListPage() {
               type="text"
               value={searchDraft}
               onChange={e => handleSearchChange(e.target.value)}
-              placeholder="Search term, alias, definition…"
+              placeholder="Buscar término, alias o definición…"
               className={`${pInput} pl-8`}
             />
           </div>
@@ -289,16 +281,14 @@ export default function BrainGlossaryListPage() {
       {/* Body */}
       {loading && (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       )}
 
       {error && !loading && (
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load glossary
+            No se pudo cargar el glosario
           </div>
           <p>{error}</p>
         </div>
@@ -309,18 +299,16 @@ export default function BrainGlossaryListPage() {
           <span className="material-icons text-5xl text-primary mb-3 block">menu_book</span>
           <h2 className="text-base font-semibold text-foreground mb-1">
             {searchParam || categoryParam || ownerParam || statusParam !== 'active'
-              ? 'No matching terms.'
-              : 'No glossary terms yet.'}
+              ? 'No hay términos que coincidan.'
+              : 'Aún no hay términos en el glosario.'}
           </h2>
           <p className="text-xs text-muted-foreground mb-4">
             {searchParam || categoryParam || ownerParam || statusParam !== 'active'
-              ? 'Try clearing filters.'
-              : 'Start by adding your most-confused acronym.'}
+              ? 'Prueba a quitar los filtros.'
+              : 'Empieza añadiendo el acrónimo que más dudas genera.'}
           </p>
           <Link href="/portal/brain/glossary/new" className={pBtnPrimary}>
-            <span className="material-icons text-base">add</span>
-            New term
-          </Link>
+            <span className="material-icons text-base">add</span>Nuevo término</Link>
         </div>
       )}
 
@@ -350,11 +338,11 @@ export default function BrainGlossaryListPage() {
             );
           })}
 
-          {/* Pagination */}
+          {/* Págination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-3 border-t border-border text-xs">
               <span className="text-muted-foreground">
-                Page {pageParam} of {totalPages} · {total} term{total === 1 ? '' : 's'}
+                Página {pageParam} de {totalPages} · {total} término{total === 1 ? '' : 's'}
               </span>
               <div className="flex items-center gap-1">
                 <button
@@ -364,16 +352,14 @@ export default function BrainGlossaryListPage() {
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <span className="material-icons text-base">chevron_left</span>
-                  Prev
+                  Anterior
                 </button>
                 <button
                   type="button"
                   disabled={pageParam >= totalPages}
                   onClick={() => updateParams({ page: String(pageParam + 1) })}
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next
-                  <span className="material-icons text-base">chevron_right</span>
+                >Siguiente<span className="material-icons text-base">chevron_right</span>
                 </button>
               </div>
             </div>

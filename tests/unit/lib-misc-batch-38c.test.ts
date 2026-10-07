@@ -115,7 +115,7 @@ describe('lib/portal', () => {
     expect(typeof mod.ticketStatusColor).toBe('function');
     expect(typeof mod.priorityColor).toBe('function');
     // sanity: helpers behave like the originals
-    expect(mod.formatCents(12345)).toBe('$123.45');
+    expect(mod.formatCents(12345)).toBe('123,45\u00A0€');
   });
 
   describe('invoiceStatusLabel', () => {

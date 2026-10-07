@@ -123,7 +123,7 @@ export async function POST(
   } = body;
 
   if (!name || !slug || price === undefined) {
-    return NextResponse.json({ success: false, message: 'name, slug, and price are required' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'El nombre, el slug y el precio son obligatorios' }, { status: 400 });
   }
 
   // Reject negative prices (allow 0 for free items, null already excluded).
@@ -155,7 +155,7 @@ export async function POST(
     .limit(1);
 
   if (existing) {
-    return NextResponse.json({ success: false, message: 'A product with this slug already exists' }, { status: 409 });
+    return NextResponse.json({ success: false, message: 'Ya existe un producto con este slug' }, { status: 409 });
   }
 
   const [product] = await db

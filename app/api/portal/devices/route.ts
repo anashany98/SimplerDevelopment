@@ -59,7 +59,11 @@ export async function DELETE(req: Request) {
   await db
     .update(devicePushTokens)
     .set({ revokedAt: new Date() })
-    .where(and(eq(devicePushTokens.token, token), eq(devicePushTokens.clientId, client.id)));
+    .where(and(
+      eq(devicePushTokens.token, token),
+      eq(devicePushTokens.clientId, client.id),
+      eq(devicePushTokens.userId, authResult.userId),
+    ));
 
   return NextResponse.json({ success: true });
 }

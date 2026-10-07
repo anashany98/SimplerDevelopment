@@ -2,7 +2,7 @@ import { defineManifest } from '@crxjs/vite-plugin';
 
 export default defineManifest({
   manifest_version: 3,
-  name: 'SimplerDevelopment Brain',
+  name: 'CRM AGENTS Brain',
   version: '0.1.0',
   description:
     'Capture pages to your Company Brain. Add CRM records and search from any tab.',

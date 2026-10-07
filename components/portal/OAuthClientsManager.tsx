@@ -25,8 +25,8 @@ interface OAuthClientsManagerProps {
 }
 
 export default function OAuthClientsManager({
-  heading = 'OAuth apps',
-  subheading = 'Register OAuth apps for AI assistants and integrations. Public (PKCE-only) clients suit ChatGPT, Claude.ai, and other MCP hosts. Confidential clients add a client_secret for server-to-server integrations. Secrets are shown only once.',
+  heading = 'Aplicaciones OAuth',
+  subheading = 'Registra aplicaciones OAuth para asistentes de IA e integraciones. Los clientes públicos (solo PKCE) sirven para ChatGPT, Claude.ai y otros hosts MCP. Los clientes confidenciales añaden un client_secret para integraciones servidor a servidor. Los secretos solo se muestran una vez.',
 }: OAuthClientsManagerProps) {
   const [clients, setClients] = useState<OAuthClient[]>([]);
   const [loading, setLoading] = useState(true);
@@ -67,9 +67,9 @@ export default function OAuthClientsManager({
           clientSecretRotatedAt: c.client_secret_rotated_at,
           createdAt: c.created_at,
         })));
-      } else setError(json.message ?? 'Failed to load OAuth apps');
+      } else setError(json.message ?? 'No se pudieron cargar las aplicaciones OAuth');
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load OAuth apps');
+      setError(e instanceof Error ? e.message : 'No se pudieron cargar las aplicaciones OAuth');
     } finally {
       setLoading(false);
     }
@@ -88,9 +88,9 @@ export default function OAuthClientsManager({
 
   async function handleCreate() {
     setCreateError(null);
-    if (!clientName.trim()) { setCreateError('App name is required'); return; }
+    if (!clientName.trim()) { setCreateError('El nombre de la aplicación es obligatorio'); return; }
     const uris = redirectUris.map(u => u.trim()).filter(Boolean);
-    if (uris.length === 0) { setCreateError('At least one redirect URI is required'); return; }
+    if (uris.length === 0) { setCreateError('Se requiere al menos un URI de redirección'); return; }
 
     setCreating(true);
     try {
@@ -105,20 +105,20 @@ export default function OAuthClientsManager({
         }),
       });
       const json = await res.json();
-      if (!json.success) { setCreateError(json.message ?? 'Failed to create app'); return; }
+      if (!json.success) { setCreateError(json.message ?? 'No se pudo crear la aplicación'); return; }
       setRevealed({ clientId: json.data.client_id, clientSecret: json.data.client_secret ?? null });
       resetCreateForm();
       setShowCreate(false);
       load();
     } catch (e) {
-      setCreateError(e instanceof Error ? e.message : 'Failed to create app');
+      setCreateError(e instanceof Error ? e.message : 'No se pudo crear la aplicación');
     } finally {
       setCreating(false);
     }
   }
 
   async function handleRotate(id: number, name: string) {
-    if (!confirm(`Rotate the secret for "${name}"? The current secret will stop working immediately.`)) return;
+    if (!confirm(`¿Rotar el secreto de "${name}"? El secreto actual dejará de funcionar de inmediato.`)) return;
     try {
       const res = await fetch(`/api/portal/oauth-clients/${id}`, {
         method: 'PATCH',
@@ -126,23 +126,23 @@ export default function OAuthClientsManager({
         body: JSON.stringify({ action: 'rotate_secret' }),
       });
       const json = await res.json();
-      if (!json.success) { setError(json.message ?? 'Failed to rotate secret'); return; }
+      if (!json.success) { setError(json.message ?? 'No se pudo rotar el secreto'); return; }
       setRevealed({ clientId: json.data.client_id, clientSecret: json.data.client_secret });
       load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to rotate secret');
+      setError(e instanceof Error ? e.message : 'No se pudo rotar el secreto');
     }
   }
 
   async function handleDelete(id: number, name: string) {
-    if (!confirm(`Delete the OAuth app "${name}"? Any connected applications using this client_id will lose access immediately.`)) return;
+    if (!confirm(`¿Eliminar la aplicación OAuth "${name}"? Cualquier aplicación conectada que use este client_id perderá el acceso de inmediato.`)) return;
     try {
       const res = await fetch(`/api/portal/oauth-clients/${id}`, { method: 'DELETE' });
       const json = await res.json();
-      if (!json.success) { setError(json.message ?? 'Failed to delete app'); return; }
+      if (!json.success) { setError(json.message ?? 'No se pudo eliminar la aplicación'); return; }
       load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to delete app');
+      setError(e instanceof Error ? e.message : 'No se pudo eliminar la aplicación');
     }
   }
 
@@ -169,10 +169,10 @@ export default function OAuthClientsManager({
         </div>
         <button
           onClick={() => { setShowCreate(v => !v); setRevealed(null); setCreateError(null); }}
-          className="inline-flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:opacity-90 whitespace-nowrap"
+          className="inline-flex items-center gap-2 px-3 py-2 bg-foreground text-background rounded-md text-sm font-medium hover:opacity-90 whitespace-nowrap"
         >
           <span className="material-icons text-base">add</span>
-          New app
+          Nueva aplicación
         </button>
       </div>
 
@@ -181,8 +181,8 @@ export default function OAuthClientsManager({
           <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-medium">
             <span className="material-icons text-base">{revealed.clientSecret ? 'warning' : 'info'}</span>
             {revealed.clientSecret
-              ? "Save these credentials now — the secret won’t be shown again"
-              : 'Public client created — copy your client_id below'}
+              ? 'Guarda estas credenciales ahora: el secreto no se volverá a mostrar'
+              : 'Cliente público creado: copia tu client_id abajo'}
           </div>
           <div className="space-y-2">
             <div>
@@ -195,9 +195,7 @@ export default function OAuthClientsManager({
                   onClick={() => navigator.clipboard.writeText(revealed.clientId)}
                   className="inline-flex items-center gap-1 text-xs px-2 py-1 border border-border rounded hover:bg-muted"
                 >
-                  <span className="material-icons text-[14px] leading-none">content_copy</span>
-                  Copy
-                </button>
+                  <span className="material-icons text-[14px] leading-none">content_copy</span>Copiar</button>
               </div>
             </div>
             {revealed.clientSecret && (
@@ -211,9 +209,7 @@ export default function OAuthClientsManager({
                     onClick={() => navigator.clipboard.writeText(revealed.clientSecret!)}
                     className="inline-flex items-center gap-1 text-xs px-2 py-1 border border-border rounded hover:bg-muted"
                   >
-                    <span className="material-icons text-[14px] leading-none">content_copy</span>
-                    Copy
-                  </button>
+                    <span className="material-icons text-[14px] leading-none">content_copy</span>Copiar</button>
                 </div>
               </div>
             )}
@@ -222,7 +218,7 @@ export default function OAuthClientsManager({
             onClick={() => setRevealed(null)}
             className="text-xs px-2 py-1 border border-border rounded hover:bg-muted"
           >
-            {revealed.clientSecret ? "I’ve saved it" : 'Done'}
+            {revealed.clientSecret ? "Ya lo guardé" : 'Hecho'}
           </button>
         </div>
       )}
@@ -232,19 +228,19 @@ export default function OAuthClientsManager({
       {showCreate && (
         <div className="rounded-md border border-border p-4 space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">App name <span className="text-destructive">*</span></label>
+            <label className="block text-sm font-medium mb-1">Nombre de la aplicación <span className="text-destructive">*</span></label>
             <input
               value={clientName}
               onChange={e => setClientName(e.target.value)}
-              placeholder="e.g. My Integration App"
+              placeholder="p. ej. Mi aplicación de integración"
               className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">
-              Redirect URIs <span className="text-destructive">*</span>
-              <span className="ml-1 text-xs font-normal text-muted-foreground">(1–5 allowed)</span>
+              URIs de redirección <span className="text-destructive">*</span>
+              <span className="ml-1 text-xs font-normal text-muted-foreground">(se permiten 1–5)</span>
             </label>
             <div className="space-y-2">
               {redirectUris.map((uri, i) => (
@@ -259,7 +255,7 @@ export default function OAuthClientsManager({
                     <button
                       onClick={() => removeUri(i)}
                       className="inline-flex items-center text-muted-foreground hover:text-destructive"
-                      aria-label="Remove URI"
+                      aria-label="Quitar URI"
                     >
                       <span className="material-icons text-base">remove_circle_outline</span>
                     </button>
@@ -273,13 +269,13 @@ export default function OAuthClientsManager({
                 className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
               >
                 <span className="material-icons text-[14px] leading-none">add_circle_outline</span>
-                Add another URI
+                Añadir otro URI
               </button>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Token endpoint auth method</label>
+            <label className="block text-sm font-medium mb-1">Método de autenticación del endpoint de token</label>
             <select
               value={authMethod}
               onChange={e => setAuthMethod(e.target.value as 'client_secret_basic' | 'client_secret_post' | 'none')}
@@ -287,13 +283,13 @@ export default function OAuthClientsManager({
             >
               <option value="client_secret_basic">HTTP Basic (client_secret_basic)</option>
               <option value="client_secret_post">POST body (client_secret_post)</option>
-              <option value="none">PKCE only / public client (no secret)</option>
+              <option value="none">Solo PKCE / cliente público (sin secreto)</option>
             </select>
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">
-              App URI <span className="text-xs font-normal text-muted-foreground">(optional)</span>
+              URI de la aplicación <span className="text-xs font-normal text-muted-foreground">(opcional)</span>
             </label>
             <input
               value={clientUri}
@@ -309,16 +305,14 @@ export default function OAuthClientsManager({
             <button
               onClick={handleCreate}
               disabled={creating}
-              className="px-3 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium disabled:opacity-60"
+              className="px-3 py-2 bg-foreground text-background rounded-md text-sm font-medium disabled:opacity-60"
             >
-              {creating ? 'Creating…' : 'Create app'}
+              {creating ? 'Creando…' : 'Crear aplicación'}
             </button>
             <button
               onClick={() => { setShowCreate(false); resetCreateForm(); }}
               className="px-3 py-2 border border-border rounded-md text-sm"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
           </div>
         </div>
       )}
@@ -328,22 +322,22 @@ export default function OAuthClientsManager({
           <table className="w-full min-w-[800px] text-sm">
             <thead className="bg-muted/50">
               <tr className="text-left">
-                <th className="px-3 py-2 font-medium">Name</th>
+                <th className="px-3 py-2 font-medium">Nombre</th>
                 <th className="px-3 py-2 font-medium">client_id</th>
-                <th className="px-3 py-2 font-medium">Secret</th>
-                <th className="px-3 py-2 font-medium">Auth method</th>
-                <th className="px-3 py-2 font-medium">Created</th>
+                <th className="px-3 py-2 font-medium">Secreto</th>
+                <th className="px-3 py-2 font-medium">Método de autenticación</th>
+                <th className="px-3 py-2 font-medium">Creado</th>
                 <th className="px-3 py-2"></th>
               </tr>
             </thead>
             <tbody>
               {loading && (
-                <tr><td colSpan={6} className="px-3 py-4 text-center text-muted-foreground">Loading…</td></tr>
+                <tr><td colSpan={6} className="px-3 py-4 text-center text-muted-foreground">Cargando…</td></tr>
               )}
               {!loading && clients.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-3 py-4 text-center text-muted-foreground">
-                    No OAuth apps yet. Create one above to get a client_id and client_secret.
+                    Aún no hay aplicaciones OAuth. Crea una arriba para obtener un client_id y un client_secret.
                   </td>
                 </tr>
               )}
@@ -371,14 +365,12 @@ export default function OAuthClientsManager({
                         className="text-xs text-muted-foreground hover:text-foreground hover:underline inline-flex items-center gap-1"
                       >
                         <span className="material-icons text-[14px] leading-none">refresh</span>
-                        Rotate secret
+                        Rotar secreto
                       </button>
                       <button
                         onClick={() => handleDelete(c.id, c.clientName)}
                         className="text-xs text-destructive hover:underline"
-                      >
-                        Delete
-                      </button>
+                      >Eliminar</button>
                     </div>
                   </td>
                 </tr>

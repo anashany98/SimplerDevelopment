@@ -7,8 +7,10 @@
 // lib/automation/engine.ts's processEvent() bridges every processed event
 // into lib/workflows/trigger.ts's `enqueueWorkflowRunsForTrigger`, which
 // enqueues rows into `workflowRunSteps` below for the crm.contact.created,
-// crm.deal.updated (stage-change), and form.submitted event kinds. A
-// `schedule`-kind workflow trigger is not yet wired to any cron source.
+// crm.deal.updated (stage-change), and form.submitted event kinds. The
+// `schedule`-kind trigger is wired to app/api/cron/process-workflow-schedules,
+// which CAS-claims due workflows (via the `last_fired_at` column, drizzle
+// 9026) and enqueues them into the same queue.
 
 import { pgTable, serial, varchar, text, timestamp, integer, json, index } from 'drizzle-orm/pg-core';
 import { users } from './auth';
@@ -33,6 +35,9 @@ export const workflows = pgTable('workflows', {
   createdBy: integer('created_by').references(() => users.id, { onDelete: 'set null' }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  // Last time a `schedule`-kind trigger fired for this workflow. Stamped by the
+  // process-workflow-schedules cron and used as its CAS claim (drizzle 9026).
+  lastFiredAt: timestamp('last_fired_at'),
 });
 
 export const workflowRuns = pgTable('workflow_runs', {

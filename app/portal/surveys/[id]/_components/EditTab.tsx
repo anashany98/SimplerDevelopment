@@ -29,7 +29,7 @@ export default function EditTab(props: Props) {
     <div className="space-y-6">
       <div className="bg-card border border-border rounded-xl p-6 space-y-4">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Título</label>
           <input
             type="text"
             value={editTitle}
@@ -38,7 +38,7 @@ export default function EditTab(props: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+          <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
           <textarea
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
@@ -60,15 +60,14 @@ export default function EditTab(props: Props) {
         <button
           onClick={onSave}
           disabled={saving}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
         >
           {saving ? (
             <>
-              <span className="material-icons text-lg animate-spin">progress_activity</span>Saving...
-            </>
+              <span className="material-icons text-lg animate-spin">autorenew</span>Guardando...</>
           ) : (
             <>
-              <span className="material-icons text-lg">save</span>Save Changes
+              <span className="material-icons text-lg">save</span>Guardar cambios
             </>
           )}
         </button>

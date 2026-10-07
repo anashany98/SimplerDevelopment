@@ -40,9 +40,9 @@ export default async function CrmSnapshotWidget({
     ]);
 
   const stats = [
-    { label: 'Contacts', value: contactsResult, href: '/portal/crm' },
-    { label: 'Companies', value: companiesResult, href: '/portal/crm/companies' },
-    { label: 'Deals', value: dealsResult, href: '/portal/crm/deals' },
+    { label: 'Contactos', value: contactsResult, href: '/portal/crm' },
+    { label: 'Empresas', value: companiesResult, href: '/portal/crm/companies' },
+    { label: 'Negocios', value: dealsResult, href: '/portal/crm/deals' },
   ];
 
   return (
@@ -62,7 +62,7 @@ export default async function CrmSnapshotWidget({
 
       {openPipelineResult > 0 && (
         <div className="border-t pt-3">
-          <p className="text-xs text-muted-foreground mb-1">Open pipeline</p>
+          <p className="text-xs text-muted-foreground mb-1">Pipeline abierto</p>
           <p className="text-lg font-semibold text-foreground">
             {formatCents(openPipelineResult)}
           </p>
@@ -71,9 +71,9 @@ export default async function CrmSnapshotWidget({
 
       {contactsResult === 0 && companiesResult === 0 && dealsResult === 0 && (
         <div className="py-2 text-center">
-          <p className="text-sm text-muted-foreground mb-2">No CRM data yet.</p>
+          <p className="text-sm text-muted-foreground mb-2">Todavía no hay datos de CRM.</p>
           <Link href="/portal/crm" className="text-xs text-primary hover:underline">
-            Go to CRM
+            Ir al CRM
           </Link>
         </div>
       )}

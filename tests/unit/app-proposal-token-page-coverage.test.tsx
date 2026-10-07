@@ -128,7 +128,7 @@ describe('PublicProposalPage — loading state', () => {
       () => new Promise<FetchResp>((res) => { resolve = res; }),
     );
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading proposal');
+    expect(container.textContent).toContain('Cargando propuesta');
     act(() => { resolve(makeRes({ success: true, data: makeProposal() })); });
   });
 });
@@ -140,7 +140,7 @@ describe('PublicProposalPage — not found', () => {
     fetchMock.mockImplementation(defaultFetch(null));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Proposal Not Found');
+      expect(container.textContent).toContain('Propuesta no encontrada');
     });
   });
 
@@ -148,7 +148,7 @@ describe('PublicProposalPage — not found', () => {
     fetchMock.mockImplementation(defaultFetch(null));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('link is invalid');
+      expect(container.textContent).toContain('enlace no es válido');
     });
   });
 });
@@ -173,7 +173,7 @@ describe('PublicProposalPage — successful render', () => {
   it('renders "Prepared for" contact name and company', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Prepared for');
+      expect(container.textContent).toContain('Preparada para');
       expect(container.textContent).toContain('Jane Doe');
       expect(container.textContent).toContain('Acme Inc');
     });
@@ -195,7 +195,7 @@ describe('PublicProposalPage — successful render', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      const img = container.querySelector('img[alt="Company logo"]');
+      const img = container.querySelector('img[alt="Logotipo de la empresa"]');
       expect(img).toBeTruthy();
     });
   });
@@ -206,7 +206,7 @@ describe('PublicProposalPage — successful render', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      const img = container.querySelector('img[alt="Cover"]');
+      const img = container.querySelector('img[alt="Portada"]');
       expect(img).toBeTruthy();
     });
   });
@@ -229,7 +229,7 @@ describe('PublicProposalPage — validUntil display', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Valid until');
+      expect(container.textContent).toContain('Válida hasta el');
     });
   });
 
@@ -241,7 +241,7 @@ describe('PublicProposalPage — validUntil display', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toMatch(/day.*remaining/i);
+      expect(container.textContent).toMatch(/días? restantes/i);
     });
   });
 
@@ -251,7 +251,7 @@ describe('PublicProposalPage — validUntil display', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Valid until');
+      expect(container.textContent).not.toContain('Válida hasta el');
     });
   });
 });
@@ -269,7 +269,7 @@ describe('PublicProposalPage — status banners', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('accepted');
+      expect(container.textContent).toContain('aceptada');
       expect(container.textContent).toContain('John Smith');
     });
   });
@@ -283,7 +283,7 @@ describe('PublicProposalPage — status banners', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('declined');
+      expect(container.textContent).toContain('rechazada');
     });
   });
 
@@ -293,7 +293,7 @@ describe('PublicProposalPage — status banners', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('expired');
+      expect(container.textContent).toContain('caducado');
     });
   });
 
@@ -303,7 +303,7 @@ describe('PublicProposalPage — status banners', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('expired');
+      expect(container.textContent).toContain('caducado');
     });
   });
 });
@@ -369,7 +369,7 @@ describe('PublicProposalPage — sections', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Terms');
+      expect(container.textContent).toContain('Términos');
       expect(container.textContent).toContain('All work is done as-is.');
     });
   });
@@ -396,7 +396,7 @@ describe('PublicProposalPage — pricing section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Pricing');
+      expect(container.textContent).toContain('Precios');
       expect(container.textContent).toContain('Design work');
     });
   });
@@ -411,7 +411,7 @@ describe('PublicProposalPage — pricing section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Optional Items');
+      expect(container.textContent).toContain('Artículos opcionales');
       expect(container.textContent).toContain('Optional add-on');
       const checkboxes = container.querySelectorAll('input[type="checkbox"]');
       expect(checkboxes.length).toBeGreaterThan(0);
@@ -435,8 +435,8 @@ describe('PublicProposalPage — pricing section', () => {
     fireEvent.click(checkbox);
     await waitFor(() => {
       // After toggling, the optional subtotal is added
-      // $1000 required + $500 optional = $1500
-      expect(container.textContent).toContain('$1,500.00');
+      // 1000 € required + 500 € optional = 1500 €
+      expect(container.textContent).toContain('1500,00\u00A0€');
     });
   });
 
@@ -450,8 +450,8 @@ describe('PublicProposalPage — pricing section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      // flat fee $50 + service $1000 = $1050 grand total
-      expect(container.textContent).toContain('$1,050.00');
+      // flat fee 50 € + service 1000 € = 1050 € grand total
+      expect(container.textContent).toContain('1050,00\u00A0€');
       expect(container.textContent).toContain('Setup fee');
     });
   });
@@ -466,8 +466,8 @@ describe('PublicProposalPage — pricing section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      // 10% of $1000 = $100, total $1100
-      expect(container.textContent).toContain('$1,100.00');
+      // 10% of 1000 € = 100 €, total 1100 €
+      expect(container.textContent).toContain('1100,00\u00A0€');
       expect(container.textContent).toContain('Tax');
       expect(container.textContent).toContain('(10%)');
     });
@@ -484,7 +484,7 @@ describe('PublicProposalPage — pricing section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Subtotal');
-      expect(container.textContent).toContain('$500.00');
+      expect(container.textContent).toContain('500,00\u00A0€');
     });
   });
 
@@ -549,8 +549,8 @@ describe('PublicProposalPage — signature section (canAct)', () => {
     fetchMock.mockImplementation(defaultFetch(withSignatureSection));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Accept');
-      expect(container.textContent).toContain('Sign');
+      expect(container.textContent).toContain('Aceptar');
+      expect(container.textContent).toContain('firmar');
     });
   });
 
@@ -558,15 +558,15 @@ describe('PublicProposalPage — signature section (canAct)', () => {
     fetchMock.mockImplementation(defaultFetch(withSignatureSection));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Accept');
+      expect(container.textContent).toContain('Aceptar');
     });
     const acceptBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Accept Proposal'),
+      (b) => b.textContent?.includes('Aceptar propuesta'),
     );
     expect(acceptBtn).toBeTruthy();
     await act(async () => { fireEvent.click(acceptBtn!); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Please enter your full name');
+      expect(container.textContent).toContain('Introduce tu nombre completo');
     });
   });
 
@@ -574,18 +574,18 @@ describe('PublicProposalPage — signature section (canAct)', () => {
     fetchMock.mockImplementation(defaultFetch(withSignatureSection));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Accept');
+      expect(container.textContent).toContain('Aceptar');
     });
     // Enter a name first
-    const nameInput = container.querySelector('input[placeholder="Enter your full name"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Introduce tu nombre completo"]') as HTMLInputElement;
     expect(nameInput).toBeTruthy();
     fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
     const acceptBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Accept Proposal'),
+      (b) => b.textContent?.includes('Aceptar propuesta'),
     );
     await act(async () => { fireEvent.click(acceptBtn!); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Please draw your signature');
+      expect(container.textContent).toContain('Dibuja tu firma');
     });
   });
 
@@ -593,7 +593,7 @@ describe('PublicProposalPage — signature section (canAct)', () => {
     fetchMock.mockImplementation(defaultFetch(withSignatureSection));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Draw your signature here');
+      expect(container.textContent).toContain('Dibuja tu firma aquí');
     });
   });
 
@@ -602,7 +602,7 @@ describe('PublicProposalPage — signature section (canAct)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       expect(declineBtn).toBeTruthy();
     });
@@ -619,7 +619,7 @@ describe('PublicProposalPage — signature section (canAct)', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Signed by Jane Signer');
+      expect(container.textContent).toContain('Firmado por Jane Signer');
     });
   });
 
@@ -633,7 +633,7 @@ describe('PublicProposalPage — signature section (canAct)', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('declined');
+      expect(container.textContent).toContain('rechazada');
     });
   });
 });
@@ -645,22 +645,22 @@ describe('PublicProposalPage — fallback accept/sign block', () => {
     // No sections — so no signature section — but status is 'sent' so canAct=true
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Accept');
-      expect(container.textContent).toContain('Sign');
+      expect(container.textContent).toContain('Aceptar');
+      expect(container.textContent).toContain('firmar');
     });
   });
 
   it('fallback block: shows error if accept clicked without name', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Accept Proposal');
+      expect(container.textContent).toContain('Aceptar propuesta');
     });
     const acceptBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Accept Proposal'),
+      (b) => b.textContent?.includes('Aceptar propuesta'),
     );
     await act(async () => { fireEvent.click(acceptBtn!); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Please enter your full name');
+      expect(container.textContent).toContain('Introduce tu nombre completo');
     });
   });
 
@@ -668,7 +668,7 @@ describe('PublicProposalPage — fallback accept/sign block', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       expect(declineBtn).toBeTruthy();
     });
@@ -692,10 +692,10 @@ describe('PublicProposalPage — accept flow', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Accept'));
+    await waitFor(() => expect(container.textContent).toContain('Aceptar'));
 
     // Fill name
-    const nameInput = container.querySelector('input[placeholder="Enter your full name"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Introduce tu nombre completo"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Jane Signer' } });
 
     // Simulate signature data being set by clicking the canvas (simulate a draw)
@@ -703,12 +703,12 @@ describe('PublicProposalPage — accept flow', () => {
     // Instead, test via the API error path since we can't easily simulate canvas.
     // Accept without signature data first:
     const acceptBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Accept Proposal'),
+      (b) => b.textContent?.includes('Aceptar propuesta'),
     );
     await act(async () => { fireEvent.click(acceptBtn!); });
     // Should show missing signature error (covers that branch)
     await waitFor(() => {
-      expect(container.textContent).toContain('Please draw your signature');
+      expect(container.textContent).toContain('Dibuja tu firma');
     });
   });
 
@@ -728,19 +728,19 @@ describe('PublicProposalPage — accept flow', () => {
     });
 
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Accept'));
+    await waitFor(() => expect(container.textContent).toContain('Aceptar'));
 
     // Fill name
-    const nameInput = container.querySelector('input[placeholder="Enter your full name"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Introduce tu nombre completo"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Tester' } });
 
     // Without signature it won't fire POST — check validation error path
     const acceptBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Accept Proposal'),
+      (b) => b.textContent?.includes('Aceptar propuesta'),
     );
     await act(async () => { fireEvent.click(acceptBtn!); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Please draw your signature');
+      expect(container.textContent).toContain('Dibuja tu firma');
     });
   });
 });
@@ -752,14 +752,14 @@ describe('PublicProposalPage — decline modal', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       expect(declineBtn).toBeTruthy();
       fireEvent.click(declineBtn!);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Decline Proposal');
-      expect(container.textContent).toContain('Are you sure you want to decline');
+      expect(container.textContent).toContain('Rechazar propuesta');
+      expect(container.textContent).toContain('¿Seguro que quieres rechazar');
     });
   });
 
@@ -767,20 +767,20 @@ describe('PublicProposalPage — decline modal', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       fireEvent.click(declineBtn!);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Are you sure you want to decline');
+      expect(container.textContent).toContain('¿Seguro que quieres rechazar');
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     );
     expect(cancelBtn).toBeTruthy();
     fireEvent.click(cancelBtn!);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Are you sure you want to decline');
+      expect(container.textContent).not.toContain('¿Seguro que quieres rechazar');
     });
   });
 
@@ -800,23 +800,23 @@ describe('PublicProposalPage — decline modal', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       fireEvent.click(declineBtn!);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Are you sure you want to decline');
+      expect(container.textContent).toContain('¿Seguro que quieres rechazar');
     });
 
     // Fill in reason
     const textarea = container.querySelector(
-      'textarea[placeholder="Let us know why you are declining..."]',
+      'textarea[placeholder="Cuéntanos por qué la rechazas..."]',
     ) as HTMLTextAreaElement;
     expect(textarea).toBeTruthy();
     fireEvent.change(textarea, { target: { value: 'Budget constraints' } });
 
     const declineConfirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Decline Proposal'),
+      (b) => b.textContent?.includes('Rechazar propuesta'),
     );
     expect(declineConfirmBtn).toBeTruthy();
     await act(async () => { fireEvent.click(declineConfirmBtn!); });
@@ -841,14 +841,14 @@ describe('PublicProposalPage — decline modal', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       fireEvent.click(declineBtn!);
     });
-    await waitFor(() => expect(container.textContent).toContain('Are you sure you want to decline'));
+    await waitFor(() => expect(container.textContent).toContain('¿Seguro que quieres rechazar'));
 
     const declineConfirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Decline Proposal'),
+      (b) => b.textContent?.includes('Rechazar propuesta'),
     );
     await act(async () => { fireEvent.click(declineConfirmBtn!); });
 
@@ -871,19 +871,19 @@ describe('PublicProposalPage — decline modal', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       fireEvent.click(declineBtn!);
     });
-    await waitFor(() => expect(container.textContent).toContain('Are you sure you want to decline'));
+    await waitFor(() => expect(container.textContent).toContain('¿Seguro que quieres rechazar'));
 
     const declineConfirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Decline Proposal'),
+      (b) => b.textContent?.includes('Rechazar propuesta'),
     );
     await act(async () => { fireEvent.click(declineConfirmBtn!); });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to decline proposal');
+      expect(container.textContent).toContain('No se pudo rechazar la propuesta');
     });
   });
 
@@ -903,14 +903,14 @@ describe('PublicProposalPage — decline modal', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const declineBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Decline',
+        (b) => b.textContent?.trim() === 'Rechazar',
       );
       fireEvent.click(declineBtn!);
     });
-    await waitFor(() => expect(container.textContent).toContain('Are you sure you want to decline'));
+    await waitFor(() => expect(container.textContent).toContain('¿Seguro que quieres rechazar'));
 
     const declineConfirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Decline Proposal'),
+      (b) => b.textContent?.includes('Rechazar propuesta'),
     );
     await act(async () => { fireEvent.click(declineConfirmBtn!); });
 
@@ -945,7 +945,7 @@ describe('PublicProposalPage — SignatureCanvas (via rendered page)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const clearBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Clear',
+        (b) => b.textContent?.trim() === 'Limpiar',
       );
       expect(clearBtn).toBeTruthy();
     });
@@ -960,7 +960,7 @@ describe('PublicProposalPage — SignatureCanvas (via rendered page)', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const clearBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.trim() === 'Clear',
+        (b) => b.textContent?.trim() === 'Limpiar',
       );
       expect(clearBtn).toBeTruthy();
       fireEvent.click(clearBtn!);
@@ -1048,7 +1048,7 @@ describe('PublicProposalPage — contactName edge cases', () => {
   it('shows " at " separator between name and company', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain(' at ');
+      expect(container.textContent).toContain(' en ');
     });
   });
 
@@ -1062,7 +1062,7 @@ describe('PublicProposalPage — contactName edge cases', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Prepared for');
+      expect(container.textContent).not.toContain('Preparada para');
     });
   });
 });

@@ -51,6 +51,14 @@ interface DbState {
   updates: Array<{ table: string; values: unknown }>;
   // If true, the next db.insert() will throw.
   insertShouldThrow: boolean;
+  // The route runs a PROJECTION pre-check on storeSettings before
+  // resolveSiteStripe (db.select({enabled, stripeMode, ...})). ONLY that one
+  // select is special-cased: it returns this row (default = enabled Connect
+  // store) WITHOUT consuming the queue. Every other select — including the
+  // cartItems / shippingRates / productDesigns / orders object-projection
+  // selects and the resolver's full-row storeSettings read — consumes the
+  // next queued row-set. Set to [] to simulate "no store row" (404).
+  projectionRow?: unknown[];
 }
 
 const dbState: DbState = {
@@ -75,6 +83,18 @@ vi.mock('stripe', () => {
   }
   return { default: Stripe };
 });
+
+// Keep the route's internal Stripe branches testable while platform billing
+// is disabled in production. This mock only opens the policy gate for this
+// isolated unit harness.
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+      headers: { 'content-type': 'application/json' },
+    }),
+}));
 
 vi.mock('@/lib/db/schema', () => {
   // The route imports these tables only to use as drizzle "references";
@@ -134,15 +154,39 @@ vi.mock('@/lib/automation/event-bus', () => ({
 }));
 
 vi.mock('@/lib/db', () => {
-  function makeSelectChain() {
-    let rows: unknown[] = [];
+  function makeSelectChain(selectArgs: unknown[] = []) {
+    // The storeSettings pre-check is identified by its projection values: the
+    // schema mock renders every column access as `${table}.${column}`, so only
+    // the pre-check projects `storeSettings.*`. A blanket "first arg is an
+    // object" test also swallowed the cartItems / shippingRates /
+    // productDesigns / orders object-projection selects, which must consume the
+    // queued rows instead.
+    const projection = selectArgs[0];
+    const isStoreSettingsProjection =
+      !!projection &&
+      typeof projection === 'object' &&
+      Object.values(projection).some(
+        (v) => typeof v === 'string' && v.startsWith('storeSettings.'),
+      );
+    let rows: unknown[] = isStoreSettingsProjection
+      ? (dbState.projectionRow ?? [{
+          enabled: true,
+          stripeMode: 'connect',
+          stripeAccountId: 'acct_test_123',
+          stripeOnboardingComplete: true,
+        }])
+      : [];
     const chain: Record<string, unknown> = {};
     const passthrough = [
       'from', 'where', 'innerJoin', 'leftJoin', 'rightJoin',
       'orderBy', 'limit', 'groupBy', 'offset',
     ];
     for (const m of passthrough) chain[m] = () => chain;
-    chain.from = (table: { _name: string }) => { rows = table._name === 'clientWebsites' ? [{ id: 1, clientId: 10 }] : (dbState.selectQueue.shift() ?? []); return chain; };
+    chain.from = (table: { _name: string }) => {
+      if (table._name === 'clientWebsites') rows = [{ id: 1, clientId: 10 }];
+      else if (!isStoreSettingsProjection) rows = dbState.selectQueue.shift() ?? [];
+      return chain;
+    };
     chain.for = () => chain;
     chain.then = (resolve: (v: unknown) => unknown) =>
       Promise.resolve(rows).then(resolve);
@@ -195,12 +239,16 @@ vi.mock('@/lib/db', () => {
   }
 
   const mockedDb = {
-    select: () => makeSelectChain(),
+    select: (...args: unknown[]) => makeSelectChain(args),
     insert: (t: unknown) => makeInsertChain(tableName(t)),
     update: (t: unknown) => makeUpdateChain(tableName(t)),
-    transaction: async (work: (tx: unknown) => Promise<unknown>) => work(mockedDb),
   };
-  return { db: mockedDb };
+  return {
+    db: {
+      ...mockedDb,
+      transaction: async (callback: (tx: typeof mockedDb) => unknown) => callback(mockedDb),
+    },
+  };
 });
 
 // ---------------------------------------------------------------------------
@@ -286,6 +334,7 @@ beforeEach(() => {
   dbState.inserts = [];
   dbState.updates = [];
   dbState.insertShouldThrow = false;
+  dbState.projectionRow = undefined;
   stripeState.paymentIntentsCreate.mockReset();
   stripeState.paymentIntentsUpdate.mockReset();
   stripeState.paymentIntentsCreate.mockResolvedValue({
@@ -313,7 +362,8 @@ describe('POST /api/storefront/[siteId]/checkout — input validation', () => {
   });
 
   it('returns 404 when no store row is found for the site', async () => {
-    queueSelectRows([[]]); // storeSettings -> empty
+    dbState.projectionRow = []; // storeSettings projection -> empty (no store row)
+    queueSelectRows([[]]); // resolveSiteStripe -> no_settings
     const { POST } = await import('@/app/api/storefront/[siteId]/checkout/route');
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(404);
@@ -327,7 +377,7 @@ describe('POST /api/storefront/[siteId]/checkout — input validation', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/stripe connect onboarding/i);
+    expect(json.message).toMatch(/configuración de pagos con stripe/i);
   });
 
   it('returns 400 when the store has not completed Stripe onboarding', async () => {
@@ -338,7 +388,7 @@ describe('POST /api/storefront/[siteId]/checkout — input validation', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/stripe connect onboarding/i);
+    expect(json.message).toMatch(/configuración de pagos con stripe/i);
   });
 
   it('returns 400 when sessionId is missing from the body', async () => {
@@ -384,7 +434,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(404);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/cart not found/i);
+    expect(json.message).toMatch(/carrito no encontrado/i);
   });
 
   it('returns 400 when cart is empty', async () => {
@@ -397,7 +447,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/cart is empty/i);
+    expect(json.message).toMatch(/carrito está vacío/i);
   });
 
   it('returns 400 when a product on the cart is inactive', async () => {
@@ -412,7 +462,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/no longer available/i);
+    expect(json.message).toMatch(/ya no está disponible/i);
   });
 
   it('rejects a design absent from the store-scoped design query before creating a payment', async () => {
@@ -450,7 +500,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/no longer available/i);
+    expect(json.message).toMatch(/ya no está disponible/i);
   });
 
   it('returns 400 when an item exceeds available stock (non-variant)', async () => {
@@ -464,8 +514,8 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/insufficient stock/i);
-    expect(json.message).toMatch(/only 3 available/i);
+    expect(json.message).toMatch(/stock insuficiente/i);
+    expect(json.message).toMatch(/disponibles: 3/i);
   });
 
   it('returns 400 when a variant has insufficient stock', async () => {
@@ -480,7 +530,7 @@ describe('POST /api/storefront/[siteId]/checkout — cart resolution', () => {
     const res = await POST(makeRequest(DEFAULT_BODY), makeParams());
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/insufficient stock/i);
+    expect(json.message).toMatch(/stock insuficiente/i);
   });
 });
 
@@ -662,7 +712,7 @@ describe('POST /api/storefront/[siteId]/checkout — shipping', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/invalid shipping rate/i);
+    expect(json.message).toMatch(/tarifa de envío no válida/i);
   });
 
   it('adds the shipping price for a paid rate', async () => {
@@ -752,7 +802,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/invalid discount code/i);
+    expect(json.message).toMatch(/código de descuento no válido/i);
   });
 
   it('returns 400 when the discount is scheduled to start in the future', async () => {
@@ -769,7 +819,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/not yet active/i);
+    expect(json.message).toMatch(/aún no está activo/i);
   });
 
   it('returns 400 when the discount has expired', async () => {
@@ -786,7 +836,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/expired/i);
+    expect(json.message).toMatch(/caducado/i);
   });
 
   it('returns 400 when the discount has been fully redeemed', async () => {
@@ -802,7 +852,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/fully redeemed/i);
+    expect(json.message).toMatch(/agotado/i);
   });
 
   it('returns 400 when the subtotal is below the discount minimum order amount', async () => {
@@ -818,7 +868,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/minimum order amount/i);
+    expect(json.message).toMatch(/pedido mínimo/i);
   });
 
   it('applies a percent discount and reports it in the total', async () => {
@@ -861,7 +911,7 @@ describe('POST /api/storefront/[siteId]/checkout — discount codes', () => {
     );
     expect(res.status).toBe(400);
     const json = (await res.json()) as ResponseEnvelope;
-    expect(json.message).toMatch(/greater than zero/i);
+    expect(json.message).toMatch(/mayor que cero/i);
   });
 
   it('applies a free-shipping discount and zeroes the shipping component', async () => {

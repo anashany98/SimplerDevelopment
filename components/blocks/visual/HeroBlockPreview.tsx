@@ -77,7 +77,7 @@ export function HeroBlockPreview({ block, isSelected, onChange }: HeroBlockPrevi
             {(block.ctaText || isSelected) && (
               <button
                 type="button"
-                className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium text-lg hover:bg-primary/90 transition-colors"
+                className="px-6 py-3 bg-foreground text-background rounded-md font-medium text-lg hover:bg-foreground/90 transition-colors"
                 onClick={(e) => e.preventDefault()}
                 style={getElementCSS(block.elementStyles, 'cta')}
               >

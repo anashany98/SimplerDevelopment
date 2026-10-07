@@ -1,7 +1,7 @@
 /**
  * SD Chat — Tanstack Query hooks for the approvals queue
  *
- * Backed by the SimplerDevelopment portal endpoints
+ * Backed by the CRM AGENTS portal endpoints
  *  - GET   /api/portal/approvals                  → list (filter by `?status=`)
  *  - GET   /api/portal/approvals/[id]             → single change w/ submitter info
  *  - POST  /api/portal/approvals/[id]/approve     → apply + mark applied

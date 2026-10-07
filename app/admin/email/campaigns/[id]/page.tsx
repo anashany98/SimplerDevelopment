@@ -65,7 +65,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
 
   async function sendCampaign() {
     if (!campaign) return;
-    if (!confirm(`Send "${campaign.name}" to ${campaign.totalRecipients > 0 ? campaign.totalRecipients : 'all active'} subscribers now?`)) return;
+    if (!confirm(`¿Enviar "${campaign.name}" a ${campaign.totalRecipients > 0 ? campaign.totalRecipients : 'todos los activos'} suscriptores ahora?`)) return;
     setSending(true);
     const res = await fetch(`/api/admin/email/campaigns/${id}/send`, { method: 'POST' });
     const data = await res.json();
@@ -75,8 +75,8 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
     setCampaign(prev => prev ? { ...prev, status: 'sent', sentAt: new Date().toISOString(), totalSent: data.data.sent } : prev);
   }
 
-  if (loading) return <div className="p-6 text-muted-foreground text-sm">Loading…</div>;
-  if (!campaign) return <div className="p-6 text-muted-foreground text-sm">Campaign not found.</div>;
+  if (loading) return <div className="p-6 text-muted-foreground text-sm">Cargando…</div>;
+  if (!campaign) return <div className="p-6 text-muted-foreground text-sm">Campaña no encontrada.</div>;
 
   const openRate = campaign.totalSent > 0 ? Math.round(campaign.totalOpened / campaign.totalSent * 100) : 0;
   const clickRate = campaign.totalSent > 0 ? Math.round(campaign.totalClicked / campaign.totalSent * 100) : 0;
@@ -104,17 +104,17 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
           <button
             onClick={sendCampaign}
             disabled={sending}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
           >
             <span className="material-icons text-base">{sending ? 'hourglass_empty' : 'send'}</span>
-            {sending ? 'Sending…' : 'Send Now'}
+            {sending ? 'Enviando…' : 'Enviar ahora'}
           </button>
         )}
       </div>
 
       {sendResult && (
         <div className="bg-green-50 border border-green-200 text-green-800 text-sm px-4 py-3 rounded-lg">
-          Campaign sent: {sendResult.sent} delivered, {sendResult.failed} failed out of {sendResult.total} recipients.
+          Campaña enviada: {sendResult.sent} entregados, {sendResult.failed} fallidos de {sendResult.total} destinatarios.
         </div>
       )}
 
@@ -122,10 +122,10 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
       {campaign.status === 'sent' && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { label: 'Sent', value: campaign.totalSent, icon: 'send' },
-            { label: 'Open Rate', value: `${openRate}%`, icon: 'drafts' },
-            { label: 'Click Rate', value: `${clickRate}%`, icon: 'touch_app' },
-            { label: 'Bounce Rate', value: `${bounceRate}%`, icon: 'error_outline' },
+            { label: 'Enviados', value: campaign.totalSent, icon: 'send' },
+            { label: 'Tasa de apertura', value: `${openRate}%`, icon: 'drafts' },
+            { label: 'Tasa de clics', value: `${clickRate}%`, icon: 'touch_app' },
+            { label: 'Tasa de rebote', value: `${bounceRate}%`, icon: 'error_outline' },
           ].map(stat => (
             <div key={stat.label} className="bg-card border border-border rounded-lg p-4">
               <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
@@ -146,7 +146,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
             onClick={() => setTab(t)}
             className={`px-4 py-2 text-sm font-medium capitalize border-b-2 transition-colors ${tab === t ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
           >
-            {t}
+            {t === 'overview' ? 'Resumen' : t === 'content' ? 'Contenido' : 'Envíos'}
           </button>
         ))}
       </div>
@@ -154,13 +154,13 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
       {tab === 'overview' && (
         <div className="bg-card border border-border rounded-lg divide-y divide-border">
           {[
-            { label: 'From', value: `${campaign.fromName} <${campaign.fromEmail}>` },
-            { label: 'Reply-To', value: campaign.replyTo ?? '—' },
-            { label: 'List', value: campaign.listName ?? '—' },
-            { label: 'Preview Text', value: campaign.previewText ?? '—' },
-            { label: 'Status', value: campaign.status },
-            { label: 'Sent At', value: campaign.sentAt ? new Date(campaign.sentAt).toLocaleString() : '—' },
-            { label: 'Scheduled At', value: campaign.scheduledAt ? new Date(campaign.scheduledAt).toLocaleString() : '—' },
+            { label: 'De', value: `${campaign.fromName} <${campaign.fromEmail}>` },
+            { label: 'Responder a', value: campaign.replyTo ?? '—' },
+            { label: 'Lista', value: campaign.listName ?? '—' },
+            { label: 'Texto de vista previa', value: campaign.previewText ?? '—' },
+            { label: 'Estado', value: campaign.status },
+            { label: 'Enviado el', value: campaign.sentAt ? new Date(campaign.sentAt).toLocaleString() : '—' },
+            { label: 'Programado para', value: campaign.scheduledAt ? new Date(campaign.scheduledAt).toLocaleString() : '—' },
           ].map(row => (
             <div key={row.label} className="flex px-5 py-3 gap-4">
               <span className="text-sm text-muted-foreground w-28 shrink-0">{row.label}</span>
@@ -171,7 +171,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
             <div className="px-5 py-3">
               <Link href={`/admin/email/campaigns/${campaign.id}/edit`} className="text-sm text-primary hover:underline flex items-center gap-1">
                 <span className="material-icons text-sm">edit</span>
-                Edit campaign
+                Editar campaña
               </Link>
             </div>
           )}
@@ -181,7 +181,7 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
       {tab === 'content' && (
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-            <h3 className="font-semibold text-foreground">Email Preview</h3>
+            <h3 className="font-semibold text-foreground">Vista previa del correo</h3>
           </div>
           <div className="p-5">
             <div
@@ -195,19 +195,19 @@ export default function CampaignDetailPage({ params }: { params: Promise<{ id: s
       {tab === 'sends' && (
         <div className="bg-card border border-border rounded-lg overflow-hidden">
           <div className="px-5 py-4 border-b border-border">
-            <h3 className="font-semibold text-foreground">Send Log ({sends.length})</h3>
+            <h3 className="font-semibold text-foreground">Registro de envíos ({sends.length})</h3>
           </div>
           {sends.length === 0 ? (
-            <p className="p-6 text-sm text-muted-foreground">No sends recorded yet.</p>
+            <p className="p-6 text-sm text-muted-foreground">Aún no hay envíos registrados.</p>
           ) : (
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/40">
-                  <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Recipient</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Sent</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Opened</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Clicked</th>
-                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Bounced</th>
+                  <th className="text-left px-5 py-2.5 font-medium text-muted-foreground">Destinatario</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Enviado</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Abierto</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Clic</th>
+                  <th className="text-center px-3 py-2.5 font-medium text-muted-foreground">Rebotado</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 /**
  * DecisionForm — shared form for creating, editing, and superseding a
  * brain_decisions record.
@@ -18,9 +20,8 @@
  * the decision row exists.
  */
 import { useEffect, useMemo, useState } from 'react';
-import type {
-  BrainDecisionReversibility,
-} from '@/lib/db/schema';
+import type { BrainDecisionReversibility } from '@/lib/db/schema';
+import { formatCents } from '@/lib/portal-utils';
 import EntityPicker, { type EntityPickerRow } from './EntityPicker';
 
 interface TeamMember {
@@ -192,15 +193,15 @@ export default function DecisionForm({
     setValidation(null);
 
     if (!title.trim()) {
-      setValidation('Title is required.');
+      setValidation('El título es obligatorio.');
       return;
     }
     if (!isEdit && !decision.trim()) {
-      setValidation('Decision is required.');
+      setValidation('La decisión es obligatoria.');
       return;
     }
     if (!isEdit && !rationale.trim()) {
-      setValidation('Rationale is required.');
+      setValidation('La justificación es obligatoria.');
       return;
     }
 
@@ -229,25 +230,25 @@ export default function DecisionForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Title */}
-      <Field label="Title" required>
+      <Field label="Título" required>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           maxLength={255}
           required
-          placeholder="Adopt Drizzle ORM for new data-access code"
+          placeholder="Adoptar Drizzle ORM para el nuevo código de acceso a datos"
           className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
         />
       </Field>
 
       {/* Context */}
-      <Field label="Context" hint="What was the situation? (optional)">
+        <Field label="Contexto" hint="¿Cuál era la situación? (opcional)">
         <textarea
           value={context}
           onChange={(e) => setContext(e.target.value)}
           rows={3}
-          placeholder="Background, constraints, the problem to solve."
+              placeholder="Antecedentes, restricciones y el problema a resolver."
           className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
         />
       </Field>
@@ -255,34 +256,34 @@ export default function DecisionForm({
       {/* Decision + Rationale + Alternatives — hidden in edit mode */}
       {!isEdit && (
         <>
-          <Field label="Decision" required hint="What was decided?">
+          <Field label="Decisión" required hint="¿Qué se decidió?">
             <textarea
               value={decision}
               onChange={(e) => setDecision(e.target.value)}
               rows={3}
               required
-              placeholder="The concrete decision in 1–3 sentences."
+              placeholder="La decisión concreta en 1-3 frases."
               className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </Field>
 
-          <Field label="Rationale" required hint="Why?">
+          <Field label="Justificación" required hint="¿Por qué?">
             <textarea
               value={rationale}
               onChange={(e) => setRationale(e.target.value)}
               rows={4}
               required
-              placeholder="The reasoning, key trade-offs, evidence considered."
+              placeholder="El razonamiento, los intercambios clave y la evidencia considerada."
               className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </Field>
 
-          <Field label="Alternatives considered" hint="What else was evaluated? (optional)">
+          <Field label="Alternativas consideradas" hint="¿Qué más se evaluó? (opcional)">
             <textarea
               value={alternatives}
               onChange={(e) => setAlternatives(e.target.value)}
               rows={3}
-              placeholder="One per line — what you didn't choose and why."
+              placeholder="Una por línea — qué descartaste y por qué."
               className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </Field>
@@ -291,7 +292,7 @@ export default function DecisionForm({
 
       {/* Alternatives is editable on edit, too — it's not "history-bearing". */}
       {isEdit && (
-        <Field label="Alternatives considered" hint="What else was evaluated? (optional)">
+        <Field label="Alternativas consideradas" hint="¿Qué más se evaluó? (opcional)">
           <textarea
             value={alternatives}
             onChange={(e) => setAlternatives(e.target.value)}
@@ -304,17 +305,17 @@ export default function DecisionForm({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {/* Reversibility — hidden in edit mode */}
         {!isEdit && (
-          <Field label="Reversibility">
+          <Field label="Reversibilidad">
             <div className="flex gap-2">
               <RadioPill
                 checked={reversibility === 'two_way'}
-                label="Two-way door"
+                label="Puerta de doble sentido"
                 icon="sync_alt"
                 onClick={() => setReversibility('two_way')}
               />
               <RadioPill
                 checked={reversibility === 'one_way'}
-                label="One-way door"
+                label="Puerta de un solo sentido"
                 icon="arrow_forward"
                 onClick={() => setReversibility('one_way')}
               />
@@ -323,7 +324,7 @@ export default function DecisionForm({
         )}
 
         {/* Decided-at */}
-        <Field label="Decided at">
+        <Field label="Decidido el">
           <input
             type="date"
             value={decidedAt}
@@ -333,7 +334,7 @@ export default function DecisionForm({
         </Field>
 
         {/* Decision-maker */}
-        <Field label="Decision maker">
+        <Field label="Quién decide">
           <select
             value={decisionMakerId ?? ''}
             onChange={(e) =>
@@ -341,7 +342,7 @@ export default function DecisionForm({
             }
             className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           >
-            <option value="">— (defaults to you)</option>
+            <option value="">— (por defecto, tú)</option>
             {team.map((m) => (
               <option key={m.userId} value={m.userId}>
                 {m.name || m.email}
@@ -351,7 +352,7 @@ export default function DecisionForm({
         </Field>
 
         {/* Confidentiality */}
-        <Field label="Confidentiality">
+        <Field label="Confidencialidad">
           <select
             value={confidentiality}
             onChange={(e) =>
@@ -359,9 +360,9 @@ export default function DecisionForm({
             }
             className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
           >
-            <option value="standard">Standard</option>
-            <option value="restricted">Restricted</option>
-            <option value="confidential">Confidential</option>
+            <option value="standard">Estándar</option>
+            <option value="restricted">Restringida</option>
+            <option value="confidential">Confidencial</option>
           </select>
         </Field>
       </div>
@@ -370,48 +371,48 @@ export default function DecisionForm({
       <fieldset>
         <legend className="text-sm font-medium text-foreground mb-2 flex items-center gap-1.5">
           <span className="material-icons text-base text-primary">anchor</span>
-          Anchors
-          <span className="text-xs font-normal text-muted-foreground">(optional — link this decision to a source record)</span>
+          Vínculos
+          <span className="text-xs font-normal text-muted-foreground">(opcional — vincula esta decisión a un registro de origen)</span>
         </legend>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <EntityPicker
-            label="Meeting"
+            label="Reunión"
             icon="event"
             value={meetingId}
             onChange={setMeetingId}
             endpoint="/api/portal/brain/meetings?limit=20"
             displayRow={meetingDisplayRow}
-            searchPlaceholder="Search meetings…"
+            searchPlaceholder="Buscar reuniones…"
             // listMeetings doesn't honour ?search yet — picker filters
             // the returned page client-side. If we add fts later, drop this.
             supportsServerSearch={false}
           />
           <EntityPicker
-            label="Note"
+            label="Nota"
             icon="description"
             value={noteId}
             onChange={setNoteId}
             endpoint="/api/portal/brain/knowledge?limit=20"
             displayRow={noteDisplayRow}
-            searchPlaceholder="Search notes…"
+            searchPlaceholder="Buscar notas…"
           />
           <EntityPicker
-            label="Company"
+            label="Empresa"
             icon="business"
             value={companyId}
             onChange={setCompanyId}
             endpoint="/api/portal/crm/companies?limit=20"
             displayRow={companyDisplayRow}
-            searchPlaceholder="Search companies…"
+            searchPlaceholder="Buscar empresas…"
           />
           <EntityPicker
-            label="Deal"
+            label="Oportunidad"
             icon="handshake"
             value={dealId}
             onChange={setDealId}
             endpoint="/api/portal/crm/deals"
             displayRow={dealDisplayRow}
-            searchPlaceholder="Search deals…"
+            searchPlaceholder="Buscar oportunidades…"
             // crm/deals returns an unpaginated array — no `limit` honoured;
             // it does support `?search=` server-side, so we keep that on.
           />
@@ -420,14 +421,14 @@ export default function DecisionForm({
 
       {/* Topic picker (create + supersede only) */}
       {showTopics && (
-        <Field label="Topics" hint="Tag this decision with one or more topics from your taxonomy.">
+        <Field label="Temas" hint="Tag this decision with one or more topics from your taxonomy.">
           {flatTopics.length === 0 ? (
             <p className="text-xs text-muted-foreground italic">
-              No topics yet. Create some in{' '}
-              <a className="underline hover:text-foreground" href="/portal/brain/topics">
-                Topics
-              </a>{' '}
-              to make decisions easier to find.
+              Aún no hay temas. Crea alguno en{' '}
+              <Link className="underline hover:text-foreground" href="/portal/brain/topics">
+                Temas
+              </Link>{' '}
+              para que las decisiones sean más fáciles de encontrar.
             </p>
           ) : (
             <div className="max-h-48 overflow-y-auto rounded-md border border-border bg-background p-2 flex flex-wrap gap-1.5">
@@ -441,7 +442,7 @@ export default function DecisionForm({
                     title={t.path}
                     className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border transition-colors ${
                       selected
-                        ? 'bg-primary text-primary-foreground border-primary'
+                        ? 'bg-foreground text-background border-primary'
                         : 'bg-muted/30 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
                     }`}
                   >
@@ -470,19 +471,17 @@ export default function DecisionForm({
             <a
               href={cancelHref}
               className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md border border-border text-foreground hover:bg-accent"
-            >
-              Cancel
-            </a>
+            >Cancelar</a>
           )}
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
           >
             {submitting && (
-              <span className="material-icons animate-spin text-base">progress_activity</span>
+              <span className="material-icons animate-spin text-base">autorenew</span>
             )}
-            {submitLabel ?? (isSupersede ? 'Supersede' : isEdit ? 'Save changes' : 'Record decision')}
+            {submitLabel ?? (isSupersede ? 'Reemplazar' : isEdit ? 'Guardar cambios' : 'Registrar decisión')}
           </button>
         </div>
       </div>
@@ -531,7 +530,7 @@ function RadioPill({
       aria-pressed={checked}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium border transition-colors ${
         checked
-          ? 'bg-primary text-primary-foreground border-primary'
+          ? 'bg-foreground text-background border-primary'
           : 'bg-muted/30 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
       }`}
     >
@@ -553,7 +552,7 @@ function meetingDisplayRow(raw: unknown): EntityPickerRow | null {
   const date = r.meetingDate ?? r.createdAt;
   const dateStr =
     typeof date === 'string' || date instanceof Date
-      ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      ? new Date(date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' })
       : null;
   return {
     id: r.id,
@@ -569,7 +568,7 @@ function noteDisplayRow(raw: unknown): EntityPickerRow | null {
   const updated = r.updatedAt;
   const dateStr =
     typeof updated === 'string' || updated instanceof Date
-      ? new Date(updated).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      ? new Date(updated).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })
       : null;
   return {
     id: r.id,
@@ -595,7 +594,7 @@ function dealDisplayRow(raw: unknown): EntityPickerRow | null {
   if (typeof r.id !== 'number') return null;
   const sec: string[] = [];
   if (typeof r.companyName === 'string' && r.companyName.trim()) sec.push(r.companyName);
-  if (typeof r.value === 'number') sec.push(`$${r.value.toLocaleString()}`);
+  if (typeof r.value === 'number') sec.push(formatCents(r.value));
   return {
     id: r.id,
     primary: typeof r.title === 'string' && r.title.trim() ? r.title : `Deal #${r.id}`,

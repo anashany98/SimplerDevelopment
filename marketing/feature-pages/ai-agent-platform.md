@@ -18,7 +18,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SimplerDevelopment AI Agent Platform",
+  "name": "CRM AGENTS AI Agent Platform",
   "applicationCategory": "DeveloperApplication",
   "featureList": [
     "450 MCP tools across all portal domains",
@@ -41,7 +41,7 @@
 {
   "@context": "https://schema.org",
   "@type": "APIReference",
-  "name": "SimplerDevelopment MCP API",
+  "name": "CRM AGENTS MCP API",
   "documentation": "/docs/agents/tool-reference",
   "programmingLanguage": "HTTP",
   "targetPlatform": "MCP Streamable HTTP"
@@ -68,7 +68,7 @@ AI tools that assist with agency work — drafting content, updating CRM records
 
 ## Solution
 
-SimplerDevelopment exposes every portal domain as a single Model Context Protocol (MCP) endpoint at `POST /api/mcp`. An AI client — such as Claude.ai, Claude Desktop, or a custom agent — connects once via OAuth 2.1 and gets access to up to 450 tools covering the full platform surface. Scopes limit which tools a given client can call. Live-content write operations (publishing, sending, deleting) produce a human-reviewable approval link before they take effect. The tool count is registry-locked by a test that runs on every push.
+CRM AGENTS exposes every portal domain as a single Model Context Protocol (MCP) endpoint at `POST /api/mcp`. An AI client — such as Claude.ai, Claude Desktop, or a custom agent — connects once via OAuth 2.1 and gets access to up to 450 tools covering the full platform surface. Scopes limit which tools a given client can call. Live-content write operations (publishing, sending, deleting) produce a human-reviewable approval link before they take effect. The tool count is registry-locked by a test that runs on every push.
 
 ---
 

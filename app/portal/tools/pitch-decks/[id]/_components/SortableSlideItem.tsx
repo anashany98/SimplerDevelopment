@@ -82,7 +82,7 @@ function SortableSlideItemImpl({
         checked={isSelected}
         onChange={(e) => { e.stopPropagation(); onToggleSelect(); }}
         className="shrink-0 rounded border-border accent-primary cursor-pointer"
-        title="Select for batch edit"
+        title="Seleccionar para edición por lotes"
       />
       <div
         onClick={onClick}
@@ -112,7 +112,7 @@ function SortableSlideItemImpl({
               setRenameValue(slide.label || getSlideTitle(slide));
               setRenaming(true);
             }}
-            title="Double-click to rename"
+            title="Doble clic para renombrar"
           >
             {getSlideTitle(slide)}
           </span>
@@ -120,33 +120,27 @@ function SortableSlideItemImpl({
         {pendingCreate && (
           <span
             className="inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold shrink-0"
-            title="New slide — not yet published"
+            title="Diapositiva nueva — aún no publicada"
           >
-            <span className="material-icons text-[10px]">fiber_new</span>
-            New
-          </span>
+            <span className="material-icons text-[10px]">fiber_new</span>Nuevo</span>
         )}
         {pendingDelete && (
           <span
             className="inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 font-semibold shrink-0"
-            title="Marked for deletion — still live until you publish"
+            title="Marcada para eliminación — sigue activa hasta que publiques"
           >
-            <span className="material-icons text-[10px]">delete_sweep</span>
-            Pending delete
-          </span>
+            <span className="material-icons text-[10px]">delete_sweep</span>Pendiente de eliminación</span>
         )}
         {hasDraft && !pendingCreate && !pendingDelete && (
           <span
             className="inline-flex items-center gap-0.5 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold shrink-0"
-            title="Unpublished draft changes"
+            title="Cambios del borrador sin publicar"
           >
-            <span className="material-icons text-[10px]">edit_note</span>
-            Draft
-          </span>
+            <span className="material-icons text-[10px]">edit_note</span>Borrador</span>
         )}
         {slide.surveySlide && surveyFieldCount != null && (
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium shrink-0" title={`Expands to ${surveyFieldCount} question slides`}>
-            {surveyFieldCount} slides
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium shrink-0" title={`Se expande a ${surveyFieldCount} diapositivas de preguntas`}>
+            {surveyFieldCount} diapositivas
           </span>
         )}
       </div>
@@ -157,7 +151,7 @@ function SortableSlideItemImpl({
             onClick={(e) => { e.stopPropagation(); onPublish(); }}
             disabled={publishing}
             className="p-1 rounded hover:bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:text-amber-700 transition-colors disabled:opacity-50"
-            title={pendingDelete ? 'Publish — removes this slide' : pendingCreate ? 'Publish new slide' : 'Publish draft changes'}
+            title={pendingDelete ? 'Publicar — elimina esta diapositiva' : pendingCreate ? 'Publicar nueva diapositiva' : 'Publicar cambios del borrador'}
           >
             <span className={`material-icons text-sm ${publishing ? 'animate-spin' : ''}`}>
               {publishing ? 'autorenew' : 'publish'}
@@ -169,7 +163,7 @@ function SortableSlideItemImpl({
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => { e.stopPropagation(); onCancelDraft(); }}
             className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            title={pendingDelete ? 'Cancel deletion' : 'Discard draft changes'}
+            title={pendingDelete ? 'Cancelar eliminación' : 'Descartar cambios del borrador'}
           >
             <span className="material-icons text-sm">undo</span>
           </button>
@@ -178,7 +172,7 @@ function SortableSlideItemImpl({
           onPointerDown={(e) => e.stopPropagation()}
           onClick={(e) => { e.stopPropagation(); onDuplicate(); }}
           className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-          title="Duplicate slide"
+          title="Duplicar diapositiva"
         >
           <span className="material-icons text-sm">content_copy</span>
         </button>
@@ -187,7 +181,7 @@ function SortableSlideItemImpl({
           onClick={(e) => { e.stopPropagation(); onRemove(); }}
           disabled={!canRemove}
           className="p-1 rounded hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-          title="Remove slide"
+          title="Eliminar diapositiva"
         >
           <span className="material-icons text-sm">delete_outline</span>
         </button>

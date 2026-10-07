@@ -163,7 +163,7 @@ describe('BrainPersonProfilePage — loading', () => {
   it('shows loading spinner while data is fetching', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 });
 
@@ -176,7 +176,7 @@ describe('BrainPersonProfilePage — error state', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load person");
+      expect(container.textContent).toContain('No se pudo cargar la persona');
     });
   });
 
@@ -194,7 +194,7 @@ describe('BrainPersonProfilePage — error state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false }, false));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load person');
+      expect(container.textContent).toContain('No se pudo cargar la persona');
     });
   });
 
@@ -331,14 +331,14 @@ describe('BrainPersonProfilePage — profile section', () => {
   it('renders Profile section heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Profile');
+      expect(container.textContent).toContain('Perfil');
     });
   });
 
   it('renders Email label in profile dl', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Email');
+      expect(container.textContent).toContain('Correo');
     });
   });
 
@@ -450,7 +450,7 @@ describe('BrainPersonProfilePage — org membership section', () => {
   it('shows "Not assigned to any org units yet" when orgUnits is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Not assigned to any org units yet');
+      expect(container.textContent).toContain('Aún no está asignado a ninguna unidad organizativa.');
     });
   });
 
@@ -499,7 +499,7 @@ describe('BrainPersonProfilePage — org membership section', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Primary');
+      expect(container.textContent).toContain('Principal');
     });
   });
 });
@@ -510,14 +510,14 @@ describe('BrainPersonProfilePage — reporting section', () => {
   it('shows "No manager set." when manager is null', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No manager set.');
+      expect(container.textContent).toContain('Sin gerente asignado.');
     });
   });
 
   it('shows "No direct reports." when directReports is empty', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No direct reports.');
+      expect(container.textContent).toContain('Sin personas a cargo.');
     });
   });
 
@@ -574,7 +574,7 @@ describe('BrainPersonProfilePage — sidebar', () => {
 // Helper: find the Edit button (has icon "edit" + text "Edit", not "Delete")
 function findEditBtn(container: HTMLElement): HTMLButtonElement | undefined {
   return Array.from(container.querySelectorAll('button')).find(
-    (b) => b.textContent?.includes('Edit') && !b.textContent?.includes('Delete'),
+    (b) => b.textContent?.includes('Editar') && !b.textContent?.includes('Eliminar'),
   ) as HTMLButtonElement | undefined;
 }
 
@@ -595,7 +595,7 @@ describe('BrainPersonProfilePage — edit mode', () => {
     const editBtn = await waitForEditBtn(container);
     expect(editBtn).toBeTruthy();
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     );
     expect(deleteBtn).toBeTruthy();
   });
@@ -606,11 +606,11 @@ describe('BrainPersonProfilePage — edit mode', () => {
     fireEvent.click(editBtn);
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Cancel'),
+        (b) => b.textContent?.includes('Cancelar'),
       )).toBe(true);
     });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save'),
+      (b) => b.textContent?.includes('Guardar'),
     );
     expect(saveBtn).toBeTruthy();
   });
@@ -631,11 +631,11 @@ describe('BrainPersonProfilePage — edit mode', () => {
     fireEvent.click(editBtn);
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Cancel'),
+        (b) => b.textContent?.includes('Cancelar'),
       )).toBe(true);
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Cancel'),
+      (b) => b.textContent?.includes('Cancelar'),
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -661,7 +661,7 @@ describe('BrainPersonProfilePage — edit mode', () => {
     fireEvent.change(nameInput, { target: { value: 'Alice Updated' } });
 
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save'),
+      (b) => b.textContent?.includes('Guardar'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
 
@@ -685,11 +685,11 @@ describe('BrainPersonProfilePage — edit mode', () => {
 
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Save'),
+        (b) => b.textContent?.includes('Guardar'),
       )).toBe(true);
     });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save'),
+      (b) => b.textContent?.includes('Guardar'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
 
@@ -710,11 +710,11 @@ describe('BrainPersonProfilePage — edit mode', () => {
 
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Save'),
+        (b) => b.textContent?.includes('Guardar'),
       )).toBe(true);
     });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save'),
+      (b) => b.textContent?.includes('Guardar'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
 
@@ -736,7 +736,7 @@ describe('BrainPersonProfilePage — edit mode', () => {
 
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save'),
+        (b) => b.textContent?.includes('Guardar'),
       ) as HTMLButtonElement;
       expect(saveBtn?.disabled).toBe(true);
     });
@@ -764,12 +764,12 @@ describe('BrainPersonProfilePage — delete modal', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       ) as HTMLButtonElement;
       fireEvent.click(deleteBtn);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Delete this person?');
+      expect(container.textContent).toContain('¿Eliminar a esta persona?');
     });
   });
 
@@ -778,19 +778,19 @@ describe('BrainPersonProfilePage — delete modal', () => {
     await waitFor(() => expect(container.textContent).toContain('Alice Smith'));
 
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
 
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Delete this person?');
+      expect(container.textContent).not.toContain('¿Eliminar a esta persona?');
     });
 
     const deleteCalls = fetchMock.mock.calls.filter(
@@ -809,16 +809,16 @@ describe('BrainPersonProfilePage — delete modal', () => {
     await waitFor(() => expect(container.textContent).toContain('Alice Smith'));
 
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     // The confirm dialog's own Delete button (inside the dialog)
     const confirmDeleteBtn = Array.from(
       container.querySelectorAll('[role="dialog"] button'),
-    ).find((b) => b.textContent?.includes('Delete')) as HTMLButtonElement;
+    ).find((b) => b.textContent?.includes('Eliminar')) as HTMLButtonElement;
     fireEvent.click(confirmDeleteBtn);
 
     await waitFor(() => {
@@ -838,15 +838,15 @@ describe('BrainPersonProfilePage — delete modal', () => {
     await waitFor(() => expect(container.textContent).toContain('Alice Smith'));
 
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     const confirmDeleteBtn = Array.from(
       container.querySelectorAll('[role="dialog"] button'),
-    ).find((b) => b.textContent?.includes('Delete')) as HTMLButtonElement;
+    ).find((b) => b.textContent?.includes('Eliminar')) as HTMLButtonElement;
     fireEvent.click(confirmDeleteBtn);
 
     await waitFor(() => {
@@ -864,15 +864,15 @@ describe('BrainPersonProfilePage — delete modal', () => {
     await waitFor(() => expect(container.textContent).toContain('Alice Smith'));
 
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
-    await waitFor(() => expect(container.textContent).toContain('Delete this person?'));
+    await waitFor(() => expect(container.textContent).toContain('¿Eliminar a esta persona?'));
 
     const confirmDeleteBtn = Array.from(
       container.querySelectorAll('[role="dialog"] button'),
-    ).find((b) => b.textContent?.includes('Delete')) as HTMLButtonElement;
+    ).find((b) => b.textContent?.includes('Eliminar')) as HTMLButtonElement;
     fireEvent.click(confirmDeleteBtn);
 
     await waitFor(() => {
@@ -885,13 +885,13 @@ describe('BrainPersonProfilePage — delete modal', () => {
     await waitFor(() => expect(container.textContent).toContain('Alice Smith'));
 
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
 
     await waitFor(() => {
       expect(container.textContent).toContain('Alice Smith');
-      expect(container.textContent).toContain('Delete this person?');
+      expect(container.textContent).toContain('¿Eliminar a esta persona?');
     });
   });
 });

@@ -194,7 +194,7 @@ describe('recomputeClientSubscription', () => {
     expect(params.items).toHaveLength(4);
     for (const item of params.items) {
       expect(item.price_data.unit_amount).toBe(2250);
-      expect(item.price_data.currency).toBe('usd');
+      expect(item.price_data.currency).toBe('eur');
       expect(item.price_data.recurring).toEqual({ interval: 'month' });
     }
   });

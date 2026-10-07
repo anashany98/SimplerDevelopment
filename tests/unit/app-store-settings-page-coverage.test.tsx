@@ -131,7 +131,7 @@ describe('StoreSettingsPage — loading state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Could not load store settings.');
+      expect(container.textContent).toContain('No se pudieron cargar los ajustes de la tienda.');
     });
   });
 
@@ -139,7 +139,7 @@ describe('StoreSettingsPage — loading state', () => {
     fetchMock.mockRejectedValue(new Error('network'));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Could not load store settings.');
+      expect(container.textContent).toContain('No se pudieron cargar los ajustes de la tienda.');
     });
   });
 });
@@ -150,34 +150,34 @@ describe('StoreSettingsPage — main render', () => {
   it('renders Store Settings heading and Save button after load', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Store Settings');
-      expect(container.textContent).toContain('Save Settings');
+      expect(container.textContent).toContain('Ajustes de la tienda');
+      expect(container.textContent).toContain('Guardar ajustes');
     });
   });
 
   it('renders all section headings', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     expect(container.textContent).toContain('General');
-    expect(container.textContent).toContain('Tax');
-    expect(container.textContent).toContain('Features');
-    expect(container.textContent).toContain('Customer Portal');
+    expect(container.textContent).toContain('Impuesto');
+    expect(container.textContent).toContain('Funciones');
+    expect(container.textContent).toContain('Portal de clientes');
     expect(container.textContent).toContain('Stripe Connect');
-    expect(container.textContent).toContain('Shipping Provider');
+    expect(container.textContent).toContain('Proveedor de envíos');
   });
 
   it('populates storeName input from settings', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     const nameInput = container.querySelector(
-      'input[placeholder="My Store"]',
+      'input[placeholder="Mi tienda"]',
     ) as HTMLInputElement;
     expect(nameInput.value).toBe('Test Store');
   });
 
   it('populates orderPrefix input from settings', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     const prefixInput = container.querySelector(
       'input[placeholder="ORD-"]',
     ) as HTMLInputElement;
@@ -190,9 +190,9 @@ describe('StoreSettingsPage — main render', () => {
 describe('StoreSettingsPage — general field edits', () => {
   it('updates storeName when user types', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     const nameInput = container.querySelector(
-      'input[placeholder="My Store"]',
+      'input[placeholder="Mi tienda"]',
     ) as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'New Name' } });
     expect(nameInput.value).toBe('New Name');
@@ -200,7 +200,7 @@ describe('StoreSettingsPage — general field edits', () => {
 
   it('updates lowStockThreshold from numeric input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     const inputs = Array.from(container.querySelectorAll('input[type="number"]')) as HTMLInputElement[];
     const stockInput = inputs.find((i) => i.value === '5');
     expect(stockInput).toBeTruthy();
@@ -210,7 +210,7 @@ describe('StoreSettingsPage — general field edits', () => {
 
   it('updates currency select', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     const select = container.querySelector('select') as HTMLSelectElement;
     fireEvent.change(select, { target: { value: 'EUR' } });
     expect(select.value).toBe('EUR');
@@ -222,8 +222,8 @@ describe('StoreSettingsPage — general field edits', () => {
 describe('StoreSettingsPage — toggle buttons', () => {
   it('toggles taxInclusive and updates label text', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    expect(container.textContent).toContain('Tax added at checkout');
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    expect(container.textContent).toContain('Impuesto agregado al pagar');
     // Find the toggle button (rounded-full) in the Tax section
     const toggles = Array.from(
       container.querySelectorAll('button.rounded-full'),
@@ -231,35 +231,35 @@ describe('StoreSettingsPage — toggle buttons', () => {
     // First toggle in DOM order is taxInclusive
     fireEvent.click(toggles[0]);
     await waitFor(() => {
-      expect(container.textContent).toContain('Prices include tax');
+      expect(container.textContent).toContain('Los precios incluyen impuesto');
     });
   });
 
   it('toggles requiresShipping', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    expect(container.textContent).toContain('Products require shipping by default');
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    expect(container.textContent).toContain('Los productos requieren envío por defecto');
     const toggles = Array.from(
       container.querySelectorAll('button.rounded-full'),
     ) as HTMLButtonElement[];
     // Second toggle is requiresShipping
     fireEvent.click(toggles[1]);
     await waitFor(() => {
-      expect(container.textContent).toContain('No shipping by default');
+      expect(container.textContent).toContain('Sin envío por defecto');
     });
   });
 
   it('toggles enableReviews', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    expect(container.textContent).toContain('Customers can leave reviews');
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    expect(container.textContent).toContain('Los clientes pueden dejar reseñas');
     const toggles = Array.from(
       container.querySelectorAll('button.rounded-full'),
     ) as HTMLButtonElement[];
     // Third toggle is enableReviews
     fireEvent.click(toggles[2]);
     await waitFor(() => {
-      expect(container.textContent).toContain('Reviews disabled');
+      expect(container.textContent).toContain('Reseñas desactivadas');
     });
   });
 });
@@ -275,10 +275,10 @@ describe('StoreSettingsPage — save flow', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    fireEvent.click(findBtn(container, 'Save Settings')!);
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    fireEvent.click(findBtn(container, 'Guardar ajustes')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Settings saved successfully.');
+      expect(container.textContent).toContain('Ajustes guardados correctamente.');
       const calls = fetchMock.mock.calls.filter(([, init]) => init?.method === 'PUT');
       expect(calls.length).toBeGreaterThan(0);
     });
@@ -292,8 +292,8 @@ describe('StoreSettingsPage — save flow', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    fireEvent.click(findBtn(container, 'Save Settings')!);
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    fireEvent.click(findBtn(container, 'Guardar ajustes')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Validation error');
     });
@@ -307,10 +307,10 @@ describe('StoreSettingsPage — save flow', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    fireEvent.click(findBtn(container, 'Save Settings')!);
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    fireEvent.click(findBtn(container, 'Guardar ajustes')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to save settings.');
+      expect(container.textContent).toContain('No se pudieron guardar los ajustes.');
     });
   });
 
@@ -320,10 +320,10 @@ describe('StoreSettingsPage — save flow', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    fireEvent.click(findBtn(container, 'Save Settings')!);
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    fireEvent.click(findBtn(container, 'Guardar ajustes')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Something went wrong.');
+      expect(container.textContent).toContain('Algo salió mal.');
     });
   });
 
@@ -344,8 +344,8 @@ describe('StoreSettingsPage — save flow', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    fireEvent.click(findBtn(container, 'Save Settings')!);
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    fireEvent.click(findBtn(container, 'Guardar ajustes')!);
     await waitFor(() => {
       expect(putBody).not.toBeNull();
       expect(putBody.defaultParcelLengthIn).toBeNull();
@@ -363,8 +363,8 @@ describe('StoreSettingsPage — save flow', () => {
       return makeRes({ success: true, data: baseSettings({ taxRate: 850 }) });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    fireEvent.click(findBtn(container, 'Save Settings')!);
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    fireEvent.click(findBtn(container, 'Guardar ajustes')!);
     await waitFor(() => {
       expect(putBody).not.toBeNull();
       // 850 / 100 = 8.5
@@ -378,8 +378,8 @@ describe('StoreSettingsPage — save flow', () => {
 describe('StoreSettingsPage — Stripe Connect', () => {
   it('shows Connect Stripe button when not connected', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
-    expect(container.textContent).toContain('Connect Stripe');
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
+    expect(container.textContent).toContain('Conectar Stripe');
   });
 
   it('shows connected state with account ID', async () => {
@@ -395,7 +395,7 @@ describe('StoreSettingsPage — Stripe Connect', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Stripe Connected'));
+    await waitFor(() => expect(container.textContent).toContain('Stripe conectado'));
     expect(container.textContent).toContain('acct_abc123');
     expect(container.textContent).toContain('daily');
     expect(container.textContent).toContain('2.5%');
@@ -414,8 +414,8 @@ describe('StoreSettingsPage — Stripe Connect', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Connect Stripe'));
-    fireEvent.click(findBtn(container, 'Connect Stripe')!);
+    await waitFor(() => expect(container.textContent).toContain('Conectar Stripe'));
+    fireEvent.click(findBtn(container, 'Conectar Stripe')!);
     await waitFor(() => {
       expect(window.location.href).toBe('https://stripe.com/connect');
     });
@@ -432,8 +432,8 @@ describe('StoreSettingsPage — Stripe Connect', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Connect Stripe'));
-    fireEvent.click(findBtn(container, 'Connect Stripe')!);
+    await waitFor(() => expect(container.textContent).toContain('Conectar Stripe'));
+    fireEvent.click(findBtn(container, 'Conectar Stripe')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Stripe error');
     });
@@ -447,10 +447,10 @@ describe('StoreSettingsPage — Stripe Connect', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Connect Stripe'));
-    fireEvent.click(findBtn(container, 'Connect Stripe')!);
+    await waitFor(() => expect(container.textContent).toContain('Conectar Stripe'));
+    fireEvent.click(findBtn(container, 'Conectar Stripe')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Something went wrong.');
+      expect(container.textContent).toContain('Algo salió mal.');
     });
   });
 });
@@ -460,14 +460,14 @@ describe('StoreSettingsPage — Stripe Connect', () => {
 describe('StoreSettingsPage — shipping provider', () => {
   it('renders Manual and EasyPost radio options', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     expect(container.textContent).toContain('Manual');
     expect(container.textContent).toContain('EasyPost');
   });
 
   it('selecting EasyPost reveals easypost-specific fields', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     // The radio input has no value attr — click the <label> containing "EasyPost"
     const labels = Array.from(container.querySelectorAll('label')) as HTMLLabelElement[];
     const easypostLabel = labels.find(
@@ -476,7 +476,7 @@ describe('StoreSettingsPage — shipping provider', () => {
     expect(easypostLabel).toBeTruthy();
     fireEvent.click(easypostLabel!);
     await waitFor(() => {
-      expect(container.textContent).toContain('EasyPost API Key');
+      expect(container.textContent).toContain('Clave API de EasyPost');
     });
   });
 
@@ -500,10 +500,10 @@ describe('StoreSettingsPage — shipping provider', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('EasyPost API Key');
+      expect(container.textContent).toContain('Clave API de EasyPost');
       expect(container.textContent).toContain('…1234');
-      expect(container.textContent).toContain('Ship-From Address');
-      expect(container.textContent).toContain('Default Parcel');
+      expect(container.textContent).toContain('Dirección de origen');
+      expect(container.textContent).toContain('Paquete predeterminado');
     });
   });
 
@@ -522,14 +522,14 @@ describe('StoreSettingsPage — shipping provider', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('EasyPost API Key'));
+    await waitFor(() => expect(container.textContent).toContain('Clave API de EasyPost'));
     const apiKeyInput = container.querySelector(
-      'input[placeholder="EZAK... or EZTK..."]',
+      'input[placeholder="EZAK… o EZTK…"]',
     ) as HTMLInputElement;
     fireEvent.change(apiKeyInput, { target: { value: 'EZAK_test_key' } });
-    fireEvent.click(findBtn(container, 'Save key')!);
+    fireEvent.click(findBtn(container, 'Guardar clave')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('EasyPost API key saved.');
+      expect(container.textContent).toContain('Clave API de EasyPost guardada.');
     });
   });
 
@@ -545,12 +545,12 @@ describe('StoreSettingsPage — shipping provider', () => {
       return makeRes({ success: true, data: baseSettings({ shippingProvider: 'easypost' }) });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('EasyPost API Key'));
+    await waitFor(() => expect(container.textContent).toContain('Clave API de EasyPost'));
     const apiKeyInput = container.querySelector(
-      'input[placeholder="EZAK... or EZTK..."]',
+      'input[placeholder="EZAK… o EZTK…"]',
     ) as HTMLInputElement;
     fireEvent.change(apiKeyInput, { target: { value: 'EZAK_bad' } });
-    fireEvent.click(findBtn(container, 'Save key')!);
+    fireEvent.click(findBtn(container, 'Guardar clave')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Invalid key');
     });
@@ -572,9 +572,9 @@ describe('StoreSettingsPage — shipping provider', () => {
     });
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('…5678'));
-    fireEvent.click(findBtn(container, 'Clear key')!);
+    fireEvent.click(findBtn(container, 'Eliminar clave')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('EasyPost API key cleared.');
+      expect(container.textContent).toContain('Clave API de EasyPost eliminada.');
     });
   });
 
@@ -594,10 +594,10 @@ describe('StoreSettingsPage — shipping provider', () => {
       return makeRes({ success: true, data: baseSettings({ shippingProvider: 'easypost' }) });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Test Connection'));
-    fireEvent.click(findBtn(container, 'Test connection')!);
+    await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
+    fireEvent.click(findBtn(container, 'Probar conexión')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('3 rates');
+      expect(container.textContent).toContain('3 tarifas');
       expect(container.textContent).toContain('USPS');
     });
   });
@@ -610,8 +610,8 @@ describe('StoreSettingsPage — shipping provider', () => {
       return makeRes({ success: true, data: baseSettings({ shippingProvider: 'easypost' }) });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Test Connection'));
-    fireEvent.click(findBtn(container, 'Test connection')!);
+    await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
+    fireEvent.click(findBtn(container, 'Probar conexión')!);
     await waitFor(() => {
       expect(container.textContent).toContain('Auth failed');
       expect(container.textContent).toContain('UNAUTHORIZED');
@@ -624,10 +624,10 @@ describe('StoreSettingsPage — shipping provider', () => {
       return makeRes({ success: true, data: baseSettings({ shippingProvider: 'easypost' }) });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Test Connection'));
-    fireEvent.click(findBtn(container, 'Test connection')!);
+    await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
+    fireEvent.click(findBtn(container, 'Probar conexión')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error running test');
+      expect(container.textContent).toContain('Error de red al ejecutar la prueba');
     });
   });
 
@@ -647,10 +647,10 @@ describe('StoreSettingsPage — shipping provider', () => {
       return makeRes({ success: true, data: baseSettings({ shippingProvider: 'easypost' }) });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Test Connection'));
-    fireEvent.click(findBtn(container, 'Test connection')!);
+    await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
+    fireEvent.click(findBtn(container, 'Probar conexión')!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Got 1 rate');
+      expect(container.textContent).toContain('Resultados: 1 tarifa');
     });
   });
 
@@ -662,14 +662,14 @@ describe('StoreSettingsPage — shipping provider', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Show manual rates when live rates fail'));
-    expect(container.textContent).toContain('Show manual rates when live rates fail');
+    await waitFor(() => expect(container.textContent).toContain('Mostrar tarifas manuales cuando fallen las tarifas en vivo'));
+    expect(container.textContent).toContain('Mostrar tarifas manuales cuando fallen las tarifas en vivo');
     const toggles = Array.from(
       container.querySelectorAll('button.rounded-full'),
     ) as HTMLButtonElement[];
     // Find the live rates toggle — it's labelled nearby
     const liveRatesLabel = Array.from(container.querySelectorAll('label')).find((l) =>
-      l.textContent?.includes('Live Rates Fallback'),
+      l.textContent?.includes('Respaldo de tarifas en vivo'),
     );
     expect(liveRatesLabel).toBeTruthy();
     // Toggle is a sibling button
@@ -700,7 +700,7 @@ describe('StoreSettingsPage — shipping provider', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Ship-From Address'));
+    await waitFor(() => expect(container.textContent).toContain('Dirección de origen'));
     // Address Line 1 input
     const line1Inputs = Array.from(container.querySelectorAll('input')).filter(
       (i) => (i as HTMLInputElement).value === '123 Main',
@@ -722,7 +722,7 @@ describe('StoreSettingsPage — shipping provider', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Default Parcel'));
+    await waitFor(() => expect(container.textContent).toContain('Paquete predeterminado'));
     // Length input should show "12"
     const lengthInput = Array.from(container.querySelectorAll('input[type="number"]')).find(
       (i) => (i as HTMLInputElement).value === '12',
@@ -736,17 +736,17 @@ describe('StoreSettingsPage — shipping provider', () => {
 describe('StoreSettingsPage — customer portal', () => {
   it('renders Customer Portal section', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
-    expect(container.textContent).toContain('Customer Accounts');
-    expect(container.textContent).toContain('Guest Checkout');
-    expect(container.textContent).toContain('Wishlist');
-    expect(container.textContent).toContain('Order Tracking');
-    expect(container.textContent).toContain('Customer Support');
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
+    expect(container.textContent).toContain('Cuentas de clientes');
+    expect(container.textContent).toContain('Compra como invitado');
+    expect(container.textContent).toContain('Lista de deseos');
+    expect(container.textContent).toContain('Seguimiento de pedidos');
+    expect(container.textContent).toContain('Soporte al cliente');
   });
 
   it('updates support email field', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const emailInput = container.querySelector(
       'input[placeholder="support@yourstore.com"]',
     ) as HTMLInputElement;
@@ -756,7 +756,7 @@ describe('StoreSettingsPage — customer portal', () => {
 
   it('updates return policy URL field', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const returnInput = container.querySelector(
       'input[placeholder="https://yourstore.com/returns"]',
     ) as HTMLInputElement;
@@ -766,7 +766,7 @@ describe('StoreSettingsPage — customer portal', () => {
 
   it('updates welcome message textarea', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'Welcome!' } });
     expect(textarea.value).toBe('Welcome!');
@@ -774,7 +774,7 @@ describe('StoreSettingsPage — customer portal', () => {
 
   it('customer portal toggle buttons work', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Customer Portal'));
+    await waitFor(() => expect(container.textContent).toContain('Portal de clientes'));
     const toggles = Array.from(
       container.querySelectorAll('button.rounded-full'),
     ) as HTMLButtonElement[];
@@ -789,8 +789,8 @@ describe('StoreSettingsPage — customer portal', () => {
 describe('StoreSettingsPage — Stripe BYOK', () => {
   it('shows "not enabled" notice when stripeByokAllowed is false', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Stripe Payment Provider'));
-    expect(container.textContent).toContain('Stripe BYOK is not enabled for this site.');
+    await waitFor(() => expect(container.textContent).toContain('Proveedor de pagos Stripe'));
+    expect(container.textContent).toContain('Stripe BYOK no está activado para este sitio.');
   });
 
   it('shows BYOK mode selector when stripeByokAllowed is true', async () => {
@@ -801,8 +801,8 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Stripe Payment Provider'));
-    expect(container.textContent).toContain('Connect');
+    await waitFor(() => expect(container.textContent).toContain('Proveedor de pagos Stripe'));
+    expect(container.textContent).toContain('Conectar');
     expect(container.textContent).toContain('BYOK');
   });
 
@@ -823,10 +823,10 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     expect(byokLabel).toBeTruthy();
     fireEvent.click(byokLabel!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Secret Key');
-      expect(container.textContent).toContain('Publishable Key');
-      expect(container.textContent).toContain('Webhook Endpoint Secret');
-      expect(container.textContent).toContain('Webhook URL');
+      expect(container.textContent).toContain('Clave secreta');
+      expect(container.textContent).toContain('Clave publicable');
+      expect(container.textContent).toContain('Secreto del endpoint del webhook');
+      expect(container.textContent).toContain('URL del webhook');
     });
   });
 
@@ -841,19 +841,19 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Secret Key'));
+    await waitFor(() => expect(container.textContent).toContain('Clave secreta'));
     const secretInput = container.querySelector(
-      'input[placeholder="sk_test_… or sk_live_…"]',
+      'input[placeholder="sk_test_… o sk_live_…"]',
     ) as HTMLInputElement;
     fireEvent.change(secretInput, { target: { value: 'sk_test_abc123' } });
     // Find the save key button in the secret section
     const saveKeyBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Save key' || b.textContent?.includes('Save key'),
+      (b) => b.textContent?.trim() === 'Guardar clave' || b.textContent?.includes('Guardar clave'),
     ) as HTMLButtonElement;
     expect(saveKeyBtn).toBeTruthy();
     fireEvent.click(saveKeyBtn!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Stripe secret key saved.');
+      expect(container.textContent).toContain('Clave secreta de Stripe guardada.');
     });
   });
 
@@ -872,13 +872,13 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Secret Key'));
+    await waitFor(() => expect(container.textContent).toContain('Clave secreta'));
     const secretInput = container.querySelector(
-      'input[placeholder="sk_test_… or sk_live_…"]',
+      'input[placeholder="sk_test_… o sk_live_…"]',
     ) as HTMLInputElement;
     fireEvent.change(secretInput, { target: { value: 'sk_test_bad' } });
     const saveKeyBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save key'),
+      (b) => b.textContent?.includes('Guardar clave'),
     ) as HTMLButtonElement;
     fireEvent.click(saveKeyBtn!);
     await waitFor(() => {
@@ -904,12 +904,12 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('…abcd'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear key'),
+      (b) => b.textContent?.includes('Eliminar clave'),
     ) as HTMLButtonElement;
     expect(clearBtn).toBeTruthy();
     fireEvent.click(clearBtn!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Stripe secret key cleared.');
+      expect(container.textContent).toContain('Clave secreta de Stripe eliminada.');
     });
   });
 
@@ -924,18 +924,18 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Webhook Endpoint Secret'));
+    await waitFor(() => expect(container.textContent).toContain('Secreto del endpoint del webhook'));
     const webhookInput = container.querySelector(
       'input[placeholder="whsec_…"]',
     ) as HTMLInputElement;
     fireEvent.change(webhookInput, { target: { value: 'whsec_test123' } });
     const saveSecretBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save secret'),
+      (b) => b.textContent?.includes('Guardar secreto'),
     ) as HTMLButtonElement;
     expect(saveSecretBtn).toBeTruthy();
     fireEvent.click(saveSecretBtn!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Stripe webhook secret saved.');
+      expect(container.textContent).toContain('Secreto del webhook de Stripe guardado.');
     });
   });
 
@@ -954,11 +954,11 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Webhook Endpoint Secret'));
+    await waitFor(() => expect(container.textContent).toContain('Secreto del endpoint del webhook'));
     const webhookInput = container.querySelector('input[placeholder="whsec_…"]') as HTMLInputElement;
     fireEvent.change(webhookInput, { target: { value: 'whsec_bad' } });
     const saveSecretBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save secret'),
+      (b) => b.textContent?.includes('Guardar secreto'),
     ) as HTMLButtonElement;
     fireEvent.click(saveSecretBtn!);
     await waitFor(() => {
@@ -981,14 +981,14 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Configured'));
+    await waitFor(() => expect(container.textContent).toContain('Configurado'));
     const clearSecretBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear secret'),
+      (b) => b.textContent?.includes('Eliminar secreto'),
     ) as HTMLButtonElement;
     expect(clearSecretBtn).toBeTruthy();
     fireEvent.click(clearSecretBtn!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Stripe webhook secret cleared.');
+      expect(container.textContent).toContain('Secreto del webhook de Stripe eliminado.');
     });
   });
 
@@ -1017,15 +1017,15 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Test Connection'));
+    await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
     // There are two Test connection buttons (easypost + stripe); click the second one
     const testBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.includes('Test connection'),
+      (b) => b.textContent?.includes('Probar conexión'),
     );
     // Click the stripe one (second occurrence or first if only one)
     fireEvent.click(testBtns[testBtns.length - 1]);
     await waitFor(() => {
-      expect(container.textContent).toContain('Connected to Stripe');
+      expect(container.textContent).toContain('Conectado a Stripe');
       expect(container.textContent).toContain('acct_xyz');
       expect(container.textContent).toContain('Acme Inc');
     });
@@ -1046,9 +1046,9 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Test Connection'));
+    await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
     const testBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.includes('Test connection'),
+      (b) => b.textContent?.includes('Probar conexión'),
     );
     fireEvent.click(testBtns[testBtns.length - 1]);
     await waitFor(() => {
@@ -1070,13 +1070,13 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Test Connection'));
+    await waitFor(() => expect(container.textContent).toContain('Probar conexión'));
     const testBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.includes('Test connection'),
+      (b) => b.textContent?.includes('Probar conexión'),
     );
     fireEvent.click(testBtns[testBtns.length - 1]);
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error running test');
+      expect(container.textContent).toContain('Error de red al ejecutar la prueba');
     });
   });
 
@@ -1088,8 +1088,8 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Webhook URL'));
-    const copyBtn = findBtn(container, 'Copy');
+    await waitFor(() => expect(container.textContent).toContain('URL del webhook'));
+    const copyBtn = findBtn(container, 'Copiar');
     expect(copyBtn).toBeTruthy();
     await act(async () => {
       fireEvent.click(copyBtn!);
@@ -1107,7 +1107,7 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Webhook URL'));
+    await waitFor(() => expect(container.textContent).toContain('URL del webhook'));
     const webhookUrlInput = Array.from(container.querySelectorAll('input[readonly]')).find(
       (i) => (i as HTMLInputElement).value.includes('siteId='),
     ) as HTMLInputElement | undefined;
@@ -1127,9 +1127,9 @@ describe('StoreSettingsPage — Stripe BYOK', () => {
       }),
     );
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Publishable Key'));
+    await waitFor(() => expect(container.textContent).toContain('Clave publicable'));
     const pkInput = container.querySelector(
-      'input[placeholder="pk_test_… or pk_live_…"]',
+      'input[placeholder="pk_test_… o pk_live_…"]',
     ) as HTMLInputElement;
     expect(pkInput).toBeTruthy();
     expect(pkInput.value).toBe('pk_test_existing');
@@ -1149,13 +1149,13 @@ describe('StoreSettingsPage — error and success banners', () => {
       return makeRes({ success: true, data: baseSettings() });
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Store Settings'));
+    await waitFor(() => expect(container.textContent).toContain('Ajustes de la tienda'));
     // Trigger an error
-    fireEvent.click(findBtn(container, 'Save Settings')!);
+    fireEvent.click(findBtn(container, 'Guardar ajustes')!);
     await waitFor(() => expect(container.textContent).toContain('Save failed'));
     // Now change a field — should clear error
     const nameInput = container.querySelector(
-      'input[placeholder="My Store"]',
+      'input[placeholder="Mi tienda"]',
     ) as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'New' } });
     await waitFor(() => {

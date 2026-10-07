@@ -162,14 +162,14 @@ describe('BrainRelationshipsPage — shell', () => {
   it('renders the Relationships heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Relationships');
+      expect(container.textContent).toContain('Relaciones');
     });
   });
 
   it('renders the subtitle text about Brain-tracked relationships', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Brain-tracked relationships');
+      expect(container.textContent).toContain('Relaciones seguidas por el Brain');
     });
   });
 
@@ -177,16 +177,16 @@ describe('BrainRelationshipsPage — shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      expect(btns.some((b) => b.textContent?.includes('New relationship'))).toBe(true);
+      expect(btns.some((b) => b.textContent?.includes('Nueva relación'))).toBe(true);
     });
   });
 
   it('renders the three view tabs: All, Prospects, Stale', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All');
-      expect(container.textContent).toContain('Prospects');
-      expect(container.textContent).toContain('Stale');
+      expect(container.textContent).toContain('Todos');
+      expect(container.textContent).toContain('Prospectos');
+      expect(container.textContent).toContain('Sin seguimiento');
     });
   });
 
@@ -194,7 +194,7 @@ describe('BrainRelationshipsPage — shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const selects = Array.from(container.querySelectorAll('select'));
-      expect(selects.some((s) => s.textContent?.includes('All priorities'))).toBe(true);
+      expect(selects.some((s) => s.textContent?.includes('Todas las prioridades'))).toBe(true);
     });
   });
 });
@@ -205,7 +205,7 @@ describe('BrainRelationshipsPage — loading state', () => {
   it('shows a loading indicator while fetch is in flight', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando…');
   });
 });
 
@@ -215,17 +215,17 @@ describe('BrainRelationshipsPage — empty state', () => {
   it('shows "No relationships yet." on vanilla empty "all" view', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No relationships yet.');
+      expect(container.textContent).toContain('Aún no hay relaciones.');
     });
   });
 
   it('shows a "New relationship" button in the empty-state card', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No relationships yet.');
+      expect(container.textContent).toContain('Aún no hay relaciones.');
     });
     const btns = Array.from(container.querySelectorAll('button'));
-    const count = btns.filter((b) => b.textContent?.includes('New relationship')).length;
+    const count = btns.filter((b) => b.textContent?.includes('Nueva relación')).length;
     expect(count).toBeGreaterThanOrEqual(2);
   });
 
@@ -233,7 +233,7 @@ describe('BrainRelationshipsPage — empty state', () => {
     searchParamsValue = new URLSearchParams('view=prospects');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No prospects yet.');
+      expect(container.textContent).toContain('Aún no hay prospectos.');
     });
   });
 
@@ -241,14 +241,14 @@ describe('BrainRelationshipsPage — empty state', () => {
     searchParamsValue = new URLSearchParams('view=stale');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No stale relationships.');
+      expect(container.textContent).toContain('No hay relaciones sin seguimiento.');
     });
   });
 
   it('empty-state on "all" includes hint about picking a CRM company or deal', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('CRM company or deal');
+      expect(container.textContent).toContain('oportunidad del CRM');
     });
   });
 
@@ -256,7 +256,7 @@ describe('BrainRelationshipsPage — empty state', () => {
     searchParamsValue = new URLSearchParams('view=prospects');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No prospects yet.');
+      expect(container.textContent).toContain('Aún no hay prospectos.');
     });
     // the empty-state card only shows a New relationship button on "all" view
     const emptyCard = container.querySelector('.text-center.py-12');
@@ -294,7 +294,7 @@ describe('BrainRelationshipsPage — error state', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Failed to load.');
+      expect(container.textContent).toContain('No se pudo cargar.');
     });
   });
 
@@ -320,7 +320,7 @@ describe('BrainRelationshipsPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -436,7 +436,7 @@ describe('BrainRelationshipsPage — type filter', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const selects = Array.from(container.querySelectorAll('select'));
-      expect(selects.some((s) => s.textContent?.includes('All types'))).toBe(true);
+      expect(selects.some((s) => s.textContent?.includes('Todos los tipos'))).toBe(true);
     });
   });
 
@@ -450,19 +450,19 @@ describe('BrainRelationshipsPage — type filter', () => {
     });
     // types.length > 0 is true when there is 1+ distinct type, so "All types" appears
     const selects = Array.from(container.querySelectorAll('select'));
-    expect(selects.some((s) => s.textContent?.includes('All types'))).toBe(true);
+    expect(selects.some((s) => s.textContent?.includes('Todos los tipos'))).toBe(true);
   });
 
   it('changing the priority filter calls fetch with the priority param', async () => {
     fetchMock.mockImplementation(async () => makeListRes([]));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No relationships yet.');
+      expect(container.textContent).toContain('Aún no hay relaciones.');
     });
     fetchMock.mockReset();
     fetchMock.mockImplementation(async () => makeListRes([]));
     const prioritySelect = Array.from(container.querySelectorAll('select')).find((s) =>
-      s.textContent?.includes('All priorities'),
+      s.textContent?.includes('Todas las prioridades'),
     ) as HTMLSelectElement;
     fireEvent.change(prioritySelect, { target: { value: 'high' } });
     await waitFor(() => {
@@ -478,12 +478,12 @@ describe('BrainRelationshipsPage — view switching', () => {
   it('clicking the "Prospects" tab calls router.replace with view=prospects', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Prospects');
+      expect(container.textContent).toContain('Prospectos');
     });
     // Tab buttons render: <span class="material-icons">icon</span>Label
     // textContent = "person_searchProspects", so use includes
     const tabs = Array.from(container.querySelectorAll('button'));
-    const prospectsTab = tabs.find((b) => b.textContent?.includes('Prospects'));
+    const prospectsTab = tabs.find((b) => b.textContent?.includes('Prospectos'));
     expect(prospectsTab).toBeTruthy();
     fireEvent.click(prospectsTab!);
     await waitFor(() => {
@@ -496,10 +496,10 @@ describe('BrainRelationshipsPage — view switching', () => {
   it('clicking the "Stale" tab calls router.replace with view=stale', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Stale');
+      expect(container.textContent).toContain('Sin seguimiento');
     });
     const tabs = Array.from(container.querySelectorAll('button'));
-    const staleTab = tabs.find((b) => b.textContent?.includes('Stale'));
+    const staleTab = tabs.find((b) => b.textContent?.includes('Sin seguimiento'));
     expect(staleTab).toBeTruthy();
     fireEvent.click(staleTab!);
     await waitFor(() => {
@@ -513,13 +513,13 @@ describe('BrainRelationshipsPage — view switching', () => {
     searchParamsValue = new URLSearchParams('view=prospects');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All');
+      expect(container.textContent).toContain('Todos');
     });
     const tabs = Array.from(container.querySelectorAll('button'));
     // "All" tab — must not match "New relationship" or other buttons
     const allTab = tabs.find((b) => {
       const txt = b.textContent ?? '';
-      return txt.includes('All') && !txt.includes('relationship') && !txt.includes('priorities') && !txt.includes('types');
+      return txt.includes('Todos') && !txt.includes('relación') && !txt.includes('prioridades') && !txt.includes('tipos');
     });
     expect(allTab).toBeTruthy();
     fireEvent.click(allTab!);
@@ -534,8 +534,8 @@ describe('BrainRelationshipsPage — view switching', () => {
     searchParamsValue = new URLSearchParams('view=prospects');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Prospects');
-      expect(container.textContent).toContain('early-stage opportunities');
+      expect(container.textContent).toContain('Prospectos');
+      expect(container.textContent).toContain('oportunidades en fase temprana');
     });
   });
 
@@ -543,7 +543,7 @@ describe('BrainRelationshipsPage — view switching', () => {
     searchParamsValue = new URLSearchParams('view=stale');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Stale relationships');
+      expect(container.textContent).toContain('Relaciones sin seguimiento');
     });
   });
 
@@ -551,7 +551,7 @@ describe('BrainRelationshipsPage — view switching', () => {
     searchParamsValue = new URLSearchParams('view=bogus');
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Relationships');
+      expect(container.textContent).toContain('Relaciones');
     });
   });
 
@@ -562,7 +562,7 @@ describe('BrainRelationshipsPage — view switching', () => {
       const calls = fetchMock.mock.calls.map((c) => String(c[0]));
       expect(calls.some((u) => u.includes('stale=true'))).toBe(true);
     });
-    expect(container.textContent).toContain('Stale');
+    expect(container.textContent).toContain('Sin seguimiento');
   });
 
   it('prospects view passes type=prospect to the fetch when no typeFilter is set', async () => {
@@ -572,7 +572,7 @@ describe('BrainRelationshipsPage — view switching', () => {
       const calls = fetchMock.mock.calls.map((c) => String(c[0]));
       expect(calls.some((u) => u.includes('type=prospect'))).toBe(true);
     });
-    expect(container.textContent).toContain('Prospects');
+    expect(container.textContent).toContain('Prospectos');
   });
 
   it('renders list rows (not cards) when view is "stale" and data is present', async () => {
@@ -613,7 +613,7 @@ describe('BrainRelationshipsPage — CreateRelationshipModal open/close', () => 
   it('modal is not visible by default', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Relationships');
+      expect(container.textContent).toContain('Relaciones');
     });
     expect(container.querySelector('.fixed.inset-0')).toBeNull();
   });
@@ -622,33 +622,33 @@ describe('BrainRelationshipsPage — CreateRelationshipModal open/close', () => 
     const { container } = renderPage();
     await waitFor(() => {
       const btns = Array.from(container.querySelectorAll('button'));
-      const btn = btns.find((b) => b.textContent?.includes('New relationship'));
+      const btn = btns.find((b) => b.textContent?.includes('Nueva relación'));
       expect(btn).toBeTruthy();
     });
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New relationship'),
+      b.textContent?.includes('Nueva relación'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
       expect(container.querySelector('.fixed.inset-0')).toBeTruthy();
-      expect(container.textContent).toContain('New relationship');
+      expect(container.textContent).toContain('Nueva relación');
     });
   });
 
   it('clicking Cancel closes the modal', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Relationships');
+      expect(container.textContent).toContain('Relaciones');
     });
     const openBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New relationship'),
+      b.textContent?.includes('Nueva relación'),
     ) as HTMLButtonElement;
     fireEvent.click(openBtn);
     await waitFor(() => {
       expect(container.querySelector('.fixed.inset-0')).toBeTruthy();
     });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
@@ -659,14 +659,14 @@ describe('BrainRelationshipsPage — CreateRelationshipModal open/close', () => 
   it('modal shows the search input for CRM companies or deals', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Relationships');
+      expect(container.textContent).toContain('Relaciones');
     });
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New relationship'),
+      b.textContent?.includes('Nueva relación'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      const input = container.querySelector('input[placeholder*="Search CRM"]');
+      const input = container.querySelector('input[placeholder*="Buscar empresas"]');
       expect(input).toBeTruthy();
     });
   });
@@ -678,7 +678,7 @@ describe('BrainRelationshipsPage — CreateRelationshipModal suggestions', () =>
   // Open the modal BEFORE activating fake timers so waitFor works normally.
   async function openModalWithRealTimers(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New relationship'),
+      b.textContent?.includes('Nueva relación'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -688,10 +688,10 @@ describe('BrainRelationshipsPage — CreateRelationshipModal suggestions', () =>
 
   it('typing in the search box triggers a CRM suggestions fetch', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalWithRealTimers(container);
     vi.useFakeTimers();
-    const input = container.querySelector('input[placeholder*="Search CRM"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="Buscar empresas"]') as HTMLInputElement;
     await act(async () => {
       fireEvent.change(input, { target: { value: 'Acme' } });
       vi.advanceTimersByTime(300);
@@ -717,10 +717,10 @@ describe('BrainRelationshipsPage — CreateRelationshipModal suggestions', () =>
       return makeListRes([]);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalWithRealTimers(container);
     vi.useFakeTimers();
-    const input = container.querySelector('input[placeholder*="Search CRM"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="Buscar empresas"]') as HTMLInputElement;
     await act(async () => {
       fireEvent.change(input, { target: { value: 'ac' } });
       vi.advanceTimersByTime(300);
@@ -745,10 +745,10 @@ describe('BrainRelationshipsPage — CreateRelationshipModal suggestions', () =>
       return makeListRes([]);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalWithRealTimers(container);
     vi.useFakeTimers();
-    const input = container.querySelector('input[placeholder*="Search CRM"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="Buscar empresas"]') as HTMLInputElement;
     await act(async () => {
       fireEvent.change(input, { target: { value: 'big' } });
       vi.advanceTimersByTime(300);
@@ -767,17 +767,17 @@ describe('BrainRelationshipsPage — CreateRelationshipModal suggestions', () =>
       return makeListRes([]);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalWithRealTimers(container);
     vi.useFakeTimers();
-    const input = container.querySelector('input[placeholder*="Search CRM"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="Buscar empresas"]') as HTMLInputElement;
     await act(async () => {
       fireEvent.change(input, { target: { value: 'zz' } });
       vi.advanceTimersByTime(300);
     });
     vi.useRealTimers();
     await waitFor(() => {
-      expect(container.textContent).toContain('No matches.');
+      expect(container.textContent).toContain('Sin resultados.');
     });
   });
 
@@ -795,17 +795,17 @@ describe('BrainRelationshipsPage — CreateRelationshipModal suggestions', () =>
       return makeListRes([]);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalWithRealTimers(container);
     vi.useFakeTimers();
-    const input = container.querySelector('input[placeholder*="Search CRM"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="Buscar empresas"]') as HTMLInputElement;
     await act(async () => {
       fireEvent.change(input, { target: { value: 'al' } });
       vi.advanceTimersByTime(300);
     });
     vi.useRealTimers();
     await waitFor(() => {
-      expect(container.textContent).toContain('already tracked');
+      expect(container.textContent).toContain('ya en seguimiento');
     });
   });
 });
@@ -815,7 +815,7 @@ describe('BrainRelationshipsPage — CreateRelationshipModal suggestions', () =>
 describe('BrainRelationshipsPage — CreateRelationshipModal submit flow', () => {
   async function openModalAndPickCompany(container: HTMLElement) {
     const openBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New relationship'),
+      b.textContent?.includes('Nueva relación'),
     ) as HTMLButtonElement;
     fireEvent.click(openBtn);
     await waitFor(() => expect(container.querySelector('.fixed.inset-0')).toBeTruthy());
@@ -835,7 +835,7 @@ describe('BrainRelationshipsPage — CreateRelationshipModal submit flow', () =>
 
     // Use fake timers only for the debounce — open modal first (with real timers) so waitFor works.
     vi.useFakeTimers();
-    const input = container.querySelector('input[placeholder*="Search CRM"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="Buscar empresas"]') as HTMLInputElement;
     await act(async () => {
       fireEvent.change(input, { target: { value: 'tar' } });
       vi.advanceTimersByTime(300);
@@ -849,48 +849,48 @@ describe('BrainRelationshipsPage — CreateRelationshipModal submit flow', () =>
     fireEvent.click(companyBtn);
     await waitFor(() => {
       // After picking, the search input disappears and the form step shows
-      expect(container.textContent).toContain('Relationship type');
+      expect(container.textContent).toContain('Tipo de relación');
     });
   }
 
   it('picking a company shows the relationship-type form step', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalAndPickCompany(container);
-    expect(container.textContent).toContain('Priority');
+    expect(container.textContent).toContain('Prioridad');
     expect(container.textContent).toContain('Target Co');
   });
 
   it('"Change" button returns to the search step', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalAndPickCompany(container);
     const changeBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Change',
+      b.textContent?.trim() === 'Cambiar',
     ) as HTMLButtonElement;
     fireEvent.click(changeBtn);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder*="Search CRM"]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder*="Buscar empresas"]')).toBeTruthy();
     });
   });
 
   it('"Create relationship" button is disabled until a company is picked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     const openBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New relationship'),
+      b.textContent?.includes('Nueva relación'),
     ) as HTMLButtonElement;
     fireEvent.click(openBtn);
     await waitFor(() => expect(container.querySelector('.fixed.inset-0')).toBeTruthy());
     const createBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create relationship'),
+      b.textContent?.includes('Crear relación'),
     ) as HTMLButtonElement;
     expect(createBtn?.disabled).toBe(true);
   });
 
   it('successful POST navigates to the new relationship page', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalAndPickCompany(container);
 
     fetchMock.mockImplementation(async (url: string, init?: RequestInit) => {
@@ -907,7 +907,7 @@ describe('BrainRelationshipsPage — CreateRelationshipModal submit flow', () =>
     } as Location);
 
     const createBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create relationship'),
+      b.textContent?.includes('Crear relación'),
     ) as HTMLButtonElement;
     fireEvent.click(createBtn);
     await waitFor(() => {
@@ -922,7 +922,7 @@ describe('BrainRelationshipsPage — CreateRelationshipModal submit flow', () =>
 
   it('POST failure shows error in the modal', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Relationships'));
+    await waitFor(() => expect(container.textContent).toContain('Relaciones'));
     await openModalAndPickCompany(container);
 
     fetchMock.mockImplementation(async (url: string, init?: RequestInit) => {
@@ -933,7 +933,7 @@ describe('BrainRelationshipsPage — CreateRelationshipModal submit flow', () =>
     });
 
     const createBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Create relationship'),
+      b.textContent?.includes('Crear relación'),
     ) as HTMLButtonElement;
     fireEvent.click(createBtn);
     await waitFor(() => {
@@ -967,8 +967,8 @@ describe('BrainRelationshipsPage — RelationshipRow fields', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('last touched');
-      expect(container.textContent).toMatch(/\d+d ago/);
+      expect(container.textContent).toContain('último contacto');
+      expect(container.textContent).toMatch(/hace \d+d/);
     });
   });
 
@@ -979,7 +979,7 @@ describe('BrainRelationshipsPage — RelationshipRow fields', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('stale after 30d');
+      expect(container.textContent).toContain('sin seguimiento tras 30d');
     });
   });
 });

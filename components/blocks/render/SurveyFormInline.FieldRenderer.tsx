@@ -96,7 +96,7 @@ export function renderField(
           className={inputCls}
           style={ringStyle}
         >
-          <option value="">Select...</option>
+          <option value="">Seleccionar...</option>
           {field.options.map((rawOpt, i) => {
             const { value, label } = normalizeOption(rawOpt);
             return <option key={value || `opt-${i}`} value={value}>{label}</option>;
@@ -190,7 +190,7 @@ export function renderField(
           >
             <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${answers[field.id] ? 'translate-x-4.5' : 'translate-x-0.5'}`} />
           </div>
-          <span className={optionTextColor ? 'text-sm' : 'text-sm text-gray-700 dark:text-gray-300'} style={optionLabelStyle}>{answers[field.id] ? 'Yes' : 'No'}</span>
+          <span className={optionTextColor ? 'text-sm' : 'text-sm text-gray-700 dark:text-gray-300'} style={optionLabelStyle}>{answers[field.id] ? 'Sí' : 'No'}</span>
         </button>
       );
 
@@ -203,6 +203,8 @@ export function renderField(
               type="button"
               onClick={() => setAnswer(field.id, star)}
               className="text-2xl transition-colors"
+              aria-label={`${star} de 5`}
+              aria-pressed={(answers[field.id] as number) >= star}
               style={{ color: (answers[field.id] as number) >= star ? color : '#d1d5db' }}
             >
               &#9733;

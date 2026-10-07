@@ -16,7 +16,7 @@ export function RegenerateModal({ prompt, regenerating, error, onPromptChange, o
   return (
     <form onSubmit={onSubmit} className="bg-card border border-border rounded-xl p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-foreground">Regenerate All Slides</h3>
+        <h3 className="text-sm font-semibold text-foreground">Regenerar todas las diapositivas</h3>
         <button type="button" onClick={onClose} className="text-muted-foreground hover:text-foreground">
           <span className="material-icons text-base">close</span>
         </button>
@@ -24,7 +24,7 @@ export function RegenerateModal({ prompt, regenerating, error, onPromptChange, o
       <textarea
         value={prompt}
         onChange={(e) => onPromptChange(e.target.value)}
-        placeholder="Describe what the new deck should focus on..."
+        placeholder="Describe en qué debe enfocarse la nueva presentación…"
         rows={3}
         className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
         disabled={regenerating}
@@ -38,12 +38,12 @@ export function RegenerateModal({ prompt, regenerating, error, onPromptChange, o
       <button
         type="submit"
         disabled={regenerating || !prompt.trim()}
-        className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium disabled:opacity-50"
+        className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium disabled:opacity-50"
       >
         {regenerating ? (
-          <><span className="material-icons animate-spin text-base">autorenew</span>Generating...</>
+          <><span className="material-icons animate-spin text-base">autorenew</span>Generando…</>
         ) : (
-          <><span className="material-icons text-base">auto_awesome</span>Regenerate Deck</>
+          <><span className="material-icons text-base">auto_awesome</span>Regenerar presentación</>
         )}
       </button>
     </form>

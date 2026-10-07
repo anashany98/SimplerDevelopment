@@ -68,7 +68,7 @@ test.describe('PM Kanban UI @pm @ui', () => {
     // detail modal — not on the card preview — so they are reliable markers
     // that the modal actually mounted.
     await expect(page.getByText('Assignees', { exact: true })).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByText('Dependencies', { exact: true })).toBeVisible();
+    await expect(page.getByText('Dependencias', { exact: true })).toBeVisible();
     // Description is rendered inside the modal body.
     await expect(page.getByText('Description visible in modal body').first()).toBeVisible();
   });

@@ -7,7 +7,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('@/config/site', () => ({
   siteConfig: {
-    name: 'SimplerDevelopment',
+    name: 'CRM AGENTS',
     description: 'Design, Dev, and Automation Agency',
     url: 'https://simplerdevelopment.com',
     ogImage: 'https://simplerdevelopment.com/og.jpg',
@@ -163,24 +163,24 @@ describe('lib/utils/seo', () => {
   it('generateSEO returns metadata with defaults', async () => {
     const { generateSEO } = await import('@/lib/utils/seo');
     const meta = generateSEO({});
-    expect(meta.title).toEqual({ absolute: 'SimplerDevelopment' });
+    expect(meta.title).toEqual({ absolute: 'CRM AGENTS' });
     expect(meta.description).toBe('Design, Dev, and Automation Agency');
     expect(meta.alternates?.canonical).toBe('https://simplerdevelopment.com');
     expect(meta.openGraph).toMatchObject({
       type: 'website',
       url: 'https://simplerdevelopment.com',
-      siteName: 'SimplerDevelopment',
+      siteName: 'CRM AGENTS',
     });
     expect(meta.twitter).toMatchObject({
       card: 'summary_large_image',
-      creator: '@simplerdevelopment',
+      creator: 'CRM AGENTS',
     });
   });
 
   it('generateSEO composes title with site name', async () => {
     const { generateSEO } = await import('@/lib/utils/seo');
     const meta = generateSEO({ title: 'About', description: 'About us', path: '/about' });
-    expect(meta.title).toEqual({ absolute: 'About | SimplerDevelopment' });
+    expect(meta.title).toEqual({ absolute: 'About | CRM AGENTS' });
     expect(meta.description).toBe('About us');
     expect(meta.alternates?.canonical).toBe('https://simplerdevelopment.com/about');
   });
@@ -250,7 +250,7 @@ describe('lib/utils/seo', () => {
       author: { '@type': 'Person', name: 'A' },
       mainEntityOfPage: { '@type': 'WebPage', '@id': 'U' },
     });
-    expect((schema.publisher as Record<string, unknown>).name).toBe('SimplerDevelopment');
+    expect((schema.publisher as Record<string, unknown>).name).toBe('CRM AGENTS');
   });
 
   it('generateArticleSchema falls back modifiedTime to publishedTime', async () => {
@@ -272,7 +272,7 @@ describe('lib/utils/seo', () => {
     expect(schema).toMatchObject({
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'SimplerDevelopment',
+      name: 'CRM AGENTS',
       url: 'https://simplerdevelopment.com',
       logo: 'https://simplerdevelopment.com/logo.png',
     });
@@ -294,7 +294,7 @@ describe('lib/utils/structured-data', () => {
     expect(schema).toEqual({
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'SimplerDevelopment',
+      name: 'CRM AGENTS',
       url: 'https://simplerdevelopment.com',
       logo: 'https://simplerdevelopment.com/logo.png',
       description: 'Design, Dev, and Automation Agency',
@@ -316,10 +316,10 @@ describe('lib/utils/structured-data', () => {
     expect(schema).toEqual({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: 'SimplerDevelopment',
+      name: 'CRM AGENTS',
       url: 'https://simplerdevelopment.com',
       description: 'Design, Dev, and Automation Agency',
-      publisher: { '@type': 'Organization', name: 'SimplerDevelopment' },
+      publisher: { '@type': 'Organization', name: 'CRM AGENTS' },
     });
   });
 
@@ -335,7 +335,7 @@ describe('lib/utils/structured-data', () => {
       dateModified: '2026-01-01',
     });
     expect(schema.image).toBeUndefined();
-    expect(schema.author.name).toBe('SimplerDevelopment');
+    expect(schema.author.name).toBe('CRM AGENTS');
   });
 
   it('generateArticleSchema accepts image and modifiedAt', async () => {
@@ -359,7 +359,7 @@ describe('lib/utils/structured-data', () => {
       '@type': 'Service',
       name: 'Consulting',
       description: 'Top-tier consulting',
-      provider: { '@type': 'Organization', name: 'SimplerDevelopment' },
+      provider: { '@type': 'Organization', name: 'CRM AGENTS' },
     });
     expect(schema.serviceType).toBeUndefined();
   });

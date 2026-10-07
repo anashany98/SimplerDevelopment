@@ -2,7 +2,7 @@
  * Turning a post's stored content into blocks you can render.
  *
  * THE GOTCHA THIS EXISTS FOR: the SDK types `Post.content` as `string`, but a
- * SimplerDevelopment post does not store HTML there — it stores the block
+ * CRM AGENTS post does not store HTML there — it stores the block
  * document as JSON, shaped `{ blocks: Block[], version: '1.0' }`. So `content`
  * has to be parsed before it means anything, and anything that renders it
  * directly will print raw JSON onto the page.

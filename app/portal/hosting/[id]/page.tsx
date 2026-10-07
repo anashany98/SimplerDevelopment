@@ -57,12 +57,12 @@ export default async function PortalHostingSitePage({
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <span className="material-icons text-base">arrow_back</span>
-        Back to Hosting
+        Volver a Alojamiento
       </Link>
 
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Hosting"
+        eyebrow="Alojamiento"
         title={site.name}
         subtitle={site.customDomain ?? undefined}
         actions={
@@ -78,9 +78,9 @@ export default async function PortalHostingSitePage({
         <div className="flex items-start gap-3 p-4 bg-yellow-50 border border-yellow-200 rounded-xl dark:bg-yellow-900/20 dark:border-yellow-800">
           <span className="material-icons text-yellow-600 mt-0.5">hourglass_empty</span>
           <div>
-            <p className="font-medium text-sm text-yellow-800 dark:text-yellow-300">Your site is being provisioned</p>
+            <p className="font-medium text-sm text-yellow-800 dark:text-yellow-300">Tu sitio se está aprovisionando</p>
             <p className="text-xs text-yellow-700 dark:text-yellow-400 mt-0.5">
-              Our team is setting up your Railway environment. We&apos;ll notify you when it&apos;s ready.
+              Nuestro equipo está configurando tu entorno de Railway. Te avisaremos cuando esté listo.
             </p>
           </div>
         </div>
@@ -90,9 +90,9 @@ export default async function PortalHostingSitePage({
         <div className="flex items-start gap-3 p-4 bg-orange-50 border border-orange-200 rounded-xl dark:bg-orange-900/20 dark:border-orange-800">
           <span className="material-icons text-orange-600 mt-0.5">pause_circle</span>
           <div>
-            <p className="font-medium text-sm text-orange-800 dark:text-orange-300">Site is suspended</p>
+            <p className="font-medium text-sm text-orange-800 dark:text-orange-300">El sitio está suspendido</p>
             <p className="text-xs text-orange-700 dark:text-orange-400 mt-0.5">
-              Contact us to reactivate your hosting.
+              Contacta con nosotros para reactivar tu alojamiento.
             </p>
           </div>
         </div>
@@ -106,12 +106,12 @@ export default async function PortalHostingSitePage({
         </div>
         {site.renewalDate && (
           <div className="bg-card border border-border rounded-2xl p-4">
-            <p className="text-xs text-muted-foreground mb-1">Renewal Date</p>
+            <p className="text-xs text-muted-foreground mb-1">Fecha de renovación</p>
             <p className="font-semibold text-foreground">{new Date(site.renewalDate).toLocaleDateString()}</p>
           </div>
         )}
         <div className="bg-card border border-border rounded-2xl p-4">
-          <p className="text-xs text-muted-foreground mb-1">Since</p>
+          <p className="text-xs text-muted-foreground mb-1">Desde</p>
           <p className="font-semibold text-foreground">{new Date(site.createdAt).toLocaleDateString()}</p>
         </div>
       </div>
@@ -121,14 +121,14 @@ export default async function PortalHostingSitePage({
         <div className="px-4 py-3 border-b border-border bg-muted/20">
           <h2 className="font-display text-sm font-extrabold tracking-[-0.02em] text-foreground flex items-center gap-2">
             <span className="material-icons text-base text-primary">language</span>
-            Domain &amp; URLs
+            Dominio y URLs
           </h2>
         </div>
         <div className="p-4 space-y-3">
           {site.customDomain ? (
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-xs text-muted-foreground">Your Domain</p>
+                <p className="text-xs text-muted-foreground">Tu dominio</p>
                 <p className="font-mono text-sm text-foreground mt-0.5">{site.customDomain}</p>
               </div>
               {site.status === 'active' && (
@@ -144,7 +144,7 @@ export default async function PortalHostingSitePage({
               )}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">No custom domain configured yet. Contact us to set one up.</p>
+            <p className="text-sm text-muted-foreground">Aún no hay un dominio personalizado configurado. Contáctanos para configurar uno.</p>
           )}
 
           {site.railwayDomain && (
@@ -190,9 +190,9 @@ export default async function PortalHostingSitePage({
               <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-muted/40 border-b border-border">
-                    <th className="text-left px-4 py-2.5 font-medium text-muted-foreground text-xs uppercase tracking-wide">Type</th>
+                    <th className="text-left px-4 py-2.5 font-medium text-muted-foreground text-xs uppercase tracking-wide">Tipo</th>
                     <th className="text-left px-4 py-2.5 font-medium text-muted-foreground text-xs uppercase tracking-wide">Host / Name</th>
-                    <th className="text-left px-4 py-2.5 font-medium text-muted-foreground text-xs uppercase tracking-wide">Value / Points To</th>
+                    <th className="text-left px-4 py-2.5 font-medium text-muted-foreground text-xs uppercase tracking-wide">Valor / Apunta a</th>
                     <th className="text-left px-4 py-2.5 font-medium text-muted-foreground text-xs uppercase tracking-wide">TTL</th>
                   </tr>
                 </thead>
@@ -224,9 +224,7 @@ export default async function PortalHostingSitePage({
             )}
             <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/20 dark:border-blue-800">
               <span className="material-icons text-blue-600 text-sm mt-0.5">schedule</span>
-              <p className="text-xs text-blue-700 dark:text-blue-300">
-                DNS changes can take up to 24–48 hours to propagate globally. Once pointed correctly, your site will be live at your custom domain.
-              </p>
+              <p className="text-xs text-blue-700 dark:text-blue-300">Los cambios de DNS pueden tardar hasta 24–48 horas en propagarse globalmente. Una vez apuntado correctamente, tu sitio estará en línea en tu dominio personalizado.</p>
             </div>
           </div>
         )}
@@ -236,10 +234,10 @@ export default async function PortalHostingSitePage({
       <div className="bg-card border border-border rounded-2xl p-4 flex items-start gap-3">
         <span className="material-icons text-primary mt-0.5">support_agent</span>
         <div className="text-sm">
-          <p className="font-medium text-foreground">Need help?</p>
+          <p className="font-medium text-foreground">¿Necesitas ayuda?</p>
           <p className="text-muted-foreground mt-0.5">
             Having trouble with DNS or your hosting setup?{' '}
-            <Link href="/portal/tickets/new" className="text-primary hover:underline">Open a support ticket</Link>{' '}
+            <Link href="/portal/tickets/new" className="text-primary hover:underline">Abrir un boleto de soporte</Link>{' '}
             and our team will help you get configured.
           </p>
         </div>

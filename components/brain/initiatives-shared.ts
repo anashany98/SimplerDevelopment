@@ -5,6 +5,8 @@
  * pull in lib/db / drizzle just to render a status chip.
  */
 
+import { relativeTimeEs } from '@/lib/portal-utils';
+
 export type BrainInitiativeStatus =
   | 'planned'
   | 'active'
@@ -124,15 +126,15 @@ export function initiativeStatusChip(
 ): { label: string; className: string; icon: string } {
   switch (status) {
     case 'planned':
-      return { label: 'Planned', icon: 'edit_calendar', className: 'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300' };
+      return { label: 'Planificada', icon: 'edit_calendar', className: 'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300' };
     case 'active':
-      return { label: 'Active', icon: 'rocket_launch', className: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' };
+      return { label: 'Activa', icon: 'rocket_launch', className: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' };
     case 'paused':
-      return { label: 'Paused', icon: 'pause_circle', className: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' };
+      return { label: 'Pausada', icon: 'pause_circle', className: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' };
     case 'completed':
-      return { label: 'Completed', icon: 'check_circle', className: 'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300' };
+      return { label: 'Completada', icon: 'check_circle', className: 'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300' };
     case 'cancelled':
-      return { label: 'Cancelled', icon: 'cancel', className: 'bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400' };
+      return { label: 'Cancelada', icon: 'cancel', className: 'bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400' };
   }
 }
 
@@ -141,13 +143,13 @@ export function initiativePriorityChip(
 ): { label: string; className: string } {
   switch (priority) {
     case 'low':
-      return { label: 'Low', className: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-700/40 dark:text-zinc-300' };
+      return { label: 'Baja', className: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-700/40 dark:text-zinc-300' };
     case 'medium':
-      return { label: 'Medium', className: 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300' };
+      return { label: 'Media', className: 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300' };
     case 'high':
-      return { label: 'High', className: 'bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300' };
+      return { label: 'Alta', className: 'bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300' };
     case 'critical':
-      return { label: 'Critical', className: 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' };
+      return { label: 'Crítica', className: 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' };
   }
 }
 
@@ -155,52 +157,37 @@ export function goalStatusChip(
   status: BrainGoalStatus,
 ): { label: string; className: string; icon: string } {
   switch (status) {
-    case 'open':       return { label: 'Open',       icon: 'radio_button_unchecked', className: 'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300' };
-    case 'on_track':   return { label: 'On track',   icon: 'trending_up',            className: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' };
-    case 'at_risk':    return { label: 'At risk',    icon: 'warning',                className: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' };
-    case 'off_track':  return { label: 'Off track',  icon: 'trending_down',          className: 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' };
-    case 'achieved':   return { label: 'Achieved',   icon: 'emoji_events',           className: 'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300' };
-    case 'missed':     return { label: 'Missed',     icon: 'cancel',                 className: 'bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400' };
+    case 'open':       return { label: 'Abierto',       icon: 'radio_button_unchecked', className: 'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300' };
+    case 'on_track':   return { label: 'En curso',   icon: 'trending_up',            className: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' };
+    case 'at_risk':    return { label: 'En riesgo',    icon: 'warning',                className: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300' };
+    case 'off_track':  return { label: 'Desviado',  icon: 'trending_down',          className: 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300' };
+    case 'achieved':   return { label: 'Logrado',   icon: 'emoji_events',           className: 'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300' };
+    case 'missed':     return { label: 'No alcanzado',     icon: 'cancel',                 className: 'bg-zinc-200 text-zinc-600 dark:bg-zinc-700 dark:text-zinc-400' };
   }
 }
 
 export function linkEntityTypeMeta(t: BrainInitiativeLinkType): { label: string; icon: string; pluralLabel: string } {
   switch (t) {
-    case 'task':        return { label: 'Task',     pluralLabel: 'Tasks',      icon: 'task_alt' };
-    case 'note':        return { label: 'Note',     pluralLabel: 'Notes',      icon: 'sticky_note_2' };
-    case 'meeting':     return { label: 'Meeting',  pluralLabel: 'Meetings',   icon: 'forum' };
-    case 'decision':    return { label: 'Decision', pluralLabel: 'Decisions',  icon: 'gavel' };
-    case 'topic':       return { label: 'Topic',    pluralLabel: 'Topics',     icon: 'sell' };
-    case 'crm_deal':    return { label: 'Deal',     pluralLabel: 'Deals',      icon: 'handshake' };
-    case 'crm_company': return { label: 'Company',  pluralLabel: 'Companies',  icon: 'business' };
+    case 'task':        return { label: 'Tarea',     pluralLabel: 'Tareas',      icon: 'task_alt' };
+    case 'note':        return { label: 'Nota',     pluralLabel: 'Notas',      icon: 'sticky_note_2' };
+    case 'meeting':     return { label: 'Reunión',  pluralLabel: 'Reuniones',   icon: 'forum' };
+    case 'decision':    return { label: 'Decisión', pluralLabel: 'Decisiones',  icon: 'gavel' };
+    case 'topic':       return { label: 'Tema',    pluralLabel: 'Temas',     icon: 'sell' };
+    case 'crm_deal':    return { label: 'Negocio',     pluralLabel: 'Negocios',      icon: 'handshake' };
+    case 'crm_company': return { label: 'Empresa',  pluralLabel: 'Empresas',  icon: 'business' };
   }
 }
 
 // ─── formatters ──────────────────────────────────────────────────────────────
 
 /**
- * Tiny relative-time formatter. Matches the shape used elsewhere in the portal
- * (see components/portal/comments/ThreadCard.tsx). Returns 'just now', '7m',
- * '3h', '5d', '2mo', '1y'. Pass `signed: true` to flip past/future ('in 2d',
- * '3d ago') — useful for target dates.
+ * Spanish relative time ("hace 5 min", "en 2 d"). Pass `signed: true` to
+ * render future target dates too.
  */
 export function relativeTime(d: Date | string, opts: { signed?: boolean } = {}): string {
   const date = typeof d === 'string' ? new Date(d) : d;
-  const diffMs = date.getTime() - Date.now();
-  const future = diffMs > 0;
-  const abs = Math.abs(diffMs);
-  const s = Math.floor(abs / 1000);
-  if (s < 45) return opts.signed ? (future ? 'soon' : 'just now') : 'just now';
-  const m = Math.floor(s / 60);
-  if (m < 60) return opts.signed ? (future ? `in ${m}m` : `${m}m ago`) : `${m}m`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return opts.signed ? (future ? `in ${h}h` : `${h}h ago`) : `${h}h`;
-  const days = Math.floor(h / 24);
-  if (days < 30) return opts.signed ? (future ? `in ${days}d` : `${days}d ago`) : `${days}d`;
-  const months = Math.floor(days / 30);
-  if (months < 12) return opts.signed ? (future ? `in ${months}mo` : `${months}mo ago`) : `${months}mo`;
-  const years = Math.floor(months / 12);
-  return opts.signed ? (future ? `in ${years}y` : `${years}y ago`) : `${years}y`;
+  if (Number.isNaN(date.getTime())) return '—';
+  return relativeTimeEs(date, opts);
 }
 
 /** Days remaining (signed). Returns null if no targetDate. */
@@ -221,7 +208,7 @@ export function formatMetric(value: number | null, unit: string | null): string 
     return `$${dollars.toFixed(0)}`;
   }
   if (unit === 'count') return value.toLocaleString();
-  if (unit === 'boolean') return value > 0 ? 'Yes' : 'No';
+  if (unit === 'boolean') return value > 0 ? 'Sí' : 'No';
   return value.toLocaleString();
 }
 

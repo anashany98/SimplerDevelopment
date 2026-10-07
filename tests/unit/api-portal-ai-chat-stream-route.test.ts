@@ -213,7 +213,14 @@ vi.mock('@/lib/db', () => {
 const resolvePortalMock = vi.fn();
 vi.mock('@/lib/mcp-auth', () => ({
   resolvePortalFromRequest: (...args: unknown[]) => resolvePortalMock(...args),
-  hasScope: (scopes: string[], scope: string) => scopes.includes(scope),
+  hasScope: (granted: string[], required: string) =>
+    granted.includes('*') || granted.includes(required),
+}));
+
+// portal-auth mock — the stream route's role gate (write → member+).
+const authorizePortalMock = vi.fn();
+vi.mock('@/lib/portal-auth', () => ({
+  authorizePortal: (...args: unknown[]) => authorizePortalMock(...args),
 }));
 vi.mock('@/lib/portal-client', () => ({ getPortalRole: vi.fn().mockResolvedValue('owner') }));
 
@@ -388,6 +395,7 @@ beforeEach(() => {
   dbIdCounter = 100;
 
   resolvePortalMock.mockReset();
+  authorizePortalMock.mockReset();
   hasCreditsM.mockReset();
   deductCreditsM.mockReset();
   reserveCreditsM.mockReset().mockResolvedValue({ success: true, newBalance: 900 });
@@ -399,6 +407,7 @@ beforeEach(() => {
 
   // Sensible defaults
   resolvePortalMock.mockResolvedValue(defaultCtx());
+  authorizePortalMock.mockResolvedValue({ userId: 1, role: 'owner' });
   planGateMock.mockResolvedValue({ allowed: true });
   resolveKeyM.mockResolvedValue({ key: 'sk-test', source: 'platform' });
   hasCreditsM.mockResolvedValue(true);
@@ -420,6 +429,17 @@ describe('POST /api/portal/ai/chat/stream — auth', () => {
     expect(res.status).toBe(401);
     const body = await res.json();
     expect(body.success).toBe(false);
+  });
+
+  it('returns 403 when the role gate denies the write', async () => {
+    authorizePortalMock.mockResolvedValueOnce({
+      response: new Response(JSON.stringify({ success: false, message: 'Permission denied.' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    });
+    const res = await POST(makeReq({ messages: [{ role: 'user', content: 'hi' }] }));
+    expect(res.status).toBe(403);
   });
 });
 

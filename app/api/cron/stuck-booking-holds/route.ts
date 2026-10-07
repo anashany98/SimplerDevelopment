@@ -5,6 +5,7 @@ import { and, eq, gt, isNull, lt, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { bookings, bookingPages, clients, crmNotifications } from '@/lib/db/schema';
 import { createCrmNotification } from '@/lib/crm/notifications';
+import { formatMoney } from '@/lib/utils/money';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -139,7 +140,7 @@ async function _GET(req: Request) {
       bodyLines.push(`Scheduled for: ${new Date(c.startTime).toISOString()}`);
     }
     if (typeof c.total === 'number' && c.total > 0) {
-      bodyLines.push(`Total: $${(c.total / 100).toFixed(2)}`);
+      bodyLines.push(`Total: ${formatMoney(c.total)}`);
     }
     bodyLines.push(`Payment status: ${c.paymentStatus} (no paidAt)`);
     if (c.stripePaymentIntentId) {

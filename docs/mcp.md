@@ -9,7 +9,7 @@ The portal exposes a [Model Context Protocol](https://modelcontextprotocol.io) s
 Claude.ai web has a custom-connector dialog that handles login and consent for you. No API key to copy and paste.
 
 1. In Claude.ai → **Settings → Connectors → Browse connectors → Add custom connector**.
-2. Name: **SimplerDevelopment**.
+2. Name: **CRM AGENTS**.
 3. Remote MCP server URL: `https://www.simplerdevelopment.com/api/mcp`
 4. Leave the OAuth fields blank — Claude registers itself automatically.
 5. Click **Add**. You'll be redirected to your portal login (if not already signed in), then to a consent screen showing what Claude is asking for. Approve to finish.
@@ -44,7 +44,7 @@ Claude Desktop expects stdio-style MCP servers. Use `mcp-remote` as a bridge:
 ```json
 {
   "mcpServers": {
-    "simplerdevelopment": {
+    "crm-agents": {
       "command": "npx",
       "args": [
         "-y",
@@ -61,10 +61,44 @@ Claude Desktop expects stdio-style MCP servers. Use `mcp-remote` as a bridge:
 ### 4. Claude Code
 
 ```bash
-claude mcp add --transport http simplerdevelopment \
+claude mcp add --transport http crm-agents \
   https://www.simplerdevelopment.com/api/mcp \
   --header "Authorization: Bearer sd_mcp_your_key_here"
 ```
+
+---
+
+## Option C — ChatGPT (OpenAI) desktop
+
+ChatGPT desktop connects to remote MCP servers through its `mcp.json` config file.
+
+1. **Create an API key**: [`/portal/settings/api-keys`](/portal/settings/api-keys) → **New key** → copy the `sd_mcp_…` value (shown once).
+2. **Create (or edit) the ChatGPT config file**:
+   - macOS: `~/.chatgpt/mcp.json`
+   - Windows: `%USERPROFILE%\.chatgpt\mcp.json`
+3. **Add the server** using the Streamable HTTP transport (`type: "http"`, NOT `sse`):
+
+   ```json
+   {
+     "mcpServers": {
+       "freebuff": {
+         "type": "http",
+         "url": "http://localhost:3000/api/mcp",
+         "headers": {
+           "Authorization": "Bearer sd_mcp_your_key_here"
+         }
+       }
+     }
+   }
+   ```
+
+4. **Restart ChatGPT desktop** and enable the **freebuff** server in its MCP/tools settings. The portal's tools (500+ across 22 product domains) become available as ChatGPT actions — the same tools Claude Code and the portal's own agents use.
+
+Notes:
+
+- Point `url` at your deployed host (e.g. `https://your-domain.com/api/mcp`) when not running locally.
+- Keys are scoped: request `*` for full access or a subset (e.g. `crm:*`, `projects:*`) to limit blast radius.
+- Verify the endpoint from a terminal before touching ChatGPT: `curl -X POST http://localhost:3000/api/mcp -H "Content-Type: application/json" -H "Authorization: Bearer sd_mcp_..." -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"probe","version":"1.0"}}}'`
 
 ---
 

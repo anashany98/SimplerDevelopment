@@ -1,5 +1,5 @@
 /**
- * Canonical Google OAuth scopes for the SimplerDevelopment Workspace integration.
+ * Canonical Google OAuth scopes for the CRM AGENTS Workspace integration.
  * Must stay in sync with the GCP project's OAuth consent screen scope list.
  * See: .planning/milestones/google-workspace/phases/01-gcp-foundation-and-schema/GCP-SETUP.md
  */

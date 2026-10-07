@@ -42,14 +42,14 @@ import { isAuthorizedCron } from '@/lib/cron-auth';
 import { db } from '@/lib/db';
 import { surveys, surveyResponses } from '@/lib/db/schema';
 import { escapeHtml } from '@/lib/utils/html';
-import { resend } from '@/lib/email';
+import { resend, getConfiguredFromEmail } from '@/lib/email';
 import { resolveSurveyRecipients } from '@/lib/automation/survey-notifications';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const BASE_URL = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@simplerdevelopment.com';
+
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const PERIOD_MS: Record<string, number> = { daily: DAY_MS, weekly: 7 * DAY_MS };
@@ -186,8 +186,9 @@ async function _GET(req: Request) {
       }
 
       const portalUrl = `${BASE_URL}/portal/surveys/${survey.id}`;
+      const fromEmail = (await getConfiguredFromEmail()) || 'noreply@simplerdevelopment.com';
       await resend.emails.send({
-        from: FROM_EMAIL,
+        from: fromEmail,
         to: recipients,
         subject: `${items.length} new response${items.length === 1 ? '' : 's'}: ${survey.title}`,
         html: renderDigestEmail({

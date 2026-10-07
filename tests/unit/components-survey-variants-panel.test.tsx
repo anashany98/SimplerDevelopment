@@ -130,14 +130,14 @@ afterEach(() => {
 describe('VariantsPanel — initial render', () => {
   it('renders the A/B Variants heading', async () => {
     renderPanel([]);
-    expect(screen.getByText('A/B Variants')).toBeTruthy();
+    expect(screen.getByText('Variantes A/B')).toBeTruthy();
   });
 
   it('shows empty state when no variants exist', async () => {
     renderPanel([]);
     await waitFor(() =>
       expect(
-        screen.getByText('No variants yet. Add one above to start splitting visitors between alternate field sets.'),
+        screen.getByText('Aún no hay variantes. Añade una arriba para empezar a dividir visitantes entre conjuntos de campos alternativos.'),
       ).toBeTruthy(),
     );
   });
@@ -153,10 +153,10 @@ describe('VariantsPanel — initial render', () => {
       expect(screen.queryByText('Loading')).toBeNull(),
     );
     expect(
-      screen.getByPlaceholderText('Variant name (e.g. Short form, Long form)'),
+      screen.getByPlaceholderText('Nombre de la variante (ej. Formulario corto, Formulario largo)'),
     ).toBeTruthy();
     const addBtns = Array.from(document.querySelectorAll('button')).filter((b) =>
-      b.textContent?.includes('Add variant'),
+      b.textContent?.includes('Añadir variante'),
     );
     expect(addBtns.length).toBeGreaterThan(0);
   });
@@ -183,29 +183,29 @@ describe('VariantsPanel — initial render', () => {
 describe('VariantsPanel — variant list display', () => {
   it('shows field count for each variant', async () => {
     renderPanel([VARIANT_BASE]);
-    await waitFor(() => expect(screen.getByText(/1 fields/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/1 campos/)).toBeTruthy());
   });
 
   it('shows 0 fields for variant with empty fields array', async () => {
     renderPanel([VARIANT_B]);
-    await waitFor(() => expect(screen.getByText(/0 fields/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/0 campos/)).toBeTruthy());
   });
 
   it('shows response count from stats', async () => {
     renderPanel([VARIANT_BASE], [STAT_BASE]);
-    await waitFor(() => expect(screen.getByText(/42 responses/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/42 respuestas/)).toBeTruthy());
   });
 
   it('shows singular "response" for total=1', async () => {
     renderPanel([VARIANT_BASE], [{ ...STAT_BASE, total: 1 }]);
-    await waitFor(() => expect(screen.getByText(/1 response\b/)).toBeTruthy());
+    await waitFor(() => expect(screen.getByText(/1 respuesta\b/)).toBeTruthy());
   });
 
   it('shows weight and traffic share for enabled variants', async () => {
     renderPanel([VARIANT_BASE, VARIANT_B]);
     await waitFor(() => {
       // VARIANT_BASE: weight 100 of 150 total → ~67%
-      expect(screen.getByText(/~67% of traffic/)).toBeTruthy();
+      expect(screen.getByText(/~67% del tráfico/)).toBeTruthy();
     });
   });
 
@@ -213,7 +213,7 @@ describe('VariantsPanel — variant list display', () => {
     renderPanel([VARIANT_DISABLED]);
     await waitFor(() => expect(screen.getByDisplayValue('Disabled Variant')).toBeTruthy());
     // 0% share — paragraph with "% of traffic" should not appear
-    expect(screen.queryByText(/% of traffic/)).toBeNull();
+    expect(screen.queryByText(/% del tráfico/)).toBeNull();
   });
 
   it('renders multiple variants', async () => {
@@ -224,12 +224,12 @@ describe('VariantsPanel — variant list display', () => {
 
   it('shows "Disable" button for enabled variant', async () => {
     renderPanel([VARIANT_BASE]);
-    await waitFor(() => expect(screen.getByText('Disable')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Desactivar')).toBeTruthy());
   });
 
   it('shows "Enable" button for disabled variant', async () => {
     renderPanel([VARIANT_DISABLED]);
-    await waitFor(() => expect(screen.getByText('Enable')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Activar')).toBeTruthy());
   });
 });
 
@@ -242,7 +242,7 @@ describe('VariantsPanel — create variant', () => {
 
     // The button is disabled when newName is empty — confirm it is disabled
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add variant'),
+      b.textContent?.includes('Añadir variante'),
     ) as HTMLButtonElement;
     expect(addBtn.disabled).toBe(true);
 
@@ -261,12 +261,12 @@ describe('VariantsPanel — create variant', () => {
     );
 
     const nameInput = screen.getByPlaceholderText(
-      'Variant name (e.g. Short form, Long form)',
+      'Nombre de la variante (ej. Formulario corto, Formulario largo)',
     ) as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Short form' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add variant'),
+      b.textContent?.includes('Añadir variante'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -290,7 +290,7 @@ describe('VariantsPanel — create variant', () => {
     );
 
     const nameInput = screen.getByPlaceholderText(
-      'Variant name (e.g. Short form, Long form)',
+      'Nombre de la variante (ej. Formulario corto, Formulario largo)',
     ) as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Enter variant' } });
 
@@ -313,12 +313,12 @@ describe('VariantsPanel — create variant', () => {
     );
 
     const nameInput = screen.getByPlaceholderText(
-      'Variant name (e.g. Short form, Long form)',
+      'Nombre de la variante (ej. Formulario corto, Formulario largo)',
     ) as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'New Variant' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add variant'),
+      b.textContent?.includes('Añadir variante'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -346,12 +346,12 @@ describe('VariantsPanel — create variant', () => {
     );
 
     const nameInput = screen.getByPlaceholderText(
-      'Variant name (e.g. Short form, Long form)',
+      'Nombre de la variante (ej. Formulario corto, Formulario largo)',
     ) as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Dup' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add variant'),
+      b.textContent?.includes('Añadir variante'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -417,9 +417,9 @@ describe('VariantsPanel — update variant (name + weight + enabled)', () => {
 
   it('calls PATCH with flipped enabled when toggle button clicked', async () => {
     renderPanel([VARIANT_BASE]);
-    await waitFor(() => expect(screen.getByText('Disable')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Desactivar')).toBeTruthy());
 
-    const disableBtn = screen.getByText('Disable') as HTMLButtonElement;
+    const disableBtn = screen.getByText('Desactivar') as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(disableBtn);
     });
@@ -445,9 +445,9 @@ describe('VariantsPanel — update variant (name + weight + enabled)', () => {
     }) as any;
 
     render(<VariantsPanel surveyId={SURVEY_ID} />);
-    await waitFor(() => expect(screen.getByText('Disable')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Desactivar')).toBeTruthy());
 
-    const disableBtn = screen.getByText('Disable');
+    const disableBtn = screen.getByText('Desactivar');
     await act(async () => {
       fireEvent.click(disableBtn);
     });
@@ -540,7 +540,7 @@ describe('VariantsPanel — inline fields editor', () => {
     renderPanel([VARIANT_BASE]);
     await waitFor(() => expect(screen.getByDisplayValue('Control')).toBeTruthy());
 
-    const fieldsBtn = screen.getByText('Fields') as HTMLButtonElement;
+    const fieldsBtn = screen.getByText('Campos') as HTMLButtonElement;
     fireEvent.click(fieldsBtn);
 
     await waitFor(() => expect(screen.getByTestId('survey-builder')).toBeTruthy());
@@ -548,36 +548,36 @@ describe('VariantsPanel — inline fields editor', () => {
 
   it('shows "Close" instead of "Fields" when editor is open', async () => {
     renderPanel([VARIANT_BASE]);
-    await waitFor(() => expect(screen.getByText('Fields')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Campos')).toBeTruthy());
 
-    fireEvent.click(screen.getByText('Fields'));
-    await waitFor(() => expect(screen.getByText('Close')).toBeTruthy());
+    fireEvent.click(screen.getByText('Campos'));
+    await waitFor(() => expect(screen.getByText('Cerrar')).toBeTruthy());
   });
 
   it('closes field editor on second "Fields"/"Close" click', async () => {
     renderPanel([VARIANT_BASE]);
-    await waitFor(() => expect(screen.getByText('Fields')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Campos')).toBeTruthy());
 
-    fireEvent.click(screen.getByText('Fields'));
-    await waitFor(() => expect(screen.getByText('Close')).toBeTruthy());
+    fireEvent.click(screen.getByText('Campos'));
+    await waitFor(() => expect(screen.getByText('Cerrar')).toBeTruthy());
 
-    fireEvent.click(screen.getByText('Close'));
-    await waitFor(() => expect(screen.getByText('Fields')).toBeTruthy());
+    fireEvent.click(screen.getByText('Cerrar'));
+    await waitFor(() => expect(screen.getByText('Campos')).toBeTruthy());
     expect(screen.queryByTestId('survey-builder')).toBeNull();
   });
 
   it('calls PATCH with updated fields on "Save fields" click', async () => {
     renderPanel([VARIANT_BASE]);
-    await waitFor(() => expect(screen.getByText('Fields')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Campos')).toBeTruthy());
 
-    fireEvent.click(screen.getByText('Fields'));
+    fireEvent.click(screen.getByText('Campos'));
     await waitFor(() => expect(screen.getByTestId('survey-builder')).toBeTruthy());
 
     // SurveyBuilder stub fires onChange when clicked
     fireEvent.click(screen.getByTestId('survey-builder'));
 
     const saveFieldsBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Save fields'),
+      b.textContent?.includes('Guardar campos'),
     ) as HTMLButtonElement;
     expect(saveFieldsBtn).toBeTruthy();
 

@@ -97,8 +97,8 @@ export function PaletteFromImage({ onApply }: Props) {
     <div className="rounded-lg border border-border bg-card overflow-hidden">
       <div className="px-4 py-3 border-b border-border flex items-center gap-2">
         <span className="material-icons text-base text-primary">colorize</span>
-        <div className="text-sm font-medium text-foreground">Extract palette from image</div>
-        <div className="text-xs text-muted-foreground ml-auto">Logo, mood board, or reference photo</div>
+        <div className="text-sm font-medium text-foreground">Extraer paleta desde una imagen</div>
+        <div className="text-xs text-muted-foreground ml-auto">Logo, moodboard o foto de referencia</div>
       </div>
 
       <div className="p-4 space-y-4">
@@ -116,8 +116,8 @@ export function PaletteFromImage({ onApply }: Props) {
             }`}
           >
             <span className="material-icons text-4xl text-muted-foreground">image</span>
-            <div className="text-sm font-medium text-foreground mt-2">Drop an image or click to upload</div>
-            <div className="text-xs text-muted-foreground mt-1">PNG, JPG, WebP, SVG — processed locally in your browser</div>
+            <div className="text-sm font-medium text-foreground mt-2">Suelta una imagen o haz clic para subirla</div>
+            <div className="text-xs text-muted-foreground mt-1">PNG, JPG, WebP, SVG: procesados localmente en tu navegador</div>
             <input
               ref={fileInputRef}
               type="file"
@@ -157,9 +157,7 @@ export function PaletteFromImage({ onApply }: Props) {
               }}
               className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
             >
-              <span className="material-icons text-sm">close</span>
-              Clear
-            </button>
+              <span className="material-icons text-sm">close</span>Limpiar</button>
           </div>
         )}
 
@@ -198,7 +196,7 @@ export function PaletteFromImage({ onApply }: Props) {
               <button
                 onClick={apply}
                 disabled={!anyAssigned}
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
               >
                 <span className="material-icons text-base">done</span>
                 Apply to profile

@@ -15,9 +15,10 @@ export const runtime = 'nodejs';
 /**
  * Cron: retry automation events whose in-process dispatch was dropped.
  *
- * emitEvent() journals every event to automation_jobs (pending) and marks it
- * 'completed' once handlers finish in-process. If the process died first (e.g.
- * a serverless cold-start), the row stays 'pending'; this cron re-runs it,
+ * emitEvent() journals an event as 'running' with a lease before returning and
+ * marks it 'completed' once handlers finish in-process. If the process died
+ * first (e.g. a serverless cold-start), the expired lease returns it to
+ * 'pending'; this cron re-runs it,
  * giving at-least-once delivery + retries instead of the old fire-and-forget.
  *
  * Per tick:

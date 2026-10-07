@@ -3,7 +3,7 @@ import Svg, { Path } from 'react-native-svg';
 import { T } from '@/lib/theme';
 
 /**
- * SdLogo — the SimplerDevelopment brand mark: a `</>` code-bracket motif
+ * SdLogo — the CRM AGENTS brand mark: a `</>` code-bracket motif
  * surrounded by sparkle stars. Ported verbatim from the site's
  * `public/iconLogo3d.svg` (viewBox 120×100) to react-native-svg so it scales
  * crisply at any size. Use for app/company branding (welcome, headers);

@@ -11,7 +11,7 @@
 // the existing one without touching anything.
 
 import { db } from '@/lib/db';
-import { projects, kanbanColumns, clients } from '@/lib/db/schema';
+import { projects, kanbanColumns, clients, projectMembers } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { PUBLISHING_SYSTEM_KIND, PUBLISHING_STAGES } from './constants';
 
@@ -106,6 +106,15 @@ async function createPublishingProject(
       .update(clients)
       .set({ publishingProjectId: project.id, updatedAt: new Date() })
       .where(eq(clients.id, clientId));
+
+    // The creator gets an owner row. Without it the project is invisible in
+    // the portal's Projects list (that endpoint only surfaces projects where
+    // the caller has a project_members row) while still counting toward the
+    // dashboard widgets — the bootstrap used to skip this insert.
+    await tx
+      .insert(projectMembers)
+      .values({ projectId: project.id, userId: createdByUserId, role: 'owner', addedBy: createdByUserId })
+      .onConflictDoNothing();
 
     return {
       id: project.id,

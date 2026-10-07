@@ -10,7 +10,7 @@ tags:
   - visual-editor
   - collaboration
   - agency-workflow
-author: "SimplerDevelopment Team"
+author: "CRM AGENTS Team"
 draft: true
 canonical: "https://example.com/blog/visual-block-editor-47-blocks"
 ---

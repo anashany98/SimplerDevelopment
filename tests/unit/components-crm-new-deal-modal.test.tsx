@@ -216,7 +216,7 @@ describe('NewDealModal', () => {
   describe('rendering', () => {
     it('renders the "New Deal" heading', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
-      expect(container.textContent).toContain('New Deal');
+      expect(container.textContent).toContain('Nuevo negocio');
     });
 
     it('renders the Title input', () => {
@@ -255,9 +255,9 @@ describe('NewDealModal', () => {
 
     it('renders priority select with Low/Medium/High', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
-      expect(container.textContent).toContain('Low');
-      expect(container.textContent).toContain('Medium');
-      expect(container.textContent).toContain('High');
+      expect(container.textContent).toContain('Baja');
+      expect(container.textContent).toContain('Media');
+      expect(container.textContent).toContain('Alta');
     });
 
     it('renders the date input', () => {
@@ -274,7 +274,7 @@ describe('NewDealModal', () => {
     it('renders the Create Deal submit button', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       expect(getSubmitButton(container)).toBeTruthy();
-      expect(getSubmitButton(container)!.textContent).toContain('Create Deal');
+      expect(getSubmitButton(container)!.textContent).toContain('Crear negocio');
     });
 
     it('renders no error message on initial render', () => {
@@ -353,22 +353,22 @@ describe('NewDealModal', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
       fireEvent.change(textarea, { target: { value: '**bold**' } });
-      fireEvent.click(screen.getByText('Preview'));
+      fireEvent.click(screen.getByText('Vista previa'));
       expect(container.querySelector('textarea')).toBeNull();
       expect(screen.getByTestId('markdown-view')).toBeTruthy();
     });
 
     it('clicking Write from Preview mode restores the textarea', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
-      fireEvent.click(screen.getByText('Preview'));
-      fireEvent.click(screen.getByText('Write'));
+      fireEvent.click(screen.getByText('Vista previa'));
+      fireEvent.click(screen.getByText('Escribir'));
       expect(container.querySelector('textarea')).toBeTruthy();
     });
 
     it('Preview of empty notes shows "Nothing to preview." message', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
-      fireEvent.click(screen.getByText('Preview'));
-      expect(container.textContent).toContain('Nothing to preview.');
+      fireEvent.click(screen.getByText('Vista previa'));
+      expect(container.textContent).toContain('Nada que previsualizar.');
     });
   });
 
@@ -379,11 +379,11 @@ describe('NewDealModal', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       // Find the "+ New" button in the Company section
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       // First "+ New" is the company one (Company section comes before Contact)
       fireEvent.click(newButtons[0]);
-      const companyNameInput = getByPlaceholder(container, 'Company name');
+      const companyNameInput = getByPlaceholder(container, 'Nombre de la empresa');
       expect(companyNameInput).toBeTruthy();
     });
 
@@ -391,14 +391,14 @@ describe('NewDealModal', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       const newButtons = () =>
         Array.from(container.querySelectorAll('button[type="button"]')).filter(
-          (b) => b.textContent?.trim() === '+ New' || b.textContent?.trim() === 'Cancel',
+          (b) => b.textContent?.trim() === '+ Nuevo' || b.textContent?.trim() === 'Cancelar',
         );
       fireEvent.click(newButtons()[0]);
       // Now the button reads "Cancel"
-      const cancelBtn = newButtons().find((b) => b.textContent?.trim() === 'Cancel');
+      const cancelBtn = newButtons().find((b) => b.textContent?.trim() === 'Cancelar');
       expect(cancelBtn).toBeTruthy();
       fireEvent.click(cancelBtn!);
-      expect(getByPlaceholder(container, 'Company name')).toBeNull();
+      expect(getByPlaceholder(container, 'Nombre de la empresa')).toBeNull();
     });
 
     it('creating a company calls api.createCompany with the trimmed name', async () => {
@@ -407,10 +407,10 @@ describe('NewDealModal', () => {
         <NewDealModal {...makeProps({ onCompanyCreated })} />,
       );
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[0]);
-      const input = getByPlaceholder(container, 'Company name')!;
+      const input = getByPlaceholder(container, 'Nombre de la empresa')!;
       fireEvent.change(input, { target: { value: '  NewCo  ' } });
       // Click the check button (last button in the company row)
       const checkBtn = input.closest('div')!.querySelector('button[type="button"]') as HTMLButtonElement;
@@ -426,10 +426,10 @@ describe('NewDealModal', () => {
         <NewDealModal {...makeProps({ onCompanyCreated })} />,
       );
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[0]);
-      const input = getByPlaceholder(container, 'Company name')!;
+      const input = getByPlaceholder(container, 'Nombre de la empresa')!;
       fireEvent.change(input, { target: { value: 'NewCo' } });
       const checkBtn = input.closest('div')!.querySelector('button[type="button"]') as HTMLButtonElement;
       fireEvent.click(checkBtn);
@@ -441,10 +441,10 @@ describe('NewDealModal', () => {
     it('pressing Enter in the company name input triggers creation', async () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[0]);
-      const input = getByPlaceholder(container, 'Company name')!;
+      const input = getByPlaceholder(container, 'Nombre de la empresa')!;
       fireEvent.change(input, { target: { value: 'KeyCo' } });
       fireEvent.keyDown(input, { key: 'Enter' });
       await waitFor(() => {
@@ -455,10 +455,10 @@ describe('NewDealModal', () => {
     it('does not call createCompany when the company name is blank', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[0]);
-      const input = getByPlaceholder(container, 'Company name')!;
+      const input = getByPlaceholder(container, 'Nombre de la empresa')!;
       fireEvent.change(input, { target: { value: '   ' } });
       const checkBtn = input.closest('div')!.querySelector('button[type="button"]') as HTMLButtonElement;
       fireEvent.click(checkBtn);
@@ -472,24 +472,24 @@ describe('NewDealModal', () => {
     it('clicking "+ New" in the Contact section shows the contact form', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       // Second "+ New" is for contacts
       fireEvent.click(newButtons[1]);
-      expect(getByPlaceholder(container, 'First name *')).toBeTruthy();
+      expect(getByPlaceholder(container, 'Nombre *')).toBeTruthy();
     });
 
     it('clicking Cancel in the contact section hides the form', () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[1]);
       const cancelBtns = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === 'Cancel',
+        (b) => b.textContent?.trim() === 'Cancelar',
       );
       fireEvent.click(cancelBtns[0]);
-      expect(getByPlaceholder(container, 'First name *')).toBeNull();
+      expect(getByPlaceholder(container, 'Nombre *')).toBeNull();
     });
 
     it('creating a contact calls api.createContact with trimmed fields', async () => {
@@ -498,19 +498,19 @@ describe('NewDealModal', () => {
         <NewDealModal {...makeProps({ onContactCreated })} />,
       );
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[1]);
-      fireEvent.change(getByPlaceholder(container, 'First name *')!, {
+      fireEvent.change(getByPlaceholder(container, 'Nombre *')!, {
         target: { value: 'New' },
       });
-      fireEvent.change(getByPlaceholder(container, 'Last name')!, {
+      fireEvent.change(getByPlaceholder(container, 'Apellido')!, {
         target: { value: 'Contact' },
       });
-      fireEvent.change(getByPlaceholder(container, 'Email')!, {
+      fireEvent.change(getByPlaceholder(container, 'Correo electrónico')!, {
         target: { value: 'new@test.com' },
       });
-      const emailInput = getByPlaceholder(container, 'Email')!;
+      const emailInput = getByPlaceholder(container, 'Correo electrónico')!;
       const checkBtn = emailInput.closest('div')!.querySelector('button[type="button"]') as HTMLButtonElement;
       fireEvent.click(checkBtn);
       await waitFor(() => {
@@ -530,13 +530,13 @@ describe('NewDealModal', () => {
         <NewDealModal {...makeProps({ onContactCreated })} />,
       );
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[1]);
-      fireEvent.change(getByPlaceholder(container, 'First name *')!, {
+      fireEvent.change(getByPlaceholder(container, 'Nombre *')!, {
         target: { value: 'New' },
       });
-      const emailInput = getByPlaceholder(container, 'Email')!;
+      const emailInput = getByPlaceholder(container, 'Correo electrónico')!;
       const checkBtn = emailInput.closest('div')!.querySelector('button[type="button"]') as HTMLButtonElement;
       fireEvent.click(checkBtn);
       await waitFor(() => {
@@ -549,13 +549,13 @@ describe('NewDealModal', () => {
     it('pressing Enter in the email field triggers contact creation', async () => {
       const { container } = render(<NewDealModal {...makeProps()} />);
       const newButtons = Array.from(container.querySelectorAll('button[type="button"]')).filter(
-        (b) => b.textContent?.trim() === '+ New',
+        (b) => b.textContent?.trim() === '+ Nuevo',
       );
       fireEvent.click(newButtons[1]);
-      fireEvent.change(getByPlaceholder(container, 'First name *')!, {
+      fireEvent.change(getByPlaceholder(container, 'Nombre *')!, {
         target: { value: 'Key' },
       });
-      fireEvent.keyDown(getByPlaceholder(container, 'Email')!, { key: 'Enter' });
+      fireEvent.keyDown(getByPlaceholder(container, 'Correo electrónico')!, { key: 'Enter' });
       await waitFor(() => {
         expect(mockCreateContact).toHaveBeenCalledWith(
           expect.objectContaining({ firstName: 'Key' }),
@@ -597,7 +597,7 @@ describe('NewDealModal', () => {
       );
       const sel = screen.getByTestId('react-select-contact') as HTMLSelectElement;
       const opt = Array.from(sel.options).find((o) => o.value === '5');
-      expect(opt?.text).toBe('Contact #5');
+      expect(opt?.text).toBe('Contacto #5');
     });
   });
 
@@ -743,7 +743,7 @@ describe('NewDealModal', () => {
       fireEvent.change(getTitleInput(container), { target: { value: 'No Msg' } });
       fireEvent.submit(container.querySelector('form')!);
       await waitFor(() => {
-        expect(container.textContent).toContain('Failed to create deal.');
+        expect(container.textContent).toContain('No se pudo crear el negocio.');
       });
     });
 

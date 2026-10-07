@@ -36,7 +36,7 @@ export const defaultSEO: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: '@simplerdevelopment',
+    creator: siteConfig.name,
   },
   robots: {
     index: true,

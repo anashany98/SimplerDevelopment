@@ -23,7 +23,7 @@ When AI capabilities are added to a fragmented stack, the problem compounds: eac
 
 ## Value Theme 1 — Tool Consolidation
 
-SimplerDevelopment provides website management, CRM, project and ticket management, email campaigns, scheduling, e-commerce, surveys, pitch decks, e-signature, and a document/knowledge base in a single platform with a single login, a single data model, and a single billing relationship.
+CRM AGENTS provides website management, CRM, project and ticket management, email campaigns, scheduling, e-commerce, surveys, pitch decks, e-signature, and a document/knowledge base in a single platform with a single login, a single data model, and a single billing relationship.
 
 **What this means in practice:**
 - A contact in the CRM is the same record that receives a campaign email, books an appointment, signs a contract, and appears in the AI knowledge base. No sync jobs, no webhook plumbing between disconnected tools.

@@ -72,7 +72,7 @@ export default function BookingCheckinPage() {
         setError(data.message);
       }
     } catch {
-      setError('Failed to process check-in');
+      setError('No se pudo procesar el registro de llegada');
     } finally {
       setChecking(false);
     }
@@ -85,14 +85,12 @@ export default function BookingCheckinPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Booking"
-        title="Check-in"
-        subtitle="Scan or enter a booking code"
+        eyebrow="Reservas"
+        title="Registro de llegada"
+        subtitle="Escanea o ingresa un código de reserva"
         actions={
           <Link href="/portal/tools/booking" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <span className="material-icons text-lg">arrow_back</span>
-            Back
-          </Link>
+            <span className="material-icons text-lg">arrow_back</span>Volver</Link>
         }
       />
 
@@ -105,14 +103,14 @@ export default function BookingCheckinPage() {
               type="text"
               value={code}
               onChange={e => setCode(e.target.value)}
-              placeholder="Enter check-in code (e.g. BK-A3F9)"
+              placeholder="Ingresa el código de registro de llegada (ej. BK-A3F9)"
               className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-xl text-foreground text-lg font-mono placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               autoFocus
             />
           </div>
           <button type="submit" disabled={!code.trim() || checking}
             className={pBtnPrimary}>
-            {checking ? 'Checking...' : 'Check In'}
+            {checking ? 'Comprobando…' : 'Registrar'}
           </button>
         </form>
 
@@ -129,9 +127,9 @@ export default function BookingCheckinPage() {
               <span className="material-icons text-2xl text-green-600">check_circle</span>
             </div>
             <div>
-              <p className="font-semibold text-green-800 dark:text-green-300">{result.guestName} checked in</p>
+              <p className="font-semibold text-green-800 dark:text-green-300">{result.guestName} registrado</p>
               <p className="text-sm text-green-600 dark:text-green-400">
-                {result.pageTitle}{result.groupSize > 1 ? ` (${result.groupSize} guests)` : ''}
+                {result.pageTitle}{result.groupSize > 1 ? ` (${result.groupSize} invitados)` : ''}
               </p>
             </div>
           </div>
@@ -143,15 +141,15 @@ export default function BookingCheckinPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-card border border-border rounded-2xl p-4 text-center">
             <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{summary.checkedIn}/{summary.total}</p>
-            <p className="text-xs text-muted-foreground">Checked In</p>
+            <p className="text-xs text-muted-foreground">Registrados</p>
           </div>
           <div className="bg-card border border-border rounded-2xl p-4 text-center">
             <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{summary.pending}</p>
-            <p className="text-xs text-muted-foreground">Pending</p>
+            <p className="text-xs text-muted-foreground">Pendiente</p>
           </div>
           <div className="bg-card border border-border rounded-2xl p-4 text-center">
             <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{summary.totalGuests}</p>
-            <p className="text-xs text-muted-foreground">Total Guests</p>
+            <p className="text-xs text-muted-foreground">Total de invitados</p>
           </div>
         </div>
       )}
@@ -159,7 +157,7 @@ export default function BookingCheckinPage() {
       {/* Today's bookings */}
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="px-4 py-3 border-b border-border">
-          <h2 className={pSectionTitle}>Today&apos;s Bookings</h2>
+          <h2 className={pSectionTitle}>Reservas de hoy</h2>
         </div>
         {loadingToday ? (
           <div className="p-8 flex justify-center">
@@ -167,9 +165,7 @@ export default function BookingCheckinPage() {
           </div>
         ) : bookings.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground text-sm">
-            <span className="material-icons text-3xl block mb-2">event_available</span>
-            No bookings today
-          </div>
+            <span className="material-icons text-3xl block mb-2">event_available</span>No hay reservas hoy</div>
         ) : (
           <div className="divide-y divide-border">
             {bookings.map(b => (
@@ -182,7 +178,7 @@ export default function BookingCheckinPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">
                     {b.guestName}
-                    {b.groupSize > 1 && <span className="text-muted-foreground font-normal"> ({b.groupSize} guests)</span>}
+                    {b.groupSize > 1 && <span className="text-muted-foreground font-normal"> ({b.groupSize} invitados)</span>}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {formatTime(b.startTime)} - {formatTime(b.endTime)} &middot; {b.pageTitle}
@@ -192,14 +188,12 @@ export default function BookingCheckinPage() {
                   <span className="text-xs font-mono bg-background border border-border rounded px-2 py-1">{b.checkinCode}</span>
                 )}
                 {b.isCheckedIn ? (
-                  <span className="text-xs text-green-600 font-medium">Checked in</span>
+                  <span className="text-xs text-green-600 font-medium">Registrado</span>
                 ) : (
                   <button
                     onClick={() => { setCode(b.checkinCode || String(b.id)); }}
                     className="text-xs text-primary hover:underline"
-                  >
-                    Check in
-                  </button>
+                  >Registrar</button>
                 )}
               </div>
             ))}

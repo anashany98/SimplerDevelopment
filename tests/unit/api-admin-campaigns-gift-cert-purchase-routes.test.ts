@@ -381,6 +381,18 @@ vi.mock('@/lib/db', () => {
   };
 });
 
+// Billing was removed (2026-08): the gift-cert purchase route short-circuits
+// with 403 when PAYMENTS_DISABLED is true. The gate is mocked open here so the
+// tests below can exercise the purchase logic itself (same pattern as
+// api-billing-verify-session.test.ts).
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+    }),
+}));
+
 // ===========================================================================
 // Modules under test (import AFTER mocks are in place)
 // ===========================================================================
@@ -746,7 +758,7 @@ describe('POST /api/public/gift-certificates/purchase', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toMatch(/\$1\.00/);
+    expect(body.message).toMatch(/1,00\u00a0€/);
   });
 
   it('returns 400 when amount is below minimum', async () => {
@@ -849,7 +861,7 @@ describe('POST /api/public/gift-certificates/purchase', () => {
     expect(paymentIntentsCreateMock).toHaveBeenCalledTimes(1);
     const params = paymentIntentsCreateMock.mock.calls[0][0] as Record<string, unknown>;
     expect(params.amount).toBe(5000);
-    expect(params.currency).toBe('usd');
+    expect(params.currency).toBe('eur');
     expect(params.application_fee_amount).toBeUndefined();
     expect(params.transfer_data).toBeUndefined();
     const meta = params.metadata as Record<string, string>;

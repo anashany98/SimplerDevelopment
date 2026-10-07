@@ -1,17 +1,17 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo-dark.png" />
-    <img src=".github/assets/logo-light.png" alt="SimplerDevelopment" width="440" />
+    <img src=".github/assets/logo-light.png" alt="CRM AGENTS" width="440" />
   </picture>
 </p>
 
-# SimplerDevelopment
+# CRM AGENTS
 
 [![CI](https://github.com/SimplerDevelopment/SimplerDevelopment/actions/workflows/ci.yml/badge.svg)](https://github.com/SimplerDevelopment/SimplerDevelopment/actions/workflows/ci.yml) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE) [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md) [![Built with Bun](https://img.shields.io/badge/built%20with-Bun-14151a.svg)](https://bun.sh) [![Tenancy gate](https://img.shields.io/badge/tenancy-required-blue)](tests/CI-GATES.md)
 
 <p align="center">
   <a href="https://www.simplerdevelopment.com/api/media/proxy/media/1a9075a0-ac5e-4480-a11d-edae25fe5030.mp4">
-    <img src="public/screenshots/marketing/portal-onboarding-desktop.webp" alt="SimplerDevelopment portal onboarding screen" width="800" />
+    <img src="public/screenshots/marketing/portal-onboarding-desktop.webp" alt="CRM AGENTS portal onboarding screen" width="800" />
   </a>
 </p>
 
@@ -19,7 +19,7 @@
 
 ## Overview
 
-SimplerDevelopment is an open-source, self-hostable platform for agencies and operators — the stack you'd otherwise rent from Webflow, HubSpot, Notion AI, Calendly, Mailchimp, and DocuSign, rebuilt as one codebase you actually own. Per-tenant client **websites**, a **CRM**, an AI **Company Brain** (RAG over client knowledge), workflow **automations**, **bookings**, a **storefront**, **email** campaigns, **surveys**, **e-signatures**, and **Stripe billing** all live in a single multi-tenant portal.
+CRM AGENTS is an open-source, self-hostable platform for agencies and operators — the stack you'd otherwise rent from Webflow, HubSpot, Notion AI, Calendly, Mailchimp, and DocuSign, rebuilt as one codebase you actually own. Per-tenant client **websites**, a **CRM**, an AI **Company Brain** (RAG over client knowledge), workflow **automations**, **bookings**, a **storefront**, **email** campaigns, **surveys**, **e-signatures**, and **invoice records** all live in a single multi-tenant portal. Stripe integration code is present, while customer payments and subscription charges are disabled in this release.
 
 Here's the part that makes it different: every one of those modules is driveable by an AI agent. The platform ships **450+ Model Context Protocol (MCP) tools**, so Claude, Cursor, or any MCP client can build a page, move a deal, or send a campaign the same way you would by clicking. Apache-2.0, no per-seat pricing, no rug-pull — bring your own Postgres and API keys and run it yourself.
 
@@ -85,15 +85,15 @@ New to the skill system? Start with the **[overview](docs/skills/SD-SKILLS-OVERV
 
 This repo is built to be worked on by AI agents alongside humans — the agent tooling is first-class infrastructure, not an add-on. The root **[`CLAUDE.md`](CLAUDE.md)** and per-area nested `CLAUDE.md` files carry the operating rules; [`.claude/index.md`](.claude/index.md) maps "I need to work on X" to the right guide.
 
-The unifying idea for building *your own* agents against the platform: **connect to the MCP server as a client and inherit all 450+ tools — never re-implement them.** [`simplerdevelopment-agents/`](simplerdevelopment-agents/) is the worked example.
+The unifying idea for building *your own* agents against the platform: **connect to the MCP server as a client and inherit all 450+ tools — never re-implement them.** [`examples/simplerdevelopment-agents/`](examples/simplerdevelopment-agents/) is the worked example (reference only — production traffic runs the hand-rolled agents in `lib/ai/`).
 
-- **Mastra** — two production agents built on [Mastra](https://mastra.ai): a deterministic *Workflow* for the Company Brain (classify → plan → tool-loop → groundedness check, with a scorer eval layer) and a *dynamic agent* portal assistant whose model and tools are chosen per request. Learn it here: **[`simplerdevelopment-agents/MASTRA_GUIDE.md`](simplerdevelopment-agents/MASTRA_GUIDE.md)**.
-- **Mastra → Next.js** — how the agents service plugs into the parent app: in multi-tenant mode it holds *no* per-tenant secrets — the Next.js app mints a short-lived, single-tenant token per request and the MCP client fails closed without one. Architecture, setup, and the adoption path: **[`simplerdevelopment-agents/BRAIN_AGENT_README.md`](simplerdevelopment-agents/BRAIN_AGENT_README.md)**.
+- **Mastra** — two worked-example agents built on [Mastra](https://mastra.ai): a deterministic *Workflow* for the Company Brain (classify → plan → tool-loop → groundedness check, with a scorer eval layer) and a *dynamic agent* portal assistant whose model and tools are chosen per request. Learn it here: **[`examples/simplerdevelopment-agents/MASTRA_GUIDE.md`](examples/simplerdevelopment-agents/MASTRA_GUIDE.md)**.
+- **Mastra → Next.js** — how the agents service plugs into the parent app: in multi-tenant mode it holds *no* per-tenant secrets — the Next.js app mints a short-lived, single-tenant token per request and the MCP client fails closed without one. Architecture, setup, and the adoption path: **[`examples/simplerdevelopment-agents/BRAIN_AGENT_README.md`](examples/simplerdevelopment-agents/BRAIN_AGENT_README.md)**.
 - **Crew AI** — a second reference implementation of the same MCP-client pattern is planned. *Coming soon.*
 
 ## Deployment
 
-Production runs on Vercel (Next.js framework mode); every other pushed branch gets a preview deploy. Background work — embedding processing, Gmail/Drive watch renewal, automation scheduling, brain daily notes, usage rollup, booking reminders — runs as Vercel cron jobs defined in [`vercel.json`](vercel.json).
+Production runs on Vercel (Next.js framework mode); every other pushed branch gets a preview deploy. Background work — embedding processing, Gmail/Drive watch renewal, automation scheduling, scheduled email campaigns, internal jobs, brain daily notes, usage rollup, booking reminders, and monthly AI credit grants — runs as Vercel cron jobs defined in [`vercel.json`](vercel.json).
 
 Want a one-click host with Postgres included? Use the **[Railway template](https://railway.com/new/template/simpler-development)** — setup notes in **[`docs/deploy/railway.md`](docs/deploy/railway.md)**.
 
@@ -123,7 +123,7 @@ Dig deeper as you need it:
 | Tests | Vitest (unit/integration) · Playwright (e2e) |
 | Realtime | Yjs + y-websocket (`packages/realtime-server`) |
 | AI | Vercel AI SDK (`@ai-sdk/anthropic`) · Anthropic SDK · OpenAI API — embeddings + realtime voice |
-| Integrations | Stripe (billing) · AWS S3 (storage) · Resend (email) · Sentry (errors) |
+| Integrations | Stripe (payments disabled in this release) · AWS S3 (storage) · Resend (email) · Sentry (errors) |
 
 ## Contributing
 
@@ -137,4 +137,4 @@ Found a vulnerability? Please **don't** open a public issue — see **[`SECURITY
 
 ## License
 
-[Apache License 2.0](LICENSE) © SimplerDevelopment.
+[Apache License 2.0](LICENSE) © CRM AGENTS.

@@ -9,15 +9,16 @@ import {
   workflowRuns,
   workflowStepLogs,
   emailTemplates,
+  emailLists,
   emailSubscribers,
   kanbanCards,
   kanbanColumns,
   kanbanCardAssignees,
   projects as projectsTable,
 } from '@/lib/db/schema';
-import { eq, asc, and } from 'drizzle-orm';
+import { eq, asc, and, isNull, or } from 'drizzle-orm';
 import { resolveResendKey } from '@/lib/email/resolve-resend';
-import { createEmailTransport, isMailpitEmailTransport } from '@/lib/email';
+import { createEmailTransport, isMailpitEmailTransport, getPlatformFromEmail } from '@/lib/email';
 import { randomBytes } from 'crypto';
 import type {
   WorkflowAction,
@@ -45,6 +46,39 @@ export interface StepResult {
 }
 
 const DEFAULT_MAX_WAIT_MS = 5_000;
+
+// Bound each webhook attempt so one hanging URL can't stall the whole cron
+// drain (up to 100 steps per tick).
+const WEBHOOK_TIMEOUT_MS = 10_000;
+
+// SSRF guard: workflow webhooks may not target loopback/private/link-local
+// hosts (hostnames compared lowercase; URL.hostname keeps IPv6 in brackets).
+const BLOCKED_WEBHOOK_HOST = [
+  /^localhost$/,
+  /^0\.0\.0\.0$/,
+  /^127\./,
+  /^10\./,
+  /^192\.168\./,
+  /^172\.(1[6-9]|2\d|3[01])\./,
+  /^169\.254\./,
+  /\.local$/,
+  /\.internal$/,
+  /^\[?::1\]?$/,
+  /^\[?(fc|fd)[0-9a-f]{2}:/,
+  /^\[?fe80:/,
+];
+
+function isAllowedWebhookUrl(raw: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
+  const host = url.hostname.toLowerCase();
+  return !BLOCKED_WEBHOOK_HOST.some((re) => re.test(host));
+}
 
 // `executeAction()` and `nextNodes()` below are NOT test-only — the durable
 // production path (app/api/cron/process-workflow-runs/route.ts, reached via
@@ -235,11 +269,26 @@ export async function executeAction(
     }
 
     case 'webhook': {
+      // SSRF guard: never let a workflow POST to loopback/private hosts.
+      if (!isAllowedWebhookUrl(action.url)) {
+        return {
+          status: 'failed',
+          output: { url: action.url, error: 'webhook URL host is not allowed' },
+          durationMs: 0,
+        };
+      }
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), WEBHOOK_TIMEOUT_MS);
       try {
         const res = await fetch(action.url, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            // Lets idempotency-aware receivers dedupe cron retries.
+            ...(runId != null && nodeId ? { 'Idempotency-Key': `wf:${runId}:${nodeId}` } : {}),
+          },
           body: JSON.stringify(action.payload ?? {}),
+          signal: controller.signal,
         });
         return {
           status: res.ok ? 'success' : 'failed',
@@ -252,6 +301,8 @@ export async function executeAction(
           output: { url: action.url, error: err instanceof Error ? err.message : String(err) },
           durationMs: 0,
         };
+      } finally {
+        clearTimeout(timeout);
       }
     }
 
@@ -282,6 +333,7 @@ export async function executeAction(
         .select({ id: projectsTable.id })
         .from(projectsTable)
         .where(eq(projectsTable.clientId, clientId))
+        .orderBy(asc(projectsTable.id))
         .limit(1);
 
       if (!project) {
@@ -377,11 +429,21 @@ export async function executeAction(
         toEmail = action.to;
       }
 
-      // Look up the email template.
+      // Look up the email template — tenant-owned or global, never another
+      // tenant's (clientId is nullable; isGlobal marks admin-shared templates).
       const [template] = await db
         .select()
         .from(emailTemplates)
-        .where(eq(emailTemplates.id, action.templateId))
+        .where(
+          and(
+            eq(emailTemplates.id, action.templateId),
+            or(
+              eq(emailTemplates.clientId, clientId),
+              isNull(emailTemplates.clientId),
+              eq(emailTemplates.isGlobal, true),
+            ),
+          ),
+        )
         .limit(1);
 
       if (!template) {
@@ -394,13 +456,12 @@ export async function executeAction(
 
       // Send via the configured email transport with an idempotency header.
       try {
-        const emailTransport = isMailpitEmailTransport()
-          ? createEmailTransport()
-          : createEmailTransport({ resendApiKey: (await resolveResendKey(clientId)).key });
+        const emailTransport = (await isMailpitEmailTransport())
+          ? await createEmailTransport()
+          : await createEmailTransport({ resendApiKey: (await resolveResendKey(clientId)).key });
         const idempotencyKey =
           runId != null && nodeId ? `wf:${runId}:${nodeId}` : undefined;
-        const fromEmail =
-          process.env.DEFAULT_FROM_EMAIL ?? 'noreply@simplerdevelopment.com';
+        const fromEmail = await getPlatformFromEmail();
 
         const result = await emailTransport.send({
           from: fromEmail,
@@ -435,11 +496,38 @@ export async function executeAction(
     }
 
     case 'add_to_list': {
+      const clientId = typeof context.clientId === 'number' ? context.clientId : null;
       const contactEmail = typeof context.contactEmail === 'string' ? context.contactEmail : null;
       if (!contactEmail) {
         return {
           status: 'skipped',
           output: { reason: 'no contactEmail in context', listId: action.listId },
+          durationMs: 0,
+        };
+      }
+      if (!clientId) {
+        return {
+          status: 'skipped',
+          output: { reason: 'no clientId in context', listId: action.listId },
+          durationMs: 0,
+        };
+      }
+
+      // The list must be tenant-owned or global — never another tenant's.
+      const [list] = await db
+        .select({ id: emailLists.id })
+        .from(emailLists)
+        .where(
+          and(
+            eq(emailLists.id, action.listId),
+            or(eq(emailLists.clientId, clientId), isNull(emailLists.clientId)),
+          ),
+        )
+        .limit(1);
+      if (!list) {
+        return {
+          status: 'failed',
+          output: { reason: `list ${action.listId} not found`, listId: action.listId },
           durationMs: 0,
         };
       }

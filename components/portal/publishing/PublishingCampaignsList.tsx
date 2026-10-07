@@ -38,7 +38,7 @@ export default function PublishingCampaignsList({
       const json = await r.json();
       if (r.ok && json.success) setCampaigns(json.data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to refresh');
+      setError(err instanceof Error ? err.message : 'No se pudo actualizar');
     }
   }, []);
 
@@ -51,7 +51,7 @@ export default function PublishingCampaignsList({
         const json = await r.json();
         if (r.ok && json.success) setCampaigns(json.data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to refresh');
+        setError(err instanceof Error ? err.message : 'No se pudo actualizar');
       }
     })();
   }, []);
@@ -65,16 +65,16 @@ export default function PublishingCampaignsList({
 
   const onDelete = useCallback(
     async (id: number) => {
-      if (!confirm('Delete this campaign? Linked cards keep their data; only the grouping is removed.')) {
+      if (!confirm('¿Eliminar esta campaña? Las tarjetas vinculadas conservan sus datos; solo se elimina la agrupación.')) {
         return;
       }
       try {
         const r = await fetch(`/api/portal/publishing/campaigns/${id}`, { method: 'DELETE' });
         const json = await r.json();
-        if (!r.ok || !json.success) throw new Error(json.message || 'Delete failed');
+        if (!r.ok || !json.success) throw new Error(json.message || 'No se pudo eliminar');
         setCampaigns((cur) => cur.filter((c) => c.id !== id));
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Delete failed');
+        setError(err instanceof Error ? err.message : 'No se pudo eliminar');
       }
     },
     [],
@@ -83,7 +83,7 @@ export default function PublishingCampaignsList({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Campaigns</h2>
+        <h2 className="text-lg font-semibold">Campañas</h2>
         {canManage && (
           <button
             type="button"
@@ -91,7 +91,7 @@ export default function PublishingCampaignsList({
             className="inline-flex items-center gap-1.5 rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700"
           >
             <span className="material-icons text-base">add</span>
-            New campaign
+            Nueva campaña
           </button>
         )}
       </div>
@@ -105,11 +105,11 @@ export default function PublishingCampaignsList({
       {campaigns.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-700 p-8 text-center">
           <span className="material-icons text-4xl text-gray-400">campaign</span>
-          <h3 className="mt-2 text-base font-medium">No campaigns yet</h3>
+          <h3 className="mt-2 text-base font-medium">Aún no hay campañas</h3>
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             {canManage
-              ? 'Click "New campaign" to create your first cross-channel grouping.'
-              : 'Ask an owner or admin to create a campaign.'}
+              ? 'Haz clic en "Nueva campaña" para crear tu primera agrupación multicanal.'
+              : 'Pide a un propietario o administrador que cree una campaña.'}
           </p>
         </div>
       ) : (
@@ -117,11 +117,11 @@ export default function PublishingCampaignsList({
           <table className="w-full text-sm">
             <thead className="bg-gray-50 dark:bg-gray-900/50 text-xs uppercase text-gray-500">
               <tr>
-                <th className="px-3 py-2 text-left">Name</th>
-                <th className="px-3 py-2 text-left">Status</th>
-                <th className="px-3 py-2 text-left">Cards</th>
-                <th className="px-3 py-2 text-left">Range</th>
-                {canManage && <th className="px-3 py-2 text-right">Actions</th>}
+                <th className="px-3 py-2 text-left">Nombre</th>
+                <th className="px-3 py-2 text-left">Estado</th>
+                <th className="px-3 py-2 text-left">Tarjetas</th>
+                <th className="px-3 py-2 text-left">Periodo</th>
+                {canManage && <th className="px-3 py-2 text-right">Acciones</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
@@ -157,17 +157,13 @@ export default function PublishingCampaignsList({
                         onClick={() => setEditing(c)}
                         className="mr-2 inline-flex items-center gap-1 text-blue-600 hover:underline text-xs"
                       >
-                        <span className="material-icons text-sm">edit</span>
-                        Edit
-                      </button>
+                        <span className="material-icons text-sm">edit</span>Editar</button>
                       <button
                         type="button"
                         onClick={() => onDelete(c.id)}
                         className="inline-flex items-center gap-1 text-red-600 hover:underline text-xs"
                       >
-                        <span className="material-icons text-sm">delete</span>
-                        Delete
-                      </button>
+                        <span className="material-icons text-sm">delete</span>Eliminar</button>
                     </td>
                   )}
                 </tr>
@@ -207,8 +203,8 @@ function StatusChip({ status }: { status: string }) {
 
 function formatRange(start: string | null, end: string | null): string {
   if (!start && !end) return '—';
-  const fmt = (s: string) => new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const fmt = (s: string) => new Date(s).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
   if (start && end) return `${fmt(start)} → ${fmt(end)}`;
-  if (start) return `from ${fmt(start)}`;
-  return `until ${fmt(end!)}`;
+  if (start) return `desde ${fmt(start)}`;
+  return `hasta ${fmt(end!)}`;
 }

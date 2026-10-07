@@ -61,20 +61,20 @@ export function WishlistClient({ siteId, domain }: { siteId: number; domain: str
       <AccountLayout siteId={siteId} domain={domain}>
         <div className="space-y-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Wishlist</h1>
-            <p className="text-gray-500 text-sm mt-1">Products you&apos;ve saved for later.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Mi lista de deseos</h1>
+            <p className="text-gray-500 text-sm mt-1">Productos que has guardado para más tarde.</p>
           </div>
 
           {loading ? (
             <div className="text-center py-12">
-              <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>progress_activity</span>
+              <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>autorenew</span>
             </div>
           ) : items.length === 0 ? (
             <div className="border border-gray-200 rounded-xl p-12 text-center">
               <span className="material-icons text-gray-300" style={{ fontSize: '48px' }}>favorite_border</span>
-              <p className="text-sm text-gray-500 mt-3">Your wishlist is empty.</p>
+              <p className="text-sm text-gray-500 mt-3">Tu lista de deseos está vacía.</p>
               <Link href="/shop" className="inline-block mt-4 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800">
-                Browse Products
+                Explorar productos
               </Link>
             </div>
           ) : (
@@ -94,10 +94,10 @@ export function WishlistClient({ siteId, domain }: { siteId: number; domain: str
                       onClick={() => removeItem(item.productId)}
                       disabled={removingId === item.productId}
                       className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full shadow-sm flex items-center justify-center hover:bg-red-50 transition-colors disabled:opacity-50"
-                      title="Remove from wishlist"
+                      title="Quitar de la lista de deseos"
                     >
                       <span className="material-icons text-gray-400 hover:text-red-500" style={{ fontSize: '18px' }}>
-                        {removingId === item.productId ? 'progress_activity' : 'close'}
+                        {removingId === item.productId ? 'autorenew' : 'close'}
                       </span>
                     </button>
                   </div>
@@ -111,7 +111,7 @@ export function WishlistClient({ siteId, domain }: { siteId: number; domain: str
                       href={`/shop/${item.productSlug}`}
                       className="block w-full text-center px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
                     >
-                      View Product
+                      Ver producto
                     </Link>
                   </div>
                 </div>

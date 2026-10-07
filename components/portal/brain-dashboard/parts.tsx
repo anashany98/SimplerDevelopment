@@ -116,7 +116,7 @@ export function TaskRow({
       <div className="text-foreground truncate flex items-center gap-2">
         <span className="truncate">{task.title}</span>
         {task.createdByAi && (
-          <span className="material-icons text-sm text-muted-foreground" title="AI-created">
+          <span className="material-icons text-sm text-muted-foreground" title="Creada por IA">
             auto_awesome
           </span>
         )}
@@ -146,7 +146,7 @@ export function TileSkeleton({ title }: { title: string }) {
   return (
     <div className="bg-card border border-border rounded-lg p-5 animate-pulse">
       <div className="flex items-center gap-2 mb-3">
-        <span className="material-icons text-base text-muted-foreground/40">progress_activity</span>
+        <span className="material-icons text-base text-muted-foreground/40">autorenew</span>
         <span className="text-sm font-semibold text-muted-foreground/60">{title}</span>
       </div>
       <div className="space-y-2">

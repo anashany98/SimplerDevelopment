@@ -6,7 +6,7 @@ import { chromium } from '@playwright/test';
 import fs from 'node:fs';
 
 const BASE = 'http://localhost:3000';
-const EMAIL = process.env.EMAIL || 'simplerdevelopment@simplerdevelopment.com';
+const EMAIL = process.env.EMAIL || 'crm-agents@simplerdevelopment.com';
 const PASSWORD = process.env.PASSWORD || 'veqa-local-123';
 const SITE = Number(process.env.SITE || 241), POST = Number(process.env.POST || 2007);
 const OUT = process.env.OUT || './veqa-batch2';

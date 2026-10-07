@@ -93,6 +93,7 @@ export async function publishMessage(
     authorKind: 'visitor' | 'agent' | 'system';
     authorName: string | null;
     body: string;
+    attachments?: unknown[];
     occurredAt: Date | string;
   },
 ): Promise<void> {
@@ -106,6 +107,7 @@ export async function publishMessage(
       authorKind: message.authorKind,
       authorName: message.authorName,
       body: message.body,
+      attachments: message.attachments ?? [],
       occurredAt: typeof message.occurredAt === 'string' ? message.occurredAt : message.occurredAt.toISOString(),
     },
   };

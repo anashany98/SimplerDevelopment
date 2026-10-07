@@ -139,7 +139,7 @@ describe('ThreadCard', () => {
   it('falls back to "User #<id>" when author not in members and no resolveAuthor', () => {
     const props = defaultProps({ members: [] });
     render(<ThreadCard {...props} />);
-    expect(screen.getByText('User #42')).toBeInTheDocument();
+    expect(screen.getByText('Usuario #42')).toBeInTheDocument();
   });
 
   it('renders avatar image when member has avatar URL', () => {
@@ -172,12 +172,12 @@ describe('ThreadCard', () => {
 
   it('shows "Resolved" badge when thread is resolved', () => {
     render(<ThreadCard {...defaultProps({ thread: makeThread({ resolved: true }) })} />);
-    expect(screen.getByText('Resolved')).toBeInTheDocument();
+    expect(screen.getByText('Resuelto')).toBeInTheDocument();
   });
 
   it('does not show "Resolved" badge when thread is not resolved', () => {
     render(<ThreadCard {...defaultProps({ thread: makeThread({ resolved: false }) })} />);
-    expect(screen.queryByText('Resolved')).not.toBeInTheDocument();
+    expect(screen.queryByText('Resuelto')).not.toBeInTheDocument();
   });
 
   it('applies opacity-70 class when resolved', () => {
@@ -194,7 +194,7 @@ describe('ThreadCard', () => {
       root: makeComment({ anchor: { blockId: 'hero-block' } }),
     });
     render(<ThreadCard {...defaultProps({ thread })} />);
-    expect(screen.getByText('On block hero-block')).toBeInTheDocument();
+    expect(screen.getByText('En el bloque hero-block')).toBeInTheDocument();
   });
 
   it('uses resolveBlockLabel for blockId anchor', () => {
@@ -203,7 +203,7 @@ describe('ThreadCard', () => {
       root: makeComment({ anchor: { blockId: 'block-abc' } }),
     });
     render(<ThreadCard {...defaultProps({ thread, resolveBlockLabel })} />);
-    expect(screen.getByText('On block Hero Banner')).toBeInTheDocument();
+    expect(screen.getByText('En el bloque Hero Banner')).toBeInTheDocument();
   });
 
   it('renders slideIndex anchor label', () => {
@@ -211,7 +211,7 @@ describe('ThreadCard', () => {
       root: makeComment({ anchor: { slideIndex: 2 } }),
     });
     render(<ThreadCard {...defaultProps({ thread })} />);
-    expect(screen.getByText('On slide 3')).toBeInTheDocument();
+    expect(screen.getByText('En la diapositiva 3')).toBeInTheDocument();
   });
 
   it('renders fieldPath anchor label', () => {
@@ -219,7 +219,7 @@ describe('ThreadCard', () => {
       root: makeComment({ anchor: { fieldPath: 'blocks[0].props.headline' } }),
     });
     render(<ThreadCard {...defaultProps({ thread })} />);
-    expect(screen.getByText('On field blocks[0].props.headline')).toBeInTheDocument();
+    expect(screen.getByText('En el campo blocks[0].props.headline')).toBeInTheDocument();
   });
 
   it('renders x/y coordinate anchor label', () => {
@@ -227,21 +227,21 @@ describe('ThreadCard', () => {
       root: makeComment({ anchor: { x: 123.7, y: 456.2 } }),
     });
     render(<ThreadCard {...defaultProps({ thread })} />);
-    expect(screen.getByText('Pinned at 124, 456')).toBeInTheDocument();
+    expect(screen.getByText('Fijado en 124, 456')).toBeInTheDocument();
   });
 
   it('renders no anchor preview when anchor is null', () => {
     render(<ThreadCard {...defaultProps()} />);
-    expect(screen.queryByText(/On block/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/On slide/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Pinned at/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/En el bloque/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/En la diapositiva/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Fijado en/)).not.toBeInTheDocument();
   });
 
   // ── Collapse / expand ──────────────────────────────────────────────────────
 
   it('renders collapse button with aria-label "Collapse thread"', () => {
     render(<ThreadCard {...defaultProps()} />);
-    expect(screen.getByRole('button', { name: 'Collapse thread' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Contraer hilo' })).toBeInTheDocument();
   });
 
   it('hides replies and action bar when collapsed', () => {
@@ -249,10 +249,10 @@ describe('ThreadCard', () => {
     const thread = makeThread({ replies: [reply] });
     render(<ThreadCard {...defaultProps({ thread })} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Collapse thread' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Contraer hilo' }));
 
     expect(screen.queryByText('Reply text')).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /reply/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /responder/i })).not.toBeInTheDocument();
   });
 
   it('re-expands when collapse button is clicked again', () => {
@@ -260,9 +260,9 @@ describe('ThreadCard', () => {
     const thread = makeThread({ replies: [reply] });
     render(<ThreadCard {...defaultProps({ thread })} />);
 
-    const collapseBtn = screen.getByRole('button', { name: 'Collapse thread' });
+    const collapseBtn = screen.getByRole('button', { name: 'Contraer hilo' });
     fireEvent.click(collapseBtn);
-    fireEvent.click(screen.getByRole('button', { name: 'Expand thread' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Expandir hilo' }));
 
     expect(screen.getByText('Reply text')).toBeInTheDocument();
   });
@@ -288,14 +288,14 @@ describe('ThreadCard', () => {
     const thread = makeThread({ replies: [reply] });
     render(<ThreadCard {...defaultProps({ thread, currentUserId: 42 })} />);
     // The delete button has title "Delete reply"
-    expect(screen.getByTitle('Delete reply')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar respuesta')).toBeInTheDocument();
   });
 
   it('does not show reply delete button when reply author is different user', () => {
     const reply = makeComment({ id: 'r1', parentId: 'comment-1', authorId: 99, body: 'Their reply' });
     const thread = makeThread({ replies: [reply] });
     render(<ThreadCard {...defaultProps({ thread, currentUserId: 42 })} />);
-    expect(screen.queryByTitle('Delete reply')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('Eliminar respuesta')).not.toBeInTheDocument();
   });
 
   it('calls onDelete with reply id when reply delete button is clicked', async () => {
@@ -304,7 +304,7 @@ describe('ThreadCard', () => {
     const thread = makeThread({ replies: [reply] });
     render(<ThreadCard {...defaultProps({ thread, currentUserId: 42, onDelete })} />);
 
-    fireEvent.click(screen.getByTitle('Delete reply'));
+    fireEvent.click(screen.getByTitle('Eliminar respuesta'));
     await waitFor(() => {
       expect(onDelete).toHaveBeenCalledWith('r1');
     });
@@ -324,13 +324,13 @@ describe('ThreadCard', () => {
 
   it('toggles compose box open when Reply button is clicked', () => {
     render(<ThreadCard {...defaultProps()} />);
-    fireEvent.click(screen.getByRole('button', { name: /reply/i }));
+    fireEvent.click(screen.getByRole('button', { name: /responder/i }));
     expect(screen.getByTestId('compose-box')).toBeInTheDocument();
   });
 
   it('closes compose box when Reply is clicked a second time', () => {
     render(<ThreadCard {...defaultProps()} />);
-    const replyBtn = screen.getByRole('button', { name: /reply/i });
+    const replyBtn = screen.getByRole('button', { name: /responder/i });
     fireEvent.click(replyBtn);
     expect(screen.getByTestId('compose-box')).toBeInTheDocument();
     fireEvent.click(replyBtn);
@@ -341,7 +341,7 @@ describe('ThreadCard', () => {
     const onReply = vi.fn().mockResolvedValue(undefined);
     render(<ThreadCard {...defaultProps({ onReply })} />);
 
-    fireEvent.click(screen.getByRole('button', { name: /reply/i }));
+    fireEvent.click(screen.getByRole('button', { name: /responder/i }));
     await act(async () => {
       fireEvent.click(screen.getByTestId('compose-submit'));
     });
@@ -355,7 +355,7 @@ describe('ThreadCard', () => {
     const onReply = vi.fn().mockResolvedValue(undefined);
     render(<ThreadCard {...defaultProps({ onReply })} />);
 
-    fireEvent.click(screen.getByRole('button', { name: /reply/i }));
+    fireEvent.click(screen.getByRole('button', { name: /responder/i }));
     await act(async () => {
       fireEvent.click(screen.getByTestId('compose-submit'));
     });
@@ -375,12 +375,12 @@ describe('ThreadCard', () => {
 
   it('shows Resolve button when thread is not resolved', () => {
     render(<ThreadCard {...defaultProps({ thread: makeThread({ resolved: false }) })} />);
-    expect(screen.getByRole('button', { name: /resolve/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /resolver/i })).toBeInTheDocument();
   });
 
   it('shows Reopen button when thread is resolved', () => {
     render(<ThreadCard {...defaultProps({ thread: makeThread({ resolved: true }) })} />);
-    expect(screen.getByRole('button', { name: /reopen/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /reabrir/i })).toBeInTheDocument();
   });
 
   it('calls onResolve with threadId when Resolve button is clicked', async () => {
@@ -388,7 +388,7 @@ describe('ThreadCard', () => {
     render(<ThreadCard {...defaultProps({ onResolve })} />);
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /resolve/i }));
+      fireEvent.click(screen.getByRole('button', { name: /resolver/i }));
     });
 
     expect(onResolve).toHaveBeenCalledWith('thread-1');
@@ -403,7 +403,7 @@ describe('ThreadCard', () => {
     );
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /reopen/i }));
+      fireEvent.click(screen.getByRole('button', { name: /reabrir/i }));
     });
 
     expect(onUnresolve).toHaveBeenCalledWith('thread-1');
@@ -413,17 +413,17 @@ describe('ThreadCard', () => {
 
   it('shows Delete button when currentUserId matches root author', () => {
     render(<ThreadCard {...defaultProps({ currentUserId: 42 })} />);
-    expect(screen.getByTitle('Delete thread')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar hilo')).toBeInTheDocument();
   });
 
   it('shows Delete button when isAdmin=true even if not the author', () => {
     render(<ThreadCard {...defaultProps({ currentUserId: 999, isAdmin: true })} />);
-    expect(screen.getByTitle('Delete thread')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar hilo')).toBeInTheDocument();
   });
 
   it('does not show Delete button when not author and not admin', () => {
     render(<ThreadCard {...defaultProps({ currentUserId: 999, isAdmin: false })} />);
-    expect(screen.queryByTitle('Delete thread')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('Eliminar hilo')).not.toBeInTheDocument();
   });
 
   it('calls onDelete with root comment id when Delete thread is clicked', async () => {
@@ -431,7 +431,7 @@ describe('ThreadCard', () => {
     render(<ThreadCard {...defaultProps({ onDelete, currentUserId: 42 })} />);
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete thread'));
+      fireEvent.click(screen.getByTitle('Eliminar hilo'));
     });
 
     expect(onDelete).toHaveBeenCalledWith('comment-1');

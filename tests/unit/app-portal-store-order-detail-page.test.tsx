@@ -210,7 +210,7 @@ describe('OrderDetailPage', () => {
       });
       render(<OrderDetailPage />);
       await waitFor(() => {
-        expect(screen.getByText('Order not found.')).toBeTruthy();
+        expect(screen.getByText('Pedido no encontrado.')).toBeTruthy();
       });
     });
 
@@ -218,7 +218,7 @@ describe('OrderDetailPage', () => {
       global.fetch = vi.fn(() => Promise.reject(new Error('Network error')));
       render(<OrderDetailPage />);
       await waitFor(() => {
-        expect(screen.getByText('Order not found.')).toBeTruthy();
+        expect(screen.getByText('Pedido no encontrado.')).toBeTruthy();
       });
     });
   });
@@ -253,7 +253,7 @@ describe('OrderDetailPage', () => {
 
     it('renders "Same as shipping" when billing address is null', async () => {
       await renderPage();
-      expect(screen.getByText('Same as shipping')).toBeTruthy();
+      expect(screen.getByText('Igual que el envío')).toBeTruthy();
     });
 
     it('renders line item product name and SKU', async () => {
@@ -276,7 +276,7 @@ describe('OrderDetailPage', () => {
 
     it('renders "Custom design" note for item with design', async () => {
       await renderPage();
-      expect(screen.getByText(/Custom design: My Design/)).toBeTruthy();
+      expect(screen.getByText(/Diseño personalizado: My Design/)).toBeTruthy();
     });
 
     it('renders "--" for items without SKU', async () => {
@@ -286,19 +286,19 @@ describe('OrderDetailPage', () => {
 
     it('renders formatted money totals', async () => {
       await renderPage();
-      // subtotal $65.00
-      expect(screen.getByText('$65.00')).toBeTruthy();
-      // shipping $5.00
-      expect(screen.getByText('$5.00')).toBeTruthy();
-      // tax $2.00
-      expect(screen.getByText('$2.00')).toBeTruthy();
-      // total $72.00
-      expect(screen.getByText('$72.00')).toBeTruthy();
+      // subtotal 65,00 €
+      expect(screen.getByText('65,00 €')).toBeTruthy();
+      // shipping 5,00 €
+      expect(screen.getByText('5,00 €')).toBeTruthy();
+      // tax 2,00 €
+      expect(screen.getByText('2,00 €')).toBeTruthy();
+      // total 72,00 €
+      expect(screen.getByText('72,00 €')).toBeTruthy();
     });
 
     it('does not render discount row when discountCents is 0', async () => {
       await renderPage();
-      expect(screen.queryByText('Discount')).toBeNull();
+      expect(screen.queryByText('Descuento')).toBeNull();
     });
 
     it('renders discount row when discountCents > 0', async () => {
@@ -309,13 +309,13 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('Discount')).toBeTruthy();
-      expect(screen.getByText('-$5.00')).toBeTruthy();
+      expect(screen.getByText('Descuento')).toBeTruthy();
+      expect(screen.getByText('-5,00 €')).toBeTruthy();
     });
 
     it('renders the breadcrumb link to orders list', async () => {
       await renderPage();
-      const link = screen.getByRole('link', { name: /Orders/ });
+      const link = screen.getByRole('link', { name: /Pedidos/ });
       expect(link.getAttribute('href')).toBe('/portal/websites/site-1/store/orders');
     });
 
@@ -332,7 +332,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('No status changes recorded.')).toBeTruthy();
+      expect(screen.getByText('No hay cambios de estado registrados.')).toBeTruthy();
     });
   });
 
@@ -380,7 +380,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('Design no longer available')).toBeTruthy();
+      expect(screen.getByText('El diseño ya no está disponible')).toBeTruthy();
     });
 
     it('renders "Untitled design" when design name is null', async () => {
@@ -402,7 +402,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText(/Untitled design/)).toBeTruthy();
+      expect(screen.getByText(/Sin título/)).toBeTruthy();
     });
   });
 
@@ -420,7 +420,7 @@ describe('OrderDetailPage', () => {
 
     it('Update button is disabled when status equals current order status', async () => {
       await renderPage();
-      const updateBtn = screen.getByRole('button', { name: /Update/ });
+      const updateBtn = screen.getByRole('button', { name: /Actualizar/ });
       expect(updateBtn).toBeDisabled();
     });
 
@@ -428,7 +428,7 @@ describe('OrderDetailPage', () => {
       await renderPage();
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'confirmed' } });
-      const updateBtn = screen.getByRole('button', { name: /Update/ });
+      const updateBtn = screen.getByRole('button', { name: /Actualizar/ });
       expect(updateBtn).not.toBeDisabled();
     });
 
@@ -436,18 +436,18 @@ describe('OrderDetailPage', () => {
       await renderPage();
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'confirmed' } });
-      fireEvent.click(screen.getByRole('button', { name: /Update/ }));
-      await waitFor(() => expect(screen.getByText('Status updated.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar/ }));
+      await waitFor(() => expect(screen.getByText('Estado actualizado.')).toBeTruthy());
     });
 
     it('accepts an optional status note', async () => {
       await renderPage();
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'confirmed' } });
-      const noteInput = screen.getByPlaceholderText('Add a note...');
+      const noteInput = screen.getByPlaceholderText('Escribe una nota…');
       fireEvent.change(noteInput, { target: { value: 'Customer called' } });
-      fireEvent.click(screen.getByRole('button', { name: /Update/ }));
-      await waitFor(() => expect(screen.getByText('Status updated.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar/ }));
+      await waitFor(() => expect(screen.getByText('Estado actualizado.')).toBeTruthy());
     });
 
     it('shows error message when status update fails', async () => {
@@ -460,7 +460,7 @@ describe('OrderDetailPage', () => {
       await renderPage();
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'confirmed' } });
-      fireEvent.click(screen.getByRole('button', { name: /Update/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar/ }));
       await waitFor(() => expect(screen.getByText('Server error on status')).toBeTruthy());
     });
 
@@ -474,21 +474,21 @@ describe('OrderDetailPage', () => {
       await renderPage();
       const select = screen.getByRole('combobox') as HTMLSelectElement;
       fireEvent.change(select, { target: { value: 'confirmed' } });
-      fireEvent.click(screen.getByRole('button', { name: /Update/ }));
-      await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Actualizar/ }));
+      await waitFor(() => expect(screen.getByText('Algo salió mal.')).toBeTruthy());
     });
   });
 
   describe('fulfillment', () => {
     it('renders tracking number and URL inputs', async () => {
       await renderPage();
-      expect(screen.getByPlaceholderText('Enter tracking number')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Ingresa el número de rastreo')).toBeTruthy();
       expect(screen.getByPlaceholderText('https://...')).toBeTruthy();
     });
 
     it('"Mark as Shipped" button is visible for pending orders', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: /Mark as Shipped/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Marcar como enviado/ })).toBeTruthy();
     });
 
     it('"Mark as Shipped" button is hidden for shipped orders', async () => {
@@ -499,7 +499,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.queryByRole('button', { name: /Mark as Shipped/ })).toBeNull();
+      expect(screen.queryByRole('button', { name: /Marcar como enviado/ })).toBeNull();
     });
 
     it('"Mark as Shipped" button is hidden for delivered orders', async () => {
@@ -510,15 +510,15 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.queryByRole('button', { name: /Mark as Shipped/ })).toBeNull();
+      expect(screen.queryByRole('button', { name: /Marcar como enviado/ })).toBeNull();
     });
 
     it('Save Tracking calls fulfillment API and shows success', async () => {
       await renderPage();
-      const trackingInput = screen.getByPlaceholderText('Enter tracking number');
+      const trackingInput = screen.getByPlaceholderText('Ingresa el número de rastreo');
       fireEvent.change(trackingInput, { target: { value: '1Z999AA10123456784' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Save Tracking' }));
-      await waitFor(() => expect(screen.getByText('Fulfillment updated.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar rastreo' }));
+      await waitFor(() => expect(screen.getByText('Preparación actualizada.')).toBeTruthy());
     });
 
     it('Save Tracking shows error when API fails', async () => {
@@ -529,14 +529,14 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Save Tracking' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar rastreo' }));
       await waitFor(() => expect(screen.getByText('Fulfillment error')).toBeTruthy());
     });
 
     it('Mark as Shipped calls status API and shows success', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Mark as Shipped/ }));
-      await waitFor(() => expect(screen.getByText('Order marked as shipped.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Marcar como enviado/ }));
+      await waitFor(() => expect(screen.getByText('Pedido marcado como enviado.')).toBeTruthy());
     });
 
     it('Mark as Shipped also saves fulfillment when tracking number is present', async () => {
@@ -545,10 +545,10 @@ describe('OrderDetailPage', () => {
       );
       global.fetch = fetchSpy;
       await renderPage();
-      const trackingInput = screen.getByPlaceholderText('Enter tracking number');
+      const trackingInput = screen.getByPlaceholderText('Ingresa el número de rastreo');
       fireEvent.change(trackingInput, { target: { value: '1Z999AA10123456784' } });
-      fireEvent.click(screen.getByRole('button', { name: /Mark as Shipped/ }));
-      await waitFor(() => expect(screen.getByText('Order marked as shipped.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Marcar como enviado/ }));
+      await waitFor(() => expect(screen.getByText('Pedido marcado como enviado.')).toBeTruthy());
       const fulfillmentCalls = fetchSpy.mock.calls.filter(
         ([url, init]) => url === `${BASE}/orders/42/fulfillment` && (init as RequestInit)?.method === 'PUT'
       );
@@ -563,7 +563,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Mark as Shipped/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Marcar como enviado/ }));
       await waitFor(() => expect(screen.getByText('Ship failed')).toBeTruthy());
     });
   });
@@ -571,7 +571,7 @@ describe('OrderDetailPage', () => {
   describe('internal notes', () => {
     it('renders the notes textarea', async () => {
       await renderPage();
-      expect(screen.getByPlaceholderText('Add private notes about this order...')).toBeTruthy();
+      expect(screen.getByPlaceholderText('Agrega notas internas sobre este pedido…')).toBeTruthy();
     });
 
     it('populates notes textarea when order has notes', async () => {
@@ -582,16 +582,16 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      const textarea = screen.getByPlaceholderText('Add private notes about this order...') as HTMLTextAreaElement;
+      const textarea = screen.getByPlaceholderText('Agrega notas internas sobre este pedido…') as HTMLTextAreaElement;
       expect(textarea.value).toBe('VIP customer');
     });
 
     it('Save Notes calls PATCH and shows success', async () => {
       await renderPage();
-      const textarea = screen.getByPlaceholderText('Add private notes about this order...');
+      const textarea = screen.getByPlaceholderText('Agrega notas internas sobre este pedido…');
       fireEvent.change(textarea, { target: { value: 'Check with warehouse' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Save Notes' }));
-      await waitFor(() => expect(screen.getByText('Notes saved.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar notas' }));
+      await waitFor(() => expect(screen.getByText('Notas guardadas.')).toBeTruthy());
     });
 
     it('Save Notes shows error when API fails', async () => {
@@ -602,7 +602,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Save Notes' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar notas' }));
       await waitFor(() => expect(screen.getByText('Notes save failed')).toBeTruthy());
     });
   });
@@ -610,12 +610,12 @@ describe('OrderDetailPage', () => {
   describe('shipping label — no label purchased', () => {
     it('renders "Compute Rates" button when no label exists', async () => {
       await renderPage();
-      expect(screen.getByRole('button', { name: /Compute Rates/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Calcular tarifas/ })).toBeTruthy();
     });
 
     it('clicking Compute Rates loads and displays rates', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
       await waitFor(() => expect(screen.getByText(/USPS/)).toBeTruthy());
       expect(screen.getByText(/Priority/)).toBeTruthy();
       expect(screen.getByText(/UPS/)).toBeTruthy();
@@ -624,39 +624,39 @@ describe('OrderDetailPage', () => {
 
     it('displays parcel summary after rates load', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
-      await waitFor(() => expect(screen.getByText(/Parcel:/)).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
+      await waitFor(() => expect(screen.getByText(/Paquete:/)).toBeTruthy());
       expect(screen.getByText(/10 × 8 × 4 in/)).toBeTruthy();
     });
 
     it('shows "Best value" badge on cheapest rate', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
-      await waitFor(() => expect(screen.getByText('Best value')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
+      await waitFor(() => expect(screen.getByText('Mejor precio')).toBeTruthy());
     });
 
     it('shows estimated delivery days on rates', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
-      await waitFor(() => expect(screen.getByText(/Est. 2 days/)).toBeTruthy());
-      expect(screen.getByText(/Est. 5 days/)).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
+      await waitFor(() => expect(screen.getByText(/Entrega estimada: 2 días/)).toBeTruthy());
+      expect(screen.getByText(/Entrega estimada: 5 días/)).toBeTruthy();
     });
 
     it('selects a rate via radio and enables Buy Label button', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
       await waitFor(() => expect(screen.getByText(/USPS/)).toBeTruthy());
       const radios = screen.getAllByRole('radio') as HTMLInputElement[];
       expect(radios[0].checked).toBe(true); // cheapest auto-selected
-      expect(screen.getByRole('button', { name: /Buy Label/ })).not.toBeDisabled();
+      expect(screen.getByRole('button', { name: /Comprar etiqueta/ })).not.toBeDisabled();
     });
 
     it('clicking Buy Label purchases label and shows success', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
       await waitFor(() => expect(screen.getByText(/USPS/)).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Buy Label/ }));
-      await waitFor(() => expect(screen.getByText('Label purchased.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Comprar etiqueta/ }));
+      await waitFor(() => expect(screen.getByText('Etiqueta comprada.')).toBeTruthy());
     });
 
     it('shows error when Compute Rates fails', async () => {
@@ -667,7 +667,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
       await waitFor(() => expect(screen.getByText('Rate compute failed')).toBeTruthy());
     });
 
@@ -679,9 +679,9 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
       await waitFor(() => expect(screen.getByText(/USPS/)).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Buy Label/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Comprar etiqueta/ }));
       await waitFor(() => expect(screen.getByText('Label purchase failed')).toBeTruthy());
     });
 
@@ -696,8 +696,8 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
-      await waitFor(() => expect(screen.getByText('No rates returned for this shipment.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
+      await waitFor(() => expect(screen.getByText('No se devolvieron tarifas para este envío.')).toBeTruthy());
     });
 
     it('renders singular "day" for 1-day delivery estimate', async () => {
@@ -717,8 +717,8 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Compute Rates/ }));
-      await waitFor(() => expect(screen.getByText(/Est. 1 day$/)).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Calcular tarifas/ }));
+      await waitFor(() => expect(screen.getByText(/Entrega estimada: 1 día$/)).toBeTruthy());
     });
   });
 
@@ -743,7 +743,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      const viewLink = screen.getByRole('link', { name: /View Label/ });
+      const viewLink = screen.getByRole('link', { name: /Ver etiqueta/ });
       expect(viewLink.getAttribute('href')).toBe('https://label.example.com/label.pdf');
     });
 
@@ -767,7 +767,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('$8.99')).toBeTruthy();
+      expect(screen.getByText('8,99 €')).toBeTruthy();
     });
 
     it('renders tracking number as link when trackingUrl is present', async () => {
@@ -807,8 +807,8 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Refund Label/ }));
-      await waitFor(() => expect(screen.getByText('Label refund requested.')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Reembolsar etiqueta/ }));
+      await waitFor(() => expect(screen.getByText('Reembolso de etiqueta solicitado.')).toBeTruthy());
     });
 
     it('skips Refund Label when user cancels confirm dialog', async () => {
@@ -824,7 +824,7 @@ describe('OrderDetailPage', () => {
       );
       global.fetch = fetchSpy;
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Refund Label/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Reembolsar etiqueta/ }));
       await flush();
       const deleteCalls = fetchSpy.mock.calls.filter(
         ([url, init]) => url === `${BASE}/orders/42/label` && (init as RequestInit)?.method === 'DELETE'
@@ -843,7 +843,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Refund Label/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Reembolsar etiqueta/ }));
       await waitFor(() => expect(screen.getByText('Refund denied')).toBeTruthy());
     });
   });
@@ -857,7 +857,7 @@ describe('OrderDetailPage', () => {
         return defaultFetch(url);
       });
       await renderPage();
-      expect(screen.getByText('No shipping address')).toBeTruthy();
+      expect(screen.getByText('Sin dirección de envío')).toBeTruthy();
     });
 
     it('renders billing address when provided', async () => {

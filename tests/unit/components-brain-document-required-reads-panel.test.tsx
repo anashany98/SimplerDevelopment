@@ -160,7 +160,7 @@ describe('DocumentRequiredReadsPanel — loading state', () => {
         }),
     );
     renderPanel();
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
     // Clean up: resolve the hanging promise so React can settle
     act(() => {
       resolveLoad({ ok: true, status: 200, json: async () => ({ success: true, data: { items: [] } }) });
@@ -236,7 +236,7 @@ describe('DocumentRequiredReadsPanel — empty state', () => {
   it('does not render People or Org units sections when empty', async () => {
     renderPanel();
     await waitFor(() => screen.getByText('No required-reads yet.'));
-    expect(screen.queryByText(/People/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Personas/)).not.toBeInTheDocument();
     expect(screen.queryByText(/Org units/)).not.toBeInTheDocument();
   });
 
@@ -268,7 +268,7 @@ describe('DocumentRequiredReadsPanel — populated state', () => {
   it('renders People section for person rows', async () => {
     renderPanel();
     await waitFor(() =>
-      expect(screen.getByText(/People/)).toBeInTheDocument(),
+      expect(screen.getByText(/Personas/)).toBeInTheDocument(),
     );
   });
 
@@ -296,7 +296,7 @@ describe('DocumentRequiredReadsPanel — populated state', () => {
   it('renders remove buttons for each row', async () => {
     renderPanel();
     await waitFor(() => screen.getByText('Alice Smith'));
-    const removeBtns = screen.getAllByLabelText('Remove');
+    const removeBtns = screen.getAllByLabelText('Quitar');
     expect(removeBtns).toHaveLength(2);
   });
 });
@@ -396,7 +396,7 @@ describe('DocumentRequiredReadsPanel — remove', () => {
     );
     renderPanel();
     await waitFor(() => screen.getByText('Bob Jones'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     expect(window.confirm).toHaveBeenCalled();
   });
 
@@ -407,7 +407,7 @@ describe('DocumentRequiredReadsPanel — remove', () => {
     );
     renderPanel({ documentId: 42 });
     await waitFor(() => screen.getByText('Bob Jones'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() =>
       expect((global as any).fetch).toHaveBeenCalledWith(
         '/api/portal/brain/documents/42/required-reads/5',
@@ -424,7 +424,7 @@ describe('DocumentRequiredReadsPanel — remove', () => {
     );
     renderPanel({ onChanged });
     await waitFor(() => screen.getByText('Bob Jones'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() => expect(onChanged).toHaveBeenCalled());
   });
 
@@ -433,7 +433,7 @@ describe('DocumentRequiredReadsPanel — remove', () => {
     mockFetch({ success: true, data: { items: [row] } });
     renderPanel();
     await waitFor(() => screen.getByText('Bob Jones'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await new Promise((r) => setTimeout(r, 50));
     const calls = ((global as any).fetch as any).mock.calls as unknown[][];
     const deleteCalls = calls.filter(
@@ -454,7 +454,7 @@ describe('DocumentRequiredReadsPanel — remove', () => {
       });
     renderPanel();
     await waitFor(() => screen.getByText('Bob Jones'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() =>
       expect(window.alert).toHaveBeenCalledWith('Remove failed'),
     );
@@ -472,7 +472,7 @@ describe('DocumentRequiredReadsPanel — remove', () => {
       });
     renderPanel();
     await waitFor(() => screen.getByText('Bob Jones'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() =>
       expect(window.alert).toHaveBeenCalledWith('Remove failed.'),
     );
@@ -487,7 +487,7 @@ describe('DocumentRequiredReadsPanel — remove', () => {
       .mockRejectedValueOnce(new Error('net boom'));
     renderPanel();
     await waitFor(() => screen.getByText('Bob Jones'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() =>
       expect(window.alert).toHaveBeenCalledWith('net boom'),
     );
@@ -515,7 +515,7 @@ describe('DocumentRequiredReadsPanel — remove 409 force flow', () => {
       });
     renderPanel();
     await waitFor(() => screen.getByText('Carol'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() => expect(window.confirm).toHaveBeenCalledTimes(2));
   });
 
@@ -540,7 +540,7 @@ describe('DocumentRequiredReadsPanel — remove 409 force flow', () => {
       });
     renderPanel({ documentId: 42 });
     await waitFor(() => screen.getByText('Carol'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() =>
       expect((global as any).fetch).toHaveBeenCalledWith(
         '/api/portal/brain/documents/42/required-reads/7?force=true',
@@ -566,7 +566,7 @@ describe('DocumentRequiredReadsPanel — remove 409 force flow', () => {
       });
     renderPanel();
     await waitFor(() => screen.getByText('Carol'));
-    fireEvent.click(screen.getByLabelText('Remove'));
+    fireEvent.click(screen.getByLabelText('Quitar'));
     await waitFor(() => expect(confirmCount).toBe(2));
     // No third fetch call (force DELETE was cancelled)
     const calls = ((global as any).fetch as any).mock.calls as unknown[][];
@@ -595,8 +595,8 @@ describe('DocumentRequiredReadsPanel — assign dialog open/close', () => {
     renderPanel();
     await waitFor(() => screen.getByText('No required-reads yet.'));
     fireEvent.click(screen.getByText('Assign required read'));
-    await waitFor(() => screen.getByText('Cancel'));
-    fireEvent.click(screen.getByText('Cancel'));
+    await waitFor(() => screen.getByText('Cancelar'));
+    fireEvent.click(screen.getByText('Cancelar'));
     await waitFor(() =>
       expect(screen.queryByText('Make this document required reading')).not.toBeInTheDocument(),
     );
@@ -606,8 +606,8 @@ describe('DocumentRequiredReadsPanel — assign dialog open/close', () => {
     renderPanel();
     await waitFor(() => screen.getByText('No required-reads yet.'));
     fireEvent.click(screen.getByText('Assign required read'));
-    await waitFor(() => screen.getByLabelText('Close'));
-    fireEvent.click(screen.getByLabelText('Close'));
+    await waitFor(() => screen.getByLabelText('Cerrar'));
+    fireEvent.click(screen.getByLabelText('Cerrar'));
     await waitFor(() =>
       expect(screen.queryByText('Make this document required reading')).not.toBeInTheDocument(),
     );
@@ -629,7 +629,7 @@ describe('DocumentRequiredReadsPanel — assign dialog (person branch)', () => {
   function clickAssign() {
     // The Assign submit button contains the text "Assign" and has a person_add icon
     const allBtns = screen.getAllByRole('button');
-    return allBtns.find((b) => b.textContent?.includes('Assign') && !b.textContent?.includes('required read'));
+    return allBtns.find((b) => b.textContent?.includes('Asignar') && !b.textContent?.includes('required read'));
   }
 
   it('shows inline error when submitting without picking a person', async () => {
@@ -773,7 +773,7 @@ describe('DocumentRequiredReadsPanel — assign dialog (org_unit branch)', () =>
 
   function clickAssign() {
     const allBtns = screen.getAllByRole('button');
-    return allBtns.find((b) => b.textContent?.includes('Assign') && !b.textContent?.includes('required read'));
+    return allBtns.find((b) => b.textContent?.includes('Asignar') && !b.textContent?.includes('required read'));
   }
 
   it('switches to org_unit mode and renders org unit select', async () => {
@@ -964,7 +964,7 @@ describe('DocumentRequiredReadsPanel — assign dialog (version + due date)', ()
     fireEvent.change(screen.getByLabelText('Pin to version (optional)'), { target: { value: '100' } });
 
     const allBtns = screen.getAllByRole('button');
-    const submitBtn = allBtns.find((b) => b.textContent?.includes('Assign') && !b.textContent?.includes('required read'));
+    const submitBtn = allBtns.find((b) => b.textContent?.includes('Asignar') && !b.textContent?.includes('required read'));
     fireEvent.click(submitBtn!);
 
     await waitFor(() => expect(onChanged).toHaveBeenCalled());
@@ -1001,7 +1001,7 @@ describe('DocumentRequiredReadsPanel — assign dialog (version + due date)', ()
     fireEvent.change(screen.getByLabelText('Due date (optional)'), { target: { value: '2025-12-31' } });
 
     const allBtns = screen.getAllByRole('button');
-    const submitBtn = allBtns.find((b) => b.textContent?.includes('Assign') && !b.textContent?.includes('required read'));
+    const submitBtn = allBtns.find((b) => b.textContent?.includes('Asignar') && !b.textContent?.includes('required read'));
     fireEvent.click(submitBtn!);
 
     await waitFor(() => expect(onChanged).toHaveBeenCalled());
@@ -1039,7 +1039,7 @@ describe('DocumentRequiredReadsPanel — onChanged optional', () => {
     renderPanel(); // no onChanged
     await waitFor(() => screen.getByText('No Callback'));
 
-    expect(() => fireEvent.click(screen.getByLabelText('Remove'))).not.toThrow();
+    expect(() => fireEvent.click(screen.getByLabelText('Quitar'))).not.toThrow();
     await waitFor(() =>
       expect(screen.getByText('No required-reads yet.')).toBeInTheDocument(),
     );
@@ -1068,7 +1068,7 @@ describe('DocumentRequiredReadsPanel — onChanged optional', () => {
     fireEvent.change(screen.getByTestId('person-picker'), { target: { value: '5' } });
 
     const allBtns = screen.getAllByRole('button');
-    const submitBtn = allBtns.find((b) => b.textContent?.includes('Assign') && !b.textContent?.includes('required read'));
+    const submitBtn = allBtns.find((b) => b.textContent?.includes('Asignar') && !b.textContent?.includes('required read'));
     expect(() => fireEvent.click(submitBtn!)).not.toThrow();
 
     await waitFor(() =>
@@ -1094,7 +1094,7 @@ describe('DocumentRequiredReadsPanel — section grouping', () => {
     });
     renderPanel();
     await waitFor(() => screen.getByText('Person A'));
-    expect(screen.getByText(/People/)).toBeInTheDocument();
+    expect(screen.getByText(/Personas/)).toBeInTheDocument();
     expect(screen.queryByText(/Org units/)).not.toBeInTheDocument();
   });
 
@@ -1110,7 +1110,7 @@ describe('DocumentRequiredReadsPanel — section grouping', () => {
     renderPanel();
     await waitFor(() => screen.getByText('Engineering'));
     expect(screen.getByText(/Org units/)).toBeInTheDocument();
-    expect(screen.queryByText(/People/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Personas/)).not.toBeInTheDocument();
   });
 
   it('renders both sections when mixed types are present', async () => {
@@ -1125,7 +1125,7 @@ describe('DocumentRequiredReadsPanel — section grouping', () => {
     });
     renderPanel();
     await waitFor(() => screen.getByText('Alice'));
-    expect(screen.getByText(/People/)).toBeInTheDocument();
+    expect(screen.getByText(/Personas/)).toBeInTheDocument();
     expect(screen.getByText(/Org units/)).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
-# SimplerDevelopment API — Developer Docs
+# CRM AGENTS API — Developer Docs
 
-SimplerDevelopment exposes three distinct API surfaces depending on who is calling and what they need. Pick the one that fits your use case and jump to the relevant reference pages below.
+CRM AGENTS exposes three distinct API surfaces depending on who is calling and what they need. Pick the one that fits your use case and jump to the relevant reference pages below.
 
 ---
 

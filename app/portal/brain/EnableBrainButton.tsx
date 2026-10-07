@@ -36,13 +36,13 @@ export function EnableBrainButton() {
       });
       const json: SettingsResponse = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to enable Company Brain.');
+        setError(json.message || 'No se pudo activar el Cerebro de empresa.');
       } else {
         // RSC needs to re-fetch the profile to flip into the dashboard view.
         startTransition(() => router.refresh());
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setEnabling(false);
     }
@@ -53,17 +53,17 @@ export function EnableBrainButton() {
       <button
         onClick={onClick}
         disabled={enabling}
-        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
       >
         {enabling ? (
           <>
-            <span className="material-icons animate-spin text-base">progress_activity</span>
-            Enabling…
+            <span className="material-icons animate-spin text-base">autorenew</span>
+            Activando…
           </>
         ) : (
           <>
             <span className="material-icons text-base">power_settings_new</span>
-            Enable Company Brain
+            Activar el Cerebro de empresa
           </>
         )}
       </button>

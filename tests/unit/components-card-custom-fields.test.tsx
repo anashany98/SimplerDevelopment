@@ -116,7 +116,7 @@ describe('CardCustomFields', () => {
   it('renders the "Custom fields" heading when fields are provided', () => {
     const fields = [makeField({ id: 1, kind: 'text', name: 'Title', value: 'hello' })];
     render(<CardCustomFields cardId={1} canEdit={true} initialFields={fields} />);
-    expect(screen.getByText('Custom fields')).toBeTruthy();
+    expect(screen.getByText('Campos personalizados')).toBeTruthy();
   });
 
   // -------------------------------------------------------------------------
@@ -544,7 +544,7 @@ describe('CardCustomFields', () => {
     });
 
     await waitFor(() => {
-      expect(screen.queryByText('Saving…')).toBeTruthy();
+      expect(screen.queryByText('Guardando…')).toBeTruthy();
     });
 
     // Resolve the PUT to clean up

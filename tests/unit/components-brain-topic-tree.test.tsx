@@ -286,7 +286,7 @@ describe('TopicTree', () => {
       const node = makeNode({ name: 'Engineering' });
       render(<TopicTree tree={[node]} />);
       fireEvent.click(screen.getByLabelText('More'));
-      expect(screen.getByText('Rename')).toBeTruthy();
+      expect(screen.getByText('Renombrar')).toBeTruthy();
     });
 
     it('closes the menu when the same button is clicked again', () => {
@@ -295,7 +295,7 @@ describe('TopicTree', () => {
       const btn = screen.getByLabelText('More');
       fireEvent.click(btn);
       fireEvent.click(btn);
-      expect(screen.queryByText('Rename')).toBeNull();
+      expect(screen.queryByText('Renombrar')).toBeNull();
     });
 
     it('closes the menu when clicking the overlay', () => {
@@ -306,17 +306,17 @@ describe('TopicTree', () => {
       const overlay = container.querySelector('.fixed.inset-0.z-30') as HTMLElement;
       expect(overlay).toBeTruthy();
       fireEvent.click(overlay);
-      expect(screen.queryByText('Rename')).toBeNull();
+      expect(screen.queryByText('Renombrar')).toBeNull();
     });
 
     it('shows Rename, New child, Merge into…, and Delete items', () => {
       const node = makeNode({ name: 'Engineering' });
       render(<TopicTree tree={[node]} />);
       fireEvent.click(screen.getByLabelText('More'));
-      expect(screen.getByText('Rename')).toBeTruthy();
+      expect(screen.getByText('Renombrar')).toBeTruthy();
       expect(screen.getByText('New child')).toBeTruthy();
       expect(screen.getByText('Merge into…')).toBeTruthy();
-      expect(screen.getByText('Delete')).toBeTruthy();
+      expect(screen.getByText('Eliminar')).toBeTruthy();
     });
   });
 
@@ -327,7 +327,7 @@ describe('TopicTree', () => {
       const node = makeNode({ name: 'Engineering' });
       render(<TopicTree tree={[node]} onRename={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const inputs = document.querySelectorAll('input');
       const renameInput = Array.from(inputs).find(
         (el) => (el as HTMLInputElement).value === 'Engineering',
@@ -340,7 +340,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<TopicTree tree={[node]} onRename={onRename} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.change(input, { target: { value: '  Backend  ' } });
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -352,7 +352,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<TopicTree tree={[node]} onRename={onRename} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.change(input, { target: { value: '   ' } });
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -363,7 +363,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<TopicTree tree={[node]} onRename={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.keyDown(input, { key: 'Escape' });
       expect(screen.getByText('Engineering')).toBeTruthy();
@@ -375,7 +375,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<TopicTree tree={[node]} onRename={onRename} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Rename'));
+      fireEvent.click(screen.getByText('Renombrar'));
       const input = document.querySelector('input') as HTMLInputElement;
       fireEvent.change(input, { target: { value: 'Platform' } });
       fireEvent.blur(input);
@@ -478,7 +478,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(screen.getByText('Delete topic?')).toBeTruthy();
     });
 
@@ -486,7 +486,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering', entityCount: 0 });
       render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(screen.getByText(/This will remove the topic permanently/i)).toBeTruthy();
     });
 
@@ -494,7 +494,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering', entityCount: 5 });
       render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(screen.getByText(/This topic has entities attached/i)).toBeTruthy();
     });
 
@@ -502,10 +502,10 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(screen.getByText('Delete topic?')).toBeTruthy();
       // Cancel button
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       expect(screen.queryByText('Delete topic?')).toBeNull();
     });
 
@@ -513,7 +513,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering' });
       const { container } = render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       const backdrop = container.querySelector('.fixed.inset-0.z-40') as HTMLElement;
       expect(backdrop).toBeTruthy();
       fireEvent.click(backdrop);
@@ -525,9 +525,9 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering', entityCount: 0 });
       render(<TopicTree tree={[node]} onDelete={onDelete} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       // Get the Delete button in the modal footer (not the menu item)
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByText('Eliminar');
       // The footer Delete button is a button with disabled status not being true
       const confirmBtn = deleteButtons[deleteButtons.length - 1].closest('button') as HTMLButtonElement;
       fireEvent.click(confirmBtn);
@@ -538,7 +538,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering', entityCount: 3 });
       render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(document.querySelector('input[type="checkbox"]')).toBeTruthy();
     });
 
@@ -546,7 +546,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'Engineering', entityCount: 0 });
       render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       expect(document.querySelector('input[type="checkbox"]')).toBeNull();
     });
 
@@ -554,11 +554,11 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'BigTopic', entityCount: 5 });
       render(<TopicTree tree={[node]} onDelete={vi.fn()} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       // The Delete confirm button in the modal should be disabled
       const buttons = document.querySelectorAll('button');
       const confirmBtn = Array.from(buttons).find(
-        (b) => b.textContent?.includes('Delete') && (b as HTMLButtonElement).disabled,
+        (b) => b.textContent?.includes('Eliminar') && (b as HTMLButtonElement).disabled,
       ) as HTMLButtonElement | undefined;
       expect(confirmBtn).toBeTruthy();
     });
@@ -568,7 +568,7 @@ describe('TopicTree', () => {
       const node = makeNode({ id: 1, name: 'BigTopic', entityCount: 5 });
       render(<TopicTree tree={[node]} onDelete={onDelete} />);
       fireEvent.click(screen.getByLabelText('More'));
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       // Use getByRole checkbox to trigger the checked state change via click
       const checkbox = screen.getByRole('checkbox') as HTMLInputElement;
       fireEvent.click(checkbox);
@@ -618,7 +618,7 @@ describe('TopicTree', () => {
       render(<TopicTree tree={tree} onMerge={vi.fn()} />);
       fireEvent.click(screen.getAllByLabelText('More')[0]);
       fireEvent.click(screen.getByText('Merge into…'));
-      fireEvent.click(screen.getByLabelText('Cancel'));
+      fireEvent.click(screen.getByLabelText('Cancelar'));
       expect(screen.queryByPlaceholderText('Search topics…')).toBeNull();
     });
 

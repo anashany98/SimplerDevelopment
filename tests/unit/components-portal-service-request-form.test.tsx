@@ -75,14 +75,14 @@ describe('ServiceRequestForm', () => {
     it('renders breadcrumb links', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
-      expect(screen.getByText('Services')).toBeInTheDocument();
-      expect(screen.getByText('Request')).toBeInTheDocument();
+      expect(screen.getByText('Servicios')).toBeInTheDocument();
+      expect(screen.getByText('Solicitud')).toBeInTheDocument();
     });
 
     it('renders submit button', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
-      expect(screen.getByRole('button', { name: /Submit Request/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Enviar solicitud/i })).toBeInTheDocument();
     });
 
     it('omits description when null', () => {
@@ -102,14 +102,14 @@ describe('ServiceRequestForm', () => {
     it('renders message textarea when no survey fields', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
-      expect(screen.getByPlaceholderText(/Describe what you need/i)).toBeInTheDocument();
-      expect(screen.getByText(/Tell us about your project/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/Describe qué necesitas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Cuéntanos tu proyecto/i)).toBeInTheDocument();
     });
 
     it('does not render progress bar when no survey fields', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
-      expect(screen.queryByText(/of.*required fields answered/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/campos obligatorios respondidos/i)).not.toBeInTheDocument();
     });
 
     it('submits message and redirects on success', async () => {
@@ -120,12 +120,12 @@ describe('ServiceRequestForm', () => {
 
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
-      fireEvent.change(screen.getByPlaceholderText(/Describe what you need/i), {
+      fireEvent.change(screen.getByPlaceholderText(/Describe qué necesitas/i), {
         target: { value: 'I need a landing page.' },
       });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
@@ -150,7 +150,7 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
@@ -167,11 +167,11 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
-        expect(screen.getByText('Failed to submit request.')).toBeInTheDocument();
+        expect(screen.getByText('No se pudo enviar la solicitud.')).toBeInTheDocument();
       });
     });
 
@@ -181,11 +181,11 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
-        expect(screen.getByText('Something went wrong. Please try again.')).toBeInTheDocument();
+        expect(screen.getByText('Algo salió mal. Inténtalo de nuevo.')).toBeInTheDocument();
       });
     });
   });
@@ -200,7 +200,7 @@ describe('ServiceRequestForm', () => {
 
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
-      expect(screen.getByText(/0 of 1 required fields answered/i)).toBeInTheDocument();
+      expect(screen.getByText(/0 de 1 campos obligatorios respondidos/i)).toBeInTheDocument();
     });
 
     it('renders heading type as section divider', () => {
@@ -241,7 +241,7 @@ describe('ServiceRequestForm', () => {
 
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
-      expect(screen.getByPlaceholderText('you@example.com')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('tu@ejemplo.com')).toBeInTheDocument();
     });
 
     it('renders phone field with default placeholder', () => {
@@ -249,7 +249,7 @@ describe('ServiceRequestForm', () => {
 
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
-      expect(screen.getByPlaceholderText('+1 (555) 000-0000')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('+34 600 123 456')).toBeInTheDocument();
     });
 
     it('renders url field with default placeholder', () => {
@@ -367,14 +367,14 @@ describe('ServiceRequestForm', () => {
 
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
-      expect(screen.getByText('0 of 1 required fields answered')).toBeInTheDocument();
+      expect(screen.getByText('0 de 1 campos obligatorios respondidos')).toBeInTheDocument();
 
       fireEvent.change(screen.getByPlaceholderText('Enter full name'), {
         target: { value: 'Jane Doe' },
       });
 
       await waitFor(() => {
-        expect(screen.getByText('1 of 1 required fields answered')).toBeInTheDocument();
+        expect(screen.getByText('1 de 1 campos obligatorios respondidos')).toBeInTheDocument();
         expect(screen.getByText('100%')).toBeInTheDocument();
       });
     });
@@ -434,7 +434,7 @@ describe('ServiceRequestForm', () => {
       fireEvent.click(screen.getByText('No').closest('div')!);
 
       await waitFor(() => {
-        expect(screen.getByText('Yes')).toBeInTheDocument();
+        expect(screen.getByText('Sí')).toBeInTheDocument();
       });
     });
 
@@ -466,7 +466,7 @@ describe('ServiceRequestForm', () => {
       fireEvent.change(slider, { target: { value: '5000' } });
 
       await waitFor(() => {
-        expect(screen.getByText('$5,000')).toBeInTheDocument();
+        expect(screen.getByText('$5000')).toBeInTheDocument();
       });
       expect(slider).toHaveValue('5000');
       fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
@@ -534,7 +534,7 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
       // f2 is hidden so required count should be 0
-      expect(screen.queryByText(/required fields answered/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/campos obligatorios respondidos/i)).not.toBeInTheDocument();
     });
   });
 
@@ -559,7 +559,7 @@ describe('ServiceRequestForm', () => {
 
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
-      expect(screen.getByText('Answer the previous question to see options.')).toBeInTheDocument();
+      expect(screen.getByText('Responde la pregunta anterior para ver las opciones.')).toBeInTheDocument();
     });
 
     it('shows mapped options when parent field is answered', async () => {
@@ -599,10 +599,10 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
-      expect(screen.getByText(/"Full Name" is required\./i)).toBeInTheDocument();
+      expect(screen.getByText(/"Full Name" es obligatorio\./i)).toBeInTheDocument();
       expect(mockFetch).not.toHaveBeenCalled();
     });
 
@@ -620,10 +620,10 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
-      expect(screen.getByText(/"Features" is required\./i)).toBeInTheDocument();
+      expect(screen.getByText(/"Features" es obligatorio\./i)).toBeInTheDocument();
     });
 
     it('skips validation for hidden required field', async () => {
@@ -647,7 +647,7 @@ describe('ServiceRequestForm', () => {
 
       // f2 is hidden — should not block submit
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
@@ -668,7 +668,7 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} surveyFields={fields} />);
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
@@ -691,7 +691,7 @@ describe('ServiceRequestForm', () => {
       });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
@@ -729,11 +729,11 @@ describe('ServiceRequestForm', () => {
       render(<ServiceRequestForm {...BASE_PROPS} />);
 
       act(() => {
-        fireEvent.click(screen.getByRole('button', { name: /Submit Request/i }));
+        fireEvent.click(screen.getByRole('button', { name: /Enviar solicitud/i }));
       });
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Submitting.../i })).toBeDisabled();
+        expect(screen.getByRole('button', { name: /Enviando.../i })).toBeDisabled();
       });
 
       // Resolve to avoid open handles

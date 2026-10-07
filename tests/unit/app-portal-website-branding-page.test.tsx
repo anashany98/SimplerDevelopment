@@ -183,7 +183,7 @@ describe('BrandingPage — loading state', () => {
   it('does not render tabs while loading', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = render(React.createElement(BrandingPage));
-    expect(container.textContent).not.toContain('Logos');
+    expect(container.textContent).not.toContain('Logotipos');
   });
 });
 
@@ -193,7 +193,7 @@ describe('BrandingPage — happy-path render', () => {
   it('renders "Brand Guidelines" heading after load', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Brand Guidelines');
+      expect(container.textContent).toContain('Guía de marca');
     });
   });
 
@@ -204,24 +204,24 @@ describe('BrandingPage — happy-path render', () => {
     // via PortalPageHeader so users know they are in a per-website context.
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Website');
+      expect(container.textContent).toContain('Sitio web');
     });
   });
 
   it('renders the four tabs: Logos, Colors, Typography, Style', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Logos');
+      expect(container.textContent).toContain('Logotipos');
       expect(container.textContent).toContain('Colors');
-      expect(container.textContent).toContain('Typography');
-      expect(container.textContent).toContain('Style');
+      expect(container.textContent).toContain('Tipografía');
+      expect(container.textContent).toContain('Estilo');
     });
   });
 
   it('defaults to the Logos tab', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Square Logo');
+      expect(container.textContent).toContain('Logotipo cuadrado');
     });
   });
 
@@ -229,7 +229,7 @@ describe('BrandingPage — happy-path render', () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save Changes'),
+        (b) => b.textContent?.includes('Guardar cambios'),
       );
       expect(btn).toBeTruthy();
     });
@@ -243,7 +243,7 @@ describe('BrandingPage — save button', () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save Changes'),
+        (b) => b.textContent?.includes('Guardar cambios'),
       ) as HTMLButtonElement | undefined;
       expect(btn).toBeTruthy();
       expect(btn!.disabled).toBe(true);
@@ -253,12 +253,12 @@ describe('BrandingPage — save button', () => {
   it('Save button becomes enabled after editing the logo alt text field', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Logos');
+      expect(container.textContent).toContain('Logotipos');
     });
 
     // The logo alt text input has placeholder="Company name"
     const input = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (el) => (el as HTMLInputElement).placeholder === 'Company name',
+      (el) => (el as HTMLInputElement).placeholder === 'Nombre de la empresa',
     ) as HTMLInputElement | undefined;
 
     expect(input).toBeTruthy();
@@ -268,7 +268,7 @@ describe('BrandingPage — save button', () => {
 
     await waitFor(() => {
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save Changes'),
+        (b) => b.textContent?.includes('Guardar cambios'),
       ) as HTMLButtonElement | undefined;
       expect(btn!.disabled).toBe(false);
     });
@@ -277,18 +277,18 @@ describe('BrandingPage — save button', () => {
   it('Save button fires a PUT request when clicked', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Logos');
+      expect(container.textContent).toContain('Logotipos');
     });
 
     // Make dirty
     const input = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (el) => (el as HTMLInputElement).placeholder === 'Company name',
+      (el) => (el as HTMLInputElement).placeholder === 'Nombre de la empresa',
     ) as HTMLInputElement;
     act(() => { fireEvent.change(input, { target: { value: 'Updated' } }); });
 
     // Click save
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(btn); });
 
@@ -304,22 +304,22 @@ describe('BrandingPage — save button', () => {
   it('Save button is disabled again after a successful save (dirty reset)', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.textContent).toContain('Logos');
+      expect(container.textContent).toContain('Logotipos');
     });
 
     const input = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (el) => (el as HTMLInputElement).placeholder === 'Company name',
+      (el) => (el as HTMLInputElement).placeholder === 'Nombre de la empresa',
     ) as HTMLInputElement;
     act(() => { fireEvent.change(input, { target: { value: 'Dirty' } }); });
 
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(btn); });
 
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save Changes'),
+        (b) => b.textContent?.includes('Guardar cambios'),
       ) as HTMLButtonElement | undefined;
       expect(saveBtn?.disabled).toBe(true);
     });
@@ -332,7 +332,7 @@ describe('BrandingPage — tab switching', () => {
   async function renderAndLoad() {
     const result = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(result.container.textContent).toContain('Brand Guidelines');
+      expect(result.container.textContent).toContain('Guía de marca');
     });
     return result;
   }
@@ -348,24 +348,24 @@ describe('BrandingPage — tab switching', () => {
     const { container } = await renderAndLoad();
     clickTab(container, 'Colors');
     await waitFor(() => {
-      expect(container.textContent).toContain('Primary');
-      expect(container.textContent).toContain('Secondary');
-      expect(container.textContent).toContain('Accent');
+      expect(container.textContent).toContain('Primario');
+      expect(container.textContent).toContain('Secundario');
+      expect(container.textContent).toContain('Acento');
     });
   });
 
   it('switches to Typography tab and shows font pickers', async () => {
     const { container } = await renderAndLoad();
-    clickTab(container, 'Typography');
+    clickTab(container, 'Tipografía');
     await waitFor(() => {
-      expect(container.textContent).toContain('Default Heading Font');
-      expect(container.textContent).toContain('Default Body Font');
+      expect(container.textContent).toContain('Fuente predeterminada de títulos');
+      expect(container.textContent).toContain('Fuente predeterminada del texto');
     });
   });
 
   it('switches to Style tab and shows Border Radius section', async () => {
     const { container } = await renderAndLoad();
-    clickTab(container, 'Style');
+    clickTab(container, 'Estilo');
     await waitFor(() => {
       expect(container.textContent).toContain('Border Radius');
     });
@@ -374,9 +374,9 @@ describe('BrandingPage — tab switching', () => {
   it('switching back to Logos shows logo content', async () => {
     const { container } = await renderAndLoad();
     clickTab(container, 'Colors');
-    clickTab(container, 'Logos');
+    clickTab(container, 'Logotipos');
     await waitFor(() => {
-      expect(container.textContent).toContain('Square Logo');
+      expect(container.textContent).toContain('Logotipo cuadrado');
     });
   });
 });
@@ -386,12 +386,12 @@ describe('BrandingPage — tab switching', () => {
 describe('BrandingPage — Colors tab', () => {
   async function renderColors() {
     const result = render(React.createElement(BrandingPage));
-    await waitFor(() => { expect(result.container.textContent).toContain('Brand Guidelines'); });
+    await waitFor(() => { expect(result.container.textContent).toContain('Guía de marca'); });
     const colorsBtn = Array.from(result.container.querySelectorAll('button')).find(
       (b) => b.textContent?.includes('Colors'),
     );
     act(() => { fireEvent.click(colorsBtn!); });
-    await waitFor(() => { expect(result.container.textContent).toContain('Primary'); });
+    await waitFor(() => { expect(result.container.textContent).toContain('Primario'); });
     return result;
   }
 
@@ -408,7 +408,7 @@ describe('BrandingPage — Colors tab', () => {
     const primaryText = inputs.find((i) => i.value === '#ff0000')!;
     act(() => { fireEvent.change(primaryText, { target: { value: '#abcdef' } }); });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(false);
   });
@@ -416,8 +416,8 @@ describe('BrandingPage — Colors tab', () => {
   it('renders Light Mode and Dark Mode color preview sections', async () => {
     const { container } = await renderColors();
     await waitFor(() => {
-      expect(container.textContent).toContain('Light Mode');
-      expect(container.textContent).toContain('Dark Mode');
+      expect(container.textContent).toContain('Modo claro');
+      expect(container.textContent).toContain('Modo oscuro');
     });
   });
 
@@ -434,9 +434,9 @@ describe('BrandingPage — Colors tab', () => {
 describe('BrandingPage — Style tab', () => {
   async function renderStyle() {
     const result = render(React.createElement(BrandingPage));
-    await waitFor(() => { expect(result.container.textContent).toContain('Brand Guidelines'); });
+    await waitFor(() => { expect(result.container.textContent).toContain('Guía de marca'); });
     const styleBtn = Array.from(result.container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim().includes('Style') && !b.textContent?.includes('Button Style'),
+      (b) => b.textContent?.trim().includes('Estilo') && !b.textContent?.includes('Button Style'),
     );
     act(() => { fireEvent.click(styleBtn!); });
     await waitFor(() => { expect(result.container.textContent).toContain('Border Radius'); });
@@ -445,20 +445,20 @@ describe('BrandingPage — Style tab', () => {
 
   it('renders border radius preset buttons: Sharp, Subtle, Rounded, Pill', async () => {
     const { container } = await renderStyle();
-    expect(container.textContent).toContain('Sharp');
-    expect(container.textContent).toContain('Subtle');
-    expect(container.textContent).toContain('Rounded');
-    expect(container.textContent).toContain('Pill');
+    expect(container.textContent).toContain('Angular');
+    expect(container.textContent).toContain('Sutil');
+    expect(container.textContent).toContain('Redondeado');
+    expect(container.textContent).toContain('Pastilla');
   });
 
   it('clicking a border radius preset marks form dirty', async () => {
     const { container } = await renderStyle();
     const sharpBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Sharp',
+      (b) => b.textContent?.trim() === 'Angular',
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(sharpBtn); });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(false);
   });
@@ -474,8 +474,8 @@ describe('BrandingPage — Style tab', () => {
   it('renders Link Colors section', async () => {
     const { container } = await renderStyle();
     expect(container.textContent).toContain('Link Colors');
-    expect(container.textContent).toContain('Link Color');
-    expect(container.textContent).toContain('Link Hover Color');
+    expect(container.textContent).toContain('Color de enlaces');
+    expect(container.textContent).toContain('Color de enlace al pasar el cursor');
   });
 
   it('renders Button Style section with filled/outline variants', async () => {
@@ -492,7 +492,7 @@ describe('BrandingPage — Style tab', () => {
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(filledBtn); });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Changes'),
+      (b) => b.textContent?.includes('Guardar cambios'),
     ) as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(false);
   });
@@ -504,7 +504,7 @@ describe('BrandingPage — Style tab', () => {
 
   it('renders Social / OG Image section', async () => {
     const { container } = await renderStyle();
-    expect(container.textContent).toContain('Social / OG Image');
+    expect(container.textContent).toContain('Social / Imagen OG');
   });
 });
 
@@ -535,29 +535,29 @@ describe('BrandingPage — Logos tab', () => {
   it('renders MediaPicker for Square Logo', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.querySelector('[data-testid="media-picker-Square Logo"]')).toBeTruthy();
+      expect(container.querySelector('[data-testid="media-picker-Logotipo cuadrado"]')).toBeTruthy();
     });
   });
 
   it('renders MediaPicker for Rectangle Logo', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.querySelector('[data-testid="media-picker-Rectangle Logo"]')).toBeTruthy();
+      expect(container.querySelector('[data-testid="media-picker-Logotipo rectangular"]')).toBeTruthy();
     });
   });
 
   it('clicking MediaPicker updates branding and marks form dirty', async () => {
     const { container } = render(React.createElement(BrandingPage));
     await waitFor(() => {
-      expect(container.querySelector('[data-testid="media-picker-trigger-Square Logo"]')).toBeTruthy();
+      expect(container.querySelector('[data-testid="media-picker-trigger-Logotipo cuadrado"]')).toBeTruthy();
     });
     act(() => {
-      const trigger = container.querySelector('[data-testid="media-picker-trigger-Square Logo"]') as HTMLButtonElement;
+      const trigger = container.querySelector('[data-testid="media-picker-trigger-Logotipo cuadrado"]') as HTMLButtonElement;
       fireEvent.click(trigger);
     });
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save Changes'),
+        (b) => b.textContent?.includes('Guardar cambios'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
@@ -576,7 +576,7 @@ describe('BrandingPage — Logos tab', () => {
 describe('BrandingPage — AI Brand Generator', () => {
   async function renderAndLoad() {
     const result = render(React.createElement(BrandingPage));
-    await waitFor(() => { expect(result.container.textContent).toContain('Brand Guidelines'); });
+    await waitFor(() => { expect(result.container.textContent).toContain('Guía de marca'); });
     return result;
   }
 
@@ -589,7 +589,7 @@ describe('BrandingPage — AI Brand Generator', () => {
   it('clicking AI Generator header expands the panel', async () => {
     const { container } = await renderAndLoad();
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => {
@@ -602,7 +602,7 @@ describe('BrandingPage — AI Brand Generator', () => {
 
     // Expand panel
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => { expect(container.querySelector('textarea')).toBeTruthy(); });
@@ -618,14 +618,14 @@ describe('BrandingPage — AI Brand Generator', () => {
     act(() => { fireEvent.click(generateBtn); });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('at least 10 characters');
+      expect(container.textContent).toContain('al menos 10 caracteres');
     });
   });
 
   it('Generate button is disabled while prompt is empty', async () => {
     const { container } = await renderAndLoad();
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => { expect(container.querySelector('textarea')).toBeTruthy(); });
@@ -639,7 +639,7 @@ describe('BrandingPage — AI Brand Generator', () => {
   it('calls generate API with description on valid prompt', async () => {
     const { container } = await renderAndLoad();
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => { expect(container.querySelector('textarea')).toBeTruthy(); });
@@ -663,7 +663,7 @@ describe('BrandingPage — AI Brand Generator', () => {
   it('applies generated primaryColor and marks form dirty', async () => {
     const { container } = await renderAndLoad();
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => { expect(container.querySelector('textarea')).toBeTruthy(); });
@@ -679,7 +679,7 @@ describe('BrandingPage — AI Brand Generator', () => {
     // After generation the form should be dirty
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save Changes'),
+        (b) => b.textContent?.includes('Guardar cambios'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
@@ -688,7 +688,7 @@ describe('BrandingPage — AI Brand Generator', () => {
   it('shows tone message returned from API', async () => {
     const { container } = await renderAndLoad();
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => { expect(container.querySelector('textarea')).toBeTruthy(); });
@@ -716,7 +716,7 @@ describe('BrandingPage — AI Brand Generator', () => {
 
     const { container } = await renderAndLoad();
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => { expect(container.querySelector('textarea')).toBeTruthy(); });
@@ -744,7 +744,7 @@ describe('BrandingPage — AI Brand Generator', () => {
 
     const { container } = await renderAndLoad();
     const header = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('AI Brand Generator'),
+      (b) => b.textContent?.includes('Generador de marca con IA'),
     ) as HTMLButtonElement;
     act(() => { fireEvent.click(header); });
     await waitFor(() => { expect(container.querySelector('textarea')).toBeTruthy(); });
@@ -758,7 +758,7 @@ describe('BrandingPage — AI Brand Generator', () => {
     await act(async () => { fireEvent.click(generateBtn); });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red. Inténtalo de nuevo.');
     });
   });
 });
@@ -788,7 +788,7 @@ describe('BrandingPage — API load / hydration', () => {
     const { container } = render(React.createElement(BrandingPage));
     // Page should still load and render (falls back to DEFAULTS)
     await waitFor(() => {
-      expect(container.textContent).toContain('Brand Guidelines');
+      expect(container.textContent).toContain('Guía de marca');
     });
   });
 
@@ -808,26 +808,26 @@ describe('BrandingPage — API load / hydration', () => {
 describe('BrandingPage — Typography tab', () => {
   async function renderTypography() {
     const result = render(React.createElement(BrandingPage));
-    await waitFor(() => { expect(result.container.textContent).toContain('Brand Guidelines'); });
+    await waitFor(() => { expect(result.container.textContent).toContain('Guía de marca'); });
     const typBtn = Array.from(result.container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Typography'),
+      (b) => b.textContent?.includes('Tipografía'),
     );
     act(() => { fireEvent.click(typBtn!); });
-    await waitFor(() => { expect(result.container.textContent).toContain('Default Heading Font'); });
+    await waitFor(() => { expect(result.container.textContent).toContain('Fuente predeterminada de títulos'); });
     return result;
   }
 
   it('shows element categories: Headings, Body Text, UI Elements', async () => {
     const { container } = await renderTypography();
-    expect(container.textContent).toContain('Headings');
-    expect(container.textContent).toContain('Body Text');
+    expect(container.textContent).toContain('Títulos');
+    expect(container.textContent).toContain('Texto del cuerpo');
     expect(container.textContent).toContain('UI Elements');
   });
 
   it('shows individual typography elements like H1 and Paragraph', async () => {
     const { container } = await renderTypography();
     expect(container.textContent).toContain('H1');
-    expect(container.textContent).toContain('Paragraph');
+    expect(container.textContent).toContain('Párrafo');
   });
 
   it('renders per-element font picker stubs', async () => {
@@ -846,7 +846,7 @@ describe('BrandingPage — Typography tab', () => {
     act(() => { fireEvent.click(selectBtns[0]); });
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save Changes'),
+        (b) => b.textContent?.includes('Guardar cambios'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });

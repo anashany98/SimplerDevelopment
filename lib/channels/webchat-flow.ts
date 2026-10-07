@@ -15,10 +15,9 @@ import { db as defaultDb } from '@/lib/db';
 import { chatConversations } from '@/lib/db/schema';
 import { publishConversationUpdate, publishMessage } from '@/lib/chat/realtime';
 import { ChannelGateway, type EventSink, type GatewayRepos } from './gateway';
-import { createAdapterRegistry } from './adapters';
-import { WebChatAdapter } from './adapters/webchat';
+import { createAdapterRegistry, getCapabilities } from './adapters';
 import { createDbRepos, ensureWebchatConnection } from './repos-db';
-import type { OutboundMessageRequest } from './types';
+import type { ChannelAdapter, OutboundMessageRequest } from './types';
 
 type Db = typeof defaultDb;
 
@@ -106,8 +105,14 @@ export interface WebchatGateway {
 /** Ready-to-use gateway for the WebChat channel (server-only: touches db). */
 export function createWebchatGateway(db: Db = defaultDb): WebchatGateway {
   const repos = createDbRepos(db);
+  const webchatAdapter: ChannelAdapter = {
+    key: 'webchat',
+    capabilities: getCapabilities('webchat'),
+    async receiveEvent() { return []; },
+    sendMessage: (request) => deliverWebchatMessage(request, db),
+  };
   const gateway = new ChannelGateway({
-    adapters: createAdapterRegistry([new WebChatAdapter((request) => deliverWebchatMessage(request, db))]),
+    adapters: createAdapterRegistry([webchatAdapter]),
     repos,
     events: createRealtimeSink(),
   });

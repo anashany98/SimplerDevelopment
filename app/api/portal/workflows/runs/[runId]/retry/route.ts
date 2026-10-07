@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { workflowRuns, workflowRunSteps } from '@/lib/db/schema';
-import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { eq, and } from 'drizzle-orm';
 
@@ -10,19 +8,9 @@ import { eq, and } from 'drizzle-orm';
 // Resets dead_letter steps to pending and moves the run back to pending so the
 // cron drainer picks it up on its next tick. Tenant-scoped via clientId.
 export async function POST(_req: Request, { params }: { params: Promise<{ runId: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-  }
-
   const authResult = await authorizePortal({ action: 'write', scope: 'automations:write' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) {
-    return NextResponse.json({ success: false, error: 'Client not found' }, { status: 404 });
-  }
+  const { client } = authResult;
 
   const { runId } = await params;
   const id = parseInt(runId, 10);

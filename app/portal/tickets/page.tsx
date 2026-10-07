@@ -107,13 +107,13 @@ export default async function TicketsIndexPage({
   return (
     <div className="space-y-6">
       <PortalPageHeader
-        eyebrow="Support"
-        title="Support Tickets"
-        subtitle={<>Track conversations with our team. {isStaff ? 'Showing tickets across all tenants you can see.' : "Only your tenant's tickets are shown."}</>}
+        eyebrow="Soporte"
+        title="Tickets de soporte"
+        subtitle={<>Gestiona las conversaciones con nuestro equipo. {isStaff ? 'Mostrando los tickets de todos los inquilinos que puedes ver.' : 'Solo se muestran los tickets de tu cuenta.'}</>}
         actions={
           <Link href="/portal/tickets/new" className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
-            New Ticket
+            Nuevo ticket
           </Link>
         }
       />
@@ -131,15 +131,15 @@ export default async function TicketsIndexPage({
       {tickets.length === 0 ? (
         <div className={`${pCard} p-12 text-center`}>
           <span className="material-icons text-5xl text-muted-foreground">support_agent</span>
-          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No tickets match these filters</h3>
-          <p className="mt-2 text-sm text-muted-foreground">Try clearing the filters or open a new ticket.</p>
+          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Ningún ticket coincide con estos filtros</h3>
+          <p className="mt-2 text-sm text-muted-foreground">Prueba a limpiar los filtros o abre un ticket nuevo.</p>
           <div className="mt-4 inline-flex items-center gap-2">
             <Link href="/portal/tickets" className={pBtnGhost}>
-              Clear filters
+              Limpiar filtros
             </Link>
             <Link href="/portal/tickets/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              Open Ticket
+              Abrir ticket
             </Link>
           </div>
         </div>
@@ -150,15 +150,15 @@ export default async function TicketsIndexPage({
             <thead className="bg-muted/50 border-b border-border">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">#</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Subject</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Asunto</th>
                 {isStaff && (
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Tenant</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Inquilino</th>
                 )}
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Priority</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Prioridad</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">SLA</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Assignee</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Updated</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Responsable</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actualizado</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -196,7 +196,7 @@ export default async function TicketsIndexPage({
                     />
                   </td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">
-                    {ticket.assigneeName ?? <span className="italic">Unassigned</span>}
+                    {ticket.assigneeName ?? <span className="italic">Sin asignar</span>}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground text-xs">
                     {new Date(ticket.updatedAt).toLocaleDateString()}
@@ -210,9 +210,9 @@ export default async function TicketsIndexPage({
       )}
 
       <p className="text-xs text-muted-foreground">
-        Looking for the legacy view? It still lives at{' '}
+        ¿Buscas la vista anterior? Sigue disponible en{' '}
         <Link href="/portal/settings/support" className="text-primary hover:underline">
-          Settings → Support
+          Ajustes → Soporte
         </Link>
         .
       </p>

@@ -23,13 +23,13 @@ interface Recurrence {
 
 interface Column { id: number; name: string }
 
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
 function describeSchedule(r: Recurrence): string {
   const time = `${r.hourUtc.toString().padStart(2, '0')}:00 UTC`;
-  if (r.cadence === 'daily') return `Daily at ${time}`;
-  if (r.cadence === 'weekly') return `Weekly · ${DAYS[r.dayOfWeek ?? 1]} ${time}`;
-  return `Monthly · day ${r.dayOfMonth ?? 1} ${time}`;
+  if (r.cadence === 'daily') return `Diario a las ${time}`;
+  if (r.cadence === 'weekly') return `Semanal · ${DAYS[r.dayOfWeek ?? 1]} ${time}`;
+  return `Mensual · día ${r.dayOfMonth ?? 1} ${time}`;
 }
 
 export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projectId: number; canEdit: boolean }) {
@@ -62,8 +62,8 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
       } else {
         // Last resort — derive column ids from sprint cards
         const fromSprints = new Map<number, string>();
-        for (const s of projRes.data?.sprints ?? []) for (const c of s.cards ?? []) if (c.columnId) fromSprints.set(c.columnId, c.columnName ?? `Column ${c.columnId}`);
-        for (const c of projRes.data?.backlog ?? []) if (c.columnId) fromSprints.set(c.columnId, c.columnName ?? `Column ${c.columnId}`);
+        for (const s of projRes.data?.sprints ?? []) for (const c of s.cards ?? []) if (c.columnId) fromSprints.set(c.columnId, c.columnName ?? `Columna ${c.columnId}`);
+        for (const c of projRes.data?.backlog ?? []) if (c.columnId) fromSprints.set(c.columnId, c.columnName ?? `Columna ${c.columnId}`);
         setColumns([...fromSprints.entries()].map(([id, name]) => ({ id, name })));
       }
     } finally { setLoading(false); }
@@ -107,7 +107,7 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
   };
 
   const onDelete = async (id: number) => {
-    if (!confirm('Delete this recurrence?')) return;
+    if (!confirm('¿Eliminar esta recurrencia?')) return;
     await fetch(`/api/portal/recurrences/${id}`, { method: 'DELETE' });
     await load();
   };
@@ -116,18 +116,18 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
     <div className="bg-card border border-border rounded-xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Recurring tasks</h3>
+          <h3 className="text-sm font-semibold text-foreground">Tareas recurrentes</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Auto-create cards on a schedule. {`{{date}}`} in the title becomes the firing date (e.g. &quot;Standup 2026-06-10&quot;).
+            Crea tarjetas automáticamente según una programación. {`{{date}}`} en el título se convierte en la fecha de ejecución (p. ej., &quot;Reunión diaria 2026-06-10&quot;).
           </p>
         </div>
         {canEdit && (
           <button
             onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+            className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium bg-foreground text-background hover:bg-foreground/90"
           >
             <span className="material-icons text-sm">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'New'}
+            {showForm ? 'Cancelar' : 'Nueva'}
           </button>
         )}
       </div>
@@ -136,42 +136,42 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
         <form onSubmit={onSubmit} className="space-y-3 border border-border rounded-lg p-4 bg-background">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Title pattern <span className="text-destructive">*</span></label>
+              <label className="text-xs font-medium text-foreground">Patrón de título <span className="text-destructive">*</span></label>
               <input
                 value={form.titlePattern}
                 onChange={e => setForm(p => ({ ...p, titlePattern: e.target.value }))}
                 required
-                placeholder="Standup {{date}}"
+                placeholder="Reunión diaria {{date}}"
                 className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Column <span className="text-destructive">*</span></label>
+              <label className="text-xs font-medium text-foreground">Columna <span className="text-destructive">*</span></label>
               <select
                 required
                 value={form.columnId}
                 onChange={e => setForm(p => ({ ...p, columnId: e.target.value }))}
                 className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
               >
-                <option value="">Choose…</option>
+                <option value="">Elegir…</option>
                 {columns.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Cadence</label>
+              <label className="text-xs font-medium text-foreground">Frecuencia</label>
               <select
                 value={form.cadence}
                 onChange={e => setForm(p => ({ ...p, cadence: e.target.value as Cadence }))}
                 className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm"
               >
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
+                <option value="daily">Diaria</option>
+                <option value="weekly">Semanal</option>
+                <option value="monthly">Mensual</option>
               </select>
             </div>
             {form.cadence === 'weekly' && (
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Day</label>
+                <label className="text-xs font-medium text-foreground">Día</label>
                 <select
                   value={form.dayOfWeek}
                   onChange={e => setForm(p => ({ ...p, dayOfWeek: parseInt(e.target.value, 10) }))}
@@ -183,7 +183,7 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
             )}
             {form.cadence === 'monthly' && (
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-foreground">Day of month (1–28)</label>
+                <label className="text-xs font-medium text-foreground">Día del mes (1–28)</label>
                 <input
                   type="number" min={1} max={28}
                   value={form.dayOfMonth}
@@ -193,7 +193,7 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
               </div>
             )}
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Hour (UTC, 0–23)</label>
+              <label className="text-xs font-medium text-foreground">Hora (UTC, 0–23)</label>
               <input
                 type="number" min={0} max={23}
                 value={form.hourUtc}
@@ -203,17 +203,17 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
             </div>
           </div>
           <div className="flex justify-end">
-            <button type="submit" disabled={saving} className="px-4 py-1.5 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50">
-              {saving ? 'Saving…' : 'Add recurrence'}
+            <button type="submit" disabled={saving} className="px-4 py-1.5 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50">
+              {saving ? 'Guardando…' : 'Añadir recurrencia'}
             </button>
           </div>
         </form>
       )}
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">Cargando…</p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground italic">No recurring tasks yet.</p>
+        <p className="text-sm text-muted-foreground italic">Aún no hay tareas recurrentes.</p>
       ) : (
         <div className="border border-border rounded-lg divide-y divide-border">
           {rows.map(r => (
@@ -222,17 +222,17 @@ export default function ProjectRecurrencesPanel({ projectId, canEdit }: { projec
                 {r.active ? 'autorenew' : 'pause_circle_outline'}
               </span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-foreground truncate">{r.titlePattern ?? '(template-driven)'}</p>
+                <p className="text-sm text-foreground truncate">{r.titlePattern ?? '(generada por plantilla)'}</p>
                 <p className="text-xs text-muted-foreground">
-                  {describeSchedule(r)} · next: {new Date(r.nextFireAt).toLocaleString('en-US')}
+                  {describeSchedule(r)} · próxima: {new Date(r.nextFireAt).toLocaleString('es-ES')}
                 </p>
               </div>
               {canEdit && (
                 <>
-                  <button onClick={() => onToggle(r)} className="text-xs text-muted-foreground hover:text-foreground" title={r.active ? 'Pause' : 'Resume'}>
+                  <button onClick={() => onToggle(r)} className="text-xs text-muted-foreground hover:text-foreground" title={r.active ? 'Pausar' : 'Reanudar'}>
                     <span className="material-icons text-sm">{r.active ? 'pause' : 'play_arrow'}</span>
                   </button>
-                  <button onClick={() => onDelete(r.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Delete">
+                  <button onClick={() => onDelete(r.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Eliminar">
                     <span className="material-icons text-sm">delete_outline</span>
                   </button>
                 </>

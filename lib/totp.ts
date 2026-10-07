@@ -101,7 +101,7 @@ export function verifiedTOTPStep(secretBase32: string, code: string, drift = 1, 
 }
 
 /** otpauth:// URI for the QR code an authenticator app scans during enrollment. */
-export function getTOTPUri(secretBase32: string, accountEmail: string, issuer = 'SimplerDevelopment'): string {
+export function getTOTPUri(secretBase32: string, accountEmail: string, issuer = 'CRM AGENTS'): string {
   const label = encodeURIComponent(`${issuer}:${accountEmail}`);
   const params = new URLSearchParams({
     secret: secretBase32,

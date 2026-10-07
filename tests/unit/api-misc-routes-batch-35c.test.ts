@@ -87,6 +87,18 @@ vi.mock('@/lib/db/schema', () => {
   return out;
 });
 
+// Billing was removed (2026-08): the route short-circuits with 403 when
+// PAYMENTS_DISABLED is true. The gate is mocked open here so the tests below
+// can exercise the route logic (including Stripe plumbing) with all original
+// assertions intact (same pattern as api-billing-verify-session.test.ts).
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+    }),
+}));
+
 vi.mock('@/lib/db', () => {
   function tableName(t: unknown): string {
     if (t && typeof t === 'object' && '_name' in t) {
@@ -218,7 +230,7 @@ describe('POST /api/storefront/[siteId]/discount/validate', () => {
     );
     const res = await POST(makeReq({}), paramsFor({ siteId: '1' }));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Discount code is required');
+    expect((await res.json()).message).toBe('Introduce un código de descuento.');
   });
 
   it('returns 400 when discount code is not found', async () => {
@@ -229,7 +241,7 @@ describe('POST /api/storefront/[siteId]/discount/validate', () => {
     );
     const res = await POST(makeReq({ code: 'NOPE' }), paramsFor({ siteId: '1' }));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Invalid discount code');
+    expect((await res.json()).message).toBe('Código de descuento no válido.');
   });
 
   it('returns 400 when discount is not yet active (startsAt in future)', async () => {
@@ -246,7 +258,7 @@ describe('POST /api/storefront/[siteId]/discount/validate', () => {
     );
     const res = await POST(makeReq({ code: 'SOON' }), paramsFor({ siteId: '1' }));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/not yet active/i);
+    expect((await res.json()).message).toMatch(/aún no está activo/i);
   });
 
   it('returns 400 when discount has expired', async () => {
@@ -263,7 +275,7 @@ describe('POST /api/storefront/[siteId]/discount/validate', () => {
     );
     const res = await POST(makeReq({ code: 'GONE' }), paramsFor({ siteId: '1' }));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/expired/i);
+    expect((await res.json()).message).toMatch(/caducado/i);
   });
 
   it('returns 400 when maxUses has been reached', async () => {
@@ -279,7 +291,7 @@ describe('POST /api/storefront/[siteId]/discount/validate', () => {
     );
     const res = await POST(makeReq({ code: 'FULL' }), paramsFor({ siteId: '1' }));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/fully redeemed/i);
+    expect((await res.json()).message).toMatch(/agotado/i);
   });
 
   it('returns 400 when subtotal is below minOrderAmount', async () => {
@@ -295,7 +307,7 @@ describe('POST /api/storefront/[siteId]/discount/validate', () => {
     );
     const res = await POST(makeReq({ code: 'BIG', subtotal: 1000 }), paramsFor({ siteId: '1' }));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toMatch(/minimum order amount/i);
+    expect((await res.json()).message).toMatch(/pedido mínimo/i);
   });
 
   it('computes a percent discount when subtotal is provided', async () => {
@@ -562,7 +574,7 @@ describe('GET /api/storefront/[siteId]/products/[slug]', () => {
       paramsFor({ siteId: '1', slug: 'widget' }),
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Product not found');
+    expect((await res.json()).message).toBe('Producto no encontrado.');
   });
 
   it('returns full product with images, options(+values), variants, bulkPricing, category=null when no categoryId', async () => {

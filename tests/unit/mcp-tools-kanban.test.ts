@@ -238,9 +238,7 @@ vi.mock('@/lib/google/tenant-credentials', () => ({
   getTenantWorkspaceCredentialsByClientId: vi.fn(async () => null),
 }));
 
-vi.mock('../pending-changes', () => ({ stageOrApply: vi.fn(async () => ({})) }));
 vi.mock('@/lib/mcp/pending-changes', () => ({ stageOrApply: vi.fn(async () => ({})) }));
-vi.mock('../blocks-schema', () => ({ BLOCKS_SCHEMA_REFERENCE: {} }));
 vi.mock('@/lib/mcp/blocks-schema', () => ({ BLOCKS_SCHEMA_REFERENCE: {} }));
 
 vi.mock('@/lib/security/assert-owned', () => {
@@ -275,9 +273,6 @@ vi.mock('next/cache', () => ({ revalidatePath: vi.fn(), unstable_cache: (fn: (..
 vi.mock('@/lib/portal-auth', () => ({ hasServiceAccess: vi.fn(async () => true) }));
 
 // projections re-exports — kanban.ts imports them but never invokes; stub minimally.
-vi.mock('../projections', () => ({
-  postProjection: {}, deckProjection: {}, campaignProjection: {},
-}));
 vi.mock('@/lib/mcp/projections', () => ({
   postProjection: {}, deckProjection: {}, campaignProjection: {},
 }));
@@ -361,9 +356,7 @@ describe('registerKanbanTools — registration', () => {
       'kanban_create_card',
       'kanban_move_card',
       'kanban_update_card',
-      'kanban_delete_card',
       'kanban_update_column',
-      'kanban_delete_column',
       'kanban_labels_list',
       'kanban_labels_create',
       'kanban_labels_update',
@@ -385,17 +378,21 @@ describe('registerKanbanTools — registration', () => {
     ]) {
       expect(tools.has(name), `should register ${name}`).toBe(true);
     }
-    // kanban_labels_delete and kanban_checklist_delete now require the
-    // granular projects:delete scope, not projects:write.
-    expect(tools.has('kanban_labels_delete')).toBe(false);
-    expect(tools.has('kanban_checklist_delete')).toBe(false);
+    // Destructive kanban deletes now require the granular projects:delete scope,
+    // not projects:write.
+    for (const name of ['kanban_delete_card', 'kanban_delete_column', 'kanban_labels_delete', 'kanban_checklist_delete']) {
+      expect(tools.has(name), `should NOT register ${name} under projects:write alone`).toBe(false);
+    }
   });
 
   it('registers the delete-scoped kanban tools only under projects:delete', () => {
     const tools = registerAll(['projects:delete']);
+    expect(tools.has('kanban_delete_card')).toBe(true);
+    expect(tools.has('kanban_delete_column')).toBe(true);
     expect(tools.has('kanban_labels_delete')).toBe(true);
     expect(tools.has('kanban_checklist_delete')).toBe(true);
     expect(tools.has('kanban_labels_create')).toBe(false);
+    expect(tools.has('kanban_create_card')).toBe(false);
   });
 
   it('skips write tools when scopes only contain projects:read', () => {
@@ -777,7 +774,7 @@ describe('kanban_delete_card', () => {
 
   it('returns Card not found when missing', async () => {
     dbState.selectQueue = [[]];
-    const tools = registerAll();
+    const tools = registerAll(['projects:read', 'projects:write', 'projects:delete']);
     const res = await tools.get('kanban_delete_card')!.handler({ id: 9 });
     expect(parseJson(res)).toEqual({ error: 'Card not found' });
   });
@@ -787,7 +784,7 @@ describe('kanban_delete_card', () => {
       [{ projectId: 1 }],
       [],
     ];
-    const tools = registerAll();
+    const tools = registerAll(['projects:read', 'projects:write', 'projects:delete']);
     const res = await tools.get('kanban_delete_card')!.handler({ id: 9 });
     expect(parseJson(res)).toEqual({ error: 'Permission denied' });
   });
@@ -797,7 +794,7 @@ describe('kanban_delete_card', () => {
       [{ projectId: 1 }],
       [{ id: 1 }],
     ];
-    const tools = registerAll();
+    const tools = registerAll(['projects:read', 'projects:write', 'projects:delete']);
     const res = await tools.get('kanban_delete_card')!.handler({ id: 9 });
     expect(parseJson(res)).toEqual({ success: true, id: 9 });
     expect(dbState.deleteCalls).toBe(1);
@@ -849,7 +846,7 @@ describe('kanban_delete_column', () => {
 
   it('returns Column not found when missing', async () => {
     dbState.selectQueue = [[]];
-    const tools = registerAll();
+    const tools = registerAll(['projects:read', 'projects:write', 'projects:delete']);
     const res = await tools.get('kanban_delete_column')!.handler({ id: 1 });
     expect(parseJson(res)).toEqual({ error: 'Column not found' });
   });
@@ -859,7 +856,7 @@ describe('kanban_delete_column', () => {
       [{ projectId: 1 }],
       [],
     ];
-    const tools = registerAll();
+    const tools = registerAll(['projects:read', 'projects:write', 'projects:delete']);
     const res = await tools.get('kanban_delete_column')!.handler({ id: 1 });
     expect(parseJson(res)).toEqual({ error: 'Permission denied' });
   });
@@ -869,7 +866,7 @@ describe('kanban_delete_column', () => {
       [{ projectId: 1 }],
       [{ id: 1 }],
     ];
-    const tools = registerAll();
+    const tools = registerAll(['projects:read', 'projects:write', 'projects:delete']);
     const res = await tools.get('kanban_delete_column')!.handler({ id: 1 });
     expect(parseJson(res)).toEqual({ success: true, id: 1 });
   });

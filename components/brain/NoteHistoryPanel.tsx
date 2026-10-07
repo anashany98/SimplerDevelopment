@@ -6,6 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { relativeTimeEs } from '@/lib/portal-utils';
 
 interface AuditLogItem {
   id: number;
@@ -82,7 +83,7 @@ function NoteHistoryPanelInner({ noteId }: { noteId: number }) {
   if (items === null) {
     return (
       <div className="p-4 flex items-center gap-2 text-sm text-muted-foreground">
-        <span className="material-icons animate-spin text-base">progress_activity</span>
+        <span className="material-icons animate-spin text-base">autorenew</span>
         Loading history…
       </div>
     );
@@ -157,15 +158,5 @@ function extractChangedFields(metadata: Record<string, unknown> | null | undefin
 }
 
 function formatRelative(iso: string): string {
-  const then = new Date(iso).getTime();
-  const now = Date.now();
-  const diff = Math.max(0, now - then);
-  const mins = Math.floor(diff / 60_000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  if (days < 30) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString();
+  return relativeTimeEs(iso);
 }

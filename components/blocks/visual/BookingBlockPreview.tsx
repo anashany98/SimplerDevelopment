@@ -82,7 +82,7 @@ export function BookingBlockPreview({ block, isSelected, onChange }: BookingBloc
                   key={i}
                   className={`py-1 rounded ${
                     i === 14
-                      ? 'bg-primary text-primary-foreground font-bold'
+                      ? 'bg-foreground text-background font-bold'
                       : ''
                   }`}
                 >

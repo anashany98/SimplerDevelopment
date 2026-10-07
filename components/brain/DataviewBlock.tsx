@@ -23,6 +23,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Components } from 'react-markdown';
+import { relativeTimeEs } from '@/lib/portal-utils';
 
 interface DataviewResponse {
   rows: Array<Record<string, unknown>>;
@@ -41,14 +42,9 @@ interface DataviewBlockProps {
 /* --------------------------------------------------------------------- */
 
 function formatRelative(from: number, now: number): string {
-  const sec = Math.max(0, Math.round((now - from) / 1000));
-  if (sec < 5) return 'just now';
-  if (sec < 60) return `${sec}s ago`;
-  const min = Math.round(sec / 60);
-  if (min < 60) return `${min} min ago`;
-  const hr = Math.round(min / 60);
-  if (hr < 24) return `${hr} hr ago`;
-  return `${Math.round(hr / 24)} d ago`;
+  // relativeTimeEs measures against Date.now(); shift `from` so a caller-supplied
+  // `now` (tests) still yields (now - from).
+  return relativeTimeEs(from + (Date.now() - now));
 }
 
 function formatCell(value: unknown): ReactNode {
@@ -200,9 +196,7 @@ export function DataviewBlock({ source, endpoint = '/api/portal/brain/dataview' 
             onClick={() => setReloadKey((n) => n + 1)}
             className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-destructive hover:bg-destructive/10"
           >
-            <span className="material-icons text-xs">refresh</span>
-            Retry
-          </button>
+            <span className="material-icons text-xs">refresh</span>Reintentar</button>
         </div>
         <div className="mt-1 font-mono text-[11px] text-destructive/80">{state.message}</div>
       </div>

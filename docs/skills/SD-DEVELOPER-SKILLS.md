@@ -1,4 +1,4 @@
-# SimplerDevelopment Developer Skills
+# CRM AGENTS Developer Skills
 
 Skills an agent uses to modify the simplerdevelopment2026 codebase itself: scaffold features, scaffold UI, add block types, add MCP tools, migrate external sites, port external features, debug the visual editor, and run autonomous dev loops.
 
@@ -83,7 +83,7 @@ All of these write code into `simplerdevelopment2026/`. They preserve the archit
 
 ## `simplerdev-mcp-tool` — new MCP tool
 
-**Purpose.** Adds a new MCP tool to the in-repo SimplerDevelopment portal MCP server. Registers the handler, input schema (Zod), and scope guard in `lib/mcp/server.ts`. Optionally creates an adapter file at `lib/<feature>/mcp-*.ts` for larger feature sets.
+**Purpose.** Adds a new MCP tool to the in-repo CRM AGENTS portal MCP server. Registers the handler, input schema (Zod), and scope guard in `lib/mcp/server.ts`. Optionally creates an adapter file at `lib/<feature>/mcp-*.ts` for larger feature sets.
 
 **Trigger phrases.** `add MCP tool for X`, `expose X via MCP`, `new MCP tool`, `wire X into the MCP server`.
 
@@ -125,7 +125,7 @@ All of these write code into `simplerdevelopment2026/`. They preserve the archit
 
 ## `site-migration` — import an external website
 
-**Purpose.** Migrates an existing external site into the SimplerDevelopment platform. Handles the whole loop: discovery (crawl), content extraction, block-by-block translation, asset mirroring, brand inference, and draft-post creation in the portal.
+**Purpose.** Migrates an existing external site into the CRM AGENTS platform. Handles the whole loop: discovery (crawl), content extraction, block-by-block translation, asset mirroring, brand inference, and draft-post creation in the portal.
 
 **Trigger phrases.** `migrate site`, `import website`, `bring over their site`, `rebuild this site`, `clone this website`, `onboard a new client site`, `move site to our platform`, `new client site from [url]`, `pull content from [domain]`.
 
@@ -139,7 +139,7 @@ All of these write code into `simplerdevelopment2026/`. They preserve the archit
 
 **Purpose.** Analyzes external application source code, compares it against simplerdevelopment2026, identifies feature gaps, and integrates missing capabilities into the platform.
 
-**Trigger phrases.** `find gaps between`, `integrate features from`, `port this to SimplerDevelopment`, `compare and implement`, `what features are missing`, `bring over from`, `adopt features from`, `merge capabilities from`.
+**Trigger phrases.** `find gaps between`, `integrate features from`, `port this to CRM AGENTS`, `compare and implement`, `what features are missing`, `bring over from`, `adopt features from`, `merge capabilities from`.
 
 **Typical input.** A path to external source (e.g. a booking-app, chat system, or component directory) alongside a request to implement or integrate it.
 
@@ -163,7 +163,7 @@ These live under `.agents/skills/` as repo-local developer skills. They are inte
 
 ### `simplerdev-code-review` — repo-aware review router
 
-**Purpose.** Reviews diffs for SimplerDevelopment-specific risks: bugs, regressions, tenancy leaks, auth/security issues, MCP token payload mistakes, accessibility problems, performance risks, and missing tests.
+**Purpose.** Reviews diffs for CRM AGENTS-specific risks: bugs, regressions, tenancy leaks, auth/security issues, MCP token payload mistakes, accessibility problems, performance risks, and missing tests.
 
 **Trigger phrases.** `review this diff`, `audit this change`, `security review`, `check for tenant leaks`, `performance review`, `accessibility review`, `pre-commit review`.
 

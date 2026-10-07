@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import type { StepProps } from './types';
 import { BUNDLE, BUNDLE_SLUG, FEATURE_DOMAINS, applyVolumeDiscount } from '@/lib/billing/domain-catalog';
 import { obPrimaryBtn } from '../ob-styles';
+import { formatCents } from '@/lib/portal-utils';
 import { verifyCheckoutSession } from '@/components/portal/billing/verify-checkout-session';
 
 const BUNDLE_KEY = 'bundle';
@@ -33,7 +34,7 @@ export function StepPayment({
   const [checkoutCancelled] = useState(() => checkoutParam === 'cancelled');
   const [checkoutSuccess, setCheckoutSuccess] = useState(() => checkoutParam === 'success');
   // Escape hatch: the success screen is supposed to auto-advance in ~1.8s, but
-  // a slow persist left users staring at "Setting up your workspace…" for
+  // a slow persist left users staring at "Configurando tu espacio de trabajo…" for
   // minutes right after being charged (OBQA-015). Offer a manual Continue.
   const [showEscape, setShowEscape] = useState(false);
   useEffect(() => {
@@ -130,20 +131,21 @@ export function StepPayment({
           throw new Error(json.message);
         }
         throw new Error(
-          "We couldn't start your checkout. Please try again — if it keeps happening, contact support and we'll sort it out.",
+          'No pudimos iniciar tu pago. Inténtalo de nuevo — si sigue pasando, contacta con soporte y lo solucionamos.',
         );
       }
 
       window.location.href = json.data.url;
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong. Please try again.');
+      setError(e instanceof Error ? e.message : 'Algo salió mal. Inténtalo de nuevo.');
     } finally {
       setLaunching(false);
     }
   }
 
-  const formatPrice = (cents: number) =>
-    `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}/mo`;
+  const formatPrice = (cents: number) => stripeEnabled
+    ? `${formatCents(cents)}/mes`
+    : 'Incluido';
 
   if (checkoutSuccess) {
     return (
@@ -151,17 +153,15 @@ export function StepPayment({
         <div className="rounded-full bg-emerald-500/10 p-4">
           <span className="material-icons text-4xl text-emerald-600">check_circle</span>
         </div>
-        <h2 className="text-xl font-bold">Trial started!</h2>
-        <p className="text-sm text-muted-foreground">Setting up your workspace…</p>
+        <h2 className="text-xl font-bold">¡Prueba iniciada!</h2>
+        <p className="text-sm text-muted-foreground">Configurando tu espacio de trabajo…</p>
         {showEscape && (
           <button
             type="button"
             onClick={() => next({ checkoutCompletedAt: new Date().toISOString() })}
             data-testid="onboarding-payment-escape"
             className={obPrimaryBtn}
-          >
-            Continue
-            <span className="material-icons text-lg">arrow_forward</span>
+          >Continuar<span className="material-icons text-lg">arrow_forward</span>
           </button>
         )}
       </div>
@@ -173,14 +173,14 @@ export function StepPayment({
       {checkoutCancelled && (
         <div className="rounded-2xl border border-amber-200/60 bg-amber-50/80 px-4 py-3 flex items-start gap-2 text-sm text-amber-800">
           <span className="material-icons text-base mt-0.5 shrink-0">info</span>
-          No charge made — pick up where you left off.
+          No se ha realizado ningún cargo — continúa donde lo dejaste.
         </div>
       )}
 
       {/* Order summary */}
       <div className="rounded-2xl border border-border bg-card divide-y divide-border overflow-hidden">
         {lineItems.length === 0 ? (
-          <div className="px-4 py-4 text-sm text-muted-foreground">No modules selected.</div>
+          <div className="px-4 py-4 text-sm text-muted-foreground">No hay módulos seleccionados.</div>
         ) : (
           lineItems.map((li) => (
             <div key={li.name} className="flex items-center gap-3 px-4 py-3.5">
@@ -190,20 +190,20 @@ export function StepPayment({
             </div>
           ))
         )}
-        {discountPercent > 0 && (
+        {stripeEnabled && discountPercent > 0 && (
           <>
             <div className="flex items-center justify-between px-4 py-2.5 text-[13px] text-muted-foreground">
               <span>Subtotal</span>
               <span>{formatPrice(subtotalCents)}</span>
             </div>
             <div className="flex items-center justify-between px-4 py-2.5 text-[13px] text-emerald-700">
-              <span>Volume discount ({discountPercent}% off)</span>
+              <span>Descuento por volumen ({discountPercent}% de descuento)</span>
               <span>−{formatPrice(discountCents)}</span>
             </div>
           </>
         )}
         <div className="flex items-center justify-between px-4 py-3.5 bg-[var(--portal-surface-2)]">
-          <span className="text-[14px] font-bold">Total</span>
+          <span className="text-[14px] font-bold">{stripeEnabled ? 'Total' : 'Acceso'}</span>
           <span className="text-[14px] font-bold">{formatPrice(totalCents)}</span>
         </div>
       </div>
@@ -213,8 +213,8 @@ export function StepPayment({
         <div className="rounded-2xl border border-emerald-200/70 bg-emerald-500/[0.07] px-4 py-3.5 flex items-start gap-2.5 text-sm text-foreground">
           <span className="material-icons text-base text-emerald-600 mt-0.5 shrink-0">card_giftcard</span>
           <div>
-            <span className="font-semibold">14-day free trial</span>
-            <span className="text-muted-foreground"> — $0 today, card required. Cancel any time before day 14.</span>
+            <span className="font-semibold">Prueba gratis de 14 días</span>
+            <span className="text-muted-foreground"> — $0 hoy, se requiere tarjeta. Cancela cuando quieras antes del día 14.</span>
           </div>
         </div>
       ) : (
@@ -225,9 +225,9 @@ export function StepPayment({
         >
           <span className="material-icons text-base mt-0.5 shrink-0">warning_amber</span>
           <div>
-            <span className="font-semibold">Payments aren&apos;t set up on this instance.</span>{' '}
-            You can continue — your selected modules will be activated without a charge. Billing
-            starts working once the operator configures Stripe.
+            <span className="font-semibold">Los pagos no están habilitados en esta instancia.</span>{' '}
+            Puedes continuar — tus módulos seleccionados se activarán sin cargo. La
+            facturación empezará a funcionar cuando el operador configure Stripe.
           </div>
         </div>
       )}
@@ -236,7 +236,7 @@ export function StepPayment({
       {verifyNotice && (
         <div className="rounded-2xl border border-amber-200/60 bg-amber-50/80 px-4 py-3 flex items-start gap-2 text-sm text-amber-800">
           <span className="material-icons text-base mt-0.5 shrink-0">mark_email_unread</span>
-          Verify your email first — check your inbox for a confirmation link.
+          Verifica tu email primero — revisa tu bandeja de entrada para el enlace de confirmación.
         </div>
       )}
 
@@ -261,8 +261,8 @@ export function StepPayment({
           <span className="material-icons text-lg">{stripeEnabled ? 'rocket_launch' : 'arrow_forward'}</span>
         )}
         {launching
-          ? stripeEnabled ? 'Redirecting…' : 'Activating…'
-          : stripeEnabled ? 'Start free trial' : 'Continue without payment'}
+          ? stripeEnabled ? 'Redirigiendo…' : 'Activando…'
+          : stripeEnabled ? 'Empezar prueba gratis' : 'Continuar sin pago'}
       </button>
     </div>
   );

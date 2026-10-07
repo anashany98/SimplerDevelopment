@@ -23,13 +23,13 @@ function formatRelative(iso: string | null): string {
   if (Number.isNaN(then)) return '';
   const delta = Date.now() - then;
   const mins = Math.floor(delta / 60_000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return 'ahora mismo';
+  if (mins < 60) return `hace ${mins} min`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString();
+  if (days < 30) return `hace ${days} d`;
+  return new Date(iso).toLocaleDateString('es-ES');
 }
 
 export function MyDesignsPanel({ siteId, domain }: { siteId: number; domain: string }) {
@@ -55,9 +55,9 @@ export function MyDesignsPanel({ siteId, domain }: { siteId: number; domain: str
       <AccountLayout siteId={siteId} domain={domain}>
         <div className="space-y-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Designs</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Mis diseños</h1>
             <p className="text-gray-500 text-sm mt-1">
-              Custom designs you&apos;ve saved. Pick one up where you left off.
+              Diseños personalizados que has guardado. Retómalos donde los dejaste.
             </p>
           </div>
 
@@ -67,7 +67,7 @@ export function MyDesignsPanel({ siteId, domain }: { siteId: number; domain: str
                 className="material-icons text-gray-300 animate-spin"
                 style={{ fontSize: '32px' }}
               >
-                progress_activity
+                autorenew
               </span>
             </div>
           ) : designs.length === 0 ? (
@@ -76,13 +76,13 @@ export function MyDesignsPanel({ siteId, domain }: { siteId: number; domain: str
                 brush
               </span>
               <p className="text-sm text-gray-500 mt-3">
-                You haven&apos;t saved any designs yet. Start customizing a product.
+                Aún no has guardado ningún diseño. Empieza personalizando un producto.
               </p>
               <Link
                 href="/shop"
                 className="inline-block mt-4 px-4 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800"
               >
-                Browse Products
+                Explorar productos
               </Link>
             </div>
           ) : (
@@ -113,7 +113,7 @@ export function MyDesignsPanel({ siteId, domain }: { siteId: number; domain: str
                   </div>
                   <div className="p-4 space-y-1">
                     <p className="text-sm font-medium text-gray-900 line-clamp-1">
-                      {design.name || 'Untitled design'}
+                      {design.name || 'Diseño sin título'}
                     </p>
                     <p className="text-xs text-gray-500 line-clamp-1">{design.productName}</p>
                     <p className="text-xs text-gray-400">

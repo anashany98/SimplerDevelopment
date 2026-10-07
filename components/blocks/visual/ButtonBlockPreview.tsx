@@ -26,7 +26,7 @@ export function ButtonBlockPreview({ block, isSelected, onChange }: ButtonBlockP
   // Mirror ButtonBlockRender variant map — preset, when present, owns bg/text.
   const variantMap = {
     primary: {
-      bg: hasCustomBg ? '' : 'bg-primary hover:bg-primary/90',
+      bg: hasCustomBg ? '' : 'bg-primary hover:bg-foreground/90',
       text: hasCustomColor ? '' : 'text-primary-foreground',
     },
     secondary: {

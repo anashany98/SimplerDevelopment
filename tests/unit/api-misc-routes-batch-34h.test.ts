@@ -85,6 +85,7 @@ vi.mock('@/lib/zoom', () => ({
 const resendSendMock = vi.fn();
 vi.mock('@/lib/email/index', () => ({
   resend: { emails: { send: (...args: unknown[]) => resendSendMock(...args) } },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 // Stripe — the pay route does `(await import('stripe')).default`.
@@ -147,6 +148,18 @@ const updateCalls: UpdateCall[] = [];
 function shiftNext(): Array<Record<string, unknown>> {
   return selectQueue.shift() ?? [];
 }
+
+// Billing was removed (2026-08): the route short-circuits with 403 when
+// PAYMENTS_DISABLED is true. The gate is mocked open here so the tests below
+// can exercise the route logic (including Stripe plumbing) with all original
+// assertions intact (same pattern as api-billing-verify-session.test.ts).
+vi.mock('@/lib/billing/disabled', () => ({
+  PAYMENTS_DISABLED: false,
+  billingDisabledResponse: (status = 403) =>
+    new Response(JSON.stringify({ success: false, message: 'Payments are disabled.' }), {
+      status,
+    }),
+}));
 
 vi.mock('@/lib/db', () => {
   function buildSelect() {
@@ -288,7 +301,7 @@ describe('POST /api/public/booking/cancel', () => {
     expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.success).toBe(false);
-    expect(body.message).toBe('Cancel token is required');
+    expect(body.message).toBe('Falta el token de cancelación.');
   });
 
   it('returns 404 when booking not found', async () => {
@@ -297,7 +310,7 @@ describe('POST /api/public/booking/cancel', () => {
       makeJsonReq('http://x/cancel', 'POST', { token: 'abc' }),
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Booking not found');
+    expect((await res.json()).message).toBe('Reserva no encontrada.');
   });
 
   it('returns 409 when booking already cancelled', async () => {
@@ -313,7 +326,7 @@ describe('POST /api/public/booking/cancel', () => {
       makeJsonReq('http://x/cancel', 'POST', { token: 'abc' }),
     );
     expect(res.status).toBe(409);
-    expect((await res.json()).message).toMatch(/already been cancelled/);
+    expect((await res.json()).message).toMatch(/ya ha sido cancelada/);
   });
 
   it('returns 400 when booking is in the past', async () => {
@@ -329,7 +342,7 @@ describe('POST /api/public/booking/cancel', () => {
       makeJsonReq('http://x/cancel', 'POST', { token: 'abc' }),
     );
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Cannot cancel a past booking');
+    expect((await res.json()).message).toBe('No se puede cancelar una reserva pasada.');
   });
 
   it('cancels future booking with page and host: sends emails, deletes calendar + zoom', async () => {
@@ -359,7 +372,7 @@ describe('POST /api/public/booking/cancel', () => {
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.success).toBe(true);
-    expect(body.data.message).toBe('Booking cancelled successfully');
+    expect(body.data.message).toBe('Reserva cancelada correctamente.');
 
     // Update set status=cancelled
     expect(updateCalls).toHaveLength(1);
@@ -484,14 +497,14 @@ describe('GET /api/public/booking/cancel', () => {
   it('returns 400 when token query param is missing', async () => {
     const res = await cancelRoute.GET(makeRawReq('http://x/cancel'));
     expect(res.status).toBe(400);
-    expect((await res.json()).message).toBe('Token is required');
+    expect((await res.json()).message).toBe('Falta el token.');
   });
 
   it('returns 404 when booking not found', async () => {
     selectQueue.push([]);
     const res = await cancelRoute.GET(makeRawReq('http://x/cancel?token=abc'));
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Booking not found');
+    expect((await res.json()).message).toBe('Reserva no encontrada.');
   });
 
   it('returns booking + page details when found', async () => {
@@ -533,7 +546,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toMatch(/not found or already paid/);
+    expect((await res.json()).message).toMatch(/no encontrado o ya pagado/i);
   });
 
   it('returns 410 when quote has expired', async () => {
@@ -552,7 +565,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(410);
-    expect((await res.json()).message).toMatch(/expired/);
+    expect((await res.json()).message).toMatch(/caducado/i);
   });
 
   it('creates plain Stripe PI when no Stripe Connect website / store', async () => {
@@ -585,7 +598,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
     expect(stripePaymentIntentsCreateMock).toHaveBeenCalledTimes(1);
     const piArgs = stripePaymentIntentsCreateMock.mock.calls[0][0] as Record<string, unknown>;
     expect(piArgs.amount).toBe(2500);
-    expect(piArgs.currency).toBe('usd');
+    expect(piArgs.currency).toBe('eur');
     expect(piArgs).not.toHaveProperty('application_fee_amount');
     expect(piArgs).not.toHaveProperty('transfer_data');
     const meta = piArgs.metadata as Record<string, unknown>;
@@ -673,7 +686,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
 
     const piArgs = stripePaymentIntentsCreateMock.mock.calls[0][0] as Record<string, unknown>;
     expect(piArgs.application_fee_amount).toBe(500); // 5% default
-    expect(piArgs.currency).toBe('usd');
+    expect(piArgs.currency).toBe('eur');
   });
 
   it('does NOT use Stripe Connect when onboarding incomplete', async () => {
@@ -711,7 +724,7 @@ describe('POST /api/public/booking/quote/[slug]/pay', () => {
     const piArgs = stripePaymentIntentsCreateMock.mock.calls[0][0] as Record<string, unknown>;
     expect(piArgs).not.toHaveProperty('application_fee_amount');
     expect(piArgs).not.toHaveProperty('transfer_data');
-    expect(piArgs.currency).toBe('usd');
+    expect(piArgs.currency).toBe('eur');
   });
 
   it('returns 500 when Stripe throws', async () => {
@@ -752,7 +765,7 @@ describe('GET /api/public/booking/quote/[slug]', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(404);
-    expect((await res.json()).message).toBe('Quote not found');
+    expect((await res.json()).message).toBe('Presupuesto no encontrado.');
   });
 
   it('returns the quote with alreadyPaid=true when status is paid', async () => {
@@ -802,7 +815,7 @@ describe('GET /api/public/booking/quote/[slug]', () => {
       { params: Promise.resolve({ slug: 'q1' }) },
     );
     expect(res.status).toBe(410);
-    expect((await res.json()).message).toMatch(/expired/);
+    expect((await res.json()).message).toMatch(/caducado/i);
   });
 
   it('returns the quote when pending and not expired', async () => {
@@ -1080,8 +1093,7 @@ describe('POST /api/public/chat/messages', () => {
       }),
     );
     expect(res.status).toBe(200);
-    expect((await res.json()).data.authorName).toBe('Visitor');
-    expect(persistWebchatInboundMock).toHaveBeenCalledTimes(1);
+    expect(insertCalls[0].values).toMatchObject({ authorName: 'Visitante' });
   });
   it('returns a retryable failure without a second insertion if persistence fails', async () => {
     verifyVisitorTokenMock.mockReturnValue({ conversationId: 1 });

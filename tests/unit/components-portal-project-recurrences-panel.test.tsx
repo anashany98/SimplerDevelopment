@@ -133,7 +133,7 @@ async function mountAndWait(props: { projectId?: number; canEdit?: boolean } = {
   const result = render(<ProjectRecurrencesPanel projectId={projectId} canEdit={canEdit} />);
   // Wait for "Loading…" to disappear
   await waitFor(() =>
-    expect(screen.queryByText('Loading…')).toBeNull(),
+    expect(screen.queryByText('Cargando…')).toBeNull(),
   );
   return result;
 }
@@ -155,25 +155,25 @@ afterEach(() => {
 describe('ProjectRecurrencesPanel — initial render', () => {
   it('renders the section heading', async () => {
     await mountAndWait();
-    expect(screen.getByText('Recurring tasks')).toBeInTheDocument();
+    expect(screen.getByText('Tareas recurrentes')).toBeInTheDocument();
   });
 
   it('shows "Loading…" while fetching', () => {
     // Don't resolve — keep it in loading state
     global.fetch = vi.fn(() => new Promise(() => {})) as typeof global.fetch;
     render(<ProjectRecurrencesPanel projectId={PROJECT_ID} canEdit />);
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
   });
 
   it('shows empty-state message when no recurrences', async () => {
     await mountAndWait();
-    expect(screen.getByText(/No recurring tasks yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/Aún no hay tareas recurrentes/i)).toBeInTheDocument();
   });
 
   it('renders description paragraph', async () => {
     await mountAndWait();
     expect(
-      screen.getByText(/Auto-create cards on a schedule/i),
+      screen.getByText(/Crea tarjetas automáticamente/i),
     ).toBeInTheDocument();
   });
 });
@@ -191,7 +191,7 @@ describe('ProjectRecurrencesPanel — list rendering', () => {
   it('renders "(template-driven)" for null titlePattern', async () => {
     setupFetch({ recurrences: [makeRecurrence({ titlePattern: null })] });
     await mountAndWait();
-    expect(screen.getByText('(template-driven)')).toBeInTheDocument();
+    expect(screen.getByText('(generada por plantilla)')).toBeInTheDocument();
   });
 
   it('renders multiple recurrences', async () => {
@@ -210,13 +210,13 @@ describe('ProjectRecurrencesPanel — list rendering', () => {
     setupFetch({ recurrences: [makeRecurrence()] });
     await mountAndWait();
     // The date is formatted via toLocaleString — just check "next:" prefix is rendered
-    expect(screen.getByText(/next:/i)).toBeInTheDocument();
+    expect(screen.getByText(/próxima:/i)).toBeInTheDocument();
   });
 
   it('does not show empty-state message when recurrences exist', async () => {
     setupFetch({ recurrences: [makeRecurrence()] });
     await mountAndWait();
-    expect(screen.queryByText(/No recurring tasks yet/i)).toBeNull();
+    expect(screen.queryByText(/Aún no hay tareas recurrentes/i)).toBeNull();
   });
 });
 
@@ -227,31 +227,31 @@ describe('ProjectRecurrencesPanel — schedule descriptions', () => {
   it('shows "Daily at" for daily cadence', async () => {
     setupFetch({ recurrences: [makeRecurrence({ cadence: 'daily', hourUtc: 8 })] });
     await mountAndWait();
-    expect(screen.getByText(/Daily at 08:00 UTC/i)).toBeInTheDocument();
+    expect(screen.getByText(/Diario a las 08:00 UTC/i)).toBeInTheDocument();
   });
 
   it('shows "Weekly · Mon" for weekly on Monday', async () => {
     setupFetch({ recurrences: [makeRecurrence({ cadence: 'weekly', dayOfWeek: 1, hourUtc: 9 })] });
     await mountAndWait();
-    expect(screen.getByText(/Weekly · Mon 09:00 UTC/i)).toBeInTheDocument();
+    expect(screen.getByText(/Semanal · Lun 09:00 UTC/i)).toBeInTheDocument();
   });
 
   it('shows "Weekly · Fri" for weekly on Friday', async () => {
     setupFetch({ recurrences: [makeRecurrence({ cadence: 'weekly', dayOfWeek: 5, hourUtc: 14 })] });
     await mountAndWait();
-    expect(screen.getByText(/Weekly · Fri 14:00 UTC/i)).toBeInTheDocument();
+    expect(screen.getByText(/Semanal · Vie 14:00 UTC/i)).toBeInTheDocument();
   });
 
   it('shows "Monthly · day 15" for monthly on day 15', async () => {
     setupFetch({ recurrences: [makeRecurrence({ cadence: 'monthly', dayOfMonth: 15, hourUtc: 6 })] });
     await mountAndWait();
-    expect(screen.getByText(/Monthly · day 15 06:00 UTC/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mensual · día 15 06:00 UTC/i)).toBeInTheDocument();
   });
 
   it('falls back to day 1 for weekly with null dayOfWeek', async () => {
     setupFetch({ recurrences: [makeRecurrence({ cadence: 'weekly', dayOfWeek: null, hourUtc: 9 })] });
     await mountAndWait();
-    expect(screen.getByText(/Weekly · Mon 09:00 UTC/i)).toBeInTheDocument();
+    expect(screen.getByText(/Semanal · Lun 09:00 UTC/i)).toBeInTheDocument();
   });
 });
 
@@ -261,26 +261,26 @@ describe('ProjectRecurrencesPanel — schedule descriptions', () => {
 describe('ProjectRecurrencesPanel — canEdit guard', () => {
   it('shows "New" button when canEdit=true', async () => {
     await mountAndWait({ canEdit: true });
-    expect(screen.getByRole('button', { name: /New/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Nueva/i })).toBeInTheDocument();
   });
 
   it('hides "New" button when canEdit=false', async () => {
     await mountAndWait({ canEdit: false });
-    expect(screen.queryByRole('button', { name: /New/i })).toBeNull();
+    expect(screen.queryByRole('button', { name: /Nueva/i })).toBeNull();
   });
 
   it('hides pause/delete buttons when canEdit=false', async () => {
     setupFetch({ recurrences: [makeRecurrence()] });
     await mountAndWait({ canEdit: false });
-    expect(screen.queryByTitle('Pause')).toBeNull();
-    expect(screen.queryByTitle('Delete')).toBeNull();
+    expect(screen.queryByTitle('Pausar')).toBeNull();
+    expect(screen.queryByTitle('Eliminar')).toBeNull();
   });
 
   it('shows pause/delete buttons when canEdit=true', async () => {
     setupFetch({ recurrences: [makeRecurrence({ active: true })] });
     await mountAndWait({ canEdit: true });
-    expect(screen.getByTitle('Pause')).toBeInTheDocument();
-    expect(screen.getByTitle('Delete')).toBeInTheDocument();
+    expect(screen.getByTitle('Pausar')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar')).toBeInTheDocument();
   });
 });
 
@@ -290,29 +290,29 @@ describe('ProjectRecurrencesPanel — canEdit guard', () => {
 describe('ProjectRecurrencesPanel — form toggle', () => {
   it('clicking "New" shows the recurrence form', async () => {
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
-    expect(screen.getByPlaceholderText('Standup {{date}}')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
+    expect(screen.getByPlaceholderText('Reunión diaria {{date}}')).toBeInTheDocument();
   });
 
   it('clicking "Cancel" (New toggled) hides the form', async () => {
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
     fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
     expect(screen.queryByPlaceholderText('Standup {{date}}')).toBeNull();
   });
 
   it('form shows Title pattern input', async () => {
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
-    expect(screen.getByPlaceholderText('Standup {{date}}')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
+    expect(screen.getByPlaceholderText('Reunión diaria {{date}}')).toBeInTheDocument();
   });
 
   it('form shows Column select with default "Choose…" option', async () => {
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
     const selects = screen.getAllByRole('combobox');
     const columnSelect = selects.find(
-      (s) => s.querySelector('option[value=""]')?.textContent === 'Choose…',
+      (s) => s.querySelector('option[value=""]')?.textContent === 'Elegir…',
     );
     expect(columnSelect).toBeTruthy();
   });
@@ -320,7 +320,7 @@ describe('ProjectRecurrencesPanel — form toggle', () => {
   it('form shows columns from API in the column select', async () => {
     setupFetch({ columns: [makeColumn({ id: 10, name: 'Backlog' })] });
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
     expect(screen.getByRole('option', { name: 'Backlog' })).toBeInTheDocument();
   });
 });
@@ -331,13 +331,13 @@ describe('ProjectRecurrencesPanel — form toggle', () => {
 describe('ProjectRecurrencesPanel — cadence fields', () => {
   async function openForm() {
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
   }
 
   it('shows "Day" select when cadence is weekly (default)', async () => {
     await openForm();
     // The day-of-week select has DAYS options (Sun, Mon, …)
-    expect(screen.getByRole('option', { name: 'Mon' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Lun' })).toBeInTheDocument();
   });
 
   it('hides day-of-week select when cadence is daily', async () => {
@@ -346,7 +346,7 @@ describe('ProjectRecurrencesPanel — cadence fields', () => {
       (s) => s.querySelector('option[value="daily"]'),
     )!;
     fireEvent.change(cadenceSelect, { target: { value: 'daily' } });
-    expect(screen.queryByRole('option', { name: 'Mon' })).toBeNull();
+    expect(screen.queryByRole('option', { name: 'Lun' })).toBeNull();
   });
 
   it('shows "Day of month" input when cadence is monthly', async () => {
@@ -355,7 +355,7 @@ describe('ProjectRecurrencesPanel — cadence fields', () => {
       (s) => s.querySelector('option[value="monthly"]'),
     )!;
     fireEvent.change(cadenceSelect, { target: { value: 'monthly' } });
-    expect(screen.getByText('Day of month (1–28)')).toBeInTheDocument();
+    expect(screen.getByText('Día del mes (1–28)')).toBeInTheDocument();
   });
 
   it('hides day-of-month input when cadence is weekly', async () => {
@@ -366,12 +366,12 @@ describe('ProjectRecurrencesPanel — cadence fields', () => {
     // Switch to monthly, then back to weekly
     fireEvent.change(cadenceSelect, { target: { value: 'monthly' } });
     fireEvent.change(cadenceSelect, { target: { value: 'weekly' } });
-    expect(screen.queryByText('Day of month (1–28)')).toBeNull();
+    expect(screen.queryByText('Día del mes (1–28)')).toBeNull();
   });
 
   it('renders Hour (UTC) input', async () => {
     await openForm();
-    expect(screen.getByText('Hour (UTC, 0–23)')).toBeInTheDocument();
+    expect(screen.getByText('Hora (UTC, 0–23)')).toBeInTheDocument();
   });
 });
 
@@ -386,10 +386,10 @@ describe('ProjectRecurrencesPanel — form submission', () => {
       ...extra,
     });
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
 
     // Fill title
-    fireEvent.change(screen.getByPlaceholderText('Standup {{date}}'), {
+    fireEvent.change(screen.getByPlaceholderText('Reunión diaria {{date}}'), {
       target: { value: 'Daily standups' },
     });
 
@@ -404,7 +404,7 @@ describe('ProjectRecurrencesPanel — form submission', () => {
   it('POSTs to the recurrences endpoint on valid submit', async () => {
     await openFormFilled();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add recurrence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir recurrencia/i }));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -420,7 +420,7 @@ describe('ProjectRecurrencesPanel — form submission', () => {
   it('includes columnId, titlePattern, cadence in POST body', async () => {
     await openFormFilled();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add recurrence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir recurrencia/i }));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -439,7 +439,7 @@ describe('ProjectRecurrencesPanel — form submission', () => {
   it('closes the form after successful submit', async () => {
     await openFormFilled();
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add recurrence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir recurrencia/i }));
     });
     await waitFor(() => {
       expect(screen.queryByPlaceholderText('Standup {{date}}')).toBeNull();
@@ -449,14 +449,14 @@ describe('ProjectRecurrencesPanel — form submission', () => {
   it('does not submit when titlePattern is empty', async () => {
     setupFetch({ columns: [makeColumn()] });
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
     // Pick column but leave title empty
     const selects = screen.getAllByRole('combobox');
     const colSelect = selects.find((s) => s.querySelector('option[value="10"]'))!;
     if (colSelect) fireEvent.change(colSelect, { target: { value: '10' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add recurrence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir recurrencia/i }));
     });
 
     // No POST call
@@ -475,7 +475,7 @@ describe('ProjectRecurrencesPanel — form submission', () => {
     if (daySelect) fireEvent.change(daySelect, { target: { value: '5' } });
 
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Add recurrence/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir recurrencia/i }));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -509,16 +509,16 @@ describe('ProjectRecurrencesPanel — form submission', () => {
     }) as typeof global.fetch;
 
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
-    fireEvent.change(screen.getByPlaceholderText('Standup {{date}}'), {
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
+    fireEvent.change(screen.getByPlaceholderText('Reunión diaria {{date}}'), {
       target: { value: 'Check' },
     });
     const selects = screen.getAllByRole('combobox');
     const colSelect = selects.find((s) => s.querySelector('option[value="10"]'));
     if (colSelect) fireEvent.change(colSelect, { target: { value: '10' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Add recurrence/i }));
-    expect(screen.getByRole('button', { name: /Saving…/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Añadir recurrencia/i }));
+    expect(screen.getByRole('button', { name: /Guardando…/i })).toBeInTheDocument();
     // Resolve to avoid act() warning
     resolveFetch({ ok: true, json: () => Promise.resolve({ success: true }) });
   });
@@ -532,7 +532,7 @@ describe('ProjectRecurrencesPanel — toggle active', () => {
     setupFetch({ recurrences: [makeRecurrence({ active: true })] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Pause'));
+      fireEvent.click(screen.getByTitle('Pausar'));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -549,7 +549,7 @@ describe('ProjectRecurrencesPanel — toggle active', () => {
     setupFetch({ recurrences: [makeRecurrence({ active: false })] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Resume'));
+      fireEvent.click(screen.getByTitle('Reanudar'));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -565,13 +565,13 @@ describe('ProjectRecurrencesPanel — toggle active', () => {
   it('shows "Pause" title for active recurrence', async () => {
     setupFetch({ recurrences: [makeRecurrence({ active: true })] });
     await mountAndWait();
-    expect(screen.getByTitle('Pause')).toBeInTheDocument();
+    expect(screen.getByTitle('Pausar')).toBeInTheDocument();
   });
 
   it('shows "Resume" title for inactive recurrence', async () => {
     setupFetch({ recurrences: [makeRecurrence({ active: false })] });
     await mountAndWait();
-    expect(screen.getByTitle('Resume')).toBeInTheDocument();
+    expect(screen.getByTitle('Reanudar')).toBeInTheDocument();
   });
 });
 
@@ -583,16 +583,16 @@ describe('ProjectRecurrencesPanel — delete', () => {
     setupFetch({ recurrences: [makeRecurrence()] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
-    expect(window.confirm).toHaveBeenCalledWith('Delete this recurrence?');
+    expect(window.confirm).toHaveBeenCalledWith('¿Eliminar esta recurrencia?');
   });
 
   it('DELETEs to recurrences/:id when confirmed', async () => {
     setupFetch({ recurrences: [makeRecurrence({ id: 99 })] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
     await waitFor(() => {
       const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
@@ -610,7 +610,7 @@ describe('ProjectRecurrencesPanel — delete', () => {
     setupFetch({ recurrences: [makeRecurrence({ id: 99 })] });
     await mountAndWait();
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
     const calls = (global.fetch as ReturnType<typeof vi.fn>).mock.calls;
     const delCall = calls.find(
@@ -627,10 +627,10 @@ describe('ProjectRecurrencesPanel — delete', () => {
     setupFetch({ recurrences: [] });
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Delete'));
+      fireEvent.click(screen.getByTitle('Eliminar'));
     });
     await waitFor(() => {
-      expect(screen.getByText(/No recurring tasks yet/i)).toBeInTheDocument();
+      expect(screen.getByText(/Aún no hay tareas recurrentes/i)).toBeInTheDocument();
     });
   });
 });
@@ -665,7 +665,7 @@ describe('ProjectRecurrencesPanel — column source fallback', () => {
     }) as typeof global.fetch;
 
     await mountAndWait();
-    fireEvent.click(screen.getByRole('button', { name: /New/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nueva/i }));
     await waitFor(() => {
       expect(screen.getByRole('option', { name: 'Sprint Column' })).toBeInTheDocument();
     });

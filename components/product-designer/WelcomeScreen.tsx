@@ -21,7 +21,7 @@ export const WelcomeScreen = () => {
           <div className="w-16 h-16 rounded-full flex items-center justify-center mb-2">
             <BsUpload size={32} />
           </div>
-          <p className="text-lg text-black">Upload</p>
+          <p className="text-lg text-black">Subir</p>
         </button>
         <button
           className="flex flex-col items-center"

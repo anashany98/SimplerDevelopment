@@ -465,7 +465,7 @@ function BookButton({
         >
           Ready to talk
         </span>
-        <span style={{ fontSize: '0.9375rem', fontWeight: 700 }}>Book a 30-minute call</span>
+            <span style={{ fontSize: '0.9375rem', fontWeight: 700 }}>Reserva una llamada de 30 minutos</span>
       </span>
       <span style={{ fontSize: '1.125rem' }}>→</span>
     </a>

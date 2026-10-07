@@ -8,6 +8,16 @@ export { renderBlocksToEmailHtml } from './render-blocks-to-email';
 export { EMAIL_BLOCK_TYPES, isEmailBlockType } from './email-block-types';
 export { createEmailTransport, getEmailTransport, isMailpitEmailTransport, sendEmail } from './transport';
 export type { EmailAttachment, EmailPayload, EmailSendResponse, EmailTransport } from './transport';
+export {
+  EMAIL_SETTING_KEYS,
+  DEFAULT_FROM_EMAIL,
+  getEmailPlatformConfig,
+  getPlatformFromEmail,
+  getConfiguredFromEmail,
+  getConfiguredFromEmailOr,
+  getResendClient,
+} from './config';
+export type { EmailPlatformConfig, EmailTransportMode } from './config';
 
 /**
  * Lazy Resend client.
@@ -19,10 +29,12 @@ export type { EmailAttachment, EmailPayload, EmailSendResponse, EmailTransport }
  * downstream import of `@/lib/email` fail in environments without the
  * env var (notably integration tests that don't actually send mail).
  *
- * Prefer `sendEmail()` in new code. The `resend` export is kept as a Proxy so
- * existing `resend.emails.send(...)` call sites route through the configured
- * email transport, while Resend-only APIs such as `resend.domains.*` still use
- * the real Resend client.
+ * Prefer `sendEmail()` in new code, and `getResendClient()` for Resend-only
+ * APIs (domains.*, audiences, …) — it resolves the platform key from the admin
+ * settings (Admin → Email → Ajustes) first and falls back to RESEND_API_KEY.
+ * The `resend` export is kept as a Proxy so existing `resend.emails.send(...)`
+ * call sites route through the configured email transport; its non-`emails`
+ * properties fall back to the env-only legacy client.
  */
 let _resend: Resend | null = null;
 

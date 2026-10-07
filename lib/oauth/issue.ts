@@ -39,7 +39,7 @@ async function getInternalAgentsOauthClientId(): Promise<number> {
     .insert(oauthClients)
     .values({
       clientId: INTERNAL_AGENTS_CLIENT_ID,
-      clientName: 'SimplerDevelopment Agents (internal)',
+      clientName: 'CRM AGENTS Agents (internal)',
       redirectUris: [],
       tokenEndpointAuthMethod: 'none',
     })

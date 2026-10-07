@@ -113,31 +113,31 @@ describe('CopyableSiteId', () => {
     render(<CopyableSiteId siteId={1234} />);
 
     expect(screen.getByText('1234')).toBeTruthy();
-    expect(screen.getByText('Site ID')).toBeTruthy();
-    expect(screen.getByRole('button', { name: /copy/i })).toBeTruthy();
+    expect(screen.getByText('ID del sitio')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /copiar/i })).toBeTruthy();
   });
 
   it('copies the id to the clipboard when the button is clicked and shows Copied', () => {
     render(<CopyableSiteId siteId={99} />);
 
-    const button = screen.getByRole('button', { name: /copy/i });
+    const button = screen.getByRole('button', { name: /copiar/i });
     fireEvent.click(button);
 
     expect((navigator.clipboard.writeText as ReturnType<typeof vi.fn>)).toHaveBeenCalledWith('99');
-    expect(screen.getByText('Copied')).toBeTruthy();
+    expect(screen.getByText('Copiado')).toBeTruthy();
   });
 
   it('reverts back to Copy after 2 seconds', () => {
     render(<CopyableSiteId siteId={7} />);
 
     fireEvent.click(screen.getByRole('button'));
-    expect(screen.getByText('Copied')).toBeTruthy();
+    expect(screen.getByText('Copiado')).toBeTruthy();
 
     act(() => {
       vi.advanceTimersByTime(2000);
     });
 
-    expect(screen.getByText('Copy')).toBeTruthy();
+    expect(screen.getByText('Copiar')).toBeTruthy();
   });
 });
 

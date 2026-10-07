@@ -421,6 +421,20 @@ export async function applyPendingChange(change: typeof mcpPendingChanges.$infer
     }
 
     // ── SITES ────────────────────────────────────────────────────────────
+    case 'site:create': {
+      const subdomain = payload.subdomain as string;
+      const [row] = await db.insert(clientWebsites).values({
+        clientId,
+        name: payload.name as string,
+        domain: (payload.domain as string | null | undefined) ?? null,
+        description: (payload.description as string | null | undefined) ?? null,
+        subdomain,
+        vercelDomain: `${subdomain}.simplerdevelopment.com`,
+        deploymentStatus: 'pending',
+        active: true,
+      }).returning();
+      return row;
+    }
     case 'site:update': {
       const id = (payload.id as number | undefined) ?? change.entityId!;
       const [existing] = await db.select().from(clientWebsites)
@@ -888,7 +902,7 @@ export async function applyPendingChange(change: typeof mcpPendingChanges.$infer
         sections: ((payload.sections as ProposalSection[] | undefined) ?? []) as ProposalSection[],
         lineItems: ((payload.lineItems as ProposalLineItem[] | undefined) ?? []) as ProposalLineItem[],
         fees: ((payload.fees as ProposalFee[] | undefined) ?? []) as ProposalFee[],
-        currency: (payload.currency as string | undefined) ?? 'USD',
+        currency: (payload.currency as string | undefined) ?? 'EUR',
         validUntil: payload.validUntil ? new Date(payload.validUntil as string) : null,
         clientToken: crypto.randomBytes(32).toString('hex'),
         accentColor: (payload.accentColor as string | undefined) ?? '#2563eb',

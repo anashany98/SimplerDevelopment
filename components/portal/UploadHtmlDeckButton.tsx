@@ -36,7 +36,7 @@ export default function UploadHtmlDeckButton({ variant = 'secondary' }: UploadHt
 
   const styles =
     variant === 'primary'
-      ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+      ? 'bg-foreground text-background hover:bg-foreground/90'
       : 'border border-border text-foreground hover:bg-accent';
 
   return (
@@ -56,11 +56,11 @@ export default function UploadHtmlDeckButton({ variant = 'secondary' }: UploadHt
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        title="Upload a single .html file, or a .zip containing the .html plus its sibling assets (images, CSS, fonts)."
+        title="Sube un único archivo .html, o un .zip con el .html y sus recursos hermanos (imágenes, CSS, fuentes)."
         className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 ${styles}`}
       >
         <span className="material-icons text-base">upload_file</span>
-        {uploading ? 'Uploading…' : 'Upload HTML / Zip'}
+        {uploading ? 'Subiendo…' : 'Subir HTML / Zip'}
       </button>
     </>
   );

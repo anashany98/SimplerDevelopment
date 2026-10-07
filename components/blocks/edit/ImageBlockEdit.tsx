@@ -24,7 +24,7 @@ export function ImageBlockEdit({ block, onChange }: ImageBlockEditProps) {
             naturalHeight: media?.height ?? undefined,
           })
         }
-        label="Image"
+        label="Imagen"
         required
       />
 
@@ -56,33 +56,29 @@ export function ImageBlockEdit({ block, onChange }: ImageBlockEditProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Width
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Ancho</label>
           <select
             value={block.width || 'full'}
             onChange={(e) => onChange({ ...block, width: e.target.value as ImageBlock['width'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
+            <option value="small">Pequeño</option>
+            <option value="medium">Media</option>
+            <option value="large">Grande</option>
             <option value="full">Full Width</option>
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Alignment
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
           <select
             value={block.alignment || 'center'}
             onChange={(e) => onChange({ ...block, alignment: e.target.value as ImageBlock['alignment'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="left">Left</option>
-            <option value="center">Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center">Centrado</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
       </div>

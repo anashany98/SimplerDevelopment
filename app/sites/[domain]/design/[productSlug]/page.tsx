@@ -17,7 +17,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { domain, productSlug } = await params;
   const site = await getClientWebsiteByDomain(domain);
-  if (!site) return { title: { absolute: 'Not Found' } };
+  if (!site) return { title: { absolute: 'No encontrado' } };
 
   const [product] = await db
     .select({ name: products.name })
@@ -25,10 +25,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .where(and(eq(products.websiteId, site.id), eq(products.slug, productSlug), eq(products.status, 'active')))
     .limit(1);
 
-  if (!product) return { title: { absolute: 'Not Found' } };
+  if (!product) return { title: { absolute: 'No encontrado' } };
 
   return {
-    title: { absolute: `Customize ${product.name} — ${site.name}` },
+    title: { absolute: `Personaliza ${product.name} — ${site.name}` },
     robots: { index: false, follow: false },
   };
 }

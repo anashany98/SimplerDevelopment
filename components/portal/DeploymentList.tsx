@@ -17,11 +17,11 @@ interface LogEvent {
 }
 
 const stateConfig: Record<string, { icon: string; color: string; label: string }> = {
-  READY: { icon: 'check_circle', color: 'text-green-500', label: 'Ready' },
-  BUILDING: { icon: 'pending', color: 'text-blue-500', label: 'Building' },
-  QUEUED: { icon: 'schedule', color: 'text-muted-foreground', label: 'Queued' },
+  READY: { icon: 'check_circle', color: 'text-green-500', label: 'Listo' },
+  BUILDING: { icon: 'pending', color: 'text-blue-500', label: 'Compilando' },
+  QUEUED: { icon: 'schedule', color: 'text-muted-foreground', label: 'En cola' },
   ERROR: { icon: 'error', color: 'text-red-500', label: 'Error' },
-  CANCELED: { icon: 'cancel', color: 'text-muted-foreground', label: 'Canceled' },
+  CANCELED: { icon: 'cancel', color: 'text-muted-foreground', label: 'Cancelado' },
 };
 
 function DeploymentLogs({ siteId, deploymentId }: { siteId: number; deploymentId: string }) {
@@ -34,9 +34,9 @@ function DeploymentLogs({ siteId, deploymentId }: { siteId: number; deploymentId
       .then((r) => r.json())
       .then((json) => {
         if (json.success) setLogs(json.data);
-        else setError(json.message || 'Failed to load logs');
+        else setError(json.message || 'No se pudieron cargar los registros');
       })
-      .catch(() => setError('Failed to load logs'))
+      .catch(() => setError('No se pudieron cargar los registros'))
       .finally(() => setLoading(false));
   }, [siteId, deploymentId]);
 
@@ -44,7 +44,7 @@ function DeploymentLogs({ siteId, deploymentId }: { siteId: number; deploymentId
     return (
       <div className="px-5 py-3 flex items-center gap-2 text-muted-foreground">
         <span className="material-icons text-sm animate-spin">refresh</span>
-        <span className="text-xs">Loading logs...</span>
+        <span className="text-xs">Cargando registros...</span>
       </div>
     );
   }
@@ -54,7 +54,7 @@ function DeploymentLogs({ siteId, deploymentId }: { siteId: number; deploymentId
   }
 
   if (logs.length === 0) {
-    return <p className="px-5 py-3 text-xs text-muted-foreground">No logs available.</p>;
+    return <p className="px-5 py-3 text-xs text-muted-foreground">No hay registros disponibles.</p>;
   }
 
   return (
@@ -97,7 +97,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
       <div className="bg-card border border-border rounded-xl p-5">
         <div className="flex items-center gap-2 text-muted-foreground">
           <span className="material-icons animate-spin text-lg">refresh</span>
-          <span className="text-sm">Loading deployments...</span>
+          <span className="text-sm">Cargando despliegues...</span>
         </div>
       </div>
     );
@@ -107,7 +107,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
     return (
       <div className="bg-card border border-border rounded-xl px-5 py-8 text-center">
         <span className="material-icons text-3xl text-muted-foreground/50">rocket_launch</span>
-        <p className="mt-2 text-sm text-muted-foreground">No deployments yet — deploy your website to see its history here.</p>
+        <p className="mt-2 text-sm text-muted-foreground">Todavía no hay despliegues. Publica tu web para ver su historial aquí.</p>
       </div>
     );
   }
@@ -115,7 +115,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden">
       <div className="px-5 py-3 border-b border-border bg-muted/20">
-        <h3 className="font-semibold text-sm text-foreground">Recent Deployments</h3>
+        <h3 className="font-semibold text-sm text-foreground">Despliegues recientes</h3>
       </div>
       <ul className="divide-y divide-border">
         {deployments.map((d) => {
@@ -127,7 +127,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
                 <span className={`material-icons text-lg ${cfg.color}`}>{cfg.icon}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-foreground truncate">
-                    {d.meta?.githubCommitMessage || 'Deployment'}
+                    {d.meta?.githubCommitMessage || 'Despliegue'}
                   </p>
                   {d.meta?.githubCommitRef && (
                     <p className="text-xs text-muted-foreground font-mono">{d.meta.githubCommitRef}</p>
@@ -141,7 +141,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
                   <button
                     onClick={() => setExpandedId(isExpanded ? null : d.id)}
                     className="text-muted-foreground hover:text-primary transition-colors"
-                    title={isExpanded ? 'Hide logs' : 'View logs'}
+                    title={isExpanded ? 'Ocultar registros' : 'Ver registros'}
                   >
                     <span className="material-icons text-base">
                       {isExpanded ? 'expand_less' : 'terminal'}
@@ -153,7 +153,7 @@ export default function DeploymentList({ siteId }: { siteId: number }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-muted-foreground hover:text-primary transition-colors"
-                      title="Visit"
+                      title="Visitar"
                     >
                       <span className="material-icons text-base">open_in_new</span>
                     </a>

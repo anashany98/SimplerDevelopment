@@ -1,6 +1,6 @@
 # Public Content & A/B Events API
 
-These endpoints let you read published content (posts, categories, tags, and media) from any active SimplerDevelopment website without an API key. A separate endpoint lets your front-end tracker record A/B test view and goal events. Use these to build headless front ends, static-site generators, or analytics integrations on top of content your client manages in the portal.
+These endpoints let you read published content (posts, categories, tags, and media) from any active CRM AGENTS website without an API key. A separate endpoint lets your front-end tracker record A/B test view and goal events. Use these to build headless front ends, static-site generators, or analytics integrations on top of content your client manages in the portal.
 
 **Base URL:** `https://your-instance.simplerdevelopment.com`
 

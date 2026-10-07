@@ -34,7 +34,7 @@ function buildOptions(opts: {
   schemes: string[];
   allowDataAttr: boolean;
   allowStyleAttr: boolean;
-}): sanitize.IOptions {
+}, filterInlineStyle?: (style: string) => string, nonTextTags = ['script', 'style', 'textarea', 'option']): sanitize.IOptions {
   const allowedTags = ALL_TAGS.filter((t) => !opts.forbidTags.has(t));
 
   return {
@@ -59,6 +59,12 @@ function buildOptions(opts: {
           if (lower.startsWith('on')) continue;
           if (!opts.allowDataAttr && lower.startsWith('data-')) continue;
           if (!opts.allowStyleAttr && lower === 'style') continue;
+          if (lower === 'style' && filterInlineStyle) {
+            const safeStyle = filterInlineStyle(value);
+            if (!safeStyle) continue;
+            cleaned[name] = safeStyle;
+            continue;
+          }
           cleaned[name] = value;
         }
         return { tagName, attribs: cleaned };
@@ -66,7 +72,7 @@ function buildOptions(opts: {
     },
     // sanitize-html drops these tags' content by default (intentional for
     // <script>/<style>); keep that behavior.
-    nonTextTags: ['script', 'style', 'textarea', 'option'],
+    nonTextTags,
   };
 }
 
@@ -96,4 +102,17 @@ export function sanitizeHtml(html: string): string {
  *  scripts and event-handler attributes. */
 export function sanitizeRichHtml(html: string): string {
   return sanitize(html ?? '', RICH_OPTIONS);
+}
+
+/** Rich sanitization with an additional inline-CSS filter for email imports. */
+export function sanitizeRichHtmlWithStyleFilter(
+  html: string,
+  filterInlineStyle: (style: string) => string,
+): string {
+  return sanitize(html ?? '', buildOptions({
+    forbidTags: RICH_FORBID_TAGS,
+    schemes: RICH_SCHEMES,
+    allowDataAttr: true,
+    allowStyleAttr: true,
+  }, filterInlineStyle, ['script', 'style', 'textarea', 'option', 'form', 'iframe', 'object', 'embed']));
 }

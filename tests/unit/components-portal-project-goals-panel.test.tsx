@@ -83,7 +83,7 @@ describe('ProjectGoalsPanel — initial states', () => {
     fetchSpy.mockReturnValueOnce(new Promise(() => {}));
 
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    expect(screen.getByText('Loading…')).toBeInTheDocument();
+    expect(screen.getByText('Cargando…')).toBeInTheDocument();
   });
 
   it('shows empty state text when no goals exist', async () => {
@@ -93,12 +93,12 @@ describe('ProjectGoalsPanel — initial states', () => {
     } as unknown as Response);
 
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
   });
 
   it('renders the panel heading', async () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    expect(screen.getByText('Goals & OKRs')).toBeInTheDocument();
+    expect(screen.getByText('Objetivos y OKR')).toBeInTheDocument();
   });
 });
 
@@ -173,7 +173,7 @@ describe('ProjectGoalsPanel — goal list', () => {
     } as unknown as Response);
 
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    await waitFor(() => expect(screen.getByText('overdue')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('vencido')).toBeInTheDocument());
   });
 
   it('does NOT render overdue badge when status is achieved', async () => {
@@ -187,7 +187,7 @@ describe('ProjectGoalsPanel — goal list', () => {
     } as unknown as Response);
 
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    await waitFor(() => expect(screen.queryByText('overdue')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText('vencido')).not.toBeInTheDocument());
   });
 
   it('renders target date line when targetDate is set', async () => {
@@ -199,7 +199,7 @@ describe('ProjectGoalsPanel — goal list', () => {
 
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
     await waitFor(() => {
-      const el = screen.getByText(/Target:/);
+      const el = screen.getByText(/Fecha objetivo:/);
       expect(el).toBeInTheDocument();
     });
   });
@@ -229,8 +229,8 @@ describe('ProjectGoalsPanel — goal list', () => {
 describe('ProjectGoalsPanel — canEdit=false', () => {
   it('hides the new-goal button when canEdit is false', async () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
-    expect(screen.queryByRole('button', { name: /New goal/i })).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
+    expect(screen.queryByRole('button', { name: /Nuevo objetivo/i })).not.toBeInTheDocument();
   });
 
   it('hides status select and delete button for each goal when canEdit is false', async () => {
@@ -242,9 +242,9 @@ describe('ProjectGoalsPanel — canEdit=false', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
     // No delete button (title="Delete")
-    expect(screen.queryByTitle('Delete')).not.toBeInTheDocument();
+    expect(screen.queryByTitle('Eliminar')).not.toBeInTheDocument();
     // No update-current-value input (title="Update current value...")
-    expect(screen.queryByTitle(/Update current value/)).not.toBeInTheDocument();
+    expect(screen.queryByTitle(/Actualizar el valor actual/)).not.toBeInTheDocument();
   });
 });
 
@@ -255,28 +255,28 @@ describe('ProjectGoalsPanel — canEdit=false', () => {
 describe('ProjectGoalsPanel — form toggle', () => {
   it('shows new-goal button when canEdit is true', async () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
-    expect(screen.getByRole('button', { name: /New goal/i })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
+    expect(screen.getByRole('button', { name: /Nuevo objetivo/i })).toBeInTheDocument();
   });
 
   it('shows form when new-goal button is clicked', async () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole('button', { name: /New goal/i }));
-    expect(screen.getByPlaceholderText(/Onboard 25 new customers/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Nuevo objetivo/i }));
+    expect(screen.getByPlaceholderText(/Incorporar 25 clientes nuevos/i)).toBeInTheDocument();
   });
 
   it('hides form and shows cancel when form is open', async () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole('button', { name: /New goal/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nuevo objetivo/i }));
     expect(screen.getByRole('button', { name: /Cancel/i })).toBeInTheDocument();
 
     // Click cancel hides form
     fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
-    expect(screen.queryByPlaceholderText(/Onboard 25 new customers/i)).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/Incorporar 25 clientes nuevos/i)).not.toBeInTheDocument();
   });
 });
 
@@ -306,14 +306,14 @@ describe('ProjectGoalsPanel — add goal form submission', () => {
 
   it('POSTs the goal and reloads the list on success', async () => {
     render(<ProjectGoalsPanel projectId={42} canEdit={true} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole('button', { name: /New goal/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nuevo objetivo/i }));
 
-    const titleInput = screen.getByPlaceholderText(/Onboard 25 new customers/i);
+    const titleInput = screen.getByPlaceholderText(/Incorporar 25 clientes nuevos/i);
     fireEvent.change(titleInput, { target: { value: 'New Goal Added' } });
 
-    fireEvent.click(screen.getByRole('button', { name: /Add goal/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir objetivo/i }));
 
     await waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledWith(
@@ -327,11 +327,11 @@ describe('ProjectGoalsPanel — add goal form submission', () => {
 
   it('does not submit if title is empty', async () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole('button', { name: /New goal/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Nuevo objetivo/i }));
     // Don't fill title
-    fireEvent.click(screen.getByRole('button', { name: /Add goal/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir objetivo/i }));
 
     // Only the initial load fetch should have been called
     expect(fetchSpy).toHaveBeenCalledTimes(1);
@@ -361,7 +361,7 @@ describe('ProjectGoalsPanel — update current value', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
 
-    const input = screen.getByTitle(/Update current value/i);
+    const input = screen.getByTitle(/Actualizar el valor actual/i);
     fireEvent.change(input, { target: { value: '55' } });
     fireEvent.blur(input);
 
@@ -385,7 +385,7 @@ describe('ProjectGoalsPanel — update current value', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
 
-    const input = screen.getByTitle(/Update current value/i);
+    const input = screen.getByTitle(/Actualizar el valor actual/i);
     fireEvent.blur(input); // value is still 25 (defaultValue)
 
     // Only the initial load should have been called
@@ -458,13 +458,13 @@ describe('ProjectGoalsPanel — delete goal', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
-    expect(confirmSpy).toHaveBeenCalledWith('Delete this goal?');
+    expect(confirmSpy).toHaveBeenCalledWith('¿Eliminar este objetivo?');
     await waitFor(() => {
       expect(fetchSpy).toHaveBeenCalledWith('/api/portal/goals/3', { method: 'DELETE' });
     });
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
 
     confirmSpy.mockRestore();
   });
@@ -480,7 +480,7 @@ describe('ProjectGoalsPanel — delete goal', () => {
     render(<ProjectGoalsPanel projectId={1} canEdit={true} />);
     await waitFor(() => expect(screen.getByText('Onboard 25 customers')).toBeInTheDocument());
 
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
     // Only the initial load fetch should have been called
     expect(fetchSpy).toHaveBeenCalledTimes(1);
@@ -500,7 +500,7 @@ describe('ProjectGoalsPanel — re-fetches on projectId change', () => {
     } as unknown as Response);
 
     const { rerender } = render(<ProjectGoalsPanel projectId={1} canEdit={false} />);
-    await waitFor(() => expect(screen.getByText('No goals yet.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Aún no hay objetivos.')).toBeInTheDocument());
 
     rerender(<ProjectGoalsPanel projectId={2} canEdit={false} />);
     await waitFor(() => {

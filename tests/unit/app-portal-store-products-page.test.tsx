@@ -156,14 +156,14 @@ describe('ProductsListPage — empty state', () => {
   it('shows "No products found" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No products found');
+      expect(container.textContent).toContain('No se encontraron productos');
     });
   });
 
   it('shows "Add your first product" prompt when no filters', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Add your first product to start selling');
+      expect(container.textContent).toContain('Agrega tu primer producto para empezar a vender.');
     });
   });
 
@@ -171,7 +171,7 @@ describe('ProductsListPage — empty state', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const links = Array.from(container.querySelectorAll('a')).filter(
-        (a) => a.textContent?.includes('Add Product'),
+        (a) => a.textContent?.includes('Nuevo producto'),
       );
       expect(links.length).toBeGreaterThan(0);
     });
@@ -179,25 +179,25 @@ describe('ProductsListPage — empty state', () => {
 
   it('shows "Try adjusting your filters" when search is active', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No products found'));
+    await waitFor(() => expect(container.textContent).toContain('No se encontraron productos'));
 
     const searchInput = container.querySelector(
-      'input[placeholder="Search products..."]',
+      'input[placeholder="Buscar productos…"]',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(searchInput, { target: { value: 'xyz' } });
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Try adjusting your filters');
+      expect(container.textContent).toContain('Prueba a ajustar tus filtros.');
     });
   });
 
   it('does NOT show "Add Product" link in empty state when filters active', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('No products found'));
+    await waitFor(() => expect(container.textContent).toContain('No se encontraron productos'));
 
     const searchInput = container.querySelector(
-      'input[placeholder="Search products..."]',
+      'input[placeholder="Buscar productos…"]',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(searchInput, { target: { value: 'xyz' } });
@@ -206,7 +206,7 @@ describe('ProductsListPage — empty state', () => {
     // The empty-state link is only shown when no filters — we verify the
     // "adjusting your filters" path (tested above).
     await waitFor(() => {
-      expect(container.textContent).toContain('Try adjusting');
+      expect(container.textContent).toContain('Prueba a ajustar');
     });
   });
 });
@@ -238,7 +238,7 @@ describe('ProductsListPage — product list', () => {
   it('renders formatted price', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('$19.99');
+      expect(container.textContent).toContain('19,99\u00A0€');
     });
   });
 
@@ -249,8 +249,8 @@ describe('ProductsListPage — product list', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('$9.99');
-      expect(container.textContent).toContain('$19.99');
+      expect(container.textContent).toContain('9,99\u00A0€');
+      expect(container.textContent).toContain('19,99\u00A0€');
     });
   });
 
@@ -272,7 +272,7 @@ describe('ProductsListPage — product list', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Not tracked');
+      expect(container.textContent).toContain('Sin seguimiento');
     });
   });
 
@@ -355,7 +355,7 @@ describe('ProductsListPage — header', () => {
   it('renders "Products" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.querySelector('h1')?.textContent).toContain('Products');
+      expect(container.querySelector('h1')?.textContent).toContain('Productos');
     });
   });
 
@@ -373,7 +373,7 @@ describe('ProductsListPage — header', () => {
 // ─── status filter tabs ───────────────────────────────────────────────────────
 
 describe('ProductsListPage — status filter tabs', () => {
-  const tabLabels = ['All', 'Active', 'Draft', 'Archived'];
+  const tabLabels = ['Todos', 'Activo', 'Borrador', 'Archivado'];
 
   tabLabels.forEach((label) => {
     it(`renders "${label}" tab`, async () => {
@@ -386,27 +386,27 @@ describe('ProductsListPage — status filter tabs', () => {
 
   it('default tab "All" is highlighted', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('All'));
+    await waitFor(() => expect(container.textContent).toContain('Todos'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const allBtn = buttons.find((b) => b.textContent?.trim() === 'All');
-    expect(allBtn?.className).toContain('bg-primary');
+    const allBtn = buttons.find((b) => b.textContent?.trim() === 'Todos');
+    expect(allBtn?.className).toContain('bg-foreground');
   });
 
   it('clicking "Active" tab highlights it', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Products'));
+    await waitFor(() => expect(container.textContent).toContain('Productos'));
     const buttons = Array.from(container.querySelectorAll('button'));
-    const activeBtn = buttons.find((b) => b.textContent?.trim() === 'Active') as HTMLButtonElement;
+    const activeBtn = buttons.find((b) => b.textContent?.trim() === 'Activo') as HTMLButtonElement;
     await act(async () => { fireEvent.click(activeBtn); });
-    expect(activeBtn.className).toContain('bg-primary');
+    expect(activeBtn.className).toContain('bg-foreground');
   });
 
   it('clicking "Draft" tab triggers re-fetch', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Products'));
+    await waitFor(() => expect(container.textContent).toContain('Productos'));
     const callsBefore = fetchMock.mock.calls.filter((c) => String(c[0]).includes('/products')).length;
     const buttons = Array.from(container.querySelectorAll('button'));
-    const draftBtn = buttons.find((b) => b.textContent?.trim() === 'Draft') as HTMLButtonElement;
+    const draftBtn = buttons.find((b) => b.textContent?.trim() === 'Borrador') as HTMLButtonElement;
     await act(async () => { fireEvent.click(draftBtn); });
     await waitFor(() => {
       const callsAfter = fetchMock.mock.calls.filter((c) => String(c[0]).includes('/products')).length;
@@ -421,15 +421,15 @@ describe('ProductsListPage — search input', () => {
   it('renders search input', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder="Search products..."]')).toBeTruthy();
+      expect(container.querySelector('input[placeholder="Buscar productos…"]')).toBeTruthy();
     });
   });
 
   it('typing in search triggers re-fetch', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Products'));
+    await waitFor(() => expect(container.textContent).toContain('Productos'));
     const callsBefore = fetchMock.mock.calls.filter((c) => String(c[0]).includes('/products')).length;
-    const input = container.querySelector('input[placeholder="Search products..."]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder="Buscar productos…"]') as HTMLInputElement;
     await act(async () => { fireEvent.change(input, { target: { value: 'widget' } }); });
     await waitFor(() => {
       const callsAfter = fetchMock.mock.calls.filter((c) => String(c[0]).includes('/products')).length;
@@ -444,7 +444,7 @@ describe('ProductsListPage — category dropdown', () => {
   it('renders "All Categories" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('All Categories');
+      expect(container.textContent).toContain('Todas las categorías');
     });
   });
 
@@ -510,7 +510,7 @@ describe('ProductsListPage — checkbox selection', () => {
     expect(checkboxes.length).toBeGreaterThan(0);
     await act(async () => { fireEvent.click(checkboxes[0]); });
     await waitFor(() => {
-      expect(container.textContent).toContain('1 selected');
+      expect(container.textContent).toContain('1 seleccionados');
     });
   });
 
@@ -530,7 +530,7 @@ describe('ProductsListPage — checkbox selection', () => {
     ) as HTMLInputElement;
     await act(async () => { fireEvent.click(headerCheckbox); });
     await waitFor(() => {
-      expect(container.textContent).toContain('2 selected');
+      expect(container.textContent).toContain('2 seleccionados');
     });
   });
 
@@ -541,13 +541,13 @@ describe('ProductsListPage — checkbox selection', () => {
       container.querySelectorAll('tbody input[type="checkbox"]'),
     ) as HTMLInputElement[];
     await act(async () => { fireEvent.click(checkboxes[0]); });
-    await waitFor(() => expect(container.textContent).toContain('1 selected'));
+    await waitFor(() => expect(container.textContent).toContain('1 seleccionados'));
     const clearBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Clear'),
+      (b) => b.textContent?.includes('Limpiar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(clearBtn); });
     await waitFor(() => {
-      expect(container.textContent).not.toContain('selected');
+      expect(container.textContent).not.toContain('seleccionados');
     });
   });
 });
@@ -561,20 +561,20 @@ describe('ProductsListPage — bulk actions', () => {
       container.querySelectorAll('tbody input[type="checkbox"]'),
     ) as HTMLInputElement[];
     await act(async () => { fireEvent.click(checkboxes[0]); });
-    await waitFor(() => expect(container.textContent).toContain('selected'));
+    await waitFor(() => expect(container.textContent).toContain('seleccionados'));
   }
 
   it('bulk bar is hidden initially', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Widget Pro'));
-    expect(container.textContent).not.toContain('selected');
+    expect(container.textContent).not.toContain('seleccionados');
   });
 
   it('"Set Active" button calls bulk PATCH', async () => {
     const { container } = renderPage();
     await selectFirstProduct(container);
     const setActiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Set Active'),
+      (b) => b.textContent?.includes('Activar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(setActiveBtn); });
     await waitFor(() => {
@@ -589,7 +589,7 @@ describe('ProductsListPage — bulk actions', () => {
     const { container } = renderPage();
     await selectFirstProduct(container);
     const setDraftBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Set Draft'),
+      (b) => b.textContent?.includes('Pasar a borrador'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(setDraftBtn); });
     await waitFor(() => {
@@ -605,7 +605,7 @@ describe('ProductsListPage — bulk actions', () => {
     await selectFirstProduct(container);
     // "Archive" (exact) — not "Archived" which is the status filter tab
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Archive',
+      (b) => b.textContent?.trim() === 'Archivar',
     ) as HTMLButtonElement;
     expect(archiveBtn).toBeTruthy();
     await act(async () => { fireEvent.click(archiveBtn); });
@@ -624,7 +624,7 @@ describe('ProductsListPage — bulk actions', () => {
     const { container } = renderPage();
     await selectFirstProduct(container);
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     await act(async () => { fireEvent.click(deleteBtn); });
     await waitFor(() => {
@@ -640,7 +640,7 @@ describe('ProductsListPage — bulk actions', () => {
     const { container } = renderPage();
     await selectFirstProduct(container);
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     const callsBefore = fetchMock.mock.calls.filter((c) =>
       String(c[0]).includes('/bulk'),
@@ -671,7 +671,7 @@ describe('ProductsListPage — pagination', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 1 of 3');
+      expect(container.textContent).toContain('Página 1 de 3');
     });
   });
 
@@ -681,7 +681,7 @@ describe('ProductsListPage — pagination', () => {
       return makeRes(makeProductsRes([makeProduct()], 3));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Page 1 of 3'));
+    await waitFor(() => expect(container.textContent).toContain('Página 1 de 3'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const prevBtn = buttons.find((b) => b.textContent?.includes('chevron_left')) as HTMLButtonElement;
     expect(prevBtn?.disabled).toBe(true);
@@ -693,12 +693,12 @@ describe('ProductsListPage — pagination', () => {
       return makeRes(makeProductsRes([makeProduct()], 3));
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Page 1 of 3'));
+    await waitFor(() => expect(container.textContent).toContain('Página 1 de 3'));
     const buttons = Array.from(container.querySelectorAll('button'));
     const nextBtn = buttons.find((b) => b.textContent?.includes('chevron_right')) as HTMLButtonElement;
     await act(async () => { fireEvent.click(nextBtn); });
     await waitFor(() => {
-      expect(container.textContent).toContain('Page 2 of 3');
+      expect(container.textContent).toContain('Página 2 de 3');
     });
   });
 });
@@ -713,7 +713,7 @@ describe('ProductsListPage — fetch error handling', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No products found');
+      expect(container.textContent).toContain('No se encontraron productos');
     });
   });
 
@@ -724,7 +724,7 @@ describe('ProductsListPage — fetch error handling', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No products found');
+      expect(container.textContent).toContain('No se encontraron productos');
     });
   });
 });

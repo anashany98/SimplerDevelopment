@@ -441,7 +441,7 @@ describe('PitchDeckEditorPage rendering', () => {
 
   it('renders the "Deck not found" empty state when no deck is loaded', () => {
     const { container } = renderPage(null);
-    expect(container.textContent).toContain('Deck not found');
+    expect(container.textContent).toContain('Presentación no encontrada');
     expect(container.querySelector('a')?.getAttribute('href')).toBe('/portal/tools/pitch-decks');
   });
 
@@ -454,9 +454,9 @@ describe('PitchDeckEditorPage rendering', () => {
 
   it('renders the no-slides empty state when deck.slides is empty', () => {
     const { container } = renderPage(makeDeck({ slides: [] }));
-    expect(container.textContent).toContain('No slides yet');
-    expect(container.textContent).toContain('Generate with AI');
-    expect(container.textContent).toContain('Add Blank Slide');
+    expect(container.textContent).toContain('Aún no hay diapositivas');
+    expect(container.textContent).toContain('Generar con IA');
+    expect(container.textContent).toContain('Agregar diapositiva en blanco');
   });
 
   it('passes pathGroups and slide counts to SlideList', () => {
@@ -691,13 +691,13 @@ describe('Slide CRUD', () => {
     });
   });
 
-  it('duplicateSlide copies a slide with a "(copy)" suffix', async () => {
+  it('duplicateSlide copies a slide with a "(copia)" suffix', async () => {
     const { container } = renderPage();
     clickCb(container, 'SlideList-onDuplicateSlide', 0);
     await waitFor(() => {
       const list = getProps('SlideList', container);
       expect(list.slides.length).toBe(3);
-      expect(list.slides[1].label).toContain('(copy)');
+      expect(list.slides[1].label).toContain('(copia)');
     });
   });
 
@@ -834,8 +834,8 @@ describe('Path groups and decision slides', () => {
     await waitFor(() => {
       const list = getProps('SlideList', container);
       const decision = list.slides.find((s: Record<string, unknown>) => s.decisionSlide);
-      expect(decision.decisionOptions[0].label).toBe('Option A');
-      expect(decision.decisionOptions[1].label).toBe('Option B');
+      expect(decision.decisionOptions[0].label).toBe('Opción A');
+      expect(decision.decisionOptions[1].label).toBe('Opción B');
     });
   });
 
@@ -1101,7 +1101,7 @@ describe('Mount-time effects', () => {
     renderPage();
     await waitFor(() => {
       expect(setErrorMock).toHaveBeenCalledWith(
-        'AI generation failed. You can try regenerating the deck.',
+        'La generación con IA falló. Puedes intentar regenerar la presentación.',
       );
     });
   });
@@ -1290,13 +1290,13 @@ describe('Board view', () => {
 // ─── HTML slide upload ──────────────────────────────────────────────────────
 
 describe('HTML slide upload', () => {
-  it('clicking "Upload HTML Slide" on the empty state triggers the file input', () => {
+  it('clicking "Subir diapositiva HTML" on the empty state triggers the file input', () => {
     const { container } = renderPage(makeDeck({ slides: [] }));
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     expect(fileInput).toBeTruthy();
     // Simulate clicking through SlideList's onUploadHtmlSlide path via empty-state button
     const uploadButton = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Upload HTML Slide'),
+      b.textContent?.includes('Subir diapositiva HTML'),
     ) as HTMLButtonElement;
     expect(uploadButton).toBeTruthy();
     // Click should not throw — file input proxies via ref.
@@ -1333,7 +1333,7 @@ describe('HTML slide upload', () => {
     fireEvent.change(fileInput);
     await waitFor(() => {
       expect(alertSpy).toHaveBeenCalled();
-      expect(alertSpy.mock.calls[0][0]).toContain('Upload failed');
+      expect(alertSpy.mock.calls[0][0]).toContain('Error al subir');
     });
     alertSpy.mockRestore();
   });
@@ -1491,7 +1491,7 @@ describe('Misc small surface', () => {
   it('switches between preview and edit modes', async () => {
     const { container } = renderPage();
     const previewBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Preview'),
+      b.textContent?.includes('Vista previa'),
     ) as HTMLButtonElement;
     fireEvent.click(previewBtn);
     await waitFor(() => {

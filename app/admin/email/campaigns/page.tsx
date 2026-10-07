@@ -37,8 +37,8 @@ export default function CampaignsPage() {
   }, []);
 
   async function deleteCampaign(id: number, status: string) {
-    if (status === 'sending') { alert('Cannot delete a campaign that is currently sending.'); return; }
-    if (!confirm('Delete this campaign?')) return;
+    if (status === 'sending') { alert('No se puede eliminar una campaña que se está enviando ahora mismo.'); return; }
+    if (!confirm('¿Eliminar esta campaña?')) return;
     await fetch(`/api/admin/email/campaigns/${id}`, { method: 'DELETE' });
     setCampaigns(prev => prev.filter(c => c.id !== id));
   }
@@ -51,39 +51,39 @@ export default function CampaignsPage() {
             <span className="material-icons text-base">arrow_back</span>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Campaigns</h1>
-            <p className="text-muted-foreground mt-0.5 text-sm">{loading ? '' : `${campaigns.length} campaign${campaigns.length !== 1 ? 's' : ''}`}</p>
+            <h1 className="text-2xl font-bold text-foreground">Campañas</h1>
+            <p className="text-muted-foreground mt-0.5 text-sm">{loading ? '' : `${campaigns.length} campaña${campaigns.length !== 1 ? 's' : ''}`}</p>
           </div>
         </div>
         <Link
           href="/admin/email/campaigns/new"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           <span className="material-icons text-base">add</span>
-          New Campaign
+          Nueva campaña
         </Link>
       </div>
 
       <div className="bg-card border border-border rounded-lg overflow-hidden">
         {loading ? (
-          <p className="p-6 text-sm text-muted-foreground">Loading…</p>
+          <p className="p-6 text-sm text-muted-foreground">Cargando…</p>
         ) : campaigns.length === 0 ? (
           <div className="p-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground mb-3 block">campaign</span>
-            <p className="text-muted-foreground mb-4">No campaigns yet.</p>
-            <Link href="/admin/email/campaigns/new" className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90">
-              Create Campaign
+            <p className="text-muted-foreground mb-4">Aún no hay campañas.</p>
+            <Link href="/admin/email/campaigns/new" className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90">
+              Crear campaña
             </Link>
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/40">
-                <th className="text-left px-5 py-3 font-medium text-muted-foreground">Campaign</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">List</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Status</th>
-                <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Open Rate</th>
-                <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Click Rate</th>
+                <th className="text-left px-5 py-3 font-medium text-muted-foreground">Campaña</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden sm:table-cell">Lista</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground hidden md:table-cell">Estado</th>
+                <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Tasa de apertura</th>
+                <th className="text-right px-4 py-3 font-medium text-muted-foreground hidden lg:table-cell">Tasa de clics</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>

@@ -19,7 +19,7 @@ export default function BrainKnowledgeTreemapPage() {
           className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
         >
           <span className="material-icons text-base">arrow_back</span>
-          <span>Back to knowledge</span>
+          <span>Volver al conocimiento</span>
         </Link>
         <div className="h-4 w-px bg-border" aria-hidden />
         <h1 className="text-sm font-semibold text-foreground">Tag Treemap</h1>

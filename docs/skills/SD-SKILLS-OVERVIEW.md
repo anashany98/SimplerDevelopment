@@ -1,6 +1,6 @@
-# SimplerDevelopment Skills — Overview
+# CRM AGENTS Skills — Overview
 
-A reference for every SimplerDevelopment-specific skill available to Claude Code. Skills fall into two broad camps:
+A reference for every CRM AGENTS-specific skill available to Claude Code. Skills fall into two broad camps:
 
 1. **Authoring skills (`sd-*`)** — used by an *agent* (Claude in the user's terminal) to produce platform content *as if it were a user*: CMS pages, decks, emails, surveys, booking pages, HTML embeds, full websites. They drive the portal **via the in-repo MCP server** and respect the active client, brand profile, and approval workflow.
 2. **Developer skills (`simplerdev-*` and friends)** — used by an *agent* to modify the simplerdevelopment2026 codebase itself: scaffold features, scaffold UI, add block types, add MCP tools, migrate external sites, port features, debug the visual editor.
@@ -49,7 +49,7 @@ Two skills bridge both: `sd-init` (bootstrap), `sd-learn` (feedback capture for 
 
 **Purpose.** One-shot setup before any `sd-create-*` skill can run. Verifies portal-MCP auth, picks the active client, snapshots the brand profile (logo, fonts, colors, voice rules), lists existing `block_templates` and `email_templates` (so sibling skills can compose rather than reinvent), and writes `.sd/config.json` to the repo. Idempotent — re-run any time to refresh.
 
-**Trigger phrases.** `sd init`, `set up SD`, `bootstrap SimplerDev`, `connect to SimplerDevelopment`, `configure my SD workspace`.
+**Trigger phrases.** `sd init`, `set up SD`, `bootstrap CRM AGENTS`, `connect to CRM AGENTS`, `configure my CRM AGENTS workspace`.
 
 **Produces.** `.sd/config.json` with `defaultBrandProfileId`, `defaultSiteId`, brand snapshot, template inventory.
 
@@ -224,7 +224,7 @@ Also auto-triggers when the user pastes a JSON object containing `"type": "html-
 
 ### `simplerdev-mcp-tool` — new MCP tool
 
-**Purpose.** Adds a new MCP tool to the in-repo SimplerDevelopment portal MCP server. Registers the handler, input schema (Zod), and scope guard in `lib/mcp/server.ts`. Optionally creates an adapter file at `lib/<feature>/mcp-*.ts` for larger feature sets.
+**Purpose.** Adds a new MCP tool to the in-repo CRM AGENTS portal MCP server. Registers the handler, input schema (Zod), and scope guard in `lib/mcp/server.ts`. Optionally creates an adapter file at `lib/<feature>/mcp-*.ts` for larger feature sets.
 
 **Trigger phrases.** `add MCP tool for X`, `expose X via MCP`, `new MCP tool`, `wire X into the MCP server`.
 
@@ -266,7 +266,7 @@ Also auto-triggers when the user pastes a JSON object containing `"type": "html-
 
 ### `site-migration` — import an external website
 
-**Purpose.** Migrates an existing external site into the SimplerDevelopment platform. Handles the whole loop: discovery (crawl), content extraction, block-by-block translation, asset mirroring, brand inference, and draft-post creation in the portal.
+**Purpose.** Migrates an existing external site into the CRM AGENTS platform. Handles the whole loop: discovery (crawl), content extraction, block-by-block translation, asset mirroring, brand inference, and draft-post creation in the portal.
 
 **Trigger phrases.** `migrate site`, `import website`, `bring over their site`, `rebuild this site`, `clone this website`, `onboard a new client site`, `move site to our platform`, `new client site from [url]`, `pull content from [domain]`.
 
@@ -280,7 +280,7 @@ Also auto-triggers when the user pastes a JSON object containing `"type": "html-
 
 **Purpose.** Analyzes external application source code, compares it against simplerdevelopment2026, identifies feature gaps, and integrates missing capabilities into the platform.
 
-**Trigger phrases.** `find gaps between`, `integrate features from`, `port this to SimplerDevelopment`, `compare and implement`, `what features are missing`, `bring over from`, `adopt features from`, `merge capabilities from`.
+**Trigger phrases.** `find gaps between`, `integrate features from`, `port this to CRM AGENTS`, `compare and implement`, `what features are missing`, `bring over from`, `adopt features from`, `merge capabilities from`.
 
 **Typical input.** A path to external source (e.g. a booking-app, chat system, or component directory) alongside a request to implement or integrate it.
 

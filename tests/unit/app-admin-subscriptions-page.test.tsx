@@ -28,7 +28,7 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('@/lib/portal-utils', () => ({
-  formatCents: (cents: number) => `$${(cents / 100).toFixed(2)}`,
+  formatCents: (cents: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100),
 }));
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ async function flush() {
 // Open the actions menu for the first row
 async function openActionMenu() {
   await renderPage();
-  const actionBtn = screen.getByLabelText('Actions');
+  const actionBtn = screen.getByLabelText('Acciones');
   fireEvent.click(actionBtn);
 }
 
@@ -134,7 +134,7 @@ describe('AdminSubscriptionsPage', () => {
 
     it('shows "Loading subscriptions…" text while loading', () => {
       render(<AdminSubscriptionsPage />);
-      expect(screen.getByText('Loading subscriptions...')).toBeTruthy();
+      expect(screen.getByText('Cargando suscripciones...')).toBeTruthy();
     });
   });
 
@@ -147,7 +147,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      expect(screen.getByText('No subscriptions found')).toBeTruthy();
+      expect(screen.getByText('No se encontraron suscripciones')).toBeTruthy();
     });
 
     it('shows "No client subscriptions yet." when all filter and no data', async () => {
@@ -156,7 +156,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      expect(screen.getByText('No client subscriptions yet.')).toBeTruthy();
+      expect(screen.getByText('Aún no hay suscripciones de clientes.')).toBeTruthy();
     });
 
     it('shows zero stats when data is empty', async () => {
@@ -166,7 +166,7 @@ describe('AdminSubscriptionsPage', () => {
       });
       await renderPage();
       // Active Subscriptions stat = 0, Suspended stat = 0
-      expect(screen.getByText('Active Subscriptions')).toBeTruthy();
+      expect(screen.getByText('Suscripciones activas')).toBeTruthy();
       const zeros = screen.getAllByText('0');
       expect(zeros.length).toBeGreaterThanOrEqual(2);
     });
@@ -177,7 +177,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      expect(screen.getByText('No subscriptions found')).toBeTruthy();
+      expect(screen.getByText('No se encontraron suscripciones')).toBeTruthy();
     });
   });
 
@@ -186,33 +186,33 @@ describe('AdminSubscriptionsPage', () => {
   describe('page heading and stats', () => {
     it('renders the Subscriptions heading', async () => {
       await renderPage();
-      expect(screen.getByText('Subscriptions')).toBeTruthy();
-      expect(screen.getByText('Manage client service subscriptions.')).toBeTruthy();
+      expect(screen.getByText('Suscripciones')).toBeTruthy();
+      expect(screen.getByText('Gestiona las suscripciones de servicios de tus clientes.')).toBeTruthy();
     });
 
     it('shows correct active count in stats', async () => {
       await renderPage();
       // baseSub has status 'active', so active count = 1
-      const activeCard = screen.getByText('Active Subscriptions').closest('div') as HTMLElement;
+      const activeCard = screen.getByText('Suscripciones activas').closest('div') as HTMLElement;
       expect(activeCard.textContent).toContain('1');
     });
 
     it('shows MRR stat card', async () => {
       await renderPage();
       expect(screen.getByText('MRR')).toBeTruthy();
-      // baseSub is active + monthly + price 5000 cents = $50.00; appears in stat card AND table cell
-      expect(screen.getAllByText('$50.00').length).toBeGreaterThanOrEqual(1);
+      // baseSub is active + monthly + price 5000 cents = 50,00 €; appears in stat card AND table cell
+      expect(screen.getAllByText('50,00 €').length).toBeGreaterThanOrEqual(1);
     });
 
     it('shows Annual Revenue stat card with $0.00 when no annual subs', async () => {
       await renderPage();
-      expect(screen.getByText('Annual Revenue')).toBeTruthy();
+      expect(screen.getByText('Ingresos anuales')).toBeTruthy();
     });
 
     it('shows Suspended stat card', async () => {
       await renderPage();
-      expect(screen.getByText('Suspended')).toBeTruthy();
-      const suspendedCard = screen.getByText('Suspended').closest('div') as HTMLElement;
+      expect(screen.getByText('Suspendidas')).toBeTruthy();
+      const suspendedCard = screen.getByText('Suspendidas').closest('div') as HTMLElement;
       expect(suspendedCard.textContent).toContain('0');
     });
 
@@ -229,9 +229,9 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      // MRR stat card = $30.00 (only monthly active); appears in stat + table
+      // MRR stat card = 30,00 € (only monthly active); appears in stat + table
       const mrrCard = screen.getByText('MRR').closest('div') as HTMLElement;
-      expect(mrrCard.textContent).toContain('$30.00');
+      expect(mrrCard.textContent).toContain('30,00\u00A0€');
     });
 
     it('counts annual revenue for annual active subs', async () => {
@@ -245,9 +245,9 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      // Annual revenue stat card = $1200.00
-      const annualCard = screen.getByText('Annual Revenue').closest('div') as HTMLElement;
-      expect(annualCard.textContent).toContain('$1200.00');
+      // Annual revenue stat card = 1200,00 €
+      const annualCard = screen.getByText('Ingresos anuales').closest('div') as HTMLElement;
+      expect(annualCard.textContent).toContain('1200,00\u00A0€');
     });
   });
 
@@ -281,8 +281,8 @@ describe('AdminSubscriptionsPage', () => {
 
     it('renders price formatted via formatCents', async () => {
       await renderPage();
-      // $50.00 appears in both the MRR stat card and the table cell
-      expect(screen.getAllByText('$50.00').length).toBeGreaterThanOrEqual(1);
+      // 50,00 € appears in both the MRR stat card and the table cell
+      expect(screen.getAllByText('50,00 €').length).toBeGreaterThanOrEqual(1);
     });
 
     it('renders billing cycle', async () => {
@@ -382,8 +382,8 @@ describe('AdminSubscriptionsPage', () => {
     it('clicking "cancelled" tab shows no-results for no matching subs', async () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: 'cancelled' }));
-      expect(screen.getByText('No subscriptions found')).toBeTruthy();
-      expect(screen.getByText('No cancelled subscriptions.')).toBeTruthy();
+      expect(screen.getByText('No se encontraron suscripciones')).toBeTruthy();
+      expect(screen.getByText('No hay suscripciones en estado cancelled.')).toBeTruthy();
     });
 
     it('clicking "all" tab shows all subscriptions after filtering', async () => {
@@ -407,7 +407,7 @@ describe('AdminSubscriptionsPage', () => {
     it('clicking "pending" shows filter-specific empty message', async () => {
       await renderPage();
       fireEvent.click(screen.getByRole('button', { name: 'pending' }));
-      expect(screen.getByText('No pending subscriptions.')).toBeTruthy();
+      expect(screen.getByText('No hay suscripciones en estado pending.')).toBeTruthy();
     });
   });
 
@@ -416,18 +416,18 @@ describe('AdminSubscriptionsPage', () => {
   describe('action menu', () => {
     it('shows action menu when Actions button clicked', async () => {
       await openActionMenu();
-      expect(screen.getByText('Change plan')).toBeTruthy();
-      expect(screen.getByText('Refund')).toBeTruthy();
-      expect(screen.getByText('Cancel')).toBeTruthy();
+      expect(screen.getByText('Cambiar plan')).toBeTruthy();
+      expect(screen.getByText('Reembolso')).toBeTruthy();
+      expect(screen.getByText('Cancelar')).toBeTruthy();
     });
 
     it('toggles menu closed when clicked again', async () => {
       await renderPage();
-      const actionBtn = screen.getByLabelText('Actions');
+      const actionBtn = screen.getByLabelText('Acciones');
       fireEvent.click(actionBtn);
-      expect(screen.getByText('Change plan')).toBeTruthy();
+      expect(screen.getByText('Cambiar plan')).toBeTruthy();
       fireEvent.click(actionBtn);
-      expect(screen.queryByText('Change plan')).toBeNull();
+      expect(screen.queryByText('Cambiar plan')).toBeNull();
     });
 
     it('Cancel button is disabled when status is "cancelled"', async () => {
@@ -437,7 +437,7 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url);
       });
       await renderPage();
-      fireEvent.click(screen.getByLabelText('Actions'));
+      fireEvent.click(screen.getByLabelText('Acciones'));
       const cancelBtn = screen.getByRole('button', { name: /Cancel/ });
       expect(cancelBtn).toHaveProperty('disabled', true);
     });
@@ -448,13 +448,13 @@ describe('AdminSubscriptionsPage', () => {
   describe('cancel dialog', () => {
     it('opens cancel dialog when "Cancel" action clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => expect(screen.getByText('Cancel subscription')).toBeTruthy());
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => expect(screen.getByText('Cancelar suscripción')).toBeTruthy());
     });
 
     it('shows subscription details in dialog subtitle', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() => {
         // The subtitle <p> contains "Acme Corp · Hosting Pro"
         const subtitle = document.querySelector('p.text-xs.text-muted-foreground') as HTMLElement;
@@ -465,37 +465,37 @@ describe('AdminSubscriptionsPage', () => {
 
     it('shows cancel description text', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() =>
-        expect(screen.getByText(/schedules the Stripe subscription/)).toBeTruthy()
+        expect(screen.getByText(/programa la suscripción de Stripe/)).toBeTruthy()
       );
     });
 
     it('closes dialog when Close button clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => screen.getByText('Cancel subscription'));
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => screen.getByText('Cancelar suscripción'));
       // The "Close" text button is in the footer (not aria-label="Close")
-      const closeBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Close');
+      const closeBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Cerrar');
       fireEvent.click(closeBtns[0]);
-      await waitFor(() => expect(screen.queryByText('Cancel subscription')).toBeNull());
+      await waitFor(() => expect(screen.queryByText('Cancelar suscripción')).toBeNull());
     });
 
     it('closes dialog when X button clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => screen.getByText('Cancel subscription'));
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => screen.getByText('Cancelar suscripción'));
       // The X button has aria-label="Close" (icon-only button in dialog header)
-      const xBtn = screen.getAllByRole('button').find(b => b.getAttribute('aria-label') === 'Close');
+      const xBtn = screen.getAllByRole('button').find(b => b.getAttribute('aria-label') === 'Cerrar');
       if (xBtn) fireEvent.click(xBtn);
-      await waitFor(() => expect(screen.queryByText('Cancel subscription')).toBeNull());
+      await waitFor(() => expect(screen.queryByText('Cancelar suscripción')).toBeNull());
     });
 
     it('shows "Cancel at period end" submit button', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(screen.getByText('Cancelar'));
       await waitFor(() =>
-        expect(screen.getByRole('button', { name: 'Cancel at period end' })).toBeTruthy()
+        expect(screen.getByRole('button', { name: 'Cancelar al final del periodo' })).toBeTruthy()
       );
     });
 
@@ -506,11 +506,11 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
       await waitFor(() =>
-        expect(screen.getByText(/Cancellation scheduled/)).toBeTruthy()
+        expect(screen.getByText(/Cancelación programada/)).toBeTruthy()
       );
     });
 
@@ -521,9 +521,9 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
       await waitFor(() => expect(screen.getByText('Stripe error')).toBeTruthy());
     });
 
@@ -534,22 +534,22 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
-      await waitFor(() => expect(screen.getByText('Cancel failed')).toBeTruthy());
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
+      await waitFor(() => expect(screen.getByText('No se pudo cancelar')).toBeTruthy());
     });
 
     it('does not submit if confirm() returns false', async () => {
       vi.spyOn(window, 'confirm').mockReturnValueOnce(false);
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
       await flush();
       // Dialog should still be open (no success toast)
-      expect(screen.queryByText(/Cancellation scheduled/)).toBeNull();
-      expect(screen.getByText('Cancel subscription')).toBeTruthy();
+      expect(screen.queryByText(/Cancelación programada/)).toBeNull();
+      expect(screen.getByText('Cancelar suscripción')).toBeTruthy();
     });
   });
 
@@ -558,13 +558,13 @@ describe('AdminSubscriptionsPage', () => {
   describe('change-plan dialog', () => {
     it('opens change-plan dialog when "Change plan" action clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
-      await waitFor(() => expect(screen.getByText('Change plan', { selector: 'h2' })).toBeTruthy());
+      fireEvent.click(screen.getByText('Cambiar plan'));
+      await waitFor(() => expect(screen.getByText('Cambiar plan', { selector: 'h2' })).toBeTruthy());
     });
 
     it('loads service catalog on open', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
+      fireEvent.click(screen.getByText('Cambiar plan'));
       await waitFor(() =>
         expect(screen.getByText(/Hosting Plus/)).toBeTruthy()
       );
@@ -572,17 +572,17 @@ describe('AdminSubscriptionsPage', () => {
 
     it('shows target plan select with catalog options', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
-      await waitFor(() => screen.getByText('Target plan'));
-      expect(screen.getByText('— Pick a service from the catalog —')).toBeTruthy();
+      fireEvent.click(screen.getByText('Cambiar plan'));
+      await waitFor(() => screen.getByText('Plan de destino'));
+      expect(screen.getByText('— Elige un servicio del catálogo —')).toBeTruthy();
     });
 
     it('shows proration select', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
-      await waitFor(() => screen.getByText('Proration'));
-      expect(screen.getByText('Prorate the change')).toBeTruthy();
-      expect(screen.getByText('No proration')).toBeTruthy();
+      fireEvent.click(screen.getByText('Cambiar plan'));
+      await waitFor(() => screen.getByText('Prorrateo'));
+      expect(screen.getByText('Prorratear el cambio')).toBeTruthy();
+      expect(screen.getByText('Sin prorrateo')).toBeTruthy();
     });
 
     it('shows "loading catalog" message when services not yet loaded', async () => {
@@ -593,18 +593,18 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
-      await waitFor(() => screen.getByText('Change plan', { selector: 'h2' }));
+      fireEvent.click(screen.getByText('Cambiar plan'));
+      await waitFor(() => screen.getByText('Cambiar plan', { selector: 'h2' }));
       // After loading, catalog is empty — shows the loading text briefly or empty message
-      await waitFor(() => expect(screen.getByText(/Loading catalog/)).toBeTruthy());
+      await waitFor(() => expect(screen.getByText(/Cargando catálogo/)).toBeTruthy());
     });
 
     it('submit button is disabled when no plan selected', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
-      await waitFor(() => screen.getByText('Target plan'));
+      fireEvent.click(screen.getByText('Cambiar plan'));
+      await waitFor(() => screen.getByText('Plan de destino'));
       // The submit button is disabled until a plan is chosen
-      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Change plan');
+      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Cambiar plan');
       const submitBtn = submitBtns[submitBtns.length - 1] as HTMLButtonElement;
       expect(submitBtn.disabled).toBe(true);
     });
@@ -616,17 +616,17 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
+      fireEvent.click(screen.getByText('Cambiar plan'));
       await waitFor(() => screen.getByText(/Hosting Plus/));
 
       // Select the plan
-      const planSelect = screen.getByText('Target plan').closest('div')
+      const planSelect = screen.getByText('Plan de destino').closest('div')
         ?.querySelector('select') as HTMLSelectElement;
       if (planSelect) fireEvent.change(planSelect, { target: { value: 'price_abc123' } });
 
-      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Change plan');
+      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Cambiar plan');
       fireEvent.click(submitBtns[submitBtns.length - 1]);
-      await waitFor(() => expect(screen.getByText(/Plan changed/)).toBeTruthy());
+      await waitFor(() => expect(screen.getByText(/Plan cambiado/)).toBeTruthy());
     });
 
     it('shows error toast when change-plan API fails', async () => {
@@ -636,14 +636,14 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Change plan'));
+      fireEvent.click(screen.getByText('Cambiar plan'));
       await waitFor(() => screen.getByText(/Hosting Plus/));
 
-      const planSelect = screen.getByText('Target plan').closest('div')
+      const planSelect = screen.getByText('Plan de destino').closest('div')
         ?.querySelector('select') as HTMLSelectElement;
       if (planSelect) fireEvent.change(planSelect, { target: { value: 'price_abc123' } });
 
-      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Change plan');
+      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Cambiar plan');
       fireEvent.click(submitBtns[submitBtns.length - 1]);
       await waitFor(() =>
         expect(screen.getByText('Plan change failed at Stripe')).toBeTruthy()
@@ -656,37 +656,37 @@ describe('AdminSubscriptionsPage', () => {
   describe('refund dialog', () => {
     it('opens refund dialog when "Refund" action clicked', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
-      await waitFor(() => expect(screen.getByText('Issue refund', { selector: 'h2' })).toBeTruthy());
+      fireEvent.click(screen.getByText('Reembolso'));
+      await waitFor(() => expect(screen.getByText('Emitir reembolso', { selector: 'h2' })).toBeTruthy());
     });
 
     it('loads invoices on refund dialog open', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => expect(screen.getByText(/INV-001/)).toBeTruthy());
     });
 
     it('shows invoice select with loaded invoices', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
-      await waitFor(() => screen.getByText('Invoice'));
-      expect(screen.getByText('— Pick an invoice —')).toBeTruthy();
+      fireEvent.click(screen.getByText('Reembolso'));
+      await waitFor(() => screen.getByText('Factura'));
+      expect(screen.getByText('— Elige una factura —')).toBeTruthy();
     });
 
     it('shows amount input field', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
-      await waitFor(() => screen.getByText('Amount (USD, optional)'));
-      expect(screen.getByPlaceholderText('Leave blank for full refund')).toBeTruthy();
+      fireEvent.click(screen.getByText('Reembolso'));
+      await waitFor(() => screen.getByText('Importe (EUR, opcional)'));
+      expect(screen.getByPlaceholderText('Déjalo en blanco para reembolso completo')).toBeTruthy();
     });
 
     it('shows reason select field', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
-      await waitFor(() => screen.getByText('Reason (optional)'));
-      expect(screen.getByText('Duplicate charge')).toBeTruthy();
-      expect(screen.getByText('Fraudulent')).toBeTruthy();
-      expect(screen.getByText('Requested by customer')).toBeTruthy();
+      fireEvent.click(screen.getByText('Reembolso'));
+      await waitFor(() => screen.getByText('Motivo (opcional)'));
+      expect(screen.getByText('Cargo duplicado')).toBeTruthy();
+      expect(screen.getByText('Fraudulento')).toBeTruthy();
+      expect(screen.getByText('Solicitado por el cliente')).toBeTruthy();
     });
 
     it('shows empty invoices message when no invoices returned', async () => {
@@ -695,18 +695,18 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() =>
-        expect(screen.getByText('No invoices found for this client.')).toBeTruthy()
+        expect(screen.getByText('No se encontraron facturas para este cliente.')).toBeTruthy()
       );
     });
 
     it('submit button is disabled when no invoice selected', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
-      await waitFor(() => screen.getByText('Issue refund', { selector: 'h2' }));
+      fireEvent.click(screen.getByText('Reembolso'));
+      await waitFor(() => screen.getByText('Emitir reembolso', { selector: 'h2' }));
       // The submit button is disabled until an invoice is picked
-      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
+      const submitBtns = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Emitir reembolso');
       const submitBtn = submitBtns[submitBtns.length - 1] as HTMLButtonElement;
       expect(submitBtn.disabled).toBe(true);
     });
@@ -718,17 +718,17 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
       // Select the invoice
-      const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
+      const invoiceSelect = screen.getByText('— Elige una factura —').closest('select') as HTMLSelectElement;
       if (invoiceSelect) fireEvent.change(invoiceSelect, { target: { value: '100' } });
 
-      const submitBtns1 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
+      const submitBtns1 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Emitir reembolso');
       fireEvent.click(submitBtns1[submitBtns1.length - 1]);
       await waitFor(() =>
-        expect(screen.getByText(/Refund issued/)).toBeTruthy()
+        expect(screen.getByText(/Reembolso emitido/)).toBeTruthy()
       );
     });
 
@@ -739,35 +739,35 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
-      const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
+      const invoiceSelect = screen.getByText('— Elige una factura —').closest('select') as HTMLSelectElement;
       if (invoiceSelect) fireEvent.change(invoiceSelect, { target: { value: '100' } });
 
-      const amountInput = screen.getByPlaceholderText('Leave blank for full refund') as HTMLInputElement;
+      const amountInput = screen.getByPlaceholderText('Déjalo en blanco para reembolso completo') as HTMLInputElement;
       fireEvent.change(amountInput, { target: { value: '10' } });
 
-      const submitBtns2 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
+      const submitBtns2 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Emitir reembolso');
       fireEvent.click(submitBtns2[submitBtns2.length - 1]);
-      await waitFor(() => expect(screen.getByText(/Refund issued/)).toBeTruthy());
+      await waitFor(() => expect(screen.getByText(/Reembolso emitido/)).toBeTruthy());
     });
 
     it('shows error toast when refund amount is invalid', async () => {
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
-      const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
+      const invoiceSelect = screen.getByText('— Elige una factura —').closest('select') as HTMLSelectElement;
       if (invoiceSelect) fireEvent.change(invoiceSelect, { target: { value: '100' } });
 
-      const amountInput = screen.getByPlaceholderText('Leave blank for full refund') as HTMLInputElement;
+      const amountInput = screen.getByPlaceholderText('Déjalo en blanco para reembolso completo') as HTMLInputElement;
       fireEvent.change(amountInput, { target: { value: '-5' } });
 
-      const submitBtns3 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
+      const submitBtns3 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Emitir reembolso');
       fireEvent.click(submitBtns3[submitBtns3.length - 1]);
       await waitFor(() =>
-        expect(screen.getByText('Refund amount must be a positive number.')).toBeTruthy()
+        expect(screen.getByText('El importe del reembolso debe ser un número positivo.')).toBeTruthy()
       );
     });
 
@@ -778,13 +778,13 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
-      const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
+      const invoiceSelect = screen.getByText('— Elige una factura —').closest('select') as HTMLSelectElement;
       if (invoiceSelect) fireEvent.change(invoiceSelect, { target: { value: '100' } });
 
-      const submitBtns4 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
+      const submitBtns4 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Emitir reembolso');
       fireEvent.click(submitBtns4[submitBtns4.length - 1]);
       await waitFor(() => expect(screen.getByText('Card refund declined')).toBeTruthy());
     });
@@ -796,31 +796,31 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
-      const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
+      const invoiceSelect = screen.getByText('— Elige una factura —').closest('select') as HTMLSelectElement;
       if (invoiceSelect) fireEvent.change(invoiceSelect, { target: { value: '100' } });
 
-      const submitBtns5 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
+      const submitBtns5 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Emitir reembolso');
       fireEvent.click(submitBtns5[submitBtns5.length - 1]);
-      await waitFor(() => expect(screen.getByText('Refund failed')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('No se pudo reembolsar')).toBeTruthy());
     });
 
     it('does not submit refund if confirm() returns false', async () => {
       vi.spyOn(window, 'confirm').mockReturnValueOnce(false);
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
+      fireEvent.click(screen.getByText('Reembolso'));
       await waitFor(() => screen.getByText(/INV-001/));
 
-      const invoiceSelect = screen.getByText('— Pick an invoice —').closest('select') as HTMLSelectElement;
+      const invoiceSelect = screen.getByText('— Elige una factura —').closest('select') as HTMLSelectElement;
       if (invoiceSelect) fireEvent.change(invoiceSelect, { target: { value: '100' } });
 
-      const submitBtns6 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Issue refund');
+      const submitBtns6 = screen.getAllByRole('button').filter(b => b.textContent?.trim() === 'Emitir reembolso');
       fireEvent.click(submitBtns6[submitBtns6.length - 1]);
       await flush();
-      expect(screen.queryByText(/Refund issued/)).toBeNull();
-      expect(screen.getByText('Issue refund', { selector: 'h2' })).toBeTruthy();
+      expect(screen.queryByText(/Reembolso emitido/)).toBeNull();
+      expect(screen.getByText('Emitir reembolso', { selector: 'h2' })).toBeTruthy();
     });
 
     it('marks invoice option disabled when no stripePaymentIntentId', async () => {
@@ -830,9 +830,9 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Refund'));
-      await waitFor(() => screen.getByText(/no payment intent/));
-      const option = screen.getByText(/no payment intent/).closest('option') as HTMLOptionElement;
+      fireEvent.click(screen.getByText('Reembolso'));
+      await waitFor(() => screen.getByText(/sin intento de pago/));
+      const option = screen.getByText(/sin intento de pago/).closest('option') as HTMLOptionElement;
       expect(option?.disabled).toBe(true);
     });
   });
@@ -847,14 +847,14 @@ describe('AdminSubscriptionsPage', () => {
         return defaultHandler(url, init);
       });
       await openActionMenu();
-      fireEvent.click(screen.getByText('Cancel'));
-      await waitFor(() => screen.getByRole('button', { name: 'Cancel at period end' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel at period end' }));
-      await waitFor(() => screen.getByText(/Cancellation scheduled/));
+      fireEvent.click(screen.getByText('Cancelar'));
+      await waitFor(() => screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar al final del periodo' }));
+      await waitFor(() => screen.getByText(/Cancelación programada/));
 
-      const dismissBtn = screen.getByRole('button', { name: 'Dismiss' });
+      const dismissBtn = screen.getByRole('button', { name: 'Descartar' });
       fireEvent.click(dismissBtn);
-      await waitFor(() => expect(screen.queryByText(/Cancellation scheduled/)).toBeNull());
+      await waitFor(() => expect(screen.queryByText(/Cancelación programada/)).toBeNull());
     });
   });
 

@@ -226,17 +226,15 @@ export default function GoalProgress({ goal, ownerLookup, onCheckin, onEdit, onD
               onClick={() => { setCheckinOpen(false); setErr(null); }}
               disabled={submitting}
               className="px-2.5 py-1 text-xs rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="button"
               onClick={submitCheckin}
               disabled={submitting}
-              className="px-2.5 py-1 text-xs rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 inline-flex items-center gap-1"
+              className="px-2.5 py-1 text-xs rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 inline-flex items-center gap-1"
             >
               {submitting
-                ? <><span className="material-icons animate-spin text-sm">progress_activity</span>Saving…</>
+                ? <><span className="material-icons animate-spin text-sm">autorenew</span>Saving…</>
                 : <><span className="material-icons text-sm">check</span>Save check-in</>}
             </button>
           </div>

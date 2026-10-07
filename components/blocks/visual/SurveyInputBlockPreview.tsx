@@ -68,7 +68,7 @@ export function SurveyInputPreview({
     case 'select':
       return (
         <div className={inputCls + ' flex items-center justify-between'}>
-          <span className="opacity-50">Select...</span>
+          <span className="opacity-50">Seleccionar...</span>
           <span className="material-icons text-base opacity-40">arrow_drop_down</span>
         </div>
       );

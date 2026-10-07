@@ -174,7 +174,7 @@ describe('AIGeneratorPanel', () => {
     openPanel();
     fireEvent.click(screen.getByRole('checkbox', { name: /Visual Identity/i }));
     fireEvent.click(screen.getByRole('checkbox', { name: /Messaging/i }));
-    expect(screen.getByText(/Select at least one section/i)).toBeInTheDocument();
+    expect(screen.getByText(/Selecciona al menos una sección/i)).toBeInTheDocument();
   });
 
   it('Generate button is disabled when description is empty', () => {

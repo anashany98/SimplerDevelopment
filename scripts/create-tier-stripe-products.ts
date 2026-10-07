@@ -50,7 +50,7 @@ async function main() {
     }
 
     const product = await stripe.products.create({
-      name: `SimplerDevelopment — ${tier.name}`,
+      name: `CRM AGENTS — ${tier.name}`,
       description: tier.tagline,
       metadata: { tier: tier.key, slug: tier.slug, kind: 'plan_tier' },
     });

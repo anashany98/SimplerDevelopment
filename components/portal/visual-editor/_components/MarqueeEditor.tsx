@@ -67,24 +67,24 @@ export function MarqueeEditor({ block, onUpdate, siteId }: { block: Block; onUpd
                   <span className="text-[10px] text-muted-foreground font-medium flex-1">{String(item.type).toUpperCase()} {i + 1}</span>
                   <button type="button" onClick={(e) => { e.stopPropagation(); moveItem(i, -1); }} disabled={i === 0} className="p-0.5 text-xs rounded hover:bg-muted disabled:opacity-30"><span className="material-icons text-xs">arrow_upward</span></button>
                   <button type="button" onClick={(e) => { e.stopPropagation(); moveItem(i, 1); }} disabled={i === items.length - 1} className="p-0.5 text-xs rounded hover:bg-muted disabled:opacity-30"><span className="material-icons text-xs">arrow_downward</span></button>
-                  <button type="button" onClick={(e) => { e.stopPropagation(); duplicateItem(i); }} className="p-0.5 text-xs rounded hover:bg-muted" title="Duplicate"><span className="material-icons text-xs">content_copy</span></button>
+                  <button type="button" onClick={(e) => { e.stopPropagation(); duplicateItem(i); }} className="p-0.5 text-xs rounded hover:bg-muted" title="Duplicar"><span className="material-icons text-xs">content_copy</span></button>
                   <button type="button" onClick={(e) => { e.stopPropagation(); removeItem(i); }} className="p-0.5 text-xs rounded text-destructive hover:bg-destructive/10"><span className="material-icons text-xs">close</span></button>
                 </div>
                 {isExpanded && (
                   <>
                     {item.type === 'text' && (
-                      <Field label="Text" value={(item.content as string) || ''} onChange={(v) => updateItem(i, { content: v })} />
+                      <Field label="Texto" value={(item.content as string) || ''} onChange={(v) => updateItem(i, { content: v })} />
                     )}
                     {item.type === 'icon' && (
-                      <IconPicker value={(item.content as string) || ''} onChange={(v) => updateItem(i, { content: v })} label="Icon" />
+                      <IconPicker value={(item.content as string) || ''} onChange={(v) => updateItem(i, { content: v })} label="Ícono" />
                     )}
                     {item.type === 'image' && (
-                      <div><span className="text-xs text-muted-foreground">Image</span><MediaPicker value={(item.imageUrl as string) || ''} onChange={(v) => updateItem(i, { imageUrl: v })} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
+                      <div><span className="text-xs text-muted-foreground">Imagen</span><MediaPicker value={(item.imageUrl as string) || ''} onChange={(v) => updateItem(i, { imageUrl: v })} mimeTypeFilter="image" label="" apiEndpoint={mediaApi} /></div>
                     )}
                     {item.type === 'image' && (
                       <Field label="Alt Text" value={(item.imageAlt as string) || ''} onChange={(v) => updateItem(i, { imageAlt: v })} />
                     )}
-                    <Field label="Link (optional)" value={(item.link as string) || ''} onChange={(v) => updateItem(i, { link: v })} />
+                    <Field label="Enlace (opcional)" value={(item.link as string) || ''} onChange={(v) => updateItem(i, { link: v })} />
                   </>
                 )}
               </div>
@@ -102,20 +102,20 @@ export function MarqueeEditor({ block, onUpdate, siteId }: { block: Block; onUpd
       <div className="border-t border-border pt-3 space-y-2">
         <span className="text-xs font-medium text-muted-foreground">Marquee Settings</span>
         <SelectField label="Direction" value={(b.direction as string) || 'left'} options={['left','right','up','down']} onChange={(v) => onUpdate({ direction: v } as Partial<Block>)} />
-        <Field label="Speed (px/s)" value={String((b.speed as number) || 50)} onChange={(v) => onUpdate({ speed: Number(v) || 50 } as Partial<Block>)} />
+        <Field label="Velocidad (px/s)" value={String((b.speed as number) || 50)} onChange={(v) => onUpdate({ speed: Number(v) || 50 } as Partial<Block>)} />
         <Field label="Gap" value={(b.gap as string) || '40px'} onChange={(v) => onUpdate({ gap: v } as Partial<Block>)} />
         <Field label="Height (vertical)" value={(b.height as string) || ''} onChange={(v) => onUpdate({ height: v } as Partial<Block>)} />
         <CheckboxField label="Auto Fill" checked={(b.autoFill as boolean) ?? true} onChange={(v) => onUpdate({ autoFill: v } as Partial<Block>)} />
-        <CheckboxField label="Pause on Hover" checked={(b.pauseOnHover as boolean) ?? false} onChange={(v) => onUpdate({ pauseOnHover: v } as Partial<Block>)} />
-        <CheckboxField label="Pause on Click" checked={(b.pauseOnClick as boolean) ?? false} onChange={(v) => onUpdate({ pauseOnClick: v } as Partial<Block>)} />
+        <CheckboxField label="Pausa al pasar el cursor" checked={(b.pauseOnHover as boolean) ?? false} onChange={(v) => onUpdate({ pauseOnHover: v } as Partial<Block>)} />
+        <CheckboxField label="Pausa al hacer clic" checked={(b.pauseOnClick as boolean) ?? false} onChange={(v) => onUpdate({ pauseOnClick: v } as Partial<Block>)} />
         <CheckboxField label="Gradient Edges" checked={(b.gradient as boolean) ?? false} onChange={(v) => onUpdate({ gradient: v } as Partial<Block>)} />
         {(b.gradient as boolean) && (
           <>
-            <ColorField label="Gradient Color" value={(b.gradientColor as string) || 'white'} onChange={(v) => onUpdate({ gradientColor: v } as Partial<Block>)} />
-            <Field label="Gradient Width" value={String((b.gradientWidth as number) || 200)} onChange={(v) => onUpdate({ gradientWidth: Number(v) || 200 } as Partial<Block>)} />
+            <ColorField label="Color del degradado" value={(b.gradientColor as string) || 'white'} onChange={(v) => onUpdate({ gradientColor: v } as Partial<Block>)} />
+            <Field label="Ancho del degradado" value={String((b.gradientWidth as number) || 200)} onChange={(v) => onUpdate({ gradientWidth: Number(v) || 200 } as Partial<Block>)} />
           </>
         )}
-        <Field label="Loop Count (0=infinite)" value={String((b.loop as number) || 0)} onChange={(v) => onUpdate({ loop: Number(v) || 0 } as Partial<Block>)} />
+        <Field label="Número de repeticiones (0=indefinido)" value={String((b.loop as number) || 0)} onChange={(v) => onUpdate({ loop: Number(v) || 0 } as Partial<Block>)} />
       </div>
     </div>
   );

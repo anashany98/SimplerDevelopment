@@ -4,20 +4,20 @@
 // this follows the same house pattern rather than inventing a new shared lib.
 
 export function relativeTime(dateStr: string | null): string {
-  if (!dateStr) return 'never';
+  if (!dateStr) return 'nunca';
   const then = new Date(dateStr).getTime();
-  if (Number.isNaN(then)) return 'never';
+  if (Number.isNaN(then)) return 'nunca';
   const diff = Math.max(0, Date.now() - then);
   const seconds = Math.floor(diff / 1000);
-  if (seconds < 60) return 'just now';
+  if (seconds < 60) return 'ahora mismo';
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `hace ${minutes} min`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}d ago`;
+  if (days < 30) return `hace ${days} d`;
   const months = Math.floor(days / 30);
-  return `${months}mo ago`;
+  return `hace ${months} meses`;
 }
 
 export type HealthTier = 'good' | 'ok' | 'bad' | 'none';
@@ -94,6 +94,13 @@ export function formatSignedNumber(n: number): string {
  * bad), so this is one neutral 3-step scale rather than a good/bad color —
  * the "Impact"/"Effort" label carries the meaning, not the color. */
 export type Tier = 'high' | 'medium' | 'low';
+
+/** Spanish labels for the impact/effort tiers (UI shows these, not the enum). */
+export const tierLabels: Record<Tier, string> = {
+  high: 'Alto',
+  medium: 'Medio',
+  low: 'Bajo',
+};
 
 export const tierClasses: Record<Tier, string> = {
   high: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',

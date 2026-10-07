@@ -114,22 +114,22 @@ export function CartPageClient({ siteId, domain }: CartPageClientProps) {
     <div className="container mx-auto px-4 py-12 max-w-3xl">
       <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
         <span className="material-icons">shopping_cart</span>
-        Shopping Cart
+        Carrito de compra
         {itemCount > 0 && (
-          <span className="text-base font-normal text-muted-foreground">({itemCount} items)</span>
+          <span className="text-base font-normal text-muted-foreground">({itemCount} artículos)</span>
         )}
       </h1>
 
       {items.length === 0 ? (
         <div className="text-center py-16 border border-border rounded-xl bg-card">
           <span className="material-icons text-5xl text-muted-foreground/30 mb-3 block">shopping_cart</span>
-          <p className="text-muted-foreground mb-6">Your cart is empty.</p>
+          <p className="text-muted-foreground mb-6">Tu carrito está vacío.</p>
           <Link
             href={`${basePath}/`}
             className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
           >
             <span className="material-icons text-base">arrow_back</span>
-            Continue Shopping
+            Seguir comprando
           </Link>
         </div>
       ) : (
@@ -156,17 +156,17 @@ export function CartPageClient({ siteId, domain }: CartPageClientProps) {
                   {item.design && (
                     <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                       <span className="material-icons text-xs">brush</span>
-                      {item.design.name || 'Custom design'}
+                      {item.design.name || 'Diseño personalizado'}
                     </p>
                   )}
-                  <p className="text-sm font-semibold mt-1">{formatMoney(item.unitPrice)} each</p>
+                  <p className="text-sm font-semibold mt-1">{formatMoney(item.unitPrice)} cada uno</p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => updateQty(item.id, item.quantity - 1)}
                     disabled={updating === item.id}
-                    aria-label="Decrease quantity"
+                    aria-label="Disminuir cantidad"
                     className="w-7 h-7 rounded border border-border flex items-center justify-center hover:bg-muted/50 transition-colors disabled:opacity-40"
                   >
                     <span className="material-icons text-sm">remove</span>
@@ -175,7 +175,7 @@ export function CartPageClient({ siteId, domain }: CartPageClientProps) {
                   <button
                     onClick={() => updateQty(item.id, item.quantity + 1)}
                     disabled={updating === item.id}
-                    aria-label="Increase quantity"
+                    aria-label="Aumentar cantidad"
                     className="w-7 h-7 rounded border border-border flex items-center justify-center hover:bg-muted/50 transition-colors disabled:opacity-40"
                   >
                     <span className="material-icons text-sm">add</span>
@@ -187,11 +187,9 @@ export function CartPageClient({ siteId, domain }: CartPageClientProps) {
                   <button
                     onClick={() => updateQty(item.id, 0)}
                     disabled={updating === item.id}
-                    aria-label="Remove item"
+                    aria-label="Quitar artículo"
                     className="text-xs text-muted-foreground hover:text-destructive transition-colors mt-0.5"
-                  >
-                    Remove
-                  </button>
+                  >Quitar</button>
                 </div>
               </div>
             ))}
@@ -203,14 +201,14 @@ export function CartPageClient({ siteId, domain }: CartPageClientProps) {
               <span className="font-semibold">Subtotal</span>
               <span className="font-bold">{formatMoney(subtotal)}</span>
             </div>
-            <p className="text-xs text-muted-foreground">Shipping and taxes calculated at checkout.</p>
+            <p className="text-xs text-muted-foreground">El envío y los impuestos se calculan al finalizar la compra.</p>
 
             <Link
               href={`${basePath}/checkout`}
               className="flex items-center justify-center gap-2 w-full py-3 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               <span className="material-icons text-base">lock</span>
-              Proceed to Checkout
+              Finalizar compra
             </Link>
 
             <Link
@@ -218,7 +216,7 @@ export function CartPageClient({ siteId, domain }: CartPageClientProps) {
               className="flex items-center justify-center gap-1.5 w-full py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               <span className="material-icons text-sm">arrow_back</span>
-              Continue Shopping
+              Seguir comprando
             </Link>
           </div>
         </div>

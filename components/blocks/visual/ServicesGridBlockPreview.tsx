@@ -160,9 +160,7 @@ export function ServicesGridBlockPreview({ block, isSelected, onChange }: Servic
                         updateService(service.id, { image: undefined });
                       }}
                       className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
-                    >
-                      Remove
-                    </button>
+                    >Quitar</button>
                   </div>
                 )}
               </div>

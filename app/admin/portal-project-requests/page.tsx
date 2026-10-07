@@ -21,16 +21,16 @@ interface ProjectRequest {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: string }> = {
-  pending:  { label: 'Pending',  color: 'bg-amber-100 text-amber-700',  icon: 'hourglass_empty' },
-  reviewed: { label: 'Reviewed', color: 'bg-blue-100 text-blue-700',    icon: 'visibility' },
-  approved: { label: 'Approved', color: 'bg-green-100 text-green-700',  icon: 'check_circle' },
-  rejected: { label: 'Rejected', color: 'bg-red-100 text-red-700',      icon: 'cancel' },
+  pending:  { label: 'Pendiente',  color: 'bg-amber-100 text-amber-700',  icon: 'hourglass_empty' },
+  reviewed: { label: 'Revisado', color: 'bg-blue-100 text-blue-700',    icon: 'visibility' },
+  approved: { label: 'Aprobado', color: 'bg-green-100 text-green-700',  icon: 'check_circle' },
+  rejected: { label: 'Rechazado', color: 'bg-red-100 text-red-700',      icon: 'cancel' },
 };
 
 const STATUSES = Object.keys(STATUS_CONFIG);
 
 function formatDate(s: string) {
-  return new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  return new Date(s).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 export default function AdminProjectRequestsPage() {
@@ -77,8 +77,8 @@ export default function AdminProjectRequestsPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Project Requests</h1>
-        <p className="text-muted-foreground mt-1">Client intake submissions from suggested projects. Review answers and update status.</p>
+        <h1 className="text-2xl font-bold text-foreground">Solicitudes de proyecto</h1>
+        <p className="text-muted-foreground mt-1">Solicitudes de clientes de proyectos sugeridos. Revisa las respuestas y actualiza el estado.</p>
       </div>
 
       {/* Summary stats */}
@@ -106,22 +106,22 @@ export default function AdminProjectRequestsPage() {
       {/* Filter pills */}
       <div className="flex items-center gap-2 flex-wrap">
         <button onClick={() => setFilterStatus('all')}
-          className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === 'all' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
-          All ({requests.length})
+          className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === 'all' ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
+          Todas ({requests.length})
         </button>
         {STATUSES.map(s => (
           <button key={s} onClick={() => setFilterStatus(s)}
-            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
+            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${filterStatus === s ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground hover:text-foreground'}`}>
             {STATUS_CONFIG[s].label} ({counts[s] ?? 0})
           </button>
         ))}
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando...</div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
-          {filterStatus === 'all' ? 'No project requests yet.' : `No ${filterStatus} requests.`}
+          {filterStatus === 'all' ? 'Aún no hay solicitudes de proyecto.' : 'No hay solicitudes que coincidan con el filtro.'}
         </div>
       ) : (
         <div className="space-y-3">
@@ -178,14 +178,14 @@ export default function AdminProjectRequestsPage() {
                   <div className="border-t border-border px-5 pb-5 pt-4 bg-muted/20 space-y-4">
                     {req.message && (
                       <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Message</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Mensaje</p>
                         <p className="text-sm text-foreground bg-card border border-border rounded-lg px-4 py-3 whitespace-pre-wrap">{req.message}</p>
                       </div>
                     )}
 
                     {hasAnswers && (
                       <div>
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Survey Answers</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Respuestas de la encuesta</p>
                         <div className="space-y-2">
                           {Object.entries(req.answers!).map(([key, val]) => (
                             <div key={key} className="bg-card border border-border rounded-lg px-4 py-3">
@@ -201,13 +201,13 @@ export default function AdminProjectRequestsPage() {
 
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Admin Notes</p>
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Notas internas</p>
                         {!isEditingNotes && (
                           <button
                             onClick={() => setEditingNotes(prev => ({ ...prev, [req.id]: req.adminNotes ?? '' }))}
                             className="text-xs text-primary hover:underline"
                           >
-                            {req.adminNotes ? 'Edit' : 'Add notes'}
+                            {req.adminNotes ? 'Editar' : 'Añadir notas'}
                           </button>
                         )}
                       </div>
@@ -218,23 +218,21 @@ export default function AdminProjectRequestsPage() {
                             value={editingNotes[req.id]}
                             onChange={e => setEditingNotes(prev => ({ ...prev, [req.id]: e.target.value }))}
                             className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                            placeholder="Internal notes — not visible to client"
+                            placeholder="Notas internas — no visibles para el cliente"
                           />
                           <div className="flex gap-2">
                             <button onClick={() => saveNotes(req)} disabled={savingId === req.id}
-                              className="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-medium hover:bg-primary/90 disabled:opacity-50">
-                              {savingId === req.id ? 'Saving...' : 'Save Notes'}
+                              className="px-3 py-1.5 bg-foreground text-background rounded-lg text-xs font-medium hover:bg-foreground/90 disabled:opacity-50">
+                              {savingId === req.id ? 'Guardando...' : 'Guardar notas'}
                             </button>
                             <button onClick={() => setEditingNotes(prev => { const n = { ...prev }; delete n[req.id]; return n; })}
-                              className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground">
-                              Cancel
-                            </button>
+                              className="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground">Cancelar</button>
                           </div>
                         </div>
                       ) : req.adminNotes ? (
                         <p className="text-sm text-foreground bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 whitespace-pre-wrap">{req.adminNotes}</p>
                       ) : (
-                        <p className="text-xs text-muted-foreground italic">No notes yet.</p>
+                        <p className="text-xs text-muted-foreground italic">Sin notas todavía.</p>
                       )}
                     </div>
                   </div>

@@ -114,7 +114,11 @@ export async function approveReviewItem(args: ApproveItemArgs): Promise<ApproveI
       .where(and(eq(brainAiReviewItems.id, args.itemId), eq(brainAiReviewItems.clientId, args.clientId)))
       .limit(1);
     if (!item) throw new Error('Review item not found');
-    if (item.status === 'approved' && item.resultEntityId) {
+    // Idempotency guard. The edit-then-approve path persists the result FK but
+    // sets status='edited' (see below), so a `status === 'approved'` check would
+    // let a re-approval of an edited item fall through the switch and insert a
+    // DUPLICATE target record. Keying on the result FK alone covers both paths.
+    if (item.resultEntityId != null) {
       return { item, resultEntityType: item.resultEntityType, resultEntityId: item.resultEntityId };
     }
 
@@ -253,6 +257,22 @@ export async function approveReviewItem(args: ApproveItemArgs): Promise<ApproveI
           .orderBy(asc(crmPipelineStages.sortOrder), asc(crmPipelineStages.id))
           .limit(1);
         if (!stage) throw new Error('crm_deal_create: pipeline has no stages. Add stages in CRM settings first.');
+        // Tenant-check optional CRM links (mirrors crm_deal_link): the payload
+        // may reference IDs from another workspace, so verify each belongs to
+        // this client before attaching it. A mismatch throws and rolls back the
+        // whole approval transaction.
+        if (dc.contactId != null) {
+          const [contact] = await tx.select({ id: crmContacts.id }).from(crmContacts)
+            .where(and(eq(crmContacts.id, dc.contactId), eq(crmContacts.clientId, args.clientId)))
+            .limit(1);
+          if (!contact) throw new Error('Contact not found');
+        }
+        if (dc.companyId != null) {
+          const [company] = await tx.select({ id: crmCompanies.id }).from(crmCompanies)
+            .where(and(eq(crmCompanies.id, dc.companyId), eq(crmCompanies.clientId, args.clientId)))
+            .limit(1);
+          if (!company) throw new Error('Company not found');
+        }
         const [created] = await tx.insert(crmDeals).values({
           clientId: args.clientId,
           pipelineId: pipeline.id,
@@ -261,7 +281,7 @@ export async function approveReviewItem(args: ApproveItemArgs): Promise<ApproveI
           companyId: dc.companyId ?? null,
           title: dc.title.slice(0, 255),
           value: typeof dc.value === 'number' && dc.value > 0 ? dc.value : null,
-          currency: dc.currency ?? 'USD',
+          currency: dc.currency ?? 'EUR',
           priority: dc.priority ?? 'medium',
           expectedCloseDate: dc.expectedCloseDate ? new Date(dc.expectedCloseDate) : null,
           ownerId: args.actorId,

@@ -26,7 +26,7 @@ export function ResponsiveHelpModal({ isOpen, onClose }: ResponsiveHelpModalProp
             type="button"
             onClick={onClose}
             className="p-2 hover:bg-muted rounded-md transition-colors"
-            aria-label="Close"
+            aria-label="Cerrar"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -38,7 +38,7 @@ export function ResponsiveHelpModal({ isOpen, onClose }: ResponsiveHelpModalProp
         <div className="px-6 py-6 space-y-6">
           {/* Overview */}
           <section>
-            <h3 className="text-lg font-semibold text-foreground mb-3">Overview</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-3">Resumen general</h3>
             <p className="text-muted-foreground mb-3">
               The responsive design system allows you to customize how your content appears on different
               devices. Configure settings for mobile, tablet, and desktop breakpoints to create an optimal

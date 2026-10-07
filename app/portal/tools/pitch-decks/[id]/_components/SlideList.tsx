@@ -106,7 +106,7 @@ export function SlideList(props: SlideListProps) {
                 <button
                   onClick={onOpenBoardView}
                   className="text-muted-foreground hover:text-foreground transition-colors"
-                  title="Board view"
+                  title="Vista de tablero"
                 >
                   <span className="material-icons text-base">grid_view</span>
                 </button>
@@ -119,13 +119,13 @@ export function SlideList(props: SlideListProps) {
                     <span className="material-icons text-lg">assignment</span>
                   </button>
                 )}
-                <button onClick={onAddSlide} className="text-primary hover:text-primary/80" title="Add slide">
+                <button onClick={onAddSlide} className="text-primary hover:text-primary/80" title="Añadir diapositiva">
                   <span className="material-icons text-lg">add_circle</span>
                 </button>
                 <button
                   onClick={onUploadHtmlSlide}
                   className="text-primary hover:text-primary/80"
-                  title="Upload HTML slide"
+                  title="Subir diapositiva HTML"
                 >
                   <span className="material-icons text-lg">upload_file</span>
                 </button>
@@ -146,15 +146,13 @@ export function SlideList(props: SlideListProps) {
                     <span className="material-icons text-sm">close</span>
                   </button>
                 </div>
-                <p className="text-[10px] text-muted-foreground">Each question becomes its own slide in the presentation.</p>
+                <p className="text-[10px] text-muted-foreground">Cada pregunta se convierte en su propia diapositiva en la presentación.</p>
                 {!surveyListLoaded ? (
                   <div className="flex items-center justify-center py-3">
                     <span className="material-icons animate-spin text-base text-muted-foreground">autorenew</span>
                   </div>
                 ) : surveyList.filter(s => s.status === 'active').length === 0 ? (
-                  <p className="text-xs text-muted-foreground py-2 text-center">
-                    No active surveys found. Create one in the Surveys section first.
-                  </p>
+                  <p className="text-xs text-muted-foreground py-2 text-center">No se encontraron encuestas activas. Crea una primero en la sección de encuestas.</p>
                 ) : (
                   <div className="space-y-1 max-h-40 overflow-y-auto">
                     {surveyList.filter(s => s.status === 'active').map(s => (
@@ -207,16 +205,12 @@ export function SlideList(props: SlideListProps) {
                       onClick={onAddDecisionSlide}
                       className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-accent transition-colors flex items-center gap-2 text-muted-foreground hover:text-foreground"
                     >
-                      <span className="material-icons text-sm text-amber-500">fork_right</span>
-                      Add Decision Slide
-                    </button>
+                      <span className="material-icons text-sm text-amber-500">fork_right</span>Agregar diapositiva de decisión</button>
                     <button
                       onClick={onAddPathGroup}
                       className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs hover:bg-accent transition-colors flex items-center gap-2 text-muted-foreground hover:text-foreground"
                     >
-                      <span className="material-icons text-sm text-blue-500">route</span>
-                      Add Path Group
-                    </button>
+                      <span className="material-icons text-sm text-blue-500">route</span>Agregar grupo de rutas</button>
                   </div>
 
                   {pathGroups.map(pg => {
@@ -256,7 +250,7 @@ export function SlideList(props: SlideListProps) {
                           />
                         ))}
                         {pgSlides.length === 0 && (
-                          <p className="text-[10px] text-muted-foreground text-center py-2">Drop slides here or click + to add</p>
+                          <p className="text-[10px] text-muted-foreground text-center py-2">Suelta diapositivas aquí o haz clic en + para agregar</p>
                         )}
                       </PathGroupDropZone>
                     );

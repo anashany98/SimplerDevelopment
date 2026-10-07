@@ -92,9 +92,7 @@ export default function InitiativeLinksPanel({ initiativeId, links, onChanged }:
           onClick={() => setPickerOpen(true)}
           className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md border border-border text-foreground hover:bg-accent"
         >
-          <span className="material-icons text-sm">add_link</span>
-          Link
-        </button>
+          <span className="material-icons text-sm">add_link</span>Enlace</button>
       </div>
 
       {err && (
@@ -264,14 +262,14 @@ function LinkPickerDialog({ initiativeId, onClose, onLinked }: PickerProps) {
               Attach a task, note, meeting, decision, topic, deal, or company.
             </p>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Close">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Cerrar">
             <span className="material-icons text-lg">close</span>
           </button>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Type</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Tipo</span>
             <select
               value={type}
               onChange={(e) => setType(e.target.value as BrainInitiativeLinkType)}
@@ -283,7 +281,7 @@ function LinkPickerDialog({ initiativeId, onClose, onLinked }: PickerProps) {
             </select>
           </label>
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Search</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Buscar</span>
             <input
               type="text"
               value={search}
@@ -297,9 +295,7 @@ function LinkPickerDialog({ initiativeId, onClose, onLinked }: PickerProps) {
         <div className="max-h-48 overflow-y-auto bg-muted/30 border border-border rounded-md">
           {loading ? (
             <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
-              <span className="material-icons animate-spin text-base mr-1.5">progress_activity</span>
-              Loading…
-            </div>
+              <span className="material-icons animate-spin text-base mr-1.5">autorenew</span>Cargando…</div>
           ) : options.length === 0 ? (
             <div className="text-center py-6 text-xs text-muted-foreground">
               No {linkEntityTypeMeta(type).pluralLabel.toLowerCase()} found.
@@ -360,17 +356,15 @@ function LinkPickerDialog({ initiativeId, onClose, onLinked }: PickerProps) {
             onClick={onClose}
             disabled={submitting}
             className="px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             onClick={submit}
             disabled={submitting || pickedId === null}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Linking…</>
-              : <><span className="material-icons text-base">add_link</span>Link</>}
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Linking…</>
+              : <><span className="material-icons text-base">add_link</span>Enlace</>}
           </button>
         </div>
       </div>

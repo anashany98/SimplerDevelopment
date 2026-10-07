@@ -1,6 +1,6 @@
-# MCP Tool Reference — SimplerDevelopment
+# MCP Tool Reference — CRM AGENTS
 
-> **Audience:** humans and AI agents connecting to the SimplerDevelopment MCP server.
+> **Audience:** humans and AI agents connecting to the CRM AGENTS MCP server.
 > **Sibling docs:** [API Index](./api-index.md) · [Architecture](./architecture-for-agents.md) · [AI Overview](./ai-overview.md) · [Repository Map](./repository-map.md) · [Workflow Reference](./workflow-reference.md) · [Glossary](./glossary.md) · [/llms.txt](/llms.txt)
 
 ---

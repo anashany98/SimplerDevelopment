@@ -88,17 +88,15 @@ export default function PlanningBacklogPanel({
           <button
             onClick={() => onTypeFilterChange('all')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${
-              typeFilter === 'all' ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+              typeFilter === 'all' ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
             }`}
-          >
-            All
-          </button>
+          >Todos</button>
           {CARD_TYPE_OPTIONS.map(t => (
             <button
               key={t}
               onClick={() => onTypeFilterChange(t)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 capitalize ${
-                typeFilter === t ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                typeFilter === t ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               <span className={`material-icons text-sm ${typeFilter === t ? '' : CARD_TYPE_META[t].color}`}>{CARD_TYPE_META[t].icon}</span>
@@ -121,7 +119,7 @@ export default function PlanningBacklogPanel({
         {cards.length === 0 ? (
           <div className="text-center py-8">
             <span className="material-icons text-4xl text-muted-foreground">inbox</span>
-            <p className="text-xs text-muted-foreground mt-2">No cards match the current filters.</p>
+            <p className="text-xs text-muted-foreground mt-2">Ninguna tarjeta coincide con los filtros actuales.</p>
           </div>
         ) : (
           cards.map(card => {

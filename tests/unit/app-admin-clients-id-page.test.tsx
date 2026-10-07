@@ -291,7 +291,7 @@ async function renderPage(id = '1') {
   const result = render(<ClientDetailPage params={makeParams(id)} />);
   // Wait for initial client fetch to resolve
   await waitFor(() => {
-    expect(screen.queryByText('Loading…')).toBeNull();
+    expect(screen.queryByText('Cargando…')).toBeNull();
   });
   return result;
 }
@@ -306,7 +306,7 @@ describe('ClientDetailPage', () => {
   describe('initial load', () => {
     it('renders loading state initially', () => {
       const result = render(<ClientDetailPage params={makeParams('1')} />);
-      expect(result.container.textContent).toContain('Loading');
+      expect(result.container.textContent).toContain('Cargando');
     });
 
     it('renders client header after fetch', async () => {
@@ -335,7 +335,7 @@ describe('ClientDetailPage', () => {
         render(<ClientDetailPage params={makeParams('999')} />);
       });
       await waitFor(() => {
-        expect(screen.getByText('Client not found.')).toBeTruthy();
+        expect(screen.getByText('Cliente no encontrado.')).toBeTruthy();
       });
     });
 
@@ -346,7 +346,7 @@ describe('ClientDetailPage', () => {
       });
       const result = render(<ClientDetailPage params={makeParams('1')} />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('Client not found');
+        expect(result.container.textContent).toContain('Cliente no encontrado');
       });
     });
   });
@@ -354,14 +354,14 @@ describe('ClientDetailPage', () => {
   describe('overview tab', () => {
     it('renders all overview rows', async () => {
       await renderPage();
-      expect(screen.getByText('Name')).toBeTruthy();
-      expect(screen.getByText('Email')).toBeTruthy();
-      expect(screen.getByText('Company')).toBeTruthy();
-      expect(screen.getByText('Phone')).toBeTruthy();
-      expect(screen.getByText('Website')).toBeTruthy();
-      expect(screen.getByText('Status')).toBeTruthy();
-      expect(screen.getByText('Notes')).toBeTruthy();
-      expect(screen.getByText('Active')).toBeTruthy();
+      expect(screen.getByText('Nombre')).toBeTruthy();
+      expect(screen.getByText('Correo')).toBeTruthy();
+      expect(screen.getByText('Empresa')).toBeTruthy();
+      expect(screen.getByText('Teléfono')).toBeTruthy();
+      expect(screen.getByText('Sitio web')).toBeTruthy();
+      expect(screen.getByText('Estado')).toBeTruthy();
+      expect(screen.getByText('Notas')).toBeTruthy();
+      expect(screen.getByText('Activo')).toBeTruthy();
     });
 
     it('renders inactive status', async () => {
@@ -372,7 +372,7 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      expect(screen.getByText('Inactive')).toBeTruthy();
+      expect(screen.getByText('Inactivo')).toBeTruthy();
     });
 
     it('shows em-dash for null fields', async () => {
@@ -391,7 +391,7 @@ describe('ClientDetailPage', () => {
   describe('tab switching', () => {
     it('switches to email tab and loads lists + campaigns', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
       expect(screen.getAllByText('Promo').length).toBeGreaterThan(0);
       expect(screen.getByText('Spring')).toBeTruthy();
@@ -399,22 +399,22 @@ describe('ClientDetailPage', () => {
 
     it('switches to billing tab and loads metered items + usage', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Current period totals')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Totales del periodo actual')).toBeTruthy());
       await waitFor(() => expect(screen.getAllByText('hosting_bandwidth_gb').length).toBeGreaterThan(0));
     });
 
     it('switches to settings tab and loads domains', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Client Profile')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Perfil del cliente')).toBeTruthy());
       await waitFor(() => expect(screen.getByText('verified.test')).toBeTruthy());
     });
 
     it('switches to team tab and loads members', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Team' }));
-      await waitFor(() => expect(screen.getByText('Team Members')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Equipo' }));
+      await waitFor(() => expect(screen.getByText('Miembros del equipo')).toBeTruthy());
       await waitFor(() => expect(screen.getAllByText('Jane Doe').length).toBeGreaterThan(0));
       expect(screen.getByText('Bob')).toBeTruthy();
     });
@@ -423,8 +423,8 @@ describe('ClientDetailPage', () => {
   describe('settings: profile form', () => {
     it('shows current values in form fields', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Client Profile')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Perfil del cliente')).toBeTruthy());
       const nameInput = screen.getByDisplayValue('Jane Doe') as HTMLInputElement;
       expect(nameInput.value).toBe('Jane Doe');
     });
@@ -432,12 +432,12 @@ describe('ClientDetailPage', () => {
     it('saves profile changes and shows success message', async () => {
       vi.useFakeTimers({ shouldAdvanceTime: true });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Client Profile')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Perfil del cliente')).toBeTruthy());
       const nameInput = screen.getByDisplayValue('Jane Doe') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'New Jane' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
-      await waitFor(() => expect(screen.getByText(/Changes saved successfully/)).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar cambios' }));
+      await waitFor(() => expect(screen.getByText(/Cambios guardados correctamente/)).toBeTruthy());
     });
 
     it('shows error message when save fails', async () => {
@@ -448,16 +448,16 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Client Profile')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Perfil del cliente')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar cambios' }));
       await waitFor(() => expect(screen.getByText('Server error')).toBeTruthy());
     });
 
     it('toggles active status', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Client Profile')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Perfil del cliente')).toBeTruthy());
       // Find the toggle button (button without name following the "Account Active" label)
       const toggles = screen.getAllByRole('button');
       const accountToggle = toggles.find(b =>
@@ -471,17 +471,17 @@ describe('ClientDetailPage', () => {
   describe('settings: domains', () => {
     it('shows add domain form when "Add Domain" clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Sending Domains')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Dominios de envío')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/ }));
       expect(screen.getByPlaceholderText('yourdomain.com')).toBeTruthy();
     });
 
     it('adds a new domain', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Sending Domains')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Dominios de envío')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/ }));
       const input = screen.getByPlaceholderText('yourdomain.com');
       fireEvent.change(input, { target: { value: 'new.test' } });
       const form = input.closest('form') as HTMLFormElement;
@@ -497,9 +497,9 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
-      await waitFor(() => expect(screen.getByText('Sending Domains')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add Domain/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
+      await waitFor(() => expect(screen.getByText('Dominios de envío')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir dominio/ }));
       const input = screen.getByPlaceholderText('yourdomain.com');
       fireEvent.change(input, { target: { value: 'dup.test' } });
       const form = input.closest('form') as HTMLFormElement;
@@ -509,30 +509,30 @@ describe('ClientDetailPage', () => {
 
     it('opens a pending domain and shows DNS records', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('pending.test')).toBeTruthy());
       fireEvent.click(screen.getByText('pending.test'));
-      await waitFor(() => expect(screen.getByText('DNS Records')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Registros DNS')).toBeTruthy());
       expect(screen.getByText('SPF')).toBeTruthy();
-      expect(screen.getByText('Pending DNS')).toBeTruthy();
+      expect(screen.getByText('DNS pendiente')).toBeTruthy();
     });
 
     it('opens a verified domain and shows tracking settings', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('verified.test')).toBeTruthy());
       fireEvent.click(screen.getByText('verified.test'));
-      await waitFor(() => expect(screen.getByText('Tracking Settings')).toBeTruthy());
-      expect(screen.getByText('Open Tracking')).toBeTruthy();
-      expect(screen.getByText('Click Tracking')).toBeTruthy();
+      await waitFor(() => expect(screen.getByText('Ajustes de seguimiento')).toBeTruthy());
+      expect(screen.getByText('Seguimiento de aperturas')).toBeTruthy();
+      expect(screen.getByText('Seguimiento de clics')).toBeTruthy();
     });
 
     it('toggles open tracking on verified domain', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('verified.test')).toBeTruthy());
       fireEvent.click(screen.getByText('verified.test'));
-      await waitFor(() => expect(screen.getByText('Tracking Settings')).toBeTruthy());
+      await waitFor(() => expect(screen.getByText('Ajustes de seguimiento')).toBeTruthy());
       // Find the open tracking toggle (first toggle in the tracking section)
       const toggles = screen.getAllByRole('button').filter(b =>
         b.className.includes('w-10 h-6 rounded-full'),
@@ -546,11 +546,11 @@ describe('ClientDetailPage', () => {
 
     it('verifies a pending domain', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('pending.test')).toBeTruthy());
       fireEvent.click(screen.getByText('pending.test'));
-      await waitFor(() => expect(screen.getByRole('button', { name: /Verify Now/ })).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Verify Now/ }));
+      await waitFor(() => expect(screen.getByRole('button', { name: /Verificar ahora/ })).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Verificar ahora/ }));
       await flush();
     });
 
@@ -562,17 +562,17 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('pending.test')).toBeTruthy());
       fireEvent.click(screen.getByText('pending.test'));
-      await waitFor(() => expect(screen.getByRole('button', { name: /Verify Now/ })).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Verify Now/ }));
+      await waitFor(() => expect(screen.getByRole('button', { name: /Verificar ahora/ })).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Verificar ahora/ }));
       await waitFor(() => expect(alertMock).toHaveBeenCalledWith('DNS not ready'));
     });
 
     it('deletes a domain after confirmation', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('verified.test')).toBeTruthy());
       // First domain row has a delete button — click it
       const deleteBtns = screen.getAllByTitle ? [] : [];
@@ -588,7 +588,7 @@ describe('ClientDetailPage', () => {
     it('skips delete when confirm is cancelled', async () => {
       confirmMock.mockReturnValueOnce(false);
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('verified.test')).toBeTruthy());
       const verifiedText = screen.getByText('verified.test');
       const row = verifiedText.closest('div')?.parentElement?.parentElement as HTMLElement;
@@ -599,11 +599,11 @@ describe('ClientDetailPage', () => {
 
     it('copies DNS record to clipboard', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Ajustes' }));
       await waitFor(() => expect(screen.getByText('pending.test')).toBeTruthy());
       fireEvent.click(screen.getByText('pending.test'));
-      await waitFor(() => expect(screen.getByText('DNS Records')).toBeTruthy());
-      const copyBtns = screen.getAllByTitle('Copy');
+      await waitFor(() => expect(screen.getByText('Registros DNS')).toBeTruthy());
+      const copyBtns = screen.getAllByTitle('Copiar');
       fireEvent.click(copyBtns[0]);
       expect((navigator.clipboard.writeText as any)).toHaveBeenCalled();
     });
@@ -612,32 +612,31 @@ describe('ClientDetailPage', () => {
   describe('billing tab', () => {
     it('shows live totals', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Current period totals')).toBeTruthy());
-      // Billing totals follow the viewer's locale, including locales without 4-digit grouping.
-      await waitFor(() => expect(screen.getAllByText(new Intl.NumberFormat().format(1234)).length).toBeGreaterThan(0));
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Totales del periodo actual')).toBeTruthy());
+      await waitFor(() => expect(screen.getAllByText('1234').length).toBeGreaterThan(0));
       expect(screen.getByText('567')).toBeTruthy();
     });
 
     it('shows metered items table', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
       expect(screen.getByText('active')).toBeTruthy();
       expect(screen.getByText('paused')).toBeTruthy();
     });
 
     it('shows dry-run preview', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Rollup preview (dry run)')).toBeTruthy());
-      expect(screen.getByText(new Intl.NumberFormat().format(11840))).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Vista previa del rollup (simulación)')).toBeTruthy());
+      expect(screen.getByText('11.840')).toBeTruthy();
     });
 
     it('shows rollup history', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Recent rollups')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Rollups recientes')).toBeTruthy());
       expect(screen.getByText('mbur_1')).toBeTruthy();
       // Missing stripeUsageRecordId shows em-dash
       expect(screen.getAllByText('—').length).toBeGreaterThan(0);
@@ -645,37 +644,37 @@ describe('ClientDetailPage', () => {
 
     it('shows metered form when "Add metered item" clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add metered item/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir artículo medido/ }));
       expect(screen.getByPlaceholderText('sub_...')).toBeTruthy();
     });
 
     it('adds a metered item with valid input', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add metered item/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir artículo medido/ }));
       const subInput = screen.getByPlaceholderText('sub_...') as HTMLInputElement;
       fireEvent.change(subInput, { target: { value: 'sub_999' } });
       // unitPriceCents input - find the first number input
       const priceInputs = document.querySelectorAll('input[type="number"]');
       fireEvent.change(priceInputs[0], { target: { value: '15' } });
-      fireEvent.click(screen.getByRole('button', { name: /Save metered item/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar artículo medido/ }));
       await flush();
     });
 
     it('shows error on invalid unit price', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add metered item/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir artículo medido/ }));
       const subInput = screen.getByPlaceholderText('sub_...') as HTMLInputElement;
       fireEvent.change(subInput, { target: { value: 'sub_1' } });
       // Provide an empty unit price — submit via the form so HTML validation is bypassed.
       const form = subInput.closest('form') as HTMLFormElement;
       fireEvent.submit(form);
-      await waitFor(() => expect(screen.getByText(/unitPriceCents must be a non-negative integer/)).toBeTruthy());
+      await waitFor(() => expect(screen.getByText(/unitPriceCents debe ser un entero no negativo/)).toBeTruthy());
     });
 
     it('shows error on metered POST failure', async () => {
@@ -686,40 +685,40 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add metered item/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir artículo medido/ }));
       const subInput = screen.getByPlaceholderText('sub_...') as HTMLInputElement;
       fireEvent.change(subInput, { target: { value: 'sub_999' } });
       const priceInputs = document.querySelectorAll('input[type="number"]');
       fireEvent.change(priceInputs[0], { target: { value: '15' } });
-      fireEvent.click(screen.getByRole('button', { name: /Save metered item/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Guardar artículo medido/ }));
       await waitFor(() => expect(screen.getByText('Stripe error')).toBeTruthy());
     });
 
     it('pauses an active metered item', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      const pauseBtn = screen.getByTitle('Pause');
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
+      const pauseBtn = screen.getByTitle('Pausar');
       fireEvent.click(pauseBtn);
       await flush();
     });
 
     it('resumes a paused metered item', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      const resumeBtn = screen.getByTitle('Resume');
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
+      const resumeBtn = screen.getByTitle('Reanudar');
       fireEvent.click(resumeBtn);
       await flush();
     });
 
     it('deletes a metered item after confirmation', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Stripe metered items')).toBeTruthy());
-      const deleteBtns = screen.getAllByTitle('Delete');
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Artículos medidos de Stripe')).toBeTruthy());
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
       await flush();
       expect(confirmMock).toHaveBeenCalled();
@@ -727,18 +726,18 @@ describe('ClientDetailPage', () => {
 
     it('runs dry-run rollup', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Rollup preview (dry run)')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Re-run dry run/ }));
-      await waitFor(() => expect(screen.getByText(/Dry-run computed/)).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Vista previa del rollup (simulación)')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Volver a simular/ }));
+      await waitFor(() => expect(screen.getByText(/Simulación calculada/)).toBeTruthy());
     });
 
     it('runs production rollup after confirmation', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Rollup preview (dry run)')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Run rollup now/ }));
-      await waitFor(() => expect(screen.getByText(/Pushed/)).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Vista previa del rollup (simulación)')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Ejecutar rollup ahora/ }));
+      await waitFor(() => expect(screen.getByText(/Enviados/)).toBeTruthy());
     });
 
     it('shows error when rollup fails', async () => {
@@ -749,9 +748,9 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Billing' }));
-      await waitFor(() => expect(screen.getByText('Rollup preview (dry run)')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Re-run dry run/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Facturación' }));
+      await waitFor(() => expect(screen.getByText('Vista previa del rollup (simulación)')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Volver a simular/ }));
       await waitFor(() => expect(screen.getByText('Boom')).toBeTruthy());
     });
   });
@@ -759,24 +758,24 @@ describe('ClientDetailPage', () => {
   describe('team tab', () => {
     it('shows add member form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Team' }));
-      await waitFor(() => expect(screen.getByText('Team Members')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add Member/ }));
-      expect(screen.getByText('Full Name *')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Equipo' }));
+      await waitFor(() => expect(screen.getByText('Miembros del equipo')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir miembro/ }));
+      expect(screen.getByText('Nombre completo *')).toBeTruthy();
     });
 
     it('adds a new team member', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Team' }));
-      await waitFor(() => expect(screen.getByText('Team Members')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add Member/ }));
-      const nameInput = screen.getByText('Full Name *').nextElementSibling as HTMLInputElement;
+      fireEvent.click(screen.getByRole('button', { name: 'Equipo' }));
+      await waitFor(() => expect(screen.getByText('Miembros del equipo')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir miembro/ }));
+      const nameInput = screen.getByText('Nombre completo *').nextElementSibling as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'New Person' } });
-      const emailInput = screen.getByText('Email *').nextElementSibling as HTMLInputElement;
+      const emailInput = screen.getByText('Correo *').nextElementSibling as HTMLInputElement;
       fireEvent.change(emailInput, { target: { value: 'new@x.com' } });
-      const passwordInput = screen.getByText('Password *').nextElementSibling as HTMLInputElement;
+      const passwordInput = screen.getByText('Contraseña *').nextElementSibling as HTMLInputElement;
       fireEvent.change(passwordInput, { target: { value: 'secret' } });
-      fireEvent.click(screen.getByRole('button', { name: /^Add Member$/i }));
+      fireEvent.click(screen.getByRole('button', { name: /^Añadir miembro$/i }));
       await waitFor(() => expect(screen.queryByText('New Person')).toBeTruthy());
     });
 
@@ -788,22 +787,22 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Team' }));
-      await waitFor(() => expect(screen.getByText('Team Members')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /Add Member/ }));
-      const nameInput = screen.getByText('Full Name *').nextElementSibling as HTMLInputElement;
+      fireEvent.click(screen.getByRole('button', { name: 'Equipo' }));
+      await waitFor(() => expect(screen.getByText('Miembros del equipo')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir miembro/ }));
+      const nameInput = screen.getByText('Nombre completo *').nextElementSibling as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'X' } });
-      const emailInput = screen.getByText('Email *').nextElementSibling as HTMLInputElement;
+      const emailInput = screen.getByText('Correo *').nextElementSibling as HTMLInputElement;
       fireEvent.change(emailInput, { target: { value: 'x@x.com' } });
-      const passwordInput = screen.getByText('Password *').nextElementSibling as HTMLInputElement;
+      const passwordInput = screen.getByText('Contraseña *').nextElementSibling as HTMLInputElement;
       fireEvent.change(passwordInput, { target: { value: 'secret' } });
-      fireEvent.click(screen.getByRole('button', { name: /^Add Member$/i }));
+      fireEvent.click(screen.getByRole('button', { name: /^Añadir miembro$/i }));
       await waitFor(() => expect(screen.getByText('Email taken')).toBeTruthy());
     });
 
     it('removes a team member', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Team' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Equipo' }));
       await waitFor(() => expect(screen.getByText('Bob')).toBeTruthy());
       // Bob is non-owner so should have person_remove button next to him
       const bobRow = screen.getByText('Bob').closest('div')?.parentElement as HTMLElement;
@@ -814,13 +813,13 @@ describe('ClientDetailPage', () => {
 
     it('shows "inactive" badge for inactive members', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Team' }));
-      await waitFor(() => expect(screen.getByText('inactive')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Equipo' }));
+      await waitFor(() => expect(screen.getByText('inactivo')).toBeTruthy());
     });
 
     it('hides remove button for owner', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Team' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Equipo' }));
       await waitFor(() => expect(screen.getByText('owner')).toBeTruthy());
     });
   });
@@ -828,7 +827,7 @@ describe('ClientDetailPage', () => {
   describe('email marketing tab', () => {
     it('shows campaign open rate', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getByText('Spring')).toBeTruthy());
       // 100/200 = 50%
       expect(screen.getByText('50%')).toBeTruthy();
@@ -836,25 +835,25 @@ describe('ClientDetailPage', () => {
 
     it('shows new list form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
-      await waitFor(() => expect(screen.getByText('Subscriber Lists')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /New List/ }));
-      expect(screen.getByPlaceholderText('List name')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
+      await waitFor(() => expect(screen.getByText('Listas de suscriptores')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Nueva lista/ }));
+      expect(screen.getByPlaceholderText('Nombre de la lista')).toBeTruthy();
     });
 
     it('creates a new list', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
-      fireEvent.click(screen.getByRole('button', { name: /New List/ }));
-      fireEvent.change(screen.getByPlaceholderText('List name'), { target: { value: 'My List' } });
-      fireEvent.click(screen.getByRole('button', { name: 'Create' }));
+      fireEvent.click(screen.getByRole('button', { name: /Nueva lista/ }));
+      fireEvent.change(screen.getByPlaceholderText('Nombre de la lista'), { target: { value: 'My List' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Crear' }));
       await flush();
     });
 
     it('opens a list and shows subscribers', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
       // Click the first Newsletter occurrence (the list-row paragraph)
       fireEvent.click(screen.getAllByText('Newsletter')[0]);
@@ -864,20 +863,20 @@ describe('ClientDetailPage', () => {
 
     it('adds a subscriber', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
       fireEvent.click(screen.getAllByText('Newsletter')[0]);
-      await waitFor(() => expect(screen.getByPlaceholderText('Email')).toBeTruthy());
-      fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'new@x.com' } });
-      fireEvent.change(screen.getByPlaceholderText('Name'), { target: { value: 'New' } });
-      const form = screen.getByPlaceholderText('Email').closest('form') as HTMLFormElement;
+      await waitFor(() => expect(screen.getByPlaceholderText('Correo')).toBeTruthy());
+      fireEvent.change(screen.getByPlaceholderText('Correo'), { target: { value: 'new@x.com' } });
+      fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'New' } });
+      const form = screen.getByPlaceholderText('Correo').closest('form') as HTMLFormElement;
       fireEvent.submit(form);
       await flush();
     });
 
     it('removes a subscriber', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
       fireEvent.click(screen.getAllByText('Newsletter')[0]);
       await waitFor(() => expect(screen.getByText('a@x.com')).toBeTruthy());
@@ -889,7 +888,7 @@ describe('ClientDetailPage', () => {
 
     it('deletes a list', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getAllByText('Newsletter').length).toBeGreaterThan(0));
       // First Newsletter is the list paragraph; click its delete sibling
       const listText = screen.getAllByText('Newsletter')[0];
@@ -902,30 +901,30 @@ describe('ClientDetailPage', () => {
 
     it('shows new campaign form', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
-      await waitFor(() => expect(screen.getByText('Campaigns')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /New Campaign/ }));
-      expect(screen.getByText('Internal Name *')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
+      await waitFor(() => expect(screen.getByText('Campañas')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Nueva campaña/ }));
+      expect(screen.getByText('Nombre interno *')).toBeTruthy();
     });
 
     it('creates a new campaign', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
-      await waitFor(() => expect(screen.getByText('Campaigns')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /New Campaign/ }));
-      const internalNameInput = screen.getByText('Internal Name *').nextElementSibling as HTMLInputElement;
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
+      await waitFor(() => expect(screen.getByText('Campañas')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Nueva campaña/ }));
+      const internalNameInput = screen.getByText('Nombre interno *').nextElementSibling as HTMLInputElement;
       fireEvent.change(internalNameInput, { target: { value: 'My Campaign' } });
-      const subjectInput = screen.getByText('Subject *').nextElementSibling as HTMLInputElement;
+      const subjectInput = screen.getByText('Asunto *').nextElementSibling as HTMLInputElement;
       fireEvent.change(subjectInput, { target: { value: 'Hi' } });
-      const fromNameInput = screen.getByText('From Name *').nextElementSibling as HTMLInputElement;
+      const fromNameInput = screen.getByText('Nombre del remitente *').nextElementSibling as HTMLInputElement;
       fireEvent.change(fromNameInput, { target: { value: 'Sender' } });
-      const fromEmailInput = screen.getByText('From Email *').nextElementSibling as HTMLInputElement;
+      const fromEmailInput = screen.getByText('Correo del remitente *').nextElementSibling as HTMLInputElement;
       fireEvent.change(fromEmailInput, { target: { value: 's@x.com' } });
-      const listSelect = screen.getByText('List *').nextElementSibling as HTMLSelectElement;
+      const listSelect = screen.getByText('Lista *').nextElementSibling as HTMLSelectElement;
       fireEvent.change(listSelect, { target: { value: '10' } });
-      const htmlTextarea = screen.getByPlaceholderText(/Hello/) as HTMLTextAreaElement;
+      const htmlTextarea = screen.getByPlaceholderText(/Hola/) as HTMLTextAreaElement;
       fireEvent.change(htmlTextarea, { target: { value: '<p>hi</p>' } });
-      fireEvent.click(screen.getByRole('button', { name: /^Create Campaign$/i }));
+      fireEvent.click(screen.getByRole('button', { name: /^Crear campaña$/i }));
       await flush();
     });
 
@@ -937,40 +936,40 @@ describe('ClientDetailPage', () => {
         return defaultFetch(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
-      await waitFor(() => expect(screen.getByText('Campaigns')).toBeTruthy());
-      fireEvent.click(screen.getByRole('button', { name: /New Campaign/ }));
-      const internalNameInput = screen.getByText('Internal Name *').nextElementSibling as HTMLInputElement;
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
+      await waitFor(() => expect(screen.getByText('Campañas')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: /Nueva campaña/ }));
+      const internalNameInput = screen.getByText('Nombre interno *').nextElementSibling as HTMLInputElement;
       fireEvent.change(internalNameInput, { target: { value: 'X' } });
-      const subjectInput = screen.getByText('Subject *').nextElementSibling as HTMLInputElement;
+      const subjectInput = screen.getByText('Asunto *').nextElementSibling as HTMLInputElement;
       fireEvent.change(subjectInput, { target: { value: 'Y' } });
-      const fromNameInput = screen.getByText('From Name *').nextElementSibling as HTMLInputElement;
+      const fromNameInput = screen.getByText('Nombre del remitente *').nextElementSibling as HTMLInputElement;
       fireEvent.change(fromNameInput, { target: { value: 'Z' } });
-      const fromEmailInput = screen.getByText('From Email *').nextElementSibling as HTMLInputElement;
+      const fromEmailInput = screen.getByText('Correo del remitente *').nextElementSibling as HTMLInputElement;
       fireEvent.change(fromEmailInput, { target: { value: 'a@x.com' } });
-      const listSelect = screen.getByText('List *').nextElementSibling as HTMLSelectElement;
+      const listSelect = screen.getByText('Lista *').nextElementSibling as HTMLSelectElement;
       fireEvent.change(listSelect, { target: { value: '10' } });
-      const htmlTextarea = screen.getByPlaceholderText(/Hello/) as HTMLTextAreaElement;
+      const htmlTextarea = screen.getByPlaceholderText(/Hola/) as HTMLTextAreaElement;
       fireEvent.change(htmlTextarea, { target: { value: '<p>hi</p>' } });
-      fireEvent.click(screen.getByRole('button', { name: /^Create Campaign$/i }));
+      fireEvent.click(screen.getByRole('button', { name: /^Crear campaña$/i }));
       await waitFor(() => expect(screen.getByText('Validation failed')).toBeTruthy());
     });
 
     it('alerts when trying to delete a sending campaign', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getByText('Send Out')).toBeTruthy());
       // Find Send Out row, click its delete
       const row = screen.getByText('Send Out').closest('tr') as HTMLElement;
       const deleteBtns = row.querySelectorAll('button');
       // Last button in actions cell is delete
       fireEvent.click(deleteBtns[deleteBtns.length - 1]);
-      expect(alertMock).toHaveBeenCalledWith('Cannot delete a sending campaign.');
+      expect(alertMock).toHaveBeenCalledWith('No se puede eliminar una campaña en envío.');
     });
 
     it('deletes a non-sending campaign', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: 'Email Marketing' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Email marketing' }));
       await waitFor(() => expect(screen.getByText('Spring')).toBeTruthy());
       const row = screen.getByText('Spring').closest('tr') as HTMLElement;
       const buttons = row.querySelectorAll('button');

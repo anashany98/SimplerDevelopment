@@ -64,7 +64,7 @@ if (env.STRIPE_SECRET_KEY && !env.STRIPE_WEBHOOK_SECRET) {
 
 // 3. Docker containers (fast; skip quietly when docker is absent/slow)
 try {
-  const ps = execSync('docker ps --format "{{.Names}} {{.Status}}" 2>/dev/null', {
+  const ps = execSync('docker ps --format "{{.Names}} {{.Status}}"', {
     timeout: 3000,
     encoding: 'utf-8',
   });
@@ -73,13 +73,13 @@ try {
   // Homebrew PG (tenancy test DB) and docker db both claim 5432 — the host's
   // localhost then resolves to the WRONG postgres (::1 → homebrew, 0.0.0.0 →
   // docker), so hand-run psql/scripts silently hit the other database.
-  if (up('simplerdev-db')) {
+  if (up('simplerdev-db') && process.platform === 'darwin') {
     try {
       execSync('/usr/local/opt/postgresql@17/bin/pg_isready -q -h localhost -p 5432 -U ' + process.env.USER, {
         timeout: 2000,
       });
       const dbs = execSync(
-        `/usr/local/opt/postgresql@17/bin/psql "postgresql://${process.env.USER}@localhost:5432/postgres" -tAc "SELECT 1 FROM pg_database WHERE datname='simplerdev'" 2>/dev/null`,
+        `/usr/local/opt/postgresql@17/bin/psql "postgresql://${process.env.USER}@localhost:5432/postgres" -tAc "SELECT 1 FROM pg_database WHERE datname='simplerdev'"`,
         { timeout: 2000, encoding: 'utf-8' },
       ).trim();
       if (dbs !== '1') {
@@ -102,7 +102,7 @@ try {
 
 // 4. Fan-out cap (agent worktrees)
 try {
-  const wt = execSync('git worktree list --porcelain 2>/dev/null', { timeout: 2000, encoding: 'utf-8' });
+  const wt = execSync('git worktree list --porcelain', { timeout: 2000, encoding: 'utf-8' });
   const agentCount = (wt.match(/worktrees\/agent-/g) ?? []).length;
   if (agentCount > 3) {
     warnings.push(`${agentCount} agent worktrees active — fan-out cap is 3; merge or prune before dispatching more (see CLAUDE.md).`);

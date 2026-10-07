@@ -152,7 +152,7 @@ describe('BrainAutomationsPage — shell', () => {
   it('renders the Brain Automations heading once loaded', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Brain Automations');
+      expect(container.textContent).toContain('Automatizaciones del cerebro');
     });
   });
 
@@ -168,10 +168,10 @@ describe('BrainAutomationsPage — shell', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const text = container.textContent ?? '';
-      expect(text).toContain('Rules');
-      expect(text).toContain('Product Presets');
-      expect(text).toContain('Activity');
-      expect(text).toContain('Create');
+      expect(text).toContain('Reglas');
+      expect(text).toContain('Presets de producto');
+      expect(text).toContain('Actividad');
+      expect(text).toContain('Crear');
     });
   });
 
@@ -189,19 +189,19 @@ describe('Rules tab — empty state', () => {
   it('shows empty-state copy when no rules exist', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No automations yet');
+      expect(container.textContent).toContain('Aún no hay automatizaciones');
     });
   });
 
   it('empty-state "Browse templates" button switches to create tab', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Browse templates'));
+    await waitFor(() => expect(container.textContent).toContain('Ver plantillas'));
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Browse templates'),
+      (b) => b.textContent?.includes('Ver plantillas'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Quick start templates');
+      expect(container.textContent).toContain('Plantillas de inicio rápido');
     });
   });
 });
@@ -248,7 +248,7 @@ describe('Rules tab — with rules', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('7 runs'));
+    await waitFor(() => expect(container.textContent).toContain('7 ejecuciones'));
   });
 
   it('renders lastExecutedAt as time-ago', async () => {
@@ -263,7 +263,7 @@ describe('Rules tab — with rules', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Last fired:');
+      expect(container.textContent).toContain('Última ejecución:');
     });
   });
 
@@ -278,7 +278,7 @@ describe('Rules tab — with rules', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Schedule:'));
+    await waitFor(() => expect(container.textContent).toContain('Programación:'));
   });
 
   it('renders action delay chip (days)', async () => {
@@ -292,7 +292,7 @@ describe('Rules tab — with rules', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('delay'));
+    await waitFor(() => expect(container.textContent).toContain('retraso'));
   });
 
   it('renders action delay chip (hours)', async () => {
@@ -306,7 +306,7 @@ describe('Rules tab — with rules', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('delay'));
+    await waitFor(() => expect(container.textContent).toContain('retraso'));
   });
 
   it('renders action delay chip (seconds)', async () => {
@@ -320,7 +320,7 @@ describe('Rules tab — with rules', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('delay'));
+    await waitFor(() => expect(container.textContent).toContain('retraso'));
   });
 
   it('toggle button calls PATCH with toggled enabled value', async () => {
@@ -397,12 +397,12 @@ describe('Rules tab — with rules', () => {
 describe('Logs tab — empty and filled states', () => {
   it('shows empty-state when no logs', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rules'));
+    await waitFor(() => expect(container.textContent).toContain('Reglas'));
     const logsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Activity'),
+      (b) => b.textContent?.includes('Actividad'),
     ) as HTMLButtonElement;
     fireEvent.click(logsTab);
-    await waitFor(() => expect(container.textContent).toContain('No activity yet'));
+    await waitFor(() => expect(container.textContent).toContain('Aún no hay actividad'));
   });
 
   it('renders log entries with rule name and time-ago', async () => {
@@ -413,9 +413,9 @@ describe('Logs tab — empty and filled states', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rules'));
+    await waitFor(() => expect(container.textContent).toContain('Reglas'));
     const logsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Activity'),
+      (b) => b.textContent?.includes('Actividad'),
     ) as HTMLButtonElement;
     fireEvent.click(logsTab);
     await waitFor(() => {
@@ -431,9 +431,9 @@ describe('Logs tab — empty and filled states', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rules'));
+    await waitFor(() => expect(container.textContent).toContain('Reglas'));
     const logsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Activity'),
+      (b) => b.textContent?.includes('Actividad'),
     ) as HTMLButtonElement;
     fireEvent.click(logsTab);
     await waitFor(() => {
@@ -449,9 +449,9 @@ describe('Logs tab — empty and filled states', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rules'));
+    await waitFor(() => expect(container.textContent).toContain('Reglas'));
     const logsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Activity'),
+      (b) => b.textContent?.includes('Actividad'),
     ) as HTMLButtonElement;
     fireEvent.click(logsTab);
     await waitFor(() => {
@@ -467,9 +467,9 @@ describe('Logs tab — empty and filled states', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rules'));
+    await waitFor(() => expect(container.textContent).toContain('Reglas'));
     const logsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Activity'),
+      (b) => b.textContent?.includes('Actividad'),
     ) as HTMLButtonElement;
     fireEvent.click(logsTab);
     await waitFor(() => {
@@ -483,13 +483,13 @@ describe('Logs tab — empty and filled states', () => {
 describe('Presets tab', () => {
   it('renders the presets info banner and the stubbed preset group', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rules'));
+    await waitFor(() => expect(container.textContent).toContain('Reglas'));
     const presetsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Product Presets'),
+      (b) => b.textContent?.includes('Presets de producto'),
     ) as HTMLButtonElement;
     fireEvent.click(presetsTab);
     await waitFor(() => {
-      expect(container.textContent).toContain('Product presets');
+      expect(container.textContent).toContain('presets de producto');
       expect(container.textContent).toContain('presets:email');
     });
   });
@@ -500,20 +500,20 @@ describe('Presets tab', () => {
 describe('Create tab — quick-start templates', () => {
   async function openCreateTab(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create Automation'),
+      (b) => b.textContent?.includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Quick start templates'));
+    await waitFor(() => expect(container.textContent).toContain('Plantillas de inicio rápido'));
   }
 
   it('renders all 4 built-in templates', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
-    expect(container.textContent).toContain('New booking → CRM deal');
-    expect(container.textContent).toContain('Survey response → CRM deal');
-    expect(container.textContent).toContain('New booking → CRM contact');
-    expect(container.textContent).toContain('Survey response → CRM contact');
+    expect(container.textContent).toContain('Nueva reserva → negocio en el CRM');
+    expect(container.textContent).toContain('Respuesta de encuesta → negocio en el CRM');
+    expect(container.textContent).toContain('Nueva reserva → contacto en el CRM');
+    expect(container.textContent).toContain('Respuesta de encuesta → contacto en el CRM');
   });
 
   it('clicking Install POSTs the template and marks it as installed', async () => {
@@ -524,10 +524,10 @@ describe('Create tab — quick-start templates', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const installBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.trim().includes('Install') && !b.textContent?.includes('Installed'),
+      (b) => b.textContent?.trim().includes('Instalar') && !b.textContent?.includes('Instalada'),
     );
     fireEvent.click(installBtns[0] as HTMLButtonElement);
     await waitFor(() => {
@@ -537,28 +537,28 @@ describe('Create tab — quick-start templates', () => {
       expect(postCall).toBeTruthy();
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Installed');
+      expect(container.textContent).toContain('Instalada');
     });
   });
 
   it('renders example automation prompts when parsed is null', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
-    expect(container.textContent).toContain('Example automations');
-    expect(container.textContent).toContain('books an appointment');
+    expect(container.textContent).toContain('Automatizaciones de ejemplo');
+    expect(container.textContent).toContain('reserve una cita');
   });
 
   it('clicking an example prompt fills the NLP textarea', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const exampleBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('books an appointment'),
+      (b) => b.textContent?.includes('reserve una cita'),
     ) as HTMLButtonElement;
     fireEvent.click(exampleBtn);
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
-    expect(textarea?.value).toContain('books an appointment');
+    expect(textarea?.value).toContain('reserve una cita');
   });
 });
 
@@ -567,18 +567,18 @@ describe('Create tab — quick-start templates', () => {
 describe('Create tab — NLP parse flow', () => {
   async function openCreateTab(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create Automation'),
+      (b) => b.textContent?.includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Quick start templates'));
+    await waitFor(() => expect(container.textContent).toContain('Plantillas de inicio rápido'));
   }
 
   it('Parse with AI button is disabled when textarea is empty', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const parseBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Parse with AI'),
+      (b) => b.textContent?.includes('Analizar con IA'),
     ) as HTMLButtonElement;
     expect(parseBtn.disabled).toBe(true);
   });
@@ -600,16 +600,16 @@ describe('Create tab — NLP parse flow', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'When someone books, create a deal' } });
     const parseBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Parse with AI'),
+      (b) => b.textContent?.includes('Analizar con IA'),
     ) as HTMLButtonElement;
     fireEvent.click(parseBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Review Automation');
+      expect(container.textContent).toContain('Revisar automatización');
       expect(container.textContent).toContain('My Parsed Rule');
     });
   });
@@ -622,12 +622,12 @@ describe('Create tab — NLP parse flow', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'test input' } });
     const parseBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Parse with AI'),
+      (b) => b.textContent?.includes('Analizar con IA'),
     ) as HTMLButtonElement;
     fireEvent.click(parseBtn);
     await waitFor(() => {
@@ -643,16 +643,16 @@ describe('Create tab — NLP parse flow', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'test input' } });
     const parseBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Parse with AI'),
+      (b) => b.textContent?.includes('Analizar con IA'),
     ) as HTMLButtonElement;
     fireEvent.click(parseBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -684,25 +684,25 @@ describe('Create tab — save parsed rule', () => {
     });
     // Navigate to create tab
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create Automation'),
+      (b) => b.textContent?.includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Quick start templates'));
+    await waitFor(() => expect(container.textContent).toContain('Plantillas de inicio rápido'));
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'When someone books, create a deal' } });
     const parseBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Parse with AI'),
+      (b) => b.textContent?.includes('Analizar con IA'),
     ) as HTMLButtonElement;
     fireEvent.click(parseBtn);
-    await waitFor(() => expect(container.textContent).toContain('Review Automation'));
+    await waitFor(() => expect(container.textContent).toContain('Revisar automatización'));
   }
 
   it('Save Automation POSTs and returns to rules tab on success', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await setupParsed(container);
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save Automation'),
+      (b) => b.textContent?.includes('Guardar automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -712,26 +712,26 @@ describe('Create tab — save parsed rule', () => {
       expect(postCall).toBeTruthy();
     });
     // After save success the tab returns to rules (the parsed review panel is gone)
-    await waitFor(() => expect(container.textContent).not.toContain('Review Automation'));
+    await waitFor(() => expect(container.textContent).not.toContain('Revisar automatización'));
   });
 
   it('Cancel button in parsed preview hides the review panel', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await setupParsed(container);
-    expect(container.textContent).toContain('Review Automation');
+    expect(container.textContent).toContain('Revisar automatización');
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Review Automation');
+      expect(container.textContent).not.toContain('Revisar automatización');
     });
   });
 
   it('renders parsed conditions in review panel', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await setupParsed(container);
     expect(container.textContent).toContain('amount');
     expect(container.textContent).toContain('>');
@@ -739,19 +739,19 @@ describe('Create tab — save parsed rule', () => {
 
   it('renders trigger filters in review panel', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await setupParsed(container);
-    expect(container.textContent).toContain('filtered:');
+    expect(container.textContent).toContain('filtrado:');
   });
 
   it('trigger mode radio switches to schedule', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await setupParsed(container);
     const scheduleRadio = container.querySelector('input[value="schedule"]') as HTMLInputElement;
     fireEvent.click(scheduleRadio);
     await waitFor(() => {
-      expect(container.textContent).toContain('Cadence');
+      expect(container.textContent).toContain('Frecuencia');
     });
   });
 });
@@ -761,25 +761,25 @@ describe('Create tab — save parsed rule', () => {
 describe('Create tab — standalone schedule rule', () => {
   async function openCreateTab(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create Automation'),
+      (b) => b.textContent?.includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Schedule a rule'));
+    await waitFor(() => expect(container.textContent).toContain('Programar una regla'));
   }
 
   it('renders the schedule rule section', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
-    expect(container.textContent).toContain('Schedule a rule');
+    expect(container.textContent).toContain('Programar una regla');
   });
 
   it('Save scheduled rule is disabled without name and template', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save scheduled rule'),
+      (b) => b.textContent?.includes('Guardar regla programada'),
     ) as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(true);
   });
@@ -792,10 +792,10 @@ describe('Create tab — standalone schedule rule', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     // Fill name
-    const nameInput = container.querySelector('input[placeholder="Weekly digest"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Resumen semanal"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'Weekly digest' } });
     // Pick a template (first built-in option after "— pick one —")
     const templateSelect = container.querySelector('select') as HTMLSelectElement;
@@ -803,12 +803,12 @@ describe('Create tab — standalone schedule rule', () => {
     // Save
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save scheduled rule'),
+        (b) => b.textContent?.includes('Guardar regla programada'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save scheduled rule'),
+      (b) => b.textContent?.includes('Guardar regla programada'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -818,7 +818,7 @@ describe('Create tab — standalone schedule rule', () => {
       expect(postCall).toBeTruthy();
     });
     // After success tab switches back to rules — schedule form is no longer shown
-    await waitFor(() => expect(container.textContent).not.toContain('Schedule a rule'));
+    await waitFor(() => expect(container.textContent).not.toContain('Programar una regla'));
   });
 
   it('save-error is surfaced in the preview error area', async () => {
@@ -829,20 +829,20 @@ describe('Create tab — standalone schedule rule', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
-    const nameInput = container.querySelector('input[placeholder="Weekly digest"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Resumen semanal"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'My Schedule' } });
     const templateSelect = container.querySelector('select') as HTMLSelectElement;
     fireEvent.change(templateSelect, { target: { value: 'survey-to-deal' } });
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save scheduled rule'),
+        (b) => b.textContent?.includes('Guardar regla programada'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save scheduled rule'),
+      (b) => b.textContent?.includes('Guardar regla programada'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -856,15 +856,15 @@ describe('Create tab — standalone schedule rule', () => {
 describe('ScheduleEditor — cadence interactions', () => {
   async function openCreateTab(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create Automation'),
+      (b) => b.textContent?.includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Schedule a rule'));
+    await waitFor(() => expect(container.textContent).toContain('Programar una regla'));
   }
 
   it('switches cadence to weekly and shows day-of-week select', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     // The ScheduleEditor's cadence select is the second select on the create tab
     const selects = Array.from(container.querySelectorAll('select'));
@@ -874,13 +874,13 @@ describe('ScheduleEditor — cadence interactions', () => {
     ) as HTMLSelectElement;
     fireEvent.change(cadenceSelect, { target: { value: 'weekly' } });
     await waitFor(() => {
-      expect(container.textContent).toContain('Day of week');
+      expect(container.textContent).toContain('Día de la semana');
     });
   });
 
   it('switches cadence to monthly and shows day-of-month input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const selects = Array.from(container.querySelectorAll('select'));
     const cadenceSelect = selects.find((s) =>
@@ -888,13 +888,13 @@ describe('ScheduleEditor — cadence interactions', () => {
     ) as HTMLSelectElement;
     fireEvent.change(cadenceSelect, { target: { value: 'monthly' } });
     await waitFor(() => {
-      expect(container.textContent).toContain('Day of month');
+      expect(container.textContent).toContain('Día del mes');
     });
   });
 
   it('switches cadence to cron and shows cron expression input', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     const selects = Array.from(container.querySelectorAll('select'));
     const cadenceSelect = selects.find((s) =>
@@ -902,7 +902,7 @@ describe('ScheduleEditor — cadence interactions', () => {
     ) as HTMLSelectElement;
     fireEvent.change(cadenceSelect, { target: { value: 'cron' } });
     await waitFor(() => {
-      expect(container.textContent).toContain('Cron expression');
+      expect(container.textContent).toContain('Expresión cron');
     });
   });
 });
@@ -928,10 +928,10 @@ describe('Create tab — plugin scripts', () => {
 
   async function openCreateTab(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create Automation'),
+      (b) => b.textContent?.includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Schedule a rule'));
+    await waitFor(() => expect(container.textContent).toContain('Programar una regla'));
   }
 
   it('renders plugin script options in the template picker', async () => {
@@ -942,7 +942,7 @@ describe('Create tab — plugin scripts', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     await waitFor(() => {
       expect(container.textContent).toContain('Acme Plugin');
@@ -957,7 +957,7 @@ describe('Create tab — plugin scripts', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     await waitFor(() => expect(container.textContent).toContain('Acme Plugin'));
     const selects = Array.from(container.querySelectorAll('select'));
@@ -969,7 +969,7 @@ describe('Create tab — plugin scripts', () => {
     )!.value;
     fireEvent.change(templateSelect, { target: { value: pluginOptionValue } });
     await waitFor(() => {
-      expect(container.textContent).toContain('Script inputs');
+      expect(container.textContent).toContain('Entradas del script');
       expect(container.textContent).toContain('recipient');
     });
   });
@@ -985,11 +985,11 @@ describe('Create tab — plugin scripts', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     await waitFor(() => expect(container.textContent).toContain('Acme Plugin'));
     // Fill name
-    const nameInput = container.querySelector('input[placeholder="Weekly digest"]') as HTMLInputElement;
+    const nameInput = container.querySelector('input[placeholder="Resumen semanal"]') as HTMLInputElement;
     fireEvent.change(nameInput, { target: { value: 'My Plugin Rule' } });
     // Pick the plugin template
     const selects = Array.from(container.querySelectorAll('select'));
@@ -1000,16 +1000,16 @@ describe('Create tab — plugin scripts', () => {
       (o) => o.value.includes('plugin:'),
     )!.value;
     fireEvent.change(templateSelect, { target: { value: pluginVal } });
-    await waitFor(() => expect(container.textContent).toContain('Script inputs'));
+    await waitFor(() => expect(container.textContent).toContain('Entradas del script'));
     // Save
     await waitFor(() => {
       const saveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Save scheduled rule'),
+        (b) => b.textContent?.includes('Guardar regla programada'),
       ) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
     const saveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Save scheduled rule'),
+      (b) => b.textContent?.includes('Guardar regla programada'),
     ) as HTMLButtonElement;
     fireEvent.click(saveBtn);
     await waitFor(() => {
@@ -1044,7 +1044,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Wednesday');
+      expect(container.textContent).toContain('Miércoles');
     });
   });
 
@@ -1062,7 +1062,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('11th');
+      expect(container.textContent).toContain('11 de cada mes');
     });
   });
 
@@ -1080,7 +1080,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('1st');
+      expect(container.textContent).toContain('1 de cada mes');
     });
   });
 
@@ -1098,7 +1098,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('2nd');
+      expect(container.textContent).toContain('2 de cada mes');
     });
   });
 
@@ -1116,7 +1116,7 @@ describe('describeScheduleClient — via rendered schedule badge', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('3rd');
+      expect(container.textContent).toContain('3 de cada mes');
     });
   });
 
@@ -1216,9 +1216,9 @@ describe('timeAgo — via log entries', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Rules'));
+    await waitFor(() => expect(container.textContent).toContain('Reglas'));
     const logsTab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Activity'),
+      (b) => b.textContent?.includes('Actividad'),
     ) as HTMLButtonElement;
     fireEvent.click(logsTab);
     await waitFor(() => expect(container.textContent).toContain('Rule 1'));
@@ -1227,22 +1227,22 @@ describe('timeAgo — via log entries', () => {
 
   it('renders "just now" for very recent dates', async () => {
     const container = await renderLogWithDate(new Date(Date.now() - 30000).toISOString());
-    expect(container.textContent).toContain('just now');
+    expect(container.textContent).toContain('ahora mismo');
   });
 
   it('renders minutes ago', async () => {
     const container = await renderLogWithDate(new Date(Date.now() - 5 * 60000).toISOString());
-    expect(container.textContent).toContain('5m ago');
+    expect(container.textContent).toContain('hace 5 min');
   });
 
   it('renders hours ago', async () => {
     const container = await renderLogWithDate(new Date(Date.now() - 3 * 3600000).toISOString());
-    expect(container.textContent).toContain('3h ago');
+    expect(container.textContent).toContain('hace 3 h');
   });
 
   it('renders days ago', async () => {
     const container = await renderLogWithDate(new Date(Date.now() - 2 * 86400000).toISOString());
-    expect(container.textContent).toContain('2d ago');
+    expect(container.textContent).toContain('hace 2 días');
   });
 });
 
@@ -1253,7 +1253,7 @@ describe('readInitialTab — URL-driven initial tab', () => {
     const { container } = renderPage();
     await waitFor(() => {
       // Rules tab content (empty state) should be shown
-      expect(container.textContent).toContain('No automations yet');
+      expect(container.textContent).toContain('Aún no hay automatizaciones');
     });
   });
 
@@ -1265,7 +1265,7 @@ describe('readInitialTab — URL-driven initial tab', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Quick start templates');
+      expect(container.textContent).toContain('Plantillas de inicio rápido');
     });
     // Restore
     Object.defineProperty(window, 'location', {
@@ -1280,10 +1280,10 @@ describe('readInitialTab — URL-driven initial tab', () => {
 describe('Schedule preview — error paths', () => {
   async function openCreateTab(container: HTMLElement) {
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Create Automation'),
+      (b) => b.textContent?.includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
-    await waitFor(() => expect(container.textContent).toContain('Schedule a rule'));
+    await waitFor(() => expect(container.textContent).toContain('Programar una regla'));
   }
 
   it('shows computing next run while preview is loading', async () => {
@@ -1295,10 +1295,10 @@ describe('Schedule preview — error paths', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Computing next run');
+      expect(container.textContent).toContain('Calculando la próxima ejecución…');
     });
   });
 
@@ -1314,7 +1314,7 @@ describe('Schedule preview — error paths', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     await waitFor(() => {
       expect(container.textContent).toContain('Daily at 09:00 UTC');
@@ -1329,7 +1329,7 @@ describe('Schedule preview — error paths', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     await waitFor(() => {
       expect(container.textContent).toContain('bad cron');
@@ -1344,10 +1344,10 @@ describe('Schedule preview — error paths', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     await openCreateTab(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -1364,7 +1364,7 @@ describe('Plugin scripts fetch failure', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Brain Automations');
+      expect(container.textContent).toContain('Automatizaciones del cerebro');
     });
   });
 });
@@ -1394,14 +1394,14 @@ describe('formatToolName — via action chips in rules tab', () => {
 describe('Header "Create Automation" button', () => {
   it('clicking Create Automation header button navigates to create tab', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Brain Automations'));
+    await waitFor(() => expect(container.textContent).toContain('Automatizaciones del cerebro'));
     // The header button
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim().includes('Create Automation'),
+      (b) => b.textContent?.trim().includes('Crear automatización'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Quick start templates');
+      expect(container.textContent).toContain('Plantillas de inicio rápido');
     });
   });
 });

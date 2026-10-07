@@ -747,7 +747,7 @@ describe('POST /api/portal/websites/[siteId]/store/products', () => {
     const res = await POST(makePost({ slug: 'x', price: 1 }), ctx());
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('name, slug, and price are required');
+    expect(body.message).toBe('El nombre, el slug y el precio son obligatorios');
   });
 
   it('returns 400 when slug is missing', async () => {
@@ -781,7 +781,7 @@ describe('POST /api/portal/websites/[siteId]/store/products', () => {
     );
     expect(res.status).toBe(409);
     const body = await res.json();
-    expect(body.message).toBe('A product with this slug already exists');
+    expect(body.message).toBe('Ya existe un producto con este slug');
   });
 
   it('allows the same slug across different websites', async () => {

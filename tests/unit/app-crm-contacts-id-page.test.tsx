@@ -232,7 +232,7 @@ describe('CrmContactDetailPage', () => {
     it('renders the contact name and status', async () => {
       const { container } = await renderPage();
       expect(container.textContent).toContain('Jane Doe');
-      expect(container.textContent).toContain('active');
+      expect(container.textContent).toContain('Activo');
     });
 
     it('renders the score badge when score > 0', async () => {
@@ -279,9 +279,9 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => {
-        expect(container.textContent).toContain('Contact not found.');
+        expect(container.textContent).toContain('Contacto no encontrado.');
       });
-      expect(container.textContent).toContain('Back to contacts');
+      expect(container.textContent).toContain('Volver a contactos');
     });
 
     it('falls back to data when data.contact is missing', async () => {
@@ -342,11 +342,11 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('No email');
-      expect(container.textContent).toContain('No phone');
-      expect(container.textContent).toContain('No LinkedIn');
-      expect(container.textContent).toContain('No address');
-      expect(container.textContent).toContain('Unknown source');
+      expect(container.textContent).toContain('Sin email');
+      expect(container.textContent).toContain('Sin teléfono');
+      expect(container.textContent).toContain('Sin LinkedIn');
+      expect(container.textContent).toContain('Sin dirección');
+      expect(container.textContent).toContain('Origen desconocido');
     });
 
     it('renders custom fields panel with contact entity', async () => {
@@ -356,7 +356,7 @@ describe('CrmContactDetailPage', () => {
       // switch tabs before asserting the panel is rendered.
       fireEvent.click(
         Array.from(container.querySelectorAll('button')).find(
-          b => b.textContent?.includes('Custom Fields')
+          b => b.textContent?.includes('Campos personalizados')
         )!
       );
       expect(container.textContent).toContain('panel:contact:7');
@@ -366,8 +366,8 @@ describe('CrmContactDetailPage', () => {
   describe('edit contact', () => {
     it('clicking Edit opens the edit form with current values', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Edit'));
-      expect(container.textContent).toContain('Edit Contact');
+      fireEvent.click(screen.getByText('Editar'));
+      expect(container.textContent).toContain('Editar contacto');
       // First required input = firstName = Jane
       const firstNameInput = container.querySelector('input[required]') as HTMLInputElement;
       expect(firstNameInput.value).toBe('Jane');
@@ -375,15 +375,15 @@ describe('CrmContactDetailPage', () => {
 
     it('Cancel button closes the edit form', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Edit'));
-      expect(container.textContent).toContain('Edit Contact');
-      fireEvent.click(screen.getByText('Cancel'));
-      expect(container.textContent).not.toContain('Edit Contact');
+      fireEvent.click(screen.getByText('Editar'));
+      expect(container.textContent).toContain('Editar contacto');
+      fireEvent.click(screen.getByText('Cancelar'));
+      expect(container.textContent).not.toContain('Editar contacto');
     });
 
     it('updates form fields on change', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       const firstNameInput = container.querySelector('input[required]') as HTMLInputElement;
       fireEvent.change(firstNameInput, { target: { value: 'Janet' } });
       expect(firstNameInput.value).toBe('Janet');
@@ -396,7 +396,7 @@ describe('CrmContactDetailPage', () => {
       // @ts-ignore
       global.fetch = fetchSpy;
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       const firstNameInput = container.querySelector('input[required]') as HTMLInputElement;
       fireEvent.change(firstNameInput, { target: { value: 'Janet' } });
       const form = container.querySelector('form')!;
@@ -411,7 +411,7 @@ describe('CrmContactDetailPage', () => {
         expect(body.companyId).toBe(42);
       });
       await waitFor(() => {
-        expect(container.textContent).not.toContain('Edit Contact');
+        expect(container.textContent).not.toContain('Editar contacto');
       });
     });
 
@@ -432,7 +432,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       fireEvent.submit(container.querySelector('form')!);
       await waitFor(() => {
         const put = fetchSpy.mock.calls.find(c =>
@@ -452,10 +452,10 @@ describe('CrmContactDetailPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       fireEvent.submit(container.querySelector('form')!);
       await flush();
-      expect(container.textContent).toContain('Edit Contact');
+      expect(container.textContent).toContain('Editar contacto');
     });
 
     it('uses empty strings for null contact fields in edit form', async () => {
@@ -477,7 +477,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       const inputs = container.querySelectorAll('input');
       // 0: firstName="Jane", 1: lastName="Doe", 2: email="" etc.
       const emailInput = inputs[2] as HTMLInputElement;
@@ -486,7 +486,7 @@ describe('CrmContactDetailPage', () => {
 
     it('populates company select with companies fetched on mount', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       const selects = container.querySelectorAll('select');
       // Find company select (has option text "Acme Corp")
       const companySelect = Array.from(selects).find(s =>
@@ -505,7 +505,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       const selects = container.querySelectorAll('select');
       const companySelect = Array.from(selects).find(s =>
         Array.from(s.options).some(o => o.textContent === 'Acme Corp')
@@ -544,7 +544,7 @@ describe('CrmContactDetailPage', () => {
       // @ts-ignore
       global.fetch = fetchSpy;
       await renderPage();
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       await flush();
       const deleteCalls = fetchSpy.mock.calls.filter(
         c => c[0] === '/api/portal/crm/contacts/7' && c[1]?.method === 'DELETE'
@@ -560,7 +560,7 @@ describe('CrmContactDetailPage', () => {
       // @ts-ignore
       global.fetch = fetchSpy;
       await renderPage();
-      fireEvent.click(screen.getByText('Delete'));
+      fireEvent.click(screen.getByText('Eliminar'));
       await waitFor(() => {
         const deleteCalls = fetchSpy.mock.calls.filter(
           c => c[0] === '/api/portal/crm/contacts/7' && c[1]?.method === 'DELETE'
@@ -590,13 +590,13 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('No tags yet.');
+      expect(container.textContent).toContain('Aún no hay etiquetas.');
     });
 
     it('Add tag button is disabled when input is empty', async () => {
       const { container } = await renderPage();
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent === 'Add'
+        b => b.textContent === 'Añadir'
       ) as HTMLButtonElement;
       expect(addBtn.disabled).toBe(true);
     });
@@ -604,11 +604,11 @@ describe('CrmContactDetailPage', () => {
     it('typing in tag input enables the Add button', async () => {
       const { container } = await renderPage();
       const tagInput = container.querySelector(
-        'input[placeholder="Add tag..."]'
+        'input[placeholder="Añadir etiqueta..."]'
       ) as HTMLInputElement;
       fireEvent.change(tagInput, { target: { value: 'hot' } });
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent === 'Add'
+        b => b.textContent === 'Añadir'
       ) as HTMLButtonElement;
       expect(addBtn.disabled).toBe(false);
     });
@@ -621,11 +621,11 @@ describe('CrmContactDetailPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const tagInput = container.querySelector(
-        'input[placeholder="Add tag..."]'
+        'input[placeholder="Añadir etiqueta..."]'
       ) as HTMLInputElement;
       fireEvent.change(tagInput, { target: { value: 'hot' } });
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent === 'Add'
+        b => b.textContent === 'Añadir'
       ) as HTMLButtonElement;
       fireEvent.click(addBtn);
       await waitFor(() => {
@@ -656,12 +656,12 @@ describe('CrmContactDetailPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const tagInput = container.querySelector(
-        'input[placeholder="Add tag..."]'
+        'input[placeholder="Añadir etiqueta..."]'
       ) as HTMLInputElement;
       // "priority" already exists on the contact
       fireEvent.change(tagInput, { target: { value: 'priority' } });
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent === 'Add'
+        b => b.textContent === 'Añadir'
       ) as HTMLButtonElement;
       fireEvent.click(addBtn);
       await flush();
@@ -680,11 +680,11 @@ describe('CrmContactDetailPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const tagInput = container.querySelector(
-        'input[placeholder="Add tag..."]'
+        'input[placeholder="Añadir etiqueta..."]'
       ) as HTMLInputElement;
       fireEvent.change(tagInput, { target: { value: '   ' } });
       const addBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent === 'Add'
+        b => b.textContent === 'Añadir'
       ) as HTMLButtonElement;
       // disabled, but try clicking the addTag function via Enter key
       fireEvent.keyDown(tagInput, { key: 'Enter' });
@@ -703,7 +703,7 @@ describe('CrmContactDetailPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const tagInput = container.querySelector(
-        'input[placeholder="Add tag..."]'
+        'input[placeholder="Añadir etiqueta..."]'
       ) as HTMLInputElement;
       fireEvent.change(tagInput, { target: { value: 'hot' } });
       fireEvent.keyDown(tagInput, { key: 'Enter' });
@@ -730,7 +730,7 @@ describe('CrmContactDetailPage', () => {
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
       const tagInput = container.querySelector(
-        'input[placeholder="Add tag..."]'
+        'input[placeholder="Añadir etiqueta..."]'
       ) as HTMLInputElement;
       fireEvent.change(tagInput, { target: { value: 'hot' } });
       fireEvent.keyDown(tagInput, { key: 'Enter' });
@@ -763,7 +763,7 @@ describe('CrmContactDetailPage', () => {
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
       const tagInput = container.querySelector(
-        'input[placeholder="Add tag..."]'
+        'input[placeholder="Añadir etiqueta..."]'
       ) as HTMLInputElement;
       fireEvent.change(tagInput, { target: { value: 'hot' } });
       fireEvent.keyDown(tagInput, { key: 'Enter' });
@@ -872,7 +872,7 @@ describe('CrmContactDetailPage', () => {
       const logForms = container.querySelectorAll('form');
       // Activity form is one of multiple — pick the one containing "Activity title..."
       const activityForm = Array.from(logForms).find(f =>
-        f.querySelector('input[placeholder="Activity title..."]')
+        f.querySelector('input[placeholder="Título de la actividad..."]')
       )!;
       fireEvent.submit(activityForm);
       await flush();
@@ -885,7 +885,7 @@ describe('CrmContactDetailPage', () => {
     it('switches activity type when type chip is clicked', async () => {
       const { container } = await renderPage();
       const meetingBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Meeting')
+        b => b.textContent?.includes('Reunión')
       ) as HTMLButtonElement;
       fireEvent.click(meetingBtn);
       // No direct value to inspect; instead, check the button has the active classes
@@ -901,11 +901,11 @@ describe('CrmContactDetailPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       const titleInput = container.querySelector(
-        'input[placeholder="Activity title..."]'
+        'input[placeholder="Título de la actividad..."]'
       ) as HTMLInputElement;
       fireEvent.change(titleInput, { target: { value: 'Demo call' } });
       const descInput = container.querySelector(
-        'textarea[placeholder="Description (optional)..."]'
+        'textarea[placeholder="Descripción (opcional)..."]'
       ) as HTMLTextAreaElement;
       fireEvent.change(descInput, { target: { value: 'with prospects' } });
       const activityForm = titleInput.closest('form')!;
@@ -936,7 +936,7 @@ describe('CrmContactDetailPage', () => {
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
       const titleInput = container.querySelector(
-        'input[placeholder="Activity title..."]'
+        'input[placeholder="Título de la actividad..."]'
       ) as HTMLInputElement;
       fireEvent.change(titleInput, { target: { value: 'X' } });
       const activityForm = titleInput.closest('form')!;
@@ -963,7 +963,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('No activities logged yet.');
+      expect(container.textContent).toContain('Aún no hay actividades registradas.');
     });
 
     it('renders default icon for unknown activity type', async () => {
@@ -1002,7 +1002,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('just now');
+      expect(container.textContent).toContain('ahora mismo');
     });
 
     it('renders "Xm ago" for activities within the hour', async () => {
@@ -1021,7 +1021,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('5m ago');
+      expect(container.textContent).toContain('hace 5 min');
     });
 
     it('renders "Xh ago" for activities within the day', async () => {
@@ -1040,7 +1040,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('3h ago');
+      expect(container.textContent).toContain('hace 3 h');
     });
 
     it('renders "Xd ago" for activities within the week', async () => {
@@ -1059,7 +1059,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('3d ago');
+      expect(container.textContent).toContain('hace 3 d');
     });
 
     it('renders locale date for activities older than a week', async () => {
@@ -1091,7 +1091,7 @@ describe('CrmContactDetailPage', () => {
       });
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
-      expect(container.textContent).toContain('No activities logged yet.');
+      expect(container.textContent).toContain('Aún no hay actividades registradas.');
     });
   });
 
@@ -1099,7 +1099,7 @@ describe('CrmContactDetailPage', () => {
     it('Send Email button is visible when contact has email and not editing', async () => {
       const { container } = await renderPage();
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send Email')
+        b => b.textContent?.includes('Enviar email')
       );
       expect(sendBtn).toBeTruthy();
     });
@@ -1117,7 +1117,7 @@ describe('CrmContactDetailPage', () => {
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send Email')
+        b => b.textContent?.includes('Enviar email')
       );
       expect(sendBtn).toBeUndefined();
     });
@@ -1125,16 +1125,16 @@ describe('CrmContactDetailPage', () => {
     it('clicking Send Email opens the email form', async () => {
       const { container } = await renderPage();
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send Email')
+        b => b.textContent?.includes('Enviar email')
       ) as HTMLButtonElement;
       fireEvent.click(sendBtn);
-      expect(container.textContent).toContain('Send Email to jane@example.test');
+      expect(container.textContent).toContain('Enviar email a jane@example.test');
     });
 
     it('close icon button hides the email form', async () => {
       const { container } = await renderPage();
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send Email')
+        b => b.textContent?.includes('Enviar email')
       ) as HTMLButtonElement;
       fireEvent.click(sendBtn);
       // Close icon button (material-icons "close")
@@ -1142,20 +1142,20 @@ describe('CrmContactDetailPage', () => {
         b => b.textContent === 'close'
       );
       fireEvent.click(closeBtn!);
-      expect(container.textContent).not.toContain('Send Email to jane@example.test');
+      expect(container.textContent).not.toContain('Enviar email a jane@example.test');
     });
 
     it('Cancel button hides the email form', async () => {
       const { container } = await renderPage();
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send Email')
+        b => b.textContent?.includes('Enviar email')
       ) as HTMLButtonElement;
       fireEvent.click(sendBtn);
       const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent === 'Cancel'
+        b => b.textContent === 'Cancelar'
       );
       fireEvent.click(cancelBtn!);
-      expect(container.textContent).not.toContain('Send Email to jane@example.test');
+      expect(container.textContent).not.toContain('Enviar email a jane@example.test');
     });
 
     it('does not submit when subject or body is empty', async () => {
@@ -1167,7 +1167,7 @@ describe('CrmContactDetailPage', () => {
       const { container } = await renderPage();
       fireEvent.click(
         Array.from(container.querySelectorAll('button')).find(
-          b => b.textContent?.includes('Send Email')
+          b => b.textContent?.includes('Enviar email')
         )!
       );
       // Submit the email form (subject + body required)
@@ -1191,7 +1191,7 @@ describe('CrmContactDetailPage', () => {
       await waitFor(() => screen.getByText('Jane Doe'));
       fireEvent.click(
         Array.from(container.querySelectorAll('button')).find(
-          b => b.textContent?.includes('Send Email')
+          b => b.textContent?.includes('Enviar email')
         )!
       );
       const subjectInput = container.querySelector(
@@ -1219,7 +1219,7 @@ describe('CrmContactDetailPage', () => {
       await waitFor(() => screen.getByText('Jane Doe'));
       fireEvent.click(
         Array.from(container.querySelectorAll('button')).find(
-          b => b.textContent?.includes('Send Email')
+          b => b.textContent?.includes('Enviar email')
         )!
       );
       const subjectInput = container.querySelector(
@@ -1232,7 +1232,7 @@ describe('CrmContactDetailPage', () => {
       fireEvent.change(bodyTextarea, { target: { value: 'there' } });
       fireEvent.submit(subjectInput.closest('form')!);
       await waitFor(() => {
-        expect(container.textContent).toContain('Failed to send email.');
+        expect(container.textContent).toContain('No se pudo enviar el email.');
       });
     });
   });
@@ -1244,7 +1244,7 @@ describe('CrmContactDetailPage', () => {
     function openDealsTab(container: HTMLElement) {
       fireEvent.click(
         Array.from(container.querySelectorAll('button')).find(
-          b => b.textContent?.includes('Deals (')
+          b => b.textContent?.includes('Negocios (')
         )!
       );
     }
@@ -1254,10 +1254,10 @@ describe('CrmContactDetailPage', () => {
       openDealsTab(container);
       expect(container.textContent).toContain('Big Deal');
       expect(container.textContent).toContain('Proposal');
-      expect(container.textContent).toContain('$1,500.00');
-      expect(container.textContent).toContain('open');
+      expect(container.textContent).toContain('1500,00\u00A0€');
+      expect(container.textContent).toContain('Abierto');
       expect(container.textContent).toContain('Lost Cause');
-      expect(container.textContent).toContain('lost');
+      expect(container.textContent).toContain('Perdido');
     });
 
     it('renders empty state when no deals', async () => {
@@ -1273,7 +1273,7 @@ describe('CrmContactDetailPage', () => {
       const { container } = render(<CrmContactDetailPage />);
       await waitFor(() => screen.getByText('Jane Doe'));
       openDealsTab(container);
-      expect(container.textContent).toContain('No deals associated with this contact.');
+      expect(container.textContent).toContain('No hay negocios asociados a este contacto.');
     });
 
     it('uses default badge color for unknown deal status', async () => {

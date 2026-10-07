@@ -245,9 +245,7 @@ export default function TopicPicker({
           <div className="max-h-64 overflow-y-auto -mx-1">
             {loading && (
               <div className="px-2 py-3 text-center text-xs text-muted-foreground">
-                <span className="material-icons text-sm animate-spin align-middle mr-1">progress_activity</span>
-                Loading…
-              </div>
+                <span className="material-icons text-sm animate-spin align-middle mr-1">autorenew</span>Cargando…</div>
             )}
             {!loading && topics && filtered.length === 0 && (
               <div className="px-2 py-3 text-center text-xs text-muted-foreground">
@@ -295,7 +293,7 @@ export default function TopicPicker({
                 className="w-full flex items-center gap-2 px-2 py-1 rounded text-left text-sm hover:bg-accent disabled:opacity-50 text-primary"
               >
                 {creating ? (
-                  <span className="material-icons text-sm animate-spin">progress_activity</span>
+                  <span className="material-icons text-sm animate-spin">autorenew</span>
                 ) : (
                   <span className="material-icons text-sm">add_circle</span>
                 )}

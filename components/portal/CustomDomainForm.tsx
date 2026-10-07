@@ -59,13 +59,13 @@ export default function CustomDomainForm({
       });
       const json = await res.json();
       if (json.success) {
-        setSuccess(`Domain ${json.data.domain} added.`);
+        setSuccess(`Dominio ${json.data.domain} añadido.`);
         setNewDomain('');
         await refreshDomains();
         // Auto-show DNS records for the new domain
         setShowDns(prev => ({ ...prev, [json.data.id]: true }));
       } else {
-        setError(json.message || 'Failed to add domain.');
+        setError(json.message || 'No se pudo añadir el dominio.');
       }
     } finally {
       setAdding(false);
@@ -81,7 +81,7 @@ export default function CustomDomainForm({
       const json = await res.json();
       if (json.success) {
         setDomains(prev => prev.filter(d => d.id !== domainId));
-        setSuccess('Domain removed.');
+        setSuccess('Dominio eliminado.');
       } else {
         setError(json.message);
       }
@@ -130,11 +130,11 @@ export default function CustomDomainForm({
     <div className="bg-card border border-border rounded-xl p-5 space-y-5">
       <div className="flex items-center gap-3">
         <span className="material-icons text-muted-foreground text-lg">public</span>
-        <h3 className="font-semibold text-sm text-foreground">Custom Domains</h3>
+        <h3 className="font-semibold text-sm text-foreground">Dominios personalizados</h3>
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Connect custom domains to this website. You&apos;ll need to update DNS records at your registrar.
+        Conecta dominios personalizados a este sitio web. Tendrás que actualizar los registros DNS en tu registrador.
       </p>
 
       {/* Add Domain */}
@@ -144,7 +144,7 @@ export default function CustomDomainForm({
           <input
             value={newDomain}
             onChange={e => setNewDomain(e.target.value.replace(/^https?:\/\//, ''))}
-            placeholder="yoursite.com"
+            placeholder="tusitio.com"
             className="bg-transparent outline-none flex-1 text-sm text-foreground font-mono"
             onKeyDown={e => e.key === 'Enter' && handleAddDomain()}
           />
@@ -152,9 +152,9 @@ export default function CustomDomainForm({
         <button
           onClick={handleAddDomain}
           disabled={adding || !newDomain}
-          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+          className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 transition-colors"
         >
-          {adding ? 'Adding...' : 'Add Domain'}
+          {adding ? 'Añadiendo...' : 'Añadir dominio'}
         </button>
       </div>
 
@@ -172,19 +172,17 @@ export default function CustomDomainForm({
                   <span className="font-mono text-sm font-medium text-foreground truncate">{d.domain}</span>
                   {d.isPrimary && (
                     <span className="shrink-0 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-primary/10 text-primary rounded">
-                      Primary
+                      Principal
                     </span>
                   )}
                   {d.status === 'verified' ? (
                     <span className="shrink-0 flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 rounded">
                       <span className="material-icons text-[10px]">check</span>
-                      Verified
+                      Verificado
                     </span>
                   ) : (
                     <span className="shrink-0 flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 rounded">
-                      <span className="material-icons text-[10px]">schedule</span>
-                      Pending
-                    </span>
+                      <span className="material-icons text-[10px]">schedule</span>Pendiente</span>
                   )}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
@@ -192,7 +190,7 @@ export default function CustomDomainForm({
                     <button
                       onClick={() => handleSetPrimary(d.id)}
                       className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
-                      title="Set as primary"
+                      title="Establecer como principal"
                     >
                       <span className="material-icons text-base">star_outline</span>
                     </button>
@@ -201,7 +199,7 @@ export default function CustomDomainForm({
                     onClick={() => handleRemove(d.id)}
                     disabled={removing[d.id]}
                     className="p-1.5 text-muted-foreground hover:text-red-600 transition-colors disabled:opacity-50"
-                    title="Remove domain"
+                    title="Eliminar dominio"
                   >
                     <span className="material-icons text-base">
                       {removing[d.id] ? 'hourglass_empty' : 'delete_outline'}
@@ -220,14 +218,14 @@ export default function CustomDomainForm({
                   <span className={`material-icons text-sm ${verifying[d.id] ? 'animate-spin' : ''}`}>
                     {verifying[d.id] ? 'refresh' : 'verified'}
                   </span>
-                  {verifying[d.id] ? 'Checking...' : 'Verify DNS'}
+                  {verifying[d.id] ? 'Comprobando...' : 'Verificar DNS'}
                 </button>
                 <button
                   onClick={() => setShowDns(prev => ({ ...prev, [d.id]: !prev[d.id] }))}
                   className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-xs font-medium text-foreground hover:bg-muted transition-colors"
                 >
                   <span className="material-icons text-sm">dns</span>
-                  {showDns[d.id] ? 'Hide' : 'Show'} DNS Records
+                  {showDns[d.id] ? 'Ocultar' : 'Mostrar'} registros DNS
                 </button>
               </div>
 
@@ -235,15 +233,15 @@ export default function CustomDomainForm({
               {showDns[d.id] && (
                 <div className="space-y-2">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    Add these records at your domain registrar
+                    Añade estos registros en tu registrador de dominios
                   </p>
                   <div className="border border-border rounded-lg overflow-hidden">
                     <table className="w-full text-sm">
                       <thead className="bg-muted/30">
                         <tr>
-                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Type</th>
+                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Tipo</th>
                           <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Host</th>
-                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Value</th>
+                          <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Valor</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
@@ -258,7 +256,7 @@ export default function CustomDomainForm({
                     </table>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    DNS changes may take up to 48 hours to propagate.
+                    Los cambios de DNS pueden tardar hasta 48 horas en propagarse.
                   </p>
                 </div>
               )}
@@ -273,19 +271,19 @@ export default function CustomDomainForm({
                       {verifyResults[d.id].verified && !verifyResults[d.id].misconfigured ? 'check_circle' : 'warning'}
                     </span>
                     {verifyResults[d.id].verified && !verifyResults[d.id].misconfigured
-                      ? 'DNS verified and working'
-                      : 'DNS not yet verified — check your records above'}
+                      ? 'DNS verificado y funcionando'
+                      : 'DNS aún sin verificar — revisa tus registros arriba'}
                   </div>
                   {verifyResults[d.id].dnsRecords.length > 0 && !verifyResults[d.id].verified && (
                     <div className="space-y-1">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Current DNS Records Detected</p>
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Registros DNS actuales detectados</p>
                       <div className="border border-border rounded-lg overflow-hidden">
                         <table className="w-full text-sm">
                           <thead className="bg-muted/30">
                             <tr>
-                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Type</th>
+                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Tipo</th>
                               <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Host</th>
-                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Value</th>
+                              <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Valor</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-border">
@@ -308,7 +306,7 @@ export default function CustomDomainForm({
         </div>
       ) : (
         <p className="text-xs text-muted-foreground text-center py-4">
-          No custom domains configured. Add one above.
+          No hay dominios personalizados configurados. Añade uno arriba.
         </p>
       )}
     </div>

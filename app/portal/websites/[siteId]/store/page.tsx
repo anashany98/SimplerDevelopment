@@ -112,11 +112,11 @@ export default function StoreDashboardPage() {
   if (!settings?.enabled) {
     return (
       <div className="max-w-4xl mx-auto space-y-6">
-        <PortalPageHeader eyebrow="Store" title="Store" subtitle="Sell products directly from your website." />
+        <PortalPageHeader eyebrow="Tienda" title="Tienda" subtitle="Vende productos directamente desde tu sitio web." />
         <DomainGetStarted domainKey="store" />
         <div className="bg-card border border-border rounded-2xl p-10 flex flex-col items-center text-center">
           <span className="material-icons text-5xl text-muted-foreground/40 mb-3">storefront</span>
-          <h2 className="text-xl font-semibold text-foreground mb-2">Enable Your Store</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-2">Activa tu tienda</h2>
           <p className="text-sm text-muted-foreground mb-6 max-w-md">
             Activate eCommerce on your website to start listing products, accepting orders, and managing inventory.
           </p>
@@ -130,7 +130,7 @@ export default function StoreDashboardPage() {
             ) : (
               <span className="material-icons text-base">power_settings_new</span>
             )}
-            {enabling ? 'Enabling...' : 'Enable Store'}
+            {enabling ? 'Activando…' : 'Activar tienda'}
           </button>
         </div>
       </div>
@@ -141,13 +141,13 @@ export default function StoreDashboardPage() {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Store"
-        title="Store Dashboard"
-        subtitle={`${settings.storeName || 'Your store'} — last 30 days overview`}
+        eyebrow="Tienda"
+        title="Panel de la tienda"
+        subtitle={`${settings.storeName || 'Tu tienda'} — resumen de los últimos 30 días`}
         actions={
           <Link href={`/portal/websites/${siteId}/store/products/new`} className={pBtnPrimary}>
             <span className="material-icons text-base">add</span>
-            Add Product
+            Añadir producto
           </Link>
         }
       />
@@ -159,7 +159,7 @@ export default function StoreDashboardPage() {
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-green-600 text-lg">payments</span>
-            <p className="text-xs text-muted-foreground">Total Revenue</p>
+            <p className="text-xs text-muted-foreground">Ingresos totales</p>
           </div>
           <p className="text-2xl font-bold text-foreground">
             {analytics ? formatMoney(analytics.totalRevenue) : '$0.00'}
@@ -168,21 +168,21 @@ export default function StoreDashboardPage() {
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-blue-600 text-lg">shopping_cart</span>
-            <p className="text-xs text-muted-foreground">Orders Today</p>
+            <p className="text-xs text-muted-foreground">Pedidos hoy</p>
           </div>
           <p className="text-2xl font-bold text-foreground">{analytics?.ordersToday ?? 0}</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-indigo-600 text-lg">inventory_2</span>
-            <p className="text-xs text-muted-foreground">Active Products</p>
+            <p className="text-xs text-muted-foreground">Productos activos</p>
           </div>
           <p className="text-2xl font-bold text-foreground">{analytics?.activeProducts ?? 0}</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-orange-600 text-lg">warning</span>
-            <p className="text-xs text-muted-foreground">Low Stock Items</p>
+            <p className="text-xs text-muted-foreground">Artículos con bajo stock</p>
           </div>
           <p className="text-2xl font-bold text-foreground">{analytics?.lowStockItems ?? 0}</p>
         </div>
@@ -191,30 +191,28 @@ export default function StoreDashboardPage() {
       {/* Recent Orders */}
       <div className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="px-4 py-3 border-b border-border bg-muted/20 flex items-center justify-between">
-          <h2 className="font-semibold text-sm text-foreground">Recent Orders</h2>
+          <h2 className="font-semibold text-sm text-foreground">Pedidos recientes</h2>
           <Link
             href={`/portal/websites/${siteId}/store/orders`}
             className="text-xs text-primary hover:underline"
-          >
-            View All
-          </Link>
+          >Ver todo</Link>
         </div>
         {recentOrders.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <span className="material-icons text-4xl text-muted-foreground/40">receipt_long</span>
-            <p className="text-sm text-muted-foreground mt-2">No orders yet.</p>
+            <p className="text-sm text-muted-foreground mt-2">Aún no hay pedidos.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Order</th>
-                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Customer</th>
-                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Items</th>
+                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Pedido</th>
+                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Cliente</th>
+                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Artículos</th>
                   <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Total</th>
-                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Status</th>
-                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Date</th>
+                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Estado</th>
+                  <th className="px-4 py-2 text-xs font-medium text-muted-foreground">Fecha</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

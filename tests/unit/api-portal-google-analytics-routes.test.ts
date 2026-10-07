@@ -427,8 +427,8 @@ describe('POST /api/portal/websites/[siteId]/google/analytics', () => {
       requestBody: expect.objectContaining({
         parent: 'accounts/1',
         displayName: 'Site Title',
-        timeZone: 'America/New_York',
-        currencyCode: 'USD',
+        timeZone: 'Europe/Madrid',
+        currencyCode: 'EUR',
       }),
     });
     // domain resolution prefers subdomain.simplerdevelopment.com when site.domain is null

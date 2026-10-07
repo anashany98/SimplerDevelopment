@@ -1,4 +1,4 @@
-# Logo reveal — voice-synced "Simpler Development" intro
+# Logo reveal — voice-synced "CRM AGENTS" intro
 
 Self-contained animated logo reveal synced to a recorded voice take, rendered to
 a 1920×1080 MP4 (`logo-reveal.mp4`) for use as a video intro/outro.

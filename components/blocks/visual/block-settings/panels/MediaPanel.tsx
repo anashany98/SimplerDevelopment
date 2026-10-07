@@ -51,7 +51,7 @@ function ImageBlockSettings({ block, onChange, currentViewport }: { block: Image
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Change Image
               </button>
@@ -59,9 +59,7 @@ function ImageBlockSettings({ block, onChange, currentViewport }: { block: Image
                 type="button"
                 onClick={() => onChange({ url: '' })}
                 className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
         ) : (
@@ -99,29 +97,29 @@ function ImageBlockSettings({ block, onChange, currentViewport }: { block: Image
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Width</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Ancho</label>
         <select
           value={block.width || 'full'}
           onChange={(e) => onChange({ width: e.target.value as ImageBlock['width'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="small">Small</option>
-          <option value="medium">Medium</option>
-          <option value="large">Large</option>
+          <option value="small">Pequeño</option>
+          <option value="medium">Media</option>
+          <option value="large">Grande</option>
           <option value="full">Full Width</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Alignment</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
         <select
           value={block.alignment || 'center'}
           onChange={(e) => onChange({ alignment: e.target.value as ImageBlock['alignment'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
+          <option value="left">Izquierda</option>
+          <option value="center">Centrado</option>
+          <option value="right">Derecha</option>
         </select>
       </div>
 
@@ -163,7 +161,7 @@ function GalleryBlockSettings({ block, onChange }: { block: GalleryBlock; onChan
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <select
           value={block.layout || 'grid'}
           onChange={(e) => onChange({ layout: e.target.value as GalleryBlock['layout'] })}
@@ -175,7 +173,7 @@ function GalleryBlockSettings({ block, onChange }: { block: GalleryBlock; onChan
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ columns: Number(e.target.value) as GalleryBlock['columns'] })}
@@ -194,9 +192,9 @@ function GalleryBlockSettings({ block, onChange }: { block: GalleryBlock; onChan
           onChange={(e) => onChange({ gap: e.target.value as GalleryBlock['gap'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="sm">Small</option>
-          <option value="md">Medium</option>
-          <option value="lg">Large</option>
+          <option value="sm">Pequeño</option>
+          <option value="md">Media</option>
+          <option value="lg">Grande</option>
         </select>
       </div>
 
@@ -214,14 +212,14 @@ function GalleryBlockSettings({ block, onChange }: { block: GalleryBlock; onChan
       <div className="border-t border-border pt-4">
         <div className="flex items-center justify-between mb-2">
           <label className="text-sm font-medium text-foreground">Images ({block.images.length})</label>
-          <button type="button" onClick={addImage} className="text-xs px-2 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/90">Add Image</button>
+          <button type="button" onClick={addImage} className="text-xs px-2 py-1 bg-foreground text-background rounded hover:bg-foreground/90">Add Image</button>
         </div>
         <div className="space-y-3 max-h-[400px] overflow-y-auto">
           {block.images.map((image, index) => (
             <div key={image.id} className="p-3 border border-border rounded-lg space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">Image {index + 1}</span>
-                <button type="button" onClick={() => removeImage(index)} className="text-xs text-red-500 hover:text-red-700">Remove</button>
+                <button type="button" onClick={() => removeImage(index)} className="text-xs text-red-500 hover:text-red-700">Quitar</button>
               </div>
               <input
                 type="text"
@@ -272,7 +270,7 @@ function VideoBlockSettings({ block, onChange, currentViewport }: { block: Video
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
                 Change Video
               </button>
@@ -280,9 +278,7 @@ function VideoBlockSettings({ block, onChange, currentViewport }: { block: Video
                 type="button"
                 onClick={() => onChange({ url: '' })}
                 className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
         ) : (

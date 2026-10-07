@@ -1,6 +1,6 @@
 # CMS Content API (Posts, Pages, Categories, Tags)
 
-The CMS Content API gives you read access to the published content on any active SimplerDevelopment site — blog posts, custom post types, static pages, and their associated categories and tags. Use it to pull content into external applications, power headless front ends, or build integrations on top of your site's content.
+The CMS Content API gives you read access to the published content on any active CRM AGENTS site — blog posts, custom post types, static pages, and their associated categories and tags. Use it to pull content into external applications, power headless front ends, or build integrations on top of your site's content.
 
 **Base URL:** `https://your-domain.com/api/v1/sites/{siteId}`
 
@@ -111,7 +111,7 @@ The `data` object contains all columns from the `posts` table for the matching r
     "published": true,
     "publishedAt": "2026-05-01T12:00:00.000Z",
     "seoTitle": "Getting Started with Headless CMS | Acme Blog",
-    "seoDescription": "Learn how to use the SimplerDevelopment CMS API.",
+    "seoDescription": "Learn how to use the CRM AGENTS CMS API.",
     "ogImage": "https://cdn.example.com/images/og-hero.jpg",
     "noIndex": false,
     "canonicalUrl": null,

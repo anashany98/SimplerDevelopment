@@ -76,9 +76,9 @@ test.describe('admin agentic-os @admin @agentic-os @critical', () => {
     // most stable proxy is the "Run" button (rendered on every on-demand
     // skill card) plus the "Cron-managed" / "Cloud-triggered" affordances on
     // the other triggers. Count all of them combined.
-    const runButtons = page.getByRole('button', { name: /^Run$/ });
-    const cronAffordances = page.getByText('Cron-managed');
-    const cloudAffordances = page.getByText('Cloud-triggered');
+    const runButtons = page.getByRole('button', { name: /^Ejecutar$/ });
+    const cronAffordances = page.getByText('Programado por cron');
+    const cloudAffordances = page.getByText('Invocada desde la nube');
     const runCount = await runButtons.count();
     const cronCount = await cronAffordances.count();
     const cloudCount = await cloudAffordances.count();
@@ -121,11 +121,11 @@ test.describe('admin agentic-os @admin @agentic-os @critical', () => {
       // exact matching won't work; use a regex and .first() to avoid
       // strict-mode ambiguity from ancestor elements that include this text.
       await expect(
-        page.getByText(/Local executor available/).first(),
+        page.getByText(/Ejecutor local disponible/).first(),
       ).toBeVisible({ timeout: 10_000 });
     } else {
-      // Same structure: the span contains "visibility" + "Catalog mode".
-      await expect(page.getByText(/Catalog mode/).first()).toBeVisible({
+      // Same structure: the span contains "visibility" + "Modo catálogo".
+      await expect(page.getByText(/Modo catálogo/).first()).toBeVisible({
         timeout: 10_000,
       });
 
@@ -157,14 +157,14 @@ test.describe('admin agentic-os @admin @agentic-os @critical', () => {
     // its accessible name is "history Run history". Exclude it with
     // hasNotText so .first() lands on a skill card button, not the tab.
     const firstCardRunButton = page
-      .getByRole('button', { name: /\bRun\b/ })
+      .getByRole('button', { name: /\bEjecutar\b/ })
       .filter({ hasNotText: /history/i })
       .first();
     await expect(firstCardRunButton).toBeVisible({ timeout: 10_000 });
     await firstCardRunButton.click();
 
     // The "Copy prompt" button only renders inside the drawer footer.
-    const copyPromptButton = page.getByRole('button', { name: /Copy prompt/ });
+    const copyPromptButton = page.getByRole('button', { name: /Copiar prompt/ });
     await expect(copyPromptButton).toBeVisible({ timeout: 10_000 });
     await expect(copyPromptButton).toBeEnabled();
 
@@ -173,13 +173,13 @@ test.describe('admin agentic-os @admin @agentic-os @critical', () => {
     // `executorAvailable === false` (see page.tsx line 514-516). Use the
     // title-locator to disambiguate from the card-level "Run" buttons that
     // are still rendered behind the modal overlay.
-    const drawerRunButton = page.locator('button[title="Executor disabled on this host"]');
+    const drawerRunButton = page.locator('button[title="Ejecutor deshabilitado en este host"]');
     await expect(drawerRunButton).toBeVisible();
     await expect(drawerRunButton).toBeDisabled();
 
     // The drawer footer also surfaces the disabled hint text.
     await expect(
-      page.getByText(/Executor disabled.*Copy prompt/i),
+      page.getByText(/Ejecutor deshabilitado.*Copiar prompt/i),
     ).toBeVisible();
   });
 
@@ -196,8 +196,8 @@ test.describe('admin agentic-os @admin @agentic-os @critical', () => {
     // "No runs yet" headline; when there are runs the section heading is
     // "Recent runs". Either is acceptable — we just need the section to
     // mount cleanly without throwing.
-    const recentRunsHeading = page.getByRole('heading', { level: 2, name: 'Recent runs' });
-    const emptyState = page.getByText('No runs yet', { exact: true });
+    const recentRunsHeading = page.getByRole('heading', { level: 2, name: 'Ejecuciones recientes' });
+    const emptyState = page.getByText('Aún no hay ejecuciones', { exact: true });
 
     // Wait for either marker — whichever shows up first wins. Race them so
     // the test is fast on a hot cache and tolerant of either state.

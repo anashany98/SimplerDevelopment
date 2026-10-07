@@ -5,7 +5,7 @@
 
 ## What this installer is
 
-A signed + notarized macOS `.pkg` that installs the SimplerDevelopment Claude skills
+A signed + notarized macOS `.pkg` that installs the CRM AGENTS Claude skills
 bundle into `~/.claude/skills/`. Replaces the awkward `.command` shell-script
 flow with a native Installer.app experience — no Gatekeeper warning, no
 "right-click → Open" dance.
@@ -120,7 +120,7 @@ On a successful run you'll see:
 
 Double-click the .pkg in Finder. It should:
 
-1. Show the welcome screen with the SimplerDevelopment skills description.
+1. Show the welcome screen with the CRM AGENTS skills description.
 2. Skip the customize step (`customize="never"` in distribution.xml).
 3. Install with no admin password prompt.
 4. Show the conclusion screen with the MCP-config snippet.

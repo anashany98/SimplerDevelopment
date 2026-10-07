@@ -75,7 +75,7 @@ export async function POST(req: Request) {
     return { ticket: newTicket };
   });
 
-  emitEvent('ticket.created', client.id, userId, { id: ticket.id, number: ticket.number, subject: ticket.subject, category: ticket.category, priority: ticket.priority, status: 'open' });
+  await emitEvent('ticket.created', client.id, userId, { id: ticket.id, number: ticket.number, subject: ticket.subject, category: ticket.category, priority: ticket.priority, status: 'open' });
 
   // E2 — invalidate the admin dashboard cache (counts the new open ticket).
   revalidateAdminDashboard();

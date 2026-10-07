@@ -16,6 +16,7 @@
  * contexts.
  */
 import type { BrainDecisionReversibility, BrainDecisionStatus } from '@/lib/db/schema';
+import { relativeTimeEs } from '@/lib/portal-utils';
 
 export interface DecisionRow {
   id: number;
@@ -65,18 +66,7 @@ export function relativeDate(input: string | Date | null | undefined): string {
   if (!input) return '';
   const d = input instanceof Date ? input : new Date(input);
   if (Number.isNaN(d.getTime())) return '';
-  const now = Date.now();
-  const diffMs = now - d.getTime();
-  const diffSec = Math.round(diffMs / 1000);
-  if (Math.abs(diffSec) < 60) return diffSec >= 0 ? 'just now' : 'in a moment';
-  const abs = Math.abs(diffSec);
-  const past = diffSec >= 0;
-  const fmt = (n: number, unit: string) => `${past ? '' : 'in '}${n} ${unit}${n === 1 ? '' : 's'}${past ? ' ago' : ''}`;
-  if (abs < 3600) return fmt(Math.round(abs / 60), 'min');
-  if (abs < 86_400) return fmt(Math.round(abs / 3600), 'hour');
-  if (abs < 86_400 * 30) return fmt(Math.round(abs / 86_400), 'day');
-  if (abs < 86_400 * 365) return fmt(Math.round(abs / (86_400 * 30)), 'month');
-  return fmt(Math.round(abs / (86_400 * 365)), 'year');
+  return relativeTimeEs(d, { signed: true });
 }
 
 function truncate(text: string | undefined, max: number): string {

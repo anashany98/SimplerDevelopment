@@ -27,13 +27,13 @@ interface AgencyChrome {
   agencyName: string | null;
   agencyLogoUrl: string | null;
   agencyPrimaryColor: string | null;
-  /** Convenience: brand text to display ("Simpler Development" or override). */
+  /** Convenience: brand text to display ("CRM AGENTS" or override). */
   brandName: string;
   /** Convenience: logo to display (default `/iconLogo.png` or override). */
   brandLogoUrl: string;
 }
 
-const DEFAULT_BRAND_NAME = 'Simpler Development';
+const DEFAULT_BRAND_NAME = 'CRM AGENTS';
 const DEFAULT_LOGO_URL = '/iconLogo.png';
 
 const DEFAULT_VALUE: AgencyChrome = {

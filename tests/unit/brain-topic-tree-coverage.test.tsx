@@ -285,7 +285,7 @@ describe('TopicTree — selection', () => {
     // Open menu to start rename
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const renameBtn = findMenuButton(container, 'Rename')!;
+    const renameBtn = findMenuButton(container, 'Renombrar')!;
     fireEvent.click(renameBtn);
     // Now click the row — should not trigger onSelect
     const rows = Array.from(
@@ -303,7 +303,7 @@ describe('TopicTree — rename flow', () => {
     const { container } = render(<TopicTree {...defaultProps()} />);
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const renameBtn = findMenuButton(container, 'Rename')!;
+    const renameBtn = findMenuButton(container, 'Renombrar')!;
     expect(renameBtn).toBeTruthy();
     fireEvent.click(renameBtn);
     const input = container.querySelector('input[type="text"]') as HTMLInputElement;
@@ -316,7 +316,7 @@ describe('TopicTree — rename flow', () => {
     const { container } = render(<TopicTree {...defaultProps({ onRename })} />);
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const renameBtn = findMenuButton(container, 'Rename')!;
+    const renameBtn = findMenuButton(container, 'Renombrar')!;
     fireEvent.click(renameBtn);
     const input = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '  New Name  ' } });
@@ -331,7 +331,7 @@ describe('TopicTree — rename flow', () => {
     const { container } = render(<TopicTree {...defaultProps({ onRename })} />);
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const renameBtn = findMenuButton(container, 'Rename')!;
+    const renameBtn = findMenuButton(container, 'Renombrar')!;
     fireEvent.click(renameBtn);
     const input = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: '   ' } });
@@ -345,7 +345,7 @@ describe('TopicTree — rename flow', () => {
     const { container } = render(<TopicTree {...defaultProps()} />);
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const renameBtn = findMenuButton(container, 'Rename')!;
+    const renameBtn = findMenuButton(container, 'Renombrar')!;
     fireEvent.click(renameBtn);
     const input = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.keyDown(input, { key: 'Escape' });
@@ -357,7 +357,7 @@ describe('TopicTree — rename flow', () => {
     const { container } = render(<TopicTree {...defaultProps({ onRename })} />);
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const renameBtn = findMenuButton(container, 'Rename')!;
+    const renameBtn = findMenuButton(container, 'Renombrar')!;
     fireEvent.click(renameBtn);
     const input = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Via Blur' } });
@@ -372,7 +372,7 @@ describe('TopicTree — rename flow', () => {
     const { container } = render(<TopicTree {...defaultProps({ onSelect })} />);
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const renameBtn = findMenuButton(container, 'Rename')!;
+    const renameBtn = findMenuButton(container, 'Renombrar')!;
     fireEvent.click(renameBtn);
     const input = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.click(input);
@@ -389,7 +389,7 @@ describe('TopicTree — context menu', () => {
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     const menuItems = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.includes('Rename') || b.textContent?.includes('New child'),
+      (b) => b.textContent?.includes('Renombrar') || b.textContent?.includes('New child'),
     );
     expect(menuItems.length).toBeGreaterThan(0);
   });
@@ -419,10 +419,10 @@ describe('TopicTree — context menu', () => {
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
     const text = container.textContent ?? '';
-    expect(text).toContain('Rename');
+    expect(text).toContain('Renombrar');
     expect(text).toContain('New child');
     expect(text).toContain('Merge into');
-    expect(text).toContain('Delete');
+    expect(text).toContain('Eliminar');
   });
 });
 
@@ -528,7 +528,7 @@ describe('TopicTree — delete confirm modal', () => {
   function openDeleteModal(container: HTMLElement) {
     const moreBtn = container.querySelector('button[aria-label="More"]') as HTMLButtonElement;
     fireEvent.click(moreBtn);
-    const deleteBtn = findMenuButton(container, 'Delete')!;
+    const deleteBtn = findMenuButton(container, 'Eliminar')!;
     expect(deleteBtn).toBeTruthy();
     fireEvent.click(deleteBtn);
   }
@@ -559,7 +559,7 @@ describe('TopicTree — delete confirm modal', () => {
     const { container } = render(<TopicTree {...defaultProps({ tree })} />);
     openDeleteModal(container);
     const deleteConfirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete') && b.getAttribute('disabled') !== null,
+      (b) => b.textContent?.includes('Eliminar') && b.getAttribute('disabled') !== null,
     ) as HTMLButtonElement;
     expect(deleteConfirmBtn).toBeTruthy();
   });
@@ -571,7 +571,7 @@ describe('TopicTree — delete confirm modal', () => {
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(checkbox);
     const deleteButtons = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     );
     const enabledDelete = deleteButtons.find((b) => !b.hasAttribute('disabled'));
     expect(enabledDelete).toBeTruthy();
@@ -583,7 +583,7 @@ describe('TopicTree — delete confirm modal', () => {
     openDeleteModal(container);
     // Find the modal confirm Delete button — it has a .material-icons child and is not disabled
     const deleteConfirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete') && !b.hasAttribute('disabled') && b.querySelector('.material-icons'),
+      (b) => b.textContent?.includes('Eliminar') && !b.hasAttribute('disabled') && b.querySelector('.material-icons'),
     ) as HTMLButtonElement;
     expect(deleteConfirmBtn).toBeTruthy();
     fireEvent.click(deleteConfirmBtn);
@@ -600,7 +600,7 @@ describe('TopicTree — delete confirm modal', () => {
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(checkbox);
     const deleteConfirmBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete') && !b.hasAttribute('disabled'),
+      (b) => b.textContent?.includes('Eliminar') && !b.hasAttribute('disabled'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteConfirmBtn);
     await waitFor(() => {
@@ -612,7 +612,7 @@ describe('TopicTree — delete confirm modal', () => {
     const { container } = render(<TopicTree {...defaultProps()} />);
     openDeleteModal(container);
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Cancel',
+      (b) => b.textContent?.trim() === 'Cancelar',
     ) as HTMLButtonElement;
     fireEvent.click(cancelBtn);
     expect(container.textContent).not.toContain('Delete topic?');
@@ -725,7 +725,7 @@ describe('TopicTree — merge picker modal', () => {
   it('closes merge modal on Cancel button click', () => {
     const { container } = render(<TopicTree {...defaultProps({ allTopics })} />);
     openMergeModal(container);
-    const cancelBtn = container.querySelector('button[aria-label="Cancel"]') as HTMLButtonElement;
+    const cancelBtn = container.querySelector('button[aria-label="Cancelar"]') as HTMLButtonElement;
     expect(cancelBtn).toBeTruthy();
     fireEvent.click(cancelBtn);
     expect(container.querySelector('input[type="search"]')).toBeNull();

@@ -32,32 +32,32 @@ type PermissionGroup = {
 
 const PERMISSION_GROUPS: ReadonlyArray<PermissionGroup> = [
   {
-    label: 'Stage transitions',
+    label: 'Transiciones de estado',
     icon: 'swap_horiz',
     keys: [
       { key: 'move_to_idea',       label: 'Idea' },
-      { key: 'move_to_draft',      label: 'Draft' },
-      { key: 'move_to_in_review',  label: 'In Review' },
-      { key: 'move_to_scheduled',  label: 'Scheduled' },
-      { key: 'move_to_published',  label: 'Published' },
-      { key: 'move_to_archived',   label: 'Archived' },
+      { key: 'move_to_draft',      label: 'Borrador' },
+      { key: 'move_to_in_review',  label: 'En revisión' },
+      { key: 'move_to_scheduled',  label: 'Programado' },
+      { key: 'move_to_published',  label: 'Publicado' },
+      { key: 'move_to_archived',   label: 'Archivado' },
     ],
   },
   {
-    label: 'Card actions',
+    label: 'Acciones de tarjeta',
     icon: 'task_alt',
     keys: [
-      { key: 'create_card', label: 'Create card' },
-      { key: 'delete_card', label: 'Delete card' },
+      { key: 'create_card', label: 'Crear tarjeta' },
+      { key: 'delete_card', label: 'Eliminar tarjeta' },
     ],
   },
   {
-    label: 'Admin actions',
+    label: 'Acciones de administración',
     icon: 'admin_panel_settings',
     keys: [
-      { key: 'manage_campaigns',   label: 'Manage campaigns' },
-      { key: 'manage_tags',        label: 'Manage tags' },
-      { key: 'manage_permissions', label: 'Manage permissions' },
+      { key: 'manage_campaigns',   label: 'Gestionar campañas' },
+      { key: 'manage_tags',        label: 'Gestionar etiquetas' },
+      { key: 'manage_permissions', label: 'Gestionar permisos' },
     ],
   },
 ];
@@ -140,7 +140,7 @@ export default function PermissionMatrix({
         });
         setErrors((e) => ({
           ...e,
-          [userId]: err instanceof Error ? err.message : 'Failed to update permission',
+          [userId]: err instanceof Error ? err.message : 'No se pudo actualizar el permiso',
         }));
       } finally {
         setPendingCells((s) => {
@@ -158,10 +158,11 @@ export default function PermissionMatrix({
         <div className="flex items-start gap-2">
           <span className="material-icons text-base">info</span>
           <div>
-            <p className="font-medium">Owners and admins automatically have every permission.</p>
+            <p className="font-medium">Los propietarios y administradores tienen automáticamente todos los permisos.</p>
             <p className="mt-1 text-blue-800/90 dark:text-blue-300/90">
-              The matrix below sets permissions for member-role users. Check a
-              box to grant; uncheck to revoke. Changes save instantly.
+              La tabla de abajo define los permisos de los usuarios con rol de
+              miembro. Marca una casilla para conceder; desmárcala para revocar.
+              Los cambios se guardan al instante.
             </p>
           </div>
         </div>
@@ -170,9 +171,9 @@ export default function PermissionMatrix({
       {members.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center dark:border-gray-700">
           <span className="material-icons text-4xl text-gray-400">group_off</span>
-          <h2 className="mt-2 text-base font-medium">No member-role users</h2>
+          <h2 className="mt-2 text-base font-medium">No hay usuarios con rol de miembro</h2>
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Invite team members from <span className="font-medium">Settings → Team</span> to assign them granular publishing permissions.
+            Invita a miembros del equipo desde <span className="font-medium">Ajustes → Equipo</span> para asignarles permisos de publicación granulares.
           </p>
         </div>
       ) : (
@@ -184,7 +185,7 @@ export default function PermissionMatrix({
                   rowSpan={2}
                   className="sticky left-0 z-10 bg-gray-50 px-3 py-2 text-left font-medium text-gray-700 dark:bg-gray-900/40 dark:text-gray-200"
                 >
-                  Member
+                  Miembro
                 </th>
                 {PERMISSION_GROUPS.map((group) => (
                   <th
@@ -263,7 +264,7 @@ export default function PermissionMatrix({
                             checked={isChecked}
                             disabled={disabled}
                             onChange={() => toggle(m.userId, key)}
-                            aria-label={`${key} for ${m.name || m.email}`}
+                            aria-label={`${key} para ${m.name || m.email}`}
                           />
                         </label>
                       </td>
@@ -280,9 +281,9 @@ export default function PermissionMatrix({
         <section className="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
           <header className="mb-3 flex items-center gap-2">
             <span className="material-icons text-base text-amber-600 dark:text-amber-400">key</span>
-            <h2 className="text-sm font-medium">Owners and admins</h2>
+            <h2 className="text-sm font-medium">Propietarios y administradores</h2>
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              Implicit grant on every permission key.
+              Permiso implícito en todas las claves.
             </span>
           </header>
           <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">

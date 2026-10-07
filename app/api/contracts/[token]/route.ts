@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { crmContracts, crmContractSigners, clients } from '@/lib/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { emitEvent } from '@/lib/automation';
 
 // GET — fetch contract for public signing view (signer token)
 export async function GET(req: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   if (!/^[a-f0-9]{64}$/.test(token)) {
-    return NextResponse.json({ success: false, message: 'Invalid token' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'Token no válido.' }, { status: 400 });
   }
 
   // Try as signer token first
@@ -16,19 +16,19 @@ export async function GET(req: Request, { params }: { params: Promise<{ token: s
     .where(eq(crmContractSigners.token, token)).limit(1);
 
   if (!signer) {
-    return NextResponse.json({ success: false, message: 'Contract not found' }, { status: 404 });
+    return NextResponse.json({ success: false, message: 'Contrato no encontrado.' }, { status: 404 });
   }
 
   const [contract] = await db.select().from(crmContracts)
     .where(eq(crmContracts.id, signer.contractId)).limit(1);
 
   if (!contract || contract.status === 'draft') {
-    return NextResponse.json({ success: false, message: 'Contract not found' }, { status: 404 });
+    return NextResponse.json({ success: false, message: 'Contrato no encontrado.' }, { status: 404 });
   }
 
   // Check expiration
   if (contract.validUntil && new Date(contract.validUntil) < new Date()) {
-    return NextResponse.json({ success: false, message: 'Contract has expired', expired: true }, { status: 410 });
+    return NextResponse.json({ success: false, message: 'El contrato ha caducado.', expired: true }, { status: 410 });
   }
 
   // Track view
@@ -64,7 +64,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ token: s
       logoUrl: contract.logoUrl,
       footerText: contract.footerText,
       status: contract.status,
-      companyName: clientRow?.company || 'Simpler Development',
+      companyName: clientRow?.company || 'CRM AGENTS',
       signer: {
         id: signer.id,
         name: signer.name,
@@ -82,31 +82,31 @@ export async function GET(req: Request, { params }: { params: Promise<{ token: s
 export async function POST(req: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   if (!/^[a-f0-9]{64}$/.test(token)) {
-    return NextResponse.json({ success: false, message: 'Invalid token' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'Token no válido.' }, { status: 400 });
   }
 
   const [signer] = await db.select().from(crmContractSigners)
     .where(eq(crmContractSigners.token, token)).limit(1);
 
-  if (!signer) return NextResponse.json({ success: false, message: 'Not found' }, { status: 404 });
+    if (!signer) return NextResponse.json({ success: false, message: 'No encontrado.' }, { status: 404 });
 
   const [contract] = await db.select().from(crmContracts)
     .where(eq(crmContracts.id, signer.contractId)).limit(1);
 
   if (!contract || contract.status === 'draft' || contract.status === 'voided') {
-    return NextResponse.json({ success: false, message: 'Contract not available' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'El contrato no está disponible.' }, { status: 400 });
   }
 
   if (contract.validUntil && new Date(contract.validUntil) < new Date()) {
-    return NextResponse.json({ success: false, message: 'Contract has expired' }, { status: 410 });
+    return NextResponse.json({ success: false, message: 'El contrato ha caducado.' }, { status: 410 });
   }
 
   if (signer.status === 'signed') {
-    return NextResponse.json({ success: false, message: 'Already signed' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'Ya has firmado este contrato.' }, { status: 400 });
   }
 
   if (signer.status === 'declined') {
-    return NextResponse.json({ success: false, message: 'Already declined' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'Ya has rechazado este contrato.' }, { status: 400 });
   }
 
   const body = await req.json();
@@ -116,10 +116,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
 
   if (body.action === 'sign') {
     if (!body.signatureName?.trim()) {
-      return NextResponse.json({ success: false, message: 'Full name is required' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'El nombre completo es obligatorio.' }, { status: 400 });
     }
     if (!body.signatureData) {
-      return NextResponse.json({ success: false, message: 'Signature is required' }, { status: 400 });
+      return NextResponse.json({ success: false, message: 'La firma es obligatoria.' }, { status: 400 });
     }
 
     // Sign
@@ -132,14 +132,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
     }).where(eq(crmContractSigners.id, signer.id));
 
     // Check if all signers have signed
-    const allSigners = await db.select({ status: crmContractSigners.status })
-      .from(crmContractSigners)
-      .where(eq(crmContractSigners.contractId, contract.id));
-
-    const allSigned = allSigners.every(s =>
-      s.status === 'signed' || (s.status === 'pending' && false) // only count after our update
-    );
-
     // Re-check after our update
     const updatedSigners = await db.select({ status: crmContractSigners.status })
       .from(crmContractSigners)
@@ -154,7 +146,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
         updatedAt: new Date(),
       }).where(eq(crmContracts.id, contract.id));
 
-      emitEvent('proposal.accepted', contract.clientId, 0, {
+      await emitEvent('proposal.accepted', contract.clientId, 0, {
         id: contract.id,
         title: contract.title,
         type: 'contract',
@@ -179,5 +171,5 @@ export async function POST(req: Request, { params }: { params: Promise<{ token: 
     return NextResponse.json({ success: true });
   }
 
-  return NextResponse.json({ success: false, message: 'Invalid action' }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'Acción no válida.' }, { status: 400 });
 }

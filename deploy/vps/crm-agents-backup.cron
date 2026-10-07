@@ -1,0 +1,1 @@
+17 3 * * * root /opt/crm-agents/deploy/vps/backup.sh >> /var/log/crm-agents-backup.log 2>&1

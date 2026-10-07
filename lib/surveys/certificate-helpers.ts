@@ -30,7 +30,7 @@ export function formatCompletionDate(input: Date | string | null | undefined): s
         : new Date();
   if (Number.isNaN(d.getTime())) return formatCompletionDate(new Date());
   // Always en-US to keep the certificate copy stable across environments.
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 /**

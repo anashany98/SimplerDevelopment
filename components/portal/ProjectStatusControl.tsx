@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const STATUS_META: Record<string, { icon: string; color: string; label: string }> = {
-  active: { icon: 'play_circle', color: 'text-green-600', label: 'Active' },
+  active: { icon: 'play_circle', color: 'text-green-600', label: 'Activo' },
   paused: { icon: 'pause_circle', color: 'text-yellow-600', label: 'Paused' },
-  completed: { icon: 'check_circle', color: 'text-blue-600', label: 'Completed' },
-  archived: { icon: 'archive', color: 'text-gray-500', label: 'Archived' },
+  completed: { icon: 'check_circle', color: 'text-blue-600', label: 'Completado' },
+  archived: { icon: 'archive', color: 'text-gray-500', label: 'Archivado' },
 };
 
 interface Props {

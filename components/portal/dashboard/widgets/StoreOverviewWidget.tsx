@@ -23,10 +23,10 @@ export default async function StoreOverviewWidget({
       <div>
         <div className="mb-3">
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">—</span>
-          <span className="ml-2 text-sm text-muted-foreground">no active stores</span>
+          <span className="ml-2 text-sm text-muted-foreground">sin tiendas activas</span>
         </div>
         <p className="text-sm text-muted-foreground py-2 text-center">
-          No websites set up yet.
+          Aún no hay webs configuradas.
         </p>
       </div>
     );
@@ -66,16 +66,16 @@ export default async function StoreOverviewWidget({
         <div>
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{orderCount}</span>
           <span className="ml-2 text-sm text-muted-foreground">
-            order{orderCount !== 1 ? 's' : ''}
+            {orderCount === 1 ? 'pedido' : 'pedidos'}
           </span>
         </div>
         <div className="text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{productCount}</span> product{productCount !== 1 ? 's' : ''}
+          <span className="font-medium text-foreground">{productCount}</span> {productCount === 1 ? 'producto' : 'productos'}
         </div>
       </div>
 
       {recentOrders.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No orders yet.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Aún no hay pedidos.</p>
       ) : (
         <ul className="space-y-2">
           {recentOrders.map((o) => (
@@ -111,7 +111,7 @@ export default async function StoreOverviewWidget({
             className="text-xs text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-sm">shopping_bag</span>
-            View all orders
+            Ver todos los pedidos
           </Link>
         </div>
       )}
@@ -123,7 +123,7 @@ export default async function StoreOverviewWidget({
             className="text-xs text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-sm">add_circle_outline</span>
-            Add your first product
+            Añade tu primer producto
           </Link>
         </div>
       )}

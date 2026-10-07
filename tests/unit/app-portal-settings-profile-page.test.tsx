@@ -63,7 +63,7 @@ function defaultFetch(url: string, init?: RequestInit): unknown {
     return { success: true, message: 'Password changed.' };
   }
   if (url === '/api/portal/default-website') {
-    // Return no websites so PortalSubdomainSection hides itself
+    // Return no websites soSubdominio del portalSection hides itself
     return { websites: [], defaultWebsiteId: null };
   }
   if (url === '/api/portal/my-subdomain') {
@@ -106,16 +106,16 @@ describe('ProfileSettingsPage', () => {
 
   // ── Successful initial load ────────────────────────────────────────────────
 
-  it('renders the Account Information section heading after load', async () => {
+  it('renders the Información de la cuenta section heading after load', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.getByText('Account Information')).toBeTruthy();
+    expect(screen.getByText('Información de la cuenta')).toBeTruthy();
   });
 
-  it('renders the Company Information section heading after load', async () => {
+  it('renders the Información de la empresa section heading after load', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.getByText('Company Information')).toBeTruthy();
+    expect(screen.getByText('Información de la empresa')).toBeTruthy();
   });
 
   it('populates name field with fetched profile data', async () => {
@@ -178,10 +178,10 @@ describe('ProfileSettingsPage', () => {
     expect(nameInput.value).toBe('');
   });
 
-  it('renders the Save Changes button', async () => {
+  it('renders the Guardar cambios button', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.getByText('Save Changes')).toBeTruthy();
+    expect(screen.getByText('Guardar cambios')).toBeTruthy();
   });
 
   // ── handleChange: clearing the message on field change ────────────────────
@@ -268,7 +268,7 @@ describe('ProfileSettingsPage', () => {
       fireEvent.submit(document.querySelector('form')!);
     });
     await flush();
-    expect(screen.getByText('Something went wrong. Please try again.')).toBeTruthy();
+    expect(screen.getByText('Algo salió mal. Inténtalo de nuevo.')).toBeTruthy();
   });
 
   it('shows success icon (check_circle) for success message', async () => {
@@ -324,11 +324,11 @@ describe('ProfileSettingsPage', () => {
     act(() => {
       fireEvent.submit(document.querySelector('form')!);
     });
-    // While pending, button should be disabled and show "Saving…"
+    // While pending, button should be disabled and show "Guardando…"
     await waitFor(() => {
-      expect(screen.getByText('Saving…')).toBeTruthy();
+      expect(screen.getByText('Guardando…')).toBeTruthy();
     });
-    const saveBtn = screen.getByText('Saving…').closest('button');
+    const saveBtn = screen.getByText('Guardando…').closest('button');
     expect(saveBtn?.disabled).toBe(true);
 
     // Resolve to finish
@@ -336,42 +336,42 @@ describe('ProfileSettingsPage', () => {
     await flush();
   });
 
-  // ── Change Password section ────────────────────────────────────────────────
+  // ── Cambiar contraseña section ────────────────────────────────────────────────
 
-  it('renders the Change Password section heading', async () => {
+  it('renders the Cambiar contraseña section heading', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.getByText('Change Password')).toBeTruthy();
+    expect(screen.getByText('Cambiar contraseña')).toBeTruthy();
   });
 
-  it('renders Current Password, New Password, Confirm New Password fields', async () => {
+  it('renders Contraseña actual, Nueva contraseña, Confirmar nueva contraseña fields', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.getByText('Current Password')).toBeTruthy();
-    expect(screen.getByText('New Password')).toBeTruthy();
-    expect(screen.getByText('Confirm New Password')).toBeTruthy();
+    expect(screen.getByText('Contraseña actual')).toBeTruthy();
+    expect(screen.getByText('Nueva contraseña')).toBeTruthy();
+    expect(screen.getByText('Confirmar nueva contraseña')).toBeTruthy();
   });
 
-  it('toggles password visibility with Show/Hide button', async () => {
+  it('toggles password visibility with Mostrar/Ocultar button', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    const showBtn = screen.getByText('Show');
+    const showBtn = screen.getByText('Mostrar');
     // All password inputs should start as type="password"
     const passwordInputs = Array.from(document.querySelectorAll('input[autocomplete="current-password"], input[autocomplete="new-password"]')) as HTMLInputElement[];
     expect(passwordInputs.every((i) => i.type === 'password')).toBe(true);
 
     await act(async () => { fireEvent.click(showBtn); });
-    // After clicking Show, inputs become type="text"
+    // After clicking Mostrar, inputs become type="text"
     const updatedInputs = Array.from(document.querySelectorAll('input[autocomplete="current-password"], input[autocomplete="new-password"]')) as HTMLInputElement[];
     expect(updatedInputs.every((i) => i.type === 'text')).toBe(true);
-    expect(screen.getByText('Hide')).toBeTruthy();
+    expect(screen.getByText('Ocultar')).toBeTruthy();
   });
 
-  it('clicking Hide toggles passwords back to hidden', async () => {
+  it('clicking Ocultar toggles passwords back to hidden', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    await act(async () => { fireEvent.click(screen.getByText('Show')); });
-    await act(async () => { fireEvent.click(screen.getByText('Hide')); });
+    await act(async () => { fireEvent.click(screen.getByText('Mostrar')); });
+    await act(async () => { fireEvent.click(screen.getByText('Ocultar')); });
     const passwordInputs = Array.from(document.querySelectorAll('input[autocomplete="current-password"], input[autocomplete="new-password"]')) as HTMLInputElement[];
     expect(passwordInputs.every((i) => i.type === 'password')).toBe(true);
   });
@@ -380,7 +380,7 @@ describe('ProfileSettingsPage', () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
 
-    // Find the Change Password form (second form on page)
+    // Find the Cambiar contraseña form (second form on page)
     const forms = document.querySelectorAll('form');
     const pwForm = forms[1] as HTMLFormElement;
 
@@ -392,7 +392,7 @@ describe('ProfileSettingsPage', () => {
 
     await act(async () => { fireEvent.submit(pwForm); });
     await flush();
-    expect(screen.getByText('New password must be at least 8 characters.')).toBeTruthy();
+    expect(screen.getByText('La nueva contraseña debe tener al menos 8 caracteres.')).toBeTruthy();
   });
 
   it('shows error when passwords do not match', async () => {
@@ -410,7 +410,7 @@ describe('ProfileSettingsPage', () => {
 
     await act(async () => { fireEvent.submit(pwForm); });
     await flush();
-    expect(screen.getByText('New passwords do not match.')).toBeTruthy();
+    expect(screen.getByText('Las nuevas contraseñas no coinciden.')).toBeTruthy();
   });
 
   it('shows success message on successful password change', async () => {
@@ -473,7 +473,7 @@ describe('ProfileSettingsPage', () => {
     expect(screen.getByText('Incorrect current password.')).toBeTruthy();
   });
 
-  it('falls back to "Something went wrong." when API error has no error field', async () => {
+  it('falls back to "Algo salió mal." when API error has no error field', async () => {
     installFetchMock((url, init) => {
       if (url === '/api/portal/change-password' && (init as RequestInit)?.method === 'POST') {
         return { success: false };
@@ -493,7 +493,7 @@ describe('ProfileSettingsPage', () => {
 
     await act(async () => { fireEvent.submit(pwForm); });
     await flush();
-    expect(screen.getByText('Something went wrong.')).toBeTruthy();
+    expect(screen.getByText('Algo salió mal.')).toBeTruthy();
   });
 
   it('shows generic error when password change fetch throws', async () => {
@@ -527,24 +527,24 @@ describe('ProfileSettingsPage', () => {
 
     await act(async () => { fireEvent.submit(pwForm); });
     await flush();
-    expect(screen.getByText('Something went wrong. Please try again.')).toBeTruthy();
+    expect(screen.getByText('Algo salió mal. Inténtalo de nuevo.')).toBeTruthy();
   });
 
-  it('renders the Update Password button', async () => {
+  it('renders the Actualizar contraseña button', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.getByText('Update Password')).toBeTruthy();
+    expect(screen.getByText('Actualizar contraseña')).toBeTruthy();
   });
 
-  // ── PortalSubdomainSection: hidden when no subdomain websites ─────────────
+  // ──Subdominio del portalSection: hidden when no subdomain websites ─────────────
 
-  it('does not render Portal Subdomain section when no websites have subdomains', async () => {
+  it('does not render Subdominio del portal section when no websites have subdomains', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.queryByText('Portal Subdomain')).toBeNull();
+    expect(screen.queryByText('Subdominio del portal')).toBeNull();
   });
 
-  it('renders Portal Subdomain section when websites with subdomains exist', async () => {
+  it('renders Subdominio del portal section when websites with subdomains exist', async () => {
     installFetchMock((url) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/default-website') {
@@ -561,11 +561,11 @@ describe('ProfileSettingsPage', () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
     await waitFor(() => {
-      expect(screen.getByText('Portal Subdomain')).toBeTruthy();
+      expect(screen.getByText('Subdominio del portal')).toBeTruthy();
     });
   });
 
-  it('shows the active subdomain URL in Portal Subdomain section', async () => {
+  it('shows the active subdomain URL in Subdominio del portal section', async () => {
     installFetchMock((url) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/default-website') {
@@ -579,11 +579,11 @@ describe('ProfileSettingsPage', () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
     await waitFor(() => {
-      expect(screen.getByText(/mysite\.simplerdevelopment\.com\/portal/)).toBeTruthy();
+      expect(screen.getByText(/mysite · CRM AGENTS \/portal/)).toBeTruthy();
     });
   });
 
-  it('clicking a website in Portal Subdomain calls POST /api/portal/default-website', async () => {
+  it('clicking a website in Subdominio del portal calls POST /api/portal/default-website', async () => {
     const fetchMock = installFetchMock((url, init) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/default-website' && (!init || (init as RequestInit).method !== 'POST')) {
@@ -631,7 +631,7 @@ describe('ProfileSettingsPage', () => {
     await waitFor(() => { expect(screen.getByText('My Site')).toBeTruthy(); });
     await act(async () => { fireEvent.click(screen.getByText('My Site')); });
     await flush();
-    expect(screen.getByText(/Portal subdomain set to mysite\.simplerdevelopment\.com/)).toBeTruthy();
+    expect(screen.getByText(/Subdominio del portal establecido en mysite · CRM AGENTS/)).toBeTruthy();
   });
 
   it('shows error when POST /api/portal/default-website fails', async () => {
@@ -680,13 +680,13 @@ describe('ProfileSettingsPage', () => {
 
   // ── DefaultPortalSection: hidden when portals.length <= 1 ─────────────────
 
-  it('does not render Default Portal section when user has only one portal', async () => {
+  it('does not render Portal predeterminado section when user has only one portal', async () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    expect(screen.queryByText('Default Portal')).toBeNull();
+    expect(screen.queryByText('Portal predeterminado')).toBeNull();
   });
 
-  it('renders Default Portal section when user has multiple portals', async () => {
+  it('renders Portal predeterminado section when user has multiple portals', async () => {
     installFetchMock((url) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/my-subdomain') {
@@ -703,11 +703,11 @@ describe('ProfileSettingsPage', () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
     await waitFor(() => {
-      expect(screen.getByText('Default Portal')).toBeTruthy();
+      expect(screen.getByText('Portal predeterminado')).toBeTruthy();
     });
   });
 
-  it('renders portal list with company names in Default Portal section', async () => {
+  it('renders portal list with company names in Portal predeterminado section', async () => {
     installFetchMock((url) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/my-subdomain') {
@@ -729,7 +729,7 @@ describe('ProfileSettingsPage', () => {
     });
   });
 
-  it('clicking a portal in Default Portal section calls POST /api/portal/default-portal', async () => {
+  it('clicking a portal in Portal predeterminado section calls POST /api/portal/default-portal', async () => {
     const fetchMock = installFetchMock((url, init) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/my-subdomain') {
@@ -781,7 +781,7 @@ describe('ProfileSettingsPage', () => {
     await waitFor(() => { expect(screen.getByText('Beta Corp')).toBeTruthy(); });
     await act(async () => { fireEvent.click(screen.getByText('Beta Corp')); });
     await flush();
-    expect(screen.getByText('Default portal updated.')).toBeTruthy();
+    expect(screen.getByText('Portal predeterminado actualizado.')).toBeTruthy();
   });
 
   it('shows error when POST /api/portal/default-portal fails', async () => {
@@ -809,7 +809,7 @@ describe('ProfileSettingsPage', () => {
     expect(screen.getByText('Permission denied.')).toBeTruthy();
   });
 
-  it('falls back to "Something went wrong." when default-portal error has no error field', async () => {
+  it('falls back to "Algo salió mal." when default-portal error has no error field', async () => {
     installFetchMock((url, init) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/my-subdomain') {
@@ -831,7 +831,7 @@ describe('ProfileSettingsPage', () => {
     await waitFor(() => { expect(screen.getByText('Beta Corp')).toBeTruthy(); });
     await act(async () => { fireEvent.click(screen.getByText('Beta Corp')); });
     await flush();
-    expect(screen.getByText('Something went wrong.')).toBeTruthy();
+    expect(screen.getByText('Algo salió mal.')).toBeTruthy();
   });
 
   it('shows subdomain URL for portals that have a subdomain', async () => {
@@ -851,8 +851,8 @@ describe('ProfileSettingsPage', () => {
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
     await waitFor(() => {
-      expect(screen.getByText(/acme\.simplerdevelopment\.com/)).toBeTruthy();
-      expect(screen.getByText(/beta\.simplerdevelopment\.com/)).toBeTruthy();
+      expect(screen.getByText(/acme · CRM AGENTS/)).toBeTruthy();
+      expect(screen.getByText(/beta · CRM AGENTS/)).toBeTruthy();
     });
   });
 
@@ -874,10 +874,10 @@ describe('ProfileSettingsPage', () => {
     await flush();
     await waitFor(() => { expect(screen.getByText('Beta Corp')).toBeTruthy(); });
     // Beta has null subdomain — no beta.simplerdevelopment.com text
-    expect(screen.queryByText(/beta\.simplerdevelopment\.com/)).toBeNull();
+    expect(screen.queryByText(/beta · CRM AGENTS/)).toBeNull();
   });
 
-  it('renders the first letter of company name as avatar in Default Portal section', async () => {
+  it('renders the first letter of company name as avatar in Portal predeterminado section', async () => {
     installFetchMock((url) => {
       if (url === '/api/portal/settings/profile') return { success: true, data: baseProfile };
       if (url === '/api/portal/my-subdomain') {
@@ -893,7 +893,7 @@ describe('ProfileSettingsPage', () => {
     });
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    await waitFor(() => { expect(screen.getByText('Default Portal')).toBeTruthy(); });
+    await waitFor(() => { expect(screen.getByText('Portal predeterminado')).toBeTruthy(); });
     const { container } = render(<React.Fragment />); // just use document
     const bodyText = document.body.textContent ?? '';
     expect(bodyText).toContain('A'); // Acme -> A
@@ -916,7 +916,7 @@ describe('ProfileSettingsPage', () => {
     });
     await act(async () => { render(<ProfileSettingsPage />); });
     await flush();
-    await waitFor(() => { expect(screen.getByText('Default Portal')).toBeTruthy(); });
+    await waitFor(() => { expect(screen.getByText('Portal predeterminado')).toBeTruthy(); });
     // company='' -> fallback 'U'
     expect(document.body.textContent).toContain('U');
   });

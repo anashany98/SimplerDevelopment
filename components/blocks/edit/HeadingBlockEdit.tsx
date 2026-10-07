@@ -43,17 +43,15 @@ export function HeadingBlockEdit({ block, onChange }: HeadingBlockEditProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Alignment
-          </label>
+          <label className="block text-sm font-medium text-foreground mb-2">Alineación</label>
           <select
             value={block.alignment || 'left'}
             onChange={(e) => onChange({ ...block, alignment: e.target.value as HeadingBlock['alignment'] })}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-primary"
           >
-            <option value="left">Left</option>
-            <option value="center">Center</option>
-            <option value="right">Right</option>
+            <option value="left">Izquierda</option>
+            <option value="center">Centrado</option>
+            <option value="right">Derecha</option>
           </select>
         </div>
       </div>

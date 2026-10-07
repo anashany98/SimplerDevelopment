@@ -33,7 +33,7 @@ const COMMON_PASSWORDS = new Set([
   '11111111', '00000000', 'aaaaaaaa', 'letmein', 'welcome', 'welcome1',
   'iloveyou', 'admin', 'admin123', 'administrator', 'changeme', 'trustno1',
   'football', 'baseball', 'sunshine', 'princess', 'monkey123', 'starwars',
-  'whatever', 'superman', 'batman123', 'simplerdev', 'simplerdevelopment',
+  'whatever', 'superman', 'batman123', 'crmdev', 'crmagents',
 ]);
 
 export interface PasswordPolicyContext {

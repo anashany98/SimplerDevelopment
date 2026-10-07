@@ -110,7 +110,7 @@ describe('public booking POST — group capacity @booking @public @group', () =>
     expect(fourth.data?.success).toBe(false);
     // Group capacity uses "seats remaining"; legacy maxGuests path used
      // "spots remaining". Either is acceptable signal of a capacity reject.
-    expect(fourth.data?.message ?? '').toMatch(/seats remaining|spots remaining/i);
+    expect(fourth.data?.message ?? '').toMatch(/plazas/i);
 
     // Verify three bookings landed in DB, all confirmed.
     const sql = getTestSql();
@@ -261,7 +261,7 @@ describe('public booking POST — group capacity @booking @public @group', () =>
       },
     );
     expect(overflow.status).toBe(409);
-    expect(overflow.data?.message ?? '').toMatch(/seats remaining|spots remaining/i);
+    expect(overflow.data?.message ?? '').toMatch(/plazas/i);
 
     // No partial write — only the 2 successful single-seat bookings exist.
     const sql = getTestSql();

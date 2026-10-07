@@ -54,14 +54,12 @@ export default function EditBookingPage({ params }: { params: Promise<{ id: stri
     return (
       <div className="max-w-4xl mx-auto text-center py-20 space-y-4">
         <span className="material-icons text-5xl text-muted-foreground/50">error_outline</span>
-        <p className="text-muted-foreground">Booking page not found</p>
+        <p className="text-muted-foreground">Página de reservas no encontrada</p>
         <Link
           href="/portal/tools/booking"
           className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
         >
-          <span className="material-icons text-lg">arrow_back</span>
-          Back to Booking Pages
-        </Link>
+          <span className="material-icons text-lg">arrow_back</span>Volver a las páginas de reservas</Link>
       </div>
     );
   }
@@ -103,7 +101,7 @@ export default function EditBookingPage({ params }: { params: Promise<{ id: stri
             onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
               activeTab === tab.key
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-foreground text-background'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
           >

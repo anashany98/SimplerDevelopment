@@ -27,18 +27,18 @@ interface NavItem {
 }
 
 const NAV: NavItem[] = [
-  { path: '',                label: 'Dashboard',     icon: 'dashboard' },
-  { path: 'entries',         label: 'Entries',       icon: 'article', matches: ['posts'] },
-  { path: 'content-types',   label: 'Content Types', icon: 'description' },
-  { path: 'taxonomy',        label: 'Taxonomy',      icon: 'account_tree', matches: ['categories', 'tags'] },
-  { path: 'navigation',      label: 'Navigation',    icon: 'menu' },
-  { path: 'branding',        label: 'Branding',      icon: 'palette' },
-  { path: 'code',            label: 'Code',          icon: 'code' },
-  { path: 'calendar',        label: 'Calendar',      icon: 'calendar_month' },
-  { path: 'automations',     label: 'Automations',   icon: 'bolt' },
-  { path: 'email',           label: 'Email',         icon: 'mail' },
-  { path: 'store',           label: 'Store',         icon: 'shopping_cart' },
-  { path: 'settings',        label: 'Settings',      icon: 'settings' },
+  { path: '',                label: 'Panel',     icon: 'dashboard' },
+  { path: 'entries',         label: 'Entradas',       icon: 'article', matches: ['posts'] },
+  { path: 'content-types',   label: 'Tipos de contenido', icon: 'description' },
+  { path: 'taxonomy',        label: 'Taxonomía',      icon: 'account_tree', matches: ['categories', 'tags'] },
+  { path: 'navigation',      label: 'Navegación',    icon: 'menu' },
+  { path: 'branding',        label: 'Marca',      icon: 'palette' },
+  { path: 'code',            label: 'Código',          icon: 'code' },
+  { path: 'calendar',        label: 'Calendario',      icon: 'calendar_month' },
+  { path: 'automations',     label: 'Automatizaciones',   icon: 'bolt' },
+  { path: 'email',           label: 'Correo',         icon: 'mail' },
+  { path: 'store',           label: 'Tienda',         icon: 'shopping_cart' },
+  { path: 'settings',        label: 'Ajustes',      icon: 'settings' },
 ];
 
 // Routes that take over the full viewport (their own toolbar + iframe). The
@@ -87,7 +87,7 @@ export function WebsiteSubNav({ site }: WebsiteSubNavProps) {
       : site.subdomain
         ? `https://${site.subdomain}.simplerdevelopment.com`
         : null;
-  const subtitle = site.domain || site.vercelDomain || (site.subdomain ? `${site.subdomain}.simplerdevelopment.com` : '');
+  const subtitle = site.domain || site.vercelDomain || (site.subdomain ? `${site.subdomain} · CRM AGENTS` : '');
 
   return (
     <div className="-mx-6 -mt-6 mb-6 sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
@@ -97,7 +97,7 @@ export function WebsiteSubNav({ site }: WebsiteSubNavProps) {
           <Link
             href="/portal/websites"
             className="flex items-center justify-center w-8 h-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
-            title="All websites"
+            title="Todos los sitios"
           >
             <span className="material-icons text-base">arrow_back</span>
           </Link>
@@ -120,15 +120,15 @@ export function WebsiteSubNav({ site }: WebsiteSubNavProps) {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md border border-border hover:bg-accent transition-colors"
             >
               <span className="material-icons text-sm">open_in_new</span>
-              View site
+              Ver web
             </a>
           )}
           <Link
             href={`${sitePrefix}/posts/new`}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 transition-colors"
           >
             <span className="material-icons text-sm">add</span>
-            New Entry
+            Nueva entrada
           </Link>
         </div>
       </div>

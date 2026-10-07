@@ -18,7 +18,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "SimplerDevelopment Pitch Decks",
+  "name": "CRM AGENTS Pitch Decks",
   "applicationCategory": "BusinessApplication",
   "featureList": [
     "AI-assisted slide generation and regeneration",
@@ -57,7 +57,7 @@ Agencies and their clients build pitch decks in a design tool, share them as PDF
 
 ## Solution
 
-SimplerDevelopment's pitch deck module brings the whole presentation workflow into the client portal. AI generates an initial slide structure from a brief. The block editor makes per-slide edits straightforward. Multiple collaborators can edit at the same time via real-time presence. Every published version is preserved in history and can be restored. The finished deck is shared from a URL on the client's domain — no third-party link required.
+CRM AGENTS's pitch deck module brings the whole presentation workflow into the client portal. AI generates an initial slide structure from a brief. The block editor makes per-slide edits straightforward. Multiple collaborators can edit at the same time via real-time presence. Every published version is preserved in history and can be restored. The finished deck is shared from a URL on the client's domain — no third-party link required.
 
 ---
 

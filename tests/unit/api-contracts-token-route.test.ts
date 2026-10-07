@@ -298,7 +298,7 @@ describe('GET /api/contracts/[token]', () => {
     const res = await GET(new Request('http://x'), makeParams('short'));
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body).toEqual({ success: false, message: 'Invalid token' });
+    expect(body).toEqual({ success: false, message: 'Token no válido.' });
   });
 
   it('returns 400 when token has uppercase chars (regex requires lowercase hex)', async () => {
@@ -310,7 +310,7 @@ describe('GET /api/contracts/[token]', () => {
     const res = await GET(new Request('http://x'), makeParams(VALID_TOKEN));
     expect(res.status).toBe(404);
     const body = await res.json();
-    expect(body.message).toBe('Contract not found');
+    expect(body.message).toBe('Contrato no encontrado.');
   });
 
   it('returns 404 when contract for signer does not exist', async () => {
@@ -378,14 +378,14 @@ describe('GET /api/contracts/[token]', () => {
     expect(state.signers[0].viewedAt).toBe(alreadyViewedAt);
   });
 
-  it('falls back to "Simpler Development" when client row has no company', async () => {
+  it('falls back to "CRM AGENTS" when client row has no company', async () => {
     state.contracts.push(defaultContract());
     state.signers.push(defaultSigner());
     // No clients row pushed
     const res = await GET(new Request('http://x'), makeParams(VALID_TOKEN));
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.companyName).toBe('Simpler Development');
+    expect(body.data.companyName).toBe('CRM AGENTS');
   });
 
   it('falls back to default company name when client.company is null', async () => {
@@ -395,7 +395,7 @@ describe('GET /api/contracts/[token]', () => {
     const res = await GET(new Request('http://x'), makeParams(VALID_TOKEN));
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body.data.companyName).toBe('Simpler Development');
+    expect(body.data.companyName).toBe('CRM AGENTS');
   });
 
   it('returns 200 when validUntil is in the future', async () => {
@@ -416,7 +416,7 @@ describe('POST /api/contracts/[token]', () => {
     const res = await POST(makePostRequest({ action: 'sign' }), makeParams('nope'));
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Invalid token');
+    expect(body.message).toBe('Token no válido.');
   });
 
   it('returns 404 when signer is not found', async () => {
@@ -435,7 +435,7 @@ describe('POST /api/contracts/[token]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Contract not available');
+    expect(body.message).toBe('El contrato no está disponible.');
   });
 
   it('returns 400 when contract is draft', async () => {
@@ -479,7 +479,7 @@ describe('POST /api/contracts/[token]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Already signed');
+    expect(body.message).toBe('Ya has firmado este contrato.');
   });
 
   it('returns 400 when signer already declined', async () => {
@@ -491,7 +491,7 @@ describe('POST /api/contracts/[token]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Already declined');
+    expect(body.message).toBe('Ya has rechazado este contrato.');
   });
 
   it('returns 400 when signatureName is missing on a sign action', async () => {
@@ -503,7 +503,7 @@ describe('POST /api/contracts/[token]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Full name is required');
+    expect(body.message).toBe('El nombre completo es obligatorio.');
   });
 
   it('returns 400 when signatureData is missing on a sign action', async () => {
@@ -515,7 +515,7 @@ describe('POST /api/contracts/[token]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Signature is required');
+    expect(body.message).toBe('La firma es obligatoria.');
   });
 
   it('signs the only signer, marks contract fully_executed, emits proposal.accepted', async () => {
@@ -628,6 +628,6 @@ describe('POST /api/contracts/[token]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Invalid action');
+    expect(body.message).toBe('Acción no válida.');
   });
 });

@@ -202,7 +202,7 @@ describe('HtmlRenderEditor', () => {
     const { getByTestId } = render(
       <HtmlRenderEditor block={makeBlock({ width: 'contained' })} onUpdate={onUpdate} />,
     );
-    const select = getByTestId('select-Width').querySelector('select');
+    const select = getByTestId('select-Ancho').querySelector('select');
     expect(select?.value).toBe('contained');
   });
 
@@ -211,7 +211,7 @@ describe('HtmlRenderEditor', () => {
     const { getByTestId } = render(
       <HtmlRenderEditor block={makeBlock()} onUpdate={onUpdate} />,
     );
-    const select = getByTestId('select-Width').querySelector('select')!;
+    const select = getByTestId('select-Ancho').querySelector('select')!;
     fireEvent.change(select, { target: { value: 'contained' } });
     expect(onUpdate).toHaveBeenCalledWith(expect.objectContaining({ width: 'contained' }));
   });
@@ -221,8 +221,8 @@ describe('HtmlRenderEditor', () => {
     const { container } = render(
       <HtmlRenderEditor block={makeBlock()} onUpdate={onUpdate} />,
     );
-    expect(container.textContent).not.toContain('Content');
-    expect(container.textContent).not.toContain('Field schema');
+    expect(container.textContent).not.toContain('Contenido');
+    expect(container.textContent).not.toContain('Esquema de campos');
   });
 
   it('shows the Content section once at least one field is present', () => {
@@ -234,8 +234,8 @@ describe('HtmlRenderEditor', () => {
     const { container } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    expect(container.textContent).toContain('Content');
-    expect(container.textContent).toContain('Field schema (1)');
+    expect(container.textContent).toContain('Contenido');
+    expect(container.textContent).toContain('Esquema de campos (1)');
   });
 
   it('emits a values update when a field input changes', () => {
@@ -275,7 +275,7 @@ describe('HtmlRenderEditor', () => {
     const { container } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    expect(container.textContent).toContain('Loop source');
+    expect(container.textContent).toContain('Origen del bucle');
   });
 
   it('shows the loop section when a loop object is set even without data-loop markup, with warning', () => {
@@ -287,7 +287,7 @@ describe('HtmlRenderEditor', () => {
     const { container } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    expect(container.textContent).toContain('Loop source');
+    expect(container.textContent).toContain('Origen del bucle');
     expect(container.textContent).toContain('No');
     expect(container.textContent).toContain('data-loop');
   });
@@ -298,7 +298,7 @@ describe('HtmlRenderEditor', () => {
     const { getByTestId } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    const input = getByTestId('field-Post type slug').querySelector('input')!;
+    const input = getByTestId('field-Slug del tipo de contenido').querySelector('input')!;
     fireEvent.change(input, { target: { value: 'case-study' } });
     expect(onUpdate).toHaveBeenCalledWith(expect.objectContaining({
       loop: expect.objectContaining({ source: 'posts', postType: 'case-study', limit: 3, orderBy: 'recent' }),
@@ -314,9 +314,9 @@ describe('HtmlRenderEditor', () => {
     const { getByTestId } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    const limit = getByTestId('number-Limit').querySelector('input')!;
+    const limit = getByTestId('number-Límite').querySelector('input')!;
     fireEvent.change(limit, { target: { value: '8' } });
-    const order = getByTestId('select-Order').querySelector('select')!;
+    const order = getByTestId('select-Pedido').querySelector('select')!;
     fireEvent.change(order, { target: { value: 'title' } });
     expect(onUpdate).toHaveBeenCalledWith(expect.objectContaining({
       loop: expect.objectContaining({ limit: 8 }),
@@ -335,7 +335,7 @@ describe('HtmlRenderEditor', () => {
     const { getByText } = render(
       <HtmlRenderEditor block={block} onUpdate={onUpdate} />,
     );
-    fireEvent.click(getByText(/Disable loop/));
+    fireEvent.click(getByText(/Desactivar bucle/));
     expect(onUpdate).toHaveBeenCalledWith({ loop: undefined });
   });
 
@@ -503,8 +503,8 @@ describe('HtmlRenderFieldInput dispatch', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
     expect(container.textContent).toContain('URL');
-    expect(container.textContent).toContain('Label');
-    expect(container.textContent).toContain('Open in');
+    expect(container.textContent).toContain('Etiqueta');
+    expect(container.textContent).toContain('Abrir en');
   });
 });
 
@@ -519,7 +519,7 @@ describe('HtmlRenderEditor schema editor', () => {
     const { getAllByTestId } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     // The "Label" input in the schema editor (1 field). There may be multiple
     // matching elements; the first within the schema panel is what we want.
-    const labelInputs = getAllByTestId('field-Label');
+    const labelInputs = getAllByTestId('field-Etiqueta');
     const input = labelInputs[0].querySelector('input')!;
     fireEvent.change(input, { target: { value: 'Headline' } });
     expect(onUpdate).toHaveBeenCalledWith(expect.objectContaining({
@@ -535,7 +535,7 @@ describe('HtmlRenderEditor schema editor', () => {
       fields: [{ name: 'title', type: 'text', label: 'Title' }],
     });
     const { getByTestId } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
-    const select = getByTestId('select-Type').querySelector('select')!;
+    const select = getByTestId('select-Tipo').querySelector('select')!;
     fireEvent.change(select, { target: { value: 'textarea' } });
     expect(onUpdate).toHaveBeenCalledWith(expect.objectContaining({
       fields: expect.arrayContaining([
@@ -552,7 +552,7 @@ describe('HtmlRenderEditor schema editor', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title')?.startsWith('Delete field'),
+      (b) => b.getAttribute('title')?.startsWith('Eliminar campo'),
     )!;
     fireEvent.click(deleteBtn);
     expect(onUpdate).toHaveBeenCalledWith({ fields: [], values: {} });
@@ -568,7 +568,7 @@ describe('HtmlRenderEditor schema editor', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const renameBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title')?.startsWith('Rename field key'),
+      (b) => b.getAttribute('title')?.startsWith('Renombrar la clave del campo'),
     )!;
     fireEvent.click(renameBtn);
     expect(promptSpy).toHaveBeenCalled();
@@ -590,7 +590,7 @@ describe('HtmlRenderEditor schema editor', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const renameBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title')?.startsWith('Rename field key'),
+      (b) => b.getAttribute('title')?.startsWith('Renombrar la clave del campo'),
     )!;
     fireEvent.click(renameBtn);
     expect(alertSpy).toHaveBeenCalled();
@@ -614,7 +614,7 @@ describe('HtmlRenderEditor schema editor', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const renameBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title')?.startsWith('Rename field key'),
+      (b) => b.getAttribute('title')?.startsWith('Renombrar la clave del campo'),
     )!;
     fireEvent.click(renameBtn);
     expect(alertSpy).toHaveBeenCalled();
@@ -626,7 +626,7 @@ describe('HtmlRenderEditor schema editor', () => {
       fields: [{ name: 'orphan', type: 'text' }],
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    expect(container.textContent).toContain('unused');
+    expect(container.textContent).toContain('sin usar');
   });
 
   it('shows the "Nx" usage badge with a count when the template references the field', () => {
@@ -648,10 +648,10 @@ describe('HtmlRenderAddFieldMenu', () => {
       fields: [{ name: 'existing', type: 'text' }],
     });
     const { container, getByText } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
-    fireEvent.click(getByText('Add field'));
+    fireEvent.click(getByText('Agregar campo'));
     // Preset "Text" should now be visible.
     expect(container.textContent).toContain('Text');
-    fireEvent.click(getByText('Textarea'));
+    fireEvent.click(getByText('Área de texto'));
     expect(onUpdate).toHaveBeenCalledWith(expect.objectContaining({
       fields: expect.arrayContaining([
         expect.objectContaining({ type: 'textarea' }),
@@ -665,8 +665,8 @@ describe('HtmlRenderAddFieldMenu', () => {
       fields: [{ name: 'text', type: 'text' }],
     });
     const { getByText } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
-    fireEvent.click(getByText('Add field'));
-    fireEvent.click(getByText('Text'));
+    fireEvent.click(getByText('Agregar campo'));
+    fireEvent.click(getByText('Texto'));
     const call = onUpdate.mock.calls[onUpdate.mock.calls.length - 1][0];
     const added = call.fields[call.fields.length - 1];
     expect(added.name).toMatch(/^text_\d+$/);
@@ -697,7 +697,7 @@ describe('HtmlRenderFullJson export/import', () => {
       fields: [{ name: 'title', type: 'text' }],
     });
     const { container, getByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    const applyBtn = getByText('Apply') as HTMLButtonElement;
+    const applyBtn = getByText('Aplicar') as HTMLButtonElement;
     expect(applyBtn.disabled).toBe(true);
     // Now edit the JSON textarea.
     const textareas = container.querySelectorAll('textarea');
@@ -718,8 +718,8 @@ describe('HtmlRenderFullJson export/import', () => {
       (t) => (t.value || '').includes('"version": 1'),
     )!;
     fireEvent.change(jsonTextarea, { target: { value: 'not json' } });
-    fireEvent.click(getByText('Apply'));
-    expect(container.textContent).toContain('Invalid JSON');
+    fireEvent.click(getByText('Aplicar'));
+    expect(container.textContent).toContain('JSON no válido');
   });
 
   it('shows an error when the payload is missing html', () => {
@@ -732,8 +732,8 @@ describe('HtmlRenderFullJson export/import', () => {
       (t) => (t.value || '').includes('"version": 1'),
     )!;
     fireEvent.change(jsonTextarea, { target: { value: JSON.stringify({ fields: [] }) } });
-    fireEvent.click(getByText('Apply'));
-    expect(container.textContent).toContain('Missing `html`');
+    fireEvent.click(getByText('Aplicar'));
+    expect(container.textContent).toContain('Falta `html`');
   });
 
   it('shows an error when fields is not an array', () => {
@@ -746,8 +746,8 @@ describe('HtmlRenderFullJson export/import', () => {
       (t) => (t.value || '').includes('"version": 1'),
     )!;
     fireEvent.change(jsonTextarea, { target: { value: JSON.stringify({ html: '<p>x</p>', fields: {} }) } });
-    fireEvent.click(getByText('Apply'));
-    expect(container.textContent).toContain('Missing `fields`');
+    fireEvent.click(getByText('Aplicar'));
+    expect(container.textContent).toContain('Falta `fields`');
   });
 
   it('applies a valid JSON payload', () => {
@@ -767,7 +767,7 @@ describe('HtmlRenderFullJson export/import', () => {
       width: 'contained',
     };
     fireEvent.change(jsonTextarea, { target: { value: JSON.stringify(payload) } });
-    fireEvent.click(getByText('Apply'));
+    fireEvent.click(getByText('Aplicar'));
     expect(onUpdate).toHaveBeenCalledWith(expect.objectContaining({
       html: '<p>{{x}}</p>',
       width: 'contained',
@@ -786,7 +786,7 @@ describe('HtmlRenderFullJson export/import', () => {
     const original = jsonTextarea.value;
     fireEvent.change(jsonTextarea, { target: { value: '{}' } });
     expect(jsonTextarea.value).toBe('{}');
-    fireEvent.click(getByText('Reset'));
+    fireEvent.click(getByText('Restablecer'));
     expect(jsonTextarea.value).toBe(original);
   });
 
@@ -799,7 +799,7 @@ describe('HtmlRenderFullJson export/import', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { getByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
     await act(async () => {
-      fireEvent.click(getByText('Copy JSON'));
+      fireEvent.click(getByText('Copiar JSON'));
     });
     expect(writeText).toHaveBeenCalled();
   });
@@ -813,9 +813,9 @@ describe('HtmlRenderFullJson export/import', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { getByText, container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
     await act(async () => {
-      fireEvent.click(getByText('Copy JSON'));
+      fireEvent.click(getByText('Copiar JSON'));
     });
-    expect(container.textContent).toContain('Clipboard write failed');
+    expect(container.textContent).toContain('No se pudo escribir en el portapapeles');
   });
 });
 
@@ -825,7 +825,7 @@ describe('HtmlRenderSchemaActions', () => {
   it('disables the Paste button when the clipboard is empty', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { getByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    expect((getByText('Paste') as HTMLButtonElement).disabled).toBe(true);
+    expect((getByText('Pegar') as HTMLButtonElement).disabled).toBe(true);
   });
 
   it('writes the schema to localStorage when Copy is clicked', () => {
@@ -835,8 +835,8 @@ describe('HtmlRenderSchemaActions', () => {
     });
     const { getAllByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
     // There are several Copy-style buttons; the schema one is the first
-    // labeled exactly "Copy" (not "Copy JSON").
-    const copyButtons = getAllByText('Copy');
+    // labeled exactly "Copiar" (not "Copiar JSON").
+    const copyButtons = getAllByText('Copiar');
     fireEvent.click(copyButtons[0]);
     expect(window.localStorage.getItem('sd-html-render-schema-clipboard')).toBeTruthy();
   });
@@ -860,7 +860,7 @@ describe('HtmlRenderSchemaActions', () => {
     // Find Paste button by its title attribute (which always starts with "Paste"
     // or "No schema in clipboard" — the populated case has the former).
     const pasteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => (b.getAttribute('title') || '').startsWith('Paste'),
+      (b) => (b.getAttribute('title') || '').startsWith('Pegar'),
     )!;
     fireEvent.click(pasteBtn);
     expect(confirmSpy).toHaveBeenCalled();
@@ -885,7 +885,7 @@ describe('HtmlRenderSchemaActions', () => {
     const block = makeBlock({ fields: [{ name: 'x', type: 'text' }] });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const pasteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => (b.getAttribute('title') || '').startsWith('Paste'),
+      (b) => (b.getAttribute('title') || '').startsWith('Pegar'),
     )!;
     fireEvent.click(pasteBtn);
     // No html replacement should have happened.
@@ -903,7 +903,7 @@ describe('HtmlRenderSchemaActions', () => {
     URL.createObjectURL = vi.fn(() => 'blob:mocked');
     URL.revokeObjectURL = vi.fn();
     const { getByText } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    fireEvent.click(getByText('Export'));
+    fireEvent.click(getByText('Exportar'));
     expect(clickSpy).toHaveBeenCalled();
   });
 });
@@ -944,7 +944,7 @@ describe('HtmlRenderArrayEditor', () => {
     // There can be multiple "Add item" buttons (one in the values-form array
     // editor, plus matches from sub-field UI). Pick the first.
     const addBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => (b.textContent || '').includes('Add item'),
+      (b) => (b.textContent || '').includes('Agregar elemento'),
     )!;
     fireEvent.click(addBtn);
     expect(onUpdate).toHaveBeenCalledWith({
@@ -967,7 +967,7 @@ describe('HtmlRenderArrayEditor', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const removeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title') === 'Remove',
+      (b) => b.getAttribute('title') === 'Quitar',
     )!;
     fireEvent.click(removeBtn);
     expect(onUpdate).toHaveBeenCalledWith({
@@ -1018,7 +1018,7 @@ describe('HtmlRenderSubFieldsEditor', () => {
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={onUpdate} />);
     const removeBtns = Array.from(container.querySelectorAll('button')).filter(
-      (b) => b.getAttribute('title') === 'Remove sub-field',
+      (b) => b.getAttribute('title') === 'Quitar subcampo',
     );
     expect(removeBtns.length).toBe(2);
     fireEvent.click(removeBtns[0]);
@@ -1075,7 +1075,7 @@ describe('HtmlRenderPostPicker', () => {
       fields: [{ name: 'p', type: 'post', label: 'P' }],
     });
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} />);
-    expect(container.textContent).toContain('No site context');
+    expect(container.textContent).toContain('Sin contexto de sitio');
   });
 
   it('shows a Loading state, then renders post options after fetch resolves', async () => {
@@ -1089,7 +1089,7 @@ describe('HtmlRenderPostPicker', () => {
       }),
     }) as any;
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} siteId={9} />);
-    expect(container.textContent).toContain('Loading posts');
+    expect(container.textContent).toContain('Cargando publicaciones…');
     await act(async () => { await Promise.resolve(); });
     await act(async () => { await Promise.resolve(); });
     expect(container.textContent).toContain('Post A');
@@ -1120,7 +1120,7 @@ describe('HtmlRenderUrlAutocomplete', () => {
       json: async () => ({ success: true, data: { posts: [], decks: [], bookings: [], proposals: [] } }),
     }) as any;
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} siteId={9} />);
-    const input = container.querySelector('input[placeholder*="pick a link"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="elige un enlace"]') as HTMLInputElement;
     expect(input).toBeTruthy();
   });
 
@@ -1142,7 +1142,7 @@ describe('HtmlRenderUrlAutocomplete', () => {
     const { container } = render(<HtmlRenderEditor block={block} onUpdate={vi.fn()} siteId={9} />);
     await act(async () => { await Promise.resolve(); });
     await act(async () => { await Promise.resolve(); });
-    const input = container.querySelector('input[placeholder*="pick a link"]') as HTMLInputElement;
+    const input = container.querySelector('input[placeholder*="elige un enlace"]') as HTMLInputElement;
     fireEvent.focus(input);
     expect(container.textContent).toContain('About');
   });
@@ -1162,7 +1162,7 @@ describe('ImagePickerModal', () => {
         onClose={onClose}
       />,
     );
-    expect(getByText('Replace image')).toBeTruthy();
+    expect(getByText('Reemplazar imagen')).toBeTruthy();
     expect(container.querySelector('[data-testid="media-picker"]')).toBeTruthy();
   });
 
@@ -1190,7 +1190,7 @@ describe('ImagePickerModal', () => {
         onClose={onClose}
       />,
     );
-    fireEvent.click(getByText('Replace image'));
+    fireEvent.click(getByText('Reemplazar imagen'));
     expect(onClose).not.toHaveBeenCalled();
   });
 
@@ -1204,7 +1204,7 @@ describe('ImagePickerModal', () => {
         onClose={onClose}
       />,
     );
-    fireEvent.click(getByText('Close'));
+    fireEvent.click(getByText('Cerrar'));
     expect(onClose).toHaveBeenCalled();
   });
 

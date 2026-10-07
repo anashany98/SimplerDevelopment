@@ -686,7 +686,7 @@ describe('GET /api/public/booking/[slug]/slots', () => {
     const res = await slotsGET(makeSlotsReq(null), slotsParams());
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toMatch(/date parameter/i);
+    expect(body.message).toMatch(/fecha válida/i);
   });
 
   it('returns 400 when date param is malformed', async () => {
@@ -699,7 +699,7 @@ describe('GET /api/public/booking/[slug]/slots', () => {
     const res = await slotsGET(makeSlotsReq('2026-12-01'), slotsParams());
     expect(res.status).toBe(404);
     const body = await res.json();
-    expect(body.message).toMatch(/not found/i);
+    expect(body.message).toMatch(/no encontrada/i);
   });
 
   it('returns empty data when requested date is beyond maxAdvanceDays', async () => {

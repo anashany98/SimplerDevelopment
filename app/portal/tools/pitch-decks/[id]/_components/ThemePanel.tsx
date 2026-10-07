@@ -78,10 +78,10 @@ export function ThemePanel({ theme, brandingProfileId, deckId, onClose, onUpdate
         <div className="text-xs text-muted-foreground mb-2">Survey Slide Buttons <span className="opacity-60">(optional — leave blank to use theme defaults)</span></div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {([
-            { key: 'nextButtonColor' as const, label: 'Next Button BG', fallback: theme.accentColor },
-            { key: 'nextButtonTextColor' as const, label: 'Next Button Text', fallback: theme.backgroundColor },
-            { key: 'backButtonColor' as const, label: 'Back Button BG', fallback: theme.textColor },
-            { key: 'backButtonTextColor' as const, label: 'Back Button Text', fallback: theme.textColor },
+            { key: 'nextButtonColor' as const, label: 'Fondo del botón Siguiente', fallback: theme.accentColor },
+            { key: 'nextButtonTextColor' as const, label: 'Texto del botón Siguiente', fallback: theme.backgroundColor },
+            { key: 'backButtonColor' as const, label: 'Fondo del botón Atrás', fallback: theme.textColor },
+            { key: 'backButtonTextColor' as const, label: 'Texto del botón Atrás', fallback: theme.textColor },
           ]).map(({ key, label, fallback }) => {
             const value = theme[key];
             return (
@@ -114,9 +114,7 @@ export function ThemePanel({ theme, brandingProfileId, deckId, onClose, onUpdate
             checked={theme.showSlideNumber !== false}
             onChange={(e) => onUpdateTheme({ showSlideNumber: e.target.checked })}
             className="h-4 w-4 rounded border-border"
-          />
-          Show slide number overlay
-          <span className="text-xs text-muted-foreground ml-1">
+          />Mostrar superposición de número de diapositiva<span className="text-xs text-muted-foreground ml-1">
             (auto-hidden on full-bleed HTML slides)
           </span>
         </label>

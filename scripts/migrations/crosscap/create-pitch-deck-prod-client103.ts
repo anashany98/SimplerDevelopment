@@ -3,7 +3,7 @@
  * (client_id 103), so it renders at crosscap-advisors.simplerdevelopment.com.
  *
  * Sibling of create-pitch-deck-prod.ts, which places the same deck under the
- * SimplerDevelopment client (104) for presenting from sd.com. This variant puts
+ * CRM AGENTS client (104) for presenting from sd.com. This variant puts
  * it under the Crossover Capital Advisors tenant instead. Reuses the exact same
  * slide content from buildSlides() — only the owning client differs.
  *
@@ -49,9 +49,9 @@ const EXPECTED_SUBDOMAIN = 'crosscap-advisors';
 const BRANDING_PROFILE_ID = 6; // Crossover Capital Brand (gold/navy, Cormorant + Plus Jakarta Sans)
 
 const DECK_SLUG = 'platform-pitch';
-const DECK_TITLE = 'SimplerDevelopment for CrossCap Advisors';
+const DECK_TITLE = 'CRM AGENTS for CrossCap Advisors';
 const DECK_DESC =
-  'Pitch deck for Crossover Capital Advisors — positioning SimplerDevelopment as the consolidating platform (Company Brain + CRM + Booking + Content + Website) for their fragmented wealth-management stack.';
+  'Pitch deck for Crossover Capital Advisors — positioning CRM AGENTS as the consolidating platform (Company Brain + CRM + Booking + Content + Website) for their fragmented wealth-management stack.';
 
 // CrossCap brand theme — gold accent on brand navy, Cormorant Garamond display /
 // Plus Jakarta Sans body. Matches branding profile 6.

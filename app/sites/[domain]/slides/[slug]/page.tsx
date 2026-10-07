@@ -79,7 +79,7 @@ async function fetchSurveyData(deckSlides: PitchDeckSlideV2[]): Promise<Record<n
       slug: row.slug,
       fields: (row.fields || []) as SurveyDataForDeck['fields'],
       requireEmail: row.requireEmail,
-      thankYouTitle: row.thankYouTitle || 'Thank you!',
+      thankYouTitle: row.thankYouTitle || '¡Gracias!',
       thankYouMessage: row.thankYouMessage || '',
       redirectUrl: row.redirectUrl,
       recommendation: row.recommendation,
@@ -96,7 +96,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     resolveDeckForRequest(domain, slug, preview),
     getClientWebsiteByDomain(domain),
   ]);
-  if (!deck) return { title: { absolute: 'Not Found' } };
+  if (!deck) return { title: { absolute: 'No encontrado' } };
 
   // Resolution order mirrors the posts table: deck SEO field -> deck content
   // -> brand fallback. Trim guards against whitespace-only overrides bleeding
@@ -116,7 +116,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const canonicalUrl = site ? `https://${site.domain}/slides/${slug}` : undefined;
 
   const metadata: Metadata = {
-    // Absolute title bypasses the root layout's `%s | SimplerDevelopment`
+    // Absolute title bypasses the root layout's `%s | CRM AGENTS`
     // template so deck titles render as authored, with no agency suffix.
     title: { absolute: title },
     description,

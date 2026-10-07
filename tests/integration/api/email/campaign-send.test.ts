@@ -205,7 +205,7 @@ describe('POST /api/portal/email/campaigns/[id]/send @email', () => {
       expect(call.body.from).toBe('Test Sender <sender@test.local>');
       // Wrapped via buildCampaignHtml — must contain the inner marker AND the unsub footer link.
       expect(call.body.html).toContain('XYZZY');
-      expect(call.body.html).toContain('Unsubscribe');
+      expect(call.body.html).toContain('Cancelar suscripción');
       const headers = call.body.headers as Record<string, string>;
       expect(headers['List-Unsubscribe']).toMatch(/^<.*\/api\/email\/unsubscribe\?token=/);
       expect(headers['List-Unsubscribe-Post']).toBe('List-Unsubscribe=One-Click');

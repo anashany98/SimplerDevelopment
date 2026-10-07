@@ -3,7 +3,7 @@ name: simplerdev-visual-editor-qa
 description: Triage the Visual Editor QA Board's "Validating" cards against the approval rubric using a local metro/prod DB copy + Playwright recordings, routing PASS→Approved lane and FAIL/NEEDS-YOU→annotate-in-place, and self-honing via an observational-memory learnings ledger. Use whenever the user says "run visual editor QA", "triage the QA board", "verify the Validating cards", "QA the visual editor board", "check the QA board", "work through the Visual Editor QA Board", mentions "VEQA", or asks to verify/approve/ship editor fixes sitting in Validating — even if they don't name the rubric or the board file explicitly. Also use when building or updating that rubric.
 ---
 
-# SimplerDev Visual Editor QA
+# CRM AGENTS Visual Editor QA
 
 Verify already-landed visual-editor fixes against a strict, user-defined approval bar — and get smarter every pass. The board is the source of truth (`vault/05 - Feature Specs/Visual Editor QA Board.md`, obsidian-kanban markdown); the living rubric + accumulated learnings live in **`.sd/qa-rubric-learnings.md`** (read it first, write to it after every verdict).
 
@@ -11,7 +11,7 @@ Why this exists: cards land tsc/eslint-clean but "QA pending" — unproven on th
 
 ## Start every run here
 
-1. **Read `.sd/qa-rubric-learnings.md`.** It holds the rubric (the 6 gates), the on-paper pre-screen of the cards, the working-environment facts (DB target, seeded post id, editor login), and the **Learnings Log**. If the file is missing, build the rubric first — see `references/rubric-and-gates.md` (§ Bootstrapping the rubric); the durable option is a SimplerDevelopment survey (`surveys_create`) asking the approval-bar questions.
+1. **Read `.sd/qa-rubric-learnings.md`.** It holds the rubric (the 6 gates), the on-paper pre-screen of the cards, the working-environment facts (DB target, seeded post id, editor login), and the **Learnings Log**. If the file is missing, build the rubric first — see `references/rubric-and-gates.md` (§ Bootstrapping the rubric); the durable option is a CRM AGENTS survey (`surveys_create`) asking the approval-bar questions.
 2. **Consult the Learnings Log** before scoring anything — past accept/reject entries encode the user's real taste/intent thresholds. Honor them; they override your priors.
 3. **Stand up the local environment** if not already up — `references/environment-runbook.md`. Never QA against staging/prod; the app reads `.env.local` → a disposable local metro copy.
 

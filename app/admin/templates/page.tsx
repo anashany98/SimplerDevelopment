@@ -36,8 +36,8 @@ interface BlockTemplateDraft {
 }
 
 const SCOPE_LABELS: Record<string, { label: string; color: string }> = {
-  block: { label: 'Block', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
-  section: { label: 'Section', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' },
+  block: { label: 'Bloque', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
+  section: { label: 'Sección', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' },
   global: { label: 'Global', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
 };
 
@@ -86,7 +86,7 @@ export default function TemplatesPage() {
   }, [filter, search]);
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Stage this template for deletion? It stays live until you click Publish.')) return;
+    if (!confirm('¿Marcar esta plantilla para eliminar? Seguirá activa hasta que pulses Publicar.')) return;
 
     const response = await fetch(`/api/block-templates/${id}`, { method: 'DELETE' });
     const data = await response.json();
@@ -129,13 +129,13 @@ export default function TemplatesPage() {
     const parts: string[] = [];
     if (updatedAt) {
       try {
-        parts.push(`Updated ${new Date(updatedAt).toLocaleString()}`);
+        parts.push(`Actualizado el ${new Date(updatedAt).toLocaleString()}`);
       } catch {
-        parts.push(`Updated ${updatedAt}`);
+        parts.push(`Actualizado el ${updatedAt}`);
       }
     }
-    if (updatedBy != null) parts.push(`by user ${updatedBy}`);
-    return parts.length > 0 ? parts.join(' ') : 'Unpublished draft';
+    if (updatedBy != null) parts.push(`por el usuario ${updatedBy}`);
+    return parts.length > 0 ? parts.join(' ') : 'Borrador sin publicar';
   };
 
   const handleEdit = (template: BlockTemplate) => {
@@ -189,13 +189,13 @@ export default function TemplatesPage() {
 
 
   const getBlockSummary = (blocks: Record<string, unknown>[]) => {
-    if (!blocks || blocks.length === 0) return 'Empty';
+    if (!blocks || blocks.length === 0) return 'Vacío';
     if (blocks.length === 1) {
       const block = blocks[0];
-      const type = (typeof block.type === 'string' ? block.type : null) ?? 'unknown';
+      const type = (typeof block.type === 'string' ? block.type : null) ?? 'desconocido';
       return type.charAt(0).toUpperCase() + type.slice(1).replace(/-/g, ' ');
     }
-    return `${blocks.length} blocks`;
+    return `${blocks.length} bloques`;
   };
 
   return (
@@ -204,9 +204,9 @@ export default function TemplatesPage() {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Block Templates</h1>
+            <h1 className="text-3xl font-bold text-foreground">Plantillas de bloques</h1>
             <p className="text-muted-foreground mt-1">
-              Reusable block configurations for your content
+              Configuraciones de bloques reutilizables para tu contenido
             </p>
           </div>
           <button
@@ -215,9 +215,9 @@ export default function TemplatesPage() {
               setEditingTemplate(null);
               setFormData({ name: '', slug: '', description: '', category: 'custom', scope: 'block', tags: '' });
             }}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium"
+            className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90 text-sm font-medium"
           >
-            + New Template
+            + Nueva plantilla
           </button>
         </div>
 
@@ -230,7 +230,7 @@ export default function TemplatesPage() {
                 onClick={() => setFilter(scope)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   filter === scope
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'bg-card border border-border text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -240,7 +240,7 @@ export default function TemplatesPage() {
           </div>
           <input
             type="text"
-            placeholder="Search templates..."
+            placeholder="Buscar plantillas..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="flex-1 max-w-sm px-3 py-1.5 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -251,11 +251,11 @@ export default function TemplatesPage() {
         {showForm && (
           <div className="bg-card border border-border rounded-lg p-6">
             <h2 className="text-lg font-semibold mb-4">
-              {editingTemplate ? 'Edit Template' : 'New Template'}
+              {editingTemplate ? 'Editar plantilla' : 'Nueva plantilla'}
             </h2>
             <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Name</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Nombre</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -282,7 +282,7 @@ export default function TemplatesPage() {
                 />
               </div>
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -291,43 +291,43 @@ export default function TemplatesPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Scope</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Alcance</label>
                 <select
                   value={formData.scope}
                   onChange={(e) => setFormData({ ...formData, scope: e.target.value as 'block' | 'section' | 'global' })}
                   className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm"
                 >
-                  <option value="block">Block - Single reusable block</option>
-                  <option value="section">Section - Multi-block group</option>
-                  <option value="global">Global - Synced across pages</option>
+                  <option value="block">Bloque - Bloque único reutilizable</option>
+                  <option value="section">Sección - Grupo de varios bloques</option>
+                  <option value="global">Global - Sincronizado entre páginas</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Category</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Categoría</label>
                 <input
                   type="text"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm"
-                  placeholder="e.g., marketing, layout, custom"
+                  placeholder="p. ej., marketing, layout, personalizado"
                 />
               </div>
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-foreground mb-1">Tags (comma-separated)</label>
+                <label className="block text-sm font-medium text-foreground mb-1">Etiquetas (separadas por comas)</label>
                 <input
                   type="text"
                   value={formData.tags}
                   onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                   className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm"
-                  placeholder="e.g., hero, landing, pricing"
+                  placeholder="p. ej., hero, landing, pricing"
                 />
               </div>
               <div className="col-span-2 flex gap-2">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium"
+                  className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90 text-sm font-medium"
                 >
-                  {editingTemplate ? 'Update' : 'Create'}
+                  {editingTemplate ? 'Actualizar' : 'Crear'}
                 </button>
                 <button
                   type="button"
@@ -336,9 +336,7 @@ export default function TemplatesPage() {
                     setEditingTemplate(null);
                   }}
                   className="px-4 py-2 border border-border text-foreground rounded-md hover:bg-accent text-sm"
-                >
-                  Cancel
-                </button>
+                >Cancelar</button>
               </div>
             </form>
           </div>
@@ -346,7 +344,7 @@ export default function TemplatesPage() {
 
         {/* Template Grid */}
         {loading ? (
-          <div className="text-center py-12 text-muted-foreground">Loading templates...</div>
+          <div className="text-center py-12 text-muted-foreground">Cargando plantillas...</div>
         ) : templates.length === 0 ? (
           <div className="text-center py-12 bg-card border border-border rounded-lg">
             <div className="text-4xl mb-4">
@@ -354,15 +352,15 @@ export default function TemplatesPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">No templates yet</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Aún no hay plantillas</h3>
             <p className="text-muted-foreground mb-4">
-              Save blocks as templates from the post editor, or create one here.
+              Guarda bloques como plantillas desde el editor de entradas, o crea una aquí.
             </p>
             <button
               onClick={() => setShowForm(true)}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 text-sm font-medium"
+              className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90 text-sm font-medium"
             >
-              Create your first template
+              Crear tu primera plantilla
             </button>
           </div>
         ) : (
@@ -428,9 +426,7 @@ export default function TemplatesPage() {
                           className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200 leading-none flex items-center gap-0.5"
                           title={draftTooltip}
                         >
-                          <span className="material-icons text-[12px]">edit_note</span>
-                          Draft
-                        </span>
+                          <span className="material-icons text-[12px]">edit_note</span>Borrador</span>
                       )}
                       {pendingDelete && (
                         <span
@@ -438,7 +434,7 @@ export default function TemplatesPage() {
                           title={draftTooltip}
                         >
                           <span className="material-icons text-[12px]">delete</span>
-                          Pending delete
+                          Eliminación pendiente
                         </span>
                       )}
                       <span className={`px-2 py-0.5 rounded text-xs font-medium ${SCOPE_LABELS[template.scope]?.color || 'bg-gray-100 text-gray-700'}`}>
@@ -470,36 +466,30 @@ export default function TemplatesPage() {
                         <button
                           onClick={() => handlePublish(template.id)}
                           className="inline-flex items-center gap-0.5 text-amber-700 dark:text-amber-300 hover:underline font-medium"
-                          title={`Publish this template — ${draftTooltip}`}
+                          title={`Publicar esta plantilla — ${draftTooltip}`}
                         >
-                          <span className="material-icons text-sm">publish</span>
-                          Publish
-                        </button>
+                          <span className="material-icons text-sm">publish</span>Publicar</button>
                       )}
                       {pendingDelete && (
                         <button
                           onClick={() => handleCancelDelete(template.id)}
                           className="inline-flex items-center gap-0.5 text-muted-foreground hover:text-foreground"
-                          title="Cancel staged deletion"
+                          title="Cancelar la eliminación programada"
                         >
                           <span className="material-icons text-sm">undo</span>
-                          Cancel deletion
+                          Cancelar eliminación
                         </button>
                       )}
                       <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleEdit(template)}
                           className="text-primary hover:text-primary/80"
-                        >
-                          Edit
-                        </button>
+                        >Editar</button>
                         {!pendingDelete && (
                           <button
                             onClick={() => handleDelete(template.id)}
                             className="text-red-500 hover:text-red-700"
-                          >
-                            Delete
-                          </button>
+                          >Eliminar</button>
                         )}
                       </div>
                     </div>

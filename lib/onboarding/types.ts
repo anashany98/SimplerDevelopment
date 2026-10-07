@@ -81,31 +81,31 @@ export interface OnboardingState {
 }
 
 export const FEATURE_CATALOG: Array<{ id: string; label: string; icon: string; description: string }> = [
-  { id: 'website', label: 'Build a website', icon: 'language', description: 'Drag-and-drop pages, blog, SEO.' },
-  { id: 'email', label: 'Send email campaigns', icon: 'email', description: 'Newsletters, automations, segments.' },
-  { id: 'booking', label: 'Take bookings', icon: 'calendar_month', description: 'Calendar sync, reminders, embeddable widgets.' },
-  { id: 'decks', label: 'Pitch decks', icon: 'slideshow', description: 'AI-drafted decks with auto-branding.' },
-  { id: 'crm', label: 'Run a CRM', icon: 'contacts', description: 'Contacts, deals, pipelines, activity.' },
-  { id: 'surveys', label: 'Surveys & forms', icon: 'list_alt', description: 'Intake forms, NPS, lead capture.' },
-  { id: 'brain', label: 'Company Brain (AI)', icon: 'smart_toy', description: 'Search your docs & meetings with AI.' },
-  { id: 'projects', label: 'Project mgmt', icon: 'view_kanban', description: 'Kanban, sprints, team collaboration.' },
-  { id: 'store', label: 'Online store', icon: 'storefront', description: 'Products, orders, inventory.' },
-  { id: 'ai-chat', label: 'Live chat for visitors', icon: 'chat', description: 'Branded live-chat widget with a shared team inbox.' },
+  { id: 'website', label: 'Crea tu web', icon: 'language', description: 'Páginas con editor visual, blog y SEO.' },
+  { id: 'email', label: 'Envía campañas de email', icon: 'email', description: 'Newsletters, automatizaciones y segmentos.' },
+  { id: 'booking', label: 'Recibe reservas', icon: 'calendar_month', description: 'Sincronización de calendario, recordatorios y widgets.' },
+  { id: 'decks', label: 'Presentaciones (decks)', icon: 'slideshow', description: 'Decks redactados por IA con tu marca aplicada.' },
+  { id: 'crm', label: 'Gestiona tu CRM', icon: 'contacts', description: 'Contactos, negocios, embudos y actividad.' },
+  { id: 'surveys', label: 'Encuestas y formularios', icon: 'list_alt', description: 'Formularios, NPS y captación de leads.' },
+  { id: 'brain', label: 'Cerebro de empresa (IA)', icon: 'smart_toy', description: 'Busca en tus documentos y reuniones con IA.' },
+  { id: 'projects', label: 'Gestión de proyectos', icon: 'view_kanban', description: 'Kanban, sprints y colaboración en equipo.' },
+  { id: 'store', label: 'Tienda online', icon: 'storefront', description: 'Productos, pedidos e inventario.' },
+  { id: 'ai-chat', label: 'Chat en vivo para visitantes', icon: 'chat', description: 'Widget de chat con tu marca y bandeja compartida.' },
 ];
 
 export const BRAND_TONES: Array<{ id: string; label: string; icon: string }> = [
-  { id: 'professional', label: 'Professional', icon: 'badge' },
-  { id: 'friendly', label: 'Friendly', icon: 'sentiment_satisfied' },
-  { id: 'bold', label: 'Bold', icon: 'bolt' },
-  { id: 'playful', label: 'Playful', icon: 'celebration' },
-  { id: 'calm', label: 'Calm', icon: 'spa' },
-  { id: 'smart', label: 'Smart', icon: 'psychology' },
-  { id: 'warm', label: 'Warm', icon: 'wb_sunny' },
-  { id: 'confident', label: 'Confident', icon: 'star' },
+  { id: 'professional', label: 'Profesional', icon: 'badge' },
+  { id: 'friendly', label: 'Cercano', icon: 'sentiment_satisfied' },
+  { id: 'bold', label: 'Audaz', icon: 'bolt' },
+  { id: 'playful', label: 'Divertido', icon: 'celebration' },
+  { id: 'calm', label: 'Sereno', icon: 'spa' },
+  { id: 'smart', label: 'Inteligente', icon: 'psychology' },
+  { id: 'warm', label: 'Cálido', icon: 'wb_sunny' },
+  { id: 'confident', label: 'Seguro', icon: 'star' },
 ];
 
 export const COMPANY_SIZES: Array<{ id: string; label: string }> = [
-  { id: 'solo', label: 'Just me' },
+  { id: 'solo', label: 'Solo yo' },
   { id: 'small', label: '2–10' },
   { id: 'mid', label: '11–50' },
   { id: 'large', label: '51–250' },
@@ -113,13 +113,13 @@ export const COMPANY_SIZES: Array<{ id: string; label: string }> = [
 ];
 
 export const ROLE_PRESETS: Array<{ id: string; label: string; icon: string }> = [
-  { id: 'owner', label: 'Owner / Founder', icon: 'workspace_premium' },
+  { id: 'owner', label: 'Propietario / Fundador', icon: 'workspace_premium' },
   { id: 'marketing', label: 'Marketing', icon: 'campaign' },
-  { id: 'sales', label: 'Sales', icon: 'trending_up' },
-  { id: 'ops', label: 'Operations', icon: 'settings_suggest' },
-  { id: 'engineering', label: 'Engineering / IT', icon: 'code' },
-  { id: 'consultant', label: 'Consultant / Agency', icon: 'support_agent' },
-  { id: 'other', label: 'Other', icon: 'more_horiz' },
+  { id: 'sales', label: 'Ventas', icon: 'trending_up' },
+  { id: 'ops', label: 'Operaciones', icon: 'settings_suggest' },
+  { id: 'engineering', label: 'Ingeniería / IT', icon: 'code' },
+  { id: 'consultant', label: 'Consultor / Agencia', icon: 'support_agent' },
+  { id: 'other', label: 'Otro', icon: 'more_horiz' },
 ];
 
 export const COLOR_PRESETS: string[] = [

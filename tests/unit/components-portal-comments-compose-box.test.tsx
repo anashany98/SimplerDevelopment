@@ -32,7 +32,7 @@ afterEach(() => {
 describe('ComposeBox — rendering', () => {
   it('renders a textarea with the default placeholder', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    expect(screen.getByPlaceholderText('Add a comment…')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Añade un comentario…')).toBeInTheDocument();
   });
 
   it('accepts a custom placeholder', () => {
@@ -42,7 +42,7 @@ describe('ComposeBox — rendering', () => {
 
   it('renders the submit button with default label', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Comentar' })).toBeInTheDocument();
   });
 
   it('accepts a custom submit label', () => {
@@ -52,57 +52,57 @@ describe('ComposeBox — rendering', () => {
 
   it('submit button is disabled when textarea is empty', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Comentar' })).toBeDisabled();
   });
 
   it('submit button is disabled when textarea contains only whitespace', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: '   ' },
     });
-    expect(screen.getByRole('button', { name: 'Comment' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Comentar' })).toBeDisabled();
   });
 
   it('submit button becomes enabled when textarea has content', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Hello!' },
     });
-    expect(screen.getByRole('button', { name: 'Comment' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Comentar' })).not.toBeDisabled();
   });
 
   it('does NOT render a Cancel button when onCancel is not provided', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    expect(screen.queryByRole('button', { name: 'Cancel' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Cancelar' })).toBeNull();
   });
 
   it('renders a Cancel button when onCancel is provided', () => {
     render(<ComposeBox members={members} onSubmit={noop} onCancel={vi.fn()} />);
-    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cancelar' })).toBeInTheDocument();
   });
 
   it('calls onCancel when Cancel button is clicked', () => {
     const onCancel = vi.fn();
     render(<ComposeBox members={members} onSubmit={noop} onCancel={onCancel} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
   it('pre-populates textarea with initialValue', () => {
     render(<ComposeBox members={members} onSubmit={noop} initialValue="Draft text" />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     expect(ta.value).toBe('Draft text');
   });
 
   it('uses compact rows when variant=compact', () => {
     render(<ComposeBox members={members} onSubmit={noop} variant="compact" />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     expect(ta.rows).toBe(2);
   });
 
   it('uses full rows by default', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     expect(ta.rows).toBe(3);
   });
 
@@ -125,11 +125,11 @@ describe('ComposeBox — submit success', () => {
   it('calls onSubmit with trimmed body on button click', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: '  Hello world  ' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
     expect(onSubmit).toHaveBeenCalledWith('Hello world', []);
   });
@@ -137,14 +137,14 @@ describe('ComposeBox — submit success', () => {
   it('resets the textarea on successful submit (resetOnSubmit=true default)', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Some text' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
     await waitFor(() => {
-      const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+      const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
       expect(ta.value).toBe('');
     });
   });
@@ -152,14 +152,14 @@ describe('ComposeBox — submit success', () => {
   it('does NOT reset the textarea when resetOnSubmit=false', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} resetOnSubmit={false} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Persist me' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
     await waitFor(() => {
-      const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+      const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
       expect(ta.value).toBe('Persist me');
     });
   });
@@ -167,11 +167,11 @@ describe('ComposeBox — submit success', () => {
   it('extracts mentioned user ids and passes them to onSubmit', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Hey @[Alice Smith](1) and @[Bob Jones](2)!' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
     expect(onSubmit).toHaveBeenCalledWith(
       'Hey @[Alice Smith](1) and @[Bob Jones](2)!',
@@ -185,16 +185,16 @@ describe('ComposeBox — submit success', () => {
     const onSubmit = vi.fn().mockReturnValue(pending);
 
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Loading test' },
     });
 
     act(() => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Sending…')).toBeInTheDocument();
+      expect(screen.getByText('Enviando…')).toBeInTheDocument();
     });
 
     // Clean up by resolving the promise
@@ -207,16 +207,16 @@ describe('ComposeBox — submit success', () => {
     const onSubmit = vi.fn().mockReturnValue(pending);
 
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Disable test' },
     });
 
     act(() => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
 
     await waitFor(() => {
-      const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+      const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
       expect(ta.disabled).toBe(true);
     });
 
@@ -232,11 +232,11 @@ describe('ComposeBox — submit error', () => {
   it('shows error message when onSubmit throws', async () => {
     const onSubmit = vi.fn().mockRejectedValue(new Error('Server exploded'));
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Trigger error' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
     await waitFor(() => {
       expect(screen.getByText('Server exploded')).toBeInTheDocument();
@@ -246,29 +246,29 @@ describe('ComposeBox — submit error', () => {
   it('shows fallback error text when thrown error has no message', async () => {
     const onSubmit = vi.fn().mockRejectedValue({ message: '' });
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Trigger fallback' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
     await waitFor(() => {
-      expect(screen.getByText('Failed to submit')).toBeInTheDocument();
+      expect(screen.getByText('No se pudo enviar')).toBeInTheDocument();
     });
   });
 
   it('re-enables submit button after failed submit', async () => {
     const onSubmit = vi.fn().mockRejectedValue(new Error('Oops'));
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Will fail' },
     });
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
     await waitFor(() => {
       // "Comment" button should reappear and be enabled (text is non-empty)
-      expect(screen.getByRole('button', { name: 'Comment' })).not.toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Comentar' })).not.toBeDisabled();
     });
   });
 });
@@ -281,7 +281,7 @@ describe('ComposeBox — keyboard submit', () => {
   it('submits on Cmd+Enter', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    const ta = screen.getByPlaceholderText('Add a comment…');
+    const ta = screen.getByPlaceholderText('Añade un comentario…');
     fireEvent.change(ta, { target: { value: 'Keyboard submit' } });
     await act(async () => {
       fireEvent.keyDown(ta, { key: 'Enter', metaKey: true });
@@ -292,7 +292,7 @@ describe('ComposeBox — keyboard submit', () => {
   it('submits on Ctrl+Enter', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    const ta = screen.getByPlaceholderText('Add a comment…');
+    const ta = screen.getByPlaceholderText('Añade un comentario…');
     fireEvent.change(ta, { target: { value: 'Ctrl submit' } });
     await act(async () => {
       fireEvent.keyDown(ta, { key: 'Enter', ctrlKey: true });
@@ -303,7 +303,7 @@ describe('ComposeBox — keyboard submit', () => {
   it('does not submit plain Enter without meta/ctrl', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    const ta = screen.getByPlaceholderText('Add a comment…');
+    const ta = screen.getByPlaceholderText('Añade un comentario…');
     fireEvent.change(ta, { target: { value: 'No submit' } });
     fireEvent.keyDown(ta, { key: 'Enter' });
     expect(onSubmit).not.toHaveBeenCalled();
@@ -312,7 +312,7 @@ describe('ComposeBox — keyboard submit', () => {
   it('does not submit when textarea is empty and Cmd+Enter pressed', async () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    const ta = screen.getByPlaceholderText('Add a comment…');
+    const ta = screen.getByPlaceholderText('Añade un comentario…');
     // no change — value stays empty
     await act(async () => {
       fireEvent.keyDown(ta, { key: 'Enter', metaKey: true });
@@ -328,7 +328,7 @@ describe('ComposeBox — keyboard submit', () => {
 describe('ComposeBox — mention autocomplete', () => {
   it('opens the mention listbox when @ is typed after whitespace', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -341,7 +341,7 @@ describe('ComposeBox — mention autocomplete', () => {
       name: `User ${i + 1}`,
     }));
     render(<ComposeBox members={manyMembers} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -351,7 +351,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('filters members by the typed query', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@alic', selectionStart: 5 },
     });
@@ -362,7 +362,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('hides the listbox when no members match the query', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@zzz', selectionStart: 4 },
     });
@@ -371,7 +371,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('renders avatar img when member has an avatar', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -383,7 +383,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('renders initials badge when member has no avatar', () => {
     render(<ComposeBox members={[{ id: 2, name: 'Bob Jones', avatar: null }]} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -392,7 +392,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('dismisses mention listbox on Escape', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -403,7 +403,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('navigates down with ArrowDown', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -419,7 +419,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('navigates up with ArrowUp (wraps around)', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -432,7 +432,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('inserts mention markup via Enter key', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -445,7 +445,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('inserts mention markup via Tab key', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -456,7 +456,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('inserts mention markup on mousedown click of a candidate', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -469,7 +469,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('highlights option on mouseEnter', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: '@', selectionStart: 1 },
     });
@@ -481,7 +481,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('does not open mention popover when @ is in the middle of a word (email)', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     // "foo@bar" — @ is preceded by a non-whitespace character
     fireEvent.change(ta, {
       target: { value: 'foo@bar', selectionStart: 7 },
@@ -491,7 +491,7 @@ describe('ComposeBox — mention autocomplete', () => {
 
   it('closes mention listbox after a successful member insert leaves value clean', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, {
       target: { value: 'Hello @ali', selectionStart: 10 },
     });
@@ -511,7 +511,7 @@ describe('ComposeBox — mention autocomplete', () => {
 describe('ComposeBox — autoFocus', () => {
   it('focuses the textarea when autoFocus=true', () => {
     render(<ComposeBox members={members} onSubmit={noop} autoFocus />);
-    const ta = screen.getByPlaceholderText('Add a comment…');
+    const ta = screen.getByPlaceholderText('Añade un comentario…');
     expect(document.activeElement).toBe(ta);
   });
 });
@@ -541,15 +541,15 @@ describe('ComposeBox — re-entrant submit guard', () => {
     const onSubmit = vi.fn().mockReturnValue(pending);
 
     render(<ComposeBox members={members} onSubmit={onSubmit} />);
-    fireEvent.change(screen.getByPlaceholderText('Add a comment…'), {
+    fireEvent.change(screen.getByPlaceholderText('Añade un comentario…'), {
       target: { value: 'Double click' },
     });
 
     act(() => {
-      fireEvent.click(screen.getByRole('button', { name: 'Comment' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Comentar' }));
     });
 
-    await waitFor(() => screen.getByText('Sending…'));
+    await waitFor(() => screen.getByText('Enviando…'));
 
     // Textarea is disabled so the button is also disabled — no second call possible
     expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -565,7 +565,7 @@ describe('ComposeBox — re-entrant submit guard', () => {
 describe('ComposeBox — onSelect caret tracking', () => {
   it('keeps mention menu open when onSelect fires while caret is still in token', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
 
     // Open via onChange
     fireEvent.change(ta, { target: { value: '@alice', selectionStart: 6 } });
@@ -578,7 +578,7 @@ describe('ComposeBox — onSelect caret tracking', () => {
 
   it('fires onSelect without crashing when textarea has no @ token', () => {
     render(<ComposeBox members={members} onSubmit={noop} />);
-    const ta = screen.getByPlaceholderText('Add a comment…') as HTMLTextAreaElement;
+    const ta = screen.getByPlaceholderText('Añade un comentario…') as HTMLTextAreaElement;
     fireEvent.change(ta, { target: { value: 'plain text' } });
     // No @ means no mention context; onSelect should not throw
     expect(() => fireEvent.select(ta)).not.toThrow();

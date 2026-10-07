@@ -297,7 +297,7 @@ describe('SidebarCreditBadge', () => {
 
     const link = container.querySelector('a');
     expect(link?.getAttribute('href')).toBe('/portal/settings/ai');
-    expect(link?.textContent).toContain('AI Credits');
+    expect(link?.textContent).toContain('Créditos de IA');
     expect(link?.textContent).toContain('12K');
     // Material icon, not emoji
     const icon = container.querySelector('.material-icons');
@@ -331,7 +331,7 @@ describe('SidebarCreditBadge', () => {
     await flushMicrotasks();
 
     const link = container.querySelector('a');
-    expect(link?.getAttribute('title')).toBe('AI Credits: 1.5M');
+    expect(link?.getAttribute('title')).toBe('Créditos de IA: 1.5M');
   });
 });
 
@@ -374,7 +374,7 @@ describe('AISettingsPage — credit purchase controls', () => {
     expect(container.textContent).toContain('PAYG Off');
     expect(container.textContent).toContain('+50K $5');
     // The page's read-only balance card still renders alongside the controls
-    expect(container.textContent).toContain('Credits Remaining');
+    expect(container.textContent).toContain('Créditos restantes');
   });
 });
 
@@ -396,7 +396,7 @@ describe('ServicePaywall', () => {
     const { container } = render(<ServicePaywall {...baseProps} />);
     expect(container.textContent).toContain('Premium Plan');
     expect(container.textContent).toContain('All the features');
-    expect(container.textContent).toContain('$49.99');
+    expect(container.textContent).toContain('49,99\u00A0€');
     expect(container.textContent).toContain('/mo');
   });
 
@@ -411,7 +411,7 @@ describe('ServicePaywall', () => {
     const { container } = render(
       <ServicePaywall {...baseProps} billingCycle="once" />,
     );
-    expect(container.textContent).toContain('$49.99');
+    expect(container.textContent).toContain('49,99\u00A0€');
     expect(container.textContent).not.toContain('/mo');
     expect(container.textContent).not.toContain('/yr');
   });
@@ -520,7 +520,7 @@ describe('UploadHtmlPageButton', () => {
   it('renders the default idle label and accepts html/zip', () => {
     const { container } = render(<UploadHtmlPageButton siteId={3} />);
     const btn = container.querySelector('button');
-    expect(btn?.textContent).toContain('Upload HTML / Zip');
+    expect(btn?.textContent).toContain('Subir HTML / Zip');
     const input = container.querySelector('input[type="file"]') as HTMLInputElement;
     expect(input).toBeTruthy();
     expect(input.accept).toContain('.html');
@@ -668,11 +668,9 @@ describe('ProvisioningStatus', () => {
 
     const { container } = render(<ProvisioningStatus siteId={11} />);
     await flushMicrotasks();
-    expect(container.textContent).toContain('Deploy your website');
-    expect(container.textContent).toContain(
-      'acme.simplerdevelopment.com subdomain',
-    );
-    expect(container.textContent).toContain('Deploy Now');
+    expect(container.textContent).toContain('Despliega tu sitio web');
+    expect(container.textContent).toContain('subdominio de CRM AGENTS');
+    expect(container.textContent).toContain('Desplegar ahora');
   });
 
   it('clicking Deploy Now POSTs to the provision endpoint and refetches', async () => {
@@ -717,7 +715,7 @@ describe('ProvisioningStatus', () => {
     render(<ProvisioningStatus siteId={22} />);
     await flushMicrotasks();
 
-    const deployBtn = screen.getByText('Deploy Now');
+    const deployBtn = screen.getByText('Desplegar ahora');
     await act(async () => {
       fireEvent.click(deployBtn);
       await Promise.resolve();
@@ -754,12 +752,12 @@ describe('ProvisioningStatus', () => {
     await flushMicrotasks();
 
     expect(container.textContent).toContain(
-      'Setting up your website...',
+      'Configurando tu sitio web...',
     );
-    expect(container.textContent).toContain('Creating repository');
-    expect(container.textContent).toContain('Setting up deployment');
-    expect(container.textContent).toContain('Configuring DNS');
-    expect(container.textContent).toContain('Live');
+    expect(container.textContent).toContain('Creando repositorio');
+    expect(container.textContent).toContain('Configurando el despliegue');
+    expect(container.textContent).toContain('Configurando el DNS');
+    expect(container.textContent).toContain('Activo');
   });
 
   it('renders the failed panel with the error message and Retry button', async () => {
@@ -782,9 +780,9 @@ describe('ProvisioningStatus', () => {
     const { container } = render(<ProvisioningStatus siteId={44} />);
     await flushMicrotasks();
 
-    expect(container.textContent).toContain('Provisioning failed');
+    expect(container.textContent).toContain('El aprovisionamiento falló');
     expect(container.textContent).toContain('github 422: name taken');
-    expect(container.textContent).toContain('Retry');
+    expect(container.textContent).toContain('Reintentar');
   });
 
   it('renders the active infrastructure panel with subdomain + repo + vercel links', async () => {
@@ -807,8 +805,8 @@ describe('ProvisioningStatus', () => {
     const { container } = render(<ProvisioningStatus siteId={55} />);
     await flushMicrotasks();
 
-    expect(container.textContent).toContain('Infrastructure');
-    expect(container.textContent).toContain('Active');
+    expect(container.textContent).toContain('Infraestructura');
+    expect(container.textContent).toContain('Activo');
     // domain
     expect(container.textContent).toContain('live.simplerdevelopment.com');
     const links = Array.from(container.querySelectorAll('a'));
@@ -819,7 +817,7 @@ describe('ProvisioningStatus', () => {
       links.some((a) => a.getAttribute('href') === 'https://vercel.com/x/live'),
     ).toBe(true);
     // Managed badge should NOT be present (github repo + vercel project set)
-    expect(container.textContent).not.toContain('Managed');
+    expect(container.textContent).not.toContain('Gestionado');
   });
 
   it('shows the "Managed" badge when active without github/vercel projects', async () => {
@@ -842,9 +840,9 @@ describe('ProvisioningStatus', () => {
     const { container } = render(<ProvisioningStatus siteId={66} />);
     await flushMicrotasks();
 
-    expect(container.textContent).toContain('Managed');
+    expect(container.textContent).toContain('Gestionado');
     expect(container.textContent).toContain(
-      'Hosted on simplerdevelopment.com',
+      'Alojado por CRM AGENTS',
     );
   });
 });

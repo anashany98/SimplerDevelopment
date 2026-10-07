@@ -122,7 +122,7 @@ describe('AdminPortalHostingPage', () => {
         return jsonResp({ success: true, data: null });
       });
       await renderPage();
-      expect(screen.getByText('No hosted sites yet. Add one to get started.')).toBeTruthy();
+      expect(screen.getByText('Aún no hay sitios alojados. Añade uno para empezar.')).toBeTruthy();
     });
 
     it('shows stats all at 0 when no sites', async () => {
@@ -142,7 +142,7 @@ describe('AdminPortalHostingPage', () => {
     it('renders the page heading', async () => {
       await renderPage();
       expect(screen.getByText('Hosting')).toBeTruthy();
-      expect(screen.getByText('Managed Railway hosting sold to clients.')).toBeTruthy();
+      expect(screen.getByText('Hosting Railway gestionado que vendemos a los clientes.')).toBeTruthy();
     });
 
     it('renders site name in table', async () => {
@@ -184,7 +184,7 @@ describe('AdminPortalHostingPage', () => {
         return jsonResp({ success: true, data: null });
       });
       await renderPage();
-      expect(screen.getByText('Not configured')).toBeTruthy();
+      expect(screen.getByText('Sin configurar')).toBeTruthy();
     });
 
     it('shows em-dash when renewalDate is null', async () => {
@@ -269,7 +269,7 @@ describe('AdminPortalHostingPage', () => {
         return jsonResp({ success: true, data: null });
       });
       await renderPage();
-      const searchInput = screen.getByPlaceholderText('Search sites, domains, clients...');
+      const searchInput = screen.getByPlaceholderText('Buscar sitios, dominios, clientes...');
       fireEvent.change(searchInput, { target: { value: 'Beta' } });
       expect(screen.queryByText('Acme Site')).toBeNull();
       expect(screen.getByText('Beta Site')).toBeTruthy();
@@ -277,9 +277,9 @@ describe('AdminPortalHostingPage', () => {
 
     it('shows filter-no-results message when search has no match', async () => {
       await renderPage();
-      const searchInput = screen.getByPlaceholderText('Search sites, domains, clients...');
+      const searchInput = screen.getByPlaceholderText('Buscar sitios, dominios, clientes...');
       fireEvent.change(searchInput, { target: { value: 'zzznomatch' } });
-      expect(screen.getByText('No sites match your filters.')).toBeTruthy();
+      expect(screen.getByText('Ningún sitio coincide con tus filtros.')).toBeTruthy();
     });
 
     it('filters by status dropdown', async () => {
@@ -296,7 +296,7 @@ describe('AdminPortalHostingPage', () => {
         return jsonResp({ success: true, data: null });
       });
       await renderPage();
-      const statusSelect = screen.getByDisplayValue('All statuses');
+      const statusSelect = screen.getByDisplayValue('Todos los estados');
       fireEvent.change(statusSelect, { target: { value: 'provisioning' } });
       expect(screen.queryByText('Acme Site')).toBeNull();
       expect(screen.getByText('Prov Site')).toBeTruthy();
@@ -304,11 +304,11 @@ describe('AdminPortalHostingPage', () => {
 
     it('filters no-match when status + search combined', async () => {
       await renderPage();
-      const searchInput = screen.getByPlaceholderText('Search sites, domains, clients...');
+      const searchInput = screen.getByPlaceholderText('Buscar sitios, dominios, clientes...');
       fireEvent.change(searchInput, { target: { value: 'zzz' } });
-      const statusSelect = screen.getByDisplayValue('All statuses');
+      const statusSelect = screen.getByDisplayValue('Todos los estados');
       fireEvent.change(statusSelect, { target: { value: 'suspended' } });
-      expect(screen.getByText('No sites match your filters.')).toBeTruthy();
+      expect(screen.getByText('Ningún sitio coincide con tus filtros.')).toBeTruthy();
     });
   });
 
@@ -338,14 +338,14 @@ describe('AdminPortalHostingPage', () => {
     it('shows DNS records table in detail panel', async () => {
       await renderPage();
       fireEvent.click(screen.getByText('Acme Site'));
-      expect(screen.getByText('DNS Records')).toBeTruthy();
+      expect(screen.getByText('Registros DNS')).toBeTruthy();
       expect(screen.getByText('CNAME')).toBeTruthy();
     });
 
     it('shows renewal date in detail panel', async () => {
       await renderPage();
       fireEvent.click(screen.getByText('Acme Site'));
-      expect(screen.getByText('Renews')).toBeTruthy();
+      expect(screen.getByText('Renueva')).toBeTruthy();
     });
 
     it('closes detail panel when backdrop clicked', async () => {
@@ -381,7 +381,7 @@ describe('AdminPortalHostingPage', () => {
       });
       await renderPage();
       fireEvent.click(screen.getByText('Acme Site'));
-      expect(screen.getByText('No domain configured.')).toBeTruthy();
+      expect(screen.getByText('Sin dominio configurado.')).toBeTruthy();
     });
 
     it('shows "No Railway IDs linked" when IDs are null', async () => {
@@ -396,7 +396,7 @@ describe('AdminPortalHostingPage', () => {
       });
       await renderPage();
       fireEvent.click(screen.getByText('Acme Site'));
-      expect(screen.getByText('No Railway IDs linked.')).toBeTruthy();
+      expect(screen.getByText('Sin IDs de Railway vinculados.')).toBeTruthy();
     });
 
     it('does not render DNS Records section when dnsInstructions is empty', async () => {
@@ -408,44 +408,44 @@ describe('AdminPortalHostingPage', () => {
       });
       await renderPage();
       fireEvent.click(screen.getByText('Acme Site'));
-      expect(screen.queryByText('DNS Records')).toBeNull();
+      expect(screen.queryByText('Registros DNS')).toBeNull();
     });
   });
 
   describe('add form modal', () => {
     it('opens add form when "Add Hosted Site" button clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      expect(screen.getByText('Add Hosted Site', { selector: 'h2' })).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
+      expect(screen.getByText('Añadir sitio alojado', { selector: 'h2' })).toBeTruthy();
     });
 
     it('closes form when Cancel clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-      await waitFor(() => expect(screen.queryByText('Add Hosted Site', { selector: 'h2' })).toBeNull());
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      await waitFor(() => expect(screen.queryByText('Añadir sitio alojado', { selector: 'h2' })).toBeNull());
     });
 
     it('closes form when X button clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
       const closeBtns = screen.getAllByRole('button').filter(b =>
         b.querySelector('.material-icons')?.textContent === 'close',
       );
       fireEvent.click(closeBtns[0]);
-      await waitFor(() => expect(screen.queryByText('Add Hosted Site', { selector: 'h2' })).toBeNull());
+      await waitFor(() => expect(screen.queryByText('Añadir sitio alojado', { selector: 'h2' })).toBeNull());
     });
 
     it('shows validation error when saving without required fields', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      fireEvent.click(screen.getByRole('button', { name: 'Add Site' }));
-      expect(screen.getByText('Client and site name are required.')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir sitio' }));
+      expect(screen.getByText('El cliente y el nombre del sitio son obligatorios.')).toBeTruthy();
     });
 
     it('populates client dropdown from clients API', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
       // Client select should include the base client option
       expect(screen.getByText('Acme Corp (janedoe)')).toBeTruthy();
     });
@@ -457,18 +457,18 @@ describe('AdminPortalHostingPage', () => {
         return defaultHandler(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
 
       // Select client
       const clientSelect = screen.getByText('Acme Corp (janedoe)').closest('select') as HTMLSelectElement;
       fireEvent.change(clientSelect, { target: { value: '10' } });
 
       // Enter site name
-      const nameInput = screen.getByPlaceholderText('e.g. Acme Corp E-commerce');
+      const nameInput = screen.getByPlaceholderText('p. ej. E-commerce de Acme Corp');
       fireEvent.change(nameInput, { target: { value: 'New Site' } });
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Site' }));
-      await waitFor(() => expect(screen.queryByText('Add Hosted Site', { selector: 'h2' })).toBeNull());
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir sitio' }));
+      await waitFor(() => expect(screen.queryByText('Añadir sitio alojado', { selector: 'h2' })).toBeNull());
     });
 
     it('shows error message when save fails', async () => {
@@ -478,15 +478,15 @@ describe('AdminPortalHostingPage', () => {
         return defaultHandler(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
 
       const clientSelect = screen.getByText('Acme Corp (janedoe)').closest('select') as HTMLSelectElement;
       fireEvent.change(clientSelect, { target: { value: '10' } });
 
-      const nameInput = screen.getByPlaceholderText('e.g. Acme Corp E-commerce');
+      const nameInput = screen.getByPlaceholderText('p. ej. E-commerce de Acme Corp');
       fireEvent.change(nameInput, { target: { value: 'New Site' } });
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Site' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir sitio' }));
       await waitFor(() => expect(screen.getByText('Server error occurred')).toBeTruthy());
     });
 
@@ -497,37 +497,37 @@ describe('AdminPortalHostingPage', () => {
         return defaultHandler(url, init);
       });
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
 
       const clientSelect = screen.getByText('Acme Corp (janedoe)').closest('select') as HTMLSelectElement;
       fireEvent.change(clientSelect, { target: { value: '10' } });
 
-      const nameInput = screen.getByPlaceholderText('e.g. Acme Corp E-commerce');
+      const nameInput = screen.getByPlaceholderText('p. ej. E-commerce de Acme Corp');
       fireEvent.change(nameInput, { target: { value: 'New Site' } });
 
-      fireEvent.click(screen.getByRole('button', { name: 'Add Site' }));
-      await waitFor(() => expect(screen.getByText('Save failed')).toBeTruthy());
+      fireEvent.click(screen.getByRole('button', { name: 'Añadir sitio' }));
+      await waitFor(() => expect(screen.getByText('Error al guardar')).toBeTruthy());
     });
   });
 
   describe('DNS row management in form', () => {
     it('shows empty DNS placeholder text when no rows', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      expect(screen.getByText(/No DNS records added/)).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
+      expect(screen.getByText(/No hay registros DNS\. Haz clic en "Añadir registro" para agregar uno\./)).toBeTruthy();
     });
 
     it('adds a DNS row when "Add record" clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      fireEvent.click(screen.getByRole('button', { name: /Add record/ }));
-      expect(screen.getByPlaceholderText('Host (e.g. @)')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir registro/ }));
+      expect(screen.getByPlaceholderText('Host (p. ej. @)')).toBeTruthy();
     });
 
     it('removes a DNS row when remove button clicked', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      fireEvent.click(screen.getByRole('button', { name: /Add record/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir registro/ }));
       const removeBtn = document.querySelector('button span.material-icons[class*="base"]')?.closest('button');
       // Find remove_circle_outline button
       const removeBtns = screen.getAllByRole('button').filter(b =>
@@ -535,19 +535,19 @@ describe('AdminPortalHostingPage', () => {
       );
       expect(removeBtns.length).toBe(1);
       fireEvent.click(removeBtns[0]);
-      expect(screen.queryByPlaceholderText('Host (e.g. @)')).toBeNull();
+      expect(screen.queryByPlaceholderText('Host (p. ej. @)')).toBeNull();
     });
 
     it('updates DNS row field values', async () => {
       await renderPage();
-      fireEvent.click(screen.getByRole('button', { name: /Add Hosted Site/ }));
-      fireEvent.click(screen.getByRole('button', { name: /Add record/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir sitio alojado/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Añadir registro/ }));
 
-      const hostInput = screen.getByPlaceholderText('Host (e.g. @)') as HTMLInputElement;
+      const hostInput = screen.getByPlaceholderText('Host (p. ej. @)') as HTMLInputElement;
       fireEvent.change(hostInput, { target: { value: '@' } });
       expect(hostInput.value).toBe('@');
 
-      const valueInput = screen.getByPlaceholderText('Value / points to') as HTMLInputElement;
+      const valueInput = screen.getByPlaceholderText('Valor / apunta a') as HTMLInputElement;
       fireEvent.change(valueInput, { target: { value: '1.2.3.4' } });
       expect(valueInput.value).toBe('1.2.3.4');
     });
@@ -556,15 +556,15 @@ describe('AdminPortalHostingPage', () => {
   describe('edit modal', () => {
     it('opens edit form with pre-filled values when edit button clicked', async () => {
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
-      expect(screen.getByText('Edit Hosted Site')).toBeTruthy();
+      expect(screen.getByText('Editar sitio alojado')).toBeTruthy();
       expect(screen.getByDisplayValue('Acme Site')).toBeTruthy();
     });
 
     it('disables the client dropdown in edit mode', async () => {
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
       // The client select should be disabled
       const clientSelect = document.querySelector('select[disabled]') as HTMLSelectElement;
@@ -573,10 +573,10 @@ describe('AdminPortalHostingPage', () => {
 
     it('pre-fills DNS rows in edit mode', async () => {
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
       // Should have the CNAME row from baseSite.dnsInstructions
-      const hostInputs = screen.getAllByPlaceholderText('Host (e.g. @)') as HTMLInputElement[];
+      const hostInputs = screen.getAllByPlaceholderText('Host (p. ej. @)') as HTMLInputElement[];
       expect(hostInputs.length).toBeGreaterThan(0);
       expect(hostInputs[0].value).toBe('www');
     });
@@ -588,14 +588,14 @@ describe('AdminPortalHostingPage', () => {
         return defaultHandler(url, init);
       });
       await renderPage();
-      const editBtns = screen.getAllByTitle('Edit');
+      const editBtns = screen.getAllByTitle('Editar');
       fireEvent.click(editBtns[0]);
 
       const nameInput = screen.getByDisplayValue('Acme Site') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'Acme Updated' } });
 
-      fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
-      await waitFor(() => expect(screen.queryByText('Edit Hosted Site')).toBeNull());
+      fireEvent.click(screen.getByRole('button', { name: 'Guardar cambios' }));
+      await waitFor(() => expect(screen.queryByText('Editar sitio alojado')).toBeNull());
     });
 
     it('opens edit from detail panel edit button', async () => {
@@ -606,24 +606,24 @@ describe('AdminPortalHostingPage', () => {
         b.querySelector('.material-icons')?.textContent === 'edit',
       );
       fireEvent.click(panelEditBtns[0]);
-      expect(screen.getByText('Edit Hosted Site')).toBeTruthy();
+      expect(screen.getByText('Editar sitio alojado')).toBeTruthy();
     });
   });
 
   describe('delete confirmation dialog', () => {
     it('opens delete dialog when delete button clicked', async () => {
       await renderPage();
-      const deleteBtns = screen.getAllByTitle('Delete');
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
-      expect(screen.getByText('Delete hosted site?')).toBeTruthy();
+      expect(screen.getByText('¿Eliminar sitio alojado?')).toBeTruthy();
     });
 
     it('cancels delete when Cancel clicked', async () => {
       await renderPage();
-      const deleteBtns = screen.getAllByTitle('Delete');
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-      await waitFor(() => expect(screen.queryByText('Delete hosted site?')).toBeNull());
+      fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+      await waitFor(() => expect(screen.queryByText('¿Eliminar sitio alojado?')).toBeNull());
     });
 
     it('deletes site and removes from table', async () => {
@@ -633,17 +633,17 @@ describe('AdminPortalHostingPage', () => {
         return defaultHandler(url, init);
       });
       await renderPage();
-      const deleteBtns = screen.getAllByTitle('Delete');
+      const deleteBtns = screen.getAllByTitle('Eliminar');
       fireEvent.click(deleteBtns[0]);
-      fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
       await waitFor(() => expect(screen.queryByText('Acme Site')).toBeNull());
     });
 
     it('opens delete dialog from detail panel Delete Site button', async () => {
       await renderPage();
       fireEvent.click(screen.getByText('Acme Site'));
-      fireEvent.click(screen.getByRole('button', { name: /Delete Site/ }));
-      expect(screen.getByText('Delete hosted site?')).toBeTruthy();
+      fireEvent.click(screen.getByRole('button', { name: /Eliminar sitio/ }));
+      expect(screen.getByText('¿Eliminar sitio alojado?')).toBeTruthy();
     });
 
     it('clears detail panel after deleting the open site', async () => {
@@ -656,9 +656,9 @@ describe('AdminPortalHostingPage', () => {
       // Open detail panel
       fireEvent.click(screen.getByText('Acme Site'));
       // Open delete from detail panel
-      fireEvent.click(screen.getByRole('button', { name: /Delete Site/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Eliminar sitio/ }));
       // Confirm delete
-      fireEvent.click(screen.getByRole('button', { name: 'Delete' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
       await waitFor(() => expect(screen.queryByText('VIP client')).toBeNull());
     });
   });

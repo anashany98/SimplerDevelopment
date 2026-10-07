@@ -10,7 +10,7 @@
  *   - search box (debounced 300ms, hits `?search=`)
  *
  * URL-param sync via useSearchParams + router.replace so filters survive
- * reload and are shareable. Pagination 25/page (offset/limit — the list
+ * reload and are shareable. Págination 25/page (offset/limit — the list
  * endpoint doesn't return a total, so we infer hasNext from `items.length`).
  *
  * Layout: sticky header (title + "New document" CTA + "My reading queue"
@@ -34,14 +34,22 @@ import { pBtnPrimary, pBtnGhost, pInput, pSelect } from '@/components/portal/por
 
 type StatusFilter = 'all' | BrainDocumentStatus;
 
+/** Spanish labels for the status filter pills (UI shows these, not the enum). */
+const DOC_STATUS_LABELS: Record<StatusFilter, string> = {
+  all: 'Todos',
+  draft: 'Borrador',
+  published: 'Publicado',
+  archived: 'Archivado',
+};
+
 const CATEGORIES: BrainDocumentCategory[] = ['sop', 'policy', 'guide', 'reference', 'announcement', 'other'];
 const CATEGORY_LABEL: Record<BrainDocumentCategory, string> = {
   sop: 'SOP',
-  policy: 'Policy',
-  guide: 'Guide',
-  reference: 'Reference',
-  announcement: 'Announcement',
-  other: 'Other',
+  policy: 'Política',
+  guide: 'Guía',
+  reference: 'Referencia',
+  announcement: 'Anuncio',
+  other: 'Otro',
 };
 
 const PAGE_SIZE = 25;
@@ -122,12 +130,12 @@ export default function BrainDocumentsListPage() {
       const r = await fetch(`/api/portal/brain/documents?${qs.toString()}`);
       const json: ListResponse = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to load documents.');
+        setError(json.message || 'No se pudieron cargar los documentos.');
       } else {
         setItems(json.data?.items ?? []);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -163,7 +171,7 @@ export default function BrainDocumentsListPage() {
       const arr = map.get(it.category) ?? [];
       arr.push({
         ...it,
-        ownerName: it.ownerId !== null ? (ownerNameById.get(it.ownerId) ?? `User #${it.ownerId}`) : null,
+        ownerName: it.ownerId !== null ? (ownerNameById.get(it.ownerId) ?? `Usuario #${it.ownerId}`) : null,
       });
       map.set(it.category, arr);
     }
@@ -178,23 +186,23 @@ export default function BrainDocumentsListPage() {
   return (
     <div className="max-w-5xl mx-auto py-6 px-4 space-y-5">
       <PortalPageHeader
-        eyebrow="Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">description</span>
-            Documents
+            Documentos
           </span>
         }
-        subtitle="Versioned, required-readable SOPs &amp; policies. The canonical written answer for your team."
+        subtitle="SOP y políticas versionadas y de lectura obligatoria. La respuesta escrita canónica para tu equipo."
         actions={
           <>
             <Link href="/portal/brain/documents/queue" className={pBtnGhost}>
               <span className="material-icons text-base">assignment_late</span>
-              My reading queue
+              Mi cola de lectura
             </Link>
             <Link href="/portal/brain/documents/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New document
+              Nuevo documento
             </Link>
           </>
         }
@@ -203,7 +211,7 @@ export default function BrainDocumentsListPage() {
       {/* Filters */}
       <div className="grid sm:grid-cols-4 gap-3 items-end">
         <div className="sm:col-span-1">
-          <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Status</span>
+          <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Estado</span>
           <div className="flex items-center gap-1 bg-background border border-border rounded-md p-0.5">
             {(['all', 'draft', 'published', 'archived'] as const).map((s) => (
               <button
@@ -212,50 +220,44 @@ export default function BrainDocumentsListPage() {
                 onClick={() => updateParams({ status: s === 'published' ? null : s, page: null })}
                 className={`flex-1 px-2 py-1 rounded text-xs font-medium capitalize transition-colors ${
                   statusParam === s
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
               >
-                {s}
+                {DOC_STATUS_LABELS[s]}
               </button>
             ))}
           </div>
         </div>
 
         <div>
-          <label htmlFor="doc-cat-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Category
-          </label>
+          <label htmlFor="doc-cat-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Categoría</label>
           <select
             id="doc-cat-f"
             value={categoryParam}
             onChange={(e) => updateParams({ category: e.target.value || null, page: null })}
             className={pSelect}
           >
-            <option value="">All categories</option>
+            <option value="">Todas las categorías</option>
             {CATEGORIES.map((c) => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
           </select>
         </div>
 
         <div>
-          <label htmlFor="doc-owner-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Owner
-          </label>
+          <label htmlFor="doc-owner-f" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Propietario</label>
           <select
             id="doc-owner-f"
             value={ownerParam}
             onChange={(e) => updateParams({ ownerId: e.target.value || null, page: null })}
             className={pSelect}
           >
-            <option value="">All owners</option>
-            {users.map((u) => <option key={u.id} value={u.id}>{u.name ?? `User #${u.id}`}</option>)}
+            <option value="">Todos los propietarios</option>
+            {users.map((u) => <option key={u.id} value={u.id}>{u.name ?? `Usuario #${u.id}`}</option>)}
           </select>
         </div>
 
         <div>
-          <label htmlFor="doc-search" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">
-            Search
-          </label>
+          <label htmlFor="doc-search" className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground mb-1">Buscar</label>
           <div className="relative">
             <span className="material-icons absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground text-base pointer-events-none">search</span>
             <input
@@ -263,7 +265,7 @@ export default function BrainDocumentsListPage() {
               type="text"
               value={searchDraft}
               onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Search title or body…"
+              placeholder="Buscar título o contenido…"
               className={`${pInput} pl-8`}
             />
           </div>
@@ -273,16 +275,14 @@ export default function BrainDocumentsListPage() {
       {/* Body */}
       {loading && (
         <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading…
-        </div>
+          <span className="material-icons animate-spin mr-2">autorenew</span>Cargando…</div>
       )}
 
       {error && !loading && (
         <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load documents
+            No se pudieron cargar los documentos
           </div>
           <p>{error}</p>
         </div>
@@ -293,22 +293,22 @@ export default function BrainDocumentsListPage() {
           <span className="material-icons text-5xl text-primary mb-3 block">description</span>
           <h2 className="text-base font-semibold text-foreground mb-1">
             {searchParam || categoryParam || ownerParam || statusParam !== 'published'
-              ? 'No matching documents.'
-              : 'No documents yet.'}
+              ? 'No hay documentos que coincidan.'
+              : 'Aún no hay documentos.'}
           </h2>
           <p className="text-xs text-muted-foreground mb-4">
             {searchParam || categoryParam || ownerParam || statusParam !== 'published'
-              ? 'Try clearing filters.'
-              : 'Promote a note into your first SOP, or write one from scratch.'}
+              ? 'Prueba a quitar los filtros.'
+              : 'Promueve una nota como tu primer SOP o escribe uno desde cero.'}
           </p>
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <Link href="/portal/brain/documents/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              New document
+              Nuevo documento
             </Link>
             <Link href="/portal/brain/documents/new?source=note" className={pBtnGhost}>
               <span className="material-icons text-base">file_upload</span>
-              Promote from note
+              Promover desde nota
             </Link>
           </div>
         </div>
@@ -342,7 +342,7 @@ export default function BrainDocumentsListPage() {
 
           {(pageParam > 1 || hasNextPage) && (
             <div className="flex items-center justify-between pt-3 border-t border-border text-xs">
-              <span className="text-muted-foreground">Page {pageParam}</span>
+              <span className="text-muted-foreground">Página {pageParam}</span>
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -351,16 +351,14 @@ export default function BrainDocumentsListPage() {
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <span className="material-icons text-base">chevron_left</span>
-                  Prev
+                  Anterior
                 </button>
                 <button
                   type="button"
                   disabled={!hasNextPage}
                   onClick={() => updateParams({ page: String(pageParam + 1) })}
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Next
-                  <span className="material-icons text-base">chevron_right</span>
+                >Siguiente<span className="material-icons text-base">chevron_right</span>
                 </button>
               </div>
             </div>

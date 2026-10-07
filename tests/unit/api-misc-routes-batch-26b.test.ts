@@ -25,16 +25,18 @@ const domainsGetMock = vi.fn();
 const domainsUpdateMock = vi.fn();
 const domainsRemoveMock = vi.fn();
 const domainsVerifyMock = vi.fn();
-vi.mock('@/lib/email', () => ({
-  resend: {
-    domains: {
-      get: (...args: unknown[]) => domainsGetMock(...args),
-      update: (...args: unknown[]) => domainsUpdateMock(...args),
-      remove: (...args: unknown[]) => domainsRemoveMock(...args),
-      verify: (...args: unknown[]) => domainsVerifyMock(...args),
-    },
-  },
-}));
+vi.mock('@/lib/email', () => {
+  const domains = {
+    get: (...args: unknown[]) => domainsGetMock(...args),
+    update: (...args: unknown[]) => domainsUpdateMock(...args),
+    remove: (...args: unknown[]) => domainsRemoveMock(...args),
+    verify: (...args: unknown[]) => domainsVerifyMock(...args),
+  };
+  return {
+    resend: { domains },
+    getResendClient: async () => ({ domains }),
+  };
+});
 
 vi.mock('drizzle-orm', () => ({
   eq: (a: unknown, b: unknown) => ({ op: 'eq', a, b }),

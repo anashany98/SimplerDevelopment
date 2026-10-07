@@ -147,7 +147,7 @@ export function PrintableAreaEditor({
             <div
               role="presentation"
               onPointerDown={start('resize')}
-              title="Drag to resize"
+              title="Arrastra para redimensionar"
               className="absolute -bottom-1.5 -right-1.5 h-3.5 w-3.5 cursor-nwse-resize rounded-sm border-2 border-background bg-primary"
             />
           </div>
@@ -157,10 +157,10 @@ export function PrintableAreaEditor({
       {natural ? (
         <p className="font-mono text-xs text-muted-foreground">
           x {value.printableX} · y {value.printableY} · {w}×{h} px
-          <span className="ml-2 opacity-60">(image {natural.w}×{natural.h})</span>
+          <span className="ml-2 opacity-60">(imagen {natural.w}×{natural.h})</span>
         </p>
       ) : (
-        <p className="text-xs text-muted-foreground">Loading mockup…</p>
+        <p className="text-xs text-muted-foreground">Cargando mockup…</p>
       )}
     </div>
   );

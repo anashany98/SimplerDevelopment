@@ -1,11 +1,11 @@
 /**
- * Seed a "SimplerDevelopment" portal client for dogfooding integrations
+ * Seed a "CRM AGENTS" portal client for dogfooding integrations
  * (Drive, Calendar, Workspace, etc). Idempotent — safe to re-run.
  *
  * Creates:
- *   - users row "SimplerDevelopment" (placeholder owner; password is random &
+ *   - users row "CRM AGENTS" (placeholder owner; password is random &
  *     unused — you log in as your existing user and switch into this client)
- *   - clients row company="SimplerDevelopment", owned by that user
+ *   - clients row company="CRM AGENTS", owned by that user
  *   - client_members row adding the team admin (SEED_ADMIN_EMAIL) as admin
  *   - sets the team admin's default_client_id to the new client
  */
@@ -18,7 +18,7 @@ dotenv.config({ path: '.env' });
 
 const TEAM_ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL ?? 'admin@simplerdevelopment.com';
 const OWNER_EMAIL = 'simplerdevelopment@simplerdevelopment.com';
-const COMPANY = 'SimplerDevelopment';
+const COMPANY = 'CRM AGENTS';
 
 async function main() {
   const { db } = await import('../lib/db');
@@ -58,7 +58,7 @@ async function main() {
       userId: owner.id,
       company: COMPANY,
       website: 'https://simplerdevelopment.com',
-      notes: 'Internal SimplerDevelopment dogfood client — used for testing Workspace integrations against our own data.',
+      notes: 'Internal CRM AGENTS dogfood client — used for testing Workspace integrations against our own data.',
     }).returning();
     console.log(`✓ Created client: #${client.id} "${client.company}"`);
   } else {
@@ -93,7 +93,7 @@ async function main() {
   }
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('  SimplerDevelopment client ready');
+  console.log('  CRM AGENTS client ready');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(`  Client ID:     ${client.id}`);
   console.log(`  Owner user:    #${owner.id} (${OWNER_EMAIL})`);

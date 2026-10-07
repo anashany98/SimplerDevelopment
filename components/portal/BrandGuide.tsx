@@ -55,11 +55,11 @@ export function BrandGuide({
             className="inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-900 transition-colors"
           >
             <span className="material-icons text-base">arrow_back</span>
-            Back to editor
+            Volver al editor
           </Link>
           <span className="text-gray-300">/</span>
           <span className="text-sm font-medium text-gray-900 truncate">{profileName}</span>
-          <span className="text-xs text-gray-500">brand guide</span>
+          <span className="text-xs text-gray-500">guía de marca</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -68,14 +68,14 @@ export function BrandGuide({
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
             <span className="material-icons text-sm">{copied ? 'check' : 'link'}</span>
-            {copied ? 'Copied' : 'Copy link'}
+            {copied ? 'Copiado' : 'Copiar enlace'}
           </button>
           <button
             onClick={() => window.print()}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-gray-900 text-white text-xs font-medium hover:bg-gray-800 transition-colors"
           >
             <span className="material-icons text-sm">print</span>
-            Print / PDF
+            Imprimir / PDF
           </button>
         </div>
       </div>
@@ -140,7 +140,7 @@ function CoverSection({
   const formattedDate = updatedAt ? new Date(updatedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : null;
   return (
     <section className="pt-8 border-b border-gray-200 pb-16 print:pt-0">
-      <div className="text-xs font-semibold tracking-[0.3em] uppercase text-gray-500 mb-8">Brand Guide</div>
+      <div className="text-xs font-semibold tracking-[0.3em] uppercase text-gray-500 mb-8">Guía de marca</div>
       {logoUrl && (
         <div className="mb-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -151,12 +151,12 @@ function CoverSection({
       {tagline && <p className="mt-6 text-2xl text-gray-600 max-w-3xl">{tagline}</p>}
       <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4 text-sm text-gray-500">
         <div>
-          <dt className="text-xs uppercase tracking-wider text-gray-400">Profile</dt>
+          <dt className="text-xs uppercase tracking-wider text-gray-400">Perfil</dt>
           <dd className="mt-1 text-gray-900 font-medium">{profileName}</dd>
         </div>
         {formattedDate && (
           <div>
-            <dt className="text-xs uppercase tracking-wider text-gray-400">Last updated</dt>
+            <dt className="text-xs uppercase tracking-wider text-gray-400">Última actualización</dt>
             <dd className="mt-1 text-gray-900 font-medium">{formattedDate}</dd>
           </div>
         )}
@@ -167,16 +167,16 @@ function CoverSection({
 
 function LogoSection({ branding }: { branding: ResolvedBranding }) {
   const variants = [
-    { label: 'Primary', url: branding.logoRectUrl || branding.logoUrl, usage: 'Default — headers, footers, documents' },
-    { label: 'Square', url: branding.logoSquareUrl, usage: 'Avatars, app icons, social profiles' },
-    { label: 'Icon', url: branding.logoIconUrl, usage: 'Favicons, small-format surfaces' },
+    { label: 'Principal', url: branding.logoRectUrl || branding.logoUrl, usage: 'Predeterminado — cabeceras, pies de página, documentos' },
+    { label: 'Cuadrado', url: branding.logoSquareUrl, usage: 'Avatares, iconos de app, perfiles sociales' },
+    { label: 'Icono', url: branding.logoIconUrl, usage: 'Favicons, superficies de formato pequeño' },
   ].filter((v) => !!v.url);
 
   if (variants.length === 0 && !branding.logoText) {
     return (
       <section>
         <SectionHeader number="01" label="Logo" title="Logo" />
-        <p className="text-gray-600">No logo assets uploaded yet. Add them on the profile&apos;s Logos tab.</p>
+        <p className="text-gray-600">Aún no hay logos subidos. Añádelos en la pestaña Logos del perfil.</p>
       </section>
     );
   }
@@ -187,7 +187,7 @@ function LogoSection({ branding }: { branding: ResolvedBranding }) {
         number="01"
         label="Logo"
         title="Logo"
-        description="Use the variant that fits the available space. Maintain clear space equal to the logo's cap-height on all sides."
+        description="Usa la variante que mejor encaje en el espacio disponible. Mantén un espacio libre igual a la altura de mayúscula del logo en todos los lados."
       />
       <div className="grid md:grid-cols-3 gap-6">
         {variants.map((v) => (
@@ -206,7 +206,7 @@ function LogoSection({ branding }: { branding: ResolvedBranding }) {
 
       {branding.logoText && (
         <div className="mt-6 border border-gray-200 rounded-xl p-8">
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">Wordmark</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">Logotipo</div>
           <div
             className="text-5xl font-bold"
             style={{
@@ -217,15 +217,15 @@ function LogoSection({ branding }: { branding: ResolvedBranding }) {
           >
             {branding.logoText}
           </div>
-          <div className="text-sm text-gray-600 mt-3">Typeset wordmark — use when an image logo is unavailable.</div>
+          <div className="text-sm text-gray-600 mt-3">Logotipo tipográfico: úsalo cuando no haya un logo de imagen disponible.</div>
         </div>
       )}
 
       {variants[0]?.url && (
         <div className="mt-6 grid sm:grid-cols-3 gap-4">
-          <LogoBgSwatch label="On light" bg="#ffffff" url={variants[0].url} />
-          <LogoBgSwatch label="On dark" bg={branding.textColor} url={variants[0].url} />
-          <LogoBgSwatch label="On primary" bg={branding.primaryColor} url={variants[0].url} />
+          <LogoBgSwatch label="Sobre claro" bg="#ffffff" url={variants[0].url} />
+          <LogoBgSwatch label="Sobre oscuro" bg={branding.textColor} url={variants[0].url} />
+          <LogoBgSwatch label="Sobre primario" bg={branding.primaryColor} url={variants[0].url} />
         </div>
       )}
     </section>
@@ -246,24 +246,24 @@ function LogoBgSwatch({ label, bg, url }: { label: string; bg: string; url: stri
 
 function ColorsSection({ branding }: { branding: ResolvedBranding }) {
   const swatches: Array<{ label: string; hex?: string; cssVar: string; role: string }> = [
-    { label: 'Primary', hex: branding.primaryColor, cssVar: '--brand-primary', role: 'Actions, links, emphasis' },
-    { label: 'Secondary', hex: branding.secondaryColor, cssVar: '--brand-secondary', role: 'Supporting accents' },
-    { label: 'Accent', hex: branding.accentColor, cssVar: '--brand-accent', role: 'Highlights, badges' },
-    { label: 'Background', hex: branding.backgroundColor, cssVar: '--brand-bg', role: 'Page surface' },
-    { label: 'Text', hex: branding.textColor, cssVar: '--brand-text', role: 'Body copy' },
-    { label: 'Nav Background', hex: branding.navBackground, cssVar: '--brand-nav-bg', role: 'Navigation surface' },
-    { label: 'Nav Text', hex: branding.navTextColor, cssVar: '--brand-nav-text', role: 'Nav labels' },
-    { label: 'Link', hex: branding.linkColor, cssVar: '--brand-link-color', role: 'Inline hyperlinks' },
-    { label: 'Link Hover', hex: branding.linkHoverColor, cssVar: '--brand-link-hover-color', role: 'Link hover state' },
+    { label: 'Principal', hex: branding.primaryColor, cssVar: '--brand-primary', role: 'Acciones, enlaces, énfasis' },
+    { label: 'Secundario', hex: branding.secondaryColor, cssVar: '--brand-secondary', role: 'Acentos de apoyo' },
+    { label: 'Acento', hex: branding.accentColor, cssVar: '--brand-accent', role: 'Destacados, insignias' },
+    { label: 'Fondo', hex: branding.backgroundColor, cssVar: '--brand-bg', role: 'Superficie de página' },
+    { label: 'Texto', hex: branding.textColor, cssVar: '--brand-text', role: 'Texto del cuerpo' },
+    { label: 'Fondo de navegación', hex: branding.navBackground, cssVar: '--brand-nav-bg', role: 'Superficie de navegación' },
+    { label: 'Texto de navegación', hex: branding.navTextColor, cssVar: '--brand-nav-text', role: 'Etiquetas de navegación' },
+    { label: 'Enlace', hex: branding.linkColor, cssVar: '--brand-link-color', role: 'Hipervínculos en línea' },
+    { label: 'Enlace (hover)', hex: branding.linkHoverColor, cssVar: '--brand-link-hover-color', role: 'Estado hover del enlace' },
   ].filter((s) => !!s.hex);
 
   return (
     <section className="break-inside-avoid">
       <SectionHeader
         number="02"
-        label="Palette"
-        title="Colors"
-        description="Core colors with their roles and CSS custom properties. Reference these variables in code — never hard-coded hex values."
+        label="Paleta"
+        title="Colores"
+        description="Colores principales con sus roles y propiedades personalizadas de CSS. Referencia estas variables en el código, nunca valores hex codificados a mano."
       />
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {swatches.map((s) => (
@@ -297,9 +297,9 @@ function ColorSwatch({ label, hex, cssVar, role }: { label: string; hex?: string
 }
 
 function TypographySection({ branding, sample }: { branding: ResolvedBranding; sample: string }) {
-  const sampleText = sample || 'The quick brown fox jumps over the lazy dog';
-  const headingFont = branding.headingFont || 'System default';
-  const bodyFont = branding.bodyFont || 'System default';
+  const sampleText = sample || 'El veloz murciélago hindú comía feliz cardillo y kiwi';
+  const headingFont = branding.headingFont || 'Predeterminada del sistema';
+  const bodyFont = branding.bodyFont || 'Predeterminada del sistema';
 
   const scale: Array<{ tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'blockquote' | 'small'; label: string }> = [
     { tag: 'h1', label: 'H1' },
@@ -308,9 +308,9 @@ function TypographySection({ branding, sample }: { branding: ResolvedBranding; s
     { tag: 'h4', label: 'H4' },
     { tag: 'h5', label: 'H5' },
     { tag: 'h6', label: 'H6' },
-    { tag: 'p', label: 'Body' },
-    { tag: 'blockquote', label: 'Quote' },
-    { tag: 'small', label: 'Small' },
+    { tag: 'p', label: 'Cuerpo' },
+    { tag: 'blockquote', label: 'Cita' },
+    { tag: 'small', label: 'Pequeño' },
   ];
 
   const getMeta = (key: string) => {
@@ -325,14 +325,14 @@ function TypographySection({ branding, sample }: { branding: ResolvedBranding; s
     <section className="break-inside-avoid">
       <SectionHeader
         number="03"
-        label="Typography"
-        title="Type system"
-        description="Heading + body pairing and the full type scale as configured."
+        label="Tipografía"
+        title="Sistema tipográfico"
+        description="Combinación de títulos y cuerpo, y la escala tipográfica completa según la configuración."
       />
 
       <div className="grid sm:grid-cols-2 gap-4 mb-10">
-        <FontCard label="Heading font" name={headingFont} sample="Aa" font={headingFont} />
-        <FontCard label="Body font" name={bodyFont} sample="Aa" font={bodyFont} />
+        <FontCard label="Fuente de títulos" name={headingFont} sample="Aa" font={headingFont} />
+        <FontCard label="Fuente del cuerpo" name={bodyFont} sample="Aa" font={bodyFont} />
       </div>
 
       <div className="border border-gray-200 rounded-xl divide-y divide-gray-200">
@@ -369,24 +369,24 @@ function ButtonsSection() {
       <SectionHeader
         number="04"
         label="UI"
-        title="Buttons"
-        description="Button variants render with the configured button style, radius, and typography."
+        title="Botones"
+        description="Las variantes de botón se renderizan con el estilo, el radio y la tipografía configurados."
       />
       <div className="border border-gray-200 rounded-xl p-8 space-y-8">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Primary</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Principal</div>
           <div className="flex flex-wrap items-center gap-3">
-            <Button size="sm">Small button</Button>
-            <Button size="md">Medium button</Button>
-            <Button size="lg">Large button</Button>
+            <Button size="sm">Botón pequeño</Button>
+            <Button size="md">Botón mediano</Button>
+            <Button size="lg">Botón grande</Button>
           </div>
         </div>
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Outline</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Contorno</div>
           <div className="flex flex-wrap items-center gap-3">
-            <Button size="sm" variant="outline">Small button</Button>
-            <Button size="md" variant="outline">Medium button</Button>
-            <Button size="lg" variant="outline">Large button</Button>
+            <Button size="sm" variant="outline">Botón pequeño</Button>
+            <Button size="md" variant="outline">Botón mediano</Button>
+            <Button size="lg" variant="outline">Botón grande</Button>
           </div>
         </div>
       </div>
@@ -398,17 +398,17 @@ function VoiceSection({ messaging }: { messaging?: BrandMessagingContext }) {
   if (!messaging) {
     return (
       <section>
-        <SectionHeader number="05" label="Voice" title="Voice & tone" />
-        <p className="text-gray-600">No messaging defined. Add tagline, mission, tone axes, and voice samples on the profile&apos;s Messaging tab.</p>
+        <SectionHeader number="05" label="Voz" title="Voz y tono" />
+        <p className="text-gray-600">No hay mensajes definidos. Añade eslogan, misión, ejes de tono y muestras de voz en la pestaña Mensajes del perfil.</p>
       </section>
     );
   }
 
   const axes: Array<{ key: keyof ToneAxes; left: string; right: string }> = [
-    { key: 'formal', left: 'Casual', right: 'Formal' },
-    { key: 'playful', left: 'Serious', right: 'Playful' },
-    { key: 'traditional', left: 'Innovative', right: 'Traditional' },
-    { key: 'authoritative', left: 'Friendly', right: 'Authoritative' },
+    { key: 'formal', left: 'Informal', right: 'Formal' },
+    { key: 'playful', left: 'Serio', right: 'Divertido' },
+    { key: 'traditional', left: 'Innovador', right: 'Tradicional' },
+    { key: 'authoritative', left: 'Cercano', right: 'Autoritario' },
   ];
   const hasAxes = axes.some(({ key }) => typeof messaging.toneAxes?.[key] === 'number');
 
@@ -416,9 +416,9 @@ function VoiceSection({ messaging }: { messaging?: BrandMessagingContext }) {
     <section>
       <SectionHeader
         number="05"
-        label="Voice"
-        title="Voice & tone"
-        description="How we sound on the page. Use these cues to keep every touchpoint on-brand."
+        label="Voz"
+        title="Voz y tono"
+        description="Cómo sonamos en la página. Usa estas pautas para mantener cada punto de contacto alineado con la marca."
       />
 
       {messaging.tagline && (
@@ -428,25 +428,25 @@ function VoiceSection({ messaging }: { messaging?: BrandMessagingContext }) {
       )}
 
       <div className="grid md:grid-cols-2 gap-6 mb-10">
-        <CopyCard label="Value proposition" text={messaging.valueProposition} />
-        <CopyCard label="Elevator pitch" text={messaging.elevatorPitch} />
-        <CopyCard label="Mission" text={messaging.missionStatement} />
-        <CopyCard label="Vision" text={messaging.visionStatement} />
-        <CopyCard label="Target audience" text={messaging.targetAudience} />
-        <CopyCard label="Boilerplate" text={messaging.boilerplate} />
+        <CopyCard label="Propuesta de valor" text={messaging.valueProposition} />
+        <CopyCard label="Pitch de ascensor" text={messaging.elevatorPitch} />
+        <CopyCard label="Misión" text={messaging.missionStatement} />
+        <CopyCard label="Visión" text={messaging.visionStatement} />
+        <CopyCard label="Público objetivo" text={messaging.targetAudience} />
+        <CopyCard label="Texto corporativo" text={messaging.boilerplate} />
       </div>
 
       {(messaging.brandPersonality || messaging.toneOfVoice || messaging.writingStyle) && (
         <div className="grid sm:grid-cols-3 gap-4 mb-10">
-          {messaging.brandPersonality && <PillCard label="Personality" text={messaging.brandPersonality} />}
-          {messaging.toneOfVoice && <PillCard label="Tone" text={messaging.toneOfVoice} />}
-          {messaging.writingStyle && <PillCard label="Writing style" text={messaging.writingStyle} />}
+          {messaging.brandPersonality && <PillCard label="Personalidad" text={messaging.brandPersonality} />}
+          {messaging.toneOfVoice && <PillCard label="Tono" text={messaging.toneOfVoice} />}
+          {messaging.writingStyle && <PillCard label="Estilo de escritura" text={messaging.writingStyle} />}
         </div>
       )}
 
       {hasAxes && (
         <div className="border border-gray-200 rounded-xl p-8 mb-10">
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-6">Tone axes</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-6">Ejes de tono</div>
           <div className="space-y-6">
             {axes.map(({ key, left, right }) => {
               const val = messaging.toneAxes?.[key];
@@ -473,7 +473,7 @@ function VoiceSection({ messaging }: { messaging?: BrandMessagingContext }) {
 
       {messaging.keyDifferentiators && messaging.keyDifferentiators.length > 0 && (
         <div className="mb-10">
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Key differentiators</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Diferenciadores clave</div>
           <ul className="grid sm:grid-cols-2 gap-3">
             {messaging.keyDifferentiators.map((d, i) => (
               <li key={i} className="flex gap-3 items-start border border-gray-200 rounded-lg p-4">
@@ -487,7 +487,7 @@ function VoiceSection({ messaging }: { messaging?: BrandMessagingContext }) {
 
       {messaging.voiceSamples && messaging.voiceSamples.length > 0 && (
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Voice samples</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">Muestras de voz</div>
           <div className="space-y-4">
             {messaging.voiceSamples.map((s, i) => (
               <figure key={i} className="border border-gray-200 rounded-xl p-6">
@@ -526,9 +526,9 @@ function ApplicationSection({ content, branding }: { content: string; branding: 
     <section>
       <SectionHeader
         number="06"
-        label="In context"
-        title="Example application"
-        description="How the system comes together on a real page."
+        label="En contexto"
+        title="Ejemplo de aplicación"
+        description="Cómo encaja todo el sistema en una página real."
       />
       <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm print:shadow-none">
         <BlockRenderer content={content} branding={branding} />
@@ -541,9 +541,9 @@ function GuideFooter({ clientName, profileName }: { clientName?: string; profile
   return (
     <footer className="pt-10 border-t border-gray-200 text-sm text-gray-500 flex flex-wrap items-center justify-between gap-3">
       <div>
-        Brand guide for <span className="text-gray-900 font-medium">{clientName ?? 'this account'}</span> · profile “{profileName}”.
+        Guía de marca de <span className="text-gray-900 font-medium">{clientName ?? 'esta cuenta'}</span> · perfil «{profileName}».
       </div>
-      <div className="text-xs">Generated {new Date().toLocaleDateString()}</div>
+      <div className="text-xs">Generado el {new Date().toLocaleDateString()}</div>
     </footer>
   );
 }

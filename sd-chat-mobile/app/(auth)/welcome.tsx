@@ -102,7 +102,7 @@ export default function Welcome() {
                   textTransform: 'uppercase',
                 }}
               >
-                Simpler Development · Chat
+                CRM AGENTS · Chat
               </Text>
             </View>
           </View>

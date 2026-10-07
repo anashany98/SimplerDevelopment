@@ -389,6 +389,30 @@ describe('approveReviewItem', () => {
     expect(state.brainAuditLogs).toHaveLength(0);
   });
 
+  it('is idempotent when re-approving an edited item (does not insert a duplicate)', async () => {
+    // Edit-then-approve stores status='edited' but still persists the result FK,
+    // so the guard must key on resultEntityId alone (regression for the old
+    // `status === 'approved'` check that re-ran the switch and duplicated rows).
+    state.brainAiReviewItems.push({
+      id: 1,
+      clientId: 1,
+      status: 'edited',
+      proposedType: 'task',
+      sourceType: 'meeting',
+      sourceId: 50,
+      resultEntityType: 'brain_task',
+      resultEntityId: 777,
+      proposedPayload: { title: 'Edited title' },
+    });
+    const { approveReviewItem } = await importModule();
+    const res = await approveReviewItem({ clientId: 1, itemId: 1, actorId: 2 });
+    expect(res.resultEntityType).toBe('brain_task');
+    expect(res.resultEntityId).toBe(777);
+    // No new task should have been created and no audit log written.
+    expect(state.brainTasks).toHaveLength(0);
+    expect(state.brainAuditLogs).toHaveLength(0);
+  });
+
   it('approves a task proposal and inserts a brain_tasks row inheriting meeting links', async () => {
     state.brainMeetings.push({
       id: 50,
@@ -705,6 +729,9 @@ describe('approveReviewItem', () => {
   it('crm_deal_create: creates a deal and links it to the source meeting', async () => {
     state.crmPipelines.push({ id: 1, clientId: 1, isDefault: true });
     state.crmPipelineStages.push({ id: 11, pipelineId: 1, sortOrder: 1 });
+    // The deal's optional contact/company links must belong to this tenant.
+    state.crmContacts.push({ id: 5, clientId: 1 });
+    state.crmCompanies.push({ id: 6, clientId: 1 });
     state.brainMeetings.push({ id: 70, clientId: 1, dealId: null });
     state.brainAiReviewItems.push({
       id: 1,
@@ -740,7 +767,7 @@ describe('approveReviewItem', () => {
     expect(state.brainMeetings[0].dealId).toBe(d.id);
   });
 
-  it('crm_deal_create: defaults currency to USD and value to null for non-positive numbers', async () => {
+  it('crm_deal_create: defaults currency to EUR and value to null for non-positive numbers', async () => {
     state.crmPipelines.push({ id: 1, clientId: 1, isDefault: true });
     state.crmPipelineStages.push({ id: 11, pipelineId: 1, sortOrder: 1 });
     state.brainAiReviewItems.push({
@@ -756,7 +783,7 @@ describe('approveReviewItem', () => {
     await approveReviewItem({ clientId: 1, itemId: 1, actorId: 2 });
     const d = state.crmDeals[0];
     expect(d.value).toBeNull();
-    expect(d.currency).toBe('USD');
+    expect(d.currency).toBe('EUR');
     expect(d.priority).toBe('medium'); // default
   });
 
@@ -807,6 +834,48 @@ describe('approveReviewItem', () => {
     await expect(
       approveReviewItem({ clientId: 1, itemId: 1, actorId: 2 }),
     ).rejects.toThrow(/no stages/i);
+  });
+
+  it('crm_deal_create: rejects a contactId belonging to another client', async () => {
+    state.crmPipelines.push({ id: 1, clientId: 1, isDefault: true });
+    state.crmPipelineStages.push({ id: 11, pipelineId: 1, sortOrder: 1 });
+    // Contact exists but belongs to a different tenant.
+    state.crmContacts.push({ id: 5, clientId: 99 });
+    state.brainAiReviewItems.push({
+      id: 1,
+      clientId: 1,
+      status: 'pending',
+      proposedType: 'crm_deal_create',
+      sourceType: 'other',
+      sourceId: 0,
+      proposedPayload: { title: 'Cross-tenant contact', contactId: 5 },
+    });
+    const { approveReviewItem } = await importModule();
+    await expect(
+      approveReviewItem({ clientId: 1, itemId: 1, actorId: 2 }),
+    ).rejects.toThrow(/contact not found/i);
+    expect(state.crmDeals).toHaveLength(0);
+  });
+
+  it('crm_deal_create: rejects a companyId belonging to another client', async () => {
+    state.crmPipelines.push({ id: 1, clientId: 1, isDefault: true });
+    state.crmPipelineStages.push({ id: 11, pipelineId: 1, sortOrder: 1 });
+    // Company exists but belongs to a different tenant.
+    state.crmCompanies.push({ id: 6, clientId: 99 });
+    state.brainAiReviewItems.push({
+      id: 1,
+      clientId: 1,
+      status: 'pending',
+      proposedType: 'crm_deal_create',
+      sourceType: 'other',
+      sourceId: 0,
+      proposedPayload: { title: 'Cross-tenant company', companyId: 6 },
+    });
+    const { approveReviewItem } = await importModule();
+    await expect(
+      approveReviewItem({ clientId: 1, itemId: 1, actorId: 2 }),
+    ).rejects.toThrow(/company not found/i);
+    expect(state.crmDeals).toHaveLength(0);
   });
 
   it('commitment: meeting source inserts a brain_tasks row with free-form "when" (NaN due date) and inherited links', async () => {

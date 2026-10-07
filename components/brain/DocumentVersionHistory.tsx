@@ -89,9 +89,7 @@ export default function DocumentVersionHistory({
                 <span className="text-xs font-semibold text-foreground">v{v.versionNumber}</span>
                 {v.isDraft && (
                   <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30">
-                    <span className="material-icons text-[11px]">edit_note</span>
-                    Draft
-                  </span>
+                    <span className="material-icons text-[11px]">edit_note</span>Borrador</span>
                 )}
                 {isCurrent && (
                   <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">

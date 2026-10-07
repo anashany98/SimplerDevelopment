@@ -96,15 +96,15 @@ export function ShopPage({ siteId }: ShopPageProps) {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
-          {activeCategory ? activeCategory.name : 'Shop'}
+          {activeCategory ? activeCategory.name : 'Tienda'}
         </h1>
         <p className="text-muted-foreground">
-          {pagination.total} {pagination.total === 1 ? 'product' : 'products'}
+          {pagination.total} {pagination.total === 1 ? 'producto' : 'productos'}
           {activeCategory && (
             <>
-              {' '}in {activeCategory.name}
+              {' '}en {activeCategory.name}
               <Link href="/shop" className="ml-2 text-primary hover:underline text-sm">
-                Clear filter
+                Quitar filtro
               </Link>
             </>
           )}
@@ -130,7 +130,7 @@ export function ShopPage({ siteId }: ShopPageProps) {
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search products..."
+                  placeholder="Buscar productos..."
                   className="w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                 />
               </div>
@@ -141,7 +141,7 @@ export function ShopPage({ siteId }: ShopPageProps) {
           {categories.length > 0 && (
             <div className="mb-6">
               <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider text-muted-foreground">
-                Categories
+                Categorías
               </h3>
               <div className="space-y-1">
                 <Link
@@ -152,7 +152,7 @@ export function ShopPage({ siteId }: ShopPageProps) {
                       : 'text-foreground hover:bg-muted/50'
                   }`}
                 >
-                  All Products
+                  Todos los productos
                 </Link>
                 {categories.map((cat) => (
                   <Link
@@ -178,7 +178,7 @@ export function ShopPage({ siteId }: ShopPageProps) {
           {/* Sort Bar */}
           <div className="flex items-center justify-between mb-6">
             <div className="text-sm text-muted-foreground">
-              {loading ? 'Loading...' : `Showing ${products.length} of ${pagination.total}`}
+              {loading ? 'Cargando...' : `Mostrando ${products.length} de ${pagination.total}`}
             </div>
             <select
               value={sort}
@@ -188,10 +188,10 @@ export function ShopPage({ siteId }: ShopPageProps) {
               }}
               className="text-sm rounded-lg border border-border bg-background px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
             >
-              <option value="newest">Newest</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-              <option value="featured">Featured</option>
+              <option value="newest">Más recientes</option>
+              <option value="price_asc">Precio: de menor a mayor</option>
+              <option value="price_desc">Precio: de mayor a menor</option>
+              <option value="featured">Destacados</option>
             </select>
           </div>
 
@@ -251,14 +251,14 @@ export function ShopPage({ siteId }: ShopPageProps) {
           ) : (
             <div className="text-center py-16">
               <span className="material-icons text-6xl text-muted-foreground/20 mb-4 block">search_off</span>
-              <h2 className="text-xl font-semibold mb-2">No products found</h2>
+              <h2 className="text-xl font-semibold mb-2">No se encontraron productos</h2>
               <p className="text-muted-foreground mb-6">
                 {searchFilter
-                  ? `No results for "${searchFilter}"`
-                  : 'No products available in this category.'}
+                  ? `Sin resultados para "${searchFilter}"`
+                  : 'No hay productos disponibles en esta categoría.'}
               </p>
               <Link href="/shop" className="text-primary hover:underline">
-                Browse all products
+                Ver todos los productos
               </Link>
             </div>
           )}

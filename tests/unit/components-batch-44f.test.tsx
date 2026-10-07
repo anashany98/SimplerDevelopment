@@ -81,8 +81,8 @@ describe('CardActivity', () => {
     const { container, queryByText } = render(
       <CardActivity activities={[]} showActivity={false} setShowActivity={setShowActivity} />,
     );
-    // Header text includes the word "Activity" but no parenthesized count.
-    expect(container.textContent).toContain('Activity');
+    // Header text includes the word "Actividad" but no parenthesized count.
+    expect(container.textContent).toContain('Actividad');
     expect(container.textContent).not.toContain('(0)');
     // Collapsed branch: empty-state text should NOT appear.
     expect(queryByText('No activity yet.')).toBeNull();
@@ -105,14 +105,14 @@ describe('CardActivity', () => {
         setShowActivity={setShowActivity}
       />,
     );
-    expect(container.textContent).toContain('Activity (3)');
+    expect(container.textContent).toContain('Actividad (3)');
   });
 
   it('renders the empty-state copy when expanded with no activities', () => {
     const { container } = render(
       <CardActivity activities={[]} showActivity={true} setShowActivity={() => {}} />,
     );
-    expect(container.textContent).toContain('No activity yet.');
+    expect(container.textContent).toContain('Aún no hay actividad.');
     // Chevron should now carry the rotate-90 class.
     const chevron = container.querySelector('.material-icons');
     expect(chevron?.className).toContain('rotate-90');
@@ -142,8 +142,8 @@ describe('CardActivity', () => {
     );
     const items = container.querySelectorAll('li');
     expect(items.length).toBe(2);
-    expect(container.textContent).toContain('Grace renamed to "New title"');
-    expect(container.textContent).toContain('Linus added label "urgent"');
+    expect(container.textContent).toContain('Grace la renombró a "New title"');
+    expect(container.textContent).toContain('Linus añadió la etiqueta "urgent"');
     // Empty-state copy must NOT appear when activities exist.
     expect(container.textContent).not.toContain('No activity yet.');
   });
@@ -172,9 +172,9 @@ describe('WebsiteAutomationSettings', () => {
     const { getByTestId } = render(<WebsiteAutomationSettings />);
     const el = getByTestId('product-automation-settings');
     expect(el.getAttribute('data-scope')).toBe('website');
-    expect(el.getAttribute('data-title')).toBe('Automations');
+    expect(el.getAttribute('data-title')).toBe('Automatizaciones');
     expect(el.getAttribute('data-description')).toBe(
-      'Automate CRM workflows and customer follow-ups',
+      'Automatiza flujos de trabajo del CRM y seguimientos de clientes',
     );
     expect(el.getAttribute('data-preset-count')).toBe('3');
     // The keys must include each of the three known automation presets.
@@ -193,9 +193,9 @@ describe('WebsiteNotificationSettings', () => {
     const { getByTestId } = render(<WebsiteNotificationSettings />);
     const el = getByTestId('product-automation-settings');
     expect(el.getAttribute('data-scope')).toBe('website');
-    expect(el.getAttribute('data-title')).toBe('Notifications');
+    expect(el.getAttribute('data-title')).toBe('Notificaciones');
     expect(el.getAttribute('data-description')).toBe(
-      'Get alerted about important website and store events',
+      'Recibe avisos sobre eventos importantes de tu web y tu tienda',
     );
     expect(el.getAttribute('data-preset-count')).toBe('5');
     const keys = el.getAttribute('data-preset-keys')!.split(',');

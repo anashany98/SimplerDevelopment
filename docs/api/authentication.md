@@ -1,6 +1,6 @@
 # Authentication & Getting Started (REST v1)
 
-The SimplerDevelopment REST API lets you read and write content on any site you manage — posts, pages, and more — from your own code, CI pipelines, or third-party integrations. Every request is scoped to a specific site, authenticated with an API key, and returns a consistent JSON envelope so error handling is uniform across all endpoints.
+The CRM AGENTS REST API lets you read and write content on any site you manage — posts, pages, and more — from your own code, CI pipelines, or third-party integrations. Every request is scoped to a specific site, authenticated with an API key, and returns a consistent JSON envelope so error handling is uniform across all endpoints.
 
 ---
 
@@ -18,7 +18,7 @@ https://<your-portal-domain>/api/v1/sites/{siteId}/...
 
 ## Getting an API Key
 
-API keys are generated inside the SimplerDevelopment portal under **Settings > API Keys** for each site. Every key:
+API keys are generated inside the CRM AGENTS portal under **Settings > API Keys** for each site. Every key:
 
 - Begins with the prefix `sd_live_` followed by 64 hex characters (256 bits of entropy).
 - Is scoped to exactly **one site** (`siteId`). A key issued for site 42 will be rejected on site 99.

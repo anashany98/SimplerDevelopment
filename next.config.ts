@@ -64,8 +64,22 @@ const FRAME_DENY_HEADERS = [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }];
 // (TypeScript is already skipped in-build for ALL branches below.)
 const isDevDeploy = process.env.VERCEL_GIT_COMMIT_REF === 'dev';
 
+// Dev-only assets (including Turbopack HMR) reject cross-origin requests by
+// default. Keep temporary tunnels opt-in and explicitly scoped by the runtime
+// environment instead of allowing an entire public tunnel domain.
+// Cloudflare Quick Tunnels issue a fresh *.trycloudflare.com hostname on every
+// start, so in development the suffix is allowed wholesale — this mirrors the
+// `.trycloudflare.com` allowance in middleware.ts isAppHostname. Any other
+// dev origin must be listed explicitly via NEXT_ALLOWED_DEV_ORIGINS.
+const allowedDevOrigins = (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+allowedDevOrigins.push('*.trycloudflare.com');
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  allowedDevOrigins,
   // Expose Google-auth availability to the client bundle so the login/signup
   // pages can conditionally render the "Continue with Google" button.
   // Computed at build time — matches the runtime provider-registration check in
@@ -89,12 +103,22 @@ const nextConfig: NextConfig = {
   // Limit static generation workers to avoid exhausting Postgres connections
   experimental: {
     workerThreads: false,
-    cpus: 4,
+    // Constrained deployment hosts can opt into a single build worker without
+    // slowing down developer and CI builds. This prevents prerender workers
+    // from exhausting the host during Docker image creation.
+    cpus: process.env.NEXT_BUILD_CPUS === '1' ? 1 : 4,
+    // Next.js documents this as a low-risk way to reduce the peak Webpack
+    // memory footprint. Keep it opt-in for constrained production builders.
+    webpackMemoryOptimizations: process.env.NEXT_LOW_MEMORY_BUILD === '1',
     // Next 16 enables Turbopack's persistent on-disk dev cache by default. On a
     // repo this size it thrashes — "filesystem cache database compaction" runs
     // for 1-2 min on a loop and freezes dev so the app never loads (vercel/next.js#87796).
     // Off = no compaction stalls; cost is a slower cold compile after a restart.
     turbopackFileSystemCacheForDev: false,
+    // A full application preload exceeds the available memory on small self-hosted
+    // instances. Load route entries on demand instead; frequently used routes
+    // naturally stay warm after their first request.
+    preloadEntriesOnStart: false,
     // Rewrites `import { MdFoo } from 'react-icons/md'` into a direct
     // per-icon path so a handful of named icons don't drag a barrel of
     // thousands in. Only helps NAMED imports — a `import * as X` is still
@@ -143,7 +167,8 @@ const nextConfig: NextConfig = {
       { source: '/portal', destination: '/portal/dashboard', permanent: false },
       { source: '/portal/ai-activity', destination: '/portal/settings/ai', permanent: false },
       { source: '/portal/billing', destination: '/portal/settings/billing', permanent: false },
-      { source: '/portal/invoices', destination: '/portal/settings/billing', permanent: false },
+        { source: '/portal/invoices', destination: '/portal/settings/billing', permanent: false },
+        { source: '/portal/flow-runs', destination: '/portal/projects', permanent: false },
       { source: '/portal/settings', destination: '/portal/settings/profile', permanent: false },
       { source: '/portal/team', destination: '/portal/settings/team', permanent: false },
       { source: '/portal/tickets', destination: '/portal/settings/support', permanent: false },

@@ -52,10 +52,10 @@ interface FormState {
 }
 
 const TRIGGERS: Array<{ value: Trigger; label: string; icon: string; hint: string }> = [
-  { value: 'manual', label: 'Manual', icon: 'touch_app', hint: 'Pick from the templates menu when creating a note.' },
-  { value: 'daily', label: 'Daily', icon: 'today', hint: 'Auto-materialized once per day by the daily-note cron.' },
-  { value: 'meeting', label: 'Meeting', icon: 'groups', hint: 'Auto-attached when a new meeting is created.' },
-  { value: 'slash', label: 'Slash', icon: 'keyboard', hint: 'Available as a /slash command inside the note editor.' },
+  { value: 'manual', label: 'Manual', icon: 'touch_app', hint: 'Elige esta plantilla desde el menú al crear una nota.' },
+  { value: 'daily', label: 'Diaria', icon: 'today', hint: 'Se genera automáticamente una vez al día con el cron de notas diarias.' },
+  { value: 'meeting', label: 'Reunión', icon: 'groups', hint: 'Se adjunta automáticamente al crear una reunión.' },
+  { value: 'slash', label: 'Slash', icon: 'keyboard', hint: 'Disponible como comando /slash dentro del editor de notas.' },
 ];
 
 const TRIGGER_BADGE: Record<Trigger, string> = {
@@ -68,11 +68,11 @@ const TRIGGER_BADGE: Record<Trigger, string> = {
 // Mirrors lib/brain/template.ts. `today.long` is real but skipped here to
 // keep the hint card short — power users will discover it from the README.
 const VARIABLE_HINTS: Array<{ name: string; description: string }> = [
-  { name: '{{today}}', description: 'ISO date — e.g. 2026-05-06' },
-  { name: '{{week}}', description: 'ISO week label — e.g. 2026-W19' },
-  { name: '{{userName}}', description: "Current user's display name" },
-  { name: '{{open_tasks}}', description: 'Bulleted list of up to 10 open tasks' },
-  { name: '{{recent_meetings}}', description: 'Meetings from the last 7 days' },
+  { name: '{{today}}', description: 'Fecha ISO — p. ej. 2026-05-06' },
+  { name: '{{week}}', description: 'Etiqueta de semana ISO — p. ej. 2026-W19' },
+  { name: '{{userName}}', description: 'Nombre visible del usuario actual' },
+  { name: '{{open_tasks}}', description: 'Lista con viñetas de hasta 10 tareas abiertas' },
+  { name: '{{recent_meetings}}', description: 'Reuniones de los últimos 7 días' },
 ];
 
 const EMPTY_FORM: FormState = {
@@ -126,7 +126,7 @@ export default function BrainTemplatesPage() {
       }
       setItems((json.data?.items ?? []) as BrainNoteTemplate[]);
     } catch (err) {
-      setLoadError(err instanceof Error ? err.message : 'Network error');
+      setLoadError(err instanceof Error ? err.message : 'Error de red');
       setItems([]);
     }
   }, []);
@@ -158,15 +158,15 @@ export default function BrainTemplatesPage() {
     setFormError(null);
     const name = form.name.trim();
     if (!name) {
-      setFormError('Name is required.');
+      setFormError('El nombre es obligatorio.');
       return;
     }
     if (name.length > 150) {
-      setFormError('Name must be 150 characters or fewer.');
+      setFormError('El nombre debe tener 150 caracteres o menos.');
       return;
     }
     if (!form.body.trim()) {
-      setFormError('Body cannot be empty.');
+      setFormError('El cuerpo no puede estar vacío.');
       return;
     }
     setSaving(true);
@@ -191,9 +191,9 @@ export default function BrainTemplatesPage() {
       const json = await r.json().catch(() => ({}));
       if (!r.ok || !json.success) {
         if (r.status === 409) {
-          setFormError('A template with that name already exists.');
+          setFormError('Ya existe una plantilla con ese nombre.');
         } else {
-          setFormError(json.message || `Save failed (${r.status})`);
+          setFormError(json.message || `No se pudo guardar (${r.status})`);
         }
         return;
       }
@@ -202,7 +202,7 @@ export default function BrainTemplatesPage() {
       setSelectedId(saved.id);
       setForm(templateToForm(saved));
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Network error');
+      setFormError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setSaving(false);
     }
@@ -210,21 +210,21 @@ export default function BrainTemplatesPage() {
 
   const handleDelete = useCallback(async () => {
     if (selectedId === null || selectedId === 'new') return;
-    if (!window.confirm(`Delete template "${form.name}"? This cannot be undone.`)) return;
+    if (!window.confirm(`¿Eliminar la plantilla "${form.name}"? Esta acción no se puede deshacer.`)) return;
     setSaving(true);
     setFormError(null);
     try {
       const r = await fetch(`/api/portal/brain/templates/${selectedId}`, { method: 'DELETE' });
       const json = await r.json().catch(() => ({}));
       if (!r.ok || !json.success) {
-        setFormError(json.message || `Delete failed (${r.status})`);
+        setFormError(json.message || `No se pudo eliminar (${r.status})`);
         return;
       }
       setSelectedId(null);
       setForm(EMPTY_FORM);
       await loadList();
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Network error');
+      setFormError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setSaving(false);
     }
@@ -242,12 +242,12 @@ export default function BrainTemplatesPage() {
       });
       const json = await r.json().catch(() => ({}));
       if (!r.ok || !json.success || !json.data?.id) {
-        setFormError(json.message || `Try-it failed (${r.status})`);
+        setFormError(json.message || `No se pudo aplicar (${r.status})`);
         return;
       }
       router.push(`/portal/brain/knowledge?id=${json.data.id}`);
     } catch (err) {
-      setFormError(err instanceof Error ? err.message : 'Network error');
+      setFormError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setTryingId(null);
     }
@@ -259,30 +259,28 @@ export default function BrainTemplatesPage() {
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">description</span>
-            Note Templates
+            Plantillas de notas
           </span>
         }
         subtitle={
           <>
-            Reusable note bodies with{' '}
+            Cuerpos de nota reutilizables con{' '}
             <code className="px-1 py-0.5 rounded bg-muted text-foreground text-xs">{'{{variable}}'}</code>{' '}
-            placeholders. Apply manually, on a schedule, or when a meeting is created.
+            marcadores. Aplícalos manualmente, según una programación o al crear una reunión.
           </>
         }
         actions={
           <>
             <Link href="/portal/brain/knowledge" className={pBtnGhost}>
               <span className="material-icons text-base">arrow_back</span>
-              Knowledge
+              Conocimiento
             </Link>
             <button type="button" onClick={handleNew} className={pBtnPrimary}>
-              <span className="material-icons text-base">add</span>
-              New template
-            </button>
+              <span className="material-icons text-base">add</span>Nueva plantilla</button>
           </>
         }
       />
@@ -291,14 +289,14 @@ export default function BrainTemplatesPage() {
         {/* List pane */}
         <aside className={`${pCard} overflow-hidden`}>
           <div className="px-3 py-2 border-b border-border flex items-center justify-between">
-            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Templates</span>
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Plantillas</span>
             <span className="text-xs text-muted-foreground">{items?.length ?? 0}</span>
           </div>
 
           {items === null && !loadError && (
             <div className="px-3 py-6 flex items-center gap-2 text-sm text-muted-foreground">
-              <span className="material-icons animate-spin text-base">progress_activity</span>
-              Loading templates…
+              <span className="material-icons animate-spin text-base">autorenew</span>
+              Cargando plantillas…
             </div>
           )}
 
@@ -311,7 +309,7 @@ export default function BrainTemplatesPage() {
 
           {items !== null && !loadError && items.length === 0 && (
             <div className="px-4 py-6 text-sm text-muted-foreground">
-              No templates yet — create your first to enable from-template note creation.
+              Aún no hay plantillas: crea la primera para poder generar notas a partir de plantillas.
             </div>
           )}
 
@@ -338,7 +336,7 @@ export default function BrainTemplatesPage() {
                         </span>
                         {!tpl.enabled && (
                           <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">
-                            off
+                            desactivada
                           </span>
                         )}
                       </div>
@@ -367,14 +365,14 @@ export default function BrainTemplatesPage() {
           {!showForm && (
             <div className={`${pCard} p-10 text-center`}>
               <span className="material-icons text-5xl text-muted-foreground">description</span>
-              <h2 className={`mt-3 ${pSectionTitle}`}>Select a template to edit</h2>
+              <h2 className={`mt-3 ${pSectionTitle}`}>Selecciona una plantilla para editar</h2>
               <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-                Pick one from the list, or click <span className="font-medium text-foreground">New template</span> to start fresh.
+                Elige una de la lista o haz clic en <span className="font-medium text-foreground">Nueva plantilla</span> para empezar de cero.
               </p>
               {items !== null && items.length === 0 && (
                 <button type="button" onClick={handleNew} className={`mt-4 ${pBtnPrimary}`}>
                   <span className="material-icons text-base">add</span>
-                  Create your first template
+                  Crea tu primera plantilla
                 </button>
               )}
             </div>
@@ -384,11 +382,11 @@ export default function BrainTemplatesPage() {
             <div className={`${pCard} p-6`}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className={pSectionTitle}>
-                  {isNewMode ? 'New template' : 'Edit template'}
+                  {isNewMode ? 'Nueva plantilla' : 'Editar plantilla'}
                 </h2>
                 {selectedTemplate && (
                   <span className="text-xs text-muted-foreground">
-                    Updated {new Date(selectedTemplate.updatedAt).toLocaleString()}
+                    Actualizada {new Date(selectedTemplate.updatedAt).toLocaleString()}
                   </span>
                 )}
               </div>
@@ -396,16 +394,14 @@ export default function BrainTemplatesPage() {
               <div className="space-y-5">
                 {/* Name */}
                 <div>
-                  <label htmlFor="tpl-name" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
-                    Name
-                  </label>
+                  <label htmlFor="tpl-name" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">Nombre</label>
                   <input
                     id="tpl-name"
                     type="text"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     maxLength={150}
-                    placeholder="Daily standup"
+                    placeholder="Reunión diaria"
                     className={pInput}
                   />
                 </div>
@@ -413,7 +409,7 @@ export default function BrainTemplatesPage() {
                 {/* Trigger */}
                 <div>
                   <span className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
-                    Trigger
+                    Disparador
                   </span>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {TRIGGERS.map((t) => {
@@ -451,23 +447,23 @@ export default function BrainTemplatesPage() {
                       onChange={(e) => setForm({ ...form, enabled: e.target.checked })}
                       className="h-4 w-4 rounded border-border accent-primary"
                     />
-                    <span className="text-sm">Enabled</span>
+                    <span className="text-sm">Activado</span>
                   </label>
 
                   <div>
                     <label htmlFor="tpl-tags" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
-                      Default tags
+                      Etiquetas predeterminadas
                     </label>
                     <input
                       id="tpl-tags"
                       type="text"
                       value={form.defaultTagsInput}
                       onChange={(e) => setForm({ ...form, defaultTagsInput: e.target.value })}
-                      placeholder="daily, standup, eng"
+                      placeholder="diario, standup, ing"
                       className={pInput}
                     />
                     <p className="text-[11px] text-muted-foreground mt-1">
-                      Comma-separated. Pre-attached to every note created from this template.
+                      Separadas por comas. Se adjuntan a cada nota creada desde esta plantilla.
                     </p>
                   </div>
                 </div>
@@ -475,19 +471,17 @@ export default function BrainTemplatesPage() {
                 {/* Body + variable hints */}
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-4">
                   <div>
-                    <label htmlFor="tpl-body" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">
-                      Body
-                    </label>
+                    <label htmlFor="tpl-body" className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground mb-1.5">Cuerpo</label>
                     <textarea
                       id="tpl-body"
                       value={form.body}
                       onChange={(e) => setForm({ ...form, body: e.target.value })}
-                      placeholder={'# {{today}}\n\n## Open tasks\n{{open_tasks}}\n\n## Recent meetings\n{{recent_meetings}}'}
+                      placeholder={'# {{today}}\n\n## Tareas abiertas\n{{open_tasks}}\n\n## Reuniones recientes\n{{recent_meetings}}'}
                       rows={18}
                       className={`${pInput} font-mono resize-y min-h-[300px]`}
                     />
                     <p className="text-[11px] text-muted-foreground mt-1">
-                      Markdown body. <code className="px-1 py-0.5 rounded bg-muted text-foreground text-xs">{'{{vars}}'}</code> are resolved at apply time; unrecognized ones are left as-is.
+                      Cuerpo en Markdown. Las <code className="px-1 py-0.5 rounded bg-muted text-foreground text-xs">{'{{vars}}'}</code> se resuelven al aplicar la plantilla; las no reconocidas se dejan tal cual.
                     </p>
                   </div>
 
@@ -530,12 +524,12 @@ export default function BrainTemplatesPage() {
                       {saving ? (
                         <>
                           <span className="material-icons text-base animate-spin">autorenew</span>
-                          Saving…
+                          Guardando…
                         </>
                       ) : (
                         <>
                           <span className="material-icons text-base">save</span>
-                          {isNewMode ? 'Create template' : 'Save changes'}
+                          {isNewMode ? 'Crear plantilla' : 'Guardar cambios'}
                         </>
                       )}
                     </button>
@@ -545,18 +539,18 @@ export default function BrainTemplatesPage() {
                         type="button"
                         onClick={handleTryIt}
                         disabled={tryingId !== null}
-                        title="Create a new note from this template and open it"
+                        title="Crea una nueva nota a partir de esta plantilla y ábrela"
                         className={pBtnGhost}
                       >
                         {tryingId === selectedTemplate.id ? (
                           <>
                             <span className="material-icons text-base animate-spin">autorenew</span>
-                            Applying…
+                            Aplicando…
                           </>
                         ) : (
                           <>
                             <span className="material-icons text-base">play_arrow</span>
-                            Try it
+                            Probar
                           </>
                         )}
                       </button>
@@ -570,9 +564,7 @@ export default function BrainTemplatesPage() {
                       disabled={saving}
                       className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-red-500 transition-colors disabled:opacity-50"
                     >
-                      <span className="material-icons text-base">delete_outline</span>
-                      Delete
-                    </button>
+                      <span className="material-icons text-base">delete_outline</span>Eliminar</button>
                   )}
                 </div>
               </div>

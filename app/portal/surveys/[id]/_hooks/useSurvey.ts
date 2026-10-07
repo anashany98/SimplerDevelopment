@@ -81,11 +81,11 @@ export function useSurvey(id: string | number): UseSurveyResult {
       const result = await updateSurvey(id, updates);
       setSaving(false);
       if (!result.success) {
-        setError(result.message || 'Failed to save');
+        setError(result.message || 'No se pudo guardar');
         return false;
       }
       setSurvey(result.data);
-      setSuccessMsg('Saved');
+      setSuccessMsg('Guardado');
       setTimeout(() => setSuccessMsg(''), 2000);
       return true;
     },
@@ -94,7 +94,7 @@ export function useSurvey(id: string | number): UseSurveyResult {
 
   const remove = useCallback(async () => {
     const result = await deleteSurveyApi(id);
-    if (!result.success) setError(result.message || 'Failed to delete');
+    if (!result.success) setError(result.message || 'No se pudo eliminar');
     return result;
   }, [id]);
 

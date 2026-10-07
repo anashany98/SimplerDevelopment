@@ -652,12 +652,12 @@ export function registerEmailTools(server: McpServer, ctx: PortalMcpContext): vo
 
 
   // ── EMAIL CAMPAIGN SCHEDULE ────────────────────────────────────────────
-  hasScope(ctx.scopes, 'email:write') && server.registerTool(
+  hasScope(ctx.scopes, 'email:send') && server.registerTool(
     'email_campaigns_schedule',
     {
       title: 'Schedule email campaign',
       description:
-        'Mark a draft campaign as scheduled for a future send. Sets status=scheduled and scheduledAt. Pass unschedule:true to revert to draft. Does NOT dispatch — a scheduler or manual send is still required.',
+        'Mark a draft campaign as scheduled for a future send. Sets status=scheduled and scheduledAt. Pass unschedule:true to revert to draft. Does NOT dispatch — a scheduler or manual send is still required. Gated on the `email:send` scope: scheduling commits the campaign to a send the cron later executes without a human, so it needs the same scope as `email_campaigns_send`.',
       inputSchema: {
         id: z.number(),
         scheduledAt: z.string().optional().describe('ISO datetime of intended send.'),
@@ -665,7 +665,7 @@ export function registerEmailTools(server: McpServer, ctx: PortalMcpContext): vo
       },
     },
     async ({ id, scheduledAt, unschedule }) => {
-      if (!requireScope(ctx, 'email:write')) return denied('email:write');
+      if (!requireScope(ctx, 'email:send')) return denied('email:send');
       if (!(await requireService(clientId, 'email'))) return serviceDenied('email');
       const [existing] = await db.select({ id: emailCampaigns.id, status: emailCampaigns.status })
         .from(emailCampaigns)

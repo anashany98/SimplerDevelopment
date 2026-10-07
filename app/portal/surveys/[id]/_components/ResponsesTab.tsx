@@ -71,7 +71,7 @@ export default function ResponsesTab({ surveyId, survey, responses, filters, onF
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-background border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors whitespace-nowrap"
             >
               <span className="material-icons text-lg">download</span>
-              Export CSV
+              Exportar CSV
             </a>
           </div>
         )}
@@ -80,10 +80,10 @@ export default function ResponsesTab({ surveyId, survey, responses, filters, onF
         <div className="bg-card border border-border rounded-xl p-10 text-center">
           <span className="material-icons text-4xl text-muted-foreground/50">{hasAnyFilter ? 'filter_alt_off' : 'inbox'}</span>
           <p className="text-muted-foreground mt-2 text-sm">
-            {hasAnyFilter ? 'No responses match these filters' : 'No responses yet'}
+            {hasAnyFilter ? 'Ninguna respuesta coincide con estos filtros' : 'Aún no hay respuestas'}
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            {hasAnyFilter ? 'Try widening the date range or clearing the keyword search.' : 'Share your survey to start collecting responses'}
+            {hasAnyFilter ? 'Prueba a ampliar el rango de fechas o a borrar la búsqueda por palabra clave.' : 'Comparte tu encuesta para empezar a recopilar respuestas'}
           </p>
         </div>
       ) : (
@@ -125,7 +125,7 @@ function FormGroup({
           <code className="font-mono">{formName}</code>
           <span className="text-xs font-medium text-muted-foreground">({responses.length})</span>
           {isOnlyGroup && formName === 'main' && (
-            <span className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wider ml-1">structured</span>
+            <span className="text-[10px] font-medium text-muted-foreground/80 uppercase tracking-wider ml-1">estructurada</span>
           )}
         </button>
       </header>
@@ -135,10 +135,10 @@ function FormGroup({
             <thead>
               <tr className="bg-muted/20">
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">#</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Respondent</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Source</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Date</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Answers</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Encuestado</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Fuente</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Fecha</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Respuestas</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -147,7 +147,7 @@ function FormGroup({
                   <td className="px-4 py-3 text-muted-foreground">{i + 1}</td>
                   <td className="px-4 py-3 text-foreground">
                     {r.respondentEmail || r.respondentName || (
-                      <span className="text-muted-foreground italic">Anonymous</span>
+                      <span className="text-muted-foreground italic">Anónimo</span>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -158,7 +158,7 @@ function FormGroup({
                   <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{new Date(r.createdAt).toLocaleString()}</td>
                   <td className="px-4 py-3">
                     <details className="cursor-pointer">
-                      <summary className="text-primary text-xs hover:underline">View answers</summary>
+                      <summary className="text-primary text-xs hover:underline">Ver respuestas</summary>
                       <AnswersList answers={r.answers} fieldsById={fieldsById} />
                     </details>
                   </td>
@@ -183,7 +183,7 @@ function AnswersList({
   return (
     <div className="mt-2 space-y-1">
       {entries.length === 0 && (
-        <div className="text-xs text-muted-foreground italic">No answers recorded</div>
+        <div className="text-xs text-muted-foreground italic">Sin respuestas registradas</div>
       )}
       {entries.map(([key, val]) => {
         const field = fieldsById.get(key);

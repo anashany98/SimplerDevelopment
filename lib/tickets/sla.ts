@@ -32,10 +32,10 @@ export interface SlaPolicy {
  * Priority → SLA target map. Hours, not minutes — kept coarse on purpose.
  */
 export const SLA_BY_PRIORITY: Record<TicketPriority, SlaPolicy> = {
-  urgent: { firstResponseHours: 2, resolutionHours: 8, label: 'Urgent (2h / 8h)' },
-  high: { firstResponseHours: 4, resolutionHours: 24, label: 'High (4h / 24h)' },
-  medium: { firstResponseHours: 12, resolutionHours: 72, label: 'Medium (12h / 72h)' },
-  low: { firstResponseHours: 24, resolutionHours: 24 * 7, label: 'Low (24h / 7d)' },
+  urgent: { firstResponseHours: 2, resolutionHours: 8, label: 'Urgente (2h / 8h)' },
+  high: { firstResponseHours: 4, resolutionHours: 24, label: 'Alta (4h / 24h)' },
+  medium: { firstResponseHours: 12, resolutionHours: 72, label: 'Media (12h / 72h)' },
+  low: { firstResponseHours: 24, resolutionHours: 24 * 7, label: 'Baja (24h / 7d)' },
 };
 
 function isPriority(value: string | null | undefined): value is TicketPriority {
@@ -71,7 +71,7 @@ export interface SlaState {
 
 const NONE_STATE: SlaState = {
   kind: 'none',
-  label: 'No SLA',
+  label: 'Sin SLA',
   icon: 'schedule',
   className: 'bg-muted text-muted-foreground',
 };
@@ -118,7 +118,7 @@ export function slaState(
   if (options.isMet) {
     return {
       kind: 'met',
-      label: 'SLA met',
+      label: 'SLA cumplido',
       icon: 'check_circle',
       className: 'bg-green-100 text-green-700',
     };
@@ -133,7 +133,7 @@ export function slaState(
   if (delta < 0) {
     return {
       kind: 'overdue',
-      label: `Overdue ${formatDelta(-delta)}`,
+      label: `Vencido hace ${formatDelta(-delta)}`,
       icon: 'error',
       className: 'bg-red-100 text-red-700',
     };
@@ -141,14 +141,14 @@ export function slaState(
   if (delta <= dueSoonMs) {
     return {
       kind: 'due_soon',
-      label: `Due in ${formatDelta(delta)}`,
+      label: `Vence en ${formatDelta(delta)}`,
       icon: 'hourglass_top',
       className: 'bg-amber-100 text-amber-800',
     };
   }
   return {
     kind: 'on_track',
-    label: 'On track',
+    label: 'En plazo',
     icon: 'schedule',
     className: 'bg-green-100 text-green-700',
   };

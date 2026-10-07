@@ -55,7 +55,7 @@ export function Button({
   const sizes = { md: 'h-[34px] px-3 text-[13px]', sm: 'h-[30px] px-2.5 text-[12.5px]' };
   const variants = {
     default: 'bg-card text-foreground border-border hover:bg-[var(--admin-hover)] hover:border-[var(--admin-border-strong)]',
-    primary: 'bg-primary text-primary-foreground border-[var(--primary)] hover:opacity-90',
+    primary: 'bg-foreground text-background border-[var(--primary)] hover:opacity-90',
   };
   const cls = `${base} ${sizes[size]} ${variants[variant]}`;
   const inner = <>{icon && <span className="material-icons text-[17px]">{icon}</span>}{children}</>;
@@ -167,7 +167,7 @@ export function Segmented<T extends string>({ options, value, onChange }: {
 }
 
 /** Search input with a leading icon. Controlled. */
-export function SearchField({ value, onChange, placeholder = 'Search…', className = '' }: {
+export function SearchField({ value, onChange, placeholder = 'Buscar…', className = '' }: {
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;

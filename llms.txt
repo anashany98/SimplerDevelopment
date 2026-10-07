@@ -1,4 +1,4 @@
-# SimplerDevelopment
+# CRM AGENTS
 
 > Multi-tenant agency SaaS platform: per-tenant client websites + CMS/visual editor, CRM, an AI "Company Brain" (RAG knowledge base), automations, commerce, bookings, email campaigns, billing, and a 451-tool MCP server that lets AI agents operate every domain. Built on Next.js (App Router), React, TypeScript, Drizzle ORM + Postgres/pgvector, NextAuth v5, and Bun.
 

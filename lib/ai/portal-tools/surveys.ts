@@ -94,7 +94,7 @@ export const surveyHandlers: Record<string, SurveyHandler> = {
       description: (input.description as string)?.trim() || null,
       fields, createdBy: userId,
     }).returning();
-    emitEvent('survey.created', clientId, userId, { id: survey.id, title });
+    await emitEvent('survey.created', clientId, userId, { id: survey.id, title });
     return { success: true, surveyId: survey.id, slug: survey.slug, message: `Survey "${title}" created. Share link: /s/${survey.slug}` };
   },
 

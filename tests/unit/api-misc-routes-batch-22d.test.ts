@@ -661,7 +661,7 @@ describe('POST /api/portal/chat/widgets', () => {
       clientId: 33,
       siteId: 7,
       enabled: true,
-      greetingMessage: 'Hi there! How can we help?',
+      greetingMessage: '¡Hola! ¿En qué podemos ayudarte?',
       position: 'bottom-right',
       primaryColor: '#0070f3',
       awayMessage: null,

@@ -25,9 +25,7 @@ export function DesignTokensEditor() {
           type="button"
           onClick={resetToDefaults}
           className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
-        >
-          Reset
-        </button>
+        >Restablecer</button>
       </div>
 
       {/* Color List */}
@@ -105,10 +103,8 @@ export function DesignTokensEditor() {
             type="button"
             onClick={handleAdd}
             disabled={!newName.trim()}
-            className="px-2 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 disabled:opacity-40 transition-colors"
-          >
-            Add
-          </button>
+            className="px-2 py-1 text-xs bg-foreground text-background rounded hover:bg-foreground/90 disabled:opacity-40 transition-colors"
+          >Añadir</button>
         </div>
       </div>
     </div>

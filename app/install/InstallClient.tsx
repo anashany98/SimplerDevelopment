@@ -17,7 +17,7 @@ const SKILLS = [
 
 const MCP_CONFIG_SNIPPET = `{
   "mcpServers": {
-    "simplerdevelopment": {
+    "crm-agents": {
       "command": "npx",
       "args": [
         "-y",
@@ -46,13 +46,13 @@ export function InstallClient() {
       <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
         <header className="mb-12">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-            SimplerDevelopment
+            CRM AGENTS
           </p>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             Install the Claude skills
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            One-click installer for the SimplerDevelopment skills bundle. After installing,
+            One-click installer for the CRM AGENTS skills bundle. After installing,
             you can draft pages, decks, emails, surveys, and full multi-page sites directly
             from Claude Desktop or Claude Code.
           </p>
@@ -72,8 +72,7 @@ export function InstallClient() {
                 computer
               </span>
               <span className="text-lg font-semibold">macOS</span>
-              <span className="text-sm text-muted-foreground">
-                Download <code className="rounded bg-muted px-1 py-0.5 text-xs">SimplerDevelopmentSkills.pkg</code>,
+              <span className="text-sm text-muted-foreground">Descargar<code className="rounded bg-muted px-1 py-0.5 text-xs">SimplerDevelopmentSkills.pkg</code>,
                 then double-click in Finder to install.
               </span>
               <span className="mt-2 text-xs text-muted-foreground">
@@ -90,8 +89,7 @@ export function InstallClient() {
                 desktop_windows
               </span>
               <span className="text-lg font-semibold">Windows</span>
-              <span className="text-sm text-muted-foreground">
-                Download <code className="rounded bg-muted px-1 py-0.5 text-xs">install-sd-skills.bat</code>,
+              <span className="text-sm text-muted-foreground">Descargar<code className="rounded bg-muted px-1 py-0.5 text-xs">install-sd-skills.bat</code>,
                 then double-click in Explorer.
               </span>
               <span className="mt-2 text-xs text-muted-foreground">
@@ -136,10 +134,9 @@ export function InstallClient() {
           <h2 className="mb-6 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             2. Configure Claude Desktop
           </h2>
-          <p className="mb-4 text-sm">
-            Open <code className="rounded bg-muted px-1 py-0.5 text-xs">claude_desktop_config.json</code>{' '}
+          <p className="mb-4 text-sm">Abierto<code className="rounded bg-muted px-1 py-0.5 text-xs">claude_desktop_config.json</code>{' '}
             (Settings → Developer → Edit Config in Claude Desktop) and add the{' '}
-            <code className="rounded bg-muted px-1 py-0.5 text-xs">simplerdevelopment</code>{' '}
+            <code className="rounded bg-muted px-1 py-0.5 text-xs">CRM AGENTS</code>{' '}
             entry under <code className="rounded bg-muted px-1 py-0.5 text-xs">mcpServers</code>.
           </p>
           <div className="rounded-lg border border-border bg-card p-4">
@@ -194,11 +191,7 @@ export function InstallClient() {
         </section>
 
         <footer className="border-t border-border pt-8 text-xs text-muted-foreground">
-          Trouble installing? See{' '}
-          <a className="underline hover:text-foreground" href="/contact">
-            contact support
-          </a>{' '}
-          or open{' '}
+          Trouble installing? Open{' '}
           <code className="rounded bg-muted px-1 py-0.5">~/.claude/skills/CLIENT_QUICKSTART.md</code>{' '}
           after install for the full guide.
         </footer>

@@ -35,6 +35,10 @@ export async function POST(req: Request) {
   const auth = await authorizePortal({ action: 'admin', scope: 'billing:write' });
   if (isAuthError(auth)) return auth.response;
 
+  // Billing removed — payments are disabled.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(403);
+
   const { client, userId } = auth;
 
   // ── 1. billingMode guard ──────────────────────────────────────────────────
@@ -43,7 +47,7 @@ export async function POST(req: Request) {
       {
         success: false,
         message:
-          'Your plan is managed by SimplerDevelopment — contact us to make changes.',
+          'Your plan is managed by CRM AGENTS — contact us to make changes.',
       },
       { status: 403 },
     );
@@ -245,7 +249,7 @@ export async function POST(req: Request) {
     checkoutSession = await createSession(lineItems);
   } catch (err) {
     // The catalog's pre-provisioned product/price ids belong to the
-    // SimplerDevelopment Stripe account; a self-hoster's own key can't see
+    // CRM AGENTS Stripe account; a self-hoster's own key can't see
     // them ("No such product"). Rebuild the lines with INLINE product_data
     // (Stripe creates the products at session time) and retry once.
     const code = (err as Stripe.errors.StripeError)?.code;
@@ -266,7 +270,7 @@ export async function POST(req: Request) {
       namedItems = rows.map((r) => ({
         quantity: 1,
         price_data: {
-          currency: 'usd',
+          currency: 'eur',
           product_data: { name: r.name },
           unit_amount: r.price as number,
           recurring: { interval: 'month' },

@@ -1,11 +1,11 @@
-# Outline: Self-Hosting SimplerDevelopment
+# Outline: Self-Hosting CRM AGENTS
 
 ---
 
 ## Meta
 
-**SEO title:** Self-Hosting SimplerDevelopment: Postgres, pgvector, and Bun
-**Meta description:** Step-by-step guide to running SimplerDevelopment yourself — Postgres with pgvector, environment variables, Drizzle migrations, and production deployment checklist.
+**SEO title:** Self-Hosting CRM AGENTS: Postgres, pgvector, and Bun
+**Meta description:** Step-by-step guide to running CRM AGENTS yourself — Postgres with pgvector, environment variables, Drizzle migrations, and production deployment checklist.
 **URL slug:** `self-hosting-simplerdevelopment`
 **Target audience:** Agencies and developers who want to self-host the platform; engineers evaluating the stack before adopting it.
 **Primary keywords:** self-host Next.js SaaS, Postgres pgvector self-hosting, Drizzle ORM migration

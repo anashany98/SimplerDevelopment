@@ -83,17 +83,17 @@ export default function DocumentComplianceCard({ report }: Props) {
       </button>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
-        <Stat label="Assigned" value={summary.totalAssigned} tone="default" icon="groups" />
+        <Stat label="Asignado" value={summary.totalAssigned} tone="default" icon="groups" />
         <Stat label="Acknowledged" value={summary.acknowledged} tone="emerald" icon="check_circle" />
-        <Stat label="Pending" value={summary.pending} tone="amber" icon="schedule" />
-        <Stat label="Overdue" value={summary.overdue} tone="red" icon="warning" />
+        <Stat label="Pendiente" value={summary.pending} tone="amber" icon="schedule" />
+        <Stat label="Atrasado" value={summary.overdue} tone="red" icon="warning" />
       </div>
 
       {expanded && (
         <div className="mt-4 space-y-4 border-t border-border pt-4">
           {loadingPeople && (
             <div className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
-              <span className="material-icons animate-spin text-sm">progress_activity</span>
+              <span className="material-icons animate-spin text-sm">autorenew</span>
               Loading names…
             </div>
           )}

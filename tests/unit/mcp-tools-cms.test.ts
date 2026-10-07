@@ -272,6 +272,11 @@ vi.mock('@/lib/mcp/blocks-schema', () => ({
 // ── helpers ─────────────────────────────────────────────────────────────────
 
 import { registerCmsTools } from '@/lib/mcp/tools/cms';
+import { registerCmsPostsForkTools } from '@/lib/mcp/tools/cms-posts-fork';
+import { registerCmsMediaTaxonomyTools } from '@/lib/mcp/tools/cms-media-taxonomy';
+import { registerCmsSitesTools } from '@/lib/mcp/tools/cms-sites';
+import { registerCmsTemplatesTools } from '@/lib/mcp/tools/cms-templates';
+import { registerCmsDomainsTools } from '@/lib/mcp/tools/cms-domains';
 import { stageOrApply } from '@/lib/mcp/pending-changes';
 
 interface CapturedTool {
@@ -309,6 +314,19 @@ function registerAll(scopes: string[] = ['*']) {
   const { stub, tools } = makeServer();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerCmsTools(stub as any, ctxFor(scopes));
+  // The cms domain was split into sub-domain registrars (see lib/mcp/tools/
+  // index.ts); the harness registers them all so these tests keep covering
+  // the full CMS tool surface.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsPostsForkTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsMediaTaxonomyTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsSitesTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsTemplatesTools(stub as any, ctxFor(scopes));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  registerCmsDomainsTools(stub as any, ctxFor(scopes));
   return tools;
 }
 

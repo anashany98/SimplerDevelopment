@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { resend } from '@/lib/email';
+import { getResendClient } from '@/lib/email';
 
 async function requireAdmin() {
   const session = await auth();
@@ -13,6 +13,16 @@ async function requireAdmin() {
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+
+  let resend;
+  try {
+    resend = await getResendClient();
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, message: err instanceof Error ? err.message : 'Resend is not configured' },
+      { status: 400 },
+    );
+  }
 
   const { id } = await params;
   const { data, error } = await resend.domains.verify(id);

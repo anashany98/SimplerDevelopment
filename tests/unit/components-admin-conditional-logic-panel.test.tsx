@@ -102,13 +102,13 @@ beforeEach(() => {
 describe('ConditionalLogicPanel — empty state (no showIf)', () => {
   it('renders "Add Condition" button when no showIf', () => {
     renderPanel(makeTextField(), []);
-    expect(screen.getByRole('button', { name: /Add Condition/i })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Add another rule/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Añadir condición/i })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Añadir otra regla/i })).not.toBeInTheDocument();
   });
 
   it('calls onChange with a single empty rule when Add Condition is clicked', () => {
     const { onChange } = renderPanel(makeTextField(), []);
-    fireEvent.click(screen.getByRole('button', { name: /Add Condition/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir condición/i }));
     expect(onChange).toHaveBeenCalledOnce();
     const arg = onChange.mock.calls[0][0] as { showIf: ShowIfCondition };
     expect(arg.showIf.combinator).toBe('AND');
@@ -135,23 +135,23 @@ describe('ConditionalLogicPanel — rules configured', () => {
 
   it('shows "Add another rule" button when rules exist', () => {
     renderPanel({ ...textField, showIf: existingShowIf }, allFields);
-    expect(screen.getByRole('button', { name: /Add another rule/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Añadir otra regla/i })).toBeInTheDocument();
   });
 
   it('shows clear-all (cancel) button when rules exist', () => {
     renderPanel({ ...textField, showIf: existingShowIf }, allFields);
-    expect(screen.getByTitle('Remove all conditions')).toBeInTheDocument();
+    expect(screen.getByTitle('Eliminar todas las condiciones')).toBeInTheDocument();
   });
 
   it('calls onChange with undefined showIf when clear-all is clicked', () => {
     const { onChange } = renderPanel({ ...textField, showIf: existingShowIf }, allFields);
-    fireEvent.click(screen.getByTitle('Remove all conditions'));
+    fireEvent.click(screen.getByTitle('Eliminar todas las condiciones'));
     expect(onChange).toHaveBeenCalledWith({ showIf: undefined });
   });
 
   it('adds a second rule when "Add another rule" is clicked', () => {
     const { onChange } = renderPanel({ ...textField, showIf: existingShowIf }, allFields);
-    fireEvent.click(screen.getByRole('button', { name: /Add another rule/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir otra regla/i }));
     const arg = onChange.mock.calls[0][0] as { showIf: ShowIfCondition };
     expect(arg.showIf.rules).toHaveLength(2);
   });
@@ -166,7 +166,7 @@ describe('ConditionalLogicPanel — rules configured', () => {
       ],
     };
     const { onChange } = renderPanel({ ...textField, showIf: twoRules }, allFields);
-    const removeBtns = screen.getAllByTitle('Remove this rule');
+    const removeBtns = screen.getAllByTitle('Eliminar esta regla');
     fireEvent.click(removeBtns[0]);
     const arg = onChange.mock.calls[0][0] as { showIf: ShowIfCondition };
     expect(arg.showIf.rules).toHaveLength(1);
@@ -174,7 +174,7 @@ describe('ConditionalLogicPanel — rules configured', () => {
 
   it('removes last rule and calls onChange with undefined showIf', () => {
     const { onChange } = renderPanel({ ...textField, showIf: existingShowIf }, allFields);
-    fireEvent.click(screen.getByTitle('Remove this rule'));
+    fireEvent.click(screen.getByTitle('Eliminar esta regla'));
     expect(onChange).toHaveBeenCalledWith({ showIf: undefined });
   });
 });
@@ -232,7 +232,7 @@ describe('ConditionalLogicPanel — operator changes', () => {
       rules: [{ fieldId: '', operator: 'is_empty', values: [] }],
     };
     renderPanel({ ...field, showIf: existing }, []);
-    expect(screen.getByText('(no value)')).toBeInTheDocument();
+    expect(screen.getByText('(sin valor)')).toBeInTheDocument();
   });
 
   it('shows "(no value)" label for is_not_empty operator', () => {
@@ -242,7 +242,7 @@ describe('ConditionalLogicPanel — operator changes', () => {
       rules: [{ fieldId: '', operator: 'is_not_empty', values: [] }],
     };
     renderPanel({ ...field, showIf: existing }, []);
-    expect(screen.getByText('(no value)')).toBeInTheDocument();
+    expect(screen.getByText('(sin valor)')).toBeInTheDocument();
   });
 
   it('switches to is_empty via operator select and shows (no value)', () => {
@@ -254,7 +254,7 @@ describe('ConditionalLogicPanel — operator changes', () => {
     renderPanel({ ...field, showIf: existing }, []);
     const operatorSelect = screen.getAllByRole('combobox')[1];
     fireEvent.change(operatorSelect, { target: { value: 'is_empty' } });
-    expect(screen.getByText('(no value)')).toBeInTheDocument();
+    expect(screen.getByText('(sin valor)')).toBeInTheDocument();
   });
 });
 
@@ -292,7 +292,7 @@ describe('ConditionalLogicPanel — value inputs', () => {
       rules: [{ fieldId: '', operator: 'contains', values: [] }],
     };
     renderPanel({ ...field, showIf: existing }, []);
-    const textInput = screen.getByPlaceholderText('Enter substring...');
+    const textInput = screen.getByPlaceholderText('Introduce el texto...');
     expect(textInput).toBeInTheDocument();
   });
 
@@ -303,7 +303,7 @@ describe('ConditionalLogicPanel — value inputs', () => {
       rules: [{ fieldId: '', operator: 'contains', values: [] }],
     };
     const { onChange } = renderPanel({ ...field, showIf: existing }, []);
-    fireEvent.change(screen.getByPlaceholderText('Enter substring...'), {
+    fireEvent.change(screen.getByPlaceholderText('Introduce el texto...'), {
       target: { value: 'hello' },
     });
     const arg = onChange.mock.calls[0][0] as { showIf: ShowIfCondition };
@@ -317,7 +317,7 @@ describe('ConditionalLogicPanel — value inputs', () => {
       rules: [{ fieldId: '', operator: 'equals', values: [] }],
     };
     renderPanel({ ...field, showIf: existing }, []);
-    expect(screen.getByPlaceholderText('Enter value...')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Introduce un valor...')).toBeInTheDocument();
   });
 
   it('fires onChange with text value for plain text input', () => {
@@ -327,7 +327,7 @@ describe('ConditionalLogicPanel — value inputs', () => {
       rules: [{ fieldId: '', operator: 'equals', values: [] }],
     };
     const { onChange } = renderPanel({ ...field, showIf: existing }, []);
-    fireEvent.change(screen.getByPlaceholderText('Enter value...'), {
+    fireEvent.change(screen.getByPlaceholderText('Introduce un valor...'), {
       target: { value: 'foo' },
     });
     const arg = onChange.mock.calls[0][0] as { showIf: ShowIfCondition };
@@ -394,7 +394,7 @@ describe('ConditionalLogicPanel — multi-value operators', () => {
     const operatorSelect = screen.getAllByRole('combobox')[1];
     fireEvent.change(operatorSelect, { target: { value: 'is_one_of' } });
 
-    expect(screen.getByPlaceholderText('Enter values, comma-separated...')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Introduce valores, separados por comas...')).toBeInTheDocument();
   });
 
   it('fires onChange with parsed comma-separated values (after switching to is_one_of)', () => {
@@ -411,7 +411,7 @@ describe('ConditionalLogicPanel — multi-value operators', () => {
     fireEvent.change(operatorSelect, { target: { value: 'is_one_of' } });
 
     // Now the comma-separated input should be visible
-    const input = screen.getByPlaceholderText('Enter values, comma-separated...');
+    const input = screen.getByPlaceholderText('Introduce valores, separados por comas...');
     // Reset onChange calls count (the operator change already fired one)
     onChange.mockClear();
     fireEvent.change(input, { target: { value: 'foo, bar, baz' } });
@@ -447,7 +447,7 @@ describe('ConditionalLogicPanel — legacy showIf shape', () => {
       { ...field, showIf: legacyShowIf as Parameters<typeof ConditionalLogicPanel>[0]['field']['showIf'] },
       [choiceField],
     );
-    expect(screen.getByRole('button', { name: /Add another rule/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Añadir otra regla/i })).toBeInTheDocument();
   });
 });
 
@@ -460,8 +460,8 @@ describe('ConditionalLogicPanel — numeric field operator options', () => {
       rules: [{ fieldId: 'num-field', operator: 'equals', values: [] }],
     };
     renderPanel({ ...field, showIf: existing }, [numField]);
-    expect(screen.getByRole('option', { name: 'Greater than' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Less than' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Mayor que' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Menor que' })).toBeInTheDocument();
   });
 
   it('shows greater_than/less_than options when no field is selected', () => {
@@ -471,7 +471,7 @@ describe('ConditionalLogicPanel — numeric field operator options', () => {
       rules: [{ fieldId: '', operator: 'equals', values: [] }],
     };
     renderPanel({ ...field, showIf: existing }, []);
-    expect(screen.getByRole('option', { name: 'Greater than' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Mayor que' })).toBeInTheDocument();
   });
 });
 
@@ -500,6 +500,6 @@ describe('ConditionalLogicPanel — re-parse on field.id change', () => {
       />,
     );
     // Empty state = "Add Condition" button visible
-    expect(screen.getByRole('button', { name: /Add Condition/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Añadir condición/i })).toBeInTheDocument();
   });
 });

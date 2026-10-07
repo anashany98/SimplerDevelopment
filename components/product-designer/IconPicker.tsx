@@ -100,9 +100,7 @@ export const IconPicker = ({ setView }) => {
         <button
           onClick={() => setView("categories")}
           className="text-blue-500 cursor-pointer bg-transparent border-none p-0 hover:text-blue-700 underline-none"
-        >
-          Back
-        </button>
+        >Atrás</button>
         <h1 className="text-xl font-semibold">Icon Picker</h1>
         <div></div>
       </div>
@@ -148,9 +146,7 @@ export const IconPicker = ({ setView }) => {
             onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
             disabled={currentPage === 1}
             className="px-3 py-1 text-sm border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-          >
-            Previous
-          </button>
+          >Anterior</button>
           
           <div className="flex items-center gap-1">
             {/* Show page numbers */}
@@ -186,9 +182,7 @@ export const IconPicker = ({ setView }) => {
             onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 text-sm border rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-          >
-            Next
-          </button>
+          >Siguiente</button>
         </div>
       )}
     </div>

@@ -115,11 +115,10 @@ export const automationLogs = pgTable('automation_logs', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-// Durable journal of emitted automation events. emitEvent() still dispatches
-// in-process for instant execution, but ALSO writes a row here and marks it
-// 'completed' once handlers finish. The process-automation-jobs cron re-runs any
-// row left 'pending' past a grace window — i.e. an event whose in-process
-// dispatch was dropped by a serverless cold-start — giving at-least-once
+// Durable journal of emitted automation events. emitEvent() writes a 'running'
+// row with a lease before returning, dispatches handlers in-process, and marks
+// the row 'completed' once they finish. The process-automation-jobs cron
+// reclaims expired leases and retries pending rows, giving at-least-once
 // delivery with retries instead of the old fire-and-forget that silently lost
 // events. (resource was previously: in-process, no retries, 5s cap.)
 export const automationJobs = pgTable('automation_jobs', {
@@ -128,7 +127,7 @@ export const automationJobs = pgTable('automation_jobs', {
   event: varchar('event', { length: 100 }).notNull(),
   userId: integer('user_id').default(0).notNull(),
   payload: json('payload').$type<Record<string, unknown>>().notNull(),
-  // 'pending' | 'completed' | 'failed' | 'dead_letter'
+  // 'pending' | 'running' | 'completed' | 'failed' | 'dead_letter'
   status: varchar('status', { length: 20 }).default('pending').notNull(),
   attemptCount: integer('attempt_count').default(0).notNull(),
   nextRetryAt: timestamp('next_retry_at', { withTimezone: true }),
@@ -742,7 +741,11 @@ export const brainEmbeddings = pgTable('brain_embeddings', {
   entityId: integer('entity_id').notNull(),
   chunkIndex: integer('chunk_index').default(0).notNull(),
   content: text('content').notNull(),
-  vector: vector('vector', { dimensions: 1536 }).notNull(),
+  // 768-dim: this deployment embeds via a local OpenAI-compatible server
+  // (LM Studio nomic-embed-text) instead of OpenAI's 1536-dim
+  // text-embedding-3-small. Keep in sync with EMBEDDINGS_DIM (lib/brain/
+  // embeddings.ts) and drizzle/9028_embeddings_local_dims_manual.sql.
+  vector: vector('vector', { dimensions: 768 }).notNull(),
   model: varchar('model', { length: 100 }).notNull(),
   dim: integer('dim').notNull(),
   tokens: integer('tokens'),
@@ -750,7 +753,7 @@ export const brainEmbeddings = pgTable('brain_embeddings', {
 }, (t) => [
   index('brain_embeddings_client_idx').on(t.clientId),
   index('brain_embeddings_entity_idx').on(t.entityType, t.entityId),
-  uniqueIndex('brain_embeddings_entity_chunk_idx').on(t.entityType, t.entityId, t.chunkIndex),
+  uniqueIndex('brain_embeddings_entity_chunk_idx').on(t.clientId, t.entityType, t.entityId, t.chunkIndex),
   // Pre-filter for the HNSW vector search in lib/brain/embeddings.ts:
   //   WHERE client_id = $1 AND entity_type IN (...)
   // The HNSW index alone handles the ORDER BY vector <=> q; this composite

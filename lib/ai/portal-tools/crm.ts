@@ -141,7 +141,7 @@ export const crmTools: PortalTool[] = [
       type: 'object' as const,
       properties: {
         title: { type: 'string', description: 'Deal title' },
-        value: { type: 'number', description: 'Deal value in dollars (will be stored as cents)' },
+        value: { type: 'number', description: 'Deal value in euros (will be stored as cents)' },
         pipeline_id: { type: 'number', description: 'Pipeline ID (optional — defaults to client\'s default pipeline)' },
         stage_id: { type: 'number', description: 'Stage ID within the pipeline (optional — defaults to first stage)' },
         contact_id: { type: 'number', description: 'Associated contact ID' },
@@ -162,7 +162,7 @@ export const crmTools: PortalTool[] = [
       properties: {
         deal_id: { type: 'number', description: 'The deal ID to update' },
         title: { type: 'string' },
-        value: { type: 'number', description: 'Value in dollars' },
+        value: { type: 'number', description: 'Value in euros' },
         stage_id: { type: 'number', description: 'Move to this stage' },
         status: { type: 'string', description: 'Set status: open, won, lost' },
         priority: { type: 'string' },
@@ -347,10 +347,12 @@ export const crmHandlers: Record<string, CrmHandler> = {
   },
 
   create_crm_contact: async (input, clientId, userId) => {
-    const { first_name, last_name, email, phone, title, company_id, source, status, notes } = input as Record<string, string | number | undefined>;
+    const firstName = typeof input.first_name === 'string' ? input.first_name.trim() : '';
+    if (!firstName) return { error: 'first_name is required' };
+    const { last_name, email, phone, title, company_id, source, status, notes } = input as Record<string, string | number | undefined>;
     const [contact] = await db.insert(crmContacts).values({
       clientId,
-      firstName: (first_name as string).trim(),
+      firstName,
       lastName: (last_name as string)?.trim() || null,
       email: (email as string)?.trim() || null,
       phone: (phone as string)?.trim() || null,
@@ -364,7 +366,7 @@ export const crmHandlers: Record<string, CrmHandler> = {
       // the FK. Coalesce to null so the row inserts with no owner.
       ownerId: userId > 0 ? userId : null,
     }).returning();
-    emitEvent('crm.contact.created', clientId, userId, { id: contact.id, name: `${contact.firstName} ${contact.lastName || ''}`.trim(), email: contact.email });
+    await emitEvent('crm.contact.created', clientId, userId, { id: contact.id, name: `${contact.firstName} ${contact.lastName || ''}`.trim(), email: contact.email });
     return { success: true, contactId: contact.id, message: `Contact "${contact.firstName} ${contact.lastName || ''}" created.` };
   },
 
@@ -404,13 +406,41 @@ export const crmHandlers: Record<string, CrmHandler> = {
 
     let pipelineId = input.pipeline_id ? Number(input.pipeline_id) : null;
     let stageId = input.stage_id ? Number(input.stage_id) : null;
+    const contactId = input.contact_id ? Number(input.contact_id) : null;
+    const companyId = input.company_id ? Number(input.company_id) : null;
 
     if (!pipelineId) {
       const pipeline = await ensureDefaultPipeline(clientId);
       pipelineId = pipeline.id;
+    } else {
+      // Caller-supplied pipeline must belong to this client before use.
+      const [pipeline] = await db.select({ id: crmPipelines.id }).from(crmPipelines)
+        .where(and(eq(crmPipelines.id, pipelineId), eq(crmPipelines.clientId, clientId)))
+        .limit(1);
+      if (!pipeline) return { error: 'Pipeline not found' };
     }
 
-    if (!stageId) {
+    // Reject cross-tenant FKs before they are attached to the deal.
+    if (contactId) {
+      const [contact] = await db.select({ id: crmContacts.id }).from(crmContacts)
+        .where(and(eq(crmContacts.id, contactId), eq(crmContacts.clientId, clientId)))
+        .limit(1);
+      if (!contact) return { error: 'Contact not found' };
+    }
+    if (companyId) {
+      const [company] = await db.select({ id: crmCompanies.id }).from(crmCompanies)
+        .where(and(eq(crmCompanies.id, companyId), eq(crmCompanies.clientId, clientId)))
+        .limit(1);
+      if (!company) return { error: 'Company not found' };
+    }
+
+    if (stageId) {
+      // The chosen stage must belong to the resolved pipeline.
+      const [stage] = await db.select({ id: crmPipelineStages.id }).from(crmPipelineStages)
+        .where(and(eq(crmPipelineStages.id, stageId), eq(crmPipelineStages.pipelineId, pipelineId)))
+        .limit(1);
+      if (!stage) return { error: 'Stage not found' };
+    } else {
       const [firstStage] = await db.select({ id: crmPipelineStages.id }).from(crmPipelineStages)
         .where(eq(crmPipelineStages.pipelineId, pipelineId))
         .orderBy(asc(crmPipelineStages.sortOrder), asc(crmPipelineStages.id))
@@ -427,15 +457,15 @@ export const crmHandlers: Record<string, CrmHandler> = {
       value: valueCents,
       pipelineId,
       stageId,
-      contactId: input.contact_id ? Number(input.contact_id) : null,
-      companyId: input.company_id ? Number(input.company_id) : null,
+      contactId,
+      companyId,
       priority: (input.priority as string) || 'medium',
       expectedCloseDate: input.expected_close_date ? new Date(input.expected_close_date as string) : null,
       notes: (input.notes as string)?.trim() || null,
       ownerId: userId,
       status: 'open',
     }).returning();
-    emitEvent('crm.deal.created', clientId, userId, { id: deal.id, title: deal.title, value: deal.value });
+    await emitEvent('crm.deal.created', clientId, userId, { id: deal.id, title: deal.title, value: deal.value });
     return { success: true, dealId: deal.id, message: `Deal "${deal.title}" created.` };
   },
 
@@ -457,23 +487,43 @@ export const crmHandlers: Record<string, CrmHandler> = {
     if (input.notes !== undefined) updates.notes = (input.notes as string).trim() || null;
     await db.update(crmDeals).set(updates).where(eq(crmDeals.id, dealId));
     const newStatus = input.status as string | undefined;
-    if (newStatus === 'won') emitEvent('crm.deal.won', clientId, userId, { id: dealId });
-    else if (newStatus === 'lost') emitEvent('crm.deal.lost', clientId, userId, { id: dealId });
-    else emitEvent('crm.deal.updated', clientId, userId, { id: dealId });
+    if (newStatus === 'won') await emitEvent('crm.deal.won', clientId, userId, { id: dealId });
+    else if (newStatus === 'lost') await emitEvent('crm.deal.lost', clientId, userId, { id: dealId });
+    else await emitEvent('crm.deal.updated', clientId, userId, { id: dealId });
     return { success: true, message: `Deal updated.` };
   },
 
   log_crm_activity: async (input, clientId, _userId) => {
+    const contactId = input.contact_id ? Number(input.contact_id) : null;
+    const dealId = input.deal_id ? Number(input.deal_id) : null;
+
+    // Reject cross-tenant links before inserting the activity. Without this a
+    // caller could attach an activity to another tenant's contact / deal, and
+    // the contact update below could write across tenants.
+    if (contactId) {
+      const [contact] = await db.select({ id: crmContacts.id }).from(crmContacts)
+        .where(and(eq(crmContacts.id, contactId), eq(crmContacts.clientId, clientId)))
+        .limit(1);
+      if (!contact) return { error: 'Contact not found' };
+    }
+    if (dealId) {
+      const [deal] = await db.select({ id: crmDeals.id }).from(crmDeals)
+        .where(and(eq(crmDeals.id, dealId), eq(crmDeals.clientId, clientId)))
+        .limit(1);
+      if (!deal) return { error: 'Deal not found' };
+    }
+
     const [activity] = await db.insert(crmActivities).values({
       clientId,
       type: (input.type as string).trim(),
       title: (input.title as string).trim(),
       description: (input.description as string)?.trim() || null,
-      contactId: input.contact_id ? Number(input.contact_id) : null,
-      dealId: input.deal_id ? Number(input.deal_id) : null,
+      contactId,
+      dealId,
     }).returning();
-    if (input.contact_id) {
-      await db.update(crmContacts).set({ lastContactedAt: new Date() }).where(eq(crmContacts.id, Number(input.contact_id)));
+    if (contactId) {
+      await db.update(crmContacts).set({ lastContactedAt: new Date() })
+        .where(and(eq(crmContacts.id, contactId), eq(crmContacts.clientId, clientId)));
     }
     return { success: true, activityId: activity.id, message: `Activity logged: ${activity.title}` };
   },
@@ -507,7 +557,7 @@ export const crmHandlers: Record<string, CrmHandler> = {
       dealId: input.deal_id ? Number(input.deal_id) : null,
       summary: (input.summary as string)?.trim() || null,
       lineItems, fees: [], sections: [],
-      currency: 'USD', status: 'draft', clientToken,
+      currency: 'EUR', status: 'draft', clientToken,
       validUntil: input.valid_until ? new Date(input.valid_until as string) : null,
       createdBy: userId,
     }).returning();

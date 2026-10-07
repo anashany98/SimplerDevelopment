@@ -14,6 +14,7 @@
 
 # testing
 /coverage
+/vitest-out.json
 
 # next.js
 /.next/
@@ -40,6 +41,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+.dev-server*.log
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -156,6 +158,8 @@ evals-out/
 .idea/
 /dist/
 /fallow-baselines/
+/.fallow/
+/.freebuff/
 
 # Published-package build output — built by `tsup` (packages/*/package.json
 # "build" script) at publish time; never commit compiled dist artifacts.
@@ -176,9 +180,6 @@ public/agile-after-ai/_*
 # Lighthouse sweep output (scripts/lighthouse-audit.sh)
 /.lighthouse
 
-# Local preview run artifacts (dev-server logs, per-machine run notes) — never commit.
-/.freebuff/
-
-# Local QA reports + Fallow churn cache — tooling artifacts, never source.
-/.qa-reports/
-.fallow/
+# Generated local reports and tunnel diagnostics
+/output/
+/tmp/

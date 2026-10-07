@@ -26,21 +26,21 @@ interface FieldDef {
 }
 
 const FIELD_TYPES: { value: FieldType; label: string; icon: string; supportsOptions: boolean }[] = [
-  { value: 'text', label: 'Text', icon: 'text_fields', supportsOptions: false },
-  { value: 'number', label: 'Number', icon: 'pin', supportsOptions: false },
-  { value: 'date', label: 'Date', icon: 'calendar_today', supportsOptions: false },
-  { value: 'select', label: 'Select', icon: 'arrow_drop_down_circle', supportsOptions: true },
-  { value: 'multiselect', label: 'Multi-select', icon: 'checklist', supportsOptions: true },
+  { value: 'text', label: 'Texto', icon: 'text_fields', supportsOptions: false },
+  { value: 'number', label: 'Número', icon: 'pin', supportsOptions: false },
+  { value: 'date', label: 'Fecha', icon: 'calendar_today', supportsOptions: false },
+  { value: 'select', label: 'Selección', icon: 'arrow_drop_down_circle', supportsOptions: true },
+  { value: 'multiselect', label: 'Selección múltiple', icon: 'checklist', supportsOptions: true },
   { value: 'url', label: 'URL', icon: 'link', supportsOptions: false },
-  { value: 'email', label: 'Email', icon: 'mail', supportsOptions: false },
-  { value: 'phone', label: 'Phone', icon: 'phone', supportsOptions: false },
-  { value: 'boolean', label: 'Yes / No', icon: 'toggle_on', supportsOptions: false },
+  { value: 'email', label: 'Correo', icon: 'mail', supportsOptions: false },
+  { value: 'phone', label: 'Teléfono', icon: 'phone', supportsOptions: false },
+  { value: 'boolean', label: 'Sí / No', icon: 'toggle_on', supportsOptions: false },
 ];
 
 const ENTITY_TABS: { value: EntityType; label: string; icon: string }[] = [
-  { value: 'contact', label: 'Contacts', icon: 'person' },
-  { value: 'company', label: 'Companies', icon: 'business' },
-  { value: 'deal', label: 'Deals', icon: 'handshake' },
+  { value: 'contact', label: 'Contactos', icon: 'person' },
+  { value: 'company', label: 'Empresas', icon: 'business' },
+  { value: 'deal', label: 'Negocios', icon: 'handshake' },
 ];
 
 const inputClass =
@@ -108,7 +108,7 @@ export default function CrmCustomFieldsAdmin() {
       ? newOptions.split(',').map(s => s.trim()).filter(Boolean)
       : null;
     if (typeSupportsOptions(newType) && (!optionList || optionList.length === 0)) {
-      setError('Select/multi-select requires at least one option.');
+      setError('El campo de selección requiere al menos una opción.');
       return;
     }
     setCreating(true);
@@ -131,7 +131,7 @@ export default function CrmCustomFieldsAdmin() {
       setFields(prev => [...prev, d.data]);
       resetCreateForm();
     } else {
-      setError(d.message ?? 'Failed to create field');
+      setError(d.message ?? 'No se pudo crear el campo');
     }
   }
 
@@ -148,7 +148,7 @@ export default function CrmCustomFieldsAdmin() {
       ? editOptions.split(',').map(s => s.trim()).filter(Boolean)
       : null;
     if (typeSupportsOptions(f.fieldType) && (!optionList || optionList.length === 0)) {
-      setError('Select/multi-select requires at least one option.');
+      setError('El campo de selección requiere al menos una opción.');
       return;
     }
     const res = await fetch(`/api/portal/crm/custom-fields/${f.id}`, {
@@ -167,29 +167,29 @@ export default function CrmCustomFieldsAdmin() {
       setEditingId(null);
       setError('');
     } else {
-      setError(d.message ?? 'Failed to update field');
+      setError(d.message ?? 'No se pudo actualizar el campo');
     }
   }
 
   async function deleteField(id: number) {
-    if (!confirm('Delete this field? All values stored against it will be removed.')) return;
+    if (!confirm('¿Eliminar este campo? Se eliminarán todos los valores guardados en él.')) return;
     const res = await fetch(`/api/portal/crm/custom-fields/${id}`, { method: 'DELETE' });
     const d = await res.json();
     if (d.success) {
       setFields(prev => prev.filter(x => x.id !== id));
     } else {
-      setError(d.message ?? 'Failed to delete field');
+      setError(d.message ?? 'No se pudo eliminar el campo');
     }
   }
 
   return (
     <div className="space-y-5">
       <div>
-        <h3 className="font-semibold text-foreground text-lg">Custom Fields</h3>
+        <h3 className="font-semibold text-foreground text-lg">Campos personalizados</h3>
         <p className="text-sm text-muted-foreground mt-1">
-          Define extra fields to capture on contacts, companies, and deals. Use{' '}
-          <span className="font-medium text-foreground">Category</span> to group related fields into
-          tabs in record views.
+          Define campos adicionales para contactos, empresas y negocios. Usa{' '}
+          <span className="font-medium text-foreground">Categoría</span> para agrupar campos relacionados
+          en pestañas de las vistas de registro.
         </p>
       </div>
 
@@ -228,11 +228,11 @@ export default function CrmCustomFieldsAdmin() {
         {loading ? (
           <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
             <span className="material-icons animate-spin text-base">refresh</span>
-            Loading...
+            Cargando...
           </div>
         ) : fields.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">
-            No custom fields for {ENTITY_TABS.find(t => t.value === entityType)?.label.toLowerCase()} yet.
+            Aún no hay campos personalizados para {ENTITY_TABS.find(t => t.value === entityType)?.label.toLowerCase()}.
           </p>
         ) : (
           fields.map(f => (
@@ -246,14 +246,14 @@ export default function CrmCustomFieldsAdmin() {
                     <input
                       value={editName}
                       onChange={e => setEditName(e.target.value)}
-                      placeholder="Field name"
+                      placeholder="Nombre del campo"
                       className={inputClass}
                     />
                   </div>
                   <input
                     value={editCategory}
                     onChange={e => setEditCategory(e.target.value)}
-                    placeholder="Category (e.g. Tech, Location)"
+                    placeholder="Categoría (p. ej. Tecnología, Ubicación)"
                     list="crm-field-categories"
                     className={inputClass}
                   />
@@ -261,7 +261,7 @@ export default function CrmCustomFieldsAdmin() {
                     <input
                       value={editOptions}
                       onChange={e => setEditOptions(e.target.value)}
-                      placeholder="Options (comma-separated)"
+                      placeholder="Opciones (separadas por comas)"
                       className={inputClass}
                     />
                   )}
@@ -273,7 +273,7 @@ export default function CrmCustomFieldsAdmin() {
                         onChange={e => setEditRequired(e.target.checked)}
                         className="rounded border-border"
                       />
-                      Required
+                      Obligatorio
                     </label>
                   </div>
                   <div className="flex gap-2 justify-end">
@@ -281,13 +281,13 @@ export default function CrmCustomFieldsAdmin() {
                       onClick={() => setEditingId(null)}
                       className="px-3 py-1.5 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-accent transition-colors"
                     >
-                      Cancel
+                      Cancelar
                     </button>
                     <button
                       onClick={() => saveEdit(f)}
-                      className="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                      className="px-3 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors"
                     >
-                      Save
+                      Guardar
                     </button>
                   </div>
                 </div>
@@ -300,7 +300,7 @@ export default function CrmCustomFieldsAdmin() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-medium text-foreground">{f.fieldName}</span>
                       <span className="text-[10px] uppercase tracking-wide text-muted-foreground bg-accent px-1.5 py-0.5 rounded">
-                        {f.fieldType}
+                        {FIELD_TYPES.find(x => x.value === f.fieldType)?.label ?? f.fieldType}
                       </span>
                       {f.category && (
                         <span className="text-[10px] uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded flex items-center gap-0.5">
@@ -310,7 +310,7 @@ export default function CrmCustomFieldsAdmin() {
                       )}
                       {f.required && (
                         <span className="text-[10px] uppercase tracking-wide text-destructive bg-destructive/10 px-1.5 py-0.5 rounded">
-                          required
+                          obligatorio
                         </span>
                       )}
                     </div>
@@ -324,14 +324,14 @@ export default function CrmCustomFieldsAdmin() {
                     <button
                       onClick={() => startEdit(f)}
                       className="p-1.5 rounded text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                      title="Edit"
+                      title="Editar"
                     >
                       <span className="material-icons text-base">edit</span>
                     </button>
                     <button
                       onClick={() => deleteField(f.id)}
                       className="p-1.5 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                      title="Delete"
+                      title="Eliminar"
                     >
                       <span className="material-icons text-base">delete</span>
                     </button>
@@ -345,12 +345,12 @@ export default function CrmCustomFieldsAdmin() {
 
       {/* Create form */}
       <form onSubmit={createField} className="border-t border-border pt-4 space-y-3">
-        <p className="text-xs font-medium text-muted-foreground">Add a field</p>
+        <p className="text-xs font-medium text-muted-foreground">Añadir un campo</p>
         <div className="grid sm:grid-cols-3 gap-3">
           <input
             value={newName}
             onChange={e => setNewName(e.target.value)}
-            placeholder="Field name"
+            placeholder="Nombre del campo"
             className={inputClass}
           />
           <select
@@ -367,7 +367,7 @@ export default function CrmCustomFieldsAdmin() {
           <input
             value={newCategory}
             onChange={e => setNewCategory(e.target.value)}
-            placeholder="Category (optional)"
+            placeholder="Categoría (opcional)"
             list="crm-field-categories"
             className={inputClass}
           />
@@ -382,7 +382,7 @@ export default function CrmCustomFieldsAdmin() {
           <input
             value={newOptions}
             onChange={e => setNewOptions(e.target.value)}
-            placeholder="Options (comma-separated, e.g. Low, Medium, High)"
+            placeholder="Opciones (separadas por comas, p. ej. Baja, Media, Alta)"
             className={inputClass}
           />
         )}
@@ -394,16 +394,16 @@ export default function CrmCustomFieldsAdmin() {
               onChange={e => setNewRequired(e.target.checked)}
               className="rounded border-border"
             />
-            Required
+            Obligatorio
           </label>
           <button
             type="submit"
             disabled={creating || !newName.trim()}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
           >
             {creating && <span className="material-icons animate-spin text-sm">refresh</span>}
             <span className="material-icons text-sm">add</span>
-            Add Field
+            Añadir campo
           </button>
         </div>
       </form>

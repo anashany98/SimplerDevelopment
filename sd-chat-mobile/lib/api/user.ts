@@ -1,7 +1,7 @@
 /**
  * SD Chat — Tanstack Query hooks for the user identity surface
  *
- * Backed by the SimplerDevelopment portal endpoints
+ * Backed by the CRM AGENTS portal endpoints
  *  - GET   /api/portal/me                  → { user, client | null }
  *  - GET   /api/portal/clients             → { clients[], activeClientId }
  *  - GET   /api/portal/settings/profile    → ProfilePayload

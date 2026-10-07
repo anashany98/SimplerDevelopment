@@ -10,6 +10,7 @@ import { ProjectGrid, ProjectTable, type Project } from '@/components/portal/Pro
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 const STATUS_TABS = ['all', 'active', 'paused', 'completed', 'archived'] as const;
+const STATUS_LABELS: Record<StatusFilter, string> = { all: 'Todos', active: 'Activos', paused: 'En pausa', completed: 'Completados', archived: 'Archivados' };
 type StatusFilter = typeof STATUS_TABS[number];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -110,9 +111,9 @@ export default function PortalProjectsPage() {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Delivery"
-        title="Projects"
-        subtitle="All projects you have access to — agency-managed and your own."
+        eyebrow="Entrega"
+        title="Proyectos"
+        subtitle="Todos los proyectos a los que tienes acceso, tanto del equipo como propios."
         actions={
           <div className="flex gap-2 flex-wrap">
             <Link
@@ -120,14 +121,14 @@ export default function PortalProjectsPage() {
               className={pBtnGhost}
             >
               <span className="material-icons text-base">bolt</span>
-              Automations
+              Automatizaciones
             </Link>
             <button
               onClick={() => setShowCreateForm(!showCreateForm)}
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">{showCreateForm ? 'close' : 'add'}</span>
-              {showCreateForm ? 'Cancel' : 'New Project'}
+              {showCreateForm ? 'Cancelar' : 'Nuevo proyecto'}
             </button>
           </div>
         }
@@ -140,21 +141,21 @@ export default function PortalProjectsPage() {
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-green-600">play_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Active</span>
+            <span className="text-xs text-muted-foreground font-medium">Activos</span>
           </div>
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{counts.active}</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-yellow-600">pause_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Paused</span>
+            <span className="text-xs text-muted-foreground font-medium">En pausa</span>
           </div>
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{counts.paused}</p>
         </div>
         <div className="bg-card border border-border rounded-2xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-blue-600">check_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Completed</span>
+            <span className="text-xs text-muted-foreground font-medium">Completados</span>
           </div>
           <p className="text-2xl font-display font-extrabold tracking-[-0.02em] text-foreground">{counts.completed}</p>
         </div>
@@ -173,7 +174,7 @@ export default function PortalProjectsPage() {
           <span className="material-icons text-muted-foreground text-base">search</span>
           <input
             className="bg-transparent text-sm outline-none flex-1 text-foreground placeholder:text-muted-foreground/50"
-            placeholder="Search projects..."
+            placeholder="Buscar proyectos..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -185,26 +186,26 @@ export default function PortalProjectsPage() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors capitalize ${
                 statusFilter === s
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
-              {s}
+              {STATUS_LABELS[s]}
             </button>
           ))}
         </div>
         {/* Cards / table view toggle */}
         <div className="flex gap-1 ml-auto">
-          {([['cards', 'grid_view', 'Card view'], ['table', 'table_rows', 'Table view']] as const).map(([mode, icon, label]) => (
+          {([['cards', 'grid_view', 'Vista de tarjetas'], ['table', 'table_rows', 'Vista de tabla']] as const).map(([mode, icon, label]) => (
             <button
               key={mode}
               onClick={() => setViewMode(mode)}
-              title={label}
-              aria-label={label}
+              title={mode === 'cards' ? 'Vista de tarjetas' : 'Vista de tabla'}
+              aria-label={mode === 'cards' ? 'Vista de tarjetas' : 'Vista de tabla'}
               aria-pressed={viewMode === mode}
               className={`p-1.5 rounded-xl transition-colors ${
                 viewMode === mode
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
@@ -217,43 +218,43 @@ export default function PortalProjectsPage() {
       {/* Create form */}
       {showCreateForm && (
         <form onSubmit={handleCreate} className="bg-card border border-border rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Create Project</h2>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Crear proyecto</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Project Name <span className="text-destructive">*</span></label>
+              <label className="text-sm font-medium text-foreground">Nombre del proyecto <span className="text-destructive">*</span></label>
               <input
                 value={createForm.name}
                 onChange={e => setCreateForm(p => ({ ...p, name: e.target.value }))}
                 required
-                placeholder="e.g. Q2 Marketing Campaign"
+                placeholder="p. ej., Campaña de marketing del segundo trimestre"
                 className={pInput}
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Status</label>
+              <label className="text-sm font-medium text-foreground">Estado</label>
               <select
                 value={createForm.status}
                 onChange={e => setCreateForm(p => ({ ...p, status: e.target.value }))}
                 className={pSelect}
               >
-                <option value="active">Active</option>
-                <option value="paused">Paused</option>
-                <option value="completed">Completed</option>
-                <option value="archived">Archived</option>
+                <option value="active">Activo</option>
+                <option value="paused">En pausa</option>
+                <option value="completed">Completado</option>
+                <option value="archived">Archivado</option>
               </select>
             </div>
             <div className="space-y-1.5 sm:col-span-2">
-              <label className="text-sm font-medium text-foreground">Description</label>
+              <label className="text-sm font-medium text-foreground">Descripción</label>
               <textarea
                 rows={2}
                 value={createForm.description}
                 onChange={e => setCreateForm(p => ({ ...p, description: e.target.value }))}
-                placeholder="Optional"
+                placeholder="Opcional"
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground/50 focus:border-primary focus:ring-4 focus:ring-primary/15 resize-none"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Start Date</label>
+              <label className="text-sm font-medium text-foreground">Fecha de inicio</label>
               <input
                 type="date"
                 value={createForm.startDate}
@@ -262,7 +263,7 @@ export default function PortalProjectsPage() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Due Date</label>
+              <label className="text-sm font-medium text-foreground">Fecha límite</label>
               <input
                 type="date"
                 value={createForm.dueDate}
@@ -272,18 +273,18 @@ export default function PortalProjectsPage() {
             </div>
             {projects.length > 0 && (
               <div className="space-y-1.5 sm:col-span-2">
-                <label className="text-sm font-medium text-foreground">Clone from existing project</label>
+                <label className="text-sm font-medium text-foreground">Clonar un proyecto existente</label>
                 <select
                   value={createForm.cloneFromProjectId}
                   onChange={e => setCreateForm(p => ({ ...p, cloneFromProjectId: e.target.value }))}
                   className={pSelect}
                 >
-                  <option value="">— Start from scratch —</option>
+                  <option value="">— Empezar desde cero —</option>
                   {projects.map(p => (
                     <option key={p.id} value={p.id}>{p.name}</option>
                   ))}
                 </select>
-                <p className="text-xs text-muted-foreground">Copies columns, labels, and card templates. Cards are not copied.</p>
+                <p className="text-xs text-muted-foreground">Copia columnas, etiquetas y plantillas de tarjetas. Las tarjetas no se copian.</p>
               </div>
             )}
           </div>
@@ -294,7 +295,7 @@ export default function PortalProjectsPage() {
               className={pBtnPrimary}
             >
               {creating && <span className="material-icons text-base animate-spin">refresh</span>}
-              Create Project
+              Crear proyecto
             </button>
           </div>
         </form>
@@ -310,8 +311,8 @@ export default function PortalProjectsPage() {
           projects={filtered}
           emptyMessage={
             search || statusFilter !== 'all'
-              ? 'No projects match your filters.'
-              : 'No projects yet. Create your first project, or wait for your team to set one up.'
+              ? 'No hay proyectos que coincidan con tus filtros.'
+              : 'Aún no hay proyectos. Crea el primero o espera a que tu equipo configure uno.'
           }
         />
       ) : (
@@ -319,8 +320,8 @@ export default function PortalProjectsPage() {
           projects={filtered}
           emptyMessage={
             search || statusFilter !== 'all'
-              ? 'No projects match your filters.'
-              : 'No projects yet. Create your first project, or wait for your team to set one up.'
+              ? 'No hay proyectos que coincidan con tus filtros.'
+              : 'Aún no hay proyectos. Crea el primero o espera a que tu equipo configure uno.'
           }
         />
       )}

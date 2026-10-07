@@ -55,7 +55,7 @@ function formatDue(iso: string | null): { label: string; tone: 'overdue' | 'soon
   const d = new Date(iso);
   const now = new Date();
   const deltaDays = Math.floor((d.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-  const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: deltaDays > 180 ? 'numeric' : undefined });
+  const label = d.toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: deltaDays > 180 ? 'numeric' : undefined });
   if (deltaDays < 0) return { label, tone: 'overdue' };
   if (deltaDays < 7) return { label, tone: 'soon' };
   return { label, tone: 'later' };
@@ -196,7 +196,7 @@ function MyTasksPageInner() {
       ...g,
       cards: g.cards.map((c) =>
         c.source === card.source && c.id === card.id
-          ? { ...c, columnIsDone: true, columnName: card.source === 'brain' ? 'Done' : c.columnName }
+          ? { ...c, columnIsDone: true, columnName: card.source === 'brain' ? 'Hecho' : c.columnName }
           : c,
       ),
     })) ?? prev);
@@ -267,9 +267,9 @@ function MyTasksPageInner() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="My work"
-        title="My Tasks"
-        subtitle={<>{total} task{total !== 1 ? 's' : ''} assigned to you{overdueCount > 0 && <span className="text-destructive"> · {overdueCount} overdue</span>}</>}
+        eyebrow="Mi trabajo"
+        title="Mis tareas"
+        subtitle={<>{total} tarea{total !== 1 ? 's' : ''} asignada{total !== 1 ? 's' : ''} a ti{overdueCount > 0 && <span className="text-destructive"> · {overdueCount} atrasada{overdueCount !== 1 ? 's' : ''}</span>}</>}
         actions={
           <label className="flex items-center gap-2 text-sm text-muted-foreground">
             <input
@@ -278,15 +278,15 @@ function MyTasksPageInner() {
               onChange={toggleOpenOnly}
               className="rounded border-border"
             />
-            Hide completed
+            Ocultar completadas
           </label>
         }
       />
 
       {/* Filter chips */}
-      <div className="bg-card border border-border rounded-2xl p-3 space-y-3" aria-label="Task filters">
-        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Source">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Source</span>
+      <div className="bg-card border border-border rounded-2xl p-3 space-y-3" aria-label="Filtros de tareas">
+        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Fuente">
+          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Fuente</span>
           {(['all', 'kanban', 'brain'] as const).map((s) => (
             <button
               key={s}
@@ -295,18 +295,18 @@ function MyTasksPageInner() {
               aria-pressed={filters.source === s}
               className={`text-xs px-2.5 py-1 rounded-full border transition-colors flex items-center gap-1 ${
                 filters.source === s
-                  ? 'bg-primary text-primary-foreground border-primary'
+                  ? 'bg-foreground text-background border-primary'
                   : 'bg-background text-muted-foreground border-border hover:border-primary/50'
               }`}
             >
               {s !== 'all' && <span className="material-icons text-xs">{sourceIcon(s)}</span>}
-              {s === 'all' ? 'All' : s === 'kanban' ? 'Kanban' : 'Brain'}
+              {s === 'all' ? 'Todas' : s === 'kanban' ? 'Kanban' : 'Brain'}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Priority">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Priority</span>
+        <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Prioridad">
+          <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Prioridad</span>
           {VALID_PRIORITIES.map((p) => {
             const active = filters.priorities.includes(p);
             return (
@@ -335,14 +335,12 @@ function MyTasksPageInner() {
                 : 'bg-background text-muted-foreground border-border hover:border-primary/50'
             }`}
           >
-            <span className="material-icons text-xs">schedule</span>
-            Overdue
-          </button>
+            <span className="material-icons text-xs">schedule</span>Atrasado</button>
         </div>
 
         {filters.source !== 'brain' && projectsAvailable.length > 0 && (
-          <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Project">
-            <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Project</span>
+          <div className="flex items-center gap-2 flex-wrap" role="group" aria-label="Proyecto">
+            <span className="text-xs uppercase tracking-wide text-muted-foreground mr-1">Proyecto</span>
             {projectsAvailable.map((p) => {
               const active = filters.projectIds.includes(p.id);
               return (
@@ -353,7 +351,7 @@ function MyTasksPageInner() {
                   aria-pressed={active}
                   className={`text-xs px-2.5 py-1 rounded-full border transition-colors flex items-center gap-1 ${
                     active
-                      ? 'bg-primary text-primary-foreground border-primary'
+                      ? 'bg-foreground text-background border-primary'
                       : 'bg-background text-muted-foreground border-border hover:border-primary/50'
                   }`}
                   title={p.name}
@@ -373,7 +371,7 @@ function MyTasksPageInner() {
             className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
           >
             <span className="material-icons text-xs">close</span>
-            Clear filters
+            Limpiar filtros
           </button>
         )}
       </div>
@@ -385,11 +383,11 @@ function MyTasksPageInner() {
       ) : groups.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">task_alt</span>
-          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Nothing assigned</h3>
+          <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Nada asignado</h3>
           <p className="mt-2 text-sm text-muted-foreground">
             {hasActiveFilters
-              ? 'No tasks match your filters.'
-              : filters.openOnly ? 'You have no open tasks. Great job!' : 'Nothing assigned in projects or Brain.'}
+              ? 'Ninguna tarea coincide con tus filtros.'
+              : filters.openOnly ? 'No tienes tareas abiertas. ¡Buen trabajo!' : 'Nada asignado en proyectos o Brain.'}
           </p>
         </div>
       ) : (
@@ -403,8 +401,8 @@ function MyTasksPageInner() {
                   <div className="min-w-0 flex items-center gap-2">
                     <span
                       className="material-icons text-base text-muted-foreground shrink-0"
-                      title={p.source === 'brain' ? 'Brain task' : 'Project board'}
-                      aria-label={p.source === 'brain' ? 'Brain task group' : 'Project group'}
+                      title={p.source === 'brain' ? 'Tarea de Brain' : 'Tablero del proyecto'}
+                      aria-label={p.source === 'brain' ? 'Grupo de tareas de Brain' : 'Grupo del proyecto'}
                     >
                       {sourceIcon(p.source)}
                     </span>
@@ -414,7 +412,7 @@ function MyTasksPageInner() {
                     {p.clientName && <span className="text-xs text-muted-foreground ml-2 shrink-0">· {p.clientName}</span>}
                   </div>
                   <span className="text-xs text-muted-foreground bg-muted rounded-full px-2 py-0.5 shrink-0">
-                    {p.cards.length} task{p.cards.length !== 1 ? 's' : ''}
+                    {p.cards.length} tarea{p.cards.length !== 1 ? 's' : ''}
                   </span>
                 </div>
                 <ul className="divide-y divide-border">
@@ -429,12 +427,12 @@ function MyTasksPageInner() {
                           type="button"
                           onClick={(e) => { e.preventDefault(); e.stopPropagation(); void completeCard(c); }}
                           disabled={!canComplete || isCompleting}
-                          aria-label={c.columnIsDone ? 'Completed' : 'Mark complete'}
+                          aria-label={c.columnIsDone ? 'Completada' : 'Marcar como completada'}
                           aria-pressed={c.columnIsDone}
                           title={
-                            c.columnIsDone ? 'Completed'
-                              : !canComplete ? 'No "done" column on this project — open the board to complete'
-                              : 'Mark complete'
+                            c.columnIsDone ? 'Completada'
+                              : !canComplete ? 'Este proyecto no tiene columna "hecho" — abre el tablero para completarla'
+                              : 'Marcar como completada'
                           }
                           className={`shrink-0 inline-flex items-center justify-center w-5 h-5 rounded border transition-colors ${
                             c.columnIsDone
@@ -458,8 +456,8 @@ function MyTasksPageInner() {
                         >
                           <span
                             className="material-icons text-sm text-muted-foreground shrink-0"
-                            title={c.source === 'brain' ? 'Brain task' : 'Project card'}
-                            aria-label={c.source === 'brain' ? 'Brain task' : 'Project card'}
+                            title={c.source === 'brain' ? 'Tarea de Brain' : 'Tarjeta del proyecto'}
+                            aria-label={c.source === 'brain' ? 'Tarea de Brain' : 'Tarjeta del proyecto'}
                           >
                             {sourceIcon(c.source)}
                           </span>
@@ -522,7 +520,7 @@ function MyTasksPageInner() {
                 <span className={`material-icons text-base ${loadingMore ? 'animate-spin' : ''}`}>
                   {loadingMore ? 'refresh' : 'expand_more'}
                 </span>
-                {loadingMore ? 'Loading…' : 'Load more'}
+                {loadingMore ? 'Cargando…' : 'Cargar más'}
               </button>
             </div>
           )}

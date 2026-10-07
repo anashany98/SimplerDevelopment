@@ -94,7 +94,7 @@ export default function DomainGetStarted({ domainKey }: { domainKey: string }) {
 
       <div className="mb-4">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span>{status.done} of {status.total} steps complete</span>
+          <span>{status.done} de {status.total} pasos completados</span>
           <span>{progressPct}%</span>
         </div>
         <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
@@ -126,9 +126,7 @@ export default function DomainGetStarted({ domainKey }: { domainKey: string }) {
                   href={action.href}
                   className="shrink-0 text-xs text-primary hover:text-primary/80 font-medium whitespace-nowrap"
                   aria-label={`Open ${action.label}`}
-                >
-                  Open
-                  <span className="material-icons text-sm align-middle ml-0.5">arrow_forward</span>
+                >Abierto<span className="material-icons text-sm align-middle ml-0.5">arrow_forward</span>
                 </a>
               )}
             </div>

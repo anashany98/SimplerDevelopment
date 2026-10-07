@@ -86,7 +86,7 @@ export default function ContentTypesPage() {
   };
 
   const handleDelete = async (typeId: number) => {
-    if (!confirm('Delete this content type?')) return;
+    if (!confirm('¿Eliminar este tipo de contenido?')) return;
     await fetch(`${base}/content-types/${typeId}`, { method: 'DELETE' });
     loadContentTypes();
   };
@@ -102,16 +102,16 @@ export default function ContentTypesPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Website"
-        title="Content Types"
-        subtitle="Define the structure of your content. Built-in types are always available."
+        eyebrow="Sitio web"
+        title="Tipos de contenido"
+        subtitle="Define la estructura de tu contenido. Los tipos integrados siempre están disponibles."
         actions={
           <button
             onClick={showForm && !editingType ? () => setShowForm(false) : openCreate}
             className={showForm && !editingType ? pBtnGhost : pBtnPrimary}
           >
             <span className="material-icons text-base">{showForm && !editingType ? 'close' : 'add'}</span>
-            {showForm && !editingType ? 'Cancel' : 'Add Content Type'}
+            {showForm && !editingType ? 'Cancelar' : 'Agregar tipo de contenido'}
           </button>
         }
       />
@@ -119,10 +119,10 @@ export default function ContentTypesPage() {
       {/* Form */}
       {showForm && (
         <form onSubmit={handleSubmit} className={`${pCard} p-5 space-y-4`}>
-          <h3 className="font-medium text-foreground text-sm">{editingType ? 'Edit' : 'New'} Content Type</h3>
+          <h3 className="font-medium text-foreground text-sm">{editingType ? 'Editar' : 'Crear'} tipo de contenido</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">Name</label>
+              <label className="text-sm font-medium text-foreground">Nombre</label>
               <input
                 value={form.name}
                 onChange={e => setForm(prev => ({
@@ -131,7 +131,7 @@ export default function ContentTypesPage() {
                   slug: !editingType ? slugify(e.target.value) : prev.slug,
                 }))}
                 required
-                placeholder="e.g. Case Study"
+                placeholder="p. ej., Caso de estudio"
                 className={pInput}
               />
             </div>
@@ -146,16 +146,16 @@ export default function ContentTypesPage() {
             </div>
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Description</label>
+            <label className="text-sm font-medium text-foreground">Descripción</label>
             <input
               value={form.description}
               onChange={e => setForm(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Optional description"
+              placeholder="Descripción opcional"
               className={pInput}
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-sm font-medium text-foreground">Icon</label>
+            <label className="text-sm font-medium text-foreground">Icono</label>
             <div className="flex flex-wrap gap-1.5">
               {CONTENT_ICONS.map(icon => (
                 <button
@@ -181,16 +181,14 @@ export default function ContentTypesPage() {
               type="button"
               onClick={() => { setShowForm(false); setEditingType(null); }}
               className={pBtnGhost}
-            >
-              Cancel
-            </button>
+            >Cancelar</button>
             <button
               type="submit"
               disabled={saving}
               className={pBtnPrimary}
             >
               {saving && <span className="material-icons text-base animate-spin">refresh</span>}
-              {editingType ? 'Update' : 'Create'}
+              {editingType ? 'Actualizar' : 'Crear'}
             </button>
           </div>
         </form>
@@ -215,10 +213,10 @@ export default function ContentTypesPage() {
               </div>
               {type.websiteId ? (
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => openEdit(type)} className="p-1 rounded hover:bg-accent" title="Edit">
+                  <button onClick={() => openEdit(type)} className="p-1 rounded hover:bg-accent" title="Editar">
                     <span className="material-icons text-sm text-muted-foreground">edit</span>
                   </button>
-                  <button onClick={() => handleDelete(type.id)} className="p-1 rounded hover:bg-destructive/10" title="Delete">
+                  <button onClick={() => handleDelete(type.id)} className="p-1 rounded hover:bg-destructive/10" title="Eliminar">
                     <span className="material-icons text-sm text-destructive">delete</span>
                   </button>
                 </div>

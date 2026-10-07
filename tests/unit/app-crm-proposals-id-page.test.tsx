@@ -217,7 +217,7 @@ import ProposalEditorPage from '@/app/portal/crm/proposals/[id]/page';
 async function renderPage() {
   const result = render(<ProposalEditorPage />);
   await waitFor(() => {
-    expect(result.container.textContent).not.toContain('Loading proposal...');
+    expect(result.container.textContent).not.toContain('Cargando propuesta...');
   });
   return result;
 }
@@ -250,14 +250,14 @@ describe('ProposalEditorPage', () => {
   describe('initial load + error states', () => {
     it('renders loading state initially', () => {
       const { container } = render(<ProposalEditorPage />);
-      expect(container.textContent).toContain('Loading proposal...');
+      expect(container.textContent).toContain('Cargando propuesta...');
     });
 
     it('renders proposal after load', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('draft');
+      expect(container.textContent).toContain('Borrador');
       // Title input populated
-      const titleInput = container.querySelector('input[placeholder="Proposal Title"]') as HTMLInputElement;
+      const titleInput = container.querySelector('input[placeholder="Título de la propuesta"]') as HTMLInputElement;
       expect(titleInput.value).toBe('Acme Build');
     });
 
@@ -270,10 +270,10 @@ describe('ProposalEditorPage', () => {
       });
       const { container } = render(<ProposalEditorPage />);
       await waitFor(() => {
-        expect(container.textContent).not.toContain('Loading proposal...');
+        expect(container.textContent).not.toContain('Cargando propuesta...');
       });
       expect(container.textContent).toContain('Not found');
-      expect(container.textContent).toContain('Back to proposals');
+      expect(container.textContent).toContain('Volver a propuestas');
     });
 
     it('renders default "Failed to load proposal" if no message', async () => {
@@ -285,9 +285,9 @@ describe('ProposalEditorPage', () => {
       });
       const { container } = render(<ProposalEditorPage />);
       await waitFor(() => {
-        expect(container.textContent).not.toContain('Loading proposal...');
+        expect(container.textContent).not.toContain('Cargando propuesta...');
       });
-      expect(container.textContent).toContain('Failed to load proposal');
+      expect(container.textContent).toContain('No se pudo cargar la propuesta');
     });
 
     it('Back-to-proposals button navigates from error state', async () => {
@@ -299,9 +299,9 @@ describe('ProposalEditorPage', () => {
       });
       const { container } = render(<ProposalEditorPage />);
       await waitFor(() => {
-        expect(container.textContent).not.toContain('Loading proposal...');
+        expect(container.textContent).not.toContain('Cargando propuesta...');
       });
-      fireEvent.click(screen.getByText('Back to proposals'));
+      fireEvent.click(screen.getByText('Volver a propuestas'));
       expect(pushMock).toHaveBeenCalledWith('/portal/crm/proposals');
     });
 
@@ -334,7 +334,7 @@ describe('ProposalEditorPage', () => {
       const colorInput = container.querySelector('input[type="color"]') as HTMLInputElement;
       expect(colorInput.value).toBe('#2563eb');
       // No sections placeholder
-      expect(container.textContent).toContain('No sections yet');
+      expect(container.textContent).toContain('Aún no hay secciones');
     });
 
     it('falls back when contacts/companies API returns data.data array', async () => {
@@ -374,21 +374,21 @@ describe('ProposalEditorPage', () => {
   describe('top action bar', () => {
     it('renders status pill', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('draft');
+      expect(container.textContent).toContain('Borrador');
     });
 
     it('back arrow navigates to proposals list', async () => {
       const { container } = await renderPage();
-      const backBtn = container.querySelector('button[title="Back"]')!;
+      const backBtn = container.querySelector('button[title="Volver"]')!;
       fireEvent.click(backBtn);
       expect(pushMock).toHaveBeenCalledWith('/portal/crm/proposals');
     });
 
     it('renders Save / Send / Delete / Save as Template buttons', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('Save');
-      expect(container.textContent).toContain('Send');
-      expect(container.textContent).toContain('Save as Template');
+      expect(container.textContent).toContain('Guardar');
+      expect(container.textContent).toContain('Enviar');
+      expect(container.textContent).toContain('Guardar como plantilla');
     });
 
     it('Send button is disabled for accepted proposals', async () => {
@@ -400,11 +400,11 @@ describe('ProposalEditorPage', () => {
       });
       const { container } = await renderPage();
       const sendBtn = Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Send' || b.textContent?.includes('Send'),
+        b.textContent?.trim() === 'Enviar' || b.textContent?.includes('Enviar'),
       );
       // Disabled button has aria-disabled true via disabled attr
       const disabledSend = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send') && (b as HTMLButtonElement).disabled,
+        b => b.textContent?.includes('Enviar') && (b as HTMLButtonElement).disabled,
       );
       expect(disabledSend).toBeTruthy();
     });
@@ -418,7 +418,7 @@ describe('ProposalEditorPage', () => {
       });
       const { container } = await renderPage();
       const disabledSend = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send') && (b as HTMLButtonElement).disabled,
+        b => b.textContent?.includes('Enviar') && (b as HTMLButtonElement).disabled,
       );
       expect(disabledSend).toBeTruthy();
     });
@@ -432,7 +432,7 @@ describe('ProposalEditorPage', () => {
       });
       const { container } = await renderPage();
       const disabledSend = Array.from(container.querySelectorAll('button')).find(
-        b => b.textContent?.includes('Send') && (b as HTMLButtonElement).disabled,
+        b => b.textContent?.includes('Enviar') && (b as HTMLButtonElement).disabled,
       );
       expect(disabledSend).toBeTruthy();
     });
@@ -452,14 +452,14 @@ describe('ProposalEditorPage', () => {
   describe('editable fields', () => {
     it('updates title on input', async () => {
       const { container } = await renderPage();
-      const titleInput = container.querySelector('input[placeholder="Proposal Title"]') as HTMLInputElement;
+      const titleInput = container.querySelector('input[placeholder="Título de la propuesta"]') as HTMLInputElement;
       fireEvent.change(titleInput, { target: { value: 'New Title' } });
       expect(titleInput.value).toBe('New Title');
     });
 
     it('updates summary textarea', async () => {
       const { container } = await renderPage();
-      const summary = container.querySelector('textarea[placeholder="Brief summary of this proposal..."]') as HTMLTextAreaElement;
+      const summary = container.querySelector('textarea[placeholder="Resumen breve de esta propuesta..."]') as HTMLTextAreaElement;
       fireEvent.change(summary, { target: { value: 'Updated summary' } });
       expect(summary.value).toBe('Updated summary');
     });
@@ -500,7 +500,7 @@ describe('ProposalEditorPage', () => {
       const date = container.querySelector('input[type="date"]') as HTMLInputElement;
       fireEvent.change(date, { target: { value: '2031-02-02' } });
       expect(date.value).toBe('2031-02-02');
-      const footer = container.querySelector('input[placeholder="Thank you for your consideration."]') as HTMLInputElement;
+      const footer = container.querySelector('input[placeholder="Gracias por tu consideración."]') as HTMLInputElement;
       fireEvent.change(footer, { target: { value: 'New footer' } });
       expect(footer.value).toBe('New footer');
     });
@@ -512,10 +512,10 @@ describe('ProposalEditorPage', () => {
       // @ts-ignore
       global.fetch = fetchSpy;
       const { container } = await renderPage();
-      const saveBtn = findButtonByLabel(container, 'Save')!;
+      const saveBtn = findButtonByLabel(container, 'Guardar')!;
       fireEvent.click(saveBtn);
       await waitFor(() => {
-        expect(container.textContent).toContain('Saved');
+        expect(container.textContent).toContain('Guardado');
       });
       const put = fetchSpy.mock.calls.find(c => c[1]?.method === 'PUT');
       expect(put).toBeTruthy();
@@ -529,7 +529,7 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const saveBtn = findButtonByLabel(container, 'Save')!;
+      const saveBtn = findButtonByLabel(container, 'Guardar')!;
       fireEvent.click(saveBtn);
       await waitFor(() => {
         expect(container.textContent).toContain('Save failed');
@@ -544,10 +544,10 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const saveBtn = findButtonByLabel(container, 'Save')!;
+      const saveBtn = findButtonByLabel(container, 'Guardar')!;
       fireEvent.click(saveBtn);
       await waitFor(() => {
-        expect(container.textContent).toContain('Failed to save');
+        expect(container.textContent).toContain('No se pudo guardar');
       });
     });
 
@@ -557,9 +557,9 @@ describe('ProposalEditorPage', () => {
       global.fetch = fetchSpy;
       const { container } = await renderPage();
       // Clear summary
-      const summary = container.querySelector('textarea[placeholder="Brief summary of this proposal..."]') as HTMLTextAreaElement;
+      const summary = container.querySelector('textarea[placeholder="Resumen breve de esta propuesta..."]') as HTMLTextAreaElement;
       fireEvent.change(summary, { target: { value: '' } });
-      const saveBtn = findButtonByLabel(container, 'Save')!;
+      const saveBtn = findButtonByLabel(container, 'Guardar')!;
       fireEvent.click(saveBtn);
       await waitFor(() => {
         const put = fetchSpy.mock.calls.find(c => c[1]?.method === 'PUT');
@@ -573,14 +573,14 @@ describe('ProposalEditorPage', () => {
   describe('send dialog', () => {
     it('opens send dialog on Send click', async () => {
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      expect(container.textContent).toContain('Send Proposal');
+      expect(container.textContent).toContain('Enviar propuesta');
     });
 
     it('shows contact name + email in dialog', async () => {
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
       expect(container.textContent).toContain('Jane Doe');
       expect(container.textContent).toContain('jane@acme.test');
@@ -594,26 +594,26 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      expect(container.textContent).toContain('Send Proposal');
+      expect(container.textContent).toContain('Enviar propuesta');
     });
 
     it('Cancel button closes send dialog', async () => {
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      fireEvent.click(screen.getByText('Cancel'));
-      expect(container.textContent).not.toContain('Send Proposal');
+      fireEvent.click(screen.getByText('Cancelar'));
+      expect(container.textContent).not.toContain('Enviar propuesta');
     });
 
     it('Send Now triggers send flow and shows shareable URL', async () => {
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      fireEvent.click(screen.getByText('Send Now'));
+      fireEvent.click(screen.getByText('Enviar ahora'));
       await waitFor(() => {
-        expect(container.textContent).toContain('Proposal Sent');
+        expect(container.textContent).toContain('Propuesta enviada');
       });
       const urlInput = container.querySelector('input[readonly]') as HTMLInputElement;
       expect(urlInput.value).toContain('/p/tok-abc');
@@ -621,23 +621,23 @@ describe('ProposalEditorPage', () => {
 
     it('Copy link button uses navigator.clipboard', async () => {
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      fireEvent.click(screen.getByText('Send Now'));
-      await waitFor(() => screen.getByText('Proposal Sent'));
-      const copyBtn = container.querySelector('button[title="Copy link"]')!;
+      fireEvent.click(screen.getByText('Enviar ahora'));
+      await waitFor(() => screen.getByText('Propuesta enviada'));
+      const copyBtn = container.querySelector('button[title="Copiar enlace"]')!;
       fireEvent.click(copyBtn);
       expect((navigator.clipboard.writeText as any).mock.calls.length).toBeGreaterThan(0);
     });
 
     it('Done button closes the URL share step', async () => {
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      fireEvent.click(screen.getByText('Send Now'));
-      await waitFor(() => screen.getByText('Proposal Sent'));
-      fireEvent.click(screen.getByText('Done'));
-      expect(container.textContent).not.toContain('Proposal Sent');
+      fireEvent.click(screen.getByText('Enviar ahora'));
+      await waitFor(() => screen.getByText('Propuesta enviada'));
+      fireEvent.click(screen.getByText('Hecho'));
+      expect(container.textContent).not.toContain('Propuesta enviada');
     });
 
     it('Send failure closes dialog and shows error', async () => {
@@ -648,9 +648,9 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      fireEvent.click(screen.getByText('Send Now'));
+      fireEvent.click(screen.getByText('Enviar ahora'));
       await waitFor(() => {
         expect(container.textContent).toContain('Send failed');
       });
@@ -664,11 +664,11 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const sendBtn = findButtonByLabel(container, 'Send', { enabledOnly: true })!;
+      const sendBtn = findButtonByLabel(container, 'Enviar', { enabledOnly: true })!;
       fireEvent.click(sendBtn);
-      fireEvent.click(screen.getByText('Send Now'));
+      fireEvent.click(screen.getByText('Enviar ahora'));
       await waitFor(() => {
-        expect(container.textContent).toContain('Failed to send');
+        expect(container.textContent).toContain('No se pudo enviar');
       });
     });
   });
@@ -682,7 +682,7 @@ describe('ProposalEditorPage', () => {
         return icon?.textContent === 'delete';
       })!;
       fireEvent.click(deleteIconBtn);
-      expect(container.textContent).toContain('Delete Proposal');
+      expect(container.textContent).toContain('Eliminar propuesta');
       expect(container.textContent).toContain('Acme Build');
     });
 
@@ -693,8 +693,8 @@ describe('ProposalEditorPage', () => {
         return icon?.textContent === 'delete';
       })!;
       fireEvent.click(deleteIconBtn);
-      fireEvent.click(screen.getByText('Cancel'));
-      expect(container.textContent).not.toContain('Delete Proposal');
+      fireEvent.click(screen.getByText('Cancelar'));
+      expect(container.textContent).not.toContain('Eliminar propuesta');
     });
 
     it('Delete button DELETEs and navigates away', async () => {
@@ -708,7 +708,7 @@ describe('ProposalEditorPage', () => {
       })!;
       fireEvent.click(deleteIconBtn);
       const confirmBtn = Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent?.trim() === 'Delete',
+        b.textContent?.trim() === 'Eliminar',
       )!;
       fireEvent.click(confirmBtn);
       await waitFor(() => {
@@ -722,26 +722,26 @@ describe('ProposalEditorPage', () => {
   describe('save-as-template dialog', () => {
     it('opens template dialog when "Save as Template" clicked', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Save as Template'));
-      expect(container.textContent).toContain('Template Name *');
+      fireEvent.click(screen.getByText('Guardar como plantilla'));
+      expect(container.textContent).toContain('Nombre de la plantilla *');
     });
 
     it('Cancel button closes template dialog', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Save as Template'));
-      fireEvent.click(screen.getByText('Cancel'));
-      expect(container.textContent).not.toContain('Template Name *');
+      fireEvent.click(screen.getByText('Guardar como plantilla'));
+      fireEvent.click(screen.getByText('Cancelar'));
+      expect(container.textContent).not.toContain('Nombre de la plantilla *');
     });
 
     it('submits template form and shows success', async () => {
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Save as Template'));
-      const nameInput = container.querySelector('input[placeholder="e.g. Standard Web Design Proposal"]') as HTMLInputElement;
+      fireEvent.click(screen.getByText('Guardar como plantilla'));
+      const nameInput = container.querySelector('input[placeholder="p. ej. Propuesta estándar de diseño web"]') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'My Template' } });
       const form = container.querySelector('form')!;
       fireEvent.submit(form);
       await waitFor(() => {
-        expect(container.textContent).toContain('Template saved');
+        expect(container.textContent).toContain('Plantilla guardada');
       });
     });
 
@@ -753,13 +753,13 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      fireEvent.click(screen.getByText('Save as Template'));
-      const nameInput = container.querySelector('input[placeholder="e.g. Standard Web Design Proposal"]') as HTMLInputElement;
+      fireEvent.click(screen.getByText('Guardar como plantilla'));
+      const nameInput = container.querySelector('input[placeholder="p. ej. Propuesta estándar de diseño web"]') as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'X' } });
       fireEvent.submit(container.querySelector('form')!);
       await flush();
       // Dialog still open
-      expect(container.textContent).toContain('Template Name *');
+      expect(container.textContent).toContain('Nombre de la plantilla *');
     });
   });
 
@@ -774,13 +774,13 @@ describe('ProposalEditorPage', () => {
       const { container } = await renderPage();
       // Add buttons (in the "Content Sections" panel, at the bottom)
       // Find by text — each type has a button
-      fireEvent.click(screen.getByText('Heading'));
-      fireEvent.click(screen.getByText('Text'));
-      fireEvent.click(screen.getByText('Image'));
-      fireEvent.click(screen.getByText('Divider'));
-      fireEvent.click(screen.getByText('Pricing'));
-      fireEvent.click(screen.getByText('Terms'));
-      fireEvent.click(screen.getByText('Signature'));
+      fireEvent.click(screen.getByText('Encabezado'));
+      fireEvent.click(screen.getByText('Texto'));
+      fireEvent.click(screen.getByText('Imagen'));
+      fireEvent.click(screen.getByText('Separador'));
+      fireEvent.click(screen.getByText('Precios'));
+      fireEvent.click(screen.getByText('Condiciones'));
+      fireEvent.click(screen.getByText('Firma'));
       // The empty-state message should be gone now
       expect(container.textContent).not.toContain('No sections yet');
     });
@@ -788,7 +788,7 @@ describe('ProposalEditorPage', () => {
     it('updates a heading section content', async () => {
       const { container } = await renderPage();
       // Heading input — has placeholder "Heading text..."
-      const headingInput = container.querySelector('input[placeholder="Heading text..."]') as HTMLInputElement;
+      const headingInput = container.querySelector('input[placeholder="Texto del encabezado..."]') as HTMLInputElement;
       expect(headingInput.value).toBe('Intro');
       fireEvent.change(headingInput, { target: { value: 'New Heading' } });
       expect(headingInput.value).toBe('New Heading');
@@ -796,7 +796,7 @@ describe('ProposalEditorPage', () => {
 
     it('updates a text section content', async () => {
       const { container } = await renderPage();
-      const textArea = container.querySelector('textarea[placeholder="Enter text content (HTML supported)..."]') as HTMLTextAreaElement;
+      const textArea = container.querySelector('textarea[placeholder="Introduce el contenido (HTML admitido)..."]') as HTMLTextAreaElement;
       expect(textArea.value).toBe('<p>Body</p>');
       fireEvent.change(textArea, { target: { value: '<p>New body</p>' } });
       expect(textArea.value).toBe('<p>New body</p>');
@@ -804,7 +804,7 @@ describe('ProposalEditorPage', () => {
 
     it('updates an image section URL and shows preview', async () => {
       const { container } = await renderPage();
-      const imageInput = container.querySelector('input[placeholder="Image URL..."]') as HTMLInputElement;
+      const imageInput = container.querySelector('input[placeholder="URL de la imagen..."]') as HTMLInputElement;
       expect(imageInput.value).toBe('https://img.test/x.png');
       fireEvent.change(imageInput, { target: { value: 'https://img.test/y.png' } });
       expect(imageInput.value).toBe('https://img.test/y.png');
@@ -812,7 +812,7 @@ describe('ProposalEditorPage', () => {
 
     it('updates a terms section content', async () => {
       const { container } = await renderPage();
-      const termsArea = container.querySelector('textarea[placeholder="Terms and conditions..."]') as HTMLTextAreaElement;
+      const termsArea = container.querySelector('textarea[placeholder="Términos y condiciones..."]') as HTMLTextAreaElement;
       expect(termsArea.value).toBe('Net 30');
       fireEvent.change(termsArea, { target: { value: 'Net 60' } });
       expect(termsArea.value).toBe('Net 60');
@@ -827,11 +827,11 @@ describe('ProposalEditorPage', () => {
         return icon?.textContent === 'close';
       });
       // First close button removes first section. Before click, Intro is visible in heading input.
-      const headingInputBefore = container.querySelector('input[placeholder="Heading text..."]') as HTMLInputElement;
+      const headingInputBefore = container.querySelector('input[placeholder="Texto del encabezado..."]') as HTMLInputElement;
       expect(headingInputBefore.value).toBe('Intro');
       fireEvent.click(closeButtons[0]);
       // Now no heading section anymore
-      const headingInputAfter = container.querySelector('input[placeholder="Heading text..."]');
+      const headingInputAfter = container.querySelector('input[placeholder="Texto del encabezado..."]');
       expect(headingInputAfter).toBeNull();
     });
 
@@ -883,23 +883,23 @@ describe('ProposalEditorPage', () => {
   describe('line item CRUD', () => {
     it('adds a new line item', async () => {
       const { container } = await renderPage();
-      const addBtn = findButtonByLabel(container, 'Add Line Item')!;
+      const addBtn = findButtonByLabel(container, 'Añadir partida')!;
       fireEvent.click(addBtn);
       // Now should have 3 description inputs in the line items table
-      const descInputs = container.querySelectorAll('input[placeholder="Item description"]');
+      const descInputs = container.querySelectorAll('input[placeholder="Descripción del artículo"]');
       expect(descInputs.length).toBe(3);
     });
 
     it('updates a line item description', async () => {
       const { container } = await renderPage();
-      const descInputs = container.querySelectorAll('input[placeholder="Item description"]') as NodeListOf<HTMLInputElement>;
+      const descInputs = container.querySelectorAll('input[placeholder="Descripción del artículo"]') as NodeListOf<HTMLInputElement>;
       fireEvent.change(descInputs[0], { target: { value: 'Updated Dev' } });
       expect(descInputs[0].value).toBe('Updated Dev');
     });
 
     it('updates a line item details', async () => {
       const { container } = await renderPage();
-      const detailsInputs = container.querySelectorAll('input[placeholder="Details"]') as NodeListOf<HTMLInputElement>;
+      const detailsInputs = container.querySelectorAll('input[placeholder="Detalles"]') as NodeListOf<HTMLInputElement>;
       fireEvent.change(detailsInputs[0], { target: { value: 'New detail' } });
       expect(detailsInputs[0].value).toBe('New detail');
     });
@@ -925,42 +925,42 @@ describe('ProposalEditorPage', () => {
 
     it('removes a line item', async () => {
       const { container } = await renderPage();
-      const descBefore = container.querySelectorAll('input[placeholder="Item description"]');
+      const descBefore = container.querySelectorAll('input[placeholder="Descripción del artículo"]');
       expect(descBefore.length).toBe(2);
       // First line item row has its own close button. Pick the close in the table row.
       const tableRows = container.querySelectorAll('table tbody tr');
       const firstRowCloseBtn = tableRows[0].querySelector('button')!;
       fireEvent.click(firstRowCloseBtn);
-      const descAfter = container.querySelectorAll('input[placeholder="Item description"]');
+      const descAfter = container.querySelectorAll('input[placeholder="Descripción del artículo"]');
       expect(descAfter.length).toBe(1);
     });
 
     it('renders subtotal / fees / grand total', async () => {
       const { container } = await renderPage();
       // baseProposal: 2 line items, only first (Dev qty 2 * 50000) counts (optional excluded)
-      // subtotal = 100000c = $1,000.00
-      expect(container.textContent).toContain('$1,000.00');
-      // Flat fee 5000c = $50.00
-      expect(container.textContent).toContain('$50.00');
-      // Percent 10% of subtotal = 10000c = $100.00
-      expect(container.textContent).toContain('$100.00');
-      // Grand total = 100000 + 5000 + 10000 = 115000c = $1,150.00
-      expect(container.textContent).toContain('$1,150.00');
+      // subtotal = 100000c = 1000,00 €
+      expect(container.textContent).toContain('1000,00\u00A0€');
+      // Flat fee 5000c = 50,00 €
+      expect(container.textContent).toContain('50,00\u00A0€');
+      // Percent 10% of subtotal = 10000c = 100,00 €
+      expect(container.textContent).toContain('100,00\u00A0€');
+      // Grand total = 100000 + 5000 + 10000 = 115000c = 1150,00 €
+      expect(container.textContent).toContain('1150,00\u00A0€');
     });
   });
 
   describe('fee CRUD', () => {
     it('adds a new fee', async () => {
       const { container } = await renderPage();
-      const addBtn = findButtonByLabel(container, 'Add Fee')!;
+      const addBtn = findButtonByLabel(container, 'Añadir cargo')!;
       fireEvent.click(addBtn);
-      const labelInputs = container.querySelectorAll('input[placeholder="Fee label"]');
+      const labelInputs = container.querySelectorAll('input[placeholder="Etiqueta del cargo"]');
       expect(labelInputs.length).toBe(3);
     });
 
     it('updates fee label', async () => {
       const { container } = await renderPage();
-      const labelInputs = container.querySelectorAll('input[placeholder="Fee label"]') as NodeListOf<HTMLInputElement>;
+      const labelInputs = container.querySelectorAll('input[placeholder="Etiqueta del cargo"]') as NodeListOf<HTMLInputElement>;
       fireEvent.change(labelInputs[0], { target: { value: 'Setup' } });
       expect(labelInputs[0].value).toBe('Setup');
     });
@@ -985,7 +985,7 @@ describe('ProposalEditorPage', () => {
       // to keep the document outline contiguous for screen readers, and pinning the
       // tag here made a semantics fix look like a fee-editing regression.
       const feesPanel = Array.from(container.querySelectorAll('h1,h2,h3,h4,h5,h6')).find(h =>
-        h.textContent?.includes('Fees'),
+        h.textContent?.includes('Cargos'),
       )!.parentElement!;
       const feeNumbers = feesPanel.querySelectorAll('input[type="number"]') as NodeListOf<HTMLInputElement>;
       expect(feeNumbers.length).toBeGreaterThan(0);
@@ -995,14 +995,14 @@ describe('ProposalEditorPage', () => {
 
     it('removes a fee', async () => {
       const { container } = await renderPage();
-      const labelInputsBefore = container.querySelectorAll('input[placeholder="Fee label"]');
+      const labelInputsBefore = container.querySelectorAll('input[placeholder="Etiqueta del cargo"]');
       expect(labelInputsBefore.length).toBe(2);
       // Find the fee row containing the first fee label and click its close button
       const firstFeeLabel = labelInputsBefore[0] as HTMLInputElement;
       const feeRow = firstFeeLabel.parentElement!;
       const closeBtn = feeRow.querySelector('button')!;
       fireEvent.click(closeBtn);
-      const labelInputsAfter = container.querySelectorAll('input[placeholder="Fee label"]');
+      const labelInputsAfter = container.querySelectorAll('input[placeholder="Etiqueta del cargo"]');
       expect(labelInputsAfter.length).toBe(1);
     });
   });
@@ -1017,9 +1017,9 @@ describe('ProposalEditorPage', () => {
 
     it('renders fallback "Untitled Proposal" when title cleared', async () => {
       const { container } = await renderPage();
-      const titleInput = container.querySelector('input[placeholder="Proposal Title"]') as HTMLInputElement;
+      const titleInput = container.querySelector('input[placeholder="Título de la propuesta"]') as HTMLInputElement;
       fireEvent.change(titleInput, { target: { value: '' } });
-      expect(container.textContent).toContain('Untitled Proposal');
+      expect(container.textContent).toContain('Propuesta sin título');
     });
 
     it('renders summary in preview', async () => {
@@ -1031,14 +1031,14 @@ describe('ProposalEditorPage', () => {
       const { container } = await renderPage();
       const imgs = container.querySelectorAll('img');
       const logo = Array.from(imgs).find(img => img.getAttribute('alt') === 'Logo');
-      const cover = Array.from(imgs).find(img => img.getAttribute('alt') === 'Cover');
+      const cover = Array.from(imgs).find(img => img.getAttribute('alt') === 'Portada');
       expect(logo).toBeTruthy();
       expect(cover).toBeTruthy();
     });
 
     it('renders prepared-for line when contact + company selected', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('Prepared for');
+      expect(container.textContent).toContain('Preparado para');
       expect(container.textContent).toContain('Jane Doe');
       expect(container.textContent).toContain('Acme');
     });
@@ -1051,7 +1051,7 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      expect(container.textContent).toContain('Prepared for');
+      expect(container.textContent).toContain('Preparado para');
       expect(container.textContent).toContain('Jane Doe');
     });
 
@@ -1063,7 +1063,7 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      expect(container.textContent).toContain('Prepared for');
+      expect(container.textContent).toContain('Preparado para');
     });
 
     it('renders valid-until date in preview', async () => {
@@ -1090,7 +1090,7 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const previewH2 = Array.from(container.querySelectorAll('h2')).find(h => h.textContent === 'Heading');
+      const previewH2 = Array.from(container.querySelectorAll('h2')).find(h => h.textContent === 'Encabezado');
       expect(previewH2).toBeTruthy();
     });
 
@@ -1109,13 +1109,13 @@ describe('ProposalEditorPage', () => {
 
     it('renders terms section in preview', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('Terms & Conditions');
+      expect(container.textContent).toContain('Términos y condiciones');
       expect(container.textContent).toContain('Net 30');
     });
 
     it('renders signature placeholder', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('Signature area');
+      expect(container.textContent).toContain('Área de firma');
     });
 
     it('renders footer text in preview', async () => {
@@ -1134,7 +1134,7 @@ describe('ProposalEditorPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      expect(container.textContent).toContain('Terms and conditions will appear here');
+      expect(container.textContent).toContain('Los términos y condiciones aparecerán aquí.');
     });
 
     it('does not render pricing block in preview when no line items', async () => {

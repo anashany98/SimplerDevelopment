@@ -47,43 +47,43 @@ function BlogPostsBlockSettings({ block, onChange, currentViewport }: { block: B
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de sección..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Section description..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Descripción de sección..." className="text-sm text-foreground" />
         </div>
       </div>
       <div className="border-t border-border pt-4">
-        <label className="block text-sm font-medium text-foreground mb-2">Post Type</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Tipo de post</label>
         <input
           type="text"
           value={block.postType || ''}
           onChange={(e) => onChange({ postType: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Leave empty for all posts"
+          placeholder="Déjalo vacío para todos los posts"
         />
-        <p className="text-xs text-muted-foreground mt-1">Filter by post type (optional). Set to <span className="font-mono">category</span> to enable category filtering below.</p>
+        <p className="text-xs text-muted-foreground mt-1">Filtra por tipo de post (opcional). Ponlo en <span className="font-mono">category</span> para habilitar el filtro por categoría de abajo.</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Category Slug</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Slug de categoría</label>
         <input
           type="text"
           value={block.categorySlug || ''}
           onChange={(e) => onChange({ categorySlug: e.target.value || undefined })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="e.g. company-news"
+          placeholder="p. ej. noticias-de-empresa"
         />
-        <p className="text-xs text-muted-foreground mt-1">Active when Post Type is <span className="font-mono">category</span>.</p>
+        <p className="text-xs text-muted-foreground mt-1">Activo cuando el tipo de post es <span className="font-mono">category</span>.</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Number of Posts</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Número de posts</label>
         <input
           type="number"
           value={block.limit || 3}
@@ -95,14 +95,14 @@ function BlogPostsBlockSettings({ block, onChange, currentViewport }: { block: B
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ columns: parseInt(e.target.value) as BlogPostsBlock['columns'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="2">2 Columns</option>
-          <option value="3">3 Columns</option>
+          <option value="2">2 columnas</option>
+          <option value="3">3 columnas</option>
         </select>
       </div>
 
@@ -115,7 +115,7 @@ function BlogPostsBlockSettings({ block, onChange, currentViewport }: { block: B
           className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
         />
         <label htmlFor="showExcerpt" className="ml-2 text-sm text-foreground">
-          Show Excerpt
+          Mostrar extracto
         </label>
       </div>
     </div>
@@ -129,21 +129,21 @@ function CardGridBlockSettings({ block, onChange, currentViewport }: { block: Ca
 
   return (
     <div className="space-y-4">
-      <div><label className="block text-sm font-medium text-foreground mb-1">Section Title</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Section title..." className="text-sm text-foreground" /></div></div>
-      <div><label className="block text-sm font-medium text-foreground mb-1">Section Description</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Section description..." className="text-sm text-foreground" /></div></div>
+      <div><label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de sección..." className="text-sm text-foreground" /></div></div>
+      <div><label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label><div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]"><RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Descripción de sección..." className="text-sm text-foreground" /></div></div>
       <div className="border-t border-border pt-4">
-        <label className="block text-sm font-medium text-foreground mb-2">Number of Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Número de columnas</label>
         <select value={block.columns || 3} onChange={(e) => onChange({ columns: parseInt(e.target.value) as CardGridBlock['columns'] })} className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground">
-          <option value="2">2 Columns</option><option value="3">3 Columns</option><option value="4">4 Columns</option>
+          <option value="2">2 columnas</option><option value="3">3 columnas</option><option value="4">4 columnas</option>
         </select>
       </div>
 
       <div className="border-t border-border pt-4 space-y-2">
-        <label className="block text-sm font-medium text-foreground mb-1">Card Icon Colors</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Colores de iconos de tarjeta</label>
         {(block.cards || []).map((card, index) => (
           <div key={card.id} className="border border-border rounded-md overflow-hidden">
-            <button type="button" onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)} className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-accent transition-colors"><span className="font-medium">Card {index + 1}{card.title ? ` — ${card.title}` : ''}</span><span className="material-icons text-base text-muted-foreground">{expandedCardId === card.id ? 'expand_less' : 'expand_more'}</span></button>
-            {expandedCardId === card.id && <div className="px-3 pb-3 pt-3 border-t border-border"><TokenColorPicker label="Icon Color" value={card.iconColor || ''} onChange={(color) => updateCard(card.id, { iconColor: color || undefined })} placeholder="Default (primary)" /></div>}
+            <button type="button" onClick={() => setExpandedCardId(expandedCardId === card.id ? null : card.id)} className="w-full flex items-center justify-between px-3 py-2 text-sm hover:bg-accent transition-colors"><span className="font-medium">Tarjeta {index + 1}{card.title ? ` — ${card.title}` : ''}</span><span className="material-icons text-base text-muted-foreground">{expandedCardId === card.id ? 'expand_less' : 'expand_more'}</span></button>
+            {expandedCardId === card.id && <div className="px-3 pb-3 pt-3 border-t border-border"><TokenColorPicker label="Color del icono" value={card.iconColor || ''} onChange={(color) => updateCard(card.id, { iconColor: color || undefined })} placeholder="Predeterminado (primario)" /></div>}
           </div>
         ))}
       </div>
@@ -157,29 +157,29 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Título..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[60px]">
-          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} placeholder="Description..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} placeholder="Descripción..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
           onChange={(e) => onChange({ buttonText: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Button text..."
+          placeholder="Texto del botón..."
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Button URL</label>
+        <label className="block text-sm font-medium text-foreground mb-1">URL del botón</label>
         <input
           type="text"
           value={block.buttonUrl || ''}
@@ -189,29 +189,27 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
         />
       </div>
       <div className="border-t border-border pt-4">
-        <label className="block text-sm font-medium text-foreground mb-2">Featured Image</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Imagen destacada</label>
         {block.imageUrl ? (
           <div className="space-y-2">
             <img
               src={block.imageUrl}
-              alt="Featured"
+              alt="Destacada"
               className="w-full h-32 object-cover rounded border border-border"
             />
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={() => setShowMediaPicker(true)}
-                className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
               >
-                Change Image
+                Cambiar imagen
               </button>
               <button
                 type="button"
                 onClick={() => onChange({ imageUrl: '' })}
                 className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
         ) : (
@@ -221,37 +219,37 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
             className="w-full p-8 border-2 border-dashed border-border rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-center"
           >
             <span className="material-icons text-5xl text-muted-foreground/20 mb-2">image</span>
-            <p className="text-sm text-muted-foreground">Click to select image</p>
+            <p className="text-sm text-muted-foreground">Haz clic para seleccionar una imagen</p>
           </button>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Image Position</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Posición de la imagen</label>
         <select
           value={block.imagePosition || 'right'}
           onChange={(e) => onChange({ imagePosition: e.target.value as FeaturedContentBlock['imagePosition'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="left">Left</option>
-          <option value="right">Right</option>
+          <option value="left">Izquierda</option>
+          <option value="right">Derecha</option>
         </select>
       </div>
 
       <div className="space-y-3 pt-3 border-t border-border">
-        <h4 className="text-sm font-semibold text-foreground">Call to Action (optional)</h4>
+        <h4 className="text-sm font-semibold text-foreground">Llamada a la acción (opcional)</h4>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
           <input
             type="text"
             value={block.buttonText || ''}
             onChange={(e) => onChange({ buttonText: e.target.value })}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-            placeholder="Learn More"
+            placeholder="Saber más"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+          <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
           <input
             type="text"
             value={block.buttonUrl || ''}
@@ -271,7 +269,7 @@ function FeaturedContentBlockSettings({ block, onChange, currentViewport }: { bl
                 onChange({ imageUrl: url });
                 setShowMediaPicker(false);
               }}
-              label="Select Featured Image"
+              label="Seleccionar imagen destacada"
             />
           </div>
         </div>
@@ -284,45 +282,45 @@ function ProductGridBlockSettings({ block, onChange }: { block: ProductGridBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de sección opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Descripción opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Category Filter</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Filtro de categoría</label>
         <input
           type="text"
           value={block.categorySlug || ''}
           onChange={(e) => onChange({ categorySlug: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Leave empty for all products"
+          placeholder="Déjalo vacío para todos los productos"
         />
-        <p className="text-xs text-muted-foreground mt-1">Category slug to filter by</p>
+        <p className="text-xs text-muted-foreground mt-1">Slug de categoría por el que filtrar</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Sort By</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Ordenar por</label>
         <select
           value={block.sort || 'newest'}
           onChange={(e) => onChange({ sort: e.target.value as ProductGridBlock['sort'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="newest">Newest</option>
-          <option value="price_asc">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-          <option value="featured">Featured</option>
+          <option value="newest">Más recientes</option>
+          <option value="price_asc">Precio: de menor a mayor</option>
+          <option value="price_desc">Precio: de mayor a menor</option>
+          <option value="featured">Destacados</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Number of Products</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Número de productos</label>
         <input
           type="number"
           value={block.limit || 6}
@@ -334,41 +332,41 @@ function ProductGridBlockSettings({ block, onChange }: { block: ProductGridBlock
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 3}
           onChange={(e) => onChange({ columns: parseInt(e.target.value) as ProductGridBlock['columns'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="2">2 Columns</option>
-          <option value="3">3 Columns</option>
-          <option value="4">4 Columns</option>
+          <option value="2">2 columnas</option>
+          <option value="3">3 columnas</option>
+          <option value="4">4 columnas</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
           onChange={(e) => onChange({ buttonText: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="e.g. Add to Cart"
+          placeholder="p. ej. Añadir al carrito"
         />
       </div>
 
       <div className="space-y-2">
         <div className="flex items-center">
           <input type="checkbox" id="pgShowPrice" checked={block.showPrice !== false} onChange={(e) => onChange({ showPrice: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pgShowPrice" className="ml-2 text-sm text-foreground">Show Price</label>
+          <label htmlFor="pgShowPrice" className="ml-2 text-sm text-foreground">Mostrar precio</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pgShowDesc" checked={block.showDescription === true} onChange={(e) => onChange({ showDescription: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pgShowDesc" className="ml-2 text-sm text-foreground">Show Description</label>
+          <label htmlFor="pgShowDesc" className="ml-2 text-sm text-foreground">Mostrar descripción</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pgShowCat" checked={block.showCategory === true} onChange={(e) => onChange({ showCategory: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pgShowCat" className="ml-2 text-sm text-foreground">Show Category</label>
+          <label htmlFor="pgShowCat" className="ml-2 text-sm text-foreground">Mostrar categoría</label>
         </div>
       </div>
     </div>
@@ -379,19 +377,19 @@ function FeaturedProductsBlockSettings({ block, onChange }: { block: FeaturedPro
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de sección opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Descripción opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Number of Products</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Número de productos</label>
         <input
           type="number"
           value={block.limit || 4}
@@ -403,48 +401,48 @@ function FeaturedProductsBlockSettings({ block, onChange }: { block: FeaturedPro
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
         <select
           value={block.columns || 4}
           onChange={(e) => onChange({ columns: parseInt(e.target.value) as FeaturedProductsBlock['columns'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="2">2 Columns</option>
-          <option value="3">3 Columns</option>
-          <option value="4">4 Columns</option>
+          <option value="2">2 columnas</option>
+          <option value="3">3 columnas</option>
+          <option value="4">4 columnas</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Badge Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto de la insignia</label>
         <input
           type="text"
           value={block.badgeText || ''}
           onChange={(e) => onChange({ badgeText: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Featured"
+          placeholder="Destacado"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
           onChange={(e) => onChange({ buttonText: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="e.g. Shop Now"
+          placeholder="p. ej. Comprar ahora"
         />
       </div>
 
       <div className="space-y-2">
         <div className="flex items-center">
           <input type="checkbox" id="fpShowPrice" checked={block.showPrice !== false} onChange={(e) => onChange({ showPrice: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="fpShowPrice" className="ml-2 text-sm text-foreground">Show Price</label>
+          <label htmlFor="fpShowPrice" className="ml-2 text-sm text-foreground">Mostrar precio</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="fpShowBadge" checked={block.showBadge !== false} onChange={(e) => onChange({ showBadge: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="fpShowBadge" className="ml-2 text-sm text-foreground">Show Badge</label>
+          <label htmlFor="fpShowBadge" className="ml-2 text-sm text-foreground">Mostrar insignia</label>
         </div>
       </div>
     </div>
@@ -455,40 +453,40 @@ function ProductCategoriesBlockSettings({ block, onChange }: { block: ProductCat
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Optional section title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Título de sección opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Optional description..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.description || ''} onChange={(html) => onChange({ description: html || undefined })} singleLine placeholder="Descripción opcional..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <select
           value={block.layout || 'grid'}
           onChange={(e) => onChange({ layout: e.target.value as ProductCategoriesBlock['layout'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="grid">Grid</option>
-          <option value="list">List</option>
+          <option value="grid">Cuadrícula</option>
+          <option value="list">Lista</option>
         </select>
       </div>
 
       {block.layout !== 'list' && (
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Columns</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Columnas</label>
           <select
             value={block.columns || 3}
             onChange={(e) => onChange({ columns: parseInt(e.target.value) as ProductCategoriesBlock['columns'] })}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
           >
-            <option value="2">2 Columns</option>
-            <option value="3">3 Columns</option>
-            <option value="4">4 Columns</option>
+            <option value="2">2 columnas</option>
+            <option value="3">3 columnas</option>
+            <option value="4">4 columnas</option>
           </select>
         </div>
       )}
@@ -496,11 +494,11 @@ function ProductCategoriesBlockSettings({ block, onChange }: { block: ProductCat
       <div className="space-y-2">
         <div className="flex items-center">
           <input type="checkbox" id="pcShowCount" checked={block.showProductCount !== false} onChange={(e) => onChange({ showProductCount: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pcShowCount" className="ml-2 text-sm text-foreground">Show Product Count</label>
+          <label htmlFor="pcShowCount" className="ml-2 text-sm text-foreground">Mostrar número de productos</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pcShowImage" checked={block.showImage !== false} onChange={(e) => onChange({ showImage: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pcShowImage" className="ml-2 text-sm text-foreground">Show Image</label>
+          <label htmlFor="pcShowImage" className="ml-2 text-sm text-foreground">Mostrar imagen</label>
         </div>
       </div>
     </div>
@@ -511,43 +509,43 @@ function ShoppingCartBlockSettings({ block, onChange }: { block: ShoppingCartBlo
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Cart Style</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Estilo del carrito</label>
         <select
           value={block.variant || 'full'}
           onChange={(e) => onChange({ variant: e.target.value as ShoppingCartBlock['variant'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="full">Full Cart</option>
-          <option value="mini">Mini Cart</option>
-          <option value="icon-only">Icon Only</option>
+          <option value="full">Carrito completo</option>
+          <option value="mini">Carrito mini</option>
+          <option value="icon-only">Solo icono</option>
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Checkout Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón de pago</label>
         <input
           type="text"
           value={block.checkoutButtonText || ''}
           onChange={(e) => onChange({ checkoutButtonText: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Proceed to Checkout"
+          placeholder="Ir a pagar"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Empty Cart Message</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Mensaje de carrito vacío</label>
         <input
           type="text"
           value={block.emptyCartMessage || ''}
           onChange={(e) => onChange({ emptyCartMessage: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Your cart is empty"
+          placeholder="Tu carrito está vacío"
         />
       </div>
 
       <div className="flex items-center">
         <input type="checkbox" id="scShowSubtotal" checked={block.showSubtotal !== false} onChange={(e) => onChange({ showSubtotal: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-        <label htmlFor="scShowSubtotal" className="ml-2 text-sm text-foreground">Show Subtotal</label>
+        <label htmlFor="scShowSubtotal" className="ml-2 text-sm text-foreground">Mostrar subtotal</label>
       </div>
     </div>
   );
@@ -557,58 +555,58 @@ function ProductDetailBlockSettings({ block, onChange }: { block: ProductDetailB
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Product Slug</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Slug del producto</label>
         <input
           type="text"
           value={block.productSlug || ''}
           onChange={(e) => onChange({ productSlug: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="e.g. dinner-at-the-club"
+          placeholder="p. ej. cena-en-el-club"
         />
-        <p className="text-xs text-muted-foreground mt-1">The URL slug of the product to display</p>
+        <p className="text-xs text-muted-foreground mt-1">El slug de URL del producto a mostrar</p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Diseño</label>
         <select
           value={block.layout || 'standard'}
           onChange={(e) => onChange({ layout: e.target.value as ProductDetailBlock['layout'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="standard">Standard (2 column)</option>
-          <option value="compact">Compact (image small)</option>
-          <option value="wide">Wide (stacked)</option>
+          <option value="standard">Estándar (2 columnas)</option>
+          <option value="compact">Compacto (imagen pequeña)</option>
+          <option value="wide">Ancho (apilado)</option>
         </select>
       </div>
 
       <div className="space-y-2">
         <div className="flex items-center">
           <input type="checkbox" id="pdShowGallery" checked={block.showGallery !== false} onChange={(e) => onChange({ showGallery: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pdShowGallery" className="ml-2 text-sm text-foreground">Show Image Gallery</label>
+          <label htmlFor="pdShowGallery" className="ml-2 text-sm text-foreground">Mostrar galería de imágenes</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pdShowDescription" checked={block.showDescription !== false} onChange={(e) => onChange({ showDescription: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pdShowDescription" className="ml-2 text-sm text-foreground">Show Full Description</label>
+          <label htmlFor="pdShowDescription" className="ml-2 text-sm text-foreground">Mostrar descripción completa</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pdShowVariants" checked={block.showVariants !== false} onChange={(e) => onChange({ showVariants: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pdShowVariants" className="ml-2 text-sm text-foreground">Show Variant Options</label>
+          <label htmlFor="pdShowVariants" className="ml-2 text-sm text-foreground">Mostrar opciones de variante</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pdShowAddToCart" checked={block.showAddToCart !== false} onChange={(e) => onChange({ showAddToCart: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pdShowAddToCart" className="ml-2 text-sm text-foreground">Show Add to Cart</label>
+          <label htmlFor="pdShowAddToCart" className="ml-2 text-sm text-foreground">Mostrar añadir al carrito</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pdShowBulkPricing" checked={block.showBulkPricing !== false} onChange={(e) => onChange({ showBulkPricing: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pdShowBulkPricing" className="ml-2 text-sm text-foreground">Show Bulk Pricing</label>
+          <label htmlFor="pdShowBulkPricing" className="ml-2 text-sm text-foreground">Mostrar precios por volumen</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pdShowBreadcrumb" checked={block.showBreadcrumb !== false} onChange={(e) => onChange({ showBreadcrumb: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pdShowBreadcrumb" className="ml-2 text-sm text-foreground">Show Breadcrumb</label>
+          <label htmlFor="pdShowBreadcrumb" className="ml-2 text-sm text-foreground">Mostrar ruta de navegación</label>
         </div>
         <div className="flex items-center">
           <input type="checkbox" id="pdShowTags" checked={block.showTags !== false} onChange={(e) => onChange({ showTags: e.target.checked })} className="h-4 w-4 rounded border-border text-primary focus:ring-primary" />
-          <label htmlFor="pdShowTags" className="ml-2 text-sm text-foreground">Show Tags & SKU</label>
+          <label htmlFor="pdShowTags" className="ml-2 text-sm text-foreground">Mostrar etiquetas y SKU</label>
         </div>
       </div>
     </div>
@@ -621,67 +619,67 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Banner title..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.title} onChange={(html) => onChange({ title: html })} singleLine placeholder="Título del banner..." className="text-sm text-foreground" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Subtitle</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Subtítulo</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtitle..." className="text-sm text-foreground" />
+          <RichTextEditable html={block.subtitle || ''} onChange={(html) => onChange({ subtitle: html || undefined })} singleLine placeholder="Subtítulo..." className="text-sm text-foreground" />
         </div>
       </div>
       <div className="border-t border-border pt-4 space-y-4">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Discount Code</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Código de descuento</label>
           <input
             type="text"
             value={block.discountCode || ''}
             onChange={(e) => onChange({ discountCode: e.target.value })}
             className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground font-mono"
-            placeholder="e.g. SAVE20"
+            placeholder="p. ej. AHORRA20"
           />
         </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button Text</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Texto del botón</label>
         <input
           type="text"
           value={block.buttonText || ''}
           onChange={(e) => onChange({ buttonText: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="Shop Now"
+          placeholder="Comprar ahora"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Button URL</label>
+        <label className="block text-sm font-medium text-foreground mb-2">URL del botón</label>
         <input
           type="text"
           value={block.buttonUrl || ''}
           onChange={(e) => onChange({ buttonUrl: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
-          placeholder="/shop"
+          placeholder="/tienda"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Background Style</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Estilo de fondo</label>
         <select
           value={block.backgroundStyle || 'gradient'}
           onChange={(e) => onChange({ backgroundStyle: e.target.value as StoreBannerBlock['backgroundStyle'] })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         >
-          <option value="gradient">Gradient</option>
-          <option value="solid">Solid</option>
-          <option value="image">Image</option>
+          <option value="gradient">Degradado</option>
+          <option value="solid">Sólido</option>
+          <option value="image">Imagen</option>
         </select>
       </div>
 
       <div>
         <TokenColorPicker
-          label="Accent Color"
+          label="Color de acento"
           value={block.accentColor || ''}
           onChange={(v) => onChange({ accentColor: v })}
           placeholder="#6366f1"
@@ -690,18 +688,18 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
 
       {block.backgroundStyle === 'image' && (
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">Background Image</label>
+          <label className="block text-sm font-medium text-foreground mb-2">Imagen de fondo</label>
           {block.backgroundImage ? (
             <div className="space-y-2">
-              <img src={block.backgroundImage} alt="Banner background" className="w-full h-24 object-cover rounded border border-border" />
+              <img src={block.backgroundImage} alt="Fondo del banner" className="w-full h-24 object-cover rounded border border-border" />
               <div className="flex gap-2">
-                <button type="button" onClick={() => setShowMediaPicker(true)} className="flex-1 px-3 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90">Change</button>
-                <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Remove</button>
+                <button type="button" onClick={() => setShowMediaPicker(true)} className="flex-1 px-3 py-2 text-sm bg-foreground text-background rounded hover:bg-foreground/90">Cambiar</button>
+                <button type="button" onClick={() => onChange({ backgroundImage: '' })} className="px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">Quitar</button>
               </div>
             </div>
           ) : (
             <button type="button" onClick={() => setShowMediaPicker(true)} className="w-full px-3 py-2 text-sm bg-background border border-border text-foreground rounded hover:bg-accent">
-              Choose Image
+              Elegir imagen
             </button>
           )}
           {showMediaPicker && (
@@ -713,7 +711,7 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
                     onChange({ backgroundImage: url });
                     setShowMediaPicker(false);
                   }}
-                  label="Select Banner Image"
+                  label="Seleccionar imagen del banner"
                 />
               </div>
             </div>
@@ -722,14 +720,14 @@ function StoreBannerBlockSettings({ block, onChange }: { block: StoreBannerBlock
       )}
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-2">Countdown End Date</label>
+        <label className="block text-sm font-medium text-foreground mb-2">Fecha de fin de la cuenta atrás</label>
         <input
           type="datetime-local"
           value={block.countdownDate || ''}
           onChange={(e) => onChange({ countdownDate: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground"
         />
-        <p className="text-xs text-muted-foreground mt-1">Optional: Shows a live countdown timer</p>
+        <p className="text-xs text-muted-foreground mt-1">Opcional: muestra un contador en vivo</p>
       </div>
       </div>
     </div>
@@ -740,13 +738,13 @@ function AccordionBlockSettings({ block, onChange, currentViewport }: { block: A
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Section Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título de la sección</label>
         <div className="rounded border border-border bg-background px-3 py-2 min-h-[36px]">
-          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Frequently Asked Questions" className="text-sm text-foreground" />
+          <RichTextEditable html={block.title || ''} onChange={(html) => onChange({ title: html || undefined })} singleLine placeholder="Preguntas frecuentes" className="text-sm text-foreground" />
         </div>
       </div>
       <div className="border-t border-border pt-4">
-      <p className="text-xs text-muted-foreground">Use the controls in the editor to add, remove, or edit accordion items.</p>
+      <p className="text-xs text-muted-foreground">Usa los controles del editor para añadir, quitar o editar elementos de acordeón.</p>
       </div>
     </div>
   );
@@ -756,10 +754,10 @@ function TabsBlockSettings({ block, onChange }: { block: TabsBlock; onChange: (u
   return (
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">
-        Edit each tab&apos;s contents by selecting it in the canvas and using the inline editor. Add or remove tabs here.
+        Edita el contenido de cada pestaña seleccionándola en el lienzo y usando el editor integrado. Añade o elimina pestañas aquí.
       </p>
       <div className="border-t border-border pt-4 space-y-2">
-        <label className="block text-sm font-medium text-foreground">Tabs</label>
+        <label className="block text-sm font-medium text-foreground">Pestañas</label>
         {(block.tabs || []).map((tab, i) => (
           <div key={tab.id ?? i} className="flex gap-2 items-center">
             <input
@@ -771,13 +769,13 @@ function TabsBlockSettings({ block, onChange }: { block: TabsBlock; onChange: (u
                 onChange({ tabs: next });
               }}
               className="flex-1 text-xs rounded border border-border bg-background px-2 py-1.5 text-foreground"
-              placeholder="Tab label"
+              placeholder="Etiqueta de la pestaña"
             />
             <button
               type="button"
               onClick={() => onChange({ tabs: (block.tabs || []).filter((_, j) => j !== i) })}
               className="px-2 py-1.5 text-xs rounded border border-border text-destructive hover:bg-destructive/10"
-              title="Remove tab"
+              title="Eliminar pestaña"
             >
               <span className="material-icons text-xs">delete</span>
             </button>
@@ -785,10 +783,10 @@ function TabsBlockSettings({ block, onChange }: { block: TabsBlock; onChange: (u
         ))}
         <button
           type="button"
-          onClick={() => onChange({ tabs: [...(block.tabs || []), { id: `tab-${Date.now()}`, label: 'New Tab', blocks: [] }] })}
+          onClick={() => onChange({ tabs: [...(block.tabs || []), { id: `tab-${Date.now()}`, label: 'Nueva pestaña', blocks: [] }] })}
           className="w-full px-3 py-2 text-xs font-medium rounded border border-dashed border-border text-muted-foreground hover:text-foreground hover:bg-accent/50"
         >
-          + Add Tab
+          + Añadir pestaña
         </button>
       </div>
     </div>

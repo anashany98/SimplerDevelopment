@@ -100,7 +100,7 @@ export default function NewDecisionPage() {
         setLoadingInitial(false);
       } catch (err) {
         if (cancelled) return;
-        setLoadError(err instanceof Error ? err.message : 'Network error');
+        setLoadError(err instanceof Error ? err.message : 'Error de red');
         setLoadingInitial(false);
       }
     })();
@@ -146,7 +146,7 @@ export default function NewDecisionPage() {
         const created = (json.data.decision ?? json.data.current) as { id: number };
         const newId = created?.id;
         if (!newId) {
-          setSubmitError('Server response missing decision id');
+          setSubmitError('La respuesta del servidor no incluye el id de la decisión');
           setSubmitting(false);
           return;
         }
@@ -171,7 +171,7 @@ export default function NewDecisionPage() {
 
         router.push(`/portal/brain/decisions/${newId}`);
       } catch (err) {
-        setSubmitError(err instanceof Error ? err.message : 'Network error');
+        setSubmitError(err instanceof Error ? err.message : 'Error de red');
         setSubmitting(false);
       }
     },
@@ -181,8 +181,8 @@ export default function NewDecisionPage() {
   if (isSupersede && loadingInitial) {
     return (
       <div className="max-w-3xl mx-auto py-12 flex items-center justify-center gap-2 text-muted-foreground text-sm">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading predecessor…
+        <span className="material-icons animate-spin mr-2">autorenew</span>
+        Cargando la decisión anterior…
       </div>
     );
   }
@@ -193,7 +193,7 @@ export default function NewDecisionPage() {
         <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load the decision being superseded
+            No se pudo cargar la decisión que se va a reemplazar
           </div>
           <p>{loadError}</p>
         </div>
@@ -209,19 +209,19 @@ export default function NewDecisionPage() {
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4"
         >
           <span className="material-icons text-sm">chevron_left</span>
-          {isSupersede ? 'Back to decision' : 'Decisions'}
+          {isSupersede ? 'Volver a la decisión' : 'Decisiones'}
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">{isSupersede ? 'history' : 'add_circle'}</span>
-              {isSupersede ? 'Supersede decision' : 'Record a decision'}
+              {isSupersede ? 'Reemplazar decisión' : 'Registrar una decisión'}
             </span>
           }
           subtitle={isSupersede
-            ? 'Create a new decision that replaces the previous one. The predecessor will be marked as superseded.'
-            : 'Capture the context, what was decided, why, and what alternatives were considered. Decisions are immutable history — to "change" one later, you supersede it.'}
+            ? 'Crea una nueva decisión que reemplaza la anterior. La predecesora se marcará como reemplazada.'
+            : 'Captura el contexto, qué se decidió, por qué y qué alternativas se consideraron. Las decisiones son un historial inmutable: para "cambiar" una más adelante, la reemplazas.'}
         />
       </div>
 
@@ -229,7 +229,7 @@ export default function NewDecisionPage() {
         mode={isSupersede ? 'supersede' : 'create'}
         initial={initial}
         cancelHref={isSupersede ? `/portal/brain/decisions/${supersedesId}` : '/portal/brain/decisions'}
-        submitLabel={isSupersede ? 'Supersede' : 'Record decision'}
+        submitLabel={isSupersede ? 'Reemplazar' : 'Registrar decisión'}
         onSubmit={handleSubmit}
         submitting={submitting}
         submitError={submitError}

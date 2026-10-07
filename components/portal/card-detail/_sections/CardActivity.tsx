@@ -19,7 +19,7 @@ export function CardActivity({ activities, showActivity, setShowActivity }: Prop
         onClick={() => setShowActivity(v => !v)}
         className="flex items-center justify-between w-full mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider hover:text-foreground"
       >
-        <span>Activity {activities.length > 0 && `(${activities.length})`}</span>
+        <span>Actividad {activities.length > 0 && `(${activities.length})`}</span>
         <span
           className={`material-icons text-sm transition-transform ${showActivity ? 'rotate-90' : ''}`}
         >
@@ -28,7 +28,7 @@ export function CardActivity({ activities, showActivity, setShowActivity }: Prop
       </button>
       {showActivity &&
         (activities.length === 0 ? (
-          <p className="text-xs text-muted-foreground italic">No activity yet.</p>
+          <p className="text-xs text-muted-foreground italic">Aún no hay actividad.</p>
         ) : (
           <ul className="space-y-2">
             {activities.map(a => (
@@ -36,7 +36,7 @@ export function CardActivity({ activities, showActivity, setShowActivity }: Prop
                 <span className="material-icons text-sm text-muted-foreground mt-0.5">history</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-foreground">{formatActivity(a)}</p>
-                  <p className="text-muted-foreground">{new Date(a.createdAt).toLocaleString('en-US')}</p>
+                  <p className="text-muted-foreground">{new Date(a.createdAt).toLocaleString('es-ES')}</p>
                 </div>
               </li>
             ))}

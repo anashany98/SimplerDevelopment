@@ -1,6 +1,6 @@
 # MCP Tools — Bookings, Integrations, Hosting, Billing & AI
 
-These tools cover the operational and platform side of your SimplerDevelopment workspace: creating and managing bookable appointment pages, connecting third-party services, inspecting hosted sites and domains, working with invoices and AI credit balances, browsing AI conversation history, and reviewing or applying staged mutations through the approvals queue.
+These tools cover the operational and platform side of your CRM AGENTS workspace: creating and managing bookable appointment pages, connecting third-party services, inspecting hosted sites and domains, working with invoices and AI credit balances, browsing AI conversation history, and reviewing or applying staged mutations through the approvals queue.
 
 For authentication setup and how to obtain an MCP access token, see [./overview.md](./overview.md).
 

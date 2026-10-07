@@ -97,15 +97,15 @@ function relativeTime(dateStr: string): string {
   const then = new Date(dateStr).getTime();
   const diff = Math.max(0, now - then);
   const seconds = Math.floor(diff / 1000);
-  if (seconds < 60) return 'just now';
+  if (seconds < 60) return 'ahora mismo';
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return `hace ${minutes} min`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days}d ago`;
+  if (days < 30) return `hace ${days} días`;
   const months = Math.floor(days / 30);
-  return `${months}mo ago`;
+  return `hace ${months} meses`;
 }
 
 // --- PM feed helpers ---
@@ -131,7 +131,7 @@ function pmTypeIcon(kind: string): string {
 }
 
 function pmGroupLabel(kind: string): string {
-  return kind === 'billing.usage_alert' ? 'Billing' : 'Projects & Tasks';
+  return kind === 'billing.usage_alert' ? 'Facturación' : 'Proyectos y tareas';
 }
 
 function normalizePm(row: PmRow): UnifiedNotif {
@@ -181,20 +181,20 @@ function crmTypeIcon(type: string): string {
 function crmGroupLabel(entityType: string | null, type: string): string {
   if (entityType) {
     switch (entityType) {
-      case 'contact': return 'Contacts';
-      case 'deal': return 'Deals';
-      case 'company': return 'Companies';
-      case 'proposal': return 'Proposals';
-      case 'mcp_approval': return 'Pending approvals';
-      case 'document': return 'Documents';
+      case 'contact': return 'Contactos';
+      case 'deal': return 'Negocios';
+      case 'company': return 'Empresas';
+      case 'proposal': return 'Propuestas';
+      case 'mcp_approval': return 'Aprobaciones pendientes';
+      case 'document': return 'Documentos';
       default: return entityType.charAt(0).toUpperCase() + entityType.slice(1);
     }
   }
   switch (type) {
-    case 'mention': return 'Mentions';
-    case 'document_comment_mention': return 'Document mentions';
-    case 'mcp_pending_change': return 'Pending approvals';
-    default: return 'Other';
+    case 'mention': return 'Menciones';
+    case 'document_comment_mention': return 'Menciones en documentos';
+    case 'mcp_pending_change': return 'Aprobaciones pendientes';
+    default: return 'Otros';
   }
 }
 
@@ -549,7 +549,7 @@ export default function NotificationBell() {
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="relative p-2 rounded-lg hover:bg-muted transition-colors"
-        aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
+        aria-label={unreadCount > 0 ? `Notificaciones, ${unreadCount} sin leer` : 'Notificaciones'}
         aria-expanded={open}
         aria-haspopup="true"
       >
@@ -573,7 +573,7 @@ export default function NotificationBell() {
         <div className="absolute right-0 top-full mt-2 w-96 max-w-[calc(100vw-2rem)] bg-card border border-border rounded-lg shadow-lg z-50 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-semibold text-foreground">Notifications</span>
+              <span className="text-sm font-semibold text-foreground">Notificaciones</span>
               <button
                 type="button"
                 onClick={() => setFilterUnread((prev) => !prev)}
@@ -584,7 +584,7 @@ export default function NotificationBell() {
                 }`}
                 aria-pressed={filterUnread}
               >
-                {filterUnread ? 'Showing unread' : 'Show unread'}
+                {filterUnread ? 'Mostrando sin leer' : 'Mostrar sin leer'}
               </button>
             </div>
             {unreadCount > 0 && (
@@ -593,7 +593,7 @@ export default function NotificationBell() {
                 disabled={loading}
                 className="text-xs text-primary hover:underline disabled:opacity-50"
               >
-                Mark all read
+                Marcar todas como leídas
               </button>
             )}
           </div>
@@ -604,7 +604,7 @@ export default function NotificationBell() {
                 <span aria-hidden="true" className="material-icons text-[14px] leading-none">
                   desktop_windows
                 </span>
-                Desktop notifications
+                Notificaciones de escritorio
               </span>
               <button
                 type="button"
@@ -614,8 +614,8 @@ export default function NotificationBell() {
                 disabled={desktop.blocked && !desktop.enabled}
                 title={
                   desktop.blocked && !desktop.enabled
-                    ? 'Notifications are blocked for this site in your browser settings.'
-                    : 'Mentions and assignments will pop up on your desktop.'
+                    ? 'Las notificaciones están bloqueadas para este sitio en la configuración de tu navegador.'
+                    : 'Las menciones y las asignaciones aparecerán en tu escritorio.'
                 }
                 className={`text-[11px] px-2 py-0.5 rounded-full border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                   desktop.enabled
@@ -623,20 +623,20 @@ export default function NotificationBell() {
                     : 'border-border text-muted-foreground hover:bg-muted'
                 }`}
               >
-                {desktop.blocked && !desktop.enabled ? 'Blocked' : desktop.enabled ? 'On' : 'Off'}
+                {desktop.blocked && !desktop.enabled ? 'Bloqueadas' : desktop.enabled ? 'Activadas' : 'Desactivadas'}
               </button>
             </div>
           )}
 
           <div className="max-h-96 overflow-y-auto">
             {!listLoaded ? (
-              <div className="px-4 py-10 text-center text-sm text-muted-foreground">Loading…</div>
+              <div className="px-4 py-10 text-center text-sm text-muted-foreground">Cargando…</div>
             ) : notifications.length === 0 ? (
               <div className="px-4 py-10 text-center text-sm text-muted-foreground">
                 <span className="material-icons text-3xl text-muted-foreground/40 mb-2 block">
                   notifications_none
                 </span>
-                {filterUnread ? 'No unread notifications' : 'No notifications yet'}
+                {filterUnread ? 'No hay notificaciones sin leer' : 'Aún no hay notificaciones'}
               </div>
             ) : (
               groups.map((group) => (
@@ -669,7 +669,7 @@ export default function NotificationBell() {
                             {n.title}
                           </span>
                           {!n.read && (
-                            <span className="w-2 h-2 rounded-full bg-primary shrink-0" aria-label="Unread" />
+                            <span className="w-2 h-2 rounded-full bg-primary shrink-0" aria-label="Sin leer" />
                           )}
                         </div>
                         {n.body && (
@@ -679,19 +679,17 @@ export default function NotificationBell() {
                           <span className="text-[11px] text-muted-foreground">{relativeTime(n.createdAt)}</span>
                           {n.url && (
                             <span className="text-[11px] text-primary inline-flex items-center gap-0.5">
-                              <span className="material-icons text-[12px] leading-none">arrow_outward</span>
-                              Open
-                            </span>
+                              <span className="material-icons text-[12px] leading-none">arrow_outward</span>Abierto</span>
                           )}
                           {!n.read && (
                             <button
                               type="button"
                               onClick={(e) => handleMarkReadClick(e, n)}
                               className="text-[11px] text-muted-foreground hover:text-primary inline-flex items-center gap-0.5"
-                              aria-label={`Mark notification "${n.title}" as read`}
+                              aria-label={`Marcar la notificación "${n.title}" como leída`}
                             >
                               <span className="material-icons text-[12px] leading-none">done</span>
-                              Mark read
+                              Marcar como leída
                             </button>
                           )}
                         </div>

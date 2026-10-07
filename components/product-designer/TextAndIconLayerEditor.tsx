@@ -75,7 +75,7 @@ export const TextAndIconLayerEditor = ({ view, layer, handleInputChange }) => {
       {layer.type !== "text" && (
         <>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Name</label>
+            <label className="block text-sm font-medium mb-1">Nombre</label>
             <input
               type="text"
               value={layer.name}
@@ -85,7 +85,7 @@ export const TextAndIconLayerEditor = ({ view, layer, handleInputChange }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Size</label>
+            <label className="block text-sm font-medium mb-1">Tamaño</label>
             <input
               type="number"
               value={layer.size}

@@ -5,7 +5,7 @@
  *
  * Lists brain_decisions for the active tenant with filterable status pills,
  * a reversibility chip, an owner dropdown, a decided-at date range, and a
- * "superseded only" toggle. Rows render via <DecisionCard>. Pagination is
+ * "superseded only" toggle. Rows render via <DecisionCard>. Págination is
  * 25/page with prev/next at the bottom.
  *
  * Filters live in the URL query string (?status=&reversibility=&
@@ -38,11 +38,11 @@ type StatusFilter = 'all' | BrainDecisionStatus;
 type ReversibilityFilter = 'all' | BrainDecisionReversibility;
 
 const STATUS_FILTERS: Array<{ key: StatusFilter; label: string; icon: string }> = [
-  { key: 'all', label: 'All', icon: 'inbox' },
-  { key: 'accepted', label: 'Accepted', icon: 'check_circle' },
-  { key: 'proposed', label: 'Proposed', icon: 'pending' },
-  { key: 'superseded', label: 'Superseded', icon: 'history' },
-  { key: 'rejected', label: 'Rejected', icon: 'cancel' },
+  { key: 'all', label: 'Todos', icon: 'inbox' },
+  { key: 'accepted', label: 'Aceptado', icon: 'check_circle' },
+  { key: 'proposed', label: 'Propuesto', icon: 'pending' },
+  { key: 'superseded', label: 'Sustituido', icon: 'history' },
+  { key: 'rejected', label: 'Rechazado', icon: 'cancel' },
 ];
 
 const PAGE_SIZE = 25;
@@ -164,7 +164,7 @@ export default function DecisionsListPage() {
         setItems(json.data.items);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
       setItems([]);
     } finally {
       setLoading(false);
@@ -188,13 +188,13 @@ export default function DecisionsListPage() {
       {/* Sticky header */}
       <div className="sticky top-0 z-10 -mx-4 px-4 bg-background/95 backdrop-blur border-b border-border">
         <PortalPageHeader
-          eyebrow="Brain"
-          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">gavel</span>Decisions</span>}
-          subtitle="The rationale-bearing log of what your team has decided, why, and when."
+          eyebrow="Cerebro de empresa"
+          title={<span className="flex items-center gap-2"><span className="material-icons text-primary">gavel</span>Decisiones</span>}
+          subtitle="El registro de las decisiones de tu equipo: qué se decidió, por qué y cuándo."
           actions={
             <Link href="/portal/brain/decisions/new" className={pBtnPrimary}>
               <span className="material-icons text-base">add</span>
-              Record decision
+              Registrar decisión
             </Link>
           }
           className="mb-0"
@@ -212,7 +212,7 @@ export default function DecisionsListPage() {
               onClick={() => updateUrl({ status: s.key === 'accepted' ? null : s.key }, { resetPage: true })}
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                 status === s.key
-                  ? 'bg-primary text-primary-foreground border-primary'
+                  ? 'bg-foreground text-background border-primary'
                   : 'bg-muted/30 text-muted-foreground border-border hover:bg-muted hover:text-foreground'
               }`}
             >
@@ -232,24 +232,24 @@ export default function DecisionsListPage() {
                 onClick={() => updateUrl({ reversibility: r === 'all' ? null : r }, { resetPage: true })}
                 className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                   reversibility === r
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-foreground text-background'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                {r === 'all' ? 'All' : r === 'one_way' ? 'One-way' : 'Two-way'}
+                {r === 'all' ? 'Todas' : r === 'one_way' ? 'Irreversible' : 'Reversible'}
               </button>
             ))}
           </div>
 
           <select
-            aria-label="Filter by decision maker"
+            aria-label="Filtrar por responsable de decisión"
             value={decisionMakerId ?? ''}
             onChange={(e) =>
               updateUrl({ decisionMakerId: e.target.value ? parseInt(e.target.value, 10) : null }, { resetPage: true })
             }
             className="px-2 py-1.5 text-xs bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary"
           >
-            <option value="">All decision makers</option>
+            <option value="">Todos los responsables</option>
             {team.map((m) => (
               <option key={m.userId} value={m.userId}>
                 {m.name || m.email}
@@ -258,7 +258,7 @@ export default function DecisionsListPage() {
           </select>
 
           <label className="inline-flex items-center gap-1 text-xs">
-            <span className="text-muted-foreground">From</span>
+            <span className="text-muted-foreground">De</span>
             <input
               type="date"
               value={dateFrom}
@@ -267,7 +267,7 @@ export default function DecisionsListPage() {
             />
           </label>
           <label className="inline-flex items-center gap-1 text-xs">
-            <span className="text-muted-foreground">To</span>
+            <span className="text-muted-foreground">Hasta</span>
             <input
               type="date"
               value={dateTo}
@@ -283,7 +283,7 @@ export default function DecisionsListPage() {
               onChange={(e) => updateUrl({ supersededOnly: e.target.checked ? 'true' : null }, { resetPage: true })}
               className="rounded border-border"
             />
-            Superseded only
+            Solo sustituidas
           </label>
 
           {(dateFrom || dateTo || decisionMakerId || supersededOnly || reversibility !== 'all' || topicId !== null) && (
@@ -305,7 +305,7 @@ export default function DecisionsListPage() {
               className="inline-flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
             >
               <span className="material-icons text-[14px]">clear</span>
-              Clear filters
+              Limpiar filtros
             </button>
           )}
         </div>
@@ -314,14 +314,14 @@ export default function DecisionsListPage() {
       {/* Body */}
       {loading && items === null ? (
         <div className="flex items-center justify-center py-16 text-muted-foreground text-sm">
-          <span className="material-icons animate-spin mr-2">progress_activity</span>
-          Loading decisions…
+          <span className="material-icons animate-spin mr-2">autorenew</span>
+          Cargando decisiones…
         </div>
       ) : error ? (
         <div className="bg-destructive/10 border border-destructive/30 rounded-2xl p-4 text-sm text-destructive">
           <div className="flex items-center gap-2 font-medium mb-1">
             <span className="material-icons text-base">error_outline</span>
-            Couldn&apos;t load decisions
+            No se pudieron cargar las decisiones
           </div>
           <p>{error}</p>
         </div>
@@ -344,7 +344,7 @@ export default function DecisionsListPage() {
             </div>
           ))}
 
-          {/* Pagination */}
+          {/* Págination */}
           <div className="flex items-center justify-between pt-4 text-sm">
             <button
               type="button"
@@ -352,18 +352,14 @@ export default function DecisionsListPage() {
               onClick={() => updateUrl({ page: page > 1 ? page - 1 : null })}
               className={`${pBtnGhost} disabled:opacity-30 disabled:hover:shadow-none disabled:hover:border-border`}
             >
-              <span className="material-icons text-base">chevron_left</span>
-              Previous
-            </button>
-            <span className="text-xs text-muted-foreground">Page {page + 1}</span>
+              <span className="material-icons text-base">chevron_left</span>Anterior</button>
+            <span className="text-xs text-muted-foreground">Página {page + 1}</span>
             <button
               type="button"
               disabled={isLastPage}
               onClick={() => updateUrl({ page: page + 1 })}
               className={`${pBtnGhost} disabled:opacity-30 disabled:hover:shadow-none disabled:hover:border-border`}
-            >
-              Next
-              <span className="material-icons text-base">chevron_right</span>
+            >Siguiente<span className="material-icons text-base">chevron_right</span>
             </button>
           </div>
         </div>
@@ -376,17 +372,17 @@ function EmptyState() {
   return (
     <div className="bg-card border border-border rounded-2xl p-10 text-center">
       <span className="material-icons text-5xl text-primary mb-3 block">psychology_alt</span>
-      <h2 className="text-base font-semibold text-foreground mb-1">No decisions captured yet</h2>
+      <h2 className="text-base font-semibold text-foreground mb-1">Aún no hay decisiones registradas</h2>
       <p className="text-sm text-muted-foreground max-w-md mx-auto mb-5">
-        Record your first decision to start building your team&apos;s decision log. Capture the context,
-        what was decided, why, and what alternatives you considered.
+        Registra tu primera decisión para empezar a construir el registro de decisiones de tu equipo.
+        Captura el contexto, qué se decidió, por qué y qué alternativas consideraste.
       </p>
       <Link
         href="/portal/brain/decisions/new"
         className={pBtnPrimary}
       >
         <span className="material-icons text-base">add</span>
-        Record decision
+        Registrar decisión
       </Link>
     </div>
   );

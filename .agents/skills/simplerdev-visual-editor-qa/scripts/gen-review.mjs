@@ -1,7 +1,7 @@
 // Generate a QA review page. Two modes:
 //   mode=file  → single self-contained HTML, images base64-embedded, "Download JSON" export.
 //   mode=embed → an html-embed BUNDLE dir (index.html + img/) whose form POSTs decisions
-//                straight into a SimplerDevelopment survey via POST /api/surveys/<slug>
+//                straight into a CRM AGENTS survey via POST /api/surveys/<slug>
 //                (public, CORS *, formName required). Zip the dir + posts_upload_html_zip.
 // Surveys can't render images (SurveyFormInline is plain-text), so the images live in this
 // page; the survey is just the response sink.

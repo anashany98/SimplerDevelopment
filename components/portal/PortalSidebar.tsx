@@ -15,7 +15,7 @@ import { getDomainByKey } from '@/lib/billing/domain-catalog';
 type Theme = 'light' | 'dark' | 'system';
 const themeOrder: Theme[] = ['system', 'light', 'dark'];
 const themeIcon: Record<Theme, string> = { light: 'light_mode', dark: 'dark_mode', system: 'brightness_auto' };
-const themeLabel: Record<Theme, string> = { light: 'Light', dark: 'Dark', system: 'System' };
+const themeLabel: Record<Theme, string> = { light: 'Claro', dark: 'Oscuro', system: 'Sistema' };
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
@@ -46,6 +46,8 @@ const EXCLUDED_SERVICES = new Set([
 ]);
 
 function isItemActive(item: { href: string; exact?: boolean; alsoActiveOn?: string }, pathname: string): boolean {
+  // Section labels (groupHeader) carry no href — they are never "active".
+  if (!item.href) return false;
   if (item.exact) return pathname === item.href;
   if (pathname === item.href || pathname.startsWith(item.href + '/')) return true;
   if (item.alsoActiveOn && pathname.startsWith(item.alsoActiveOn)) return true;
@@ -299,9 +301,18 @@ export default function PortalSidebar({
 
   // Renders a nav item link (or parent toggle)
   const renderNavLink = (
-    item: { href: string; label: string; icon: string; exact?: boolean; alsoActiveOn?: string; children?: NavChild[]; locked?: boolean; requiredDomain?: string },
+    item: { href: string; label: string; icon: string; exact?: boolean; alsoActiveOn?: string; children?: NavChild[]; locked?: boolean; requiredDomain?: string; groupHeader?: boolean },
     depth: number,
   ) => {
+    // Non-clickable section label inside an accordion (e.g. Brain's subgroups).
+    if (item.groupHeader) {
+      return (
+        <div className="pl-8 pr-3 pt-3 pb-1 font-mono text-[10px] uppercase tracking-[0.14em] font-semibold text-muted-foreground/60 group-data-[collapsed=true]/sb:lg:hidden">
+          {item.label}
+        </div>
+      );
+    }
+
     const hasChildren = item.children && item.children.length > 0;
     const isLocked = !!item.locked;
     const active = !isLocked && isItemActive(item, pathname);
@@ -361,7 +372,7 @@ export default function PortalSidebar({
           {priceLabel && (
             <span className="text-xs font-semibold text-primary opacity-0 translate-x-2 group-hover/lock:opacity-100 group-hover/lock:translate-x-0 transition-all duration-200 shrink-0 group-data-[collapsed=true]/sb:lg:hidden">
               {priceLabel}
-              <span className="font-normal text-[10px] text-muted-foreground">/mo</span>
+              <span className="font-normal text-[10px] text-muted-foreground">/mes</span>
             </span>
           )}
           <span className="material-icons text-base shrink-0">lock</span>
@@ -403,7 +414,7 @@ export default function PortalSidebar({
         <span className="material-icons text-xl shrink-0">{item.icon}</span>
         <span className="flex-1 truncate group-data-[collapsed=true]/sb:lg:hidden">{item.label}</span>
         {badgeCount > 0 && (
-          <span className="min-w-[20px] h-5 px-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center shrink-0 group-data-[collapsed=true]/sb:lg:hidden">
+          <span className="min-w-[20px] h-5 px-1.5 rounded-full bg-foreground text-background text-[10px] font-bold flex items-center justify-center shrink-0 group-data-[collapsed=true]/sb:lg:hidden">
             {badgeCount > 99 ? '99+' : badgeCount}
           </span>
         )}
@@ -420,7 +431,7 @@ export default function PortalSidebar({
 
     return (
       <li
-        key={`${depth}-${item.href}`}
+        key={`${depth}-${item.href || item.label}`}
         className={item.dividerBefore && depth === 0 ? 'mt-3 pt-3 border-t border-border' : undefined}
       >
         {renderNavLink(item, depth)}
@@ -460,8 +471,8 @@ export default function PortalSidebar({
           <button
             onClick={onCloseMobile}
             className="lg:hidden p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
-            title="Close"
-            aria-label="Close navigation"
+            title="Cerrar"
+            aria-label="Cerrar navegación"
           >
             <span className="material-icons text-lg">close</span>
           </button>
@@ -479,21 +490,21 @@ export default function PortalSidebar({
           <SidebarCreditBadge collapsed={collapsed} onNavigate={onCloseMobile} />
           <button
             onClick={cycleTheme}
-            title={collapsed ? `${themeLabel[theme]} mode` : undefined}
+            title={collapsed ? `Modo ${themeLabel[theme].toLowerCase()}` : undefined}
             className="flex items-center gap-3 w-full px-3 py-2 rounded-md text-[13.5px] text-muted-foreground hover:bg-accent hover:text-foreground transition-colors group-data-[collapsed=true]/sb:lg:justify-center group-data-[collapsed=true]/sb:lg:px-0"
           >
             <span className="material-icons text-xl shrink-0">{themeIcon[theme]}</span>
-            <span className="flex-1 text-left group-data-[collapsed=true]/sb:lg:hidden">{themeLabel[theme]} Mode</span>
+            <span className="flex-1 text-left group-data-[collapsed=true]/sb:lg:hidden">Modo {themeLabel[theme].toLowerCase()}</span>
             <span className="material-icons text-sm opacity-40 group-data-[collapsed=true]/sb:lg:hidden">swap_horiz</span>
           </button>
 
           <button
             onClick={async () => { await fetch('/api/portal/sign-out', { method: 'POST' }); await signOut({ callbackUrl: '/portal/login' }); }}
-            title={collapsed ? 'Sign out' : undefined}
+            title={collapsed ? 'Cerrar sesión' : undefined}
             className="flex items-center gap-3 w-full px-3 py-2 rounded-md text-[13.5px] text-muted-foreground hover:bg-accent hover:text-foreground transition-colors group-data-[collapsed=true]/sb:lg:justify-center group-data-[collapsed=true]/sb:lg:px-0"
           >
             <span className="material-icons text-xl shrink-0">logout</span>
-            <span className="group-data-[collapsed=true]/sb:lg:hidden">Sign Out</span>
+            <span className="group-data-[collapsed=true]/sb:lg:hidden">Cerrar sesión</span>
           </button>
         </div>
       </aside>
@@ -526,7 +537,7 @@ export default function PortalSidebar({
             </div>
             <div className="mb-1.5">
               <span className="text-xl font-bold text-foreground">${Math.round(d.monthlyPriceCents / 100)}</span>
-              <span className="text-xs font-normal text-muted-foreground">/mo</span>
+              <span className="text-xs font-normal text-muted-foreground">/mes</span>
             </div>
             <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{d.tagline}</p>
             {d.features.length > 0 && (
@@ -542,10 +553,10 @@ export default function PortalSidebar({
             <Link
               href={`/portal/settings/billing/plans?highlight=${lockPopover.key}`}
               onClick={() => { setLockPopover(null); onCloseMobile?.(); }}
-              className="flex items-center justify-center gap-1 w-full rounded-md bg-primary text-primary-foreground text-sm font-medium py-2 hover:bg-primary/90 transition-colors"
+              className="flex items-center justify-center gap-1 w-full rounded-md bg-foreground text-background text-sm font-medium py-2 hover:bg-foreground/90 transition-colors"
               style={agencyActiveStyle}
             >
-              Add to plan
+              Añadir al plan
               <span className="material-icons text-sm">arrow_forward</span>
             </Link>
           </div>

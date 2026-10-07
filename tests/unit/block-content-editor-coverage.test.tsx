@@ -156,9 +156,9 @@ describe('BlockContentEditor — popup block', () => {
       id: 'pp1', type: 'popup', order: 0, headline: 'Hello', trigger: 'time-delay',
     });
     // headline RTE
-    expect(container.querySelector('[data-testid="rte-Headline"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Titular"]')).toBeTruthy();
     // body RTE
-    expect(container.querySelector('[data-testid="rte-Body"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Cuerpo"]')).toBeTruthy();
     // delay number field visible when trigger=time-delay
     const numInputs = container.querySelectorAll('input[type="number"]');
     expect(numInputs.length).toBeGreaterThanOrEqual(1);
@@ -302,7 +302,7 @@ describe('BlockContentEditor — text block extra fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 't1', type: 'text', order: 0, content: 'Hello',
     });
-    const rte = container.querySelector('[data-testid="rte-Content"]') as HTMLTextAreaElement;
+    const rte = container.querySelector('[data-testid="rte-Contenido"]') as HTMLTextAreaElement;
     fireEvent.change(rte, { target: { value: 'Updated' } });
     expect(onUpdate).toHaveBeenCalledWith({ content: 'Updated' });
   });
@@ -326,7 +326,7 @@ describe('BlockContentEditor — cta block all fields', () => {
       primaryButtonText: 'Sign Up', primaryButtonUrl: '/signup',
     });
     // description RTE
-    const descRte = container.querySelector('[data-testid="rte-Description"]') as HTMLTextAreaElement;
+    const descRte = container.querySelector('[data-testid="rte-Descripción"]') as HTMLTextAreaElement;
     fireEvent.change(descRte, { target: { value: 'New desc' } });
     expect(onUpdate).toHaveBeenCalledWith({ description: 'New desc' });
 
@@ -444,7 +444,7 @@ describe('BlockContentEditor — featured-content extra fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'fc1', type: 'featured-content', order: 0, description: 'D',
     });
-    const descRte = container.querySelector('[data-testid="rte-Description"]') as HTMLTextAreaElement;
+    const descRte = container.querySelector('[data-testid="rte-Descripción"]') as HTMLTextAreaElement;
     fireEvent.change(descRte, { target: { value: 'New' } });
     expect(onUpdate).toHaveBeenCalledWith({ description: 'New' });
   });
@@ -616,7 +616,7 @@ describe('BlockContentEditor — store-banner extra fields', () => {
       discountCode: 'SAVE10', countdownDate: '2025-12-31',
     });
     // subtitle RTE
-    expect(container.querySelector('[data-testid="rte-Subtitle"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Subtítulo"]')).toBeTruthy();
 
     const discountInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
       (i) => (i as HTMLInputElement).value === 'SAVE10',
@@ -629,7 +629,7 @@ describe('BlockContentEditor — store-banner extra fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sb1', type: 'store-banner', order: 0,
     });
-    const accent = container.querySelector('[data-testid="color-Accent Color"]') as HTMLInputElement;
+    const accent = container.querySelector('[data-testid="color-Color de énfasis"]') as HTMLInputElement;
     fireEvent.change(accent, { target: { value: '#f00' } });
     expect(onUpdate).toHaveBeenCalledWith({ accentColor: '#f00' });
   });
@@ -653,12 +653,12 @@ describe('BlockContentEditor — sticky-scroll-tabs color fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sst1', type: 'sticky-scroll-tabs', order: 0, panels: [],
     });
-    const activeBg = container.querySelector('[data-testid="color-Active Tab Background"]') as HTMLInputElement;
+    const activeBg = container.querySelector('[data-testid="color-Fondo de pestaña activa"]') as HTMLInputElement;
     expect(activeBg).toBeTruthy();
     fireEvent.change(activeBg, { target: { value: '#222' } });
     expect(onUpdate).toHaveBeenCalledWith({ activeTabBackground: '#222' });
 
-    const activeText = container.querySelector('[data-testid="color-Active Tab Text"]') as HTMLInputElement;
+    const activeText = container.querySelector('[data-testid="color-Texto de pestaña activa"]') as HTMLInputElement;
     fireEvent.change(activeText, { target: { value: '#fff' } });
     expect(onUpdate).toHaveBeenCalledWith({ activeTabColor: '#fff' });
   });
@@ -667,11 +667,11 @@ describe('BlockContentEditor — sticky-scroll-tabs color fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sst1', type: 'sticky-scroll-tabs', order: 0, panels: [],
     });
-    const inactiveBg = container.querySelector('[data-testid="color-Inactive Tab Background"]') as HTMLInputElement;
+    const inactiveBg = container.querySelector('[data-testid="color-Fondo de pestaña inactiva"]') as HTMLInputElement;
     fireEvent.change(inactiveBg, { target: { value: '#eee' } });
     expect(onUpdate).toHaveBeenCalledWith({ inactiveTabBackground: '#eee' });
 
-    const inactiveText = container.querySelector('[data-testid="color-Inactive Tab Text"]') as HTMLInputElement;
+    const inactiveText = container.querySelector('[data-testid="color-Texto de pestaña inactiva"]') as HTMLInputElement;
     fireEvent.change(inactiveText, { target: { value: '#333' } });
     expect(onUpdate).toHaveBeenCalledWith({ inactiveTabColor: '#333' });
   });
@@ -680,11 +680,11 @@ describe('BlockContentEditor — sticky-scroll-tabs color fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sst1', type: 'sticky-scroll-tabs', order: 0, panels: [],
     });
-    const mobileActiveBg = container.querySelector('[data-testid="color-Mobile Active Background"]') as HTMLInputElement;
+    const mobileActiveBg = container.querySelector('[data-testid="color-Fondo activo (móvil)"]') as HTMLInputElement;
     fireEvent.change(mobileActiveBg, { target: { value: '#000' } });
     expect(onUpdate).toHaveBeenCalledWith({ mobileActiveTabBackground: '#000' });
 
-    const mobileInactiveText = container.querySelector('[data-testid="color-Mobile Inactive Text"]') as HTMLInputElement;
+    const mobileInactiveText = container.querySelector('[data-testid="color-Texto inactivo (móvil)"]') as HTMLInputElement;
     fireEvent.change(mobileInactiveText, { target: { value: '#aaa' } });
     expect(onUpdate).toHaveBeenCalledWith({ mobileInactiveTabColor: '#aaa' });
   });
@@ -742,7 +742,7 @@ describe('BlockContentEditor — flip-card-grid extra fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'fc1', type: 'flip-card-grid', order: 0, cards: [], overline: 'SUP',
     });
-    const overlineRte = container.querySelector('[data-testid="rte-Overline"]') as HTMLTextAreaElement;
+    const overlineRte = container.querySelector('[data-testid="rte-Antetítulo"]') as HTMLTextAreaElement;
     fireEvent.change(overlineRte, { target: { value: 'NEW' } });
     expect(onUpdate).toHaveBeenCalledWith({ overline: 'NEW' });
   });
@@ -751,7 +751,7 @@ describe('BlockContentEditor — flip-card-grid extra fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'fc1', type: 'flip-card-grid', order: 0, cards: [],
     });
-    const accent = container.querySelector('[data-testid="color-Accent Color"]') as HTMLInputElement;
+    const accent = container.querySelector('[data-testid="color-Color de énfasis"]') as HTMLInputElement;
     fireEvent.change(accent, { target: { value: '#blue' } });
     expect(onUpdate).toHaveBeenCalledWith({ accentColor: '#blue' });
   });
@@ -839,7 +839,7 @@ describe('BlockContentEditor — metric-cards extra fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'm1', type: 'metric-cards', order: 0, metrics: [],
     });
-    const accent = container.querySelector('[data-testid="color-Accent Color"]') as HTMLInputElement;
+    const accent = container.querySelector('[data-testid="color-Color de énfasis"]') as HTMLInputElement;
     expect(accent).toBeTruthy();
     fireEvent.change(accent, { target: { value: '#333' } });
     expect(onUpdate).toHaveBeenCalledWith({ accentColor: '#333' });
@@ -849,9 +849,9 @@ describe('BlockContentEditor — metric-cards extra fields', () => {
     const { container } = renderBlock({
       id: 'm1', type: 'metric-cards', order: 0, metrics: [],
     });
-    expect(container.querySelector('[data-testid="rte-Overline"]')).toBeTruthy();
-    expect(container.querySelector('[data-testid="rte-Title"]')).toBeTruthy();
-    expect(container.querySelector('[data-testid="rte-Description"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Antetítulo"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Título"]')).toBeTruthy();
+    expect(container.querySelector('[data-testid="rte-Descripción"]')).toBeTruthy();
   });
 });
 
@@ -874,7 +874,7 @@ describe('BlockContentEditor — booking styleOverrides fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'bk1', type: 'booking', order: 0, slug: 'x',
     });
-    const textColor = container.querySelector('[data-testid="color-Text Color"]') as HTMLInputElement;
+    const textColor = container.querySelector('[data-testid="color-Color del texto"]') as HTMLInputElement;
     if (textColor) {
       fireEvent.change(textColor, { target: { value: '#fff' } });
       const call = onUpdate.mock.calls.at(-1)![0];
@@ -1011,7 +1011,7 @@ describe('BlockContentEditor — hero-slideshow extra slide fields', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'a', title: 'A' }],
     });
-    const arrowBg = container.querySelector('[data-testid="color-Arrow Background"]') as HTMLInputElement;
+    const arrowBg = container.querySelector('[data-testid="color-Fondo de flecha"]') as HTMLInputElement;
     if (arrowBg) {
       fireEvent.change(arrowBg, { target: { value: 'rgba(0,0,0,0.3)' } });
       expect(onUpdate).toHaveBeenCalledWith({ arrowBackground: 'rgba(0,0,0,0.3)' });
@@ -1029,13 +1029,13 @@ describe('BlockContentEditor — hero-slideshow extra slide fields', () => {
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'a', title: 'A' }],
     });
-    const dotActive = container.querySelector('[data-testid="color-Active Dot"]') as HTMLInputElement;
+    const dotActive = container.querySelector('[data-testid="color-Punto activo"]') as HTMLInputElement;
     if (dotActive) {
       fireEvent.change(dotActive, { target: { value: '#aabbcc' } });
       expect(onUpdate).toHaveBeenCalledWith({ dotActiveColor: '#aabbcc' });
     }
 
-    const progressBar = container.querySelector('[data-testid="color-Progress Bar"]') as HTMLInputElement;
+    const progressBar = container.querySelector('[data-testid="color-Barra de progreso"]') as HTMLInputElement;
     if (progressBar) {
       fireEvent.change(progressBar, { target: { value: '#abc123' } });
       expect(onUpdate).toHaveBeenCalledWith({ progressBarColor: '#abc123' });
@@ -1094,7 +1094,7 @@ describe('BlockContentEditor — hero-slideshow extra slide fields', () => {
     fireEvent.click(numBtns[2]); // switch to slide 3
     // Now remove it
     const rm = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.startsWith('Remove slide'),
+      b.textContent?.startsWith('Eliminar diapositiva'),
     );
     if (rm) {
       fireEvent.click(rm);
@@ -1483,7 +1483,7 @@ describe('BlockContentEditor — survey-results showResponseCount + search', () 
     await waitFor(() => expect((globalThis as any).fetch).toHaveBeenCalled());
     expect(container.textContent).toContain('Bar Chart');
     expect(container.textContent).toContain('Donut Chart');
-    expect(container.textContent).toContain('Ranked List');
+    expect(container.textContent).toContain('Lista clasificada');
   });
 
   it('updates chartType to ranked-list', async () => {
@@ -1493,7 +1493,7 @@ describe('BlockContentEditor — survey-results showResponseCount + search', () 
     });
     await waitFor(() => expect((globalThis as any).fetch).toHaveBeenCalled());
     const listBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Ranked List'),
+      b.textContent?.includes('Lista clasificada'),
     );
     fireEvent.click(listBtn!);
     expect(onUpdate).toHaveBeenCalledWith({ chartType: 'list' });
@@ -1658,7 +1658,7 @@ describe('BlockContentEditor — section fontFamily', () => {
   // to the Style tab's Typography section (StyleSettings.tsx) — see the
   // comment atop LayoutPanel.tsx's section-block branch.
   function openTypography(container: HTMLElement) {
-    const header = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('Typography'));
+    const header = Array.from(container.querySelectorAll('button')).find((b) => b.textContent?.includes('Tipografía'));
     fireEvent.click(header!);
   }
 
@@ -1683,7 +1683,7 @@ describe('BlockContentEditor — section fontFamily', () => {
       <StyleSettings block={block} onChange={onChange} currentViewport="desktop" />,
     );
     openTypography(container);
-    const textColor = container.querySelector('[data-testid="color-Text Color"]') as HTMLInputElement;
+    const textColor = container.querySelector('[data-testid="color-Color del texto"]') as HTMLInputElement;
     fireEvent.change(textColor, { target: { value: '#000' } });
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({ style: expect.objectContaining({ color: '#000' }) }),
@@ -1907,7 +1907,7 @@ describe('BlockContentEditor — youtube block caption', () => {
     const { container, onUpdate } = renderBlock({
       id: 'y1', type: 'youtube', order: 0, url: 'https://youtube.com', caption: 'old',
     });
-    const captionInput = container.querySelector('[data-testid="rte-Caption"]') as HTMLTextAreaElement;
+    const captionInput = container.querySelector('[data-testid="rte-Leyenda"]') as HTMLTextAreaElement;
     expect(captionInput.value).toBe('old');
     fireEvent.change(captionInput, { target: { value: 'new caption' } });
     expect(onUpdate).toHaveBeenCalledWith({ caption: 'new caption' });
@@ -1941,7 +1941,7 @@ describe('BlockContentEditor — quote block author and citation', () => {
     const { container, onUpdate } = renderBlock({
       id: 'q1', type: 'quote', order: 0, content: 'q', author: 'Auth', citation: 'Cite',
     });
-    const authorInput = container.querySelector('[data-testid="rte-Author"]') as HTMLTextAreaElement;
+    const authorInput = container.querySelector('[data-testid="rte-Autor"]') as HTMLTextAreaElement;
     expect(authorInput.value).toBe('Auth');
     fireEvent.change(authorInput, { target: { value: 'New Author' } });
     expect(onUpdate).toHaveBeenCalledWith({ author: 'New Author' });
@@ -1960,7 +1960,7 @@ describe('BlockContentEditor — popup body field', () => {
     const { container, onUpdate } = renderBlock({
       id: 'pp1', type: 'popup', order: 0, trigger: 'page-load', body: 'Some body',
     });
-    const bodyRte = container.querySelector('[data-testid="rte-Body"]') as HTMLTextAreaElement;
+    const bodyRte = container.querySelector('[data-testid="rte-Cuerpo"]') as HTMLTextAreaElement;
     fireEvent.change(bodyRte, { target: { value: '' } });
     const call = onUpdate.mock.calls[0][0];
     expect(call.body).toBeUndefined();
@@ -1974,7 +1974,7 @@ describe('BlockContentEditor — sticky-scroll-tabs rich text fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sst1', type: 'sticky-scroll-tabs', order: 0, panels: [], overline: 'Top',
     });
-    const overline = container.querySelector('[data-testid="rte-Overline"]') as HTMLTextAreaElement;
+    const overline = container.querySelector('[data-testid="rte-Antetítulo"]') as HTMLTextAreaElement;
     fireEvent.change(overline, { target: { value: '' } });
     const call = onUpdate.mock.calls[0][0];
     expect(call.overline).toBeUndefined();
@@ -1984,7 +1984,7 @@ describe('BlockContentEditor — sticky-scroll-tabs rich text fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sst1', type: 'sticky-scroll-tabs', order: 0, panels: [], title: 'Old Title',
     });
-    const title = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const title = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(title, { target: { value: 'New Title' } });
     const call = onUpdate.mock.calls[0][0];
     expect(call.title).toBe('New Title');
@@ -1994,7 +1994,7 @@ describe('BlockContentEditor — sticky-scroll-tabs rich text fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sst1', type: 'sticky-scroll-tabs', order: 0, panels: [],
     });
-    const desc = container.querySelector('[data-testid="rte-Description"]') as HTMLTextAreaElement;
+    const desc = container.querySelector('[data-testid="rte-Descripción"]') as HTMLTextAreaElement;
     fireEvent.change(desc, { target: { value: 'Some desc' } });
     const call = onUpdate.mock.calls[0][0];
     expect(call.description).toBe('Some desc');
@@ -2010,7 +2010,7 @@ describe('BlockContentEditor — sticky-scroll-tabs rich text fields', () => {
     fireEvent.click(addBtn!);
     const call = onUpdate.mock.calls[0][0];
     expect(call.panels).toHaveLength(1);
-    expect(call.panels[0].label).toBe('New Panel');
+    expect(call.panels[0].label).toBe('Nuevo panel');
   });
 
   it('edits panel label', () => {
@@ -2040,7 +2040,7 @@ describe('BlockContentEditor — stats block title field', () => {
     const { container, onUpdate } = renderBlock({
       id: 'st1', type: 'stats', order: 0, stats: [], columns: 3, title: 'Our Stats',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'New Stats Title' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'New Stats Title' });
   });
@@ -2053,11 +2053,11 @@ describe('BlockContentEditor — card-grid rich text fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'cg1', type: 'card-grid', order: 0, cards: [], columns: 3, title: 'Grid Title',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'New Title' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'New Title' });
 
-    const descRte = container.querySelector('[data-testid="rte-Description"]') as HTMLTextAreaElement;
+    const descRte = container.querySelector('[data-testid="rte-Descripción"]') as HTMLTextAreaElement;
     fireEvent.change(descRte, { target: { value: 'New Desc' } });
     expect(onUpdate).toHaveBeenCalledWith({ description: 'New Desc' });
   });
@@ -2070,15 +2070,15 @@ describe('BlockContentEditor — services-grid rich text + color fields', () => 
     const { container, onUpdate } = renderBlock({
       id: 'sg1', type: 'services-grid', order: 0, services: [],
     });
-    const overlineRte = container.querySelector('[data-testid="rte-Overline"]') as HTMLTextAreaElement;
+    const overlineRte = container.querySelector('[data-testid="rte-Antetítulo"]') as HTMLTextAreaElement;
     fireEvent.change(overlineRte, { target: { value: 'SERVICES' } });
     expect(onUpdate).toHaveBeenCalledWith({ overline: 'SERVICES' });
 
-    const descRte = container.querySelector('[data-testid="rte-Description"]') as HTMLTextAreaElement;
+    const descRte = container.querySelector('[data-testid="rte-Descripción"]') as HTMLTextAreaElement;
     fireEvent.change(descRte, { target: { value: 'We do stuff' } });
     expect(onUpdate).toHaveBeenCalledWith({ description: 'We do stuff' });
 
-    const accent = container.querySelector('[data-testid="color-Accent Color"]') as HTMLInputElement;
+    const accent = container.querySelector('[data-testid="color-Color de énfasis"]') as HTMLInputElement;
     if (accent) {
       fireEvent.change(accent, { target: { value: '#ff6600' } });
       expect(onUpdate).toHaveBeenCalledWith({ accentColor: '#ff6600' });
@@ -2095,7 +2095,7 @@ describe('BlockContentEditor — services-grid rich text + color fields', () => 
     fireEvent.click(addBtn!);
     const call = onUpdate.mock.calls[0][0];
     expect(call.services).toHaveLength(1);
-    expect(call.services[0].title).toBe('New service');
+    expect(call.services[0].title).toBe('Nuevo servicio');
   });
 });
 
@@ -2106,7 +2106,7 @@ describe('BlockContentEditor — booking-menu rich text fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'bm1', type: 'booking-menu', order: 0, title: 'Book Now',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'Schedule' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'Schedule' });
   });
@@ -2212,7 +2212,7 @@ describe('BlockContentEditor — hero-slideshow secondary CTA + overlayColor', (
       id: 'hs1', type: 'hero-slideshow', order: 0,
       slides: [{ id: 'a', title: 'A', overlayColor: 'rgba(0,0,0,0.45)' }],
     });
-    const overlayColor = container.querySelector('[data-testid="color-Overlay Color"]') as HTMLInputElement;
+    const overlayColor = container.querySelector('[data-testid="color-Color de superposición"]') as HTMLInputElement;
     if (overlayColor) {
       fireEvent.change(overlayColor, { target: { value: 'rgba(0,0,0,0.7)' } });
       const call = onUpdate.mock.calls[0][0];
@@ -2245,7 +2245,7 @@ describe('BlockContentEditor — accordion title field', () => {
     const { container, onUpdate } = renderBlock({
       id: 'a1', type: 'accordion', order: 0, items: [], title: 'FAQ',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'Questions' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'Questions' });
   });
@@ -2337,7 +2337,7 @@ describe('BlockContentEditor — bento-grid color fields', () => {
     const { container, onUpdate } = renderBlock({
       id: 'bg1', type: 'bento-grid', order: 0, cards: [],
     });
-    const darkBg = container.querySelector('[data-testid="color-Dark BG"]') as HTMLInputElement;
+    const darkBg = container.querySelector('[data-testid="color-Fondo oscuro"]') as HTMLInputElement;
     if (darkBg) {
       fireEvent.change(darkBg, { target: { value: '#111' } });
       expect(onUpdate).toHaveBeenCalledWith({ darkBg: '#111' });
@@ -2630,7 +2630,7 @@ describe('BlockContentEditor — survey block title and description', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sv1', type: 'survey', order: 0, slug: 'x', title: 'Our Survey',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'Updated Survey' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'Updated Survey' });
   });
@@ -2639,7 +2639,7 @@ describe('BlockContentEditor — survey block title and description', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sv1', type: 'survey', order: 0, slug: 'x',
     });
-    const descRte = container.querySelector('[data-testid="rte-Description"]') as HTMLTextAreaElement;
+    const descRte = container.querySelector('[data-testid="rte-Descripción"]') as HTMLTextAreaElement;
     fireEvent.change(descRte, { target: { value: 'Take our survey' } });
     expect(onUpdate).toHaveBeenCalledWith({ description: 'Take our survey' });
   });
@@ -2652,7 +2652,7 @@ describe('BlockContentEditor — booking block title and description', () => {
     const { container, onUpdate } = renderBlock({
       id: 'bk1', type: 'booking', order: 0, slug: 'x', title: 'Book a Call',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'Schedule' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'Schedule' });
   });
@@ -2790,7 +2790,7 @@ describe('BlockContentEditor — bento-grid overline + subtitle', () => {
     const { container, onUpdate } = renderBlock({
       id: 'bg1', type: 'bento-grid', order: 0, cards: [], subtitle: 'Old Sub',
     });
-    const subRte = container.querySelector('[data-testid="rte-Subtitle"]') as HTMLTextAreaElement;
+    const subRte = container.querySelector('[data-testid="rte-Subtítulo"]') as HTMLTextAreaElement;
     if (subRte) {
       fireEvent.change(subRte, { target: { value: 'New Sub' } });
       expect(onUpdate).toHaveBeenCalledWith({ subtitle: 'New Sub' });
@@ -2849,11 +2849,11 @@ describe('BlockContentEditor — team-showcase overline + subtitle RTEs', () => 
       id: 'ts1', type: 'team-showcase', order: 0, members: [],
       title: 'Our Team', subtitle: 'Meet us',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'The Team' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'The Team' });
 
-    const subtitleRte = container.querySelector('[data-testid="rte-Subtitle"]') as HTMLTextAreaElement;
+    const subtitleRte = container.querySelector('[data-testid="rte-Subtítulo"]') as HTMLTextAreaElement;
     fireEvent.change(subtitleRte, { target: { value: 'Get to know us' } });
     expect(onUpdate).toHaveBeenCalledWith({ subtitle: 'Get to know us' });
   });
@@ -2866,7 +2866,7 @@ describe('BlockContentEditor — team-flip-grid title + subtitle RTEs', () => {
     const { container, onUpdate } = renderBlock({
       id: 'tfg1', type: 'team-flip-grid', order: 0, members: [],
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'The Grid' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'The Grid' });
   });
@@ -2920,7 +2920,7 @@ describe('BlockContentEditor — logo-strip overline', () => {
     const { container, onUpdate } = renderBlock({
       id: 'ls1', type: 'logo-strip', order: 0, logos: [], overline: 'Trusted By',
     });
-    const overlineRte = container.querySelector('[data-testid="rte-Overline"]') as HTMLTextAreaElement;
+    const overlineRte = container.querySelector('[data-testid="rte-Antetítulo"]') as HTMLTextAreaElement;
     if (overlineRte) {
       fireEvent.change(overlineRte, { target: { value: 'Partners' } });
       expect(onUpdate).toHaveBeenCalledWith({ overline: 'Partners' });
@@ -2935,7 +2935,7 @@ describe('BlockContentEditor — metric-cards title update', () => {
     const { container, onUpdate } = renderBlock({
       id: 'm1', type: 'metric-cards', order: 0, metrics: [], title: 'Impact',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'Our Impact' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'Our Impact' });
   });
@@ -2948,7 +2948,7 @@ describe('BlockContentEditor — flip-card-grid title update', () => {
     const { container, onUpdate } = renderBlock({
       id: 'fc1', type: 'flip-card-grid', order: 0, cards: [], title: 'Grid',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'New Grid' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'New Grid' });
   });
@@ -2979,7 +2979,7 @@ describe('BlockContentEditor — services-grid title', () => {
     const { container, onUpdate } = renderBlock({
       id: 'sg1', type: 'services-grid', order: 0, services: [], title: 'Services',
     });
-    const titleRte = container.querySelector('[data-testid="rte-Title"]') as HTMLTextAreaElement;
+    const titleRte = container.querySelector('[data-testid="rte-Título"]') as HTMLTextAreaElement;
     fireEvent.change(titleRte, { target: { value: 'What We Offer' } });
     expect(onUpdate).toHaveBeenCalledWith({ title: 'What We Offer' });
   });

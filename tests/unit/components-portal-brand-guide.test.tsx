@@ -121,7 +121,7 @@ describe('BrandGuide', () => {
   describe('toolbar', () => {
     it('renders back link pointing to the correct profile URL', () => {
       render(<BrandGuide {...baseProps} />);
-      const link = screen.getByRole('link', { name: /back to editor/i });
+      const link = screen.getByRole('link', { name: /volver al editor/i });
       expect(link).toHaveAttribute('href', '/portal/branding/profiles/42');
     });
 
@@ -129,29 +129,29 @@ describe('BrandGuide', () => {
       render(<BrandGuide {...baseProps} />);
       // profileName appears in both toolbar and cover dl — use getAllByText
       expect(screen.getAllByText('Acme Brand').length).toBeGreaterThanOrEqual(1);
-      expect(screen.getByText('brand guide')).toBeInTheDocument();
+      expect(screen.getByText('guía de marca')).toBeInTheDocument();
     });
 
     it('renders copy link button initially showing "Copy link"', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByRole('button', { name: /copy link/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /copiar enlace/i })).toBeInTheDocument();
     });
 
     it('calls clipboard.writeText on copy-link click and shows "Copied"', async () => {
       render(<BrandGuide {...baseProps} />);
-      const btn = screen.getByRole('button', { name: /copy link/i });
+      const btn = screen.getByRole('button', { name: /copiar enlace/i });
       await act(async () => {
         fireEvent.click(btn);
       });
       expect(writeTextMock).toHaveBeenCalledWith(window.location.href);
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /copied/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /copiado/i })).toBeInTheDocument();
       });
     });
 
     it('calls window.print on print button click', () => {
       render(<BrandGuide {...baseProps} />);
-      const btn = screen.getByRole('button', { name: /print/i });
+      const btn = screen.getByRole('button', { name: /imprimir/i });
       fireEvent.click(btn);
       expect(printMock).toHaveBeenCalledTimes(1);
     });
@@ -193,17 +193,17 @@ describe('BrandGuide', () => {
     it('renders formatted date when updatedAt is provided', () => {
       render(<BrandGuide {...baseProps} />);
       // "Last updated" label exists
-      expect(screen.getByText('Last updated')).toBeInTheDocument();
+      expect(screen.getByText('Última actualización')).toBeInTheDocument();
     });
 
     it('does not render Last updated when updatedAt is absent', () => {
       render(<BrandGuide {...baseProps} updatedAt={undefined} />);
-      expect(screen.queryByText('Last updated')).not.toBeInTheDocument();
+      expect(screen.queryByText('Última actualización')).not.toBeInTheDocument();
     });
 
     it('renders profile name in cover section dl', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Profile')).toBeInTheDocument();
+      expect(screen.getByText('Perfil')).toBeInTheDocument();
     });
   });
 
@@ -211,15 +211,15 @@ describe('BrandGuide', () => {
     it('renders Primary, Square, Icon logo variants when all URLs set', () => {
       render(<BrandGuide {...baseProps} />);
       // "Primary" appears in logo section, color swatch, and buttons section
-      const allPrimary = screen.getAllByText('Primary');
+      const allPrimary = screen.getAllByText('Principal');
       expect(allPrimary.length).toBeGreaterThanOrEqual(1);
-      expect(screen.getByText('Square')).toBeInTheDocument();
-      expect(screen.getByText('Icon')).toBeInTheDocument();
+      expect(screen.getByText('Cuadrado')).toBeInTheDocument();
+      expect(screen.getByText('Icono')).toBeInTheDocument();
     });
 
     it('renders wordmark when logoText is set', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Wordmark')).toBeInTheDocument();
+      expect(screen.getByText('Logotipo')).toBeInTheDocument();
       expect(screen.getByText('Acme')).toBeInTheDocument();
     });
 
@@ -234,41 +234,41 @@ describe('BrandGuide', () => {
       };
       render(<BrandGuide {...baseProps} branding={brandingNoLogo} />);
       expect(
-        screen.getByText(/No logo assets uploaded yet/i),
+        screen.getByText(/Aún no hay logos subidos/i),
       ).toBeInTheDocument();
     });
 
     it('renders On light / On dark / On primary background swatches when logo URL present', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('On light')).toBeInTheDocument();
-      expect(screen.getByText('On dark')).toBeInTheDocument();
-      expect(screen.getByText('On primary')).toBeInTheDocument();
+      expect(screen.getByText('Sobre claro')).toBeInTheDocument();
+      expect(screen.getByText('Sobre oscuro')).toBeInTheDocument();
+      expect(screen.getByText('Sobre primario')).toBeInTheDocument();
     });
 
     it('omits Square variant when logoSquareUrl is empty', () => {
       const noSquare: ResolvedBranding = { ...baseBranding, logoSquareUrl: '' };
       render(<BrandGuide {...baseProps} branding={noSquare} />);
-      expect(screen.queryByText('Square')).not.toBeInTheDocument();
+      expect(screen.queryByText('Cuadrado')).not.toBeInTheDocument();
     });
   });
 
   describe('ColorsSection', () => {
     it('renders Palette section header', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Colors')).toBeInTheDocument();
+      expect(screen.getByText('Colores')).toBeInTheDocument();
     });
 
     it('renders all color swatches that have hex values', () => {
       render(<BrandGuide {...baseProps} />);
       // Role descriptions are unique — check a couple
-      expect(screen.getByText('Actions, links, emphasis')).toBeInTheDocument();
-      expect(screen.getByText('Body copy')).toBeInTheDocument();
+      expect(screen.getByText('Acciones, enlaces, énfasis')).toBeInTheDocument();
+      expect(screen.getByText('Texto del cuerpo')).toBeInTheDocument();
     });
 
     it('does not render swatches for missing optional colors', () => {
       const noLink: ResolvedBranding = { ...baseBranding, linkColor: undefined };
       render(<BrandGuide {...baseProps} branding={noLink} />);
-      expect(screen.queryByText('Inline hyperlinks')).not.toBeInTheDocument();
+      expect(screen.queryByText('Hipervínculos en línea')).not.toBeInTheDocument();
     });
 
     it('renders hex values in uppercase', () => {
@@ -281,13 +281,13 @@ describe('BrandGuide', () => {
   describe('TypographySection', () => {
     it('renders type system section header', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Type system')).toBeInTheDocument();
+      expect(screen.getByText('Sistema tipográfico')).toBeInTheDocument();
     });
 
     it('renders heading and body font cards', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Heading font')).toBeInTheDocument();
-      expect(screen.getByText('Body font')).toBeInTheDocument();
+      expect(screen.getByText('Fuente de títulos')).toBeInTheDocument();
+      expect(screen.getByText('Fuente del cuerpo')).toBeInTheDocument();
       expect(screen.getByText('Inter')).toBeInTheDocument();
       expect(screen.getByText('Source Sans Pro')).toBeInTheDocument();
     });
@@ -295,12 +295,12 @@ describe('BrandGuide', () => {
     it('shows "System default" when fonts are absent', () => {
       const noFont: ResolvedBranding = { ...baseBranding, headingFont: '', bodyFont: '' };
       render(<BrandGuide {...baseProps} branding={noFont} />);
-      expect(screen.getAllByText('System default')).toHaveLength(2);
+      expect(screen.getAllByText('Predeterminada del sistema')).toHaveLength(2);
     });
 
     it('renders all type scale rows (H1–H6, Body, Quote, Small)', () => {
       render(<BrandGuide {...baseProps} />);
-      ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Body', 'Quote', 'Small'].forEach((label) => {
+      ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Cuerpo', 'Cita', 'Pequeño'].forEach((label) => {
         expect(screen.getByText(label)).toBeInTheDocument();
       });
     });
@@ -318,18 +318,18 @@ describe('BrandGuide', () => {
   describe('ButtonsSection', () => {
     it('renders buttons section with Primary and Outline groups', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Buttons')).toBeInTheDocument();
+      expect(screen.getByText('Botones')).toBeInTheDocument();
       // "Primary" appears in both colors (swatch label) and buttons section label
-      const primaryLabels = screen.getAllByText('Primary');
+      const primaryLabels = screen.getAllByText('Principal');
       expect(primaryLabels.length).toBeGreaterThanOrEqual(2);
-      expect(screen.getByText('Outline')).toBeInTheDocument();
+      expect(screen.getByText('Contorno')).toBeInTheDocument();
     });
 
     it('renders sm, md, lg button variants in each group', () => {
       render(<BrandGuide {...baseProps} />);
-      const smBtns = screen.getAllByText('Small button');
+      const smBtns = screen.getAllByText('Botón pequeño');
       expect(smBtns.length).toBeGreaterThanOrEqual(2); // one primary, one outline
-      const mdBtns = screen.getAllByText('Medium button');
+      const mdBtns = screen.getAllByText('Botón mediano');
       expect(mdBtns.length).toBeGreaterThanOrEqual(2);
     });
   });
@@ -337,7 +337,7 @@ describe('BrandGuide', () => {
   describe('VoiceSection — no messaging', () => {
     it('renders empty voice section with add-messaging prompt', () => {
       render(<BrandGuide {...baseProps} messaging={undefined} />);
-      expect(screen.getByText(/No messaging defined/i)).toBeInTheDocument();
+      expect(screen.getByText(/No hay mensajes definidos/i)).toBeInTheDocument();
     });
   });
 
@@ -374,37 +374,37 @@ describe('BrandGuide', () => {
 
     it('renders copy cards for value prop, elevator pitch, mission, vision', () => {
       render(<BrandGuide {...baseProps} messaging={fullMessaging} />);
-      expect(screen.getByText('Value proposition')).toBeInTheDocument();
+      expect(screen.getByText('Propuesta de valor')).toBeInTheDocument();
       expect(screen.getByText('We save you time')).toBeInTheDocument();
-      expect(screen.getByText('Elevator pitch')).toBeInTheDocument();
+      expect(screen.getByText('Pitch de ascensor')).toBeInTheDocument();
       expect(screen.getByText('Empower builders')).toBeInTheDocument();
     });
 
     it('renders personality, tone, writing style pill cards', () => {
       render(<BrandGuide {...baseProps} messaging={fullMessaging} />);
-      expect(screen.getByText('Personality')).toBeInTheDocument();
+      expect(screen.getByText('Personalidad')).toBeInTheDocument();
       expect(screen.getByText('Bold and energetic')).toBeInTheDocument();
-      expect(screen.getByText('Tone')).toBeInTheDocument();
+      expect(screen.getByText('Tono')).toBeInTheDocument();
       expect(screen.getByText('Direct')).toBeInTheDocument();
     });
 
     it('renders tone axes section', () => {
       render(<BrandGuide {...baseProps} messaging={fullMessaging} />);
-      expect(screen.getByText('Tone axes')).toBeInTheDocument();
-      expect(screen.getByText('Casual')).toBeInTheDocument();
+      expect(screen.getByText('Ejes de tono')).toBeInTheDocument();
+      expect(screen.getByText('Informal')).toBeInTheDocument();
       expect(screen.getByText('Formal')).toBeInTheDocument();
     });
 
     it('renders key differentiators list', () => {
       render(<BrandGuide {...baseProps} messaging={fullMessaging} />);
-      expect(screen.getByText('Key differentiators')).toBeInTheDocument();
+      expect(screen.getByText('Diferenciadores clave')).toBeInTheDocument();
       expect(screen.getByText('Fast')).toBeInTheDocument();
       expect(screen.getByText('Reliable')).toBeInTheDocument();
     });
 
     it('renders voice samples', () => {
       render(<BrandGuide {...baseProps} messaging={fullMessaging} />);
-      expect(screen.getByText('Voice samples')).toBeInTheDocument();
+      expect(screen.getByText('Muestras de voz')).toBeInTheDocument();
       expect(screen.getByText('Homepage hero')).toBeInTheDocument();
       expect(screen.getByText('Build faster today.')).toBeInTheDocument();
       expect(screen.getByText('Email subject')).toBeInTheDocument();
@@ -413,19 +413,19 @@ describe('BrandGuide', () => {
     it('omits tone axes section when no axes have numeric values', () => {
       const noAxes: BrandMessagingContext = { ...fullMessaging, toneAxes: {} };
       render(<BrandGuide {...baseProps} messaging={noAxes} />);
-      expect(screen.queryByText('Tone axes')).not.toBeInTheDocument();
+      expect(screen.queryByText('Ejes de tono')).not.toBeInTheDocument();
     });
 
     it('omits differentiators section when array is empty', () => {
       const noDiff: BrandMessagingContext = { ...fullMessaging, keyDifferentiators: [] };
       render(<BrandGuide {...baseProps} messaging={noDiff} />);
-      expect(screen.queryByText('Key differentiators')).not.toBeInTheDocument();
+      expect(screen.queryByText('Diferenciadores clave')).not.toBeInTheDocument();
     });
 
     it('omits voice samples section when array is empty', () => {
       const noSamples: BrandMessagingContext = { ...fullMessaging, voiceSamples: [] };
       render(<BrandGuide {...baseProps} messaging={noSamples} />);
-      expect(screen.queryByText('Voice samples')).not.toBeInTheDocument();
+      expect(screen.queryByText('Muestras de voz')).not.toBeInTheDocument();
     });
 
     it('omits personality pills when all three fields are absent', () => {
@@ -436,14 +436,14 @@ describe('BrandGuide', () => {
         writingStyle: undefined,
       };
       render(<BrandGuide {...baseProps} messaging={noPills} />);
-      expect(screen.queryByText('Personality')).not.toBeInTheDocument();
+      expect(screen.queryByText('Personalidad')).not.toBeInTheDocument();
     });
   });
 
   describe('ApplicationSection', () => {
     it('renders Example application section and BlockRenderer stub', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText('Example application')).toBeInTheDocument();
+      expect(screen.getByText('Ejemplo de aplicación')).toBeInTheDocument();
       expect(screen.getByTestId('block-renderer')).toBeInTheDocument();
     });
 
@@ -461,12 +461,12 @@ describe('BrandGuide', () => {
       // "Acme Corp" appears in cover h1 and footer — use getAllByText
       expect(screen.getAllByText('Acme Corp').length).toBeGreaterThanOrEqual(1);
       // footer text pattern
-      expect(screen.getByText(/Brand guide for/)).toBeInTheDocument();
+      expect(screen.getByText(/Guía de marca de/)).toBeInTheDocument();
     });
 
     it('shows "this account" when clientName is absent', () => {
       render(<BrandGuide {...baseProps} clientName={undefined} />);
-      expect(screen.getByText('this account')).toBeInTheDocument();
+      expect(screen.getByText('esta cuenta')).toBeInTheDocument();
     });
 
     it('renders profile name in footer', () => {
@@ -477,7 +477,7 @@ describe('BrandGuide', () => {
 
     it('renders generated date in footer', () => {
       render(<BrandGuide {...baseProps} />);
-      expect(screen.getByText(/Generated/)).toBeInTheDocument();
+      expect(screen.getByText(/Generado/)).toBeInTheDocument();
     });
   });
 });

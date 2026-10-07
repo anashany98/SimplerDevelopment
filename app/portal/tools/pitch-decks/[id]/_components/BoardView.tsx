@@ -69,7 +69,7 @@ export function BoardView(props: BoardViewProps) {
       <div className="sticky top-0 z-10 bg-background/80 backdrop-blur border-b border-border px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <span className="material-icons text-muted-foreground shrink-0">grid_view</span>
-          <h2 className="text-sm font-semibold text-foreground">All Slides</h2>
+          <h2 className="text-sm font-semibold text-foreground">Todas las diapositivas</h2>
           <span className="text-xs text-muted-foreground shrink-0">{slides.length} slides</span>
         </div>
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
@@ -80,7 +80,7 @@ export function BoardView(props: BoardViewProps) {
                 key={n}
                 onClick={() => onSetColumns(n)}
                 className={`w-7 h-7 flex items-center justify-center rounded text-xs font-medium transition-colors ${
-                  boardColumns === n ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                  boardColumns === n ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 }`}
                 title={`${n} columns`}
               >
@@ -91,7 +91,7 @@ export function BoardView(props: BoardViewProps) {
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-            title="Close board view"
+            title="Cerrar vista de tablero"
           >
             <span className="material-icons">close</span>
           </button>
@@ -154,9 +154,7 @@ export function BoardView(props: BoardViewProps) {
                 onClick={onAddSlide}
                 className="flex items-center justify-center gap-2 py-4 border-2 border-dashed border-border rounded-xl text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-accent/30 transition-colors"
               >
-                <span className="material-icons text-base">add</span>
-                Add Slide
-              </button>
+                <span className="material-icons text-base">add</span>Agregar diapositiva</button>
               <button
                 onClick={onUploadHtmlSlide}
                 className="flex items-center justify-center gap-2 py-4 border-2 border-dashed border-border rounded-xl text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-accent/30 transition-colors"

@@ -215,12 +215,12 @@ describe('DealDetailDrawer — initial render', () => {
     const { container } = render(<DealDetailDrawer {...defaultProps()} />);
     await flush();
     expect(container.textContent).toContain('Big Deal');
-    expect(container.textContent).toContain('Title');
-    expect(container.textContent).toContain('Value ($)');
-    expect(container.textContent).toContain('Priority');
-    expect(container.textContent).toContain('Status');
-    expect(container.textContent).toContain('Expected Close');
-    expect(container.textContent).toContain('Custom Fields');
+    expect(container.textContent).toContain('Título');
+    expect(container.textContent).toContain('Valor ($');
+    expect(container.textContent).toContain('Prioridad');
+    expect(container.textContent).toContain('Estado');
+    expect(container.textContent).toContain('Cierre previsto');
+    expect(container.textContent).toContain('Campos personalizados');
   });
 
   it('initializes form fields from the deal prop', async () => {
@@ -239,9 +239,9 @@ describe('DealDetailDrawer — initial render', () => {
   it('renders three tabs and starts on Details', async () => {
     const { container } = render(<DealDetailDrawer {...defaultProps()} />);
     await flush();
-    expect(container.textContent).toContain('Details');
-    expect(container.textContent).toContain('Artifacts');
-    expect(container.textContent).toContain('Comments');
+    expect(container.textContent).toContain('Detalles');
+    expect(container.textContent).toContain('Adjuntos');
+    expect(container.textContent).toContain('Comentarios');
   });
 
   it('shows count badges on Artifacts and Comments tabs when data present', async () => {
@@ -280,7 +280,7 @@ describe('DealDetailDrawer — initial render', () => {
     // pass-through field on the payload but has no UI). Assert instead that a
     // null companyId/contactId renders cleanly, showing the "select a company
     // first" placeholder on the (now company-filtered) contact picker.
-    expect(container.textContent).toContain('Select a company first');
+    expect(container.textContent).toContain('Primero selecciona una empresa');
   });
 });
 
@@ -347,7 +347,7 @@ describe('DealDetailDrawer — header actions', () => {
     const { container } = render(<DealDetailDrawer {...props} />);
     await flush();
     const cancel = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Cancel',
+      (b) => b.textContent === 'Cancelar',
     );
     expect(cancel).toBeTruthy();
     fireEvent.click(cancel!);
@@ -408,7 +408,7 @@ describe('DealDetailDrawer — details form editing', () => {
     await act(async () => {
       fireEvent.submit(form);
     });
-    expect(container.textContent).toContain('Failed to save deal');
+    expect(container.textContent).toContain('No se pudo guardar el negocio');
   });
 
   it('changes priority via the select', async () => {
@@ -593,19 +593,19 @@ describe('DealDetailDrawer — inline company creation', () => {
     const { container } = render(<DealDetailDrawer {...defaultProps()} />);
     await flush();
     const toggleBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === '+ New Company',
+      (b) => b.textContent === '+ Nueva empresa',
     );
     expect(toggleBtn).toBeTruthy();
     fireEvent.click(toggleBtn!);
     expect(
-      container.querySelector('input[placeholder="Company name"]'),
+      container.querySelector('input[placeholder="Nombre de la empresa"]'),
     ).toBeTruthy();
     const cancel = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Cancel',
+      (b) => b.textContent === 'Cancelar',
     );
     fireEvent.click(cancel!);
     expect(
-      container.querySelector('input[placeholder="Company name"]'),
+      container.querySelector('input[placeholder="Nombre de la empresa"]'),
     ).toBeNull();
   });
 
@@ -619,11 +619,11 @@ describe('DealDetailDrawer — inline company creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Company',
+        (b) => b.textContent === '+ Nueva empresa',
       )!,
     );
     const input = container.querySelector(
-      'input[placeholder="Company name"]',
+      'input[placeholder="Nombre de la empresa"]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'BrandCo' } });
     const submitBtn = input.parentElement!.querySelector(
@@ -642,11 +642,11 @@ describe('DealDetailDrawer — inline company creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Company',
+        (b) => b.textContent === '+ Nueva empresa',
       )!,
     );
     const input = container.querySelector(
-      'input[placeholder="Company name"]',
+      'input[placeholder="Nombre de la empresa"]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'EnterCo' } });
     await act(async () => {
@@ -660,11 +660,11 @@ describe('DealDetailDrawer — inline company creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Company',
+        (b) => b.textContent === '+ Nueva empresa',
       )!,
     );
     const input = container.querySelector(
-      'input[placeholder="Company name"]',
+      'input[placeholder="Nombre de la empresa"]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: '   ' } });
     const submitBtn = input.parentElement!.querySelector(
@@ -683,11 +683,11 @@ describe('DealDetailDrawer — inline company creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Company',
+        (b) => b.textContent === '+ Nueva empresa',
       )!,
     );
     const input = container.querySelector(
-      'input[placeholder="Company name"]',
+      'input[placeholder="Nombre de la empresa"]',
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'Nope' } });
     const submitBtn = input.parentElement!.querySelector(
@@ -709,29 +709,29 @@ describe('DealDetailDrawer — inline contact creation', () => {
     const { container } = render(<DealDetailDrawer {...defaultProps()} />);
     await flush();
     const toggleBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === '+ New Contact',
+      (b) => b.textContent === '+ Nuevo contacto',
     );
     fireEvent.click(toggleBtn!);
     const first = container.querySelector(
-      'input[placeholder="First name *"]',
+      'input[placeholder="Nombre *"]',
     ) as HTMLInputElement;
     fireEvent.change(first, { target: { value: 'X' } });
     // Cancel
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Cancel',
+      (b) => b.textContent === 'Cancelar',
     );
     fireEvent.click(cancelBtn!);
     expect(
-      container.querySelector('input[placeholder="First name *"]'),
+      container.querySelector('input[placeholder="Nombre *"]'),
     ).toBeNull();
     // Re-open: should be empty
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Contact',
+        (b) => b.textContent === '+ Nuevo contacto',
       )!,
     );
     const reopened = container.querySelector(
-      'input[placeholder="First name *"]',
+      'input[placeholder="Nombre *"]',
     ) as HTMLInputElement;
     expect(reopened.value).toBe('');
   });
@@ -751,24 +751,24 @@ describe('DealDetailDrawer — inline contact creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Contact',
+        (b) => b.textContent === '+ Nuevo contacto',
       )!,
     );
     fireEvent.change(
       container.querySelector(
-        'input[placeholder="First name *"]',
+        'input[placeholder="Nombre *"]',
       ) as HTMLInputElement,
       { target: { value: 'Eve' } },
     );
     fireEvent.change(
       container.querySelector(
-        'input[placeholder="Last name"]',
+        'input[placeholder="Apellido"]',
       ) as HTMLInputElement,
       { target: { value: 'Day' } },
     );
     fireEvent.change(
       container.querySelector(
-        'input[placeholder="Email"]',
+        'input[placeholder="Correo electrónico"]',
       ) as HTMLInputElement,
       { target: { value: 'eve@x.com' } },
     );
@@ -799,12 +799,12 @@ describe('DealDetailDrawer — inline contact creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Contact',
+        (b) => b.textContent === '+ Nuevo contacto',
       )!,
     );
     fireEvent.change(
       container.querySelector(
-        'input[placeholder="First name *"]',
+        'input[placeholder="Nombre *"]',
       ) as HTMLInputElement,
       { target: { value: 'Solo' } },
     );
@@ -831,17 +831,17 @@ describe('DealDetailDrawer — inline contact creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Contact',
+        (b) => b.textContent === '+ Nuevo contacto',
       )!,
     );
     fireEvent.change(
       container.querySelector(
-        'input[placeholder="First name *"]',
+        'input[placeholder="Nombre *"]',
       ) as HTMLInputElement,
       { target: { value: 'Press' } },
     );
     const emailInput = container.querySelector(
-      'input[placeholder="Email"]',
+      'input[placeholder="Correo electrónico"]',
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.keyDown(emailInput, { key: 'Enter' });
@@ -854,7 +854,7 @@ describe('DealDetailDrawer — inline contact creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Contact',
+        (b) => b.textContent === '+ Nuevo contacto',
       )!,
     );
     const submit = Array.from(container.querySelectorAll('button')).find(
@@ -870,12 +870,12 @@ describe('DealDetailDrawer — inline contact creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Contact',
+        (b) => b.textContent === '+ Nuevo contacto',
       )!,
     );
     fireEvent.change(
       container.querySelector(
-        'input[placeholder="First name *"]',
+        'input[placeholder="Nombre *"]',
       ) as HTMLInputElement,
       { target: { value: 'Nope' } },
     );
@@ -893,10 +893,10 @@ describe('DealDetailDrawer — inline contact creation', () => {
     await flush();
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === '+ New Contact',
+        (b) => b.textContent === '+ Nuevo contacto',
       )!,
     );
-    expect(container.textContent).toContain('Will be assigned to');
+    expect(container.textContent).toContain('Se asignará a');
     expect(container.textContent).toContain('Acme Co');
   });
 });
@@ -908,7 +908,7 @@ describe('DealDetailDrawer — inline contact creation', () => {
 describe('DealDetailDrawer — artifacts tab', () => {
   function switchToArtifacts(container: HTMLElement) {
     const tab = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Artifacts') && b.className.includes('flex-1'),
+      (b) => b.textContent?.includes('Adjuntos') && b.className.includes('flex-1'),
     );
     fireEvent.click(tab!);
   }
@@ -917,7 +917,7 @@ describe('DealDetailDrawer — artifacts tab', () => {
     const { container } = render(<DealDetailDrawer {...defaultProps()} />);
     await flush();
     switchToArtifacts(container);
-    expect(container.textContent).toContain('No artifacts linked yet');
+    expect(container.textContent).toContain('Aún no hay adjuntos vinculados');
   });
 
   it('renders linked artifacts with type label and a working open link', async () => {
@@ -946,7 +946,7 @@ describe('DealDetailDrawer — artifacts tab', () => {
     switchToArtifacts(container);
     expect(container.textContent).toContain('Site A');
     expect(container.textContent).toContain('No URL');
-    expect(container.textContent).toContain('Website');
+    expect(container.textContent).toContain('Sitio web');
     // First artifact has an open-in-new icon (a tag); second doesn't
     const links = container.querySelectorAll('a[href="/portal/websites/5"]');
     expect(links.length).toBeGreaterThanOrEqual(1);
@@ -960,7 +960,7 @@ describe('DealDetailDrawer — artifacts tab', () => {
     await flush();
     switchToArtifacts(container);
     const linkBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Link Artifact'),
+      b.textContent?.includes('Vincular adjunto'),
     );
     fireEvent.click(linkBtn!);
     expect(container.textContent).toContain('Pickable');
@@ -981,14 +981,14 @@ describe('DealDetailDrawer — artifacts tab', () => {
     switchToArtifacts(container);
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Link Artifact'),
+        b.textContent?.includes('Vincular adjunto'),
       )!,
     );
     // Both should be visible initially
     expect(container.textContent).toContain('SiteAvail');
     expect(container.textContent).toContain('DeckAvail');
     const websiteChip = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Website' && b.className.includes('px-2'),
+      (b) => b.textContent === 'Sitio web' && b.className.includes('px-2'),
     );
     fireEvent.click(websiteChip!);
     expect(container.textContent).toContain('SiteAvail');
@@ -1004,14 +1004,14 @@ describe('DealDetailDrawer — artifacts tab', () => {
     switchToArtifacts(container);
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Link Artifact'),
+        b.textContent?.includes('Vincular adjunto'),
       )!,
     );
     const surveyChip = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Survey' && b.className.includes('px-2'),
+      (b) => b.textContent === 'Encuesta' && b.className.includes('px-2'),
     );
     fireEvent.click(surveyChip!);
-    expect(container.textContent).toContain('No available artifacts');
+    expect(container.textContent).toContain('No hay adjuntos disponibles');
   });
 
   it('handleAddArtifact picks an option, calls api, and refreshes', async () => {
@@ -1023,7 +1023,7 @@ describe('DealDetailDrawer — artifacts tab', () => {
     switchToArtifacts(container);
     fireEvent.click(
       Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Link Artifact'),
+        b.textContent?.includes('Vincular adjunto'),
       )!,
     );
     const optionBtn = Array.from(container.querySelectorAll('button')).find(
@@ -1062,7 +1062,7 @@ describe('DealDetailDrawer — artifacts tab', () => {
     await flush();
     switchToArtifacts(container);
     const pinBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title') === 'Pin',
+      (b) => b.getAttribute('title') === 'Fijar',
     );
     expect(pinBtn).toBeTruthy();
     await act(async () => {
@@ -1088,7 +1088,7 @@ describe('DealDetailDrawer — artifacts tab', () => {
     switchToArtifacts(container);
     expect(container.textContent).toContain('GoneSoon');
     const removeBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title') === 'Remove',
+      (b) => b.getAttribute('title') === 'Quitar',
     );
     await act(async () => {
       fireEvent.click(removeBtn!);
@@ -1120,7 +1120,7 @@ describe('DealDetailDrawer — artifacts tab', () => {
     ]);
     const { container } = render(<DealDetailDrawer {...defaultProps()} />);
     await flush();
-    expect(container.textContent).toContain('Pinned Artifacts');
+    expect(container.textContent).toContain('Adjuntos fijados');
     expect(container.textContent).toContain('PinnedSite');
     expect(container.textContent).toContain('PinnedNoUrl');
   });
@@ -1134,7 +1134,7 @@ describe('DealDetailDrawer — comments tab', () => {
   function switchToComments(container: HTMLElement) {
     const tab = Array.from(container.querySelectorAll('button')).find(
       (b) =>
-        b.textContent?.includes('Comments') && b.className.includes('flex-1'),
+        b.textContent?.includes('Comentarios') && b.className.includes('flex-1'),
     );
     fireEvent.click(tab!);
   }
@@ -1143,7 +1143,7 @@ describe('DealDetailDrawer — comments tab', () => {
     const { container } = render(<DealDetailDrawer {...defaultProps()} />);
     await flush();
     switchToComments(container);
-    expect(container.textContent).toContain('No comments yet');
+    expect(container.textContent).toContain('Aún no hay comentarios');
   });
 
   it('renders existing comments with author name and timestamps', async () => {
@@ -1184,7 +1184,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     expect(container.textContent).toContain('Hello world');
-    expect(container.textContent).toContain('Unknown');
+    expect(container.textContent).toContain('Desconocido');
     expect(container.textContent).toContain('pic.png');
     expect(container.textContent).toContain('doc.pdf');
   });
@@ -1232,7 +1232,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send'),
+      (b) => b.textContent?.includes('Enviar'),
     ) as HTMLButtonElement;
     expect(sendBtn.disabled).toBe(true);
   });
@@ -1242,11 +1242,11 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'hello there' } });
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send'),
+      (b) => b.textContent?.includes('Enviar'),
     );
     apiMock.fetchComments.mockResolvedValueOnce([
       {
@@ -1272,7 +1272,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'shortcut' } });
     await act(async () => {
@@ -1287,7 +1287,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'ctrl' } });
     await act(async () => {
@@ -1305,11 +1305,11 @@ describe('DealDetailDrawer — comments tab', () => {
     // navigates back — but the error renders on the Details form.
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: 'bad' } });
     const sendBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Send'),
+      (b) => b.textContent?.includes('Enviar'),
     );
     await act(async () => {
       fireEvent.click(sendBtn!);
@@ -1317,10 +1317,10 @@ describe('DealDetailDrawer — comments tab', () => {
     // Switch back to details to see error
     const detailsTab = Array.from(container.querySelectorAll('button')).find(
       (b) =>
-        b.textContent?.includes('Details') && b.className.includes('flex-1'),
+        b.textContent?.includes('Detalles') && b.className.includes('flex-1'),
     );
     fireEvent.click(detailsTab!);
-    expect(container.textContent).toContain('Failed to post comment');
+    expect(container.textContent).toContain('No se pudo publicar el comentario');
   });
 
   it('does nothing when posting an empty body with no files', async () => {
@@ -1328,7 +1328,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     await act(async () => {
       fireEvent.keyDown(textarea, { key: 'Enter', metaKey: true });
@@ -1346,7 +1346,7 @@ describe('DealDetailDrawer — comments tab', () => {
     const file = new File(['hi'], 'note.txt', { type: 'text/plain' });
     fireEvent.change(fileInput, { target: { files: [file] } });
     expect(container.textContent).toContain('note.txt');
-    expect(container.textContent).toContain('1 file');
+    expect(container.textContent).toContain('1 archivo');
     // Remove the file
     const closeBtns = Array.from(container.querySelectorAll('button')).filter(
       (b) => b.innerHTML.includes('close'),
@@ -1370,7 +1370,7 @@ describe('DealDetailDrawer — comments tab', () => {
     const f1 = new File(['a'], 'a.txt', { type: 'text/plain' });
     const f2 = new File(['b'], 'b.txt', { type: 'text/plain' });
     fireEvent.change(fileInput, { target: { files: [f1, f2] } });
-    expect(container.textContent).toContain('2 files');
+    expect(container.textContent).toContain('2 archivos');
   });
 
   it('attach button triggers the hidden file input', async () => {
@@ -1378,7 +1378,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const attachBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Attach'),
+      (b) => b.textContent?.includes('Adjuntar'),
     );
     const fileInput = container.querySelector(
       'input[type="file"]',
@@ -1405,7 +1405,7 @@ describe('DealDetailDrawer — comments tab', () => {
     switchToComments(container);
     expect(container.textContent).toContain('soon-gone');
     const delBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.getAttribute('title') === 'Delete',
+      (b) => b.getAttribute('title') === 'Eliminar',
     );
     await act(async () => {
       fireEvent.click(delBtn!);
@@ -1424,7 +1424,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '@a' } });
     // Simulate cursor at end
@@ -1442,7 +1442,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '@' } });
     (textarea as any).selectionStart = 1;
@@ -1462,7 +1462,7 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '@b' } });
     (textarea as any).selectionStart = 2;
@@ -1483,13 +1483,13 @@ describe('DealDetailDrawer — comments tab', () => {
     await flush();
     switchToComments(container);
     const textarea = container.querySelector(
-      'textarea[placeholder*="@ to mention"]',
+      'textarea[placeholder*="@ para mencionar"]',
     ) as HTMLTextAreaElement;
     fireEvent.change(textarea, { target: { value: '@zzzz' } });
     (textarea as any).selectionStart = 5;
     fireEvent.change(textarea, { target: { value: '@zzzz' } });
     await waitFor(() => {
-      expect(container.textContent).toContain('No matches');
+      expect(container.textContent).toContain('Sin coincidencias');
     });
   });
 });
@@ -1507,12 +1507,12 @@ describe('DealDetailDrawer — tab switching', () => {
     );
     // Click Artifacts
     fireEvent.click(tabs[1]);
-    expect(container.textContent).toContain('Linked Artifacts');
+    expect(container.textContent).toContain('Adjuntos vinculados');
     // Click Comments
     fireEvent.click(tabs[2]);
-    expect(container.textContent).toContain('No comments yet');
+    expect(container.textContent).toContain('Aún no hay comentarios');
     // Back to Details
     fireEvent.click(tabs[0]);
-    expect(container.textContent).toContain('Custom Fields');
+    expect(container.textContent).toContain('Campos personalizados');
   });
 });

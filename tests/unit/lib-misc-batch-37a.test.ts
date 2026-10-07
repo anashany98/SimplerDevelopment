@@ -451,57 +451,57 @@ describe('lib/portal-nav', () => {
     it('returns the consolidated top-level groups without a per-site branch when site is null', () => {
       const items = portalNav.buildPortalNavItems(null, null);
       const labels = items.map((i) => i.label);
-      expect(labels).toContain('Dashboard');
-      expect(labels).toContain('Company Brain');
-      expect(labels).toContain('Projects');
+      expect(labels).toContain('Panel');
+      expect(labels).toContain('Cerebro de empresa');
+      expect(labels).toContain('Proyectos');
       expect(labels).toContain('CRM');
       expect(labels).toContain('Marketing');
-      expect(labels).toContain('Websites');
-      expect(labels).toContain('Settings');
+      expect(labels).toContain('Webs');
+      expect(labels).toContain('Ajustes');
       // Email now lives inside the Marketing group, not at the top level.
       const marketing = items.find((i) => i.label === 'Marketing');
       expect(marketing?.children?.some((c) => c.label === 'Email')).toBe(true);
       // No per-site branch inside Websites when there's no active site.
-      const websites = items.find((i) => i.label === 'Websites');
+      const websites = items.find((i) => i.label === 'Webs');
       expect(websites?.children?.some((c) => c.href.startsWith('/portal/websites/'))).toBe(false);
     });
 
     it('inserts the per-site branch inside Websites when activeSiteId is provided', () => {
       const items = portalNav.buildPortalNavItems('site-7', 'Acme Co');
-      const websites = items.find((i) => i.label === 'Websites');
+      const websites = items.find((i) => i.label === 'Webs');
       const siteNode = websites?.children?.find((c) => c.href === '/portal/websites/site-7');
       expect(siteNode).toBeDefined();
       expect(siteNode?.label).toBe('Acme Co');
-      expect(siteNode?.children?.some((c) => c.label === 'Content')).toBe(true);
-      expect(siteNode?.children?.some((c) => c.label === 'Store')).toBe(true);
-      expect(siteNode?.children?.some((c) => c.label === 'Website Settings')).toBe(true);
+      expect(siteNode?.children?.some((c) => c.label === 'Contenido')).toBe(true);
+      expect(siteNode?.children?.some((c) => c.label === 'Tienda')).toBe(true);
+      expect(siteNode?.children?.some((c) => c.label === 'Ajustes de la web')).toBe(true);
     });
 
     it('falls back to "Current Site" label when activeSiteName is null', () => {
       const items = portalNav.buildPortalNavItems('site-1', null);
-      const websites = items.find((i) => i.label === 'Websites');
+      const websites = items.find((i) => i.label === 'Webs');
       const siteNode = websites?.children?.find((c) => c.href === '/portal/websites/site-1');
       expect(siteNode?.label).toBe('Current Site');
     });
 
     it('store children include products and orders', () => {
       const items = portalNav.buildPortalNavItems('s', 'S');
-      const websites = items.find((i) => i.label === 'Websites');
+      const websites = items.find((i) => i.label === 'Webs');
       const siteNode = websites?.children?.find((c) => c.href === '/portal/websites/s');
-      const store = siteNode?.children?.find((c) => c.label === 'Store');
+      const store = siteNode?.children?.find((c) => c.label === 'Tienda');
       const storeChildrenLabels = store?.children?.map((c) => c.label) ?? [];
       expect(storeChildrenLabels).toEqual(
-        expect.arrayContaining(['Products', 'Orders', 'Categories', 'Discounts', 'Shipping']),
+        expect.arrayContaining(['Productos', 'Pedidos', 'Categorías', 'Descuentos', 'Envíos']),
       );
     });
 
     it('agency branch is always included with its children', () => {
       const items = portalNav.buildPortalNavItems(null, null);
-      const agency = items.find((i) => i.label === 'Agency');
+      const agency = items.find((i) => i.label === 'Agencia');
       expect(agency).toBeDefined();
       const labels = agency?.children?.map((c) => c.label) ?? [];
       expect(labels).toEqual(
-        expect.arrayContaining(['Overview', 'Custom Domain', 'Agency Branding']),
+        expect.arrayContaining(['Resumen', 'Dominio personalizado', 'Marca de la agencia']),
       );
     });
   });
@@ -525,7 +525,7 @@ describe('lib/portal-nav', () => {
       const items = portalNav.buildPortalNavItems(null, null);
       const flat = portalNav.flattenPortalNav(items);
       const tasks = flat.find((t) => t.href === '/portal/brain/tasks');
-      expect(tasks?.breadcrumb).toEqual(['Company Brain']);
+      expect(tasks?.breadcrumb).toEqual(['Cerebro de empresa']);
       const root = flat.find((t) => t.href === '/portal/dashboard');
       expect(root?.breadcrumb).toEqual([]);
     });
@@ -534,9 +534,9 @@ describe('lib/portal-nav', () => {
       const items = portalNav.buildPortalNavItems(null, null);
       const flat = portalNav.flattenPortalNav(items);
       const tasks = flat.find((t) => t.href === '/portal/brain/tasks');
-      expect(tasks?.haystack).toContain('tasks');
+      expect(tasks?.haystack).toContain('tareas');
       expect(tasks?.haystack).toContain('kanban');
-      expect(tasks?.haystack).toContain('company brain');
+      expect(tasks?.haystack).toContain('cerebro de empresa');
     });
 
     it('walks children of per-site branch when present', () => {
@@ -550,7 +550,7 @@ describe('lib/portal-nav', () => {
         (t) => t.href === '/portal/websites/s9/store/products',
       )?.breadcrumb;
       expect(productsBreadcrumb).toContain('Demo');
-      expect(productsBreadcrumb).toContain('Store');
+      expect(productsBreadcrumb).toContain('Tienda');
     });
 
     it('returns empty array on empty input', () => {

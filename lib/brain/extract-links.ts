@@ -134,7 +134,7 @@ async function fetchHtml(url: string): Promise<{ html: string; finalUrl: string 
       headers: {
         // Some sites serve different content (or block) based on UA.
         // Identify as a bot but include a contact hint for sites that care.
-        'User-Agent': 'SimplerDevelopment-LinkPreview/1.0 (+https://simplerdevelopment.com)',
+        'User-Agent': 'CRM-AGENTS-LinkPreview/1.0 (+https://simplerdevelopment.com)',
         'Accept': 'text/html,application/xhtml+xml',
       },
       signal: controller.signal,

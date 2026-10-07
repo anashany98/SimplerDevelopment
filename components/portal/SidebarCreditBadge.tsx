@@ -36,11 +36,11 @@ export default function SidebarCreditBadge({ collapsed = false, onNavigate }: { 
     <Link
       href="/portal/settings/ai"
       onClick={onNavigate}
-      title={collapsed ? `AI Credits: ${formatTokens(data.balance)}` : undefined}
+      title={collapsed ? `Créditos de IA: ${formatTokens(data.balance)}` : undefined}
       className="flex items-center gap-3 w-full px-3 py-2 rounded-md text-[13.5px] text-muted-foreground hover:bg-accent hover:text-foreground transition-colors group-data-[collapsed=true]/sb:lg:justify-center group-data-[collapsed=true]/sb:lg:px-0"
     >
       <span className="material-icons text-xl shrink-0">token</span>
-      <span className="flex-1 text-left group-data-[collapsed=true]/sb:lg:hidden">AI Credits</span>
+      <span className="flex-1 text-left group-data-[collapsed=true]/sb:lg:hidden">Créditos de IA</span>
       <span className="text-xs font-semibold text-foreground group-data-[collapsed=true]/sb:lg:hidden">{formatTokens(data.balance)}</span>
     </Link>
   );

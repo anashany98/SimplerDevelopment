@@ -97,12 +97,12 @@ function ProjectsContent() {
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Projects</h1>
-          <p className="text-muted-foreground text-sm mt-0.5">Manage client projects and Kanban boards across the platform.</p>
+          <h1 className="text-2xl font-bold text-foreground">Proyectos</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">Gestiona proyectos de clientes y tableros Kanban en toda la plataforma.</p>
         </div>
         <button onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
-          <span className="material-icons text-base">add</span>New Project
+          className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors">
+          <span className="material-icons text-base">add</span>Nuevo proyecto
         </button>
       </div>
 
@@ -111,21 +111,21 @@ function ProjectsContent() {
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-green-600">play_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Active</span>
+            <span className="text-xs text-muted-foreground font-medium">Activo</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{activeCount}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-yellow-600">pause_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Paused</span>
+            <span className="text-xs text-muted-foreground font-medium">Pausado</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{pausedCount}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-1">
             <span className="material-icons text-base text-blue-600">check_circle</span>
-            <span className="text-xs text-muted-foreground font-medium">Completed</span>
+            <span className="text-xs text-muted-foreground font-medium">Completado</span>
           </div>
           <p className="text-2xl font-bold text-foreground">{completedCount}</p>
         </div>
@@ -144,7 +144,7 @@ function ProjectsContent() {
           <span className="material-icons text-muted-foreground text-base">search</span>
           <input
             className="bg-transparent text-sm outline-none flex-1 text-foreground placeholder:text-muted-foreground"
-            placeholder="Search projects..."
+            placeholder="Buscar proyectos..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -155,7 +155,7 @@ function ProjectsContent() {
               key={s}
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${
-                statusFilter === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                statusFilter === s ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               {s}
@@ -166,41 +166,41 @@ function ProjectsContent() {
 
       {showForm && (
         <div className="bg-card border border-border rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-foreground mb-4">Create Project</h2>
+          <h2 className="text-lg font-semibold text-foreground mb-4">Crear proyecto</h2>
           <form onSubmit={createProject} className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Project Name <span className="text-destructive">*</span></label>
+              <label className="block text-sm font-medium text-foreground mb-1">Nombre del proyecto <span className="text-destructive">*</span></label>
               <input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Client <span className="text-destructive">*</span></label>
+              <label className="block text-sm font-medium text-foreground mb-1">Cliente<span className="text-destructive">*</span></label>
               <select required value={form.clientId} onChange={e => setForm({ ...form, clientId: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary">
-                <option value="">Select client...</option>
+                <option value="">Selecciona un cliente...</option>
                 {clients.map(c => <option key={c.id} value={c.id}>{c.company ?? c.userName}</option>)}
               </select>
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
               <textarea rows={2} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Start Date</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Fecha de inicio</label>
               <input type="date" value={form.startDate} onChange={e => setForm({ ...form, startDate: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Due Date</label>
+              <label className="block text-sm font-medium text-foreground mb-1">Fecha de vencimiento</label>
               <input type="date" value={form.dueDate} onChange={e => setForm({ ...form, dueDate: e.target.value })}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
             <div className="sm:col-span-2 flex justify-end gap-3">
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancel</button>
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground">Cancelar</button>
               <button type="submit" disabled={saving}
-                className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-                {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Creating...</> : 'Create Project'}
+                className="flex items-center gap-2 px-5 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
+                {saving ? <><span className="material-icons text-base animate-spin">refresh</span>Creando...</> : 'Crear proyecto'}
               </button>
             </div>
           </form>
@@ -214,9 +214,9 @@ function ProjectsContent() {
       ) : filtered.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">view_kanban</span>
-          <h3 className="mt-4 font-semibold text-foreground">No projects found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se encontraron proyectos</h3>
           <p className="mt-2 text-sm text-muted-foreground">
-            {search || statusFilter !== 'all' ? 'Try adjusting your filters.' : 'Create your first project above.'}
+            {search || statusFilter !== 'all' ? 'Prueba a ajustar los filtros.' : 'Crea tu primer proyecto arriba.'}
           </p>
         </div>
       ) : (
@@ -225,14 +225,14 @@ function ProjectsContent() {
             <table className="w-full text-sm">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Project</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Members</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Owner</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Start</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Due</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Proyecto</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Miembros</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Propietario</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Comenzar</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Vence</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -274,7 +274,7 @@ function ProjectsContent() {
                       <td className="px-4 py-3">
                         <Link href={`/portal/projects/${p.id}`} className="flex items-center gap-1 text-xs text-primary hover:underline">
                           <span className="material-icons text-sm">open_in_new</span>
-                          Board
+                          Tablero
                         </Link>
                       </td>
                     </tr>

@@ -1,9 +1,10 @@
 /**
- * Stripe webhook signature verification + dispatch.
+ * Stripe webhook behaviour with payments disabled.
  *
- * The handler uses Stripe's `webhooks.constructEvent` which validates the
- * `stripe-signature` header via HMAC-SHA256. We reconstruct that signature in
- * tests so we can exercise both the happy path and tamper/forgery scenarios.
+ * Payments are removed from Freebuff — the handler acknowledges every event
+ * with a 200 (so Stripe stops retrying) but processes nothing, regardless of
+ * the `stripe-signature` header. The old signature-verification and
+ * invoice-marking flows are gone.
  *
  * No network calls hit Stripe's API during these tests — `constructEvent` is
  * pure HMAC and `new Stripe(key)` is just a client factory. So we don't need
@@ -61,7 +62,10 @@ async function createInvoice(clientId: number): Promise<{ id: number; number: st
 describe('Stripe webhook @billing @security', () => {
   const SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
 
-  it('rejects a request with no stripe-signature header', async () => {
+  // Payments are disabled in Freebuff — the webhook acknowledges every event
+  // (200, so Stripe stops retrying) but processes nothing, regardless of the
+  // signature.
+  it('acknowledges every event without processing (payments disabled)', async () => {
     const route = await import('@/app/api/stripe/webhook/route');
     const body = buildCheckoutCompletedEvent({});
     const res = await callHandler(
@@ -69,41 +73,14 @@ describe('Stripe webhook @billing @security', () => {
       'POST',
       { body, headers: { 'content-type': 'application/json' } },   // no stripe-signature header
     );
-    expect(res.status).not.toBe(200);
+    expect(res.status).toBe(200);
+    const body = res.data as { billingDisabled?: boolean };
+    expect(body.billingDisabled).toBe(true);
   });
 
-  it('rejects a request whose signature was computed against the wrong secret', async () => {
-    const body = buildCheckoutCompletedEvent({});
-    const forgedSig = signStripeEvent('whsec_the_attacker_guess', body);
-
-    const route = await import('@/app/api/stripe/webhook/route');
-    const res = await callHandler(
-      route as unknown as Record<string, unknown>,
-      'POST',
-      { body, headers: { 'stripe-signature': forgedSig, 'content-type': 'application/json' } },
-    );
-    expect(res.status).not.toBe(200);   // constructEvent throws → handler returns non-200
-  });
-
-  it('rejects a request where the body was tampered after signing', async () => {
-    const original = buildCheckoutCompletedEvent({ invoiceId: '999' });
-    const goodSig = signStripeEvent(SECRET, original);
-    // Swap metadata after signing
-    const tampered = original.replace('"invoiceId":"999"', '"invoiceId":"1000"');
-
-    const route = await import('@/app/api/stripe/webhook/route');
-    const res = await callHandler(
-      route as unknown as Record<string, unknown>,
-      'POST',
-      { body: tampered, headers: { 'stripe-signature': goodSig, 'content-type': 'application/json' } },
-    );
-    expect(res.status).not.toBe(200);
-  });
-
-  it('accepts a properly-signed checkout.session.completed and marks the invoice paid', async () => {
-    const ctx = await sessionForNewClientUser('stripe-ok');
+  it('acknowledges signed events but never marks invoices paid', async () => {
+    const ctx = await sessionForNewClientUser('stripe-disabled');
     const invoice = await createInvoice(ctx.client.id);
-
     const body = buildCheckoutCompletedEvent({ invoiceId: String(invoice.id) });
     const sig = signStripeEvent(SECRET, body);
 
@@ -111,44 +88,14 @@ describe('Stripe webhook @billing @security', () => {
     const res = await callHandler(
       route as unknown as Record<string, unknown>,
       'POST',
-      { body: body, headers: { 'stripe-signature': sig, 'content-type': 'application/json' } },
+      { body, headers: { 'stripe-signature': sig, 'content-type': 'application/json' } },
     );
-
     expect(res.status).toBe(200);
 
-    const sql = getTestSql();
-    const [after] = await sql<{ status: string; paid_at: Date | null; stripe_checkout_session_id: string | null }[]>`
-      SELECT status, paid_at, stripe_checkout_session_id FROM ${sql(TEST_SCHEMA)}.invoices WHERE id = ${invoice.id}
-    `;
-    expect(after.status).toBe('paid');
-    expect(after.paid_at).not.toBeNull();
-    expect(after.stripe_checkout_session_id).toBe('cs_test_mock_1');
-  });
-
-  it('accepts a replay of the same checkout.session.completed without re-charging', async () => {
-    const ctx = await sessionForNewClientUser('stripe-replay');
-    const invoice = await createInvoice(ctx.client.id);
-    const body = buildCheckoutCompletedEvent({ invoiceId: String(invoice.id) }, 'cs_test_replay_1');
-    const sig = signStripeEvent(SECRET, body);
-
-    const route = await import('@/app/api/stripe/webhook/route');
-    const res1 = await callHandler(
-      route as unknown as Record<string, unknown>, 'POST',
-      { body: body, headers: { 'stripe-signature': sig, 'content-type': 'application/json' } },
-    );
-    const res2 = await callHandler(
-      route as unknown as Record<string, unknown>, 'POST',
-      { body: body, headers: { 'stripe-signature': sig, 'content-type': 'application/json' } },
-    );
-
-    expect(res1.status).toBe(200);
-    expect(res2.status).toBe(200);
-
-    // Invoice still shows paid once — the second call is idempotent
     const sql = getTestSql();
     const [after] = await sql<{ status: string }[]>`
       SELECT status FROM ${sql(TEST_SCHEMA)}.invoices WHERE id = ${invoice.id}
     `;
-    expect(after.status).toBe('paid');
+    expect(after.status).toBe('sent'); // untouched — no payment processing
   });
 });

@@ -37,7 +37,7 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
     try {
       const r = await fetch(base);
       const j = await r.json();
-      if (!j.success) throw new Error(j.message ?? 'Failed to load sides');
+      if (!j.success) throw new Error(j.message ?? 'No se pudieron cargar las caras de impresión');
       setSides(j.data ?? []);
       setError(null);
     } catch (e) {
@@ -61,7 +61,7 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
       body: JSON.stringify(body),
     });
     const j = await r.json().catch(() => ({}));
-    if (!j.success) { setError(j.message ?? 'Save failed'); void load(); }
+    if (!j.success) { setError(j.message ?? 'No se pudo guardar'); void load(); }
   };
 
   const upload = async (file: File): Promise<string | null> => {
@@ -69,7 +69,7 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
     fd.append('file', file);
     const r = await fetch('/api/portal/media/upload', { method: 'POST', body: fd });
     const j = await r.json().catch(() => ({}));
-    if (!j.success) { setError(j.message ?? 'Upload failed'); return null; }
+    if (!j.success) { setError(j.message ?? 'No se pudo subir el archivo'); return null; }
     return j.data?.url ?? null;
   };
 
@@ -88,7 +88,7 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
         body: JSON.stringify({ side, imageUrl: url, printableX: 0, printableY: 0, order: sides.length }),
       });
       const j = await r.json().catch(() => ({}));
-      if (!j.success) { setError(j.message ?? 'Could not add side'); return; }
+      if (!j.success) { setError(j.message ?? 'No se pudo añadir la cara'); return; }
       await load();
     } finally { setBusy(false); }
   };
@@ -111,7 +111,7 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
     ]);
   };
 
-  if (loading) return <p className="text-sm text-muted-foreground">Loading print surfaces…</p>;
+  if (loading) return <p className="text-sm text-muted-foreground">Cargando caras de impresión…</p>;
 
   return (
     <div className="space-y-4">
@@ -121,7 +121,7 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
 
       {sides.length === 0 && (
         <p className="text-sm text-muted-foreground">
-          No print surfaces yet. Upload a mockup image below — the customer designs on top of it, and the box you drag is the area that actually prints.
+          Aún no hay caras de impresión. Sube una imagen de maqueta abajo: el cliente diseña encima de ella y el recuadro que arrastras es el área que se imprime de verdad.
         </p>
       )}
 
@@ -132,25 +132,25 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
               value={s.side}
               onChange={(e) => patch(s.id, { side: e.target.value })}
               className="w-36 rounded-md border border-border bg-card px-2 py-1 text-sm"
-              aria-label="Side key"
+              aria-label="Clave de la cara"
             />
             <input
               value={s.label ?? ''}
-              placeholder="Label (optional)"
+              placeholder="Etiqueta (opcional)"
               onChange={(e) => patch(s.id, { label: e.target.value })}
               className="w-44 rounded-md border border-border bg-card px-2 py-1 text-sm"
-              aria-label="Side label"
+              aria-label="Etiqueta de la cara"
             />
             <div className="ml-auto flex items-center gap-1">
-              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Move up"
+              <button type="button" onClick={() => swap(i, i - 1)} disabled={i === 0} title="Mover arriba"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_upward</span>
               </button>
-              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === sides.length - 1} title="Move down"
+              <button type="button" onClick={() => swap(i, i + 1)} disabled={i === sides.length - 1} title="Mover abajo"
                 className="rounded-md border border-border p-1 disabled:opacity-30">
                 <span className="material-icons text-base">arrow_downward</span>
               </button>
-              <button type="button" onClick={() => remove(s.id)} title="Remove side"
+              <button type="button" onClick={() => remove(s.id)} title="Quitar cara"
                 className="rounded-md border border-destructive/40 p-1 text-destructive">
                 <span className="material-icons text-base">delete</span>
               </button>
@@ -172,7 +172,7 @@ export function ProductSidesPanel({ siteId, productId, styleId }: { siteId: numb
 
       <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2 text-sm text-muted-foreground hover:bg-muted/30">
         <span className="material-icons text-base">add_photo_alternate</span>
-        {busy ? 'Working…' : 'Add print surface (upload mockup)'}
+        {busy ? 'Procesando…' : 'Añadir cara de impresión (subir maqueta)'}
         <input
           type="file"
           accept="image/*"

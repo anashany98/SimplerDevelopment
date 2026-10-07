@@ -99,16 +99,16 @@ export function SortableBoardCard({
           }`}
           title={
             pendingDelete
-              ? 'Marked for deletion'
+              ? 'Marcada para eliminación'
               : pendingCreate
-                ? 'New slide — not yet published'
+                ? 'Diapositiva nueva — aún no publicada'
                 : 'Unpublished draft changes'
           }
         >
           <span className="material-icons text-xs">
             {pendingDelete ? 'delete_sweep' : pendingCreate ? 'fiber_new' : 'edit_note'}
           </span>
-          {pendingDelete ? 'Pending delete' : pendingCreate ? 'New' : 'Draft'}
+          {pendingDelete ? 'Pendiente de eliminación' : pendingCreate ? 'Nuevo' : 'Draft'}
         </div>
       )}
       <button type="button" onClick={onClick} className={`w-full text-left ${pendingDelete ? 'opacity-60' : ''}`}>

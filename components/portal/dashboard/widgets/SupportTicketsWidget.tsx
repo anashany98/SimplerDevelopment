@@ -3,6 +3,7 @@ import { supportTickets } from '@/lib/db/schema';
 import { eq, and, ne, count, desc } from 'drizzle-orm';
 import Link from 'next/link';
 import { ticketStatusColor } from '@/lib/portal';
+import { ticketStatusLabel } from '@/lib/portal-utils';
 
 export default async function SupportTicketsWidget({
   clientId,
@@ -29,10 +30,10 @@ export default async function SupportTicketsWidget({
     <div>
       <div className="mb-3">
         <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{openCount}</span>
-        <span className="ml-2 text-sm text-muted-foreground">open ticket{openCount !== 1 ? 's' : ''}</span>
+        <span className="ml-2 text-sm text-muted-foreground">ticket abierto{openCount !== 1 ? 's' : ''}</span>
       </div>
       {recent.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No tickets yet.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Todavía no hay tickets.</p>
       ) : (
         <ul className="space-y-2">
           {recent.map((t) => (
@@ -52,7 +53,7 @@ export default async function SupportTicketsWidget({
                 <span
                   className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${ticketStatusColor(t.status)}`}
                 >
-                  {t.status.replace('_', ' ')}
+                  {ticketStatusLabel(t.status)}
                 </span>
               </Link>
             </li>

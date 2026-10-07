@@ -15,7 +15,7 @@ export async function GET(
       .limit(1);
 
     if (!page) {
-      return NextResponse.json({ success: false, message: 'Booking page not found' }, { status: 404 });
+      return NextResponse.json({ success: false, message: 'Página de reservas no encontrada.' }, { status: 404 });
     }
 
     if (!page.enableAddOns) {

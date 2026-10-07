@@ -1,7 +1,7 @@
 /**
  * SD Chat — Media API types
  *
- * Mirrors the response shape returned by the SimplerDevelopment portal at
+ * Mirrors the response shape returned by the CRM AGENTS portal at
  * `GET /api/portal/media` (list + brandingProfiles + pagination) and the
  * `PUT` / `DELETE` variants at `/api/portal/media/[id]`.
  *

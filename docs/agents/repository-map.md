@@ -1,6 +1,6 @@
 # Repository Map
 
-Annotated directory tree for the SimplerDevelopment monorepo (~357k LOC). Written for human developers and AI agents. Use this file to orient yourself before diving into code.
+Annotated directory tree for the CRM AGENTS monorepo (~357k LOC). Written for human developers and AI agents. Use this file to orient yourself before diving into code.
 
 **Siblings:** [project-map.md](./project-map.md) · [architecture-for-agents.md](./architecture-for-agents.md) · [ai-overview.md](./ai-overview.md) · [api-index.md](./api-index.md) · [tool-reference.md](./tool-reference.md) · [glossary.md](./glossary.md) · [/llms.txt](/llms.txt)
 
@@ -213,7 +213,7 @@ lib/
 │   ├── playbooks, goals, initiatives, people, glossary, topics, ...
 │   └── mcp-sdk-adapter.ts ⚠ 5630-line god file — spawn subagent, do NOT read inline
 │
-├── billing/              Stripe billing logic (70% coverage floor)
+├── billing/              Invoice and usage logic plus Stripe integration code; customer charging is disabled (70% coverage floor)
 │   ├── entitlements.ts   Feature-gate entitlement checks
 │   ├── subscription-items.ts Subscription + seat management
 │   ├── usage-rollup.ts   Usage metering aggregation

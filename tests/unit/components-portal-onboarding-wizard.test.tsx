@@ -46,13 +46,17 @@ type StepProps = {
   next?: (patch?: Partial<OnboardingAnswers>) => void;
   back?: () => void;
   finish?: () => Promise<void>;
+  stripeEnabled?: boolean;
 };
 
 function makeStepStub(name: string) {
-  return function StepStub({ next, back, finish }: StepProps) {
+  return function StepStub({ next, back, finish, stripeEnabled }: StepProps) {
     return React.createElement(
       'div',
-      { 'data-testid': `stub-step-${name}` },
+      {
+        'data-testid': `stub-step-${name}`,
+        ...(stripeEnabled === undefined ? {} : { 'data-stripe-enabled': String(stripeEnabled) }),
+      },
       next &&
         React.createElement(
           'button',
@@ -149,6 +153,7 @@ function makeState(step: OnboardingStep = 'welcome', answers: Partial<Onboarding
       company: 'Acme',
       website: 'https://acme.com',
     },
+    showBillingSteps: false,
   };
 }
 
@@ -192,49 +197,63 @@ describe('OnboardingWizard', () => {
   it('shows correct title for welcome step', () => {
     global.fetch = makeFetchMock('welcome');
     render(<OnboardingWizard initialState={makeState('welcome')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Welcome');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Bienvenido');
   });
 
   it('shows correct title for about-you step', () => {
     global.fetch = makeFetchMock('about-you');
     render(<OnboardingWizard initialState={makeState('about-you')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('About you');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Sobre ti');
   });
 
   it('shows correct title for about-company step', () => {
     global.fetch = makeFetchMock('about-company');
     render(<OnboardingWizard initialState={makeState('about-company')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('About your company');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Sobre tu empresa');
+  });
+
+  it('uses activation language and passes self-hosted mode to billing steps', () => {
+    global.fetch = makeFetchMock('payment');
+    render(<OnboardingWizard initialState={makeState('payment')} stripeEnabled={false} />);
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Activa tus herramientas');
+    expect(screen.getByTestId('stub-step-payment').getAttribute('data-stripe-enabled')).toBe('false');
+  });
+
+  it('keeps trial language when Stripe is configured', () => {
+    global.fetch = makeFetchMock('payment');
+    render(<OnboardingWizard initialState={makeState('payment')} stripeEnabled />);
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Empieza tu prueba gratuita');
+    expect(screen.getByTestId('stub-step-payment').getAttribute('data-stripe-enabled')).toBe('true');
   });
 
   it('shows correct title for brand-vibe step', () => {
     global.fetch = makeFetchMock('brand-vibe');
     render(<OnboardingWizard initialState={makeState('brand-vibe')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Your brand vibe');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('El estilo de tu marca');
   });
 
   it('shows correct title for mission step', () => {
     global.fetch = makeFetchMock('mission');
     render(<OnboardingWizard initialState={makeState('mission')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('What do you do?');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('¿A qué te dedicas?');
   });
 
   it('shows correct title for features step', () => {
     global.fetch = makeFetchMock('features');
     render(<OnboardingWizard initialState={makeState('features')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('What brings you here?');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('¿Qué te trae por aquí?');
   });
 
   it('shows correct title for power-up step', () => {
     global.fetch = makeFetchMock('power-up');
     render(<OnboardingWizard initialState={makeState('power-up')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Power up with Claude');
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('Poténciate con Claude');
   });
 
   it("shows correct title for done step", () => {
     global.fetch = makeFetchMock('done');
     render(<OnboardingWizard initialState={makeState('done')} />);
-    expect(screen.getByTestId('onboarding-step-title').textContent).toBe("You're all set!");
+    expect(screen.getByTestId('onboarding-step-title').textContent).toBe('¡Todo listo!');
   });
 
   // ── step index + progress ────────────────────────────────────────────────
@@ -243,21 +262,21 @@ describe('OnboardingWizard', () => {
     global.fetch = makeFetchMock('welcome');
     render(<OnboardingWizard initialState={makeState('welcome')} />);
     const label = screen.getByTestId('onboarding-step-label');
-    expect(label.textContent).toContain('Step 1 of 8');
+    expect(label.textContent).toContain('Paso 1 de 8');
   });
 
   it('shows Step 2 of 8 on about-you', () => {
     global.fetch = makeFetchMock('about-you');
     render(<OnboardingWizard initialState={makeState('about-you')} />);
     const label = screen.getByTestId('onboarding-step-label');
-    expect(label.textContent).toContain('Step 2 of 8');
+    expect(label.textContent).toContain('Paso 2 de 8');
   });
 
   it('shows Step 8 of 8 on done', () => {
     global.fetch = makeFetchMock('done');
     render(<OnboardingWizard initialState={makeState('done')} />);
     const label = screen.getByTestId('onboarding-step-label');
-    expect(label.textContent).toContain('Step 8 of 8');
+    expect(label.textContent).toContain('Paso 8 de 8');
   });
 
   // ── step body: each step renders its stub ────────────────────────────────
@@ -689,12 +708,12 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
     // (The websites inline form's own heading also reads "Name your first
     // site", so anchor on its unique input testid instead of the duplicated text.)
     await waitFor(() => expect(screen.getByTestId('ob-setup-site-name')).toBeTruthy());
-    expect(screen.queryByText('Also activated')).toBeNull();
+    expect(screen.queryByText('También activados')).toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: /Next module/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Siguiente módulo/ }));
 
     // Store never gets its own walk segment — it's grouped onto the summary screen.
-    await waitFor(() => expect(screen.getByText('Also activated')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('También activados')).toBeTruthy());
     expect(screen.getByText('Storefront & Commerce')).toBeTruthy();
     expect(screen.queryByText('Add your first product')).toBeNull();
   });
@@ -705,9 +724,9 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
 
     render(<RealStepModuleSetup {...makeStepProps({ state })} />);
 
-    await waitFor(() => expect(screen.getByText('Surveys enabled')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Encuestas activado')).toBeTruthy());
     expect(
-      screen.getByText('Create your first survey whenever you need it — Surveys is in your sidebar.'),
+      screen.getByText('Crea tu primera encuesta cuando la necesites — Encuestas está en tu barra lateral.'),
     ).toBeTruthy();
     // No pending action rows — check the rows' unique description copy rather
     // than their label, since the segment *header* title also happens to read
@@ -775,9 +794,9 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
     render(<RealStepModuleSetup {...makeStepProps({ state })} />);
 
     // email is now summary-tier — it never gets a walk segment, so the
-    // terminal "Also activated" screen renders immediately (no inline form,
+    // terminal "También activados" screen renders immediately (no inline form,
     // no per-action checklist).
-    await waitFor(() => expect(screen.getByText('Also activated')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('También activados')).toBeTruthy());
     expect(screen.getByText('Email Marketing')).toBeTruthy();
     expect(screen.queryByText('Verify your sender address')).toBeNull();
     expect(screen.queryByTestId('ob-setup-brain-note-title')).toBeNull();
@@ -789,15 +808,15 @@ describe('StepModuleSetup (real component, OBQA-028 wizard tiers)', () => {
     // Single walk-tier module — the only segment is also the last one.
     const singleState = makeState('module-setup', { selectedModules: ['websites'] });
     const { unmount } = render(<RealStepModuleSetup {...makeStepProps({ state: singleState })} />);
-    await waitFor(() => expect(screen.getByRole('button', { name: /Continue/ })).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole('button', { name: /Continuar/ })).toBeTruthy());
     unmount();
 
     // Multi-module case: the grouped summary screen is the terminal segment too.
     const groupedState = makeState('module-setup', { selectedModules: ['websites', 'store'] });
     render(<RealStepModuleSetup {...makeStepProps({ state: groupedState })} />);
-    await waitFor(() => expect(screen.getByRole('button', { name: /Next module/ })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: /Next module/ }));
-    await waitFor(() => expect(screen.getByText('Also activated')).toBeTruthy());
-    expect(screen.getByRole('button', { name: /Continue/ })).toBeTruthy();
+    await waitFor(() => expect(screen.getByRole('button', { name: /Siguiente módulo/ })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Siguiente módulo/ }));
+    await waitFor(() => expect(screen.getByText('También activados')).toBeTruthy());
+    expect(screen.getByRole('button', { name: /Continuar/ })).toBeTruthy();
   });
 });

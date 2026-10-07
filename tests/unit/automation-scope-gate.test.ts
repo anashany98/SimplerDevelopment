@@ -94,10 +94,6 @@ vi.mock('@/lib/audit/agent-action-log', () => ({
   hashParams: (input: unknown) => JSON.stringify(input).slice(0, 8),
 }));
 
-// ─── Event-bus mock (no-op — we drive runRule directly) ────────────────────
-
-vi.mock('./event-bus', () => ({ onEvent: vi.fn() }));
-
 const mockStartRun = vi.fn().mockResolvedValue({ runId: 1 });
 vi.mock('@/lib/brain/playbook-runs', () => ({
   startRun: (...args: unknown[]) => mockStartRun(...args),

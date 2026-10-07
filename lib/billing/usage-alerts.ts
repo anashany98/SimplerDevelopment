@@ -81,8 +81,8 @@ function currentPeriod(): string {
  *   1. Active meteredSubscriptionItems.includedQuantity for this resource (overrides catalog).
  *   2. Otherwise: bundleIncludedPerMonth if hasBundle, else includedPerMonth.
  *
- * For agency clients (gatingBypassed): only include meters that have at least
- * one usageMeterEvent row for the current period (don't alert on empty meters).
+ * For all-access clients (gatingBypassed): only include meters that have at
+ * least one usageMeterEvent row for the current period (don't alert on empty meters).
  *
  * ai_tokens: uses getMonthlyUsage() for `used` and sum of active
  * services.includedAiCredits for `included`.
@@ -332,7 +332,7 @@ function alertBody(alert: PendingAlert, clientEmail: string): string {
 ${alert.level === 'exceeded'
   ? `<p>Additional usage is being billed at the overage rate. Visit your billing page to review charges or upgrade your plan.</p>`
   : alert.level === 'hard_limit'
-    ? `<p>Usage has been stopped at your configured hard limit. Contact support or adjust your limit to resume.</p>`
+    ? `<p>Your configured usage alert threshold has been reached. This alert does not block further usage; additional activity may incur charges under your plan.</p>`
     : `<p>You can upgrade or purchase additional capacity from your billing page.</p>`
 }
 <p><a href="${billingUrl}" style="color:#6366f1;">View billing &amp; plans →</a></p>
@@ -464,7 +464,7 @@ export async function runUsageAlerts(): Promise<UsageAlertsResult> {
         if (alert.notifyEmail && ownerEmail) {
           try {
             await sendEmail({
-              from: `SimplerDevelopment <${process.env.BILLING_EMAIL || 'billing@simplerdevelopment.com'}>`,
+              from: `CRM AGENTS <${process.env.BILLING_EMAIL || 'billing@simplerdevelopment.com'}>`,
               to: ownerEmail,
               subject: alertSubject(alert),
               html: alertBody(alert, ownerEmail),

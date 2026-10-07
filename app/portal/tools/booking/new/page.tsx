@@ -7,12 +7,12 @@ import { PortalPageHeader } from '@/components/portal/PortalPageHeader';
 import { pBtnPrimary, pCardPad, pInput, pSelect } from '@/components/portal/portal-ui';
 
 const durationOptions = [
-  { value: 15, label: '15 minutes' },
-  { value: 30, label: '30 minutes' },
-  { value: 45, label: '45 minutes' },
-  { value: 60, label: '60 minutes' },
-  { value: 90, label: '90 minutes' },
-  { value: 120, label: '120 minutes' },
+  { value: 15, label: '15 minutos' },
+  { value: 30, label: '30 minutos' },
+  { value: 45, label: '45 minutos' },
+  { value: 60, label: '60 minutos' },
+  { value: 90, label: '90 minutos' },
+  { value: 120, label: '120 minutos' },
 ];
 
 export default function NewBookingPage() {
@@ -47,14 +47,14 @@ export default function NewBookingPage() {
       const data = await res.json();
 
       if (!data.success) {
-        setError(data.message || 'Failed to create booking page');
+        setError(data.message || 'No se pudo crear la página de reservas');
         setLoading(false);
         return;
       }
 
       router.push(`/portal/tools/booking/${data.data.id}`);
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       setLoading(false);
     }
   }
@@ -65,13 +65,11 @@ export default function NewBookingPage() {
         href="/portal/tools/booking"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
       >
-        <span className="material-icons text-lg">arrow_back</span>
-        Back to Booking Pages
-      </Link>
+        <span className="material-icons text-lg">arrow_back</span>Volver a las páginas de reservas</Link>
       <PortalPageHeader
-        eyebrow="Booking"
-        title="Create Booking Page"
-        subtitle="Set up a new scheduling page for clients to book time with you"
+        eyebrow="Reservas"
+        title="Crear página de reservas"
+        subtitle="Configura una nueva página de agenda para que tus clientes reserven tiempo contigo"
       />
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -84,12 +82,12 @@ export default function NewBookingPage() {
 
         <div className={`${pCardPad} space-y-4`}>
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Title</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Título</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. 30-Minute Consultation"
+              placeholder="p. ej., Consulta de 30 minutos"
               className={pInput}
               required
               disabled={loading}
@@ -97,14 +95,12 @@ export default function NewBookingPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">
-              Description
-              <span className="font-normal text-muted-foreground ml-1">(optional)</span>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Descripción<span className="font-normal text-muted-foreground ml-1">(opcional)</span>
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Brief description shown to people booking with you"
+              placeholder="Descripción breve que verán las personas que reserven contigo"
               rows={3}
               className={`${pInput} resize-none`}
               disabled={loading}
@@ -112,7 +108,7 @@ export default function NewBookingPage() {
           </div>
 
           <div>
-            <label htmlFor="booking-duration" className="block text-sm font-medium text-foreground mb-1.5">Duration</label>
+            <label htmlFor="booking-duration" className="block text-sm font-medium text-foreground mb-1.5">Duración</label>
             <select
               id="booking-duration"
               value={duration}
@@ -129,7 +125,7 @@ export default function NewBookingPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Timezone</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">Zona horaria</label>
             <input
               type="text"
               value={timezone}
@@ -139,7 +135,7 @@ export default function NewBookingPage() {
               disabled={loading}
             />
             <p className="text-xs text-muted-foreground mt-1">
-              IANA timezone identifier (e.g. America/Chicago, Europe/London)
+              Identificador de zona horaria IANA (p. ej. America/Chicago, Europe/London)
             </p>
           </div>
         </div>
@@ -152,13 +148,11 @@ export default function NewBookingPage() {
           {loading ? (
             <>
               <span className="material-icons animate-spin text-lg">autorenew</span>
-              Creating...
+              Creando...
             </>
           ) : (
             <>
-              <span className="material-icons text-lg">add_circle</span>
-              Create Booking Page
-            </>
+              <span className="material-icons text-lg">add_circle</span>Crear página de reservas</>
           )}
         </button>
       </form>

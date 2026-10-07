@@ -49,13 +49,13 @@ export function SlideSettingsPanel({ slide, theme, onChange }: SlideSettingsPane
             <button
               onClick={() => removePageSettingKey('backgroundColor')}
               className="text-xs text-muted-foreground hover:text-foreground"
-              title="Reset to theme default"
+              title="Restablecer al valor predeterminado del tema"
             >
               <span className="material-icons text-sm">restart_alt</span>
             </button>
           )}
         </div>
-        <p className="text-[10px] text-muted-foreground mt-1">Overrides the deck theme for this slide</p>
+        <p className="text-[10px] text-muted-foreground mt-1">Anula el tema de la presentación para esta diapositiva</p>
       </div>
 
       {/* Background Image */}
@@ -75,7 +75,7 @@ export function SlideSettingsPanel({ slide, theme, onChange }: SlideSettingsPane
         <>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Size</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Tamaño</label>
               <select
                 value={['cover', 'contain', 'auto'].includes(slide.pageSettings?.backgroundSize || 'cover') ? (slide.pageSettings?.backgroundSize || 'cover') : 'custom'}
                 onChange={(e) => {
@@ -88,51 +88,51 @@ export function SlideSettingsPanel({ slide, theme, onChange }: SlideSettingsPane
                 }}
                 className="w-full px-2 py-1.5 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="cover">Cover</option>
-                <option value="contain">Contain</option>
-                <option value="auto">Auto</option>
-                <option value="custom">Custom</option>
+                <option value="cover">Cubrir</option>
+                <option value="contain">Contener</option>
+                <option value="auto">Automático</option>
+                <option value="custom">Personalizado</option>
               </select>
               {!['cover', 'contain', 'auto'].includes(slide.pageSettings?.backgroundSize || 'cover') && (
                 <input
                   type="text"
                   value={slide.pageSettings?.backgroundSize || ''}
                   onChange={(e) => updatePageSettings({ backgroundSize: e.target.value as 'cover' })}
-                  placeholder="e.g. 200px, 50%, 100px auto"
+                  placeholder="p. ej. 200px, 50%, 100px auto"
                   className="mt-1 w-full px-2 py-1 text-xs bg-background border border-border rounded text-foreground font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               )}
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Repeat</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Repetición</label>
               <select
                 value={slide.pageSettings?.backgroundRepeat || 'no-repeat'}
                 onChange={(e) => updatePageSettings({ backgroundRepeat: e.target.value as 'no-repeat' | 'repeat' | 'repeat-x' | 'repeat-y' })}
                 className="w-full px-2 py-1.5 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="no-repeat">No Repeat</option>
-                <option value="repeat">Repeat</option>
-                <option value="repeat-x">Repeat X</option>
-                <option value="repeat-y">Repeat Y</option>
+                <option value="no-repeat">Sin repetición</option>
+                <option value="repeat">Repetir</option>
+                <option value="repeat-x">Repetir X</option>
+                <option value="repeat-y">Repetir Y</option>
               </select>
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1">Position</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Posición</label>
             <select
               value={slide.pageSettings?.backgroundPosition || 'center'}
               onChange={(e) => updatePageSettings({ backgroundPosition: e.target.value })}
               className="w-full px-2 py-1.5 text-xs bg-background border border-border rounded text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              <option value="center">Center</option>
-              <option value="top">Top</option>
-              <option value="bottom">Bottom</option>
-              <option value="left">Left</option>
-              <option value="right">Right</option>
-              <option value="top left">Top Left</option>
-              <option value="top right">Top Right</option>
-              <option value="bottom left">Bottom Left</option>
-              <option value="bottom right">Bottom Right</option>
+              <option value="center">Centrado</option>
+              <option value="top">Arriba</option>
+              <option value="bottom">Abajo</option>
+              <option value="left">Izquierda</option>
+              <option value="right">Derecha</option>
+              <option value="top left">Arriba a la izquierda</option>
+              <option value="top right">Arriba a la derecha</option>
+              <option value="bottom left">Inferior izquierda</option>
+              <option value="bottom right">Inferior derecha</option>
             </select>
           </div>
           <div>
@@ -186,7 +186,7 @@ export function SlideSettingsPanel({ slide, theme, onChange }: SlideSettingsPane
             <button
               onClick={() => removePageSettingKey('color')}
               className="text-xs text-muted-foreground hover:text-foreground"
-              title="Reset to theme default"
+              title="Restablecer al valor predeterminado del tema"
             >
               <span className="material-icons text-sm">restart_alt</span>
             </button>
@@ -219,8 +219,7 @@ export function SlideSettingsPanel({ slide, theme, onChange }: SlideSettingsPane
           className="w-full px-2 py-1.5 text-xs bg-background border border-border rounded text-foreground font-mono focus:outline-none focus:ring-2 focus:ring-primary/50"
           placeholder={`/* Target rendered blocks via [data-block-id="..."] */\n[data-block-id="cover-rule"] hr { background: var(--rust); height: 3px; }`}
         />
-        <p className="mt-1 text-[11px] text-muted-foreground">
-          Injected unscoped while this slide is active. Block wrappers expose <code>data-block-id</code> and <code>data-block-type</code> for targeting. The slide stage carries <code>data-slide-id</code>.
+        <p className="mt-1 text-[11px] text-muted-foreground">Inyectado sin alcance mientras esta diapositiva está activa. Los envoltorios de bloque exponen<code>data-block-id</code> and <code>data-block-type</code> for targeting. The slide stage carries <code>data-slide-id</code>.
         </p>
       </div>
     </div>

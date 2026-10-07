@@ -23,18 +23,18 @@ interface ReviewItem {
 }
 
 const TYPE_META: Record<ProposedType, { label: string; icon: string; tone: string }> = {
-  task: { label: 'Task', icon: 'task_alt', tone: 'text-blue-600 dark:text-blue-400 bg-blue-500/10' },
-  decision: { label: 'Decision', icon: 'flag', tone: 'text-purple-600 dark:text-purple-400 bg-purple-500/10' },
-  commitment: { label: 'Commitment', icon: 'handshake', tone: 'text-amber-600 dark:text-amber-400 bg-amber-500/10' },
-  relationship_update: { label: 'Relationship update', icon: 'group_work', tone: 'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10' },
-  follow_up: { label: 'Follow-up', icon: 'reply', tone: 'text-foreground bg-muted' },
-  compliance_warning: { label: 'Compliance warning', icon: 'warning', tone: 'text-red-600 dark:text-red-400 bg-red-500/10' },
-  note: { label: 'Note', icon: 'sticky_note_2', tone: 'text-foreground bg-muted' },
-  crm_contact_classify: { label: 'Classify contact', icon: 'badge', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_deal_link:        { label: 'Link to deal',     icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_deal_create:      { label: 'Create deal',      icon: 'monetization_on', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_company_link:     { label: 'Link to company',  icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
-  crm_company_create:   { label: 'Create company',   icon: 'apartment', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  task: { label: 'Tarea', icon: 'task_alt', tone: 'text-blue-600 dark:text-blue-400 bg-blue-500/10' },
+  decision: { label: 'Decisión', icon: 'flag', tone: 'text-purple-600 dark:text-purple-400 bg-purple-500/10' },
+  commitment: { label: 'Compromiso', icon: 'handshake', tone: 'text-amber-600 dark:text-amber-400 bg-amber-500/10' },
+  relationship_update: { label: 'Actualización de relación', icon: 'group_work', tone: 'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10' },
+  follow_up: { label: 'Seguimiento', icon: 'reply', tone: 'text-foreground bg-muted' },
+  compliance_warning: { label: 'Aviso de cumplimiento', icon: 'warning', tone: 'text-red-600 dark:text-red-400 bg-red-500/10' },
+  note: { label: 'Nota', icon: 'sticky_note_2', tone: 'text-foreground bg-muted' },
+  crm_contact_classify: { label: 'Clasificar contacto', icon: 'badge', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_deal_link:        { label: 'Vincular a negocio',     icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_deal_create:      { label: 'Crear negocio',      icon: 'monetization_on', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_company_link:     { label: 'Vincular a empresa',  icon: 'link',  tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
+  crm_company_create:   { label: 'Crear empresa',   icon: 'apartment', tone: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10' },
 };
 
 const TYPE_ORDER: ProposedType[] = [
@@ -69,16 +69,16 @@ export default function MeetingReviewPage() {
       ]);
       const [mj, ij] = await Promise.all([mr.json(), ir.json()]);
       if (!mr.ok || !mj.success) {
-        setError(mj.message || 'Failed to load communication.');
+        setError(mj.message || 'No se pudo cargar la comunicación.');
       } else if (!ir.ok || !ij.success) {
-        setError(ij.message || 'Failed to load review items.');
+        setError(ij.message || 'No se pudieron cargar los elementos de revisión.');
       } else {
         setMeeting({ id: mj.data.id, title: mj.data.title, status: mj.data.status, aiSummary: mj.data.aiSummary });
         setItems(ij.data);
         setError(null);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setLoading(false);
     }
@@ -108,7 +108,7 @@ export default function MeetingReviewPage() {
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to approve.');
+        setError(json.message || 'No se pudo aprobar.');
       }
       await load();
     } finally {
@@ -126,7 +126,7 @@ export default function MeetingReviewPage() {
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Failed to reject.');
+        setError(json.message || 'No se pudo rechazar.');
       }
       await load();
     } finally {
@@ -137,8 +137,8 @@ export default function MeetingReviewPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading review queue…
+        <span className="material-icons animate-spin mr-2">autorenew</span>
+        Cargando la cola de revisión…
       </div>
     );
   }
@@ -147,7 +147,7 @@ export default function MeetingReviewPage() {
     return (
       <div className="max-w-4xl mx-auto py-12">
         <div className="bg-destructive/10 border border-destructive/30 rounded-md p-3 text-sm text-destructive">
-          {error || 'Communication not found.'}
+          {error || 'Comunicación no encontrada.'}
         </div>
       </div>
     );
@@ -161,21 +161,21 @@ export default function MeetingReviewPage() {
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4"
         >
           <span className="material-icons text-sm">arrow_back</span>
-          Back to communication
+          Volver a la comunicación
         </Link>
         <PortalPageHeader
-          eyebrow="Company Brain"
+          eyebrow="Cerebro de empresa"
           title={
             <span className="flex items-center gap-2">
               <span className="material-icons text-primary">reviews</span>
-              Review queue
+              Cola de revisión
             </span>
           }
           subtitle={meeting.title}
           actions={
             pendingCount === 0
-              ? <span className="text-emerald-600 dark:text-emerald-400 font-medium inline-flex items-center gap-1 text-sm"><span className="material-icons text-base">check_circle</span> All clear</span>
-              : <span className="text-sm text-muted-foreground"><strong className="text-foreground">{pendingCount}</strong> pending</span>
+              ? <span className="text-emerald-600 dark:text-emerald-400 font-medium inline-flex items-center gap-1 text-sm"><span className="material-icons text-base">check_circle</span> Todo en orden</span>
+              : <span className="text-sm text-muted-foreground"><strong className="text-foreground">{pendingCount}</strong> pendientes</span>
           }
         />
       </div>
@@ -190,7 +190,7 @@ export default function MeetingReviewPage() {
         <section className="bg-card border border-border rounded-2xl p-5">
           <h2 className="font-display text-[17px] font-extrabold tracking-[-0.02em] text-foreground flex items-center gap-2 mb-2">
             <span className="material-icons text-base text-muted-foreground">auto_awesome</span>
-            AI summary
+            Resumen de IA
           </h2>
           <p className="text-sm text-foreground whitespace-pre-wrap">{meeting.aiSummary}</p>
         </section>
@@ -200,7 +200,7 @@ export default function MeetingReviewPage() {
         <div className="text-center py-12 bg-card border border-border rounded-2xl">
           <span className="material-icons text-4xl text-muted-foreground mb-2 block">inbox</span>
           <p className="text-sm text-muted-foreground">
-            No items in the review queue yet. Run AI processing from the communication page.
+            Aún no hay elementos en la cola de revisión. Ejecuta el procesamiento de IA desde la página de la comunicación.
           </p>
         </div>
       ) : (
@@ -246,35 +246,35 @@ function ReviewCard({ item, busy, onApprove, onReject }: {
   let summary = '';
   const p = item.proposedPayload;
   if (item.proposedType === 'task') {
-    summary = (typeof p.title === 'string' ? p.title : 'Untitled task');
+    summary = (typeof p.title === 'string' ? p.title : 'Tarea sin título');
   } else if (item.proposedType === 'decision') {
     summary = (typeof p.title === 'string' ? p.title : '');
   } else if (item.proposedType === 'commitment') {
-    summary = `${typeof p.who === 'string' ? p.who : 'Someone'} → ${typeof p.what === 'string' ? p.what : ''}`;
+    summary = `${typeof p.who === 'string' ? p.who : 'Alguien'} → ${typeof p.what === 'string' ? p.what : ''}`;
   } else if (item.proposedType === 'relationship_update') {
-    summary = `${typeof p.field === 'string' ? p.field : 'field'}: ${typeof p.value === 'string' ? p.value : ''}`;
+    summary = `${typeof p.field === 'string' ? p.field : 'campo'}: ${typeof p.value === 'string' ? p.value : ''}`;
   } else if (item.proposedType === 'compliance_warning') {
     summary = typeof p.message === 'string' ? p.message : '';
   } else if (item.proposedType === 'crm_contact_classify') {
     const parts: string[] = [];
-    if (typeof p.proposedStatus === 'string') parts.push(`status → ${p.proposedStatus}`);
-    if (typeof p.proposedSeniority === 'string') parts.push(`seniority → ${p.proposedSeniority}`);
-    if (typeof p.proposedDepartment === 'string') parts.push(`department → ${p.proposedDepartment}`);
-    if (typeof p.proposedTitle === 'string') parts.push(`title → ${p.proposedTitle}`);
-    summary = parts.length > 0 ? `Contact #${p.contactId}: ${parts.join(', ')}` : `Contact #${p.contactId}`;
+    if (typeof p.proposedStatus === 'string') parts.push(`estado → ${p.proposedStatus}`);
+    if (typeof p.proposedSeniority === 'string') parts.push(`antigüedad → ${p.proposedSeniority}`);
+    if (typeof p.proposedDepartment === 'string') parts.push(`departamento → ${p.proposedDepartment}`);
+    if (typeof p.proposedTitle === 'string') parts.push(`cargo → ${p.proposedTitle}`);
+    summary = parts.length > 0 ? `Contacto #${p.contactId}: ${parts.join(', ')}` : `Contacto #${p.contactId}`;
   } else if (item.proposedType === 'crm_deal_link') {
-    summary = `Link this email to deal #${p.dealId}`;
+    summary = `Vincular este correo al negocio #${p.dealId}`;
   } else if (item.proposedType === 'crm_deal_create') {
-    const value = typeof p.value === 'number' ? ` (${formatCents(p.value, typeof p.currency === 'string' ? p.currency : 'USD')})` : '';
-    summary = `Create deal: ${typeof p.title === 'string' ? p.title : '(untitled)'}${value}`;
+    const value = typeof p.value === 'number' ? ` (${formatCents(p.value, typeof p.currency === 'string' ? p.currency : 'EUR')})` : '';
+    summary = `Crear negocio: ${typeof p.title === 'string' ? p.title : '(sin título)'}${value}`;
   } else if (item.proposedType === 'crm_company_link') {
     const candidates = Array.isArray(p.candidateCompanyIds) ? p.candidateCompanyIds : [];
     summary = candidates.length > 1
-      ? `Pick a company from ${candidates.length} candidates (default: #${p.companyId})`
-      : `Link to company #${p.companyId}`;
+      ? `Elige una empresa entre ${candidates.length} candidatas (por defecto: #${p.companyId})`
+      : `Vincular a empresa #${p.companyId}`;
   } else if (item.proposedType === 'crm_company_create') {
     const dom = typeof p.domain === 'string' ? ` (${p.domain})` : '';
-    summary = `Create company: ${typeof p.name === 'string' ? p.name : '(unnamed)'}${dom}`;
+    summary = `Crear empresa: ${typeof p.name === 'string' ? p.name : '(sin nombre)'}${dom}`;
   } else {
     summary = JSON.stringify(p).slice(0, 80);
   }
@@ -304,7 +304,7 @@ function ReviewCard({ item, busy, onApprove, onReject }: {
                 disabled={busy}
                 className="px-3 py-1.5 text-xs rounded-xl border border-border bg-card text-foreground hover:border-foreground/25 disabled:opacity-50 inline-flex items-center"
               >
-                {editing ? 'Cancel edit' : 'Edit'}
+                {editing ? 'Cancelar edición' : 'Editar'}
               </button>
               <button
                 onClick={onReject}
@@ -312,7 +312,7 @@ function ReviewCard({ item, busy, onApprove, onReject }: {
                 className="px-3 py-1.5 text-xs rounded-xl border border-border bg-card text-foreground hover:bg-destructive/10 hover:text-destructive disabled:opacity-50 inline-flex items-center gap-1"
               >
                 <span className="material-icons text-sm">close</span>
-                Reject
+                Rechazar
               </button>
               <button
                 onClick={() => {
@@ -322,7 +322,7 @@ function ReviewCard({ item, busy, onApprove, onReject }: {
                       onApprove(parsed);
                       setEditing(false);
                     } catch {
-                      alert('Edited payload is not valid JSON.');
+                      alert('El JSON editado no es válido.');
                     }
                   } else {
                     onApprove();
@@ -332,25 +332,25 @@ function ReviewCard({ item, busy, onApprove, onReject }: {
                 className="px-3 py-1.5 text-xs rounded-xl bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 inline-flex items-center gap-1 font-semibold"
               >
                 <span className="material-icons text-sm">check</span>
-                Approve
+                Aprobar
               </button>
             </>
           ) : item.status === 'approved' || item.status === 'edited' ? (
             <span className="text-xs text-emerald-600 dark:text-emerald-400 inline-flex items-center gap-1">
               <span className="material-icons text-sm">check_circle</span>
-              {item.status === 'edited' ? 'Edited & approved' : 'Approved'}
+              {item.status === 'edited' ? 'Editado y aprobado' : 'Aprobado'}
             </span>
           ) : (
             <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
               <span className="material-icons text-sm">block</span>
-              Rejected
+              Rechazado
             </span>
           )}
         </div>
       </div>
       {editing && (
         <div className="mt-3">
-          <label className="text-xs text-muted-foreground mb-1 block">Edit JSON before approving:</label>
+          <label className="text-xs text-muted-foreground mb-1 block">Edita el JSON antes de aprobar:</label>
           <textarea
             value={draftJson}
             onChange={(e) => setDraftJson(e.target.value)}
@@ -367,38 +367,38 @@ function PayloadDetails({ payload, type }: { payload: Record<string, unknown>; t
   const bits: { label: string; value: string }[] = [];
   if (type === 'task') {
     if (typeof payload.description === 'string' && payload.description) bits.push({ label: '', value: payload.description });
-    if (typeof payload.ownerHint === 'string') bits.push({ label: 'owner', value: payload.ownerHint });
-    if (typeof payload.dueDate === 'string') bits.push({ label: 'due', value: payload.dueDate });
-    if (typeof payload.priority === 'string') bits.push({ label: 'priority', value: payload.priority });
-    if (payload.complianceFlag === true) bits.push({ label: '', value: 'compliance flag' });
-    if (typeof payload.relatesToBrainHit === 'string') bits.push({ label: 'brain context', value: payload.relatesToBrainHit });
+    if (typeof payload.ownerHint === 'string') bits.push({ label: 'responsable', value: payload.ownerHint });
+    if (typeof payload.dueDate === 'string') bits.push({ label: 'vence', value: payload.dueDate });
+    if (typeof payload.priority === 'string') bits.push({ label: 'prioridad', value: payload.priority });
+    if (payload.complianceFlag === true) bits.push({ label: '', value: 'marca de cumplimiento' });
+    if (typeof payload.relatesToBrainHit === 'string') bits.push({ label: 'contexto de Brain', value: payload.relatesToBrainHit });
   } else if (type === 'decision' && typeof payload.details === 'string') {
     bits.push({ label: '', value: payload.details });
   } else if (type === 'commitment' && typeof payload.when === 'string') {
-    bits.push({ label: 'when', value: payload.when });
+    bits.push({ label: 'cuándo', value: payload.when });
   } else if (type === 'relationship_update' && typeof payload.rationale === 'string') {
-    bits.push({ label: 'rationale', value: payload.rationale });
+    bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'compliance_warning' && typeof payload.severity === 'string') {
-    bits.push({ label: 'severity', value: payload.severity });
+    bits.push({ label: 'gravedad', value: payload.severity });
   } else if (type === 'crm_contact_classify') {
-    if (typeof payload.confidence === 'string') bits.push({ label: 'confidence', value: payload.confidence });
-    if (typeof payload.rationale === 'string') bits.push({ label: 'rationale', value: payload.rationale });
+    if (typeof payload.confidence === 'string') bits.push({ label: 'confianza', value: payload.confidence });
+    if (typeof payload.rationale === 'string') bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'crm_deal_link') {
-    if (typeof payload.rationale === 'string') bits.push({ label: 'rationale', value: payload.rationale });
+    if (typeof payload.rationale === 'string') bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'crm_deal_create') {
-    if (typeof payload.priority === 'string') bits.push({ label: 'priority', value: payload.priority });
-    if (typeof payload.expectedCloseDate === 'string') bits.push({ label: 'close by', value: payload.expectedCloseDate });
-    if (typeof payload.contactId === 'number') bits.push({ label: 'contact', value: `#${payload.contactId}` });
-    if (typeof payload.companyId === 'number') bits.push({ label: 'company', value: `#${payload.companyId}` });
-    if (typeof payload.rationale === 'string') bits.push({ label: 'rationale', value: payload.rationale });
+    if (typeof payload.priority === 'string') bits.push({ label: 'prioridad', value: payload.priority });
+    if (typeof payload.expectedCloseDate === 'string') bits.push({ label: 'cierre previsto', value: payload.expectedCloseDate });
+    if (typeof payload.contactId === 'number') bits.push({ label: 'contacto', value: `#${payload.contactId}` });
+    if (typeof payload.companyId === 'number') bits.push({ label: 'empresa', value: `#${payload.companyId}` });
+    if (typeof payload.rationale === 'string') bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'crm_company_link') {
     const candidates = Array.isArray(payload.candidateCompanyIds) ? payload.candidateCompanyIds : [];
-    if (candidates.length > 1) bits.push({ label: 'candidates', value: candidates.map((c) => `#${c}`).join(', ') });
-    if (typeof payload.rationale === 'string') bits.push({ label: 'rationale', value: payload.rationale });
+    if (candidates.length > 1) bits.push({ label: 'candidatas', value: candidates.map((c) => `#${c}`).join(', ') });
+    if (typeof payload.rationale === 'string') bits.push({ label: 'motivo', value: payload.rationale });
   } else if (type === 'crm_company_create') {
-    if (typeof payload.industry === 'string') bits.push({ label: 'industry', value: payload.industry });
-    if (typeof payload.website === 'string') bits.push({ label: 'website', value: payload.website });
-    if (typeof payload.rationale === 'string') bits.push({ label: 'rationale', value: payload.rationale });
+    if (typeof payload.industry === 'string') bits.push({ label: 'sector', value: payload.industry });
+    if (typeof payload.website === 'string') bits.push({ label: 'sitio web', value: payload.website });
+    if (typeof payload.rationale === 'string') bits.push({ label: 'motivo', value: payload.rationale });
   }
 
   if (bits.length === 0) return null;
@@ -415,7 +415,7 @@ function PayloadDetails({ payload, type }: { payload: Record<string, unknown>; t
 
 function formatCents(cents: number, currency: string): string {
   try {
-    return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(cents / 100);
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: currency || 'EUR' }).format(cents / 100);
   } catch {
     return `${(cents / 100).toFixed(2)} ${currency}`;
   }

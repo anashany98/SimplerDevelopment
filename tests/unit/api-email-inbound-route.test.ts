@@ -445,6 +445,20 @@ vi.mock('@/lib/email', () => ({
       }),
     },
   },
+  // Mirror the real DB→env→default resolution, env-only here.
+  getEmailPlatformConfig: vi.fn(async () => ({
+    resendApiKey: process.env.RESEND_API_KEY ?? null,
+    resendApiKeySource: process.env.RESEND_API_KEY ? 'env' : 'none',
+    fromEmail: process.env.RESEND_FROM_EMAIL ?? 'noreply@simplerdevelopment.com',
+    fromEmailSource: process.env.RESEND_FROM_EMAIL ? 'env' : 'default',
+    transport: process.env.EMAIL_TRANSPORT === 'mailpit' ? 'mailpit' : 'resend',
+    transportSource: process.env.EMAIL_TRANSPORT ? 'env' : 'default',
+    webhookSecret: process.env.RESEND_WEBHOOK_SECRET ?? null,
+    webhookSecretSource: process.env.RESEND_WEBHOOK_SECRET ? 'env' : 'none',
+    inboundSecret: process.env.INBOUND_EMAIL_SECRET ?? null,
+    inboundSecretSource: process.env.INBOUND_EMAIL_SECRET ? 'env' : 'none',
+  })),
+  getConfiguredFromEmail: vi.fn(async () => process.env.RESEND_FROM_EMAIL ?? null),
 }));
 
 // ---------------------------------------------------------------------------
@@ -547,6 +561,48 @@ describe('POST /api/email/inbound — request validation', () => {
     );
     expect(res.status).toBe(401);
     expect(await res.json()).toEqual({ error: 'Unauthorized' });
+  });
+
+  it('rejects (silently) when Authentication-Results shows a DKIM failure', async () => {
+    const POST = await importHandler();
+    const res = await POST(
+      makeReq({
+        secret: INBOUND_SECRET,
+        from: 'owner@acme.test',
+        to: 'acme@simplerdevelopment.com',
+        subject: 's',
+        body: 'b',
+        authResults: 'mx.google.com; spf=pass; dkim=fail header.d=acme.test',
+      }),
+    );
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      status: 'rejected',
+      reason: 'sender authentication failed',
+    });
+  });
+
+  it('requires a passing SPF/DKIM result when INBOUND_REQUIRE_SENDER_AUTH=1', async () => {
+    process.env.INBOUND_REQUIRE_SENDER_AUTH = '1';
+    try {
+      const POST = await importHandler();
+      const res = await POST(
+        makeReq({
+          secret: INBOUND_SECRET,
+          from: 'owner@acme.test',
+          to: 'acme@simplerdevelopment.com',
+          subject: 's',
+          body: 'b',
+        }),
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({
+        status: 'rejected',
+        reason: 'sender authentication required',
+      });
+    } finally {
+      delete process.env.INBOUND_REQUIRE_SENDER_AUTH;
+    }
   });
 
   it('rejects with 400 when required fields are missing', async () => {

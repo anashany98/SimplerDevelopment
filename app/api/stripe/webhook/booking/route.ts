@@ -10,6 +10,10 @@ import { emitEvent } from '@/lib/automation';
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
+  // Billing removed — payments are disabled. Acknowledge Stripe, process nothing.
+  const { PAYMENTS_DISABLED, billingDisabledResponse } = await import('@/lib/billing/disabled');
+  if (PAYMENTS_DISABLED) return billingDisabledResponse(200);
+
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_BOOKING_WEBHOOK_SECRET;
 
@@ -174,7 +178,7 @@ export async function POST(req: Request) {
         }
       }
 
-      emitEvent('booking.confirmed', page.clientId, 0, {
+      await emitEvent('booking.confirmed', page.clientId, 0, {
         bookingId: booking.id,
         bookingPageId: page.id,
         pageTitle: page.title,

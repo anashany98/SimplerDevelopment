@@ -164,9 +164,7 @@ export function CardGridBlockPreview({ block, isSelected, onChange }: CardGridBl
                             updateCard(card.id, { image: undefined });
                           }}
                           className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
-                        >
-                          Remove
-                        </button>
+                        >Quitar</button>
                       </div>
                     )}
                   </>
@@ -208,7 +206,7 @@ export function CardGridBlockPreview({ block, isSelected, onChange }: CardGridBl
                 onChange={(e) => updateCard(card.id, { icon: e.target.value || undefined })}
                 onClick={(e) => e.stopPropagation()}
                 className="block w-full mb-3 text-xs bg-transparent border-b border-border focus:outline-none text-muted-foreground"
-                placeholder="Material Icon name (e.g. star) — leave blank for none"
+                placeholder="Nombre de Material Icon (p. ej. star): déjalo en blanco para ninguno"
               />
             )}
 
@@ -216,7 +214,7 @@ export function CardGridBlockPreview({ block, isSelected, onChange }: CardGridBl
               html={card.title}
               onChange={(html) => updateCard(card.id, { title: html })}
               className="font-heading text-xl font-bold mb-2 w-full bg-transparent border-none focus:outline-none focus:border-b border-primary text-foreground"
-              placeholder="Card Title"
+              placeholder="Título de la tarjeta"
               singleLine={true}
               toolbar={true}
               style={getElementCSS(block.elementStyles, 'cardTitle')}
@@ -281,7 +279,7 @@ export function CardGridBlockPreview({ block, isSelected, onChange }: CardGridBl
             className="border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-colors flex flex-col items-center justify-center min-h-[250px]"
           >
             <span className="material-icons text-4xl text-muted-foreground mb-2">add</span>
-            <span className="text-sm text-muted-foreground">Add Card</span>
+            <span className="text-sm text-muted-foreground">Añadir tarjeta</span>
           </button>
         )}
       </div>

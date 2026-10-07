@@ -14,7 +14,7 @@ interface ServicePaywallProps {
 }
 
 function formatCents(cents: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
 }
 
 export default function ServicePaywall({
@@ -76,7 +76,7 @@ export default function ServicePaywall({
         <button
           onClick={handleSubscribe}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl text-base font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-foreground text-background rounded-xl text-base font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50"
         >
           {loading ? (
             <span className="material-icons animate-spin text-xl">refresh</span>

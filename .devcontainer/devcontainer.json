@@ -4,7 +4,7 @@
   // and ./docker/initdb extension-provisioning scripts. Reusing it keeps the
   // dev-container DB byte-for-byte identical to the README quick-start setup.
   // The extend file adds an oven/bun:1-debian workspace container alongside.
-  "name": "SimplerDevelopment",
+  "name": "CRM AGENTS",
   "dockerComposeFile": ["../docker-compose.yml", "docker-compose.extend.yml"],
   "service": "app",
   "workspaceFolder": "/workspace",

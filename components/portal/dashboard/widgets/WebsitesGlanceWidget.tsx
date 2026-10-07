@@ -23,16 +23,16 @@ export default async function WebsitesGlanceWidget({
       <div>
         <div className="mb-3">
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">0</span>
-          <span className="ml-2 text-sm text-muted-foreground">active websites</span>
+          <span className="ml-2 text-sm text-muted-foreground">webs activas</span>
         </div>
-        <p className="text-sm text-muted-foreground py-2 text-center">No websites yet.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Aún no hay sitios web.</p>
         <div className="mt-3 text-center">
           <Link
             href="/portal/websites"
             className="text-xs text-primary hover:underline inline-flex items-center gap-1"
           >
             <span className="material-icons text-sm">add_circle_outline</span>
-            Create your first website
+            Crea tu primera web
           </Link>
         </div>
       </div>
@@ -72,18 +72,18 @@ export default async function WebsitesGlanceWidget({
         <div>
           <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{activeCount}</span>
           <span className="ml-2 text-sm text-muted-foreground">
-            active site{activeCount !== 1 ? 's' : ''}
+            {activeCount === 1 ? 'sitio activo' : 'sitios activos'}
           </span>
         </div>
         <div className="text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{publishedCount}</span> published
+          <span className="font-medium text-foreground">{publishedCount}</span> publicados
           {' / '}
-          <span className="font-medium text-foreground">{draftCount}</span> draft
+          <span className="font-medium text-foreground">{draftCount}</span> borradores
         </div>
       </div>
 
       {recentDrafts.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No draft posts.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Sin borradores.</p>
       ) : (
         <ul className="space-y-2">
           {recentDrafts.map((p) => (
@@ -113,7 +113,7 @@ export default async function WebsitesGlanceWidget({
           className="text-xs text-primary hover:underline inline-flex items-center gap-1"
         >
           <span className="material-icons text-sm">web</span>
-          Manage websites
+          Gestionar webs
         </Link>
       </div>
     </div>

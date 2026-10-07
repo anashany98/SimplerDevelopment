@@ -3,7 +3,7 @@ import { scopesForSurfaces, type MicrosoftSurface } from '@/lib/microsoft/scopes
 /**
  * Microsoft Identity Platform (Azure AD / Entra ID) v2.0 OAuth helpers.
  *
- * Auth model: SimplerDevelopment owns one Azure AD multi-tenant app
+ * Auth model: CRM AGENTS owns one Azure AD multi-tenant app
  * registration. Any Microsoft 365 tenant's users can OAuth through it. Per-
  * tenant BYO-app credentials (matching the Google enterprise tier) is phase 3+.
  *

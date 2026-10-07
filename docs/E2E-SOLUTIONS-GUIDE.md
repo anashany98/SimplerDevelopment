@@ -119,7 +119,7 @@ _Each section: intent verdict · E2E coverage + gaps · strengths · top improve
 **E2E:** `portal-agency-white-label.spec.ts` (`@critical`) — branding persist/clear, custom-domain pending+TXT, white-label rejected pre-verification. Gaps: verified-domain happy-path (only the unverified branch is tested), visual chrome swap, `agencyPrimaryColor` persistence, 409 domain-claim conflict.
 **Strengths:** production-grade middleware (dual-layer TTL cache, 1s DB timeout fail-open, tag invalidation); tight security (32-byte TXT token, apex blocked, clean 409); toggle gated on verified-domain AND name with specific missing-prereq messaging; domain audit trail.
 **Top improvements:** (1) **Apply `agencyPrimaryColor` to the shell** (stored + fetched but never consumed — set `--primary` in `AgencyChromeProvider`). (2) Add a tier/billing gate to the white-label routes (copy says "Scale tier"; API doesn't check). (3) Replace the logo URL input with file-upload. (4) Add DNS-propagation auto-poll.
-**Recommended E2E:** seed `verifiedAt`→enable→`/chrome` returns white-label on; 422 when name missing; 409 domain already claimed; browser: sidebar shows agencyName not "Simpler Development".
+**Recommended E2E:** seed `verifiedAt`→enable→`/chrome` returns white-label on; 422 when name missing; 409 domain already claimed; browser: sidebar shows agencyName not "CRM AGENTS".
 
 ## Help Desk (Inbox + Tickets) — UX 3 · Completeness 4 · E2E partial (API only)
 **Intent:** Delivers — async tickets + realtime inbox chat, complementary and lightweight (no third-party push).

@@ -260,13 +260,13 @@ export function SurveyFormInline({
           // already sits right next to the box — echoing it back as a banner is
           // redundant. Use a short, clear prompt instead.
           return field.type === 'checkbox'
-            ? 'Please check the box to agree before continuing.'
-            : `${field.label} is required`;
+            ? 'Marca la casilla para aceptar antes de continuar.'
+            : `El campo «${field.label}» es obligatorio.`;
         }
       }
     }
     if (pageIndex === 0 && survey?.requireEmail && !email?.trim()) {
-      return 'Email is required';
+      return 'El correo electrónico es obligatorio.';
     }
     return null;
   }
@@ -290,7 +290,7 @@ export function SurveyFormInline({
 
   function handleNext() {
     if (hasInflightUpload) {
-      setError('Please wait for file uploads to finish');
+      setError('Espera a que terminen las subidas de archivos');
       return;
     }
     const err = validateCurrentPage();
@@ -319,7 +319,7 @@ export function SurveyFormInline({
     // See pageEnteredAtRef — swallow the double-click-Next ghost submit.
     if (Date.now() - pageEnteredAtRef.current < 500) return;
     if (hasInflightUpload) {
-      setError('Please wait for file uploads to finish');
+      setError('Espera a que terminen las subidas de archivos');
       return;
     }
     const err = validateCurrentPage();
@@ -361,7 +361,7 @@ export function SurveyFormInline({
     }
 
     setThankYou({
-      title: data.data.thankYouTitle || 'Thank you!',
+        title: data.data.thankYouTitle || '¡Gracias!',
       message: data.data.thankYouMessage || '',
     });
     // PDF-01: only offer the certificate when the survey has it enabled
@@ -730,9 +730,7 @@ export function SurveyFormInline({
                   onClick={handleBack}
                   className="flex items-center gap-1 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                  Back
-                </button>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Atrás</button>
               ) : <div />}
 
               {isMultiPage && !isLastPage ? (

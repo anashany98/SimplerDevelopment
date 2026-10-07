@@ -9,7 +9,7 @@ tags:
   - all-in-one agency software
   - agency tech stack
   - white-label client portal
-author: SimplerDevelopment Team
+author: CRM AGENTS Team
 draft: true
 canonical: "https://example.com/blog/one-platform-vs-point-tools-agency"
 ---
@@ -60,7 +60,7 @@ The client opens one portal and sees their website, CRM pipeline, active project
 
 The category argument about AI and platform integration is straightforward: an AI agent is only as useful as its access to data. In an assembled stack, connecting an agent to the business means one integration per tool — separate credentials, separate authentication flows, separate context windows, separate tool definitions for each system. The agent knows what you have explicitly wired it to, and nothing else.
 
-On an integrated platform with a unified API surface — in SimplerDevelopment's case, 450 MCP tools accessible through a single OAuth connection — an AI agent can read the CRM, update a project card, query the knowledge base, draft an email campaign, and check booking availability in one session, without re-authenticating per domain. The unified data model means the agent has context across the whole client relationship, not just the slice that lives in whichever tool it is currently connected to.
+On an integrated platform with a unified API surface — in CRM AGENTS's case, 450 MCP tools accessible through a single OAuth connection — an AI agent can read the CRM, update a project card, query the knowledge base, draft an email campaign, and check booking availability in one session, without re-authenticating per domain. The unified data model means the agent has context across the whole client relationship, not just the slice that lives in whichever tool it is currently connected to.
 
 ### Permissions and audit in one place
 

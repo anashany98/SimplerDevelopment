@@ -32,7 +32,7 @@ export function AssetsTab({ profile, update, updateDark, updateTypo }: Props) {
       <div className="grid grid-cols-2 gap-6">
         <div>
           <label className={LABEL_CLASS}>Square Logo</label>
-          <p className="text-xs text-muted-foreground mb-2">Used for favicons, social media, and small displays.</p>
+          <p className="text-xs text-muted-foreground mb-2">Se usa en faviconos, redes sociales y pantallas pequeñas.</p>
           <MediaPicker
             value={profile.logoSquareUrl}
             onChange={(url) => update({ logoSquareUrl: url })}
@@ -43,7 +43,7 @@ export function AssetsTab({ profile, update, updateDark, updateTypo }: Props) {
 
         <div>
           <label className={LABEL_CLASS}>Rectangle Logo</label>
-          <p className="text-xs text-muted-foreground mb-2">Used in the navigation bar and headers.</p>
+          <p className="text-xs text-muted-foreground mb-2">Se usa en la barra de navegación y las cabeceras.</p>
           <MediaPicker
             value={profile.logoRectUrl}
             onChange={(url) => update({ logoRectUrl: url })}
@@ -54,7 +54,7 @@ export function AssetsTab({ profile, update, updateDark, updateTypo }: Props) {
 
         <div>
           <label className={LABEL_CLASS}>Logo Icon</label>
-          <p className="text-xs text-muted-foreground mb-2">Small icon that appears alongside your brand name.</p>
+          <p className="text-xs text-muted-foreground mb-2">Icono pequeño que aparece junto al nombre de tu marca.</p>
           <MediaPicker
             value={profile.logoIconUrl}
             onChange={(url) => update({ logoIconUrl: url })}
@@ -65,16 +65,16 @@ export function AssetsTab({ profile, update, updateDark, updateTypo }: Props) {
 
         <div>
           <label className={LABEL_CLASS}>Brand Name / Text Logo</label>
-          <p className="text-xs text-muted-foreground mb-2">Text displayed when no image logo is available.</p>
+          <p className="text-xs text-muted-foreground mb-2">Texto que se muestra cuando no hay logotipo de imagen disponible.</p>
           <input
             type="text"
             value={profile.logoText ?? ''}
             onChange={(e) => update({ logoText: e.target.value })}
             className={INPUT_CLASS}
-            placeholder="Your Brand Name"
+            placeholder="El nombre de tu marca"
           />
           <div className="mt-2">
-            <label className="block text-[11px] text-muted-foreground mb-1">Font (falls back to heading font)</label>
+            <label className="block text-[11px] text-muted-foreground mb-1">Fuente (usa la fuente de títulos como respaldo)</label>
             <GoogleFontPicker
               value={profile.typography?.logoText?.font ?? ''}
               onChange={(font) => updateTypo('logoText', { font })}

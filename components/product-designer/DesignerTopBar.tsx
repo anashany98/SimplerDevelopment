@@ -227,7 +227,7 @@ export const DesignerTopBar = ({
             {isSaving || designState?.isAutoSaving ? (
             <>
               <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-              <span>Saving...</span>
+              <span>Guardando...</span>
             </>
             ) : saveSuccess ? (
             <>
@@ -377,7 +377,7 @@ export const DesignerTopBar = ({
           type="button"
         >
           <IoDuplicateOutline size={16} />
-          <span>Duplicate</span>
+          <span>Duplicar</span>
         </button>
         
         <button
@@ -390,7 +390,7 @@ export const DesignerTopBar = ({
           type="button"
         >
           <BsX size={18} />
-          <span>Delete</span>
+          <span>Eliminar</span>
         </button>
         </div>
       </div>
@@ -450,9 +450,7 @@ export const DesignerTopBar = ({
           }}
           className="btn-secondary dark:bg-gray-800 dark:text-gray-200"
           type="button"
-          >
-          Cancel
-          </button>
+          >Cancelar</button>
           <button
           onClick={confirmSaveAs}
           disabled={!saveAsName.trim() || isSaving}
@@ -462,7 +460,7 @@ export const DesignerTopBar = ({
           {isSaving ? (
             <>
             <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-            <span>Saving...</span>
+            <span>Guardando...</span>
             </>
           ) : (
             <>

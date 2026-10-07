@@ -1,6 +1,6 @@
 # Live Chat API (Public)
 
-These endpoints power the visitor-facing side of the SimplerDevelopment live chat widget. Use them to start a conversation session, send messages as a visitor, and subscribe to a real-time stream of agent replies. All three endpoints are public — no platform API key is required — but message and stream calls require the short-lived `ephemeralToken` you receive when starting a conversation.
+These endpoints power the visitor-facing side of the CRM AGENTS live chat widget. Use them to start a conversation session, send messages as a visitor, and subscribe to a real-time stream of agent replies. All three endpoints are public — no platform API key is required — but message and stream calls require the short-lived `ephemeralToken` you receive when starting a conversation.
 
 **Base URL:** `https://<your-tenant-domain>/api/public/chat`
 

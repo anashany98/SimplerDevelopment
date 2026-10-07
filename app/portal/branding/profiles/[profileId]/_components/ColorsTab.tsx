@@ -30,13 +30,13 @@ export function ColorsTab({ profile, update, updateDark }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {(
           [
-            { key: 'primaryColor', label: 'Primary', desc: 'Buttons, links, accents' },
-            { key: 'secondaryColor', label: 'Secondary', desc: 'Supporting elements' },
-            { key: 'accentColor', label: 'Accent', desc: 'Highlights, badges' },
-            { key: 'backgroundColor', label: 'Background', desc: 'Page background' },
-            { key: 'textColor', label: 'Text', desc: 'Body text color' },
-            { key: 'navBackground', label: 'Nav Background', desc: 'Navigation bar' },
-            { key: 'navTextColor', label: 'Nav Text', desc: 'Navigation text' },
+            { key: 'primaryColor', label: 'Principal', desc: 'Buttons, links, accents' },
+            { key: 'secondaryColor', label: 'Secundario', desc: 'Supporting elements' },
+            { key: 'accentColor', label: 'Acento', desc: 'Highlights, badges' },
+            { key: 'backgroundColor', label: 'Fondo', desc: 'Page background' },
+            { key: 'textColor', label: 'Texto', desc: 'Body text color' },
+            { key: 'navBackground', label: 'Fondo de navegación', desc: 'Navigation bar' },
+            { key: 'navTextColor', label: 'Texto de navegación', desc: 'Navigation text' },
           ] as const
         ).map(({ key, label, desc }) => (
           <div key={key}>
@@ -72,13 +72,13 @@ export function ColorsTab({ profile, update, updateDark }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {(
             [
-              { key: 'primaryColor' as const, label: 'Primary' },
-              { key: 'secondaryColor' as const, label: 'Secondary' },
-              { key: 'accentColor' as const, label: 'Accent' },
-              { key: 'backgroundColor' as const, label: 'Background' },
-              { key: 'textColor' as const, label: 'Text' },
-              { key: 'navBackground' as const, label: 'Nav Background' },
-              { key: 'navTextColor' as const, label: 'Nav Text' },
+              { key: 'primaryColor' as const, label: 'Principal' },
+              { key: 'secondaryColor' as const, label: 'Secundario' },
+              { key: 'accentColor' as const, label: 'Acento' },
+              { key: 'backgroundColor' as const, label: 'Fondo' },
+              { key: 'textColor' as const, label: 'Texto' },
+              { key: 'navBackground' as const, label: 'Fondo de navegación' },
+              { key: 'navTextColor' as const, label: 'Texto de navegación' },
             ]
           ).map(({ key, label }) => (
             <div key={key}>
@@ -105,7 +105,7 @@ export function ColorsTab({ profile, update, updateDark }: Props) {
 
       {/* Color previews */}
       <div className="mt-6 pt-6 border-t border-border">
-        <label className={LABEL_CLASS}>Preview</label>
+        <label className={LABEL_CLASS}>Vista previa</label>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <span className="text-[11px] text-muted-foreground mb-1 block">Light Mode</span>
@@ -116,7 +116,7 @@ export function ColorsTab({ profile, update, updateDark }: Props) {
               >
                 <span className="text-sm font-semibold">{profile.logoText || 'Brand'}</span>
                 <div className="flex-1" />
-                <span className="text-xs">Link</span>
+                <span className="text-xs">Enlace</span>
                 <span
                   className="text-xs px-2 py-0.5 rounded text-white"
                   style={{ backgroundColor: profile.primaryColor }}
@@ -129,7 +129,7 @@ export function ColorsTab({ profile, update, updateDark }: Props) {
                 style={{ backgroundColor: profile.backgroundColor, color: profile.textColor }}
               >
                 <h3 className="text-base font-bold mb-1">Heading</h3>
-                <p className="text-xs mb-2">Body text preview with brand colors.</p>
+                <p className="text-xs mb-2">Vista previa del texto con los colores de la marca.</p>
                 <div className="flex gap-1.5">
                   <span
                     className="px-2 py-0.5 rounded text-xs text-white"
@@ -165,7 +165,7 @@ export function ColorsTab({ profile, update, updateDark }: Props) {
               >
                 <span className="text-sm font-semibold">{profile.logoText || 'Brand'}</span>
                 <div className="flex-1" />
-                <span className="text-xs">Link</span>
+                <span className="text-xs">Enlace</span>
                 <span
                   className="text-xs px-2 py-0.5 rounded text-white"
                   style={{ backgroundColor: profile.darkMode?.primaryColor || profile.primaryColor }}
@@ -181,7 +181,7 @@ export function ColorsTab({ profile, update, updateDark }: Props) {
                 }}
               >
                 <h3 className="text-base font-bold mb-1">Heading</h3>
-                <p className="text-xs mb-2">Body text preview with dark mode colors.</p>
+                <p className="text-xs mb-2">Vista previa del texto con los colores del modo oscuro.</p>
                 <div className="flex gap-1.5">
                   <span
                     className="px-2 py-0.5 rounded text-xs text-white"

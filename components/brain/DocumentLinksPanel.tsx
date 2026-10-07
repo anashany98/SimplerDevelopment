@@ -28,12 +28,12 @@ const ENTITY_TYPES: BrainDocumentLinkEntityType[] = [
 ];
 
 const META: Record<BrainDocumentLinkEntityType, { label: string; plural: string; icon: string }> = {
-  topic:         { label: 'Topic',         plural: 'Topics',     icon: 'account_tree' },
-  initiative:    { label: 'Initiative',    plural: 'Initiatives', icon: 'flag' },
-  decision:      { label: 'Decision',      plural: 'Decisions',  icon: 'gavel' },
-  meeting:       { label: 'Meeting',       plural: 'Meetings',   icon: 'event' },
-  glossary_term: { label: 'Glossary term', plural: 'Glossary',   icon: 'menu_book' },
-  person:        { label: 'Person',        plural: 'People',     icon: 'person' },
+  topic:         { label: 'Tema',                 plural: 'Temas',                 icon: 'account_tree' },
+  initiative:    { label: 'Iniciativa',           plural: 'Iniciativas',           icon: 'flag' },
+  decision:      { label: 'Decisión',             plural: 'Decisiones',            icon: 'gavel' },
+  meeting:       { label: 'Reunión',              plural: 'Reuniones',             icon: 'event' },
+  glossary_term: { label: 'Término del glosario', plural: 'Términos del glosario', icon: 'menu_book' },
+  person:        { label: 'Persona',              plural: 'Personas',              icon: 'person' },
 };
 
 interface Props {
@@ -65,7 +65,7 @@ export default function DocumentLinksPanel({ documentId, links, onChanged }: Pro
   const [err, setErr] = useState<string | null>(null);
 
   const unlink = useCallback(async (item: ResolvedDocumentLink) => {
-    if (!confirm(`Unlink this ${META[item.entityType].label.toLowerCase()}?`)) return;
+    if (!confirm(`¿Desvincular "${META[item.entityType].label}"?`)) return;
     setBusy(true);
     setErr(null);
     try {
@@ -76,12 +76,12 @@ export default function DocumentLinksPanel({ documentId, links, onChanged }: Pro
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setErr(json.message || 'Failed to unlink.');
+        setErr(json.message || 'No se pudo desvincular.');
         return;
       }
       onChanged?.();
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Network error');
+      setErr(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setBusy(false);
     }
@@ -92,7 +92,7 @@ export default function DocumentLinksPanel({ documentId, links, onChanged }: Pro
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <h2 className="text-base font-semibold text-foreground inline-flex items-center gap-2">
           <span className="material-icons text-base text-primary">hub</span>
-          Linked entities
+          Entidades vinculadas
           <span className="text-xs text-muted-foreground font-normal">({links.length})</span>
         </h2>
         <button
@@ -100,9 +100,7 @@ export default function DocumentLinksPanel({ documentId, links, onChanged }: Pro
           onClick={() => setPickerOpen(true)}
           className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md border border-border text-foreground hover:bg-accent"
         >
-          <span className="material-icons text-sm">add_link</span>
-          Link
-        </button>
+          <span className="material-icons text-sm">add_link</span>Enlace</button>
       </div>
 
       {err && (
@@ -113,7 +111,7 @@ export default function DocumentLinksPanel({ documentId, links, onChanged }: Pro
 
       {orderedTypes.length === 0 ? (
         <div className="mt-4 text-center py-6 text-xs text-muted-foreground bg-muted/30 rounded-md border border-dashed border-border">
-          Nothing linked yet. Attach topics, initiatives, decisions, meetings, glossary terms, or people to give this doc context.
+          Aún no hay nada vinculado. Adjunta temas, iniciativas, decisiones, reuniones, términos del glosario o personas para dar contexto a este documento.
         </div>
       ) : (
         <>
@@ -161,8 +159,8 @@ export default function DocumentLinksPanel({ documentId, links, onChanged }: Pro
                   onClick={() => unlink(item)}
                   disabled={busy}
                   className="p-1 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded disabled:opacity-50"
-                  title="Unlink"
-                  aria-label="Unlink"
+                  title="Desvincular"
+                  aria-label="Desvincular"
                 >
                   <span className="material-icons text-sm">close</span>
                 </button>
@@ -218,7 +216,7 @@ function LinkPickerDialog({
       const opts = await fetchPickerOptions(type, search);
       setOptions(opts);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Failed to load options');
+      setErr(e instanceof Error ? e.message : 'No se pudieron cargar las opciones');
     } finally {
       setLoading(false);
     }
@@ -245,12 +243,12 @@ function LinkPickerDialog({
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setErr(json.message || 'Failed to link.');
+        setErr(json.message || 'No se pudo vincular.');
         return;
       }
       onLinked();
     } catch (e) {
-      setErr(e instanceof Error ? e.message : 'Network error');
+      setErr(e instanceof Error ? e.message : 'Error de red');
     } finally {
       setSubmitting(false);
     }
@@ -261,19 +259,19 @@ function LinkPickerDialog({
       <div className="bg-card border border-border rounded-lg shadow-xl max-w-lg w-full p-5 space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="text-base font-semibold text-foreground">Link an entity</h3>
+            <h3 className="text-base font-semibold text-foreground">Vincular una entidad</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Attach a topic, initiative, decision, meeting, glossary term, or person.
+              Adjunta un tema, una iniciativa, una decisión, una reunión, un término del glosario o una persona.
             </p>
           </div>
-          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Close">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Cerrar">
             <span className="material-icons text-lg">close</span>
           </button>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Type</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Tipo</span>
             <select
               value={type}
               onChange={(e) => setType(e.target.value as BrainDocumentLinkEntityType)}
@@ -285,12 +283,12 @@ function LinkPickerDialog({
             </select>
           </label>
           <label className="block">
-            <span className="text-[11px] font-medium text-muted-foreground">Search</span>
+            <span className="text-[11px] font-medium text-muted-foreground">Buscar</span>
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Title or name…"
+              placeholder="Título o nombre…"
               className="mt-1 w-full px-2 py-1.5 text-sm rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </label>
@@ -299,12 +297,10 @@ function LinkPickerDialog({
         <div className="max-h-48 overflow-y-auto bg-muted/30 border border-border rounded-md">
           {loading ? (
             <div className="flex items-center justify-center py-6 text-xs text-muted-foreground">
-              <span className="material-icons animate-spin text-base mr-1.5">progress_activity</span>
-              Loading…
-            </div>
+              <span className="material-icons animate-spin text-base mr-1.5">autorenew</span>Cargando…</div>
           ) : options.length === 0 ? (
             <div className="text-center py-6 text-xs text-muted-foreground">
-              No {META[type].plural.toLowerCase()} found.
+              No se han encontrado {META[type].plural.toLowerCase()}.
             </div>
           ) : (
             <ul className="divide-y divide-border">
@@ -329,12 +325,12 @@ function LinkPickerDialog({
         </div>
 
         <label className="block">
-          <span className="text-[11px] font-medium text-muted-foreground">Note (optional)</span>
+          <span className="text-[11px] font-medium text-muted-foreground">Nota (opcional)</span>
           <input
             type="text"
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="Why is this linked?"
+            placeholder="¿Por qué está vinculado?"
             className="mt-1 w-full px-2 py-1.5 text-sm rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </label>
@@ -350,17 +346,15 @@ function LinkPickerDialog({
             onClick={onClose}
             disabled={submitting}
             className="px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
           <button
             onClick={submit}
             disabled={submitting || pickedId === null}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
           >
             {submitting
-              ? <><span className="material-icons animate-spin text-base">progress_activity</span>Linking…</>
-              : <><span className="material-icons text-base">add_link</span>Link</>}
+              ? <><span className="material-icons animate-spin text-base">autorenew</span>Vinculando…</>
+              : <><span className="material-icons text-base">add_link</span>Enlace</>}
           </button>
         </div>
       </div>

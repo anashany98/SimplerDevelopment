@@ -146,7 +146,7 @@ describe('WebhooksPanel — initial render', () => {
   it('shows loading state briefly then renders empty state', async () => {
     renderPanel([]);
     await waitFor(() =>
-      expect(screen.getByText('No webhooks configured yet.')).toBeTruthy(),
+      expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy(),
     );
   });
 
@@ -159,10 +159,10 @@ describe('WebhooksPanel — initial render', () => {
 
   it('renders the create form with URL input and Add button', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
     expect(screen.getByPlaceholderText('https://example.com/webhooks/survey')).toBeTruthy();
     const addBtns = Array.from(document.querySelectorAll('button')).filter((b) =>
-      b.textContent?.includes('Add webhook'),
+      b.textContent?.includes('Añadir webhook'),
     );
     expect(addBtns.length).toBeGreaterThan(0);
   });
@@ -183,7 +183,7 @@ describe('WebhooksPanel — initial render', () => {
 describe('WebhooksPanel — hook list display', () => {
   it('shows "Never fired" badge when lastFiredAt is null', async () => {
     renderPanel([HOOK_BASE]);
-    await waitFor(() => expect(screen.getByText('Never fired')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Nunca se ejecutó')).toBeTruthy());
   });
 
   it('shows HTTP 200 badge on last successful delivery', async () => {
@@ -194,18 +194,18 @@ describe('WebhooksPanel — hook list display', () => {
   it('shows HTTP 500 badge and failure count for failed hook', async () => {
     renderPanel([HOOK_FAILED]);
     await waitFor(() => expect(screen.getByText('HTTP 500')).toBeTruthy());
-    await waitFor(() => expect(screen.getByText('2 consecutive failures')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('2 fallos consecutivos')).toBeTruthy());
   });
 
   it('shows plural "failures" for failureCount > 1', async () => {
     renderPanel([HOOK_FAILED]);
-    await waitFor(() => expect(screen.getByText('2 consecutive failures')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('2 fallos consecutivos')).toBeTruthy());
   });
 
   it('shows singular "failure" for failureCount = 1', async () => {
     const singleFail = { ...HOOK_FAILED, failureCount: 1 };
     renderPanel([singleFail]);
-    await waitFor(() => expect(screen.getByText('1 consecutive failure')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('1 fallo consecutivo')).toBeTruthy());
   });
 
   it('renders the event tag for each hook', async () => {
@@ -223,10 +223,10 @@ describe('WebhooksPanel — hook list display', () => {
 describe('WebhooksPanel — event checkbox in form', () => {
   it('pre-checks "response.submitted" checkbox', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
     const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
     const responseSubmittedCheckbox = checkboxes.find((c) =>
-      c.closest('label')?.textContent?.includes('Response submitted'),
+      c.closest('label')?.textContent?.includes('Respuesta enviada'),
     );
     expect(responseSubmittedCheckbox).toBeTruthy();
     expect(responseSubmittedCheckbox!.checked).toBe(true);
@@ -234,7 +234,7 @@ describe('WebhooksPanel — event checkbox in form', () => {
 
   it('unchecks the checkbox when clicked', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
     const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[];
     const cb = checkboxes[0];
     fireEvent.click(cb);
@@ -247,17 +247,17 @@ describe('WebhooksPanel — event checkbox in form', () => {
 describe('WebhooksPanel — create webhook', () => {
   it('shows error and skips POST when URL is empty', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add webhook'),
+      b.textContent?.includes('Añadir webhook'),
     ) as HTMLButtonElement;
 
     await act(async () => {
       fireEvent.click(addBtn);
     });
 
-    expect(screen.getByText('URL is required')).toBeTruthy();
+    expect(screen.getByText('La URL es obligatoria')).toBeTruthy();
     const postCalls = (global.fetch as any).mock.calls.filter(
       (c: any[]) => c[1]?.method === 'POST',
     );
@@ -266,7 +266,7 @@ describe('WebhooksPanel — create webhook', () => {
 
   it('calls POST with correct payload on valid URL', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
 
     const urlInput = screen.getByPlaceholderText(
       'https://example.com/webhooks/survey',
@@ -274,7 +274,7 @@ describe('WebhooksPanel — create webhook', () => {
     fireEvent.change(urlInput, { target: { value: 'https://my.site/hook' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add webhook'),
+      b.textContent?.includes('Añadir webhook'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -295,7 +295,7 @@ describe('WebhooksPanel — create webhook', () => {
 
   it('shows the saved secret banner after successful create', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
 
     const urlInput = screen.getByPlaceholderText(
       'https://example.com/webhooks/survey',
@@ -303,7 +303,7 @@ describe('WebhooksPanel — create webhook', () => {
     fireEvent.change(urlInput, { target: { value: 'https://my.site/hook' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add webhook'),
+      b.textContent?.includes('Añadir webhook'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -311,14 +311,14 @@ describe('WebhooksPanel — create webhook', () => {
     });
 
     await waitFor(() =>
-      expect(screen.getByText("Save this secret — it will not be shown again")).toBeTruthy(),
+      expect(screen.getByText('Guarda este secreto — no se mostrará de nuevo')).toBeTruthy(),
     );
     expect(screen.getByText('mysecret')).toBeTruthy();
   });
 
   it('dismisses saved secret banner on "I\'ve saved it" click', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
 
     const urlInput = screen.getByPlaceholderText(
       'https://example.com/webhooks/survey',
@@ -326,20 +326,20 @@ describe('WebhooksPanel — create webhook', () => {
     fireEvent.change(urlInput, { target: { value: 'https://my.site/hook' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add webhook'),
+      b.textContent?.includes('Añadir webhook'),
     ) as HTMLButtonElement;
 
     await act(async () => {
       fireEvent.click(addBtn);
     });
 
-    await waitFor(() => expect(screen.getByText("I've saved it")).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Ya lo guardé')).toBeTruthy());
 
-    fireEvent.click(screen.getByText("I've saved it"));
+    fireEvent.click(screen.getByText('Ya lo guardé'));
 
     await waitFor(() =>
       expect(
-        screen.queryByText("Save this secret — it will not be shown again"),
+        screen.queryByText('Guarda este secreto — no se mostrará de nuevo'),
       ).toBeNull(),
     );
   });
@@ -353,7 +353,7 @@ describe('WebhooksPanel — create webhook', () => {
     }) as any;
 
     render(<WebhooksPanel surveyId={SURVEY_ID} />);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
 
     const urlInput = screen.getByPlaceholderText(
       'https://example.com/webhooks/survey',
@@ -361,7 +361,7 @@ describe('WebhooksPanel — create webhook', () => {
     fireEvent.change(urlInput, { target: { value: 'https://my.site/hook' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add webhook'),
+      b.textContent?.includes('Añadir webhook'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -373,7 +373,7 @@ describe('WebhooksPanel — create webhook', () => {
 
   it('resets URL input after successful create', async () => {
     renderPanel([]);
-    await waitFor(() => expect(screen.getByText('No webhooks configured yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no hay webhooks configurados.')).toBeTruthy());
 
     const urlInput = screen.getByPlaceholderText(
       'https://example.com/webhooks/survey',
@@ -381,7 +381,7 @@ describe('WebhooksPanel — create webhook', () => {
     fireEvent.change(urlInput, { target: { value: 'https://my.site/hook' } });
 
     const addBtn = Array.from(document.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Add webhook'),
+      b.textContent?.includes('Añadir webhook'),
     ) as HTMLButtonElement;
 
     await act(async () => {
@@ -399,7 +399,7 @@ describe('WebhooksPanel — toggle enabled', () => {
     renderPanel([HOOK_BASE]);
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
-    const toggleBtn = screen.getByTitle('Disable') as HTMLButtonElement;
+    const toggleBtn = screen.getByTitle('Desactivar') as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(toggleBtn);
     });
@@ -416,7 +416,7 @@ describe('WebhooksPanel — toggle enabled', () => {
 
   it('shows Enable button for disabled hook', async () => {
     renderPanel([HOOK_DISABLED]);
-    await waitFor(() => expect(screen.getByTitle('Enable')).toBeTruthy());
+    await waitFor(() => expect(screen.getByTitle('Activar')).toBeTruthy());
   });
 
   it('shows error when PUT returns success:false', async () => {
@@ -430,7 +430,7 @@ describe('WebhooksPanel — toggle enabled', () => {
     render(<WebhooksPanel surveyId={SURVEY_ID} />);
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
-    const toggleBtn = screen.getByTitle('Disable');
+    const toggleBtn = screen.getByTitle('Desactivar');
     await act(async () => {
       fireEvent.click(toggleBtn);
     });
@@ -456,7 +456,7 @@ describe('WebhooksPanel — delete webhook', () => {
     render(<WebhooksPanel surveyId={SURVEY_ID} />);
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
-    const deleteBtn = screen.getByTitle('Delete');
+    const deleteBtn = screen.getByTitle('Eliminar');
     await act(async () => {
       fireEvent.click(deleteBtn);
     });
@@ -474,7 +474,7 @@ describe('WebhooksPanel — delete webhook', () => {
     renderPanel([HOOK_BASE]);
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
 
     const delCalls = (global.fetch as any).mock.calls.filter(
       (c: any[]) => c[1]?.method === 'DELETE',
@@ -493,7 +493,7 @@ describe('WebhooksPanel — delete webhook', () => {
     render(<WebhooksPanel surveyId={SURVEY_ID} />);
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
-    const deleteBtn = screen.getByTitle('Delete');
+    const deleteBtn = screen.getByTitle('Eliminar');
     await act(async () => {
       fireEvent.click(deleteBtn);
     });
@@ -508,12 +508,12 @@ describe('WebhooksPanel — deliveries panel', () => {
     render(<WebhooksPanel surveyId={SURVEY_ID} />);
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
-    const historyBtn = screen.getByTitle('Recent deliveries');
+    const historyBtn = screen.getByTitle('Entregas recientes');
     await act(async () => {
       fireEvent.click(historyBtn);
     });
 
-    await waitFor(() => expect(screen.getByText('Recent deliveries')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Entregas recientes')).toBeTruthy());
   });
 
   it('shows deliveries in the panel', async () => {
@@ -522,11 +522,11 @@ describe('WebhooksPanel — deliveries panel', () => {
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Recent deliveries'));
+      fireEvent.click(screen.getByTitle('Entregas recientes'));
     });
 
     await waitFor(() => expect(screen.getByText('HTTP 200')).toBeTruthy());
-    expect(screen.getByText('attempt 1')).toBeTruthy();
+    expect(screen.getByText('intento 1')).toBeTruthy();
   });
 
   it('shows failed delivery with error text when statusCode is null', async () => {
@@ -540,7 +540,7 @@ describe('WebhooksPanel — deliveries panel', () => {
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Recent deliveries'));
+      fireEvent.click(screen.getByTitle('Entregas recientes'));
     });
 
     await waitFor(() => expect(screen.getByText('Timeout')).toBeTruthy());
@@ -552,10 +552,10 @@ describe('WebhooksPanel — deliveries panel', () => {
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Recent deliveries'));
+      fireEvent.click(screen.getByTitle('Entregas recientes'));
     });
 
-    await waitFor(() => expect(screen.getByText('No deliveries recorded yet.')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aún no se han registrado entregas.')).toBeTruthy());
   });
 
   it('closes deliveries panel when history button clicked again', async () => {
@@ -563,17 +563,17 @@ describe('WebhooksPanel — deliveries panel', () => {
     render(<WebhooksPanel surveyId={SURVEY_ID} />);
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
-    const historyBtn = screen.getByTitle('Recent deliveries');
+    const historyBtn = screen.getByTitle('Entregas recientes');
 
     await act(async () => {
       fireEvent.click(historyBtn);
     });
-    await waitFor(() => expect(screen.getByText('Recent deliveries')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Entregas recientes')).toBeTruthy());
 
     await act(async () => {
       fireEvent.click(historyBtn);
     });
-    await waitFor(() => expect(screen.queryByText('No deliveries recorded yet.')).toBeNull());
+    await waitFor(() => expect(screen.queryByText('Aún no se han registrado entregas.')).toBeNull());
   });
 
   it('shows error when deliveries fetch returns success:false', async () => {
@@ -591,7 +591,7 @@ describe('WebhooksPanel — deliveries panel', () => {
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Recent deliveries'));
+      fireEvent.click(screen.getByTitle('Entregas recientes'));
     });
 
     await waitFor(() => expect(screen.getByText('Deliveries fetch failed')).toBeTruthy());
@@ -603,7 +603,7 @@ describe('WebhooksPanel — deliveries panel', () => {
     await waitFor(() => expect(screen.getByText('https://example.com/hooks')).toBeTruthy());
 
     await act(async () => {
-      fireEvent.click(screen.getByTitle('Recent deliveries'));
+      fireEvent.click(screen.getByTitle('Entregas recientes'));
     });
 
     await waitFor(() => expect(screen.getByText('HTTP 200')).toBeTruthy());

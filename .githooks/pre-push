@@ -92,8 +92,8 @@ fi
 # `DROP DATABASE` teardown timeouts with ZERO failing assertions -- noise that
 # teaches you to reach for --no-verify, which is the actual hazard.
 #
-# `.github/workflows/ci.yml` runs it on the same data-access paths this used to
-# match. To run it by hand before pushing: `bun test:tenancy`, or
+# `.github/workflows/ci.yml` runs it on all product-source paths. To run it by
+# hand before pushing: `bun test:tenancy`, or
 # `scripts/ci-local.sh --tenancy` (the flag is still supported).
 
 echo "pre-push: running local CI…"

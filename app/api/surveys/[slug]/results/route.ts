@@ -35,7 +35,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
     .limit(1);
 
   if (!survey || !survey.publishResults) {
-    return NextResponse.json({ success: false, message: 'Survey not found' }, { status: 404 });
+    return NextResponse.json({ success: false, message: 'Encuesta no encontrada.' }, { status: 404 });
   }
 
   const responses = await db

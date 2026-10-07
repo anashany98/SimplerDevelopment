@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { workflows } from '@/lib/db/schema';
-import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { eq, and } from 'drizzle-orm';
 import type { WorkflowGraph, WorkflowStatus, WorkflowTriggerConfig } from '@/lib/workflows/types';
@@ -19,15 +17,9 @@ async function loadOwned(workflowId: number, clientId: number) {
 }
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-
   const authResult = await authorizePortal({ action: 'read', scope: 'automations:read' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false, error: 'Client not found' }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const workflowId = parseInt(id, 10);
@@ -42,15 +34,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 }
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-
   const authResult = await authorizePortal({ action: 'write', scope: 'automations:write' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false, error: 'Client not found' }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const workflowId = parseInt(id, 10);
@@ -91,15 +77,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'admin', scope: 'automations:write' });
+  const authResult = await authorizePortal({ action: 'admin', scope: 'automations:delete' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false, error: 'Client not found' }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const workflowId = parseInt(id, 10);

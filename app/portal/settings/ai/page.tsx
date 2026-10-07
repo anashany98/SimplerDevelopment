@@ -58,12 +58,12 @@ interface ImageUsage {
 function relativeTime(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return 'ahora mismo';
+  if (mins < 60) return `hace ${mins} min`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return `hace ${hours} h`;
   const days = Math.floor(hours / 24);
-  if (days < 7) return `${days}d ago`;
+  if (days < 7) return `hace ${days} d`;
   return new Date(dateStr).toLocaleDateString();
 }
 
@@ -76,34 +76,34 @@ function cleanTitle(title: string): string {
 }
 
 const toolLabels: Record<string, string> = {
-  get_crm_contacts: 'Looked up contacts',
-  get_crm_deals: 'Looked up deals',
-  get_crm_pipelines: 'Looked up pipelines',
-  get_crm_contact_detail: 'Viewed contact',
-  create_crm_contact: 'Created contact',
-  update_crm_contact: 'Updated contact',
-  create_crm_deal: 'Created deal',
-  update_crm_deal: 'Updated deal',
-  log_crm_activity: 'Logged activity',
-  create_crm_proposal: 'Created proposal',
-  send_crm_proposal: 'Sent proposal',
-  get_crm_proposals: 'Looked up proposals',
-  get_my_projects: 'Looked up projects',
-  get_project_board: 'Viewed project board',
-  create_project_card: 'Created task',
-  move_project_card: 'Moved task',
-  update_project_card: 'Updated task',
-  get_my_surveys: 'Looked up surveys',
-  create_survey: 'Created survey',
-  create_automation: 'Created automation',
-  get_dashboard_summary: 'Checked dashboard',
-  get_my_invoices: 'Checked invoices',
-  create_support_ticket: 'Created ticket',
-  reply_to_ticket: 'Replied to ticket',
-  get_my_websites: 'Looked up websites',
-  create_email_campaign: 'Created campaign',
-  add_email_subscriber: 'Added subscriber',
-  navigate_to: 'Navigated',
+  get_crm_contacts: 'Consultó contactos',
+  get_crm_deals: 'Consultó negocios',
+  get_crm_pipelines: 'Consultó embudos',
+  get_crm_contact_detail: 'Vio contacto',
+  create_crm_contact: 'Creó contacto',
+  update_crm_contact: 'Actualizó contacto',
+  create_crm_deal: 'Creó negocio',
+  update_crm_deal: 'Actualizó negocio',
+  log_crm_activity: 'Registró actividad',
+  create_crm_proposal: 'Creó propuesta',
+  send_crm_proposal: 'Envió propuesta',
+  get_crm_proposals: 'Consultó propuestas',
+  get_my_projects: 'Consultó proyectos',
+  get_project_board: 'Vio el tablero del proyecto',
+  create_project_card: 'Creó tarea',
+  move_project_card: 'Movió tarea',
+  update_project_card: 'Actualizó tarea',
+  get_my_surveys: 'Consultó encuestas',
+  create_survey: 'Creó encuesta',
+  create_automation: 'Creó automatización',
+  get_dashboard_summary: 'Revisó el panel',
+  get_my_invoices: 'Revisó facturas',
+  create_support_ticket: 'Creó ticket',
+  reply_to_ticket: 'Respondió al ticket',
+  get_my_websites: 'Consultó sitios web',
+  create_email_campaign: 'Creó campaña',
+  add_email_subscriber: 'Añadió suscriptor',
+  navigate_to: 'Navegó',
 };
 
 export default function AISettingsPage() {
@@ -175,26 +175,26 @@ export default function AISettingsPage() {
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-blue-500">mail</span>
           <p className="mt-2 text-xl font-bold text-foreground">{emailCount}</p>
-          <p className="text-xs text-muted-foreground">Email Requests</p>
+          <p className="text-xs text-muted-foreground">Solicitudes por email</p>
         </div>
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-purple-500">chat</span>
           <p className="mt-2 text-xl font-bold text-foreground">{chatCount}</p>
-          <p className="text-xs text-muted-foreground">Chat Conversations</p>
+          <p className="text-xs text-muted-foreground">Conversaciones de chat</p>
         </div>
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-green-500">token</span>
           <p className="mt-2 text-xl font-bold text-foreground">{credits ? credits.balance.toLocaleString() : '---'}</p>
-          <p className="text-xs text-muted-foreground">Credits Remaining</p>
+          <p className="text-xs text-muted-foreground">Créditos restantes</p>
         </div>
         <div className={`${pCard} p-4`}>
           <span className="material-icons text-lg text-pink-500">auto_awesome</span>
           <p className="mt-2 text-xl font-bold text-foreground">{imageUsage ? `${imageUsage.todayCount}/${imageUsage.dailyCap}` : '---'}</p>
           <p className="text-xs text-muted-foreground">
-            AI Images today
+            Imágenes IA hoy
             {imageUsage && (
               <span className="ml-1 text-foreground/60">
-                · {imageUsage.monthCount.toLocaleString()} this month
+                · {imageUsage.monthCount.toLocaleString()} este mes
               </span>
             )}
           </p>
@@ -215,12 +215,12 @@ export default function AISettingsPage() {
                 auto_awesome
               </span>
               <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">
-                AI Image Generations
+                Generaciones de imágenes IA
               </h2>
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
               <span>
-                Today:{' '}
+                Hoy:{' '}
                 <span className="font-medium text-foreground">
                   {imageUsage.todayCount}
                 </span>
@@ -230,13 +230,13 @@ export default function AISettingsPage() {
                 </span>
               </span>
               <span>
-                Per design cap:{' '}
+                Límite por diseño:{' '}
                 <span className="font-medium text-foreground">
                   {imageUsage.perDesignCap}
                 </span>
               </span>
               <span>
-                This month:{' '}
+                Este mes:{' '}
                 <span className="font-medium text-foreground">
                   {imageUsage.monthCount}
                 </span>
@@ -254,7 +254,7 @@ export default function AISettingsPage() {
                     image
                   </span>
                   <span className="text-foreground">
-                    {ev.amount} image{ev.amount === 1 ? '' : 's'} generated
+                    {ev.amount} {ev.amount === 1 ? 'imagen generada' : 'imágenes generadas'}
                   </span>
                   <span
                     className={`px-1.5 py-0.5 rounded text-[10px] font-medium uppercase tracking-wide ${
@@ -264,11 +264,11 @@ export default function AISettingsPage() {
                     }`}
                     title={
                       ev.source === 'byok'
-                        ? 'Billed to your own OpenAI key'
-                        : 'Billed against the platform plan'
+                        ? 'Facturado con tu propia clave de OpenAI'
+                        : 'Facturado con el plan de plataforma'
                     }
                   >
-                    {ev.source === 'byok' ? 'BYOK' : 'platform'}
+                    {ev.source === 'byok' ? 'BYOK' : 'plataforma'}
                   </span>
                 </div>
                 <span className="text-muted-foreground">
@@ -285,35 +285,35 @@ export default function AISettingsPage() {
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b border-border">
           <div className="flex items-center gap-2">
             <span className="material-icons text-base text-primary">receipt_long</span>
-            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Token Receipts</h2>
+            <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Recibos de tokens</h2>
           </div>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <span>This month: <span className="font-medium text-foreground">{monthlyUsage.toLocaleString()}</span> tokens</span>
+            <span>Este mes: <span className="font-medium text-foreground">{monthlyUsage.toLocaleString()}</span> tokens</span>
             {ledger.length > 5 && (
               <button onClick={() => setShowAllReceipts(v => !v)} className="text-primary hover:underline">
-                {showAllReceipts ? 'Show less' : `View all (${ledger.length})`}
+                {showAllReceipts ? 'Mostrar menos' : `Ver todos (${ledger.length})`}
               </button>
             )}
           </div>
         </div>
         {ledger.length === 0 ? (
-          <div className="p-6 text-center text-xs text-muted-foreground">No token activity yet.</div>
+          <div className="p-6 text-center text-xs text-muted-foreground">Aún no hay actividad de tokens.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted/30">
-                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Date</th>
-                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Type</th>
-                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Description</th>
+                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Fecha</th>
+                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Tipo</th>
+                  <th className="text-left px-4 py-2 text-xs font-medium text-muted-foreground">Descripción</th>
                   <th className="text-right px-4 py-2 text-xs font-medium text-muted-foreground">Tokens</th>
-                  <th className="text-right px-4 py-2 text-xs font-medium text-muted-foreground">Balance</th>
+                  <th className="text-right px-4 py-2 text-xs font-medium text-muted-foreground">Saldo</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {(showAllReceipts ? ledger : ledger.slice(0, 5)).map(entry => {
                   const isDebit = entry.amount < 0;
-                  const typeLabel: Record<string, string> = { grant: 'Credit Grant', usage: 'Usage', purchase: 'Purchase', refund: 'Refund', expiry: 'Expired' };
+                  const typeLabel: Record<string, string> = { grant: 'Concesión de crédito', usage: 'Uso', purchase: 'Compra', refund: 'Reembolso', expiry: 'Caducado' };
                   const typeColor: Record<string, string> = { grant: 'text-green-600 bg-green-100', usage: 'text-blue-600 bg-blue-100', purchase: 'text-purple-600 bg-purple-100', refund: 'text-orange-600 bg-orange-100', expiry: 'text-gray-500 bg-gray-100' };
                   const typeIcon: Record<string, string> = { grant: 'card_giftcard', usage: 'smart_toy', purchase: 'shopping_cart', refund: 'undo', expiry: 'timer_off' };
                   return (
@@ -328,7 +328,7 @@ export default function AISettingsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-2.5 text-xs text-foreground truncate max-w-[200px]">
-                        {entry.description || (entry.serviceCategory ? `${entry.serviceCategory} service` : '---')}
+                        {entry.description || (entry.serviceCategory ? `servicio de ${entry.serviceCategory}` : '---')}
                       </td>
                       <td className={`px-4 py-2.5 text-xs text-right font-mono font-medium ${isDebit ? 'text-red-600' : 'text-green-600'}`}>
                         {isDebit ? '' : '+'}{entry.amount.toLocaleString()}
@@ -349,17 +349,17 @@ export default function AISettingsPage() {
       <div className={`${pCard} p-5 space-y-4`}>
         <div className="flex items-center gap-2">
           <span className="material-icons text-base text-primary">mail</span>
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">AI Email Address</h2>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Dirección de email de IA</h2>
         </div>
         <p className="text-xs text-muted-foreground">
-          Send requests to this email address and the AI assistant will process them automatically. Only registered team members can use this address.
+          Envía solicitudes a esta dirección de email y el asistente de IA las procesará automáticamente. Solo los miembros registrados del equipo pueden usar esta dirección.
         </p>
         <div className="flex items-center gap-2">
           <div className="flex items-center">
             <input
               value={emailPrefix}
               onChange={e => { setEmailPrefix(e.target.value); setEmailMessage(''); }}
-              placeholder="your-company"
+              placeholder="tu-empresa"
               className="w-40 px-3 py-2 rounded-l-lg border border-r-0 border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
             <span className="px-3 py-2 bg-muted border border-border rounded-r-lg text-sm text-muted-foreground whitespace-nowrap">
@@ -374,21 +374,21 @@ export default function AISettingsPage() {
                 body: JSON.stringify({ emailPrefix }),
               });
               const d = await res.json();
-              setEmailMessage(d.success ? 'Saved' : d.message || 'Failed');
+              setEmailMessage(d.success ? 'Guardado' : d.message || 'Error');
               setSavingEmail(false);
             }}
             disabled={savingEmail}
             className={pBtnPrimary}
           >
             {savingEmail ? <span className="material-icons animate-spin text-sm">refresh</span> : <span className="material-icons text-sm">save</span>}
-            Save
+            Guardar
           </button>
           {emailMessage && <span className="text-xs text-green-600">{emailMessage}</span>}
         </div>
         {emailPrefix && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="material-icons text-sm text-green-500">check_circle</span>
-            Active: <span className="font-mono text-foreground">{emailPrefix.toLowerCase().replace(/[^a-z0-9-]/g, '')}@simplerdevelopment.com</span>
+            Activo: <span className="font-mono text-foreground">{emailPrefix.toLowerCase().replace(/[^a-z0-9-]/g, '')}@simplerdevelopment.com</span>
           </div>
         )}
       </div>
@@ -396,17 +396,17 @@ export default function AISettingsPage() {
       {/* Request Log */}
       <div className={`${pCard} overflow-hidden`}>
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-b border-border">
-          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Request Log</h2>
+          <h2 className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Registro de solicitudes</h2>
           <div className="flex items-center gap-1 bg-accent rounded-lg p-0.5">
             {([
-              { value: 'all' as const, label: 'All' },
-              { value: 'email' as const, label: 'Email' },
+              { value: 'all' as const, label: 'Todos' },
+              { value: 'email' as const, label: 'Correo' },
               { value: 'chat' as const, label: 'Chat' },
             ]).map(f => (
               <button
                 key={f.value}
                 onClick={() => { setSource(f.value); setSelectedConv(null); }}
-                className={`px-2.5 py-1 text-xs rounded-md transition-colors ${source === f.value ? 'bg-primary text-primary-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}
+                className={`px-2.5 py-1 text-xs rounded-md transition-colors ${source === f.value ? 'bg-foreground text-background font-medium' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 {f.label}
               </button>
@@ -423,9 +423,9 @@ export default function AISettingsPage() {
                   {source === 'email' ? 'mail' : source === 'chat' ? 'chat' : 'smart_toy'}
                 </span>
                 <p className="text-xs text-muted-foreground">
-                  {source === 'email' ? 'No email requests yet. Send an email to your AI address to get started.' :
-                   source === 'chat' ? 'No chat conversations yet. Use the chat widget to talk to the AI.' :
-                   'No AI activity yet.'}
+                  {source === 'email' ? 'Aún no hay solicitudes por email. Envía un correo a tu dirección de IA para empezar.' :
+                   source === 'chat' ? 'Aún no hay conversaciones de chat. Usa el widget de chat para hablar con la IA.' :
+                   'Aún no hay actividad de IA.'}
                 </p>
               </div>
             ) : (
@@ -466,7 +466,7 @@ export default function AISettingsPage() {
             {!selectedConv ? (
               <div className="flex flex-col items-center justify-center h-full py-16">
                 <span className="material-icons text-3xl text-muted-foreground mb-2">forum</span>
-                <p className="text-xs text-muted-foreground">Select a request to view the conversation</p>
+                <p className="text-xs text-muted-foreground">Selecciona una solicitud para ver la conversación</p>
               </div>
             ) : messagesLoading ? (
               <div className="flex items-center justify-center py-12">
@@ -498,11 +498,11 @@ export default function AISettingsPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium text-foreground">{msg.role === 'user' ? 'Request' : 'AI Response'}</span>
+                          <span className="text-xs font-medium text-foreground">{msg.role === 'user' ? 'Solicitud' : 'Respuesta de IA'}</span>
                           <span className="text-[10px] text-muted-foreground">{new Date(msg.createdAt).toLocaleTimeString()}</span>
                           {(msg.inputTokens > 0 || msg.outputTokens > 0) && (
                             <span className="text-[10px] text-muted-foreground bg-accent px-1.5 py-0.5 rounded">
-                              {msg.inputTokens.toLocaleString()} in / {msg.outputTokens.toLocaleString()} out
+                              {msg.inputTokens.toLocaleString()} entrada / {msg.outputTokens.toLocaleString()} salida
                             </span>
                           )}
                         </div>
@@ -526,10 +526,10 @@ export default function AISettingsPage() {
                 {messages.length > 0 && (
                   <div className="px-4 py-3 border-t border-border bg-muted/30">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span className="font-medium">Token Receipt</span>
+                      <span className="font-medium">Recibo de tokens</span>
                       <div className="flex items-center gap-3">
-                        <span>Input: {selectedConv.totalInputTokens.toLocaleString()}</span>
-                        <span>Output: {selectedConv.totalOutputTokens.toLocaleString()}</span>
+                        <span>Entrada: {selectedConv.totalInputTokens.toLocaleString()}</span>
+                        <span>Salida: {selectedConv.totalOutputTokens.toLocaleString()}</span>
                         <span className="font-medium text-foreground">Total: {(selectedConv.totalInputTokens + selectedConv.totalOutputTokens).toLocaleString()}</span>
                       </div>
                     </div>

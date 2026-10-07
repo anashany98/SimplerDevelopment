@@ -117,19 +117,19 @@ afterEach(() => {
 describe('CustomFieldsSection: top-level chrome', () => {
   it('renders empty state when no top-level defs are present', () => {
     renderSection({ customFieldDefs: [] });
-    expect(screen.getByText('No custom fields defined yet.')).toBeTruthy();
-    expect(screen.getByText(/Click .Manage Fields. above/)).toBeTruthy();
+    expect(screen.getByText('Aún no hay campos personalizados definidos.')).toBeTruthy();
+    expect(screen.getByText(/Haz clic en .Gestionar campos. arriba/)).toBeTruthy();
   });
 
   it('renders the Manage Fields trigger button', () => {
     renderSection();
-    expect(screen.getByRole('button', { name: /Manage Fields/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Gestionar campos/ })).toBeTruthy();
   });
 
   it('invokes setShowManageFieldsModal(true) when Manage Fields is clicked', () => {
     const setShow = vi.fn();
     renderSection({ setShowManageFieldsModal: setShow });
-    fireEvent.click(screen.getByRole('button', { name: /Manage Fields/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Gestionar campos/ }));
     expect(setShow).toHaveBeenCalledWith(true);
   });
 
@@ -137,7 +137,7 @@ describe('CustomFieldsSection: top-level chrome', () => {
     renderSection({
       customFieldDefs: [makeDef({ id: 1, name: 'Author', slug: 'author', fieldType: 'text' })],
     });
-    expect(screen.queryByText('No custom fields defined yet.')).toBeNull();
+    expect(screen.queryByText('Aún no hay campos personalizados definidos.')).toBeNull();
     expect(screen.getByText('Author')).toBeTruthy();
   });
 });
@@ -276,7 +276,7 @@ describe('CustomFieldsSection: group fields', () => {
       ],
     });
     expect(screen.getByText('SEO')).toBeTruthy();
-    expect(screen.getByText('1 field')).toBeTruthy();
+    expect(screen.getByText('1 campo')).toBeTruthy();
   });
 
   it('uses pluralized "fields" label when zero or more than one child', () => {
@@ -285,7 +285,7 @@ describe('CustomFieldsSection: group fields', () => {
         makeDef({ id: 10, name: 'Empty', slug: 'empty', fieldType: 'group' }),
       ],
     });
-    expect(screen.getByText('0 fields')).toBeTruthy();
+    expect(screen.getByText('0 campos')).toBeTruthy();
   });
 
   it('shows the empty-group message when group has no children', () => {
@@ -294,7 +294,7 @@ describe('CustomFieldsSection: group fields', () => {
         makeDef({ id: 10, name: 'Empty', slug: 'empty', fieldType: 'group' }),
       ],
     });
-    expect(screen.getByText('No sub-fields in this group yet.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay subcampos en este grupo.')).toBeTruthy();
   });
 
   it('renders child fields by default (expanded) and collapses on click', () => {
@@ -351,7 +351,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: JSON.stringify([{ label: 'a' }, { label: 'b' }]) },
     });
-    expect(screen.getByText('2 rows')).toBeTruthy();
+    expect(screen.getByText('2 filas')).toBeTruthy();
     expect(screen.getByDisplayValue('a')).toBeTruthy();
     expect(screen.getByDisplayValue('b')).toBeTruthy();
   });
@@ -364,7 +364,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: '{not json' },
     });
-    expect(screen.getByText('0 rows')).toBeTruthy();
+    expect(screen.getByText('0 filas')).toBeTruthy();
   });
 
   it('falls back to empty rows when JSON parses but is not an array', () => {
@@ -375,7 +375,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: '{"foo":"bar"}' },
     });
-    expect(screen.getByText('0 rows')).toBeTruthy();
+    expect(screen.getByText('0 filas')).toBeTruthy();
   });
 
   it('renders empty-repeater message when no sub-fields are defined', () => {
@@ -384,7 +384,7 @@ describe('CustomFieldsSection: repeater fields', () => {
         makeDef({ id: 20, name: 'Items', slug: 'items', fieldType: 'repeater' }),
       ],
     });
-    expect(screen.getByText('No sub-fields defined for this repeater yet.')).toBeTruthy();
+    expect(screen.getByText('Aún no hay subcampos definidos para este repetidor.')).toBeTruthy();
   });
 
   it('uses singular "row" label when exactly one row', () => {
@@ -395,7 +395,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       customFieldValues: { 20: JSON.stringify([{ label: 'a' }]) },
     });
-    expect(screen.getByText('1 row')).toBeTruthy();
+    expect(screen.getByText('1 fila')).toBeTruthy();
   });
 
   it('collapses and re-expands the repeater on header click', () => {
@@ -421,7 +421,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       ],
       updateCustomFieldValue: update,
     });
-    fireEvent.click(screen.getByRole('button', { name: /Add Row/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir fila/ }));
     expect(update).toHaveBeenCalledWith(20, JSON.stringify([{}]));
   });
 
@@ -435,7 +435,7 @@ describe('CustomFieldsSection: repeater fields', () => {
       customFieldValues: { 20: JSON.stringify([{ label: 'a' }, { label: 'b' }]) },
       updateCustomFieldValue: update,
     });
-    const removeButtons = screen.getAllByTitle('Remove row');
+    const removeButtons = screen.getAllByTitle('Eliminar fila');
     fireEvent.click(removeButtons[0]);
     expect(update).toHaveBeenCalledWith(20, JSON.stringify([{ label: 'b' }]));
   });
@@ -497,7 +497,7 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
     global.fetch = vi.fn(() => new Promise(() => {})) as unknown as typeof fetch;
     const setShow = vi.fn();
     renderSection({ showManageFieldsModal: true, setShowManageFieldsModal: setShow });
-    expect(screen.getByText('Manage Custom Fields')).toBeTruthy();
+    expect(screen.getByText('Gestionar campos personalizados')).toBeTruthy();
     expect(document.querySelector('.animate-spin')).toBeTruthy();
   });
 
@@ -507,7 +507,7 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
     ]);
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => {
-      expect(screen.getByText(/not found/)).toBeTruthy();
+      expect(screen.getByText(/no existe/)).toBeTruthy();
     });
   });
 
@@ -518,9 +518,9 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
     ]);
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => {
-      expect(screen.getByText('No fields defined for this post type yet.')).toBeTruthy();
+      expect(screen.getByText('Aún no hay campos definidos para este tipo de contenido.')).toBeTruthy();
     });
-    expect(screen.getByRole('button', { name: /Add Field/ })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy();
   });
 
   it('falls through to the not-found state when the post-types lookup returns success:false', async () => {
@@ -531,7 +531,7 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
     // finally{} still flips loading -> false, and postTypeId stays null,
     // so we land on the "post type not found" branch.
     await waitFor(() => {
-      expect(screen.getByText(/not found/)).toBeTruthy();
+      expect(screen.getByText(/no existe/)).toBeTruthy();
     });
   });
 
@@ -555,7 +555,7 @@ describe('ManageCustomFieldsModal: lifecycle', () => {
       expect(screen.getByText('Tags Group')).toBeTruthy();
     });
     expect(screen.getByText('Author')).toBeTruthy();
-    expect(screen.getByText('1 sub-field')).toBeTruthy();
+    expect(screen.getByText('1 subcampo')).toBeTruthy();
   });
 });
 
@@ -568,22 +568,22 @@ describe('ManageCustomFieldsModal: add-field form', () => {
     const setCustomFieldsLoaded = vi.fn();
     renderSection({ showManageFieldsModal: true, setCustomFieldsLoaded });
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /Add Field/ })).toBeTruthy();
+      expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy();
     });
     return { setCustomFieldsLoaded };
   }
 
   it('opens the form when Add Field is clicked', async () => {
     await openModalWithEmptyFields();
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    expect(screen.getByText('New Field')).toBeTruthy();
-    expect(screen.getByPlaceholderText('e.g. Author Name')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    expect(screen.getByText('Nuevo campo')).toBeTruthy();
+    expect(screen.getByPlaceholderText('p. ej. Nombre del autor')).toBeTruthy();
   });
 
   it('auto-derives slug from name when creating', async () => {
     await openModalWithEmptyFields();
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    const name = screen.getByPlaceholderText('e.g. Author Name') as HTMLInputElement;
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    const name = screen.getByPlaceholderText('p. ej. Nombre del autor') as HTMLInputElement;
     fireEvent.change(name, { target: { value: 'Hello World!' } });
     const slug = screen.getByPlaceholderText('author_name') as HTMLInputElement;
     expect(slug.value).toBe('hello_world');
@@ -591,7 +591,7 @@ describe('ManageCustomFieldsModal: add-field form', () => {
 
   it('allows manually editing the slug', async () => {
     await openModalWithEmptyFields();
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
     const slug = screen.getByPlaceholderText('author_name') as HTMLInputElement;
     fireEvent.change(slug, { target: { value: 'custom_slug' } });
     expect(slug.value).toBe('custom_slug');
@@ -599,25 +599,25 @@ describe('ManageCustomFieldsModal: add-field form', () => {
 
   it('shows the options textarea only for fieldType=select', async () => {
     await openModalWithEmptyFields();
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    expect(screen.queryByPlaceholderText(/Option 1/)).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    expect(screen.queryByPlaceholderText(/Opción 1/)).toBeNull();
     const selects = screen.getAllByRole('combobox');
     const typeSelect = selects[0] as HTMLSelectElement;
     fireEvent.change(typeSelect, { target: { value: 'select' } });
-    expect(screen.getByPlaceholderText(/Option 1/)).toBeTruthy();
+    expect(screen.getByPlaceholderText(/Opción 1/)).toBeTruthy();
   });
 
   it('closes the form when Cancel is clicked', async () => {
     await openModalWithEmptyFields();
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
     fireEvent.click(screen.getByRole('button', { name: /Cancel/ }));
-    expect(screen.queryByText('New Field')).toBeNull();
+    expect(screen.queryByText('Nuevo campo')).toBeNull();
   });
 
   it('toggles the required checkbox', async () => {
     await openModalWithEmptyFields();
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    const required = screen.getByLabelText('Required') as HTMLInputElement;
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    const required = screen.getByLabelText('Obligatorio') as HTMLInputElement;
     expect(required.checked).toBe(false);
     fireEvent.click(required);
     expect(required.checked).toBe(true);
@@ -625,7 +625,7 @@ describe('ManageCustomFieldsModal: add-field form', () => {
 
   it('parses the order input into an integer (defaulting to 0 on NaN)', async () => {
     await openModalWithEmptyFields();
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
     const orderInputs = screen.getAllByRole('spinbutton');
     const order = orderInputs[0] as HTMLInputElement;
     fireEvent.change(order, { target: { value: '5' } });
@@ -659,10 +659,10 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
 
     const setCustomFieldsLoaded = vi.fn();
     renderSection({ showManageFieldsModal: true, setCustomFieldsLoaded });
-    await waitFor(() => expect(screen.getByRole('button', { name: /Add Field/ })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
     await waitFor(() => expect(createdCalled).toBe(true));
     await waitFor(() => expect(setCustomFieldsLoaded).toHaveBeenCalledWith(false));
   });
@@ -682,13 +682,13 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     }) as unknown as typeof fetch;
 
     renderSection({ showManageFieldsModal: true });
-    await waitFor(() => expect(screen.getByRole('button', { name: /Add Field/ })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Tier' } });
+    await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Tier' } });
     const typeSelect = screen.getAllByRole('combobox')[0];
     fireEvent.change(typeSelect, { target: { value: 'select' } });
-    fireEvent.change(screen.getByPlaceholderText(/Option 1/), { target: { value: 'a\nb\n  c  ' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
+    fireEvent.change(screen.getByPlaceholderText(/Opción 1/), { target: { value: 'a\nb\n  c  ' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
     await waitFor(() => expect(body).not.toBeNull());
     expect((body as { options: unknown }).options).toEqual(['a', 'b', 'c']);
   });
@@ -703,10 +703,10 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     }) as unknown as typeof fetch;
 
     renderSection({ showManageFieldsModal: true });
-    await waitFor(() => expect(screen.getByRole('button', { name: /Add Field/ })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
     await waitFor(() => expect(screen.getByText('Slug taken')).toBeTruthy());
   });
 
@@ -725,11 +725,11 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     }) as unknown as typeof fetch;
 
     renderSection({ showManageFieldsModal: true });
-    await waitFor(() => expect(screen.getByRole('button', { name: /Add Field/ })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
-    await waitFor(() => expect(screen.getByText('Failed to save')).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
+    await waitFor(() => expect(screen.getByText('No se pudo guardar')).toBeTruthy());
   });
 
   it('shows a network-error message when fetch throws', async () => {
@@ -742,11 +742,11 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     }) as unknown as typeof fetch;
 
     renderSection({ showManageFieldsModal: true });
-    await waitFor(() => expect(screen.getByRole('button', { name: /Add Field/ })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: /Add Field/ }));
-    fireEvent.change(screen.getByPlaceholderText('e.g. Author Name'), { target: { value: 'Author' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add Field$/ }));
-    await waitFor(() => expect(screen.getByText('Network error')).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole('button', { name: /Añadir campo/ })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: /Añadir campo/ }));
+    fireEvent.change(screen.getByPlaceholderText('p. ej. Nombre del autor'), { target: { value: 'Author' } });
+    fireEvent.click(screen.getByRole('button', { name: /^Añadir campo$/ }));
+    await waitFor(() => expect(screen.getByText('Error de red')).toBeTruthy());
   });
 
   it('populates the form when editing an existing field', async () => {
@@ -774,12 +774,12 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     ]);
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByText('Author')).toBeTruthy());
-    fireEvent.click(screen.getByTitle('Edit'));
-    expect(screen.getByText('Edit Field')).toBeTruthy();
-    expect((screen.getByPlaceholderText('e.g. Author Name') as HTMLInputElement).value).toBe('Author');
+    fireEvent.click(screen.getByTitle('Editar'));
+    expect(screen.getByText('Editar campo')).toBeTruthy();
+    expect((screen.getByPlaceholderText('p. ej. Nombre del autor') as HTMLInputElement).value).toBe('Author');
     expect((screen.getByPlaceholderText('author_name') as HTMLInputElement).value).toBe('author');
-    expect((screen.getByPlaceholderText(/Option 1/) as HTMLTextAreaElement).value).toBe('a\nb');
-    expect((screen.getByLabelText('Required') as HTMLInputElement).checked).toBe(true);
+    expect((screen.getByPlaceholderText(/Opción 1/) as HTMLTextAreaElement).value).toBe('a\nb');
+    expect((screen.getByLabelText('Obligatorio') as HTMLInputElement).checked).toBe(true);
   });
 
   it('sends PUT to /api/custom-fields/:id when submitting an edit', async () => {
@@ -808,8 +808,8 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
 
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByText('Author')).toBeTruthy());
-    fireEvent.click(screen.getByTitle('Edit'));
-    fireEvent.click(screen.getByRole('button', { name: /Update Field/ }));
+    fireEvent.click(screen.getByTitle('Editar'));
+    fireEvent.click(screen.getByRole('button', { name: /Actualizar campo/ }));
     await waitFor(() => expect(putCalled).toBe(true));
   });
 
@@ -841,7 +841,7 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     const setCustomFieldsLoaded = vi.fn();
     renderSection({ showManageFieldsModal: true, setCustomFieldsLoaded });
     await waitFor(() => expect(screen.getByText('Author')).toBeTruthy());
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
     await waitFor(() => expect(deleteCalled).toBe(true));
     await waitFor(() => expect(setCustomFieldsLoaded).toHaveBeenCalledWith(false));
   });
@@ -868,7 +868,7 @@ describe('ManageCustomFieldsModal: submit / edit / delete', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(false);
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByText('Author')).toBeTruthy());
-    fireEvent.click(screen.getByTitle('Delete'));
+    fireEvent.click(screen.getByTitle('Eliminar'));
     // Allow any microtasks to flush
     await Promise.resolve();
     expect(deleteAttempted).toBe(false);
@@ -917,8 +917,8 @@ describe('ManageCustomFieldsModal: sub-field flows + close', () => {
     ]);
     renderSection({ showManageFieldsModal: true });
     await waitFor(() => expect(screen.getByText('Group A')).toBeTruthy());
-    fireEvent.click(screen.getByTitle('Add sub-field'));
-    expect(screen.getByText('New Sub-field')).toBeTruthy();
+    fireEvent.click(screen.getByTitle('Añadir subcampo'));
+    expect(screen.getByText('Nuevo subcampo')).toBeTruthy();
     // Sub-field type select must not include repeater/group
     const optValues = Array.from(screen.getAllByRole('combobox')[0].querySelectorAll('option')).map((o) => (o as HTMLOptionElement).value);
     expect(optValues).not.toContain('repeater');
@@ -932,7 +932,7 @@ describe('ManageCustomFieldsModal: sub-field flows + close', () => {
     ]);
     const setShow = vi.fn();
     renderSection({ showManageFieldsModal: true, setShowManageFieldsModal: setShow });
-    await waitFor(() => expect(screen.getByText('Manage Custom Fields')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Gestionar campos personalizados')).toBeTruthy());
     const backdrop = document.querySelector('.bg-black\\/40') as HTMLElement;
     expect(backdrop).toBeTruthy();
     fireEvent.click(backdrop);
@@ -946,8 +946,8 @@ describe('ManageCustomFieldsModal: sub-field flows + close', () => {
     ]);
     const setShow = vi.fn();
     renderSection({ showManageFieldsModal: true, setShowManageFieldsModal: setShow });
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Done' })).toBeTruthy());
-    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Listo' })).toBeTruthy());
+    fireEvent.click(screen.getByRole('button', { name: 'Listo' }));
     expect(setShow).toHaveBeenCalledWith(false);
   });
 
@@ -958,7 +958,7 @@ describe('ManageCustomFieldsModal: sub-field flows + close', () => {
     ]);
     const setShow = vi.fn();
     renderSection({ showManageFieldsModal: true, setShowManageFieldsModal: setShow });
-    await waitFor(() => expect(screen.getByText('Manage Custom Fields')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Gestionar campos personalizados')).toBeTruthy());
     // The header close button contains the 'close' material icon
     const buttons = screen.getAllByRole('button');
     const closeBtn = buttons.find((b) => b.querySelector('.material-icons')?.textContent === 'close');

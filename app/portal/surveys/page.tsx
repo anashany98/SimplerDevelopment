@@ -38,9 +38,9 @@ export default async function SurveysListPage() {
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
       <PortalPageHeader
-        eyebrow="Forms"
-        title="Surveys"
-        subtitle="Create surveys and collect responses from customers, leads, and visitors"
+        eyebrow="Formularios"
+        title="Encuestas"
+        subtitle="Crea encuestas y recopila respuestas de clientes, leads y visitantes"
         actions={
           <Link
             href="/portal/surveys/new"
@@ -59,15 +59,15 @@ export default async function SurveysListPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className={`${pCard} p-4`}>
             <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{list.length}</p>
-            <p className="text-xs text-muted-foreground">Total Surveys</p>
+            <p className="text-xs text-muted-foreground">Total de encuestas</p>
           </div>
           <div className={`${pCard} p-4`}>
             <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{list.filter(s => s.status === 'active').length}</p>
-            <p className="text-xs text-muted-foreground">Active</p>
+            <p className="text-xs text-muted-foreground">Activo</p>
           </div>
           <div className={`${pCard} p-4`}>
             <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{list.reduce((sum, s) => sum + (s.responseCount || 0), 0)}</p>
-            <p className="text-xs text-muted-foreground">Total Responses</p>
+            <p className="text-xs text-muted-foreground">Total de respuestas</p>
           </div>
           <div className={`${pCard} p-4`}>
             <p className="font-display text-2xl font-extrabold tracking-[-0.02em] text-foreground">{list.filter(s => s.linkedType).length}</p>
@@ -80,7 +80,7 @@ export default async function SurveysListPage() {
       {list.length === 0 ? (
         <div className={`${pCard} p-10 text-center space-y-4`}>
           <span className="material-icons text-5xl text-muted-foreground/50">poll</span>
-          <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">No surveys yet</h2>
+          <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground">Aún no hay encuestas</h2>
           <p className="text-muted-foreground text-sm max-w-md mx-auto">
             Create your first survey to collect feedback, run polls, or gather information
             from customers and leads. Surveys can be shared via link, embedded on websites,
@@ -152,7 +152,7 @@ export default async function SurveysListPage() {
       <div className={`${pCard} p-4 flex items-start gap-3`}>
         <span className="material-icons text-primary mt-0.5">tips_and_updates</span>
         <div className="text-sm text-muted-foreground">
-          <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">Integration Tips</p>
+          <p className="font-display font-extrabold tracking-[-0.01em] text-foreground">Consejos de integración</p>
           <p>
             Surveys can be linked to email campaigns, CRM deals, proposals, pitch decks, booking pages, and websites.
             Share the public link, embed on any page, or attach to an email campaign for maximum reach.

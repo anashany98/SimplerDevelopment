@@ -294,7 +294,7 @@ export default function YouTab() {
               letterSpacing: 0.3,
             }}
           >
-            Simpler Development Chat · 1.0.0 (build 247)
+            CRM AGENTS Chat · 1.0.0 (build 247)
           </Text>
         </View>
       </ScrollView>

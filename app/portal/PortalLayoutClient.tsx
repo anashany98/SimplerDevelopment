@@ -20,9 +20,6 @@ import type { SerializableEntitlements } from './PortalShell';
 // surface and a ~50ms shimmer before it appears is fine. Dynamic import keeps
 // `react-markdown` + the rest of the 441-LoC widget out of the initial
 // portal bundle. See perf phase 3.
-// Kept (unused) so the floating AI chat widget can be re-enabled by
-// uncommenting its render below — see note near the bottom of the tree.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const AIChatWidget = dynamic(() => import('@/components/portal/AIChatWidget'), {
   ssr: false,
   loading: () => null,
@@ -44,14 +41,7 @@ export default function PortalLayoutClient({ children, apps, entitlements }: Por
   // Pre-auth pages render without portal chrome (no sidebar/topbar). Onboarding
   // joins them: it renders its own full-bleed split-screen shell (stepper rail
   // + content), so the portal sidebar/topbar would only fight it.
-  const isLoginPage =
-    pathname === '/portal/login' ||
-    pathname === '/portal/signup' ||
-    pathname === '/portal/forgot-password' ||
-    pathname === '/portal/reset-password' ||
-    pathname === '/portal/mobile-auth' ||
-    pathname.startsWith('/portal/invite/') ||
-    pathname === '/portal/onboarding';
+  const isLoginPage = pathname === '/portal/login' || pathname === '/portal/signup' || pathname === '/portal/forgot-password' || pathname === '/portal/reset-password' || pathname === '/portal/mobile-auth' || pathname.startsWith('/portal/invite/') || pathname === '/portal/onboarding';
   const isEditorRoute = /\/portal\/websites\/\d+\/(posts\/|navigation)|\/portal\/tools\/pitch-decks\/\d+/.test(pathname);
   const [previewMode, setPreviewMode] = useState(false);
 
@@ -68,9 +58,13 @@ export default function PortalLayoutClient({ children, apps, entitlements }: Por
   }, []);
 
   const toggleCollapse = () => {
-    setCollapsed(prev => {
+    setCollapsed((prev) => {
       const next = !prev;
-      try { localStorage.setItem('portalSidebarCollapsed', String(next)); } catch { /* ignore */ }
+      try {
+        localStorage.setItem('portalSidebarCollapsed', String(next));
+      } catch {
+        /* ignore */
+      }
       return next;
     });
   };
@@ -88,8 +82,8 @@ export default function PortalLayoutClient({ children, apps, entitlements }: Por
       const subdomain = hostname.replace('.simplerdevelopment.com', '');
       if (subdomain && !subdomain.includes('.')) {
         fetch(`/api/portal/resolve-subdomain?subdomain=${encodeURIComponent(subdomain)}`)
-          .then(r => r.ok ? r.json() : null)
-          .then(data => {
+          .then((r) => (r.ok ? r.json() : null))
+          .then((data) => {
             if (data?.success) {
               // Reload to pick up the new active client cookie (only if not already resolved)
               const resolved = sessionStorage.getItem('sd-subdomain-resolved');
@@ -125,19 +119,13 @@ export default function PortalLayoutClient({ children, apps, entitlements }: Por
     return (
       <AgencyChromeProvider>
         <PortalTitle />
-        {isIframePage ? children : (
-          <div className="min-h-screen flex items-center justify-center bg-background">
-            {children}
-          </div>
-        )}
+        {isIframePage ? children : <div className="min-h-screen flex items-center justify-center bg-background">{children}</div>}
       </AgencyChromeProvider>
     );
   }
 
   // Remove padding on full-screen editor pages
-  const isEditorPage =
-    /\/portal\/websites\/\d+\/(posts\/|navigation)/.test(pathname) ||
-    /\/portal\/branding\/profiles\/\d+\/guide/.test(pathname);
+  const isEditorPage = /\/portal\/websites\/\d+\/(posts\/|navigation)/.test(pathname) || /\/portal\/branding\/profiles\/\d+\/guide/.test(pathname);
 
   // The persistent rail + topbar apply to normal pages. Full-screen editors
   // (and preview mode) keep the sidebar as an overlay drawer so they retain
@@ -157,36 +145,30 @@ export default function PortalLayoutClient({ children, apps, entitlements }: Por
             collapsed={collapsed}
             mobileOpen={mobileOpen}
             onCloseMobile={() => setMobileOpen(false)}
-            onExpandRail={() => { setCollapsed(false); try { localStorage.setItem('portalSidebarCollapsed', 'false'); } catch { /* ignore */ } }}
+            onExpandRail={() => {
+              setCollapsed(false);
+              try {
+                localStorage.setItem('portalSidebarCollapsed', 'false');
+              } catch {
+                /* ignore */
+              }
+            }}
           />
         )}
 
         {/* Full-screen editor pages have no topbar — give them a floating
             control to open the nav drawer so navigation stays reachable. */}
         {!previewMode && !persistent && !mobileOpen && (
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="fixed top-3 left-3 z-50 w-9 h-9 grid place-items-center rounded-md bg-card border border-border text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-            title="Menu"
-            aria-label="Open navigation"
-          >
+          <button onClick={() => setMobileOpen(true)} className="fixed top-3 left-3 z-50 w-9 h-9 grid place-items-center rounded-md bg-card border border-border text-muted-foreground hover:bg-accent hover:text-foreground transition-colors" title="Menú" aria-label="Abrir navegación">
             <span className="material-icons text-xl">menu</span>
           </button>
         )}
 
         <div className={`min-h-screen flex flex-col transition-[padding] duration-200 ${persistent ? (collapsed ? 'lg:pl-16' : 'lg:pl-64') : ''}`}>
-          {persistent && (
-            <PortalTopbar
-              collapsed={collapsed}
-              onToggleCollapse={toggleCollapse}
-              onOpenMobile={() => setMobileOpen(true)}
-            />
-          )}
+          {persistent && <PortalTopbar collapsed={collapsed} onToggleCollapse={toggleCollapse} onOpenMobile={() => setMobileOpen(true)} />}
           <main className={`flex-1 ${isEditorPage || previewMode ? '' : 'p-4 sm:p-6'}`}>{children}</main>
         </div>
-        {/* AIChatWidget (floating robot/chat toggle) temporarily hidden across
-            the portal per request. Re-enable by uncommenting this line. */}
-        {/* {!previewMode && <AIChatWidget />} */}
+        {!previewMode && pathname !== '/portal/chat' && <AIChatWidget />}
       </div>
       <CmdKLauncher apps={apps} entitlements={entitlements} />
     </AgencyChromeProvider>

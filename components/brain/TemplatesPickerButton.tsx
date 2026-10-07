@@ -140,7 +140,7 @@ export default function TemplatesPickerButton({ onCreate, onTemplateApplied }: T
           <div className="max-h-72 overflow-y-auto">
             {items === null && (
               <div className="px-3 py-3 flex items-center gap-2 text-xs text-muted-foreground">
-                <span className="material-icons animate-spin text-sm">progress_activity</span>
+                <span className="material-icons animate-spin text-sm">autorenew</span>
                 Loading templates…
               </div>
             )}
@@ -169,7 +169,7 @@ export default function TemplatesPickerButton({ onCreate, onTemplateApplied }: T
                         className="w-full text-left px-3 py-2 hover:bg-accent disabled:opacity-60 disabled:cursor-wait flex items-start gap-2"
                       >
                         <span className="material-icons text-sm text-muted-foreground mt-0.5">
-                          {isApplying ? 'progress_activity' : 'description'}
+                          {isApplying ? 'autorenew' : 'description'}
                         </span>
                         <span className="flex-1 min-w-0">
                           <span className="block text-sm text-foreground truncate">{tpl.name}</span>

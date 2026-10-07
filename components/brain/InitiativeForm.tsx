@@ -114,8 +114,7 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">
-          Name <span className="text-destructive">*</span>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre<span className="text-destructive">*</span>
         </label>
         <input
           type="text"
@@ -129,20 +128,20 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">Description</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción</label>
         <textarea
           value={values.description}
           onChange={(e) => set('description', e.target.value)}
           rows={3}
           maxLength={50_000}
           className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          placeholder="What does success look like? Who's affected? Where do followups live?"
+          placeholder="¿Cómo se ve el éxito? ¿A quién afecta? ¿Dónde viven los seguimientos?"
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Priority</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Prioridad</label>
           <div className="flex items-center gap-1">
             {INITIATIVE_PRIORITIES.map((p) => {
               const chip = initiativePriorityChip(p);
@@ -182,14 +181,14 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label htmlFor="initiative-owner" className="block text-xs font-medium text-muted-foreground mb-1">Owner</label>
+          <label htmlFor="initiative-owner" className="block text-xs font-medium text-muted-foreground mb-1">Propietario</label>
           <select
             id="initiative-owner"
             value={values.ownerId ?? ''}
             onChange={(e) => set('ownerId', e.target.value ? parseInt(e.target.value, 10) : null)}
             className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="">Unassigned</option>
+            <option value="">Sin asignar</option>
             {team?.map((m) => (
               <option key={m.userId} value={m.userId}>{m.name || m.email}</option>
             ))}
@@ -204,7 +203,7 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
             onChange={(e) => set('sponsorId', e.target.value ? parseInt(e.target.value, 10) : null)}
             className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="">None</option>
+            <option value="">Ninguno</option>
             {team?.map((m) => (
               <option key={m.userId} value={m.userId}>{m.name || m.email}</option>
             ))}
@@ -214,7 +213,7 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label htmlFor="initiative-start-date" className="block text-xs font-medium text-muted-foreground mb-1">Start date</label>
+          <label htmlFor="initiative-start-date" className="block text-xs font-medium text-muted-foreground mb-1">Fecha de inicio</label>
           <input
             id="initiative-start-date"
             type="date"
@@ -248,17 +247,15 @@ function CreateEditForm({ mode, initial, onSubmit, onCancel, team, submitLabel }
             onClick={onCancel}
             disabled={submitting}
             className="px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         )}
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           {submitting
-            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Saving…</>
+            ? <><span className="material-icons animate-spin text-base">autorenew</span>Saving…</>
             : <><span className="material-icons text-base">{mode === 'create' ? 'add' : 'save'}</span>
                 {submitLabel ?? (mode === 'create' ? 'Create initiative' : 'Save changes')}
               </>}
@@ -317,7 +314,7 @@ function CloseForm({ initial, onSubmit, onCancel, submitLabel }: CloseProps) {
               className="accent-primary"
             />
             <span className="material-icons text-base text-emerald-600 dark:text-emerald-400">check_circle</span>
-            <span className="text-sm font-medium">Completed</span>
+            <span className="text-sm font-medium">Completado</span>
           </label>
           <label
             className={`flex items-center gap-2 px-3 py-2 rounded-md border cursor-pointer transition-colors ${
@@ -333,7 +330,7 @@ function CloseForm({ initial, onSubmit, onCancel, submitLabel }: CloseProps) {
               className="accent-primary"
             />
             <span className="material-icons text-base text-zinc-500">cancel</span>
-            <span className="text-sm font-medium">Cancelled</span>
+            <span className="text-sm font-medium">Cancelado</span>
           </label>
         </div>
       </div>
@@ -360,7 +357,7 @@ function CloseForm({ initial, onSubmit, onCancel, submitLabel }: CloseProps) {
           rows={5}
           maxLength={50_000}
           className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          placeholder="What worked, what didn't, what would we do differently?"
+          placeholder="¿Qué funcionó, qué no, qué haríamos de otra forma?"
         />
       </div>
 
@@ -377,17 +374,15 @@ function CloseForm({ initial, onSubmit, onCancel, submitLabel }: CloseProps) {
             onClick={onCancel}
             disabled={submitting}
             className="px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         )}
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           {submitting
-            ? <><span className="material-icons animate-spin text-base">progress_activity</span>Closing…</>
+            ? <><span className="material-icons animate-spin text-base">autorenew</span>Closing…</>
             : <><span className="material-icons text-base">archive</span>{submitLabel ?? 'Close initiative'}</>}
         </button>
       </div>

@@ -108,12 +108,12 @@ export async function revalidateBlogPostsCache(): Promise<void> {
 }
 
 // These helpers back main-domain blog routes (app/(pages)/blog/*) and must
-// ONLY return SimplerDevelopment's own "global" blog posts — rows where
+// ONLY return CRM AGENTS's own "global" blog posts — rows where
 // posts.websiteId IS NULL per the schema convention. Tenant blog posts
 // live in rows with a non-null websiteId and are served through
 // /sites/[domain]/[[...slug]] on the owning tenant's subdomain. Without
 // the isNull filter, any tenant's published blog post could be rendered
-// on the SimplerDevelopment marketing blog by guessing its slug.
+// on the CRM AGENTS marketing blog by guessing its slug.
 
 export interface BlogPostWithRelations {
   id: number;

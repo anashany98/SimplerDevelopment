@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { BookingPaymentForm } from './BookingPaymentForm';
+import { formatMoney as formatCents } from '@/lib/utils/money';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -125,13 +126,9 @@ function formatDate(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-function formatCents(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
-
 const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -241,8 +238,8 @@ export function BookingFormInline({
         const mapped: TimeSlot[] = (data.data as SlotData[]).map((slot) => {
           const start = new Date(slot.time);
           const end = new Date(start.getTime() + pageInfo.duration * 60 * 1000);
-          const display = start.toLocaleTimeString(undefined, {
-            hour: 'numeric', minute: '2-digit', hour12: true,
+          const display = start.toLocaleTimeString('es-ES', {
+            hour: 'numeric', minute: '2-digit', hour12: false,
           });
           return { start: slot.time, end: end.toISOString(), display, remainingCapacity: slot.remainingCapacity };
         });
@@ -327,7 +324,7 @@ export function BookingFormInline({
       const data = await res.json();
       if (data.success) setDiscountResult(data.data);
       else setDiscountError(data.message);
-    } catch { setDiscountError('Failed to validate code'); }
+    } catch { setDiscountError('No se pudo validar el código'); }
   }
 
   async function validateGiftCert() {
@@ -343,7 +340,7 @@ export function BookingFormInline({
       const data = await res.json();
       if (data.success) setGiftCertResult(data.data);
       else setGiftCertError(data.message);
-    } catch { setGiftCertError('Failed to validate certificate'); }
+    } catch { setGiftCertError('No se pudo validar el certificado'); }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -387,10 +384,10 @@ export function BookingFormInline({
           setStep('confirmed');
         }
       } else {
-        setSubmitError(data.message || 'Failed to book. Please try again.');
+        setSubmitError(data.message || 'No se pudo completar la reserva. Inténtalo de nuevo.');
       }
     } catch {
-      setSubmitError('Something went wrong. Please try again.');
+      setSubmitError('Algo salió mal. Inténtalo de nuevo.');
     } finally {
       setSubmitting(false);
     }
@@ -456,9 +453,9 @@ export function BookingFormInline({
           <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto">
             <span className="material-icons text-3xl text-gray-400">event_busy</span>
           </div>
-          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Page Not Found</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Página no encontrada</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm">
-            This booking page doesn&apos;t exist or is no longer active.
+            Esta página de reservas no existe o ya no está activa.
           </p>
         </div>
       </div>
@@ -519,12 +516,12 @@ export function BookingFormInline({
   if (hasPricing) stepList.push('payment');
 
   const stepLabels: Record<Step, string> = {
-    date: 'Date',
-    time: 'Time',
+    date: 'Fecha',
+    time: 'Hora',
     addons: 'Extras',
-    info: 'Details',
-    payment: 'Pay',
-    confirmed: 'Done',
+    info: 'Datos',
+    payment: 'Pago',
+    confirmed: 'Listo',
   };
 
   const backButton = (targetStep: Step) => (
@@ -532,9 +529,7 @@ export function BookingFormInline({
       onClick={() => setStep(targetStep)}
       className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
     >
-      <span className="material-icons text-lg">arrow_back</span>
-      Back
-    </button>
+      <span className="material-icons text-lg">arrow_back</span>Atrás</button>
   );
 
   return (
@@ -612,7 +607,7 @@ export function BookingFormInline({
             {pageInfo?.allowStaffSelection && pageInfo.staffMembers && pageInfo.staffMembers.length > 0 && (
               <div className="mb-5">
                 <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3" style={textColor ? { color: textColor } : undefined}>
-                  Choose a staff member
+                  Elige a un miembro del equipo
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   <button
@@ -626,7 +621,7 @@ export function BookingFormInline({
                     style={selectedStaff === null ? { borderColor: btnBg, color: btnBg, backgroundColor: btnBg + '10' } : undefined}
                   >
                     <span className="material-icons text-lg mb-1 block" style={selectedStaff === null ? { color: btnBg } : { color: '#9ca3af' }}>groups</span>
-                    <p className="text-xs font-medium" style={textColor ? { color: textColor } : undefined}>Any available</p>
+                    <p className="text-xs font-medium" style={textColor ? { color: textColor } : undefined}>Cualquiera disponible</p>
                   </button>
                   {pageInfo.staffMembers.map(staff => (
                     <button
@@ -648,7 +643,7 @@ export function BookingFormInline({
               </div>
             )}
 
-            <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4" style={textColor ? { color: textColor } : undefined}>Select a date</h2>
+            <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-4" style={textColor ? { color: textColor } : undefined}>Elige una fecha</h2>
             <div className="flex items-center justify-between mb-4">
               <button onClick={prevMonth} disabled={!canGoPrev}
                 className="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
@@ -663,7 +658,7 @@ export function BookingFormInline({
               </button>
             </div>
             <div className="grid grid-cols-7 mb-1">
-              {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
+              {['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'].map((d) => (
                 <div key={d} className="text-center text-xs font-medium text-gray-400 dark:text-gray-500 py-1" style={calDateColor ? { color: calDateColor, opacity: 0.65 } : undefined}>{d}</div>
               ))}
             </div>
@@ -693,14 +688,14 @@ export function BookingFormInline({
             <div className="flex items-center justify-between mb-4">
               {backButton('date')}
               <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {selectedDate && new Date(selectedDate + 'T12:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+                {selectedDate && new Date(selectedDate + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric' })}
               </span>
             </div>
 
             {/* Group size selector */}
             {pageInfo.maxGuests && pageInfo.maxGuests > 1 && (
               <div className="mb-4 flex items-center gap-3">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Group size:</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Tamaño del grupo:</label>
                 <div className="flex items-center gap-2">
                   <button onClick={() => setGroupSize(Math.max(1, groupSize - 1))} disabled={groupSize <= 1}
                     className="w-8 h-8 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 disabled:opacity-30">
@@ -727,7 +722,7 @@ export function BookingFormInline({
             ) : slots.length === 0 ? (
               <div className="text-center py-12">
                 <span className="material-icons text-3xl text-gray-300 dark:text-gray-600 mb-2 block">event_busy</span>
-                <p className="text-sm text-gray-500 dark:text-gray-400">No available times on this day</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">No hay horarios disponibles este día</p>
               </div>
             ) : (
               <div className="grid grid-cols-3 gap-2 max-h-80 overflow-y-auto">
@@ -745,7 +740,7 @@ export function BookingFormInline({
                       <div>{slot.display}</div>
                       {slot.remainingCapacity !== null && (
                         <div className="text-[10px] opacity-70 mt-0.5">
-                          {slot.remainingCapacity} spot{slot.remainingCapacity !== 1 ? 's' : ''} left
+                          {slot.remainingCapacity} plaza{slot.remainingCapacity !== 1 ? 's' : ''} disponible{slot.remainingCapacity !== 1 ? 's' : ''}
                         </div>
                       )}
                     </button>
@@ -761,7 +756,7 @@ export function BookingFormInline({
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5" style={cardStyle}>
             <div className="flex items-center justify-between mb-4">
               {backButton('time')}
-              <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100">Add extras</h2>
+              <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100">Añadir extras</h2>
             </div>
 
             <div className="space-y-3 mb-4">
@@ -812,9 +807,7 @@ export function BookingFormInline({
               onClick={() => setStep('info')}
               className="w-full py-3 rounded-xl font-medium transition-all hover:shadow-md"
               style={{ backgroundColor: btnBg, color: btnText, ...(btnRadius ? { borderRadius: btnRadius } : {}) }}
-            >
-              Continue
-            </button>
+            >Continuar</button>
           </div>
         )}
 
@@ -825,11 +818,11 @@ export function BookingFormInline({
               {backButton(pageInfo.enableAddOns && addOns.length > 0 ? 'addons' : 'time')}
               <div className="text-right">
                 <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  {new Date(selectedSlot.start).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
+                  {new Date(selectedSlot.start).toLocaleDateString('es-ES', { weekday: 'short', month: 'short', day: 'numeric' })}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   {selectedSlot.display} ({pageInfo.duration} min)
-                  {groupSize > 1 && ` / ${groupSize} guests`}
+                  {groupSize > 1 && ` / ${groupSize} invitados`}
                 </p>
               </div>
             </div>
@@ -843,27 +836,27 @@ export function BookingFormInline({
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre<span className="text-red-500">*</span></label>
                 <input type="text" required value={guestName} onChange={(e) => setGuestName(e.target.value)}
-                  placeholder="Your full name"
+                  placeholder="Tu nombre completo"
                   className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
                   style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties}
                   disabled={submitting} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo<span className="text-red-500">*</span></label>
                 <input type="email" required value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  placeholder="tu@ejemplo.com"
                   className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
                   style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties}
                   disabled={submitting} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone <span className="text-gray-400 font-normal">(optional)</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono<span className="text-gray-400 font-normal">(opcional)</span></label>
                 <input type="tel" value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)}
-                  placeholder="(555) 123-4567"
+                  placeholder="+34 600 123 456"
                   className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent"
                   style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties}
                   disabled={submitting} />
@@ -889,7 +882,7 @@ export function BookingFormInline({
                     <select required={q.required} value={answers[q.id] || ''} onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
                       className="w-full px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:border-transparent"
                       style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties} disabled={submitting}>
-                      <option value="">Select...</option>
+                      <option value="">Seleccionar...</option>
                       {(q.options || []).map((opt) => <option key={opt} value={opt}>{opt}</option>)}
                     </select>
                   )}
@@ -899,30 +892,26 @@ export function BookingFormInline({
               {/* Discount code */}
               {pageInfo.enableDiscountCodes && hasPricing && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Discount code</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código de descuento</label>
                   <div className="flex gap-2">
                     <input type="text" value={discountCode} onChange={(e) => setDiscountCode(e.target.value)}
-                      placeholder="Enter code" disabled={!!discountResult}
+                      placeholder="Introduce el código" disabled={!!discountResult}
                       className="flex-1 px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent text-sm"
                       style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties} />
                     {discountResult ? (
                       <button type="button" onClick={() => { setDiscountResult(null); setDiscountCode(''); }}
-                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">
-                        Clear
-                      </button>
+                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">Limpiar</button>
                     ) : (
                       <button type="button" onClick={validateDiscount} disabled={!discountCode.trim()}
                         className="px-4 py-2 rounded-xl text-sm font-medium text-white disabled:opacity-50"
-                        style={{ backgroundColor: accent }}>
-                        Apply
-                      </button>
+                        style={{ backgroundColor: accent }}>Aplicar</button>
                     )}
                   </div>
                   {discountError && <p className="text-xs text-red-500 mt-1">{discountError}</p>}
                   {discountResult && (
                     <p className="text-xs mt-1" style={{ color: accent }}>
                       <span className="material-icons text-sm align-middle mr-0.5">check_circle</span>
-                      {discountResult.code} applied ({discountResult.discountType === 'percent' ? `${discountResult.amount / 100}% off` : `${formatCents(discountResult.amount)} off`})
+                      {discountResult.code} aplicado ({discountResult.discountType === 'percent' ? `${discountResult.amount / 100}% de descuento` : `${formatCents(discountResult.amount)} de descuento`})
                     </p>
                   )}
                 </div>
@@ -931,7 +920,7 @@ export function BookingFormInline({
               {/* Gift certificate */}
               {pageInfo.enableGiftCertificates && hasPricing && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gift certificate</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tarjeta regalo</label>
                   <div className="flex gap-2">
                     <input type="text" value={giftCertCode} onChange={(e) => setGiftCertCode(e.target.value)}
                       placeholder="CERT-XXXXXX" disabled={!!giftCertResult}
@@ -939,22 +928,18 @@ export function BookingFormInline({
                       style={{ '--tw-ring-color': accent + '50', ...inputFieldStyle } as React.CSSProperties} />
                     {giftCertResult ? (
                       <button type="button" onClick={() => { setGiftCertResult(null); setGiftCertCode(''); }}
-                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">
-                        Clear
-                      </button>
+                        className="px-3 py-2 rounded-xl text-sm border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300">Limpiar</button>
                     ) : (
                       <button type="button" onClick={validateGiftCert} disabled={!giftCertCode.trim()}
                         className="px-4 py-2 rounded-xl text-sm font-medium text-white disabled:opacity-50"
-                        style={{ backgroundColor: accent }}>
-                        Apply
-                      </button>
+                        style={{ backgroundColor: accent }}>Aplicar</button>
                     )}
                   </div>
                   {giftCertError && <p className="text-xs text-red-500 mt-1">{giftCertError}</p>}
                   {giftCertResult && (
                     <p className="text-xs mt-1" style={{ color: accent }}>
                       <span className="material-icons text-sm align-middle mr-0.5">check_circle</span>
-                      Certificate applied (balance: {formatCents(giftCertResult.remainingAmount)})
+                      Certificado aplicado (saldo: {formatCents(giftCertResult.remainingAmount)})
                     </p>
                   )}
                 </div>
@@ -964,30 +949,30 @@ export function BookingFormInline({
               {hasPricing && (
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-3 space-y-1.5 text-sm">
                   <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                    <span>{pageInfo.price > 0 ? `${formatCents(pageInfo.price)} x ${groupSize}` : 'Booking'}</span>
+                    <span>{pageInfo.price > 0 ? `${formatCents(pageInfo.price)} x ${groupSize}` : 'Reserva'}</span>
                     <span>{formatCents((pageInfo.price || 0) * groupSize)}</span>
                   </div>
                   {pricing.addOnTotal > 0 && (
                     <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                      <span>Add-ons</span>
+                      <span>Extras</span>
                       <span>{formatCents(pricing.addOnTotal)}</span>
                     </div>
                   )}
                   {pricing.discount > 0 && (
                     <div className="flex justify-between" style={{ color: accent }}>
-                      <span>Discount</span>
+                      <span>Descuento</span>
                       <span>-{formatCents(pricing.discount)}</span>
                     </div>
                   )}
                   {pricing.giftCert > 0 && (
                     <div className="flex justify-between" style={{ color: accent }}>
-                      <span>Gift certificate</span>
+                      <span>Tarjeta regalo</span>
                       <span>-{formatCents(pricing.giftCert)}</span>
                     </div>
                   )}
                   <div className="flex justify-between font-semibold text-gray-900 dark:text-gray-100 pt-1.5 border-t border-gray-200 dark:border-gray-700">
                     <span>Total</span>
-                    <span>{pricing.total === 0 ? 'Free' : formatCents(pricing.total)}</span>
+                    <span>{pricing.total === 0 ? 'Gratis' : formatCents(pricing.total)}</span>
                   </div>
                 </div>
               )}
@@ -1000,10 +985,10 @@ export function BookingFormInline({
                 {submitting ? (
                   <span className="flex items-center justify-center gap-2">
                     <span className="animate-spin rounded-full h-4 w-4 border-2 border-white/30" style={{ borderTopColor: '#ffffff' }} />
-                    {pricing.total > 0 ? 'Processing...' : 'Booking...'}
+                    {pricing.total > 0 ? 'Procesando...' : 'Reservando...'}
                   </span>
                 ) : (
-                  pricing.total > 0 ? `Pay ${formatCents(pricing.total)}` : 'Confirm Booking'
+                  pricing.total > 0 ? `Pagar ${formatCents(pricing.total)}` : 'Confirmar reserva'
                 )}
               </button>
             </form>
@@ -1015,7 +1000,7 @@ export function BookingFormInline({
           <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-5" style={cardStyle}>
             <div className="text-center mb-4">
               <span className="material-icons text-3xl mb-2" style={{ color: accent }}>lock</span>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Complete Payment</h2>
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Completar pago</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 Total: <span className="font-semibold" style={{ color: accent }}>{formatCents(bookingResult.total || 0)}</span>
               </p>
@@ -1040,34 +1025,34 @@ export function BookingFormInline({
               style={{ backgroundColor: accent + '15' }}>
               <span className="material-icons text-3xl" style={{ color: accent }}>check_circle</span>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Booking Confirmed</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Reserva confirmada</h2>
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-              A confirmation has been sent to {guestEmail}
+              Hemos enviado una confirmación a {guestEmail}
             </p>
 
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 space-y-2 text-left">
               <div className="flex items-center gap-3">
                 <span className="material-icons text-gray-400 text-lg">event</span>
                 <span className="text-sm text-gray-900 dark:text-gray-100">
-                  {new Date(selectedSlot.start).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                  {new Date(selectedSlot.start).toLocaleDateString('es-ES', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                 </span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-icons text-gray-400 text-lg">schedule</span>
                 <span className="text-sm text-gray-900 dark:text-gray-100">
-                  {selectedSlot.display} - {new Date(selectedSlot.end).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })} ({pageInfo.duration} min)
+                  {selectedSlot.display} - {new Date(selectedSlot.end).toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit' })} ({pageInfo.duration} min)
                 </span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="material-icons text-gray-400 text-lg">person</span>
                 <span className="text-sm text-gray-900 dark:text-gray-100">
-                  {guestName}{groupSize > 1 ? ` (${groupSize} guests)` : ''}
+                  {guestName}{groupSize > 1 ? ` (${groupSize} invitados)` : ''}
                 </span>
               </div>
               {pricing.total > 0 && (
                 <div className="flex items-center gap-3">
                   <span className="material-icons text-gray-400 text-lg">receipt</span>
-                  <span className="text-sm text-gray-900 dark:text-gray-100">{formatCents(pricing.total)} paid</span>
+                  <span className="text-sm text-gray-900 dark:text-gray-100">{formatCents(pricing.total)} pagado</span>
                 </div>
               )}
               {meetingLink && (
@@ -1075,7 +1060,7 @@ export function BookingFormInline({
                   <span className="material-icons text-gray-400 text-lg">videocam</span>
                   <a href={meetingLink} target="_blank" rel="noopener noreferrer"
                     className="text-sm font-medium hover:underline" style={{ color: accent }}>
-                    Join Video Call
+                    Unirse a la videollamada
                   </a>
                 </div>
               )}
@@ -1083,7 +1068,7 @@ export function BookingFormInline({
                 <div className="flex items-center gap-3">
                   <span className="material-icons text-gray-400 text-lg">qr_code_2</span>
                   <span className="text-sm text-gray-900 dark:text-gray-100">
-                    Check-in code: <span className="font-mono font-bold">{bookingResult.checkinCode}</span>
+                    Código de check-in: <span className="font-mono font-bold">{bookingResult.checkinCode}</span>
                   </span>
                 </div>
               )}
@@ -1094,7 +1079,7 @@ export function BookingFormInline({
                 className="inline-flex items-center gap-2 mt-4 px-6 py-3 rounded-lg text-sm font-medium text-white transition-colors"
                 style={{ backgroundColor: accent }}>
                 <span className="material-icons text-lg">videocam</span>
-                Join Video Call
+                Unirse a la videollamada
               </a>
             )}
           </div>

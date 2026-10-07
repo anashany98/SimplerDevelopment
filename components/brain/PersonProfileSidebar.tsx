@@ -155,7 +155,7 @@ export function PersonProfileSidebar({ person }: PersonProfileSidebarProps) {
 
       {everythingEmpty ? (
         <p className="text-xs text-muted-foreground">
-          Link this person to a user account to surface their open tasks here.
+              Vincula esta persona a una cuenta de usuario para ver aquí sus tareas abiertas.
         </p>
       ) : (
         <>
@@ -166,15 +166,13 @@ export function PersonProfileSidebar({ person }: PersonProfileSidebarProps) {
             </h3>
             {tasksLoading ? (
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="material-icons animate-spin text-sm">progress_activity</span>
-                Loading…
-              </div>
+                <span className="material-icons animate-spin text-sm">autorenew</span>Cargando…</div>
             ) : noTasksPossible ? (
               <p className="text-xs text-muted-foreground">
                 No linked user account.
               </p>
             ) : tasksEmpty ? (
-              <p className="text-xs text-muted-foreground">No open tasks.</p>
+              <p className="text-xs text-muted-foreground">Sin tareas abiertas.</p>
             ) : (
               <ul className="space-y-1.5">
                 {(tasks ?? []).slice(0, 8).map((t) => (

@@ -40,14 +40,8 @@ vi.mock('@/components/portal/CompanySwitcher', () => ({
   default: () => React.createElement('div', { 'data-testid': 'company-switcher' }, 'CompanySwitcher'),
 }));
 
-// Stub CreditBalance — it fetches its own credit balance on mount (VEQA-003);
-// the sidebar test should not exercise that async fetch.
-vi.mock('@/components/portal/CreditBalance', () => ({
-  default: () => null,
-}));
-
 // AgencyChromeProvider hook — return controllable values
-const mockBrandName = { value: 'Simpler Development' };
+const mockBrandName = { value: 'CRM AGENTS' };
 const mockBrandLogoUrl = { value: 'https://example.com/logo.png' };
 
 vi.mock('@/components/portal/AgencyChromeProvider', () => ({
@@ -130,7 +124,7 @@ function setupFetch() {
 beforeEach(() => {
   vi.clearAllMocks();
   mockPathname.mockReturnValue('/portal/dashboard');
-  mockBrandName.value = 'Simpler Development';
+  mockBrandName.value = 'CRM AGENTS';
   mockBrandLogoUrl.value = 'https://example.com/logo.png';
   mockSessionRole.value = 'client';
   localStorage.clear();
@@ -174,17 +168,17 @@ describe('PortalSidebar — initial render (closed state)', () => {
   });
 
   it('renders the default brand name on the brand-mark link', async () => {
-    // Default brandName ('Simpler Development') is consumed by useAgencyChrome and
+    // Default brandName ('CRM AGENTS') is consumed by useAgencyChrome and
     // passed to the brand-mark link's title attr — the same render path the custom
     // brand test below checks. Asserts the brand identity actually renders, not just
     // that the (always-present, mocked) CompanySwitcher stub mounted.
     render(<PortalSidebar />);
     await waitFor(() => {
-      expect(document.querySelector('a[title="Simpler Development"]')).toBeTruthy();
+      expect(document.querySelector('a[title="CRM AGENTS"]')).toBeTruthy();
     });
   });
 
-  it('renders a custom (non-Simpler Development) brand name as plain text', async () => {
+  it('renders a custom (non-CRM AGENTS) brand name as plain text', async () => {
     mockBrandName.value = 'Acme Corp';
     // The brand name is consumed by useAgencyChrome and passed to the collapsed
     // brand mark link's title attribute.
@@ -231,7 +225,7 @@ describe('PortalSidebar — open/close toggle', () => {
     const onClose = vi.fn();
     render(<PortalSidebar mobileOpen={true} onCloseMobile={onClose} />);
     // The close button inside the aside calls onCloseMobile
-    const closeBtn = screen.getByTitle('Close');
+    const closeBtn = screen.getByTitle('Cerrar');
     await act(async () => { fireEvent.click(closeBtn); });
     expect(onClose).toHaveBeenCalledTimes(1);
   });
@@ -251,7 +245,7 @@ describe('PortalSidebar — open/close toggle', () => {
     // When the sidebar is open (mobileOpen={true}), verify the close button
     // inside the aside is present instead.
     render(<PortalSidebar mobileOpen={true} />);
-    const closeBtn = document.querySelector('button[aria-label="Close navigation"]');
+    const closeBtn = document.querySelector('button[aria-label="Cerrar navegación"]');
     expect(closeBtn).toBeTruthy();
   });
 });
@@ -376,7 +370,7 @@ describe('PortalSidebar — approvals badge', () => {
     render(<PortalSidebar mobileOpen={true} />);
     // No badge span with primary background (badge only renders when count > 0)
     await waitFor(() => {
-      const badges = document.querySelectorAll('.bg-primary.rounded-full');
+      const badges = document.querySelectorAll('.bg-foreground.rounded-full');
       expect(badges.length).toBe(0);
     });
   });
@@ -392,7 +386,7 @@ describe('PortalSidebar — approvals badge', () => {
     render(<PortalSidebar mobileOpen={true} />);
 
     await waitFor(() => {
-      const badge = document.querySelector('.rounded-full.bg-primary');
+      const badge = document.querySelector('.rounded-full.bg-foreground');
       expect(badge).toBeTruthy();
       expect(badge?.textContent).toBe('5');
     });
@@ -409,7 +403,7 @@ describe('PortalSidebar — approvals badge', () => {
     render(<PortalSidebar mobileOpen={true} />);
 
     await waitFor(() => {
-      const badge = document.querySelector('.rounded-full.bg-primary');
+      const badge = document.querySelector('.rounded-full.bg-foreground');
       expect(badge?.textContent).toBe('99+');
     });
   });
@@ -430,7 +424,7 @@ describe('PortalSidebar — AI credits badge (footer)', () => {
     render(<PortalSidebar mobileOpen={true} />);
 
     await waitFor(() => {
-      const link = screen.getByText('AI Credits').closest('a');
+      const link = screen.getByText('Créditos de IA').closest('a');
       expect(link).toBeTruthy();
       expect(link?.getAttribute('href')).toBe('/portal/settings/ai');
       expect(link?.textContent).toContain('12K');
@@ -445,43 +439,43 @@ describe('PortalSidebar — AI credits badge (footer)', () => {
         (c: any[]) => c[0].includes('/api/portal/credits'),
       )).toBe(true);
     });
-    expect(screen.queryByText('AI Credits')).toBeNull();
+    expect(screen.queryByText('Créditos de IA')).toBeNull();
   });
 });
 
 describe('PortalSidebar — theme cycling', () => {
   it('renders the theme button with System Mode initially', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    expect(screen.getByText('System Mode')).toBeInTheDocument();
+    expect(screen.getByText('Modo sistema')).toBeInTheDocument();
   });
 
   it('cycles theme from system → light on first click', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    const themeBtn = screen.getByText('System Mode').closest('button');
+    const themeBtn = screen.getByText('Modo sistema').closest('button');
     fireEvent.click(themeBtn!);
-    expect(screen.getByText('Light Mode')).toBeInTheDocument();
+    expect(screen.getByText('Modo claro')).toBeInTheDocument();
   });
 
   it('cycles theme from light → dark on second click', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    const themeBtn = screen.getByText('System Mode').closest('button');
+    const themeBtn = screen.getByText('Modo sistema').closest('button');
     fireEvent.click(themeBtn!);
-    fireEvent.click(screen.getByText('Light Mode').closest('button')!);
-    expect(screen.getByText('Dark Mode')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Modo claro').closest('button')!);
+    expect(screen.getByText('Modo oscuro')).toBeInTheDocument();
   });
 
   it('cycles theme from dark → system on third click', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    const themeBtn = screen.getByText('System Mode').closest('button');
+    const themeBtn = screen.getByText('Modo sistema').closest('button');
     fireEvent.click(themeBtn!);
-    fireEvent.click(screen.getByText('Light Mode').closest('button')!);
-    fireEvent.click(screen.getByText('Dark Mode').closest('button')!);
-    expect(screen.getByText('System Mode')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Modo claro').closest('button')!);
+    fireEvent.click(screen.getByText('Modo oscuro').closest('button')!);
+    expect(screen.getByText('Modo sistema')).toBeInTheDocument();
   });
 
   it('persists chosen theme to localStorage', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    const themeBtn = screen.getByText('System Mode').closest('button');
+    const themeBtn = screen.getByText('Modo sistema').closest('button');
     fireEvent.click(themeBtn!);
     expect(localStorage.getItem('theme')).toBe('light');
   });
@@ -490,7 +484,7 @@ describe('PortalSidebar — theme cycling', () => {
     localStorage.setItem('theme', 'dark');
     render(<PortalSidebar mobileOpen={true} />);
     await waitFor(() => {
-      expect(screen.getByText('Dark Mode')).toBeInTheDocument();
+      expect(screen.getByText('Modo oscuro')).toBeInTheDocument();
     });
   });
 });
@@ -498,12 +492,12 @@ describe('PortalSidebar — theme cycling', () => {
 describe('PortalSidebar — sign out', () => {
   it('renders the Sign Out button', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    expect(screen.getByText('Sign Out')).toBeInTheDocument();
+    expect(screen.getByText('Cerrar sesión')).toBeInTheDocument();
   });
 
   it('calls signOut with callbackUrl on click', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    const signOutBtn = screen.getByText('Sign Out').closest('button');
+    const signOutBtn = screen.getByText('Cerrar sesión').closest('button');
     await act(async () => { fireEvent.click(signOutBtn!); });
     await waitFor(() => {
       expect(signOut).toHaveBeenCalledWith({ callbackUrl: '/portal/login' });
@@ -512,7 +506,7 @@ describe('PortalSidebar — sign out', () => {
 
   it('POSTs to /api/portal/sign-out before calling signOut', async () => {
     render(<PortalSidebar mobileOpen={true} />);
-    const signOutBtn = screen.getByText('Sign Out').closest('button');
+    const signOutBtn = screen.getByText('Cerrar sesión').closest('button');
     await act(async () => { fireEvent.click(signOutBtn!); });
     await waitFor(() => {
       const call = (global.fetch as any).mock.calls.find(

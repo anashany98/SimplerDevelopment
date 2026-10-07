@@ -43,7 +43,7 @@ export function ProductDetailBlockPreview({ block, isSelected, onChange }: Produ
           >
             <span className="hover:text-foreground transition-colors">Shop</span>
             <span className="material-icons text-xs">chevron_right</span>
-            <span className="hover:text-foreground transition-colors">Category</span>
+            <span className="hover:text-foreground transition-colors">Categoría</span>
             <span className="material-icons text-xs">chevron_right</span>
             <span className="text-foreground">
               {block.productSlug
@@ -76,7 +76,7 @@ export function ProductDetailBlockPreview({ block, isSelected, onChange }: Produ
 
           {/* Product info placeholder */}
           <div className={`space-y-5 ${layout === 'compact' ? 'lg:col-span-2' : ''}`}>
-            <div className="text-sm font-medium text-primary">Category</div>
+            <div className="text-sm font-medium text-primary">Categoría</div>
             <div className="text-3xl font-bold" style={getElementCSS(block.elementStyles, 'productName')}>
               {block.productSlug
                 ? block.productSlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -112,14 +112,12 @@ export function ProductDetailBlockPreview({ block, isSelected, onChange }: Produ
                 <div
                   className="text-sm font-semibold mb-2"
                   style={getElementCSS(block.elementStyles, 'optionLabel')}
-                >
-                  Size
-                </div>
+                >Tamaño</div>
                 <div className="flex gap-2">
                   {['Small', 'Medium', 'Large'].map((s, i) => (
                     <div
                       key={s}
-                      className={`px-4 py-2 text-sm font-medium rounded-lg border ${i === 0 ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-background text-foreground'}`}
+                      className={`px-4 py-2 text-sm font-medium rounded-lg border ${i === 0 ? 'border-foreground bg-foreground text-background' : 'border-border bg-background text-foreground'}`}
                       style={getElementCSS(block.elementStyles, 'optionButton')}
                     >
                       {s}
@@ -132,7 +130,7 @@ export function ProductDetailBlockPreview({ block, isSelected, onChange }: Produ
             {showAddToCart && (
               <div className="border-t border-border pt-5">
                 <div
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-primary text-primary-foreground text-lg font-semibold rounded-xl"
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-foreground text-background text-lg font-semibold rounded-xl"
                   style={getElementCSS(block.elementStyles, 'addToCartButton')}
                 >
                   <span className="material-icons text-xl">shopping_cart</span>
@@ -157,9 +155,7 @@ export function ProductDetailBlockPreview({ block, isSelected, onChange }: Produ
 
         {showDescription && (
           <div className="mt-12 border-t border-border pt-8">
-            <h3 className="text-2xl font-bold mb-4" style={getElementCSS(block.elementStyles, 'sectionTitle')}>
-              Description
-            </h3>
+            <h3 className="text-2xl font-bold mb-4" style={getElementCSS(block.elementStyles, 'sectionTitle')}>Descripción</h3>
             <div className="space-y-2 text-muted-foreground">
               <div className="h-4 bg-muted/20 rounded w-full" />
               <div className="h-4 bg-muted/20 rounded w-5/6" />

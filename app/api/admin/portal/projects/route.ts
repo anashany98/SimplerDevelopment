@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { projects, clients, users, kanbanColumns } from '@/lib/db/schema';
+import { projects, clients, users, kanbanColumns, projectMembers } from '@/lib/db/schema';
 import { eq, sql } from 'drizzle-orm';
 
 async function requireStaff() {
@@ -74,6 +74,21 @@ export async function POST(req: Request) {
       db.insert(kanbanColumns).values({ projectId: project.id, name, order })
     )
   );
+
+  // Give the client's owner an explicit member row — the portal Projects list
+  // only surfaces projects where the caller has one, so an admin-created
+  // project was invisible to the client it was created for.
+  const [clientRow] = await db
+    .select({ userId: clients.userId })
+    .from(clients)
+    .where(eq(clients.id, body.clientId))
+    .limit(1);
+  if (clientRow?.userId) {
+    await db
+      .insert(projectMembers)
+      .values({ projectId: project.id, userId: clientRow.userId, role: 'owner', addedBy: userId })
+      .onConflictDoNothing();
+  }
 
   return NextResponse.json({ success: true, data: project });
 }

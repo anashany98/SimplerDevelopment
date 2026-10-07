@@ -183,15 +183,15 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
   if (rules.length === 0) {
     return (
       <div className="sm:col-span-2 space-y-1">
-        <p className="text-xs font-medium text-foreground">Conditional Logic</p>
-        <p className="text-xs text-muted-foreground">Show this field only when...</p>
+        <p className="text-xs font-medium text-foreground">Lógica condicional</p>
+        <p className="text-xs text-muted-foreground">Mostrar este campo solo cuando...</p>
         <button
           type="button"
           onClick={addRule}
           className="flex items-center gap-1.5 px-3 py-2 bg-primary/10 text-primary rounded-lg text-xs font-medium hover:bg-primary/20 transition-colors"
         >
           <span className="material-icons text-sm">add</span>
-          Add Condition
+          Añadir condición
         </button>
       </div>
     );
@@ -203,13 +203,13 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
       {/* Header row */}
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs font-medium text-foreground">Conditional Logic</p>
-          <p className="text-xs text-muted-foreground">Show this field only when...</p>
+          <p className="text-xs font-medium text-foreground">Lógica condicional</p>
+          <p className="text-xs text-muted-foreground">Mostrar este campo solo cuando...</p>
         </div>
         <button
           type="button"
           onClick={clearAll}
-          title="Remove all conditions"
+          title="Eliminar todas las condiciones"
           className="p-1"
         >
           <span className="material-icons text-sm text-muted-foreground hover:text-destructive cursor-pointer">
@@ -244,7 +244,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
                 onChange={e => handleFieldChange(idx, e.target.value)}
                 className={`${inputCls} flex-1 min-w-0`}
               >
-                <option value="">Select field...</option>
+                <option value="">Selecciona un campo...</option>
                 {allFields.map(f => (
                   <option key={f.id} value={f.id}>
                     {f.label || f.type} ({f.type})
@@ -258,27 +258,27 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
                 onChange={e => handleOperatorChange(idx, e.target.value as UiOperator)}
                 className={`${inputCls} flex-shrink-0`}
               >
-                <option value="equals">Is</option>
-                <option value="not_equals">Is not</option>
-                <option value="is_one_of">Is one of</option>
-                <option value="is_not_one_of">Is not one of</option>
-                <option value="contains">Contains</option>
-                <option value="not_contains">Does not contain</option>
+                <option value="equals">Es</option>
+                <option value="not_equals">No es</option>
+                <option value="is_one_of">Es uno de</option>
+                <option value="is_not_one_of">No es uno de</option>
+                <option value="contains">Contiene</option>
+                <option value="not_contains">No contiene</option>
                 {(isNumericField || !triggerField) && (
                   <>
-                    <option value="greater_than">Greater than</option>
-                    <option value="less_than">Less than</option>
+                    <option value="greater_than">Mayor que</option>
+                    <option value="less_than">Menor que</option>
                   </>
                 )}
-                <option value="is_empty">Is empty</option>
-                <option value="is_not_empty">Is not empty</option>
+                <option value="is_empty">Está vacío</option>
+                <option value="is_not_empty">No está vacío</option>
               </select>
 
               {/* Value input — depends on field type + operator */}
               <div className="flex-1 min-w-0">
                 {isPresenceOp ? (
                   // Presence ops take no value.
-                  <span className="text-xs text-muted-foreground italic">(no value)</span>
+                  <span className="text-xs text-muted-foreground italic">(sin valor)</span>
                 ) : isMultiOp && isChoiceField ? (
                   // Multi-value: checkboxes for choice fields
                   <div className="flex flex-wrap gap-2">
@@ -300,7 +300,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
                     type="text"
                     value={rule.values.join(', ')}
                     onChange={e => handleMultiValueFreeText(idx, e.target.value)}
-                    placeholder="Enter values, comma-separated..."
+                    placeholder="Introduce valores, separados por comas..."
                     className={`${inputCls} w-full`}
                   />
                 ) : isNumericOp ? (
@@ -309,7 +309,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
                     type="number"
                     value={rule.values[0] ?? ''}
                     onChange={e => handleSingleValueChange(idx, e.target.value)}
-                    placeholder="Enter number..."
+                    placeholder="Introduce un número..."
                     className={`${inputCls} w-full`}
                   />
                 ) : isContainsOp ? (
@@ -318,7 +318,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
                     type="text"
                     value={rule.values[0] ?? ''}
                     onChange={e => handleSingleValueChange(idx, e.target.value)}
-                    placeholder="Enter substring..."
+                    placeholder="Introduce el texto..."
                     className={`${inputCls} w-full`}
                   />
                 ) : isChoiceField ? (
@@ -328,7 +328,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
                     onChange={e => handleSingleValueChange(idx, e.target.value)}
                     className={`${inputCls} w-full`}
                   >
-                    <option value="">Select value...</option>
+                    <option value="">Selecciona un valor...</option>
                     {triggerField!.options.filter(Boolean).map(opt => (
                       <option key={opt} value={opt}>{opt}</option>
                     ))}
@@ -339,7 +339,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
                     type="text"
                     value={rule.values[0] ?? ''}
                     onChange={e => handleSingleValueChange(idx, e.target.value)}
-                    placeholder="Enter value..."
+                    placeholder="Introduce un valor..."
                     className={`${inputCls} w-full`}
                   />
                 )}
@@ -349,7 +349,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
               <button
                 type="button"
                 onClick={() => removeRule(idx)}
-                title="Remove this rule"
+                title="Eliminar esta regla"
                 className="p-1 flex-shrink-0 self-start mt-0.5"
               >
                 <span className="material-icons text-sm text-muted-foreground hover:text-destructive cursor-pointer">
@@ -368,7 +368,7 @@ export default function ConditionalLogicPanel({ field, allFields, onChange }: Pr
         className="flex items-center gap-1 text-xs text-primary hover:underline cursor-pointer"
       >
         <span className="material-icons text-sm">add</span>
-        Add another rule
+        Añadir otra regla
       </button>
     </div>
   );

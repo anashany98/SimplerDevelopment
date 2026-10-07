@@ -130,7 +130,7 @@ export default function CrmCompanyDetailPage() {
     })();
   }, [fetchCompany]);
 
-  // Contacts are driven by the paginated /api/portal/crm/contacts endpoint so
+  // Contacts are driven by the páginated /api/portal/crm/contacts endpoint so
   // we can search and page through companies with many contacts.
   const fetchContacts = useCallback(async () => {
     setContactsLoading(true);
@@ -255,7 +255,7 @@ export default function CrmCompanyDetailPage() {
     const d = await res.json();
     setSavingContact(false);
     if (!d.success) {
-      setContactError(d.message ?? 'Failed to create contact.');
+      setContactError(d.message ?? 'No se pudo crear el contacto.');
       return;
     }
     setShowContactForm(false);
@@ -276,9 +276,9 @@ export default function CrmCompanyDetailPage() {
     return (
       <div className="text-center py-20">
         <span className="material-icons text-4xl text-muted-foreground">business</span>
-        <p className="mt-2 text-muted-foreground">Company not found.</p>
+        <p className="mt-2 text-muted-foreground">Empresa no encontrada.</p>
         <Link href="/portal/crm/companies" className="text-primary text-sm hover:underline mt-2 inline-block">
-          Back to companies
+          Volver a empresas
         </Link>
       </div>
     );
@@ -289,7 +289,7 @@ export default function CrmCompanyDetailPage() {
       {/* Back link */}
       <Link href="/portal/crm/companies" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-2">
         <span className="material-icons text-base">arrow_back</span>
-        Companies
+        Empresas
       </Link>
 
       {/* Logo + header */}
@@ -315,7 +315,7 @@ export default function CrmCompanyDetailPage() {
               {!editing && (
                 <button onClick={startEditing} className={pBtnGhost}>
                   <span className="material-icons text-base">edit</span>
-                  Edit
+                  Editar
                 </button>
               )}
               <button
@@ -323,7 +323,7 @@ export default function CrmCompanyDetailPage() {
                 className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-destructive hover:bg-destructive/10 transition-colors"
               >
                 <span className="material-icons text-base">delete</span>
-                Delete
+                Eliminar
               </button>
             </div>
           }
@@ -333,10 +333,10 @@ export default function CrmCompanyDetailPage() {
       {/* Edit form */}
       {editing && (
         <form onSubmit={saveEdit} className="bg-card border border-border rounded-2xl p-6 space-y-4">
-          <h2 className={pSectionTitle}>Edit Company</h2>
+          <h2 className={pSectionTitle}>Editar empresa</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Name *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre *</label>
               <input
                 required
                 value={editForm.name}
@@ -345,7 +345,7 @@ export default function CrmCompanyDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Domain</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Dominio</label>
               <input
                 value={editForm.domain}
                 onChange={e => setEditForm(f => ({ ...f, domain: e.target.value }))}
@@ -353,7 +353,7 @@ export default function CrmCompanyDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Industry</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Sector</label>
               <input
                 value={editForm.industry}
                 onChange={e => setEditForm(f => ({ ...f, industry: e.target.value }))}
@@ -361,20 +361,20 @@ export default function CrmCompanyDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Size</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Tamaño</label>
               <select
                 value={editForm.size}
                 onChange={e => setEditForm(f => ({ ...f, size: e.target.value }))}
                 className={pSelect}
               >
-                <option value="">Select size</option>
+                <option value="">Seleccionar tamaño</option>
                 {sizeOptions.map(s => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Phone</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Teléfono</label>
               <input
                 value={editForm.phone}
                 onChange={e => setEditForm(f => ({ ...f, phone: e.target.value }))}
@@ -382,7 +382,7 @@ export default function CrmCompanyDetailPage() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Website</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Sitio web</label>
               <input
                 value={editForm.website}
                 onChange={e => setEditForm(f => ({ ...f, website: e.target.value }))}
@@ -390,17 +390,17 @@ export default function CrmCompanyDetailPage() {
               />
             </div>
             <div className="sm:col-span-2 lg:col-span-3">
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Address</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Dirección</label>
               <textarea
                 value={editForm.address}
                 onChange={e => setEditForm(f => ({ ...f, address: e.target.value }))}
                 rows={2}
-                placeholder="123 Main St, City, State"
+                placeholder="Calle 123, Ciudad, Provincia"
                 className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 resize-y"
               />
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Latitude</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Latitud</label>
                   <input
                     type="number"
                     step="any"
@@ -408,12 +408,12 @@ export default function CrmCompanyDetailPage() {
                     max={90}
                     value={editForm.latitude}
                     onChange={e => setEditForm(f => ({ ...f, latitude: e.target.value }))}
-                    placeholder="e.g. 40.7128"
+                    placeholder="p. ej. 40.7128"
                     className={pInput}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Longitude</label>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Longitud</label>
                   <input
                     type="number"
                     step="any"
@@ -421,12 +421,12 @@ export default function CrmCompanyDetailPage() {
                     max={180}
                     value={editForm.longitude}
                     onChange={e => setEditForm(f => ({ ...f, longitude: e.target.value }))}
-                    placeholder="e.g. -74.0060"
+                    placeholder="p. ej. -74.0060"
                     className={pInput}
                   />
                 </div>
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">Auto-derived from address on save if left blank.</p>
+              <p className="mt-1 text-xs text-muted-foreground">Se deduce automáticamente de la dirección al guardar si se deja vacío.</p>
             </div>
             <div className="sm:col-span-2 lg:col-span-3">
               <MediaPicker
@@ -437,7 +437,7 @@ export default function CrmCompanyDetailPage() {
               />
             </div>
             <div className="sm:col-span-2 lg:col-span-3">
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Notes</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Notas</label>
               <textarea
                 value={editForm.notes}
                 onChange={e => setEditForm(f => ({ ...f, notes: e.target.value }))}
@@ -452,7 +452,7 @@ export default function CrmCompanyDetailPage() {
               onClick={cancelEdit}
               className={pBtnGhost}
             >
-              Cancel
+              Cancelar
             </button>
             <button
               type="submit"
@@ -460,7 +460,7 @@ export default function CrmCompanyDetailPage() {
               className={pBtnPrimary}
             >
               {saving && <span className="material-icons animate-spin text-sm">refresh</span>}
-              Save Changes
+              Guardar cambios
             </button>
           </div>
         </form>
@@ -478,7 +478,7 @@ export default function CrmCompanyDetailPage() {
             }`}
           >
             <span className="material-icons text-base">info</span>
-            Info
+            Información
           </button>
           <button
             onClick={() => setActiveTab('contacts')}
@@ -489,7 +489,7 @@ export default function CrmCompanyDetailPage() {
             }`}
           >
             <span className="material-icons text-base">person</span>
-            Contacts ({contactTotal})
+            Contactos ({contactTotal})
           </button>
           <button
             onClick={() => setActiveTab('deals')}
@@ -500,7 +500,7 @@ export default function CrmCompanyDetailPage() {
             }`}
           >
             <span className="material-icons text-base">handshake</span>
-            Deals ({deals.length})
+            Negocios ({deals.length})
           </button>
           <button
             onClick={() => setActiveTab('custom-fields')}
@@ -511,7 +511,7 @@ export default function CrmCompanyDetailPage() {
             }`}
           >
             <span className="material-icons text-base">tune</span>
-            Custom Fields
+            Campos personalizados
           </button>
         </div>
 
@@ -519,11 +519,11 @@ export default function CrmCompanyDetailPage() {
           {activeTab === 'info' && (
             <div className="space-y-6">
               <div>
-                <h2 className={pSectionTitle + ' mb-4'}>Company Information</h2>
+                <h2 className={pSectionTitle + ' mb-4'}>Información de la empresa</h2>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="flex items-center gap-3">
                     <span className="material-icons text-base text-muted-foreground">phone</span>
-                    <span className="text-sm text-foreground">{company.phone ?? 'No phone'}</span>
+                    <span className="text-sm text-foreground">{company.phone ?? 'Sin teléfono'}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="material-icons text-base text-muted-foreground">language</span>
@@ -532,21 +532,21 @@ export default function CrmCompanyDetailPage() {
                         {company.website}
                       </a>
                     ) : (
-                      <span className="text-sm text-foreground">No website</span>
+                      <span className="text-sm text-foreground">Sin sitio web</span>
                     )}
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="material-icons text-base text-muted-foreground">location_on</span>
-                    <span className="text-sm text-foreground">{company.address ?? 'No address'}</span>
+                    <span className="text-sm text-foreground">{company.address ?? 'Sin dirección'}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="material-icons text-base text-muted-foreground">calendar_today</span>
-                    <span className="text-sm text-muted-foreground">Added {new Date(company.createdAt).toLocaleDateString()}</span>
+                    <span className="text-sm text-muted-foreground">Añadida {new Date(company.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
                 {company.notes && (
                   <div className="mt-4 pt-4 border-t border-border">
-                    <p className="text-xs font-medium text-muted-foreground mb-1">Notes</p>
+                    <p className="text-xs font-medium text-muted-foreground mb-1">Notas</p>
                     <p className="text-sm text-foreground whitespace-pre-wrap">{company.notes}</p>
                   </div>
                 )}
@@ -562,7 +562,7 @@ export default function CrmCompanyDetailPage() {
                 <div className="relative flex-1 min-w-[200px]">
                   <span className="material-icons text-base text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">search</span>
                   <input
-                    placeholder="Search contacts..."
+                    placeholder="Buscar contactos..."
                     value={contactSearchInput}
                     onChange={e => setContactSearchInput(e.target.value)}
                     className={`${pInput} pl-9 pr-3`}
@@ -578,7 +578,7 @@ export default function CrmCompanyDetailPage() {
                   className={`${pBtnPrimary} shrink-0`}
                 >
                   <span className="material-icons text-base">{showContactForm ? 'close' : 'person_add'}</span>
-                  {showContactForm ? 'Cancel' : 'Add Contact'}
+                  {showContactForm ? 'Cancelar' : 'Añadir contacto'}
                 </button>
               </div>
 
@@ -592,7 +592,7 @@ export default function CrmCompanyDetailPage() {
                   )}
                   <div className="grid sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">First name *</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre *</label>
                       <input
                         required
                         value={newContact.firstName}
@@ -601,7 +601,7 @@ export default function CrmCompanyDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Last name</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Apellidos</label>
                       <input
                         value={newContact.lastName}
                         onChange={e => setNewContact(f => ({ ...f, lastName: e.target.value }))}
@@ -609,7 +609,7 @@ export default function CrmCompanyDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Email</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Correo</label>
                       <input
                         type="email"
                         value={newContact.email}
@@ -618,7 +618,7 @@ export default function CrmCompanyDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Phone</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Teléfono</label>
                       <input
                         value={newContact.phone}
                         onChange={e => setNewContact(f => ({ ...f, phone: e.target.value }))}
@@ -626,7 +626,7 @@ export default function CrmCompanyDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Title</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Cargo</label>
                       <input
                         value={newContact.title}
                         onChange={e => setNewContact(f => ({ ...f, title: e.target.value }))}
@@ -634,16 +634,16 @@ export default function CrmCompanyDetailPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-muted-foreground mb-1">Status</label>
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">Estado</label>
                       <select
                         value={newContact.status}
                         onChange={e => setNewContact(f => ({ ...f, status: e.target.value }))}
                         className={pSelect}
                       >
-                        <option value="active">Active</option>
-                        <option value="lead">Lead</option>
-                        <option value="customer">Customer</option>
-                        <option value="inactive">Inactive</option>
+                        <option value="active">Activo</option>
+                        <option value="lead">Prospecto</option>
+                        <option value="customer">Cliente</option>
+                        <option value="inactive">Inactivo</option>
                       </select>
                     </div>
                   </div>
@@ -654,7 +654,7 @@ export default function CrmCompanyDetailPage() {
                       className={pBtnPrimary}
                     >
                       {savingContact && <span className="material-icons animate-spin text-sm">refresh</span>}
-                      Create Contact
+                      Crear contacto
                     </button>
                   </div>
                 </form>
@@ -667,8 +667,8 @@ export default function CrmCompanyDetailPage() {
               ) : contacts.length === 0 ? (
                 <p className="text-sm text-muted-foreground py-4 text-center">
                   {contactSearch || titleFilter.length > 0
-                    ? 'No contacts match your filters.'
-                    : 'No contacts at this company.'}
+                    ? 'Ningún contacto coincide con tus filtros.'
+                    : 'No hay contactos en esta empresa.'}
                 </p>
               ) : (
                 <div className="divide-y divide-border">
@@ -684,7 +684,7 @@ export default function CrmCompanyDetailPage() {
                       </div>
                       <div className="flex items-center gap-3">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[c.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                          {c.status}
+                          {({ active: 'Activo', inactive: 'Inactivo', lead: 'Prospecto', customer: 'Cliente' })[c.status] ?? c.status}
                         </span>
                         <span className="material-icons text-base text-muted-foreground">chevron_right</span>
                       </div>
@@ -696,7 +696,7 @@ export default function CrmCompanyDetailPage() {
               {totalPages > 1 && (
                 <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
                   <p className="text-xs text-muted-foreground">
-                    Page {contactPage} of {totalPages}
+                    Página {contactPage} de {totalPages}
                   </p>
                   <div className="flex items-center gap-1">
                     <button
@@ -743,7 +743,7 @@ export default function CrmCompanyDetailPage() {
               <div className="flex justify-end">
                 <button onClick={() => setShowDealForm(true)} className={pBtnPrimary}>
                   <span className="material-icons text-base">add</span>
-                  Add Deal
+                  Añadir negocio
                 </button>
               </div>
 
@@ -756,7 +756,7 @@ export default function CrmCompanyDetailPage() {
               )}
 
               {deals.length === 0 ? (
-                <p className="text-sm text-muted-foreground py-4 text-center">No deals with this company.</p>
+                <p className="text-sm text-muted-foreground py-4 text-center">No hay negocios con esta empresa.</p>
               ) : (
                 <div className="divide-y divide-border">
                   {deals.map(d => (
@@ -774,7 +774,7 @@ export default function CrmCompanyDetailPage() {
                           {d.expectedCloseDate && (
                             <>
                               <span>-</span>
-                              <span>Close: {new Date(d.expectedCloseDate).toLocaleDateString()}</span>
+                              <span>Cierre: {new Date(d.expectedCloseDate).toLocaleDateString()}</span>
                             </>
                           )}
                         </div>
@@ -782,7 +782,7 @@ export default function CrmCompanyDetailPage() {
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-semibold text-foreground">{formatMoney(d.value)}</span>
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${dealStatusColor[d.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                          {d.status}
+                          {({ open: 'Abierto', won: 'Ganado', lost: 'Perdido' })[d.status] ?? d.status}
                         </span>
                       </div>
                     </Link>

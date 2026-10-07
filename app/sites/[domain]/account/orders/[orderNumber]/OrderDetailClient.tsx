@@ -87,6 +87,14 @@ const statusColor: Record<string, string> = {
   cancelled: 'bg-red-100 text-red-800',
 };
 
+const statusLabel: Record<string, string> = {
+  pending: 'Pendiente',
+  processing: 'En proceso',
+  shipped: 'Enviado',
+  delivered: 'Entregado',
+  cancelled: 'Cancelado',
+};
+
 const timelineIcon: Record<string, string> = {
   pending: 'schedule',
   processing: 'inventory_2',
@@ -97,15 +105,15 @@ const timelineIcon: Record<string, string> = {
 
 // Map EasyPost tracking status → { label, pill class }
 const trackingStatusMeta: Record<string, { label: string; pill: string }> = {
-  pre_transit: { label: 'Label created', pill: 'bg-gray-100 text-gray-700' },
-  in_transit: { label: 'In transit', pill: 'bg-blue-100 text-blue-800' },
-  out_for_delivery: { label: 'Out for delivery', pill: 'bg-blue-100 text-blue-800' },
-  delivered: { label: 'Delivered', pill: 'bg-green-100 text-green-800' },
-  return_to_sender: { label: 'Returned', pill: 'bg-orange-100 text-orange-800' },
-  failure: { label: 'Issue', pill: 'bg-red-100 text-red-800' },
-  error: { label: 'Issue', pill: 'bg-red-100 text-red-800' },
-  cancelled: { label: 'Cancelled', pill: 'bg-gray-100 text-gray-700' },
-  unknown: { label: 'Updating', pill: 'bg-gray-100 text-gray-700' },
+  pre_transit: { label: 'Etiqueta creada', pill: 'bg-gray-100 text-gray-700' },
+  in_transit: { label: 'En tránsito', pill: 'bg-blue-100 text-blue-800' },
+  out_for_delivery: { label: 'En reparto', pill: 'bg-blue-100 text-blue-800' },
+  delivered: { label: 'Entregado', pill: 'bg-green-100 text-green-800' },
+  return_to_sender: { label: 'Devuelto', pill: 'bg-orange-100 text-orange-800' },
+  failure: { label: 'Incidencia', pill: 'bg-red-100 text-red-800' },
+  error: { label: 'Incidencia', pill: 'bg-red-100 text-red-800' },
+  cancelled: { label: 'Cancelado', pill: 'bg-gray-100 text-gray-700' },
+  unknown: { label: 'Actualizando', pill: 'bg-gray-100 text-gray-700' },
 };
 
 function getTrackingStatusMeta(status: string | null | undefined, hasTracking: boolean) {
@@ -119,18 +127,18 @@ function relativeTime(input: string | Date | null | undefined): string {
   if (!input) return '';
   const date = input instanceof Date ? input : new Date(input);
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
-  if (seconds < 0) return 'just now';
-  if (seconds < 60) return 'just now';
+  if (seconds < 0) return 'ahora mismo';
+  if (seconds < 60) return 'ahora mismo';
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  if (minutes < 60) return `hace ${minutes} minuto${minutes === 1 ? '' : 's'}`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+  if (hours < 24) return `hace ${hours} hora${hours === 1 ? '' : 's'}`;
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days} day${days === 1 ? '' : 's'} ago`;
+  if (days < 30) return `hace ${days} día${days === 1 ? '' : 's'}`;
   const months = Math.floor(days / 30);
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} ago`;
+  if (months < 12) return `hace ${months} ${months === 1 ? 'mes' : 'meses'}`;
   const years = Math.floor(months / 12);
-  return `${years} year${years === 1 ? '' : 's'} ago`;
+  return `hace ${years} año${years === 1 ? '' : 's'}`;
 }
 
 // Pull a human-readable status from a webhook payload, falling back to "—".
@@ -195,30 +203,30 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
           <div>
             <Link href="/account/orders" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 mb-3">
               <span className="material-icons" style={{ fontSize: '18px' }}>arrow_back</span>
-              Back to orders
+              Volver a los pedidos
             </Link>
 
             {loading ? (
               <div className="text-center py-12">
-                <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>progress_activity</span>
+                <span className="material-icons text-gray-300 animate-spin" style={{ fontSize: '32px' }}>autorenew</span>
               </div>
             ) : !order ? (
               <div className="border border-gray-200 rounded-xl p-12 text-center">
                 <span className="material-icons text-gray-300" style={{ fontSize: '48px' }}>error_outline</span>
-                <p className="text-sm text-gray-500 mt-3">Order not found.</p>
+                <p className="text-sm text-gray-500 mt-3">Pedido no encontrado.</p>
               </div>
             ) : (
               <div className="space-y-6">
                 {/* Order header */}
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Order {order.orderNumber}</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">Pedido {order.orderNumber}</h1>
                     <p className="text-sm text-gray-500 mt-1">
-                      Placed on {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      Realizado el {new Date(order.createdAt).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}
                     </p>
                   </div>
                   <span className={`text-sm px-3 py-1.5 rounded-full font-medium ${statusColor[order.status] ?? 'bg-gray-100 text-gray-700'}`}>
-                    {order.status}
+                    {statusLabel[order.status] ?? order.status}
                   </span>
                 </div>
 
@@ -230,7 +238,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                     <div className="border border-gray-200 rounded-xl p-5 space-y-3">
                       <div className="flex items-center gap-2">
                         <span className="material-icons text-gray-400" style={{ fontSize: '20px' }}>local_shipping</span>
-                        <h2 className="text-sm font-semibold text-gray-900">Shipment</h2>
+                        <h2 className="text-sm font-semibold text-gray-900">Envío</h2>
                         <span className={`ml-auto text-xs px-2.5 py-1 rounded-full font-medium ${statusMeta.pill}`}>
                           {statusMeta.label}
                         </span>
@@ -240,13 +248,13 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                         <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-700">
                           {order.carrier && (
                             <div>
-                              <span className="text-gray-500">Carrier: </span>
+                              <span className="text-gray-500">Transportista: </span>
                               <span className="font-medium">{order.carrier}</span>
                             </div>
                           )}
                           {order.shippingMethod && (
                             <div>
-                              <span className="text-gray-500">Service: </span>
+                              <span className="text-gray-500">Servicio: </span>
                               <span className="font-medium">{order.shippingMethod}</span>
                             </div>
                           )}
@@ -255,7 +263,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
 
                       {order.trackingNumber && (
                         <div className="text-sm">
-                          <span className="text-gray-500">Tracking #: </span>
+                          <span className="text-gray-500">N.º de seguimiento: </span>
                           {order.trackingUrl ? (
                             <a
                               href={order.trackingUrl}
@@ -274,11 +282,11 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
 
                       {order.latestTrackingEventAt ? (
                         <p className="text-xs text-gray-500">
-                          Last update: {relativeTime(order.latestTrackingEventAt)}
+                          Última actualización: {relativeTime(order.latestTrackingEventAt)}
                         </p>
                       ) : (
                         hasTracking && (
-                          <p className="text-xs text-gray-500">Awaiting carrier scan</p>
+                          <p className="text-xs text-gray-500">Esperando escaneo del transportista</p>
                         )
                       )}
 
@@ -289,7 +297,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                           rel="noopener noreferrer"
                           className="text-sm font-medium text-gray-900 hover:underline inline-flex items-center gap-1"
                         >
-                          View full tracking
+                          Ver seguimiento completo
                           <span className="material-icons" style={{ fontSize: '16px' }}>open_in_new</span>
                         </a>
                       )}
@@ -302,7 +310,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                   <div className="border border-gray-200 rounded-xl overflow-hidden">
                     <div className="px-5 py-3 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
                       <span className="material-icons text-gray-400" style={{ fontSize: '18px' }}>history</span>
-                      <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Tracking history</h2>
+                      <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Historial de seguimiento</h2>
                     </div>
                     <div className="divide-y divide-gray-200">
                       {trackingEvents.map((ev, i) => {
@@ -310,7 +318,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                         return (
                           <div key={i} className="flex items-baseline gap-3 px-5 py-3 text-sm">
                             <span className="text-xs text-gray-400 whitespace-nowrap min-w-[7.5rem]">
-                              {new Date(ev.processedAt).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                              {new Date(ev.processedAt).toLocaleString('es-ES', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
                             </span>
                             <span className="text-gray-900 font-medium">{ev.eventType}</span>
                             <span className="text-gray-500">— {status}</span>
@@ -324,7 +332,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                 {/* Items table */}
                 <div className="border border-gray-200 rounded-xl overflow-hidden">
                   <div className="px-5 py-3 bg-gray-50 border-b border-gray-200">
-                    <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Items</h2>
+                    <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Elementos</h2>
                   </div>
                   <div className="divide-y divide-gray-200">
                     {items.map(item => {
@@ -347,16 +355,16 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                             <p className="text-sm font-medium text-gray-900">{item.productName}</p>
                             {item.variantName && <p className="text-xs text-gray-500">{item.variantName}</p>}
                             {item.design ? (
-                              <p className="text-xs italic text-gray-500">Custom: {item.design.name || 'Untitled design'}</p>
+                              <p className="text-xs italic text-gray-500">Personalizado: {item.design.name || 'Diseño sin título'}</p>
                             ) : item.designId ? (
-                              <p className="text-xs italic text-gray-400">Design no longer available</p>
+                              <p className="text-xs italic text-gray-400">Diseño ya no disponible</p>
                             ) : null}
-                            <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                            <p className="text-xs text-gray-500">Cant.: {item.quantity}</p>
                           </div>
                           <div className="text-right">
                             <p className="text-sm font-medium text-gray-900">{formatMoney(item.total)}</p>
                             {item.quantity > 1 && (
-                              <p className="text-xs text-gray-500">{formatMoney(item.unitPrice)} each</p>
+                              <p className="text-xs text-gray-500">{formatMoney(item.unitPrice)} cada uno</p>
                             )}
                           </div>
                         </div>
@@ -370,11 +378,11 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                       <span>{formatMoney(order.subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-gray-500">
-                      <span>Shipping</span>
+                      <span>Envío</span>
                       <span>{formatMoney(order.shipping)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-gray-500">
-                      <span>Tax</span>
+                      <span>Impuesto</span>
                       <span>{formatMoney(order.tax)}</span>
                     </div>
                     <div className="flex justify-between text-sm font-semibold text-gray-900 pt-2 border-t border-gray-200">
@@ -388,10 +396,10 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                 {(order.shippingAddress || order.billingAddress) && (
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div className="border border-gray-200 rounded-xl p-5">
-                      {renderAddress(order.shippingAddress, 'Shipping Address')}
+                      {renderAddress(order.shippingAddress, 'Dirección de envío')}
                     </div>
                     <div className="border border-gray-200 rounded-xl p-5">
-                      {renderAddress(order.billingAddress, 'Billing Address')}
+                      {renderAddress(order.billingAddress, 'Dirección de facturación')}
                     </div>
                   </div>
                 )}
@@ -399,7 +407,7 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                 {/* Order timeline */}
                 {history.length > 0 && (
                   <div className="border border-gray-200 rounded-xl p-5">
-                    <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Order History</h2>
+                    <h2 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">Historial del pedido</h2>
                     <div className="space-y-4">
                       {history.map((entry, i) => (
                         <div key={entry.id} className="flex gap-3">
@@ -414,11 +422,11 @@ export function OrderDetailClient({ siteId, domain, orderNumber }: { siteId: num
                           </div>
                           <div className="pb-4">
                             <p className={`text-sm font-medium ${i === 0 ? 'text-gray-900' : 'text-gray-500'}`}>
-                              {entry.status.charAt(0).toUpperCase() + entry.status.slice(1)}
+                              {statusLabel[entry.status] ?? (entry.status.charAt(0).toUpperCase() + entry.status.slice(1))}
                             </p>
                             {entry.note && <p className="text-xs text-gray-500 mt-0.5">{entry.note}</p>}
                             <p className="text-xs text-gray-400 mt-0.5">
-                              {new Date(entry.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                              {new Date(entry.createdAt).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}
                             </p>
                           </div>
                         </div>

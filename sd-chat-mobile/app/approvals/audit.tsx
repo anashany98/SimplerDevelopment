@@ -433,7 +433,7 @@ export default function AuditExportScreen() {
                     textTransform: 'uppercase',
                   }}
                 >
-                  SimplerDevelopment seal
+                  CRM AGENTS seal
                 </Text>
                 <View
                   style={{

@@ -15,13 +15,13 @@ interface CustomField {
 }
 
 const KIND_LABELS: Record<Kind, string> = {
-  text: 'Text',
-  number: 'Number',
-  date: 'Date',
-  select: 'Select (one)',
-  multi_select: 'Select (multiple)',
+  text: 'Texto',
+  number: 'Número',
+  date: 'Fecha',
+  select: 'Selección (una)',
+  multi_select: 'Selección (múltiple)',
   url: 'URL',
-  checkbox: 'Checkbox',
+  checkbox: 'Casilla',
 };
 
 const KINDS: Kind[] = ['text', 'number', 'date', 'select', 'multi_select', 'url', 'checkbox'];
@@ -65,7 +65,7 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
   };
 
   const onDelete = async (id: number) => {
-    if (!confirm('Delete this field? Existing card values will be removed.')) return;
+    if (!confirm('¿Eliminar este campo? Se eliminarán los valores existentes en las tarjetas.')) return;
     await fetch(`/api/portal/custom-fields/${id}`, { method: 'DELETE' });
     await load();
   };
@@ -74,18 +74,18 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
     <div className="bg-card border border-border rounded-xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Custom fields</h3>
+          <h3 className="text-sm font-semibold text-foreground">Campos personalizados</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Adds an editable section to every card detail in this project.
+            Añade una sección editable al detalle de cada tarjeta de este proyecto.
           </p>
         </div>
         {canEdit && (
           <button
             onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+            className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-medium bg-foreground text-background hover:bg-foreground/90"
           >
             <span className="material-icons text-sm">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'New field'}
+            {showForm ? 'Cancelar' : 'Nuevo campo'}
           </button>
         )}
       </div>
@@ -94,17 +94,17 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
         <form onSubmit={onSubmit} className="space-y-3 border border-border rounded-lg p-4 bg-background">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Field name <span className="text-destructive">*</span></label>
+              <label className="text-xs font-medium text-foreground">Nombre del campo <span className="text-destructive">*</span></label>
               <input
                 value={form.name}
                 onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
                 required
-                placeholder="e.g. Severity"
+                placeholder="p. ej. Gravedad"
                 className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-foreground">Kind</label>
+              <label className="text-xs font-medium text-foreground">Tipo</label>
               <select
                 value={form.kind}
                 onChange={e => setForm(p => ({ ...p, kind: e.target.value as Kind }))}
@@ -115,11 +115,11 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
             </div>
             {(form.kind === 'select' || form.kind === 'multi_select') && (
               <div className="space-y-1.5 sm:col-span-2">
-                <label className="text-xs font-medium text-foreground">Options (comma-separated)</label>
+                <label className="text-xs font-medium text-foreground">Opciones (separadas por comas)</label>
                 <input
                   value={form.optionsCsv}
                   onChange={e => setForm(p => ({ ...p, optionsCsv: e.target.value }))}
-                  placeholder="Critical, High, Medium, Low"
+                  placeholder="Crítica, Alta, Media, Baja"
                   className="w-full px-2 py-1.5 rounded border border-border bg-background text-sm"
                 />
               </div>
@@ -131,23 +131,21 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
                   checked={form.required}
                   onChange={e => setForm(p => ({ ...p, required: e.target.checked }))}
                   className="accent-primary"
-                />
-                Required
-              </label>
+                />Obligatorio</label>
             </div>
           </div>
           <div className="flex justify-end">
-            <button type="submit" disabled={saving} className="px-4 py-1.5 rounded bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50">
-              {saving ? 'Saving…' : 'Add field'}
+            <button type="submit" disabled={saving} className="px-4 py-1.5 rounded bg-foreground text-background text-xs font-medium hover:bg-foreground/90 disabled:opacity-50">
+              {saving ? 'Guardando…' : 'Añadir campo'}
             </button>
           </div>
         </form>
       )}
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <p className="text-sm text-muted-foreground">Cargando…</p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground italic">No custom fields yet.</p>
+        <p className="text-sm text-muted-foreground italic">Aún no hay campos personalizados.</p>
       ) : (
         <div className="border border-border rounded-lg divide-y divide-border">
           {rows.map(f => (
@@ -156,14 +154,14 @@ export default function ProjectCustomFieldsPanel({ projectId, canEdit }: { proje
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-medium text-foreground">{f.name}</p>
                   <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono">{f.key}</span>
-                  {f.required && <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/15 text-destructive font-medium">required</span>}
+                  {f.required && <span className="text-[10px] px-1.5 py-0.5 rounded bg-destructive/15 text-destructive font-medium">obligatorio</span>}
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  {KIND_LABELS[f.kind]}{f.options.length > 0 ? ` · ${f.options.length} options` : ''}
+                  {KIND_LABELS[f.kind]}{f.options.length > 0 ? ` · ${f.options.length} opciones` : ''}
                 </p>
               </div>
               {canEdit && (
-                <button onClick={() => onDelete(f.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Delete">
+                <button onClick={() => onDelete(f.id)} className="text-xs text-muted-foreground hover:text-destructive" title="Eliminar">
                   <span className="material-icons text-sm">delete_outline</span>
                 </button>
               )}

@@ -1,6 +1,6 @@
 # Commerce API (Products & Product Categories)
 
-The Commerce API lets you browse the product catalog for any SimplerDevelopment-hosted storefront: list products with filtering, sorting, and pagination; fetch a full single-product detail by slug; and retrieve the site's product category tree. All endpoints are read-only and return only `active` products from an enabled store.
+The Commerce API lets you browse the product catalog for any CRM AGENTS-hosted storefront: list products with filtering, sorting, and pagination; fetch a full single-product detail by slug; and retrieve the site's product category tree. All endpoints are read-only and return only `active` products from an enabled store.
 
 **Base URL:** `https://{your-domain}/api/v1/sites/{siteId}`
 

@@ -42,7 +42,7 @@ export default async function TemplatePreviewPage({ params, searchParams }: Page
     // The template preview is not a public-facing URL.
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-muted-foreground text-sm">Sign in to preview a content-type template.</p>
+        <p className="text-muted-foreground text-sm">Inicia sesión para previsualizar una plantilla de tipo de contenido.</p>
       </div>
     );
   }

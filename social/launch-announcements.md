@@ -12,7 +12,7 @@
 
 ---
 
-### SimplerDevelopment — Initial public release
+### CRM AGENTS — Initial public release
 
 **Multi-tenant agency SaaS platform. Apache-2.0. Self-hostable.**
 
@@ -78,7 +78,7 @@ See [README.md → Quick start](./README.md#quick-start). Requires Postgres with
 
 ---
 
-**Name:** SimplerDevelopment
+**Name:** CRM AGENTS
 
 **Tagline:** Open-source agency SaaS with a 450-tool AI agent API
 
@@ -116,7 +116,7 @@ Apache-2.0. BYOK for AI providers and Stripe. Happy to answer technical question
 ---
 
 **Title:**
-`Show HN: SimplerDevelopment – open-source multi-tenant agency SaaS with MCP server`
+`Show HN: CRM AGENTS – open-source multi-tenant agency SaaS with MCP server`
 
 **Body:**
 
@@ -233,7 +233,7 @@ Repo: `https://github.com/DanielPCoyle/simplerdevelopment2026` (Apache-2.0)
 
 Today I'm open-sourcing the platform I built to run a software agency.
 
-SimplerDevelopment is a multi-tenant SaaS platform that lets an agency provision per-client portals — each with a website, CRM, AI knowledge base, email campaigns, bookings, projects, and a storefront — from a single deployment.
+CRM AGENTS is a multi-tenant SaaS platform that lets an agency provision per-client portals — each with a website, CRM, AI knowledge base, email campaigns, bookings, projects, and a storefront — from a single deployment.
 
 **Why I built it:**
 Running an agency means stitching together a site builder, a CRM, a project tool, an email platform, and a knowledge base — each with separate billing and logins. I wanted one system where I could onboard a client in minutes and have everything ready: their website, their pipeline, their processes, all connected.
@@ -413,7 +413,7 @@ Feedback welcome — especially on the MCP architecture.
 
 Model Context Protocol (MCP) is becoming the standard handshake between AI agents and software platforms. Most MCP implementations I've seen add a handful of tools to a single-purpose app. What happens when you need to expose an entire multi-tenant SaaS — 22 product domains, tens of thousands of lines of business logic — through a single endpoint?
 
-I built SimplerDevelopment, an open-source multi-tenant agency SaaS, and the platform ships 450 MCP tools at `POST /api/mcp`. In this post I'll walk through:
+I built CRM AGENTS, an open-source multi-tenant agency SaaS, and the platform ships 450 MCP tools at `POST /api/mcp`. In this post I'll walk through:
 
 1. How the tool registry works — and why a baseline test that locks the tool count is load-bearing infrastructure, not a nice-to-have
 2. The scope model: ~50 named scopes, OAuth 2.1 with PKCE, and how a single missing scope guard becomes a tenancy bug
@@ -439,7 +439,7 @@ Running a software agency means your clients need websites, a CRM, a project boa
 
 I spent the past year building a different answer: a single multi-tenant platform that provisions all of that under one roof when you onboard a client. Today I'm open-sourcing it under Apache-2.0.
 
-SimplerDevelopment is a Next.js monorepo that serves three audiences from one deployment: an internal admin panel for the agency, a per-tenant client portal (CRM, websites, brain, projects, email, bookings, store), and per-tenant public-facing websites. Every client's data is isolated at the database level by `clientId` — a tenancy regression test runs on every data-access change to verify there are no leaks.
+CRM AGENTS is a Next.js monorepo that serves three audiences from one deployment: an internal admin panel for the agency, a per-tenant client portal (CRM, websites, brain, projects, email, bookings, store), and per-tenant public-facing websites. Every client's data is isolated at the database level by `clientId` — a tenancy regression test runs on every data-access change to verify there are no leaks.
 
 The piece that makes it agent-native: 450 MCP tools at a single endpoint, so an AI agent like Claude can build pages, update CRM records, send campaigns, and manage the platform without touching the UI.
 

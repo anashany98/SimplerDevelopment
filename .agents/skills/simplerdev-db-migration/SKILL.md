@@ -1,9 +1,9 @@
 ---
 name: simplerdev-db-migration
-description: Safely make or review SimplerDevelopment database schema changes using Drizzle. Use when editing `lib/db/schema/**`, adding tables/columns/indexes/relations, changing tenant keys, generating migrations, reviewing `drizzle/*.sql`, handling pgvector extensions, fixing migration drift, or when the user says "add a migration", "change schema", "db generate", "Drizzle migration", "schema review", or "is this migration safe".
+description: Safely make or review CRM AGENTS database schema changes using Drizzle. Use when editing `lib/db/schema/**`, adding tables/columns/indexes/relations, changing tenant keys, generating migrations, reviewing `drizzle/*.sql`, handling pgvector extensions, fixing migration drift, or when the user says "add a migration", "change schema", "db generate", "Drizzle migration", "schema review", or "is this migration safe".
 ---
 
-# SimplerDev DB Migration
+# CRM AGENTS DB Migration
 
 Own database safety. Drizzle schema files are the source; generated SQL is output. Never hand-edit `drizzle/*.sql`.
 
@@ -27,4 +27,4 @@ Own database safety. Drizzle schema files are the source; generated SQL is outpu
 
 ## Reference
 
-Read `references/drizzle-safety.md` for migration review checks, DB target verification, and common SimplerDevelopment schema patterns.
+Read `references/drizzle-safety.md` for migration review checks, DB target verification, and common CRM AGENTS schema patterns.

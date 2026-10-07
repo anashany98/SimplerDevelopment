@@ -45,7 +45,7 @@ describe('QuestionEditor', () => {
     await userEvent.click(expand);
 
     // The label input uses the unique placeholder from SurveyBuilder.
-    const labelInput = screen.getByPlaceholderText(/What is your domain name\?/);
+    const labelInput = screen.getByPlaceholderText(/¿Cuál es tu nombre de dominio\?/);
     await userEvent.clear(labelInput);
     await userEvent.type(labelInput, 'A');
 

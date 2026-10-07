@@ -50,7 +50,7 @@ export default function HttpLogViewer({ siteId }: { siteId: number }) {
         setError(json.message);
       }
     } catch {
-      setError('Failed to fetch logs');
+      setError('No se pudieron obtener los registros');
     } finally {
       setLoading(false);
     }
@@ -68,7 +68,7 @@ export default function HttpLogViewer({ siteId }: { siteId: number }) {
           setError(json.message);
         }
       } catch {
-        setError('Failed to fetch logs');
+        setError('No se pudieron obtener los registros');
       } finally {
         setLoading(false);
       }
@@ -92,7 +92,7 @@ export default function HttpLogViewer({ siteId }: { siteId: number }) {
       <div className="px-5 py-3 border-b border-border bg-muted/20 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="material-icons text-muted-foreground text-lg">monitoring</span>
-          <h3 className="font-semibold text-sm text-foreground">HTTP Logs</h3>
+          <h3 className="font-semibold text-sm text-foreground">Registros HTTP</h3>
         </div>
         <div className="flex items-center gap-2">
           {errorCount > 0 && (
@@ -119,7 +119,7 @@ export default function HttpLogViewer({ siteId }: { siteId: number }) {
             <span className={`material-icons text-sm ${autoRefresh ? 'animate-spin' : ''}`}>
               {autoRefresh ? 'sync' : 'sync_disabled'}
             </span>
-            {autoRefresh ? 'Live' : 'Paused'}
+            {autoRefresh ? 'En vivo' : 'En pausa'}
           </button>
           <button
             onClick={fetchLogs}
@@ -136,23 +136,23 @@ export default function HttpLogViewer({ siteId }: { siteId: number }) {
       {loading && logs.length === 0 ? (
         <div className="px-5 py-8 flex items-center justify-center text-muted-foreground">
           <span className="material-icons animate-spin text-lg mr-2">refresh</span>
-          <span className="text-sm">Loading...</span>
+          <span className="text-sm">Cargando...</span>
         </div>
       ) : filteredLogs.length === 0 ? (
         <p className="px-5 py-8 text-center text-sm text-muted-foreground">
-          {filter === 'errors' ? 'No errors.' : 'No HTTP requests logged yet. Logs will appear once your site receives traffic.'}
+          {filter === 'errors' ? 'Sin errores.' : 'Todavía no hay solicitudes HTTP registradas. Los registros aparecerán cuando tu sitio reciba tráfico.'}
         </p>
       ) : (
         <div className="bg-[#0d1117] max-h-96 overflow-y-auto">
           <table className="w-full text-xs font-mono">
             <thead className="sticky top-0 bg-[#161b22] text-[#8b949e]">
               <tr>
-                <th className="px-3 py-2 text-left">Time</th>
-                <th className="px-3 py-2 text-left">Method</th>
-                <th className="px-3 py-2 text-left">Path</th>
-                <th className="px-3 py-2 text-right">Status</th>
-                <th className="px-3 py-2 text-right">Duration</th>
-                <th className="px-3 py-2 text-left">Country</th>
+                <th className="px-3 py-2 text-left">Hora</th>
+                <th className="px-3 py-2 text-left">Método</th>
+                <th className="px-3 py-2 text-left">Ruta</th>
+                <th className="px-3 py-2 text-right">Estado</th>
+                <th className="px-3 py-2 text-right">Duración</th>
+                <th className="px-3 py-2 text-left">País</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#21262d]">

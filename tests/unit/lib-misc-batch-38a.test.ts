@@ -392,7 +392,7 @@ describe('lib/visual-editor/protocol', () => {
       sendToIframe(iframe, 'MY_TYPE', { x: 1 });
       expect(postMessage).toHaveBeenCalledTimes(1);
       const [msg, targetOrigin] = postMessage.mock.calls[0];
-      expect(targetOrigin).toBe('*');
+      expect(targetOrigin).toBe('http://localhost:3000');
       expect(msg).toMatchObject({
         source: 'sd-editor-parent',
         type: 'MY_TYPE',
@@ -431,7 +431,7 @@ describe('lib/visual-editor/protocol', () => {
         sendToParent('CHILD_TYPE', { z: 3 });
         expect(postMessage).toHaveBeenCalledTimes(1);
         const [msg, targetOrigin] = postMessage.mock.calls[0];
-        expect(targetOrigin).toBe('*');
+        expect(targetOrigin).toBe('http://localhost:3000');
         expect(msg).toMatchObject({
           source: 'sd-editor-iframe',
           type: 'CHILD_TYPE',
@@ -600,19 +600,19 @@ describe('lib/portal-utils', () => {
   describe('formatCents', () => {
     it('formats whole dollars', async () => {
       const { formatCents } = await import('@/lib/portal-utils');
-      expect(formatCents(0)).toBe('$0.00');
-      expect(formatCents(100)).toBe('$1.00');
-      expect(formatCents(99)).toBe('$0.99');
+      expect(formatCents(0)).toBe('0,00\u00A0€');
+      expect(formatCents(100)).toBe('1,00\u00A0€');
+      expect(formatCents(99)).toBe('0,99\u00A0€');
     });
 
     it('handles thousands separator', async () => {
       const { formatCents } = await import('@/lib/portal-utils');
-      expect(formatCents(123456)).toBe('$1,234.56');
+      expect(formatCents(123456)).toBe('1234,56\u00A0€');
     });
 
     it('formats negative cents', async () => {
       const { formatCents } = await import('@/lib/portal-utils');
-      expect(formatCents(-500)).toBe('-$5.00');
+      expect(formatCents(-500)).toBe('-5,00\u00A0€');
     });
   });
 
@@ -784,6 +784,84 @@ describe('lib/portal-utils', () => {
     it('returns empty string for empty input', async () => {
       const { stripMarkdown } = await import('@/lib/portal-utils');
       expect(stripMarkdown('')).toBe('');
+    });
+  });
+
+  describe('chat label helpers', () => {
+    it('chatChannelLabel maps channels to Spanish labels', async () => {
+      const { chatChannelLabel } = await import('@/lib/portal-utils');
+      expect(chatChannelLabel('whatsapp')).toBe('WhatsApp');
+      expect(chatChannelLabel('instagram')).toBe('Instagram');
+      expect(chatChannelLabel('messenger')).toBe('Messenger');
+      expect(chatChannelLabel('email')).toBe('Correo');
+      expect(chatChannelLabel('webchat')).toBe('Chat web');
+      expect(chatChannelLabel('unknown')).toBe('unknown');
+    });
+
+    it('chatConversationStatusLabel maps statuses to Spanish labels', async () => {
+      const { chatConversationStatusLabel } = await import('@/lib/portal-utils');
+      expect(chatConversationStatusLabel('open')).toBe('Abierto');
+      expect(chatConversationStatusLabel('assigned')).toBe('Asignado');
+      expect(chatConversationStatusLabel('closed')).toBe('Cerrado');
+      expect(chatConversationStatusLabel('weird')).toBe('weird');
+    });
+
+    it('chatAiModeLabel maps AI modes to Spanish labels', async () => {
+      const { chatAiModeLabel } = await import('@/lib/portal-utils');
+      expect(chatAiModeLabel('ai')).toBe('IA');
+      expect(chatAiModeLabel('human')).toBe('Humano');
+      expect(chatAiModeLabel('hybrid')).toBe('Híbrido');
+      expect(chatAiModeLabel('paused')).toBe('En pausa');
+      expect(chatAiModeLabel('closed')).toBe('Cerrado');
+      expect(chatAiModeLabel('weird')).toBe('weird');
+    });
+
+    it('chatMessageStatusLabel maps delivery statuses to Spanish labels', async () => {
+      const { chatMessageStatusLabel } = await import('@/lib/portal-utils');
+      expect(chatMessageStatusLabel('received')).toBe('Recibido');
+      expect(chatMessageStatusLabel('sent')).toBe('Enviado');
+      expect(chatMessageStatusLabel('delivered')).toBe('Entregado');
+      expect(chatMessageStatusLabel('read')).toBe('Leído');
+      expect(chatMessageStatusLabel('failed')).toBe('Fallido');
+      expect(chatMessageStatusLabel('pending')).toBe('Pendiente');
+      expect(chatMessageStatusLabel('weird')).toBe('weird');
+    });
+
+    it('chatAuthorKindLabel maps author kinds to Spanish labels', async () => {
+      const { chatAuthorKindLabel } = await import('@/lib/portal-utils');
+      expect(chatAuthorKindLabel('visitor')).toBe('Visitante');
+      expect(chatAuthorKindLabel('agent')).toBe('Agente');
+      expect(chatAuthorKindLabel('system')).toBe('Sistema');
+      expect(chatAuthorKindLabel('ai')).toBe('IA');
+      expect(chatAuthorKindLabel('weird')).toBe('weird');
+    });
+
+    it('chatPriorityLabel maps conversation priorities to Spanish labels', async () => {
+      const { chatPriorityLabel } = await import('@/lib/portal-utils');
+      expect(chatPriorityLabel('low')).toBe('Baja');
+      expect(chatPriorityLabel('normal')).toBe('Normal');
+      expect(chatPriorityLabel('high')).toBe('Alta');
+      expect(chatPriorityLabel('urgent')).toBe('Urgente');
+      expect(chatPriorityLabel('weird')).toBe('weird');
+    });
+  });
+
+  describe('calendar label helpers', () => {
+    it('calendarStatusLabel maps statuses to Spanish labels', async () => {
+      const { calendarStatusLabel } = await import('@/lib/portal-utils');
+      expect(calendarStatusLabel('published')).toBe('Publicado');
+      expect(calendarStatusLabel('scheduled')).toBe('Programado');
+      expect(calendarStatusLabel('draft')).toBe('Borrador');
+      expect(calendarStatusLabel('weird')).toBe('weird');
+    });
+
+    it('postTypeLabel maps post types to Spanish labels', async () => {
+      const { postTypeLabel } = await import('@/lib/portal-utils');
+      expect(postTypeLabel('blog')).toBe('Entrada de blog');
+      expect(postTypeLabel('page')).toBe('Página');
+      expect(postTypeLabel('case-study')).toBe('Caso de estudio');
+      expect(postTypeLabel('landing')).toBe('Landing page');
+      expect(postTypeLabel('weird')).toBe('weird');
     });
   });
 });

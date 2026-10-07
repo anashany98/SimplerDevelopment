@@ -84,7 +84,7 @@ function expandSlide(slide: PitchDeckSlideV2, surveys: Record<number, SurveyData
     if (!recommendation) {
       result.push({
         kind: 'survey-thanks', surveyId: survey.id,
-        thankYouTitle: survey.thankYouTitle || 'Thank you!',
+        thankYouTitle: survey.thankYouTitle || '¡Gracias!',
         thankYouMessage: survey.thankYouMessage || '',
       });
     }
@@ -276,7 +276,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
       const answers = surveyAnswers[currentVS.surveyId] || {};
       const email = ((answers.__email as string) || '').trim();
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        setSurveyErrors({ __email: 'Please enter a valid email address' });
+        setSurveyErrors({ __email: 'Introduce un correo electrónico válido' });
         return false;
       }
       setSurveyErrors({});
@@ -431,7 +431,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
   if (visibleCount === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: theme.backgroundColor, color: theme.textColor }}>
-        <p style={{ fontFamily: theme.bodyFont }}>No slides in this presentation.</p>
+        <p style={{ fontFamily: theme.bodyFont }}>No hay diapositivas en esta presentación.</p>
       </div>
     );
   }
@@ -478,7 +478,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
       >
         {isDraft && (
           <div className="absolute top-0 left-0 right-0 z-30 bg-yellow-500/90 text-black text-center text-xs font-medium py-1 tracking-wide">
-            DRAFT PREVIEW — This deck is not published
+            DRAFT PREVIEW — Esta presentación no está publicada
           </div>
         )}
 
@@ -495,7 +495,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
         {/* Navigation hint — desktop only (mobile users get the footer affordance). */}
         {current === 0 && currentVS?.kind === 'block' && (
           <div className="hidden md:block absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-xs opacity-20 tracking-wide" style={{ fontFamily: theme.bodyFont }}>
-            Press arrow keys or spacebar &middot; Swipe on mobile
+            Usa las flechas o la barra espaciadora &middot; Desliza en móvil
           </div>
         )}
 
@@ -505,7 +505,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
             viewport center regardless of how tall the current slide is. */}
         {current > 0 && !isOnDecisionSlide && currentVS?.kind !== 'survey-question' && (
           <button onClick={prev}
-            aria-label="Previous slide"
+            aria-label="Diapositiva anterior"
             className="hidden md:inline-flex items-center justify-center fixed left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full transition-all opacity-80 hover:opacity-100 backdrop-blur-sm"
             style={{ color: '#ffffff', backgroundColor: '#374151' }}>
             <span className="material-icons text-3xl leading-none">chevron_left</span>
@@ -513,7 +513,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
         )}
         {current < visibleCount - 1 && !submitting && !isOnDecisionSlide && currentVS?.kind !== 'survey-question' && (
           <button onClick={next}
-            aria-label="Next slide"
+            aria-label="Diapositiva siguiente"
             className="hidden md:inline-flex items-center justify-center fixed right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full transition-all opacity-80 hover:opacity-100 backdrop-blur-sm"
             style={{ color: '#ffffff', backgroundColor: '#374151' }}>
             <span className="material-icons text-3xl leading-none">chevron_right</span>
@@ -563,7 +563,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
                 type="button"
                 onClick={prev}
                 disabled={current === 0}
-                aria-label="Previous slide"
+                aria-label="Diapositiva anterior"
                 className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-opacity disabled:opacity-25 disabled:pointer-events-none"
                 style={{ color: theme.textColor, backgroundColor: `${theme.textColor}10` }}
               >
@@ -582,7 +582,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
                 type="button"
                 onClick={next}
                 disabled={current >= visibleCount - 1 || submitting}
-                aria-label="Next slide"
+                aria-label="Diapositiva siguiente"
                 className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-opacity disabled:opacity-25 disabled:pointer-events-none"
                 style={{ color: theme.textColor, backgroundColor: `${theme.textColor}10` }}
               >
@@ -640,7 +640,7 @@ export default function PitchDeckPresentation({ slides, theme, title, isDraft, s
 
           {currentVS?.kind === 'decision' && (
             <DecisionSlideRenderer
-              title={currentVS.slide.label || 'Choose your path'}
+              title={currentVS.slide.label || 'Elige tu camino'}
               options={currentVS.options}
               theme={theme}
               onChoose={handleDecisionChoice}
@@ -804,41 +804,41 @@ function ContactSlide({
           className="text-2xl md:text-3xl font-semibold leading-tight"
           style={{ fontFamily: theme.headingFont, color: theme.textColor }}
         >
-          Tell us a bit about you
+          Cuéntanos un poco sobre ti
         </h2>
 
         <p className="text-base opacity-50" style={{ fontFamily: theme.bodyFont, color: theme.textColor }}>
-          So we know who we&rsquo;re talking to.
+          Para saber con quién hablamos.
         </p>
 
         <div className="pt-2 space-y-4">
           <input
             type="email"
-            placeholder="you@example.com"
+            placeholder="tu@ejemplo.com"
             value={(answers.__email as string) || ''}
             onChange={(e) => onAnswer('__email', e.target.value)}
             className={inputCls}
             style={inputStyle}
             autoFocus
-            aria-label="Email"
+            aria-label="Correo"
           />
           <input
             type="text"
-            placeholder="Your name"
+            placeholder="Tu nombre"
             value={(answers.__name as string) || ''}
             onChange={(e) => onAnswer('__name', e.target.value)}
             className={inputCls}
             style={inputStyle}
-            aria-label="Name"
+            aria-label="Nombre"
           />
           <input
             type="text"
-            placeholder="Company"
+            placeholder="Empresa"
             value={(answers.__company as string) || ''}
             onChange={(e) => onAnswer('__company', e.target.value)}
             className={inputCls}
             style={inputStyle}
-            aria-label="Company"
+            aria-label="Empresa"
           />
         </div>
 
@@ -860,18 +860,14 @@ function ContactSlide({
               className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all hover:opacity-80"
               style={{ color: backFg, backgroundColor: backBg }}
             >
-              <span className="material-icons text-lg">arrow_back</span>
-              Back
-            </button>
+              <span className="material-icons text-lg">arrow_back</span>Atrás</button>
           ) : <div />}
           <button
             type="button"
             onClick={onNext}
             className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg text-sm font-medium transition-all hover:opacity-90"
             style={{ backgroundColor: nextBg, color: nextFg }}
-          >
-            Next
-            <span className="material-icons text-lg">arrow_forward</span>
+          >Siguiente<span className="material-icons text-lg">arrow_forward</span>
           </button>
         </div>
       </div>

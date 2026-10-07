@@ -59,6 +59,7 @@ pattern as the Brain runner.
 | `automation-parser` | NLP rule parser | contract + trigger/action correctness |
 | `survey-summary` | survey synthesis | contract + rules + **LLM-judge** groundedness |
 | `brain-classifier` | intent classifier | label accuracy (intent/complexity) |
+| `brain-planner` | step planner | contract + allowlisted tools + expected-tool presence |
 | `brain-grounder` | hallucination checker | meta-eval: verdict correctness + self-consistency |
 | `page-extractor` | extension extractor | needs `--clientId` (tenant key); no row seeding |
 | `note-classifier` | note taxonomy | via pure `classifyNoteRow` core (no DB) |

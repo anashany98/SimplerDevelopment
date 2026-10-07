@@ -27,14 +27,14 @@ export default function RegisterPage() {
     if (result.success) {
       router.push('/account');
     } else {
-      setError(result.message ?? 'Registration failed');
+      setError(result.message ?? 'No se pudo crear la cuenta');
     }
   }
 
   return (
     <div className="max-w-md mx-auto px-4 py-16">
-      <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">Create Account</h1>
-      <p className="text-gray-500 text-center text-sm mb-8">Create an account to track orders, save your wishlist, and more.</p>
+      <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">Crear cuenta</h1>
+      <p className="text-gray-500 text-center text-sm mb-8">Crea una cuenta para seguir pedidos, guardar tu lista de deseos y más.</p>
 
       <form method="post" onSubmit={handleSubmit} className="space-y-4">
         {error && (
@@ -42,36 +42,36 @@ export default function RegisterPage() {
         )}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
             <input value={form.firstName} onChange={set('firstName')}
               className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
             <input value={form.lastName} onChange={set('lastName')}
               className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent" />
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico *</label>
           <input type="email" required value={form.email} onChange={set('email')}
             className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-            placeholder="you@example.com" />
+            placeholder="tu@ejemplo.com" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña *</label>
           <input type="password" required minLength={8} value={form.password} onChange={set('password')}
             className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-            placeholder="Minimum 8 characters" />
+            placeholder="Mínimo 8 caracteres" />
         </div>
         <button type="submit" disabled={submitting}
           className="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-800 disabled:opacity-50 transition-colors">
-          {submitting ? 'Creating account...' : 'Create Account'}
+          {submitting ? 'Creando cuenta...' : 'Crear cuenta'}
         </button>
       </form>
 
       <p className="text-center text-sm text-gray-500 mt-6">
-        Already have an account? <Link href="/account/login" className="text-gray-900 font-medium hover:underline">Sign in</Link>
+        ¿Ya tienes cuenta? <Link href="/account/login" className="text-gray-900 font-medium hover:underline">Inicia sesión</Link>
       </p>
     </div>
   );

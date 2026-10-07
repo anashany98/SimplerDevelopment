@@ -29,7 +29,7 @@ export default async function SiteNotFound() {
   const domain = h.get('x-site-domain') || '';
 
   // Sensible defaults for the brand-agnostic fallback path.
-  let siteName = 'this site';
+  let siteName = 'este sitio';
   let primary = '#1c3370';
   let secondary = '#25418b';
   let accent = '#5ac96f';
@@ -105,12 +105,13 @@ export default async function SiteNotFound() {
           className="text-4xl sm:text-6xl font-bold mb-5 leading-tight"
           style={{ fontFamily: 'var(--brand-heading-font, inherit)' }}
         >
-          We couldn&rsquo;t find that page.
+          No encontramos esa página.
         </h1>
 
         <p className="text-base sm:text-lg max-w-2xl mx-auto mb-10 opacity-90">
-          The link may be out of date, or the page may have moved. Here are a
-          few places on {siteName} that might help you get where you&rsquo;re going.
+          Es posible que el enlace esté desactualizado o que la página se haya
+          movido. Aquí tienes algunos lugares de {siteName} que podrían ayudarte a
+          encontrar lo que buscas.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
@@ -123,7 +124,7 @@ export default async function SiteNotFound() {
             }}
           >
             <span className="material-icons text-lg" aria-hidden>home</span>
-            Back to home
+            Volver al inicio
           </Link>
           <Link
             href={`${homeHref}#contact`}
@@ -131,14 +132,14 @@ export default async function SiteNotFound() {
             style={{ borderColor: '#ffffff', color: '#ffffff' }}
           >
             <span className="material-icons text-lg" aria-hidden>support_agent</span>
-            Talk to a specialist
+            Habla con un especialista
           </Link>
         </div>
 
         {popular.length > 0 && (
           <div className="border-t border-white/20 pt-10 mt-2">
             <h2 className="text-sm font-semibold tracking-widest uppercase mb-6 opacity-80">
-              Popular pages
+              Páginas populares
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-3xl mx-auto">
               {popular.map(item => (

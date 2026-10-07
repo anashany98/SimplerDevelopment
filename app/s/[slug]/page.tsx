@@ -56,7 +56,7 @@ export default async function PublicSurveyPage({ params }: PageProps) {
         // what keeps the reviewer oriented when the thank-you screen tells them
         // a response was recorded that deliberately was not (PUX-067).
         <ApprovalBar
-          entityLabel="Survey"
+          entityLabel="Encuesta"
           title={survey.title}
           summary={approval.summary}
           status={approval.status}

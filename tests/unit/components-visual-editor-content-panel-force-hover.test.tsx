@@ -38,7 +38,7 @@ function makeButtonBlock(overrides: Record<string, unknown> = {}): Block {
 }
 
 function hoverEffectWrapper() {
-  return screen.getByText('Hover Effect').closest('div')!;
+  return screen.getByText('Efecto al pasar el cursor').closest('div')!;
 }
 
 describe('ContentPanel — button Hover Effect force-hover trigger (VEQA-041)', () => {
@@ -77,7 +77,7 @@ describe('ContentPanel — button Hover Effect force-hover trigger (VEQA-041)', 
     const headingBlock = { id: 'block-2', type: 'heading', order: 0, content: 'Hi', level: 2 } as unknown as Block;
     render(<ContentPanel block={headingBlock} onUpdate={() => {}} onForceHoverChange={onForceHoverChange} />);
 
-    expect(screen.queryByText('Hover Effect')).not.toBeInTheDocument();
+    expect(screen.queryByText('Efecto al pasar el cursor')).not.toBeInTheDocument();
     expect(onForceHoverChange).not.toHaveBeenCalled();
   });
 });

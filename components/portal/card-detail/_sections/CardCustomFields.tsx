@@ -69,8 +69,8 @@ export function CardCustomFields({ cardId, canEdit, initialFields }: { cardId: n
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Custom fields</h3>
-        {saving && <span className="text-[10px] text-muted-foreground">Saving…</span>}
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Campos personalizados</h3>
+        {saving && <span className="text-[10px] text-muted-foreground">Guardando…</span>}
       </div>
       <div className="space-y-2">
         {fields.map(f => (
@@ -191,7 +191,7 @@ function FieldInput({ field, canEdit, onChange, onBlur }: {
             disabled={disabled}
             onClick={() => toggle(o)}
             className={`px-2 py-1 rounded text-xs font-medium transition-colors disabled:opacity-60 ${
-              selected.includes(o) ? 'bg-primary text-primary-foreground' : 'border border-border text-foreground hover:bg-accent'
+              selected.includes(o) ? 'bg-foreground text-background' : 'border border-border text-foreground hover:bg-accent'
             }`}
           >
             {o}

@@ -2,8 +2,9 @@
  * Embedding + semantic-search layer for Company Brain. Phase 6.
  *
  * Provider-agnostic: the `embedText` function takes any string array and
- * returns vectors. Default provider is OpenAI text-embedding-3-small (1536d,
- * cheap, good enough). Swap by adding a branch and changing
+ * returns vectors. Default provider is OpenAI text-embedding-3-small with
+ * the output explicitly reduced to this deployment's 768-dimension storage
+ * contract. Swap by adding a branch and changing
  * brain_profiles.embeddingProvider — code is structured so the rest of the
  * system doesn't care which provider produced a vector, as long as the
  * dimensions match the column declaration.
@@ -33,8 +34,27 @@ export const ALL_ENTITY_TYPES: EntityType[] = [
   'company', 'contact', 'deal', 'post',
 ];
 
-const DEFAULT_MODEL = 'text-embedding-3-small';
-const DEFAULT_DIM = 1536;
+// Model and endpoint are env-swappable so embeddings can use a local
+// OpenAI-compatible server. The pgvector column and its HNSW index are fixed
+// at 768 dimensions, so accepting a different runtime dimension would defer a
+// configuration error until a production write fails.
+const STORAGE_VECTOR_DIMENSIONS = 768;
+const DEFAULT_MODEL = process.env.EMBEDDINGS_MODEL ?? 'text-embedding-3-small';
+const configuredDimension = Number(process.env.EMBEDDINGS_DIM ?? STORAGE_VECTOR_DIMENSIONS);
+const DEFAULT_DIM = Number.isInteger(configuredDimension) && configuredDimension > 0
+  ? configuredDimension
+  : STORAGE_VECTOR_DIMENSIONS;
+if (DEFAULT_DIM !== STORAGE_VECTOR_DIMENSIONS) {
+  throw new Error(`EMBEDDINGS_DIM=${DEFAULT_DIM} does not match brain_embeddings.vector(${STORAGE_VECTOR_DIMENSIONS})`);
+}
+
+function embeddingsEndpoint(): string {
+  const base =
+    process.env.EMBEDDINGS_BASE_URL ??
+    process.env.OPENAI_BASE_URL ??
+    'https://api.openai.com/v1';
+  return base.replace(/\/+$/, '') + '/embeddings';
+}
 
 interface EmbedResult {
   vector: number[];
@@ -76,13 +96,16 @@ export async function embedText(
 
   for (let i = 0; i < inputs.length; i += BATCH_SIZE) {
     const batch = inputs.slice(i, i + BATCH_SIZE);
-    const res = await fetch('https://api.openai.com/v1/embeddings', {
+    const res = await fetch(embeddingsEndpoint(), {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ model, input: batch }),
+      // text-embedding-3-small supports reduced dimensions. OpenAI-compatible
+      // local servers commonly ignore this field and return their native 768d
+      // representation; embedEntity verifies the actual result before writing.
+      body: JSON.stringify({ model, input: batch, dimensions: DEFAULT_DIM }),
     });
     if (!res.ok) {
       const txt = await res.text();
@@ -231,7 +254,9 @@ export async function embedEntity(args: {
     // Nothing to embed — clear any prior chunks and return.
     await db.execute(sql`
       DELETE FROM brain_embeddings
-      WHERE entity_type = ${args.entityType} AND entity_id = ${args.entityId}
+      WHERE client_id = ${args.clientId}
+        AND entity_type = ${args.entityType}
+        AND entity_id = ${args.entityId}
     `);
     return { chunks: 0, tokens: 0 };
   }
@@ -241,6 +266,9 @@ export async function embedEntity(args: {
   const dim = DEFAULT_DIM;
 
   const results = await embedText(chunks, { provider, model, clientId: args.clientId });
+  if (results.some((result) => result.vector.length !== dim)) {
+    throw new Error(`Embedding provider returned a vector whose dimensions do not match the configured ${dim}-dimension index`);
+  }
 
   // Replace strategy: delete all existing chunks for this entity, then bulk
   // insert. Done in a single transaction so a partial failure doesn't leave
@@ -248,7 +276,9 @@ export async function embedEntity(args: {
   await db.transaction(async (tx) => {
     await tx.execute(sql`
       DELETE FROM brain_embeddings
-      WHERE entity_type = ${args.entityType} AND entity_id = ${args.entityId}
+      WHERE client_id = ${args.clientId}
+        AND entity_type = ${args.entityType}
+        AND entity_id = ${args.entityId}
     `);
     for (let i = 0; i < chunks.length; i++) {
       const v = results[i].vector;
@@ -280,10 +310,12 @@ export async function embedEntity(args: {
  * Remove all embeddings for an entity. Call from delete handlers so vectors
  * don't outlive their source content.
  */
-export async function removeEmbeddings(entityType: EntityType, entityId: number): Promise<void> {
+export async function removeEmbeddings(clientId: number, entityType: EntityType, entityId: number): Promise<void> {
   await db.execute(sql`
     DELETE FROM brain_embeddings
-    WHERE entity_type = ${entityType} AND entity_id = ${entityId}
+    WHERE client_id = ${clientId}
+      AND entity_type = ${entityType}
+      AND entity_id = ${entityId}
   `);
 }
 
@@ -302,13 +334,13 @@ export async function embedById(args: {
   const { text, found } = await extractContentForEntity(args.clientId, args.entityType, args.entityId);
   if (!found) {
     // Entity was deleted — clean up any orphaned embeddings.
-    await removeEmbeddings(args.entityType, args.entityId);
+    await removeEmbeddings(args.clientId, args.entityType, args.entityId);
     return null;
   }
   if (!text.trim()) {
     // Entity exists but has nothing meaningful to embed (e.g. a deal with
     // just a stage and no notes). Drop any prior chunks and skip.
-    await removeEmbeddings(args.entityType, args.entityId);
+    await removeEmbeddings(args.clientId, args.entityType, args.entityId);
     return { chunks: 0, tokens: 0 };
   }
   return embedEntity({

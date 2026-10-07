@@ -80,7 +80,7 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
   }
 
   async function remove(id: number) {
-    if (!confirm('Delete this webhook?')) return;
+    if (!confirm('¿Eliminar este webhook?')) return;
     await fetch(`/api/portal/project-webhooks/${id}`, { method: 'DELETE' });
     setHooks(prev => prev.filter(h => h.id !== id));
   }
@@ -98,22 +98,22 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
       <div className="flex items-center justify-between p-4 border-b border-border">
         <div>
           <h3 className="font-semibold text-foreground">Webhooks</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">Get notified on card events. POSTs signed with <code className="bg-muted px-1 rounded">X-SimplerDev-Signature: sha256=…</code>.</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Recibe notificaciones de eventos de tarjetas. Peticiones POST firmadas con <code className="bg-muted px-1 rounded">X-SimplerDev-Signature: sha256=…</code>.</p>
         </div>
         {canEdit && (
           <button onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90">
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90">
             <span className="material-icons text-base">{showForm ? 'close' : 'add'}</span>
-            {showForm ? 'Cancel' : 'New webhook'}
+            {showForm ? 'Cancelar' : 'Nuevo webhook'}
           </button>
         )}
       </div>
 
       {justCreated && (
         <div className="p-4 border-b border-border bg-amber-50 dark:bg-amber-900/20">
-          <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">Copy this secret now — it will not be shown again.</p>
+          <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">Copia este secreto ahora: no se volverá a mostrar.</p>
           <code className="block mt-2 text-xs bg-card border border-border rounded p-2 break-all">{justCreated.secret}</code>
-          <button onClick={() => setJustCreated(null)} className="mt-2 text-xs text-amber-900 dark:text-amber-200 underline">Dismiss</button>
+          <button onClick={() => setJustCreated(null)} className="mt-2 text-xs text-amber-900 dark:text-amber-200 underline">Descartar</button>
         </div>
       )}
 
@@ -130,19 +130,19 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-foreground mb-1">Events (leave empty to subscribe to all)</label>
+            <label className="block text-xs font-medium text-foreground mb-1">Eventos (déjalo vacío para suscribirte a todos)</label>
             <div className="flex flex-wrap gap-1.5">
               {EVENT_OPTIONS.map(ev => (
                 <button key={ev} onClick={() => toggleEvent(ev)}
-                  className={`text-xs px-2 py-0.5 rounded-full border font-mono ${newEvents.has(ev) ? 'bg-primary text-primary-foreground border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>
+                  className={`text-xs px-2 py-0.5 rounded-full border font-mono ${newEvents.has(ev) ? 'bg-foreground text-background border-primary' : 'border-border text-muted-foreground hover:text-foreground'}`}>
                   {ev}
                 </button>
               ))}
             </div>
           </div>
           <button onClick={create} disabled={creating || !newUrl.trim()}
-            className="px-4 py-1.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50">
-            {creating ? 'Creating…' : 'Create webhook'}
+            className="px-4 py-1.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50">
+            {creating ? 'Creando…' : 'Crear webhook'}
           </button>
         </div>
       )}
@@ -150,7 +150,7 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
       {loading ? (
         <div className="p-8 text-center"><span className="material-icons animate-spin text-muted-foreground">refresh</span></div>
       ) : hooks.length === 0 ? (
-        <p className="p-6 text-sm text-muted-foreground text-center italic">No webhooks configured.</p>
+        <p className="p-6 text-sm text-muted-foreground text-center italic">No hay webhooks configurados.</p>
       ) : (
         <ul className="divide-y divide-border">
           {hooks.map(h => (
@@ -162,21 +162,21 @@ export default function ProjectWebhooksPanel({ projectId, canEdit }: { projectId
                 <p className="text-sm text-foreground font-mono truncate">{h.url}</p>
                 <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
                   {h.events.length === 0
-                    ? <span>All events</span>
+                    ? <span>Todos los eventos</span>
                     : h.events.map(ev => <span key={ev} className="bg-muted rounded px-1.5 py-0.5 font-mono">{ev}</span>)}
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground flex gap-3">
-                  {h.lastFiredAt && <span>Last fired {new Date(h.lastFiredAt).toLocaleString('en-US')} · {h.lastStatus ?? '—'}</span>}
-                  {h.failureCount > 0 && <span className="text-destructive">{h.failureCount} recent failure{h.failureCount === 1 ? '' : 's'}</span>}
+                  {h.lastFiredAt && <span>Último envío {new Date(h.lastFiredAt).toLocaleString('es-ES')} · {h.lastStatus ?? '—'}</span>}
+                  {h.failureCount > 0 && <span className="text-destructive">{h.failureCount} fallo{h.failureCount === 1 ? '' : 's'} reciente{h.failureCount === 1 ? '' : 's'}</span>}
                 </div>
               </div>
               {canEdit && (
                 <div className="flex items-center gap-1">
                   <button onClick={() => toggleActive(h.id, !h.active)}
                     className="text-xs px-2 py-1 rounded border border-border hover:bg-accent text-foreground">
-                    {h.active ? 'Pause' : 'Resume'}
+                    {h.active ? 'Pausar' : 'Reanudar'}
                   </button>
-                  <button onClick={() => remove(h.id)} className="p-1 rounded text-muted-foreground hover:text-destructive" aria-label="Delete">
+                  <button onClick={() => remove(h.id)} className="p-1 rounded text-muted-foreground hover:text-destructive" aria-label="Eliminar">
                     <span className="material-icons text-base">delete_outline</span>
                   </button>
                 </div>

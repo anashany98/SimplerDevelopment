@@ -93,9 +93,7 @@ export function SurveySlideRenderer({
                 className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all hover:opacity-80"
                 style={{ color: backFg, backgroundColor: backBg }}
               >
-                <span className="material-icons text-lg">arrow_back</span>
-                Back
-              </button>
+                <span className="material-icons text-lg">arrow_back</span>Atrás</button>
             ) : <div />}
             {onNext && (
               <button
@@ -103,9 +101,7 @@ export function SurveySlideRenderer({
                 onClick={onNext}
                 className="flex items-center gap-1.5 px-6 py-2.5 rounded-lg text-sm font-medium transition-all hover:opacity-90"
                 style={{ backgroundColor: nextBg, color: nextFg }}
-              >
-                Next
-                <span className="material-icons text-lg">arrow_forward</span>
+              >Siguiente<span className="material-icons text-lg">arrow_forward</span>
               </button>
             )}
           </div>
@@ -168,9 +164,7 @@ export function SurveySlideRenderer({
               className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium transition-all hover:opacity-80"
               style={{ color: backFg, backgroundColor: backBg }}
             >
-              <span className="material-icons text-lg">arrow_back</span>
-              Back
-            </button>
+              <span className="material-icons text-lg">arrow_back</span>Atrás</button>
           ) : <div />}
           {onNext && (
             <button
@@ -186,14 +180,10 @@ export function SurveySlideRenderer({
                   Submitting...
                 </>
               ) : isLastQuestion ? (
-                <>
-                  Submit
-                  <span className="material-icons text-lg">check</span>
+                <>Enviar<span className="material-icons text-lg">check</span>
                 </>
               ) : (
-                <>
-                  Next
-                  <span className="material-icons text-lg">arrow_forward</span>
+                <>Siguiente<span className="material-icons text-lg">arrow_forward</span>
                 </>
               )}
             </button>
@@ -285,7 +275,7 @@ function renderSlideField(
           className={inputCls}
           style={ringStyle}
         >
-          <option value="">Select...</option>
+          <option value="">Seleccionar...</option>
           {field.options.map(opt => (
             <option key={opt} value={opt}>{opt}</option>
           ))}

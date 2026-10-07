@@ -133,7 +133,7 @@ describe('BrainDocumentNewPage — basic render', () => {
   it('renders "New document" heading', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New document');
+      expect(container.textContent).toContain('Nuevo documento');
     });
   });
 
@@ -171,14 +171,14 @@ describe('BrainDocumentNewPage — basic render', () => {
   it('renders "Create & open editor" submit button', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Create');
+      expect(container.textContent).toContain('Crear');
     });
   });
 
   it('renders description sub-text about promoting notes', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('promote an existing note');
+      expect(container.textContent).toContain('promueve una nota existente');
     });
   });
 });
@@ -287,7 +287,7 @@ describe('BrainDocumentNewPage — owner dropdown', () => {
   it('shows "Unassigned" default option', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Unassigned');
+      expect(container.textContent).toContain('Sin asignar');
     });
   });
 
@@ -318,7 +318,7 @@ describe('BrainDocumentNewPage — owner dropdown', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('User #5');
+      expect(container.textContent).toContain('Usuario #5');
     });
   });
 
@@ -331,7 +331,7 @@ describe('BrainDocumentNewPage — owner dropdown', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New document');
+      expect(container.textContent).toContain('Nuevo documento');
     });
   });
 
@@ -344,7 +344,7 @@ describe('BrainDocumentNewPage — owner dropdown', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('New document');
+      expect(container.textContent).toContain('Nuevo documento');
     });
   });
 });
@@ -354,25 +354,25 @@ describe('BrainDocumentNewPage — owner dropdown', () => {
 describe('BrainDocumentNewPage — validation', () => {
   it('shows validation error when title is empty and no note picked', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const form = container.querySelector('form') as HTMLFormElement;
     await act(async () => {
       fireEvent.submit(form);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Title is required');
+      expect(container.textContent).toContain('El título es obligatorio');
     });
   });
 
   it('does not call fetch when validation fails', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     fetchMock.mockClear();
     const form = container.querySelector('form') as HTMLFormElement;
     await act(async () => {
       fireEvent.submit(form);
     });
-    await waitFor(() => expect(container.textContent).toContain('Title is required'));
+    await waitFor(() => expect(container.textContent).toContain('El título es obligatorio'));
     const docPostCalls = fetchMock.mock.calls.filter(
       (c) => String(c[0]).includes('/api/portal/brain/documents') && c[1]?.method === 'POST',
     );
@@ -394,7 +394,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
 
   it('POSTs to /api/portal/brain/documents on valid submit', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await fillAndSubmit(container);
     await waitFor(() => {
       const call = fetchMock.mock.calls.find(
@@ -409,7 +409,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
 
   it('redirects to edit page on success', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await fillAndSubmit(container);
     await waitFor(() => {
       expect(pushMock).toHaveBeenCalledWith('/portal/brain/documents/99/edit');
@@ -418,7 +418,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
 
   it('sends title in POST body', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await fillAndSubmit(container);
     await waitFor(() => {
       const call = fetchMock.mock.calls.find(
@@ -446,7 +446,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const titleInput = container.querySelector('#doc-title') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Failing doc' } });
     const form = container.querySelector('form') as HTMLFormElement;
@@ -472,7 +472,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const titleInput = container.querySelector('#doc-title') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Failing doc' } });
     const form = container.querySelector('form') as HTMLFormElement;
@@ -480,7 +480,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
       fireEvent.submit(form);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Create failed');
+      expect(container.textContent).toContain('No se pudo crear');
     });
   });
 
@@ -498,7 +498,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const titleInput = container.querySelector('#doc-title') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Failing doc' } });
     const form = container.querySelector('form') as HTMLFormElement;
@@ -525,7 +525,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const titleInput = container.querySelector('#doc-title') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Failing doc' } });
     const form = container.querySelector('form') as HTMLFormElement;
@@ -533,7 +533,7 @@ describe('BrainDocumentNewPage — plain create submit', () => {
       fireEvent.submit(form);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Network error');
+      expect(container.textContent).toContain('Error de red');
     });
   });
 });
@@ -544,28 +544,28 @@ describe('BrainDocumentNewPage — source-note section', () => {
   it('renders "Seed this document from an existing note" checkbox label', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Seed this document from an existing note');
+      expect(container.textContent).toContain('Crear este documento a partir de una nota existente');
     });
   });
 
   it('note search section is hidden by default', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     // note search input only appears after checking the box
     const noteSearchInput = Array.from(container.querySelectorAll('input[type="text"]')).find(
-      (i) => (i as HTMLInputElement).placeholder?.toLowerCase().includes('search notes'),
+      (i) => (i as HTMLInputElement).placeholder?.toLowerCase().includes('buscar notas'),
     );
     expect(noteSearchInput).toBeUndefined();
   });
 
   it('checking the "Seed from note" checkbox reveals the note search section', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Seed this document'));
+    await waitFor(() => expect(container.textContent).toContain('Crear este documento'));
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(checkbox);
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeTruthy();
     });
@@ -573,13 +573,13 @@ describe('BrainDocumentNewPage — source-note section', () => {
 
   it('unchecking the box hides the note section again', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Seed this document'));
+    await waitFor(() => expect(container.textContent).toContain('Crear este documento'));
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(checkbox);
     await waitFor(() => {
-      expect(container.querySelector('input[placeholder*="Search notes"]') ??
+      expect(container.querySelector('input[placeholder*="Buscar notas"]') ??
         Array.from(container.querySelectorAll('input')).find(
-          (i) => i.placeholder?.toLowerCase().includes('search notes'),
+          (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
         ),
       ).toBeTruthy();
     });
@@ -587,7 +587,7 @@ describe('BrainDocumentNewPage — source-note section', () => {
     fireEvent.click(checkbox);
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeUndefined();
     });
@@ -598,7 +598,7 @@ describe('BrainDocumentNewPage — source-note section', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeTruthy();
     });
@@ -624,7 +624,7 @@ describe('BrainDocumentNewPage — note search results', () => {
     fireEvent.click(checkbox);
     await waitFor(() => {
       const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-        (i) => i.placeholder?.toLowerCase().includes('search notes'),
+        (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
       );
       expect(noteSearchInput).toBeTruthy();
     });
@@ -632,10 +632,10 @@ describe('BrainDocumentNewPage — note search results', () => {
 
   it('shows "No notes found." when knowledge API returns empty', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openNoteSection(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('No notes found');
+      expect(container.textContent).toContain('No se encontraron notas');
     });
   });
 
@@ -658,7 +658,7 @@ describe('BrainDocumentNewPage — note search results', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openNoteSection(container);
     await waitFor(() => {
       expect(container.textContent).toContain('Note Alpha');
@@ -680,7 +680,7 @@ describe('BrainDocumentNewPage — note search results', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openNoteSection(container);
     await waitFor(() => expect(container.textContent).toContain('Note Alpha'));
     const noteBtn = Array.from(container.querySelectorAll('button')).find(
@@ -693,11 +693,11 @@ describe('BrainDocumentNewPage — note search results', () => {
 
   it('typing in note search box triggers a fetch', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openNoteSection(container);
     vi.useFakeTimers();
     const noteSearchInput = Array.from(container.querySelectorAll('input')).find(
-      (i) => i.placeholder?.toLowerCase().includes('search notes'),
+      (i) => i.placeholder?.toLowerCase().includes('buscar notas'),
     ) as HTMLInputElement;
     await act(async () => {
       fireEvent.change(noteSearchInput, { target: { value: 'onboarding' } });
@@ -728,10 +728,10 @@ describe('BrainDocumentNewPage — note search results', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openNoteSection(container);
     await waitFor(() => {
-      expect(container.textContent).toContain('Note #77');
+      expect(container.textContent).toContain('Nota #77');
     });
   });
 });
@@ -767,7 +767,7 @@ describe('BrainDocumentNewPage — promote-from-note submit', () => {
 
   it('POSTs to promote-from-note endpoint when note is selected', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openAndPickNote(container);
 
     const form = container.querySelector('form') as HTMLFormElement;
@@ -785,7 +785,7 @@ describe('BrainDocumentNewPage — promote-from-note submit', () => {
 
   it('redirects to edit page with docId from promote response', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openAndPickNote(container);
 
     const form = container.querySelector('form') as HTMLFormElement;
@@ -815,7 +815,7 @@ describe('BrainDocumentNewPage — promote-from-note submit', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const checkbox = container.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(checkbox);
     await waitFor(() => expect(container.textContent).toContain('Source Note'));
@@ -834,7 +834,7 @@ describe('BrainDocumentNewPage — promote-from-note submit', () => {
 
   it('sends noteId and category in promote-from-note body', async () => {
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     await openAndPickNote(container);
 
     const catSelect = container.querySelector('#doc-cat') as HTMLSelectElement;
@@ -875,7 +875,7 @@ describe('BrainDocumentNewPage — submitting state', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const titleInput = container.querySelector('#doc-title') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Pending doc' } });
     const form = container.querySelector('form') as HTMLFormElement;
@@ -883,7 +883,7 @@ describe('BrainDocumentNewPage — submitting state', () => {
       fireEvent.submit(form);
     });
     await waitFor(() => {
-      expect(container.textContent).toContain('Creating');
+      expect(container.textContent).toContain('Creando');
     });
   });
 
@@ -901,7 +901,7 @@ describe('BrainDocumentNewPage — submitting state', () => {
       return defaultFetch(url);
     });
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('New document'));
+    await waitFor(() => expect(container.textContent).toContain('Nuevo documento'));
     const titleInput = container.querySelector('#doc-title') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Pending doc' } });
     const form = container.querySelector('form') as HTMLFormElement;

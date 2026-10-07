@@ -185,7 +185,7 @@ describe('GlossaryTermForm — initial render (create)', () => {
   it('does not render Cancel button when onCancel not provided', () => {
     const { container } = renderCreate();
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     );
     expect(cancelBtn).toBeUndefined();
   });
@@ -193,7 +193,7 @@ describe('GlossaryTermForm — initial render (create)', () => {
   it('renders Cancel button when onCancel is provided', () => {
     const { container } = renderCreate({ onCancel: vi.fn() });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     );
     expect(cancelBtn).toBeTruthy();
   });
@@ -262,7 +262,7 @@ describe('GlossaryTermForm — field edits', () => {
     )!;
     fireEvent.click(deprBtn);
     // The deprecated button should now have primary styling
-    expect(deprBtn.className).toContain('bg-primary');
+    expect(deprBtn.className).toContain('bg-foreground');
   });
 
   it('toggles status back to active', () => {
@@ -271,7 +271,7 @@ describe('GlossaryTermForm — field edits', () => {
       b.textContent?.trim() === 'active',
     )!;
     fireEvent.click(activeBtn);
-    expect(activeBtn.className).toContain('bg-primary');
+    expect(activeBtn.className).toContain('bg-foreground');
   });
 });
 
@@ -835,7 +835,7 @@ describe('GlossaryTermForm — cancel button', () => {
     const onCancel = vi.fn();
     const { container } = renderCreate({ onCancel });
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(b =>
-      b.textContent?.trim() === 'Cancel',
+      b.textContent?.trim() === 'Cancelar',
     )!;
     fireEvent.click(cancelBtn);
     expect(onCancel).toHaveBeenCalledOnce();

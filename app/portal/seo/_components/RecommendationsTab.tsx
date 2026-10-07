@@ -33,12 +33,12 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
       const res = await fetch(`/api/portal/seo/projects/${projectId}/recommendations`);
       const json = await res.json();
       if (!json.success) {
-        setError(json.message || 'Failed to load recommendations.');
+        setError(json.message || 'No se pudieron cargar las recomendaciones.');
         return;
       }
       onDataChange(json.data);
     } catch {
-      setError('Network error loading recommendations.');
+      setError('Error de red al cargar las recomendaciones.');
     }
   }, [projectId, onDataChange]);
 
@@ -55,7 +55,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
       const res = await fetch(`/api/portal/seo/projects/${projectId}/recommendations`, { method: 'POST' });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setGenError(json.message || 'Failed to generate recommendations.');
+        setGenError(json.message || 'No se pudieron generar las recomendaciones.');
         return;
       }
       // The POST response is only the freshly generated open items (the
@@ -64,7 +64,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
       await fetchData();
       setConfirmingRegenerate(false);
     } catch {
-      setGenError('Network error generating recommendations.');
+      setGenError('Error de red al generar las recomendaciones.');
     } finally {
       setGenerating(false);
     }
@@ -86,13 +86,13 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
         const json = await res.json();
         if (!res.ok || !json.success) {
           onDataChange(prev);
-          setRowErrors((e) => ({ ...e, [id]: json.message || 'Failed to update.' }));
+          setRowErrors((e) => ({ ...e, [id]: json.message || 'No se pudo actualizar.' }));
           return;
         }
         onDataChange(prev.map((r) => (r.id === id ? (json.data as Recommendation) : r)));
       } catch {
         onDataChange(prev);
-        setRowErrors((e) => ({ ...e, [id]: 'Network error updating.' }));
+        setRowErrors((e) => ({ ...e, [id]: 'Error de red al actualizar.' }));
       } finally {
         setPendingId(null);
       }
@@ -104,7 +104,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
     if (error) return <p className="text-sm text-destructive">{error}</p>;
     return (
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin text-2xl">progress_activity</span>
+        <span className="material-icons animate-spin text-2xl">autorenew</span>
       </div>
     );
   }
@@ -115,27 +115,27 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
         <div>
           <span className="material-icons text-4xl text-muted-foreground/50 mb-2">checklist</span>
           <p className="text-sm font-semibold text-foreground mb-1">
-            Turn your audit + Search data into a prioritized fix list
+            Convierte tu auditoría y los datos de Search en una lista de correcciones priorizada
           </p>
           <p className="text-sm text-muted-foreground">
-            AI reads your latest crawl and Search Console history and ranks the changes most likely to move
-            organic traffic — by impact, effort, and confidence.
+            La IA lee tu último rastreo y el historial de Search Console y clasifica los cambios con más
+            probabilidad de mejorar el tráfico orgánico — por impacto, esfuerzo y confianza.
           </p>
         </div>
         <button type="button" onClick={generate} disabled={generating} className={`${pBtnPrimary} mx-auto`}>
           {generating ? (
             <>
-              <span className="material-icons text-base animate-spin">progress_activity</span>
-              Generating…
+              <span className="material-icons text-base animate-spin">autorenew</span>
+              Generando…
             </>
           ) : (
             <>
               <span className="material-icons text-base">auto_awesome</span>
-              Generate recommendations
+              Generar recomendaciones
             </>
           )}
         </button>
-        <p className="text-xs text-muted-foreground/70">Uses AI credits — a real metered generation, usually a few seconds.</p>
+        <p className="text-xs text-muted-foreground/70">Usa créditos de IA — una generación real medida, normalmente unos segundos.</p>
         {genError && <p className="text-xs text-destructive">{genError}</p>}
       </div>
     );
@@ -148,32 +148,30 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <p className="text-sm text-muted-foreground">
-          {open.length} open {open.length === 1 ? 'recommendation' : 'recommendations'}
+          {open.length} {open.length === 1 ? 'recomendación abierta' : 'recomendaciones abiertas'}
         </p>
         <div className="flex items-center gap-2">
           {confirmingRegenerate ? (
             <>
               <span className="text-xs text-muted-foreground">
-                Replaces your current open recommendations — done/dismissed are kept.
+                Reemplaza tus recomendaciones abiertas actuales; las hechas y descartadas se conservan.
               </span>
               <button type="button" onClick={generate} disabled={generating} className={pBtnPrimary}>
                 {generating ? (
                   <>
-                    <span className="material-icons text-base animate-spin">progress_activity</span>
-                    Generating…
+                    <span className="material-icons text-base animate-spin">autorenew</span>
+                    Generando…
                   </>
                 ) : (
-                  'Confirm'
+                  'Confirmar'
                 )}
               </button>
-              <button type="button" onClick={() => setConfirmingRegenerate(false)} disabled={generating} className={pBtnGhost}>
-                Cancel
-              </button>
+              <button type="button" onClick={() => setConfirmingRegenerate(false)} disabled={generating} className={pBtnGhost}>Cancelar</button>
             </>
           ) : (
             <button type="button" onClick={() => setConfirmingRegenerate(true)} className={pBtnGhost}>
               <span className="material-icons text-base">refresh</span>
-              Regenerate
+              Regenerar
             </button>
           )}
         </div>
@@ -183,7 +181,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
       {open.length === 0 ? (
         <div className={`${pCard} p-10 text-center`}>
           <span className="material-icons text-4xl text-green-500 mb-2">check_circle</span>
-          <p className="text-sm text-muted-foreground">No open recommendations — you&apos;re caught up.</p>
+          <p className="text-sm text-muted-foreground">No hay recomendaciones abiertas: estás al día.</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -209,7 +207,7 @@ export function RecommendationsTab({ projectId, data, onDataChange }: Props) {
             aria-expanded={resolvedOpen}
           >
             <span className="material-icons text-muted-foreground text-lg shrink-0">inventory_2</span>
-            <span className="flex-1 min-w-0 font-medium text-sm text-foreground">Done &amp; dismissed</span>
+            <span className="flex-1 min-w-0 font-medium text-sm text-foreground">Hechas y descartadas</span>
             <span className="text-xs text-muted-foreground shrink-0">{resolved.length}</span>
             <span className="material-icons text-muted-foreground shrink-0">{resolvedOpen ? 'expand_less' : 'expand_more'}</span>
           </button>

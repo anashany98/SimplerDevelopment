@@ -1,8 +1,314 @@
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import UsageMeters from '@/components/portal/billing/UsageMeters';
+import { useRouter } from 'next/navigation';
+import { pBtnPrimary, pBtnGhost } from '@/components/portal/portal-ui';
+
+interface Invoice {
+  id: number;
+  number: string;
+  status: string;
+  total: number;
+  dueDate: string | null;
+  paidAt: string | null;
+  createdAt: string;
+}
+
+interface PaymentMethod {
+  id: number;
+  brand: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+  isDefault: boolean;
+}
+
+function formatCents(cents: number) {
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100);
+}
+
+function formatDate(iso: string | null) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+const invoiceStatusStyles: Record<string, string> = {
+  draft: 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+  sent: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  paid: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  overdue: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+  cancelled: 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-500',
+};
 
 // The payment/billing surfaces are hidden from this deployment's UI (nav,
 // settings tab and direct URLs). The route still exists so deep links and
 // bookmarks don't 404, but it lands on the settings index instead.
 export default function SettingsBillingPage() {
-  redirect('/portal/settings');
+  const router = useRouter();
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [methods, setMethods] = useState<PaymentMethod[]>([]);
+  const [loadingInvoices, setLoadingInvoices] = useState(true);
+  const [loadingMethods, setLoadingMethods] = useState(true);
+  const [removingId, setRemovingId] = useState<number | null>(null);
+  const [paymentsDisabled, setPaymentsDisabled] = useState(true);
+  const [section, setSection] = useState<'invoices' | 'payment-methods'>('invoices');
+  const [openingPortal, setOpeningPortal] = useState(false);
+
+  useEffect(() => {
+    void (async () => {
+      const settings = await fetch('/api/portal/settings/billing')
+        .then(r => r.json())
+        .catch(() => null);
+      if (settings?.success) {
+        setInvoices(settings.data.invoices);
+        setPaymentsDisabled(Boolean(settings.data.paymentsDisabled));
+        // Payments disabled (billing removed): the payment-methods endpoint
+        // 403s by design — skip the call so the console stays clean and the
+        // section renders its dedicated state instead.
+        if (settings.data.paymentsDisabled) {
+          setPaymentsDisabled(true);
+          setLoadingInvoices(false);
+          setLoadingMethods(false);
+          return;
+        }
+      }
+      setLoadingInvoices(false);
+
+      const methodsRes = await fetch('/api/portal/billing/payment-methods')
+        .then(r => r.json())
+        .catch(() => null);
+      if (methodsRes?.success) setMethods(methodsRes.data);
+      setLoadingMethods(false);
+    })();
+  }, []);
+
+  const totalDue = invoices
+    .filter(i => i.status === 'sent' || i.status === 'overdue')
+    .reduce((sum, i) => sum + i.total, 0);
+
+  const handleManageBilling = async () => {
+    if (paymentsDisabled) return;
+    setOpeningPortal(true);
+    try {
+      const res = await fetch('/api/portal/billing/customer-portal', { method: 'POST' });
+      const data = await res.json();
+      if (data.success && data.data?.url) {
+        router.push(data.data.url);
+      }
+    } finally {
+      setOpeningPortal(false);
+    }
+  };
+
+  const handleRemoveMethod = async (id: number) => {
+    if (!confirm('¿Eliminar este método de pago?')) return;
+    setRemovingId(id);
+    try {
+      const res = await fetch('/api/portal/billing/payment-methods', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      if (data.success) setMethods(prev => prev.filter(m => m.id !== id));
+    } finally {
+      setRemovingId(null);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Usage meters */}
+      <UsageMeters />
+
+      {paymentsDisabled && (
+        <div className="flex items-center gap-2 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-4 py-3 dark:bg-amber-900/20 dark:border-amber-800 dark:text-amber-300">
+          <span className="material-icons text-base">info</span>
+          Los pagos en línea y la gestión de suscripciones están desactivados. Las facturas siguen disponibles para consulta.
+        </div>
+      )}
+
+      {/* Plans & modules CTA */}
+      <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-6 py-4">
+        <div>
+          <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Planes y módulos</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {paymentsDisabled
+              ? 'Consulta los módulos y sus precios de referencia.'
+              : 'Añade o elimina módulos de funciones de tu suscripción.'}
+          </p>
+        </div>
+        <Link
+          href="/portal/settings/billing/plans"
+          className={`${pBtnPrimary} flex-shrink-0`}
+        >
+          <span className="material-icons text-base">explore</span>
+          Planes y módulos
+        </Link>
+      </div>
+
+      {!paymentsDisabled && (
+        <div className="flex items-center justify-between bg-card border border-border rounded-2xl px-6 py-4">
+          <div>
+            <p className="text-sm font-display font-extrabold tracking-[-0.01em] text-foreground">Gestionar facturación</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Actualiza métodos de pago, descarga recibos y gestiona suscripciones en Stripe.</p>
+          </div>
+          <button
+            onClick={handleManageBilling}
+            disabled={openingPortal}
+            className={`${pBtnGhost} flex-shrink-0`}
+          >
+            {openingPortal
+              ? <span className="material-icons text-base animate-spin">refresh</span>
+              : <span className="material-icons text-base">open_in_new</span>
+            }
+            Gestionar facturación
+          </button>
+        </div>
+      )}
+
+      {/* Outstanding balance */}
+      {totalDue > 0 && (
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex items-center gap-3 dark:bg-orange-900/20 dark:border-orange-800">
+          <span className="material-icons text-orange-600">payments</span>
+          <div>
+            <p className="text-sm font-semibold text-orange-800 dark:text-orange-300">Saldo pendiente: {formatCents(totalDue)}</p>
+            <p className="text-xs text-orange-600 dark:text-orange-400">
+              {paymentsDisabled
+                ? 'Los pagos con tarjeta están desactivados. Contacta con quien emitió la factura para acordar el pago.'
+                : 'Haz clic en una factura para pagar de forma segura mediante Stripe.'}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Section toggle */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => setSection('invoices')}
+          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            section === 'invoices' ? 'bg-foreground text-background' : 'bg-accent text-muted-foreground hover:text-foreground'
+          }`}>Facturas</button>
+        <button
+          onClick={() => setSection('payment-methods')}
+          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            section === 'payment-methods' ? 'bg-foreground text-background' : 'bg-accent text-muted-foreground hover:text-foreground'
+          }`}>Métodos de pago</button>
+      </div>
+
+      {section === 'invoices' && (
+        loadingInvoices ? (
+          <div className="flex items-center justify-center py-16">
+            <span className="material-icons animate-spin text-primary text-2xl">refresh</span>
+          </div>
+        ) : invoices.length === 0 ? (
+          <div className="bg-card border border-border rounded-2xl p-12 text-center">
+            <span className="material-icons text-5xl text-muted-foreground/40">receipt_long</span>
+            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Todavía no hay facturas</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Las facturas aparecerán aquí cuando se creen.</p>
+          </div>
+        ) : (
+          <div className="bg-card border border-border rounded-2xl overflow-hidden">
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <table className="w-full min-w-[640px] text-sm">
+              <thead className="bg-muted/50 border-b border-border">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Factura</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Importe</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Acción</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {invoices.map((inv) => (
+                  <tr key={inv.id} className="hover:bg-accent/50 transition-colors">
+                    <td className="px-4 py-3">
+                      <Link href={`/portal/invoices/${inv.id}`} className="font-medium text-foreground hover:text-primary hover:underline">
+                        {inv.number}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3 font-display font-extrabold tracking-[-0.02em] text-foreground">{formatCents(inv.total)}</td>
+                    <td className="px-4 py-3">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${invoiceStatusStyles[inv.status] ?? invoiceStatusStyles.draft}`}>
+                        {inv.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {inv.status === 'paid' ? formatDate(inv.paidAt) : formatDate(inv.dueDate)}
+                    </td>
+                    <td className="px-4 py-3">
+                      {(inv.status === 'sent' || inv.status === 'overdue') && (
+                        <Link
+                          href={`/portal/invoices/${inv.id}`}
+                          className={`${paymentsDisabled ? pBtnGhost : pBtnPrimary} text-xs px-3 py-1 w-fit`}
+                        >
+                          <span className="material-icons text-xs">{paymentsDisabled ? 'receipt_long' : 'credit_card'}</span>
+                          {paymentsDisabled ? 'Ver factura' : 'Pagar ahora'}
+                        </Link>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            </div>
+          </div>
+        )
+      )}
+
+      {section === 'payment-methods' && (
+        paymentsDisabled ? (
+          <div className="bg-card border border-border rounded-2xl p-12 text-center">
+            <span className="material-icons text-5xl text-muted-foreground/40">credit_card_off</span>
+            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">Pagos deshabilitados</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Esta instancia gestiona la facturación manualmente; los pagos con tarjeta están desactivados.</p>
+          </div>
+        ) : loadingMethods ? (
+          <div className="flex items-center justify-center py-16">
+            <span className="material-icons animate-spin text-primary text-2xl">refresh</span>
+          </div>
+        ) : methods.length === 0 ? (
+          <div className="bg-card border border-border rounded-2xl p-12 text-center">
+            <span className="material-icons text-5xl text-muted-foreground/40">credit_card_off</span>
+            <h3 className="mt-4 font-display font-extrabold tracking-[-0.01em] text-foreground">No hay métodos de pago</h3>
+            <p className="mt-2 text-sm text-muted-foreground">Los métodos de pago se guardan cuando pagas una factura mediante Stripe.</p>
+          </div>
+        ) : (
+          <div className="bg-card border border-border rounded-2xl overflow-hidden">
+            <ul className="divide-y divide-border">
+              {methods.map(m => (
+                <li key={m.id} className="flex items-center gap-4 px-6 py-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span className="material-icons text-primary text-lg">credit_card</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground capitalize">
+                      {m.brand} terminada en {m.last4}
+                      {m.isDefault && (
+                        <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium">Predeterminado</span>
+                      )}
+                    </p>
+                    <p className="text-xs text-muted-foreground">Caduca {String(m.expMonth).padStart(2, '0')}/{m.expYear}</p>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveMethod(m.id)}
+                    disabled={removingId === m.id}
+                    className="p-1.5 rounded-md text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-40"
+                  >
+                    {removingId === m.id
+                      ? <span className="material-icons text-base animate-spin">refresh</span>
+                      : <span className="material-icons text-base">delete</span>
+                    }
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      )}
+    </div>
+  );
 }

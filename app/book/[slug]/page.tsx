@@ -53,7 +53,7 @@ export default async function PublicBookingPage({ params }: PageProps) {
       <BookingPageClient slug={slug} />
       {viaApproval && approval && (
         <ApprovalBar
-          entityLabel="Booking page"
+          entityLabel="Página de reservas"
           title={page.title}
           summary={approval.summary}
           status={approval.status}

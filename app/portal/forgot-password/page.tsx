@@ -33,10 +33,10 @@ export default function ForgotPasswordPage() {
       if (data.success) {
         setSent(true);
       } else {
-        setError(data.error || 'Something went wrong.');
+        setError(data.error || 'Algo salió mal.');
       }
     } catch {
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -44,34 +44,34 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <AuthShell panelSubtitle="Check your inbox — the link expires in an hour.">
+      <AuthShell panelSubtitle="Revisa tu bandeja de entrada. El enlace caduca en una hora.">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
           <span className="material-icons text-3xl text-primary">mark_email_read</span>
         </div>
-        <h1 className={`${authHeading} mt-5`}>Check your email.</h1>
+        <h1 className={`${authHeading} mt-5`}>Revisa tu email.</h1>
         <p className={authSubtext}>
-          If an account with <strong className="text-foreground">{email}</strong> exists, we&apos;ve sent a password reset
-          link. It expires in 1 hour.
+          Si existe una cuenta con <strong className="text-foreground">{email}</strong> exists, te hemos enviado un enlace para restablecer la contraseña
+          link. Caduca en una hora.
         </p>
         <a
           href="/portal/login"
           className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
         >
           <span className="material-icons text-sm">arrow_back</span>
-          Back to sign in
+          Volver a iniciar sesión
         </a>
       </AuthShell>
     );
   }
 
   return (
-    <AuthShell panelSubtitle="Secure recovery — the link works once and expires in an hour.">
+    <AuthShell panelSubtitle="Recuperación segura. El enlace funciona una vez y caduca en una hora.">
       <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10">
         <span className="material-icons text-3xl text-primary">lock_reset</span>
       </div>
-      <div className={authEyebrow}>{'// Account recovery'}</div>
-      <h1 className={authHeading}>Reset your password.</h1>
-      <p className={authSubtext}>Enter the email on your account and we&apos;ll send you a secure link to set a new one.</p>
+      <div className={authEyebrow}>{'// Recuperación de cuenta'}</div>
+      <h1 className={authHeading}>Restablece tu contraseña.</h1>
+      <p className={authSubtext}>Introduce el email de tu cuenta y te enviaremos un enlace seguro para establecer una nueva contraseña.</p>
 
       <div className="mt-7">
         {error && (
@@ -83,7 +83,7 @@ export default function ForgotPasswordPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className={authLabel}>Email</label>
+            <label className={authLabel}>Correo</label>
             <AuthField icon="mail_outline">
               <input
                 type="email"
@@ -93,7 +93,7 @@ export default function ForgotPasswordPage() {
                 autoComplete="email"
                 autoFocus
                 className={authInput}
-                placeholder="you@company.com"
+                placeholder="tu@empresa.com"
               />
             </AuthField>
           </div>
@@ -101,11 +101,11 @@ export default function ForgotPasswordPage() {
             {loading ? (
               <>
                 <span className="material-icons animate-spin text-base">refresh</span>
-                Sending…
+                Enviando…
               </>
             ) : (
               <>
-                Send reset link
+                Enviar enlace de restablecimiento
                 <span className="material-icons text-[19px] transition group-hover:translate-x-0.5">send</span>
               </>
             )}
@@ -117,7 +117,7 @@ export default function ForgotPasswordPage() {
           className="mt-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <span className="material-icons text-sm">arrow_back</span>
-          Back to sign in
+          Volver a iniciar sesión
         </a>
       </div>
     </AuthShell>

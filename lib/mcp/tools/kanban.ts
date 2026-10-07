@@ -393,15 +393,15 @@ export function registerKanbanTools(server: McpServer, ctx: PortalMcpContext): v
     }
   );
 
-  hasScope(ctx.scopes, 'projects:write') && server.registerTool(
+  hasScope(ctx.scopes, 'projects:delete') && server.registerTool(
     'kanban_delete_card',
     {
       title: 'Delete kanban card',
-      description: 'Permanently delete a kanban card.',
+      description: 'Permanently delete a kanban card. Requires the projects:delete scope (not projects:write).',
       inputSchema: { id: z.number() },
     },
     async ({ id }) => {
-      if (!requireScope(ctx, 'projects:write')) return denied('projects:write');
+      if (!requireScope(ctx, 'projects:delete')) return denied('projects:delete');
       const [card] = await db.select({ projectId: kanbanCards.projectId })
         .from(kanbanCards).where(eq(kanbanCards.id, id)).limit(1);
       if (!card) return json({ error: 'Card not found' });
@@ -447,15 +447,15 @@ export function registerKanbanTools(server: McpServer, ctx: PortalMcpContext): v
     }
   );
 
-  hasScope(ctx.scopes, 'projects:write') && server.registerTool(
+  hasScope(ctx.scopes, 'projects:delete') && server.registerTool(
     'kanban_delete_column',
     {
       title: 'Delete kanban column',
-      description: 'Permanently delete a kanban column and every card inside it (cascade).',
+      description: 'Permanently delete a kanban column and every card inside it (cascade). Requires the projects:delete scope (not projects:write).',
       inputSchema: { id: z.number() },
     },
     async ({ id }) => {
-      if (!requireScope(ctx, 'projects:write')) return denied('projects:write');
+      if (!requireScope(ctx, 'projects:delete')) return denied('projects:delete');
       const [col] = await db.select({ projectId: kanbanColumns.projectId })
         .from(kanbanColumns).where(eq(kanbanColumns.id, id)).limit(1);
       if (!col) return json({ error: 'Column not found' });

@@ -56,7 +56,7 @@ export function ElementStyleEditor({
               onClick={() => setActiveElement(el.key)}
               className={`px-2 py-1 text-[10px] font-medium rounded transition-colors ${
                 activeElement === el.key
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80'
               }`}
             >

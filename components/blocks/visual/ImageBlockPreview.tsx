@@ -39,7 +39,7 @@ export function ImageBlockPreview({ block, isSelected, onChange }: ImageBlockPre
               e.stopPropagation();
               setShowMediaPicker(true);
             }}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+            className="px-4 py-2 bg-foreground text-background rounded-md hover:bg-foreground/90"
           >
             Choose Image
           </button>

@@ -5,7 +5,7 @@ import { useState, type ReactNode } from 'react';
 const TABS = [
   { id: 'infrastructure', label: 'Infrastructure', icon: 'cloud' },
   { id: 'deployments', label: 'Recent Deployments', icon: 'rocket_launch' },
-  { id: 'logs', label: 'HTTP Logs', icon: 'monitoring' },
+  { id: 'logs', label: 'HTTP Logs', icon: 'insights' },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];

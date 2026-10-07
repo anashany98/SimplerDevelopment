@@ -39,7 +39,7 @@ export function BookingsPanel({
           </h2>
         </div>
         {upcomingBookings.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-4 text-center">No upcoming bookings</p>
+          <p className="text-sm text-muted-foreground py-4 text-center">No hay próximas reservas</p>
         ) : (
           <div className="divide-y divide-border">
             {upcomingBookings.map((b) => (
@@ -89,7 +89,7 @@ export function BookingsPanel({
                       }}
                       className="px-2 py-1 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     >
-                      <option value="">Unassigned</option>
+                      <option value="">Sin asignar</option>
                       {pageMembers
                         .filter((m) => m.active)
                         .map((m) => (
@@ -103,9 +103,7 @@ export function BookingsPanel({
                     onClick={() => onCancel(b.id)}
                     className="inline-flex items-center gap-1 px-2.5 py-1 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                   >
-                    <span className="material-icons text-sm">cancel</span>
-                    Cancel
-                  </button>
+                    <span className="material-icons text-sm">cancel</span>Cancelar</button>
                 </div>
               </div>
             ))}

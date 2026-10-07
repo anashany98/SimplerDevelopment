@@ -195,7 +195,7 @@ describe('AgenticOsPage — loading state', () => {
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
     expect(container.textContent).toContain('autorenew');
-    expect(container.textContent).toContain('Loading Agentic OS');
+    expect(container.textContent).toContain('Cargando Agentic OS');
   });
 });
 
@@ -206,7 +206,7 @@ describe('AgenticOsPage — error state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false, message: 'Catalog unavailable' }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load Agentic OS");
+      expect(container.textContent).toContain('No se pudo cargar Agentic OS');
       expect(container.textContent).toContain('Catalog unavailable');
     });
   });
@@ -215,7 +215,7 @@ describe('AgenticOsPage — error state', () => {
     fetchMock.mockResolvedValue(makeRes({ success: false }));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load Agentic OS");
+      expect(container.textContent).toContain('No se pudo cargar Agentic OS');
     });
   });
 
@@ -223,7 +223,7 @@ describe('AgenticOsPage — error state', () => {
     fetchMock.mockRejectedValue(new Error('Network down'));
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load Agentic OS");
+      expect(container.textContent).toContain('No se pudo cargar Agentic OS');
       expect(container.textContent).toContain('Network down');
     });
   });
@@ -242,7 +242,7 @@ describe('AgenticOsPage — catalog renders', () => {
   it('shows "Local executor available" badge when executorAvailable is true', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Local executor available');
+      expect(container.textContent).toContain('Ejecutor local disponible');
     });
   });
 
@@ -255,7 +255,7 @@ describe('AgenticOsPage — catalog renders', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Catalog mode');
+      expect(container.textContent).toContain('Modo catálogo');
     });
   });
 
@@ -279,10 +279,10 @@ describe('AgenticOsPage — catalog renders', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(container.textContent).toContain('Skills');
-      expect(container.textContent).toContain('On-demand');
-      expect(container.textContent).toContain('Scheduled');
-      expect(container.textContent).toContain('Succeeded');
-      expect(container.textContent).toContain('Failed');
+      expect(container.textContent).toContain('Bajo demanda');
+      expect(container.textContent).toContain('Programado');
+      expect(container.textContent).toContain('Exitoso');
+      expect(container.textContent).toContain('Fallido');
     });
   });
 
@@ -334,7 +334,7 @@ describe('AgenticOsPage — refresh button', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
     const callsBefore = fetchMock.mock.calls.length;
     const refreshBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Refresh'),
+      b.textContent?.includes('Actualizar'),
     ) as HTMLButtonElement;
     fireEvent.click(refreshBtn);
     await waitFor(() => {
@@ -359,15 +359,15 @@ describe('AgenticOsPage — rules panel', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
 
     // Rules panel is initially hidden
-    expect(container.textContent).not.toContain('Cross-cutting rules');
+    expect(container.textContent).not.toContain('Reglas transversales');
 
     const rulesBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Rules'),
+      b.textContent?.includes('Reglas'),
     ) as HTMLButtonElement;
     fireEvent.click(rulesBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Cross-cutting rules');
+      expect(container.textContent).toContain('Reglas transversales');
       expect(container.textContent).toContain('No cross-tenant queries');
       expect(container.textContent).toContain('Always scope by clientId.');
     });
@@ -375,7 +375,7 @@ describe('AgenticOsPage — rules panel', () => {
     // Clicking again collapses it
     fireEvent.click(rulesBtn);
     await waitFor(() => {
-      expect(container.textContent).not.toContain('Cross-cutting rules');
+      expect(container.textContent).not.toContain('Reglas transversales');
     });
   });
 });
@@ -386,10 +386,10 @@ describe('AgenticOsPage — filter bar', () => {
   it('renders all four filter buttons', async () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
-    expect(container.textContent).toContain('All domains');
-    expect(container.textContent).toContain('On-demand only');
-    expect(container.textContent).toContain('Scheduled');
-    expect(container.textContent).toContain('Run history');
+    expect(container.textContent).toContain('Todos los dominios');
+    expect(container.textContent).toContain('Solo bajo demanda');
+    expect(container.textContent).toContain('Programado');
+    expect(container.textContent).toContain('Historial de ejecuciones');
   });
 
   it('on-demand filter shows only on-demand skills', async () => {
@@ -410,7 +410,7 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('OnDemandSkill'));
 
     const odBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'On-demand only' || b.textContent?.includes('On-demand only'),
+      b.textContent?.trim() === 'Solo bajo demanda' || b.textContent?.includes('Solo bajo demanda'),
     ) as HTMLButtonElement;
     fireEvent.click(odBtn);
 
@@ -438,7 +438,7 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('OnDemandSkill'));
 
     const scBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.trim() === 'Scheduled' || b.textContent?.includes('Scheduled'),
+      b.textContent?.trim() === 'Programado' || b.textContent?.includes('Programado'),
     ) as HTMLButtonElement;
     fireEvent.click(scBtn);
 
@@ -461,12 +461,12 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
 
     const scBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Scheduled'),
+      b.textContent?.includes('Programado'),
     ) as HTMLButtonElement;
     fireEvent.click(scBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('No skills match this filter');
+      expect(container.textContent).toContain('Ninguna skill coincide con este filtro');
     });
   });
 
@@ -475,13 +475,13 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
 
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
 
     await waitFor(() => {
       // RunHistory empty state text when no runs
-      expect(container.textContent).toContain('No runs yet');
+      expect(container.textContent).toContain('Aún no hay ejecuciones');
     });
   });
 
@@ -498,12 +498,12 @@ describe('AgenticOsPage — filter bar', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
 
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Run history');
+      expect(container.textContent).toContain('Historial de ejecuciones');
       expect(container.textContent).toContain('succeeded');
     });
   });
@@ -516,7 +516,7 @@ describe('SkillCard — trigger variants', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Test Skill'));
     const runBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Run' || b.textContent?.includes('Run'),
+      (b) => b.textContent?.trim() === 'Ejecutar' || b.textContent?.includes('Ejecutar'),
     );
     expect(runBtn).toBeTruthy();
   });
@@ -538,7 +538,7 @@ describe('SkillCard — trigger variants', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Cron-managed');
+      expect(container.textContent).toContain('Programado por cron');
     });
   });
 
@@ -553,7 +553,7 @@ describe('SkillCard — trigger variants', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Cloud-triggered');
+      expect(container.textContent).toContain('Invocada desde la nube');
     });
   });
 
@@ -642,12 +642,12 @@ describe('RunHistory — empty state', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('No runs yet');
-      expect(container.textContent).toContain('Fire a skill from the catalog above');
+      expect(container.textContent).toContain('Aún no hay ejecuciones');
+      expect(container.textContent).toContain('Ejecuta una skill del catálogo de arriba');
     });
   });
 });
@@ -675,7 +675,7 @@ describe('RunHistory — filled table', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
 
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
 
@@ -706,7 +706,7 @@ describe('RunHistory — filled table', () => {
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
 
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
 
@@ -728,7 +728,7 @@ describe('RunHistory — filled table', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
     await waitFor(() => {
@@ -747,7 +747,7 @@ describe('RunHistory — filled table', () => {
     );
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Recent runs');
+      expect(container.textContent).toContain('Ejecuciones recientes');
     });
   });
 });
@@ -767,7 +767,7 @@ describe('formatDuration — via RunHistory rows', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
     await waitFor(() => expect(container.textContent).toContain('succeeded'));
@@ -810,12 +810,12 @@ describe('formatDate — via RunHistory rows', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
     const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Run history'),
+      b.textContent?.includes('Historial de ejecuciones'),
     ) as HTMLButtonElement;
     fireEvent.click(histBtn);
     await waitFor(() => {
-      // Should contain some form of "Mar" or the month
-      expect(container.textContent).toMatch(/Mar|Feb|Apr/);
+      // Should contain some form of the month (es-ES renders the abbreviation lowercase, e.g. "mar")
+      expect(container.textContent).toMatch(/Mar|Feb|Apr/i);
     });
   });
 });
@@ -838,7 +838,7 @@ describe('statusBadge — all status values via RunHistory', () => {
       const { container } = renderPage();
       await waitFor(() => expect(container.textContent).toContain('Agentic OS'));
       const histBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Run history'),
+        b.textContent?.includes('Historial de ejecuciones'),
       ) as HTMLButtonElement;
       fireEvent.click(histBtn);
       await waitFor(() => {
@@ -892,8 +892,8 @@ describe('triggerBadge — all trigger types via SkillCard', () => {
 function findCardRunButton(container: HTMLElement): HTMLButtonElement | undefined {
   return Array.from(container.querySelectorAll('button')).find(
     (b) =>
-      b.textContent?.includes('Run') &&
-      b.className.includes('bg-primary') &&
+      b.textContent?.includes('Ejecutar') &&
+      b.className.includes('bg-foreground') &&
       // Not in the <footer> of the drawer
       !b.closest('footer') &&
       // Not the drawer's footer run button (disabled or not)
@@ -915,7 +915,7 @@ describe('RunDrawer — open and close', () => {
       // Drawer is open when the <aside> panel is in the DOM
       expect(container.querySelector('aside')).toBeTruthy();
       // The close button has aria-label="Close drawer"
-      expect(container.querySelector('button[aria-label="Close drawer"]')).toBeTruthy();
+      expect(container.querySelector('button[aria-label="Cerrar panel"]')).toBeTruthy();
     });
   });
 
@@ -941,7 +941,7 @@ describe('RunDrawer — open and close', () => {
     fireEvent.click(findCardRunButton(container)!);
     await waitFor(() => expect(container.querySelector('aside')).toBeTruthy());
 
-    const closeBtn = container.querySelector('button[aria-label="Close drawer"]') as HTMLButtonElement;
+    const closeBtn = container.querySelector('button[aria-label="Cerrar panel"]') as HTMLButtonElement;
     fireEvent.click(closeBtn);
     await waitFor(() => {
       expect(container.querySelector('aside')).toBeNull();
@@ -957,7 +957,7 @@ describe('RunDrawer — no variables', () => {
     await waitFor(() => expect(findCardRunButton(container)).toBeTruthy());
     fireEvent.click(findCardRunButton(container)!);
     await waitFor(() => {
-      expect(container.textContent).toContain('This skill takes no inputs.');
+      expect(container.textContent).toContain('Esta skill no admite entradas.');
     });
   });
 
@@ -966,7 +966,7 @@ describe('RunDrawer — no variables', () => {
     await waitFor(() => expect(findCardRunButton(container)).toBeTruthy());
     fireEvent.click(findCardRunButton(container)!);
     await waitFor(() => {
-      expect(container.textContent).toContain('(no prompt template)');
+      expect(container.textContent).toContain('(sin plantilla de prompt)');
     });
   });
 });
@@ -1126,7 +1126,7 @@ describe('RunDrawer — variable inputs', () => {
     await openDrawer(container);
 
     const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-      b.textContent?.includes('Run'),
+      b.textContent?.includes('Ejecutar'),
     ) as HTMLButtonElement;
     expect(footerRunBtn.disabled).toBe(true);
   });
@@ -1147,7 +1147,7 @@ describe('RunDrawer — variable inputs', () => {
 
     await waitFor(() => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       expect(footerRunBtn.disabled).toBe(false);
     });
@@ -1168,7 +1168,7 @@ describe('RunDrawer — executor disabled', () => {
     await waitFor(() => expect(findCardRunButton(container)).toBeTruthy());
     fireEvent.click(findCardRunButton(container)!);
     await waitFor(() => {
-      expect(container.textContent).toContain('Executor disabled');
+      expect(container.textContent).toContain('Ejecutor deshabilitado');
     });
   });
 });
@@ -1191,7 +1191,7 @@ describe('RunDrawer — copy prompt', () => {
     await waitFor(() => expect(container.querySelector('aside')).toBeTruthy());
 
     const copyBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-      b.textContent?.includes('Copy prompt'),
+      b.textContent?.includes('Copiar prompt'),
     ) as HTMLButtonElement;
     fireEvent.click(copyBtn);
 
@@ -1224,7 +1224,7 @@ describe('RunDrawer — copy prompt', () => {
     await waitFor(() => expect(container.querySelector('aside')).toBeTruthy());
 
     const copyBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-      b.textContent?.includes('Copy prompt'),
+      b.textContent?.includes('Copiar prompt'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(copyBtn);
@@ -1232,7 +1232,7 @@ describe('RunDrawer — copy prompt', () => {
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Copied');
+      expect(container.textContent).toContain('Copiado');
     });
 
     vi.useRealTimers();
@@ -1259,7 +1259,7 @@ describe('RunDrawer — Run button: success path', () => {
     await waitFor(() => expect(container.querySelector('aside')).toBeTruthy());
 
     const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-      b.textContent?.includes('Run'),
+      b.textContent?.includes('Ejecutar'),
     ) as HTMLButtonElement;
     await act(async () => {
       fireEvent.click(footerRunBtn);
@@ -1293,7 +1293,7 @@ describe('RunDrawer — Run button: success path', () => {
 
     await act(async () => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       fireEvent.click(footerRunBtn);
     });
@@ -1327,7 +1327,7 @@ describe('RunDrawer — Run button: success path', () => {
 
     await act(async () => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       fireEvent.click(footerRunBtn);
     });
@@ -1341,9 +1341,9 @@ describe('RunDrawer — Run button: success path', () => {
     await waitFor(() => {
       // Run button should no longer say "Running…" (submitting = false)
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
-      expect(footerRunBtn.textContent).not.toContain('Running…');
+      expect(footerRunBtn.textContent).not.toContain('Ejecutando…');
     });
   });
 
@@ -1365,7 +1365,7 @@ describe('RunDrawer — Run button: success path', () => {
 
     await act(async () => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       fireEvent.click(footerRunBtn);
     });
@@ -1377,7 +1377,7 @@ describe('RunDrawer — Run button: success path', () => {
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Live stream disconnected');
+      expect(container.textContent).toContain('Transmisión en vivo desconectada');
     });
   });
 });
@@ -1403,7 +1403,7 @@ describe('RunDrawer — Run button: error paths', () => {
 
     await act(async () => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       fireEvent.click(footerRunBtn);
     });
@@ -1431,13 +1431,13 @@ describe('RunDrawer — Run button: error paths', () => {
 
     await act(async () => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       fireEvent.click(footerRunBtn);
     });
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Executor disabled on this host');
+      expect(container.textContent).toContain('Ejecutor deshabilitado en este host');
     });
   });
 
@@ -1459,7 +1459,7 @@ describe('RunDrawer — Run button: error paths', () => {
 
     await act(async () => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       fireEvent.click(footerRunBtn);
     });
@@ -1491,7 +1491,7 @@ describe('AgenticOsPage — onRunStarted optimistic update', () => {
 
     await act(async () => {
       const footerRunBtn = Array.from(container.querySelectorAll('footer button')).find((b) =>
-        b.textContent?.includes('Run'),
+        b.textContent?.includes('Ejecutar'),
       ) as HTMLButtonElement;
       fireEvent.click(footerRunBtn);
     });

@@ -1,8 +1,9 @@
-The unjournaled `0011_snapshot.json` belongs to the retired migration chain.
-Its parent snapshot is absent. It is retained here for reference, outside the
-active `meta/` directory so Drizzle does not treat it as a second active root.
+The active Drizzle chain is recorded in `../meta/_journal.json` and currently
+ends at `0006_snapshot.json`. Snapshots from the source branch's separate
+reconciliation chain are intentionally excluded so `drizzle-kit generate`
+starts from the private repository's migration history.
 
-The current chain is `0000_snapshot.json` → `0032_snapshot.json`. Migration
-0032 was generated against a local database with the baseline and all existing
-manual migrations applied. It adds missing objects and preserves existing
-historical column types and indexes; it does not perform a wholesale schema push.
+`../0032_current_schema_reconciliation.sql` remains an idempotent legacy
+upgrade artifact and is verified only against an isolated historical test
+database by `../../scripts/verify-reconciliation-upgrade.ts`. New schema
+changes belong in the active journaled chain.

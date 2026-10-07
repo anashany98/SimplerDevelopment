@@ -19,6 +19,9 @@ import { mintInternalAccessToken } from '@/lib/oauth/issue';
  *    tamper-proof) AND `body.requestContext.token` (Mastra merges this into the
  *    run context — the functional path when no middleware ran, e.g. local dev).
  *    Only the app can pass the internal secret, so the body path is trusted too.
+ *  - `x-sd-tenant-id` carries the clientId; the agents middleware maps it to
+ *    Mastra's `mastra__resourceId` so Memory is scoped per-tenant (one tenant
+ *    can never read another's threads/messages even on a threadId collision).
  */
 
 const AGENTS_URL = process.env.SD_AGENTS_URL;
@@ -103,6 +106,7 @@ export async function runBrainWorkflowOnService(opts: RunBrainWorkflowOpts): Pro
         'Content-Type': 'application/json',
         Authorization: `Bearer ${INTERNAL_SECRET}`,
         'x-sd-tenant-token': token,
+        'x-sd-tenant-id': String(opts.clientId),
       },
       body: JSON.stringify({
         inputData: { query: opts.query },

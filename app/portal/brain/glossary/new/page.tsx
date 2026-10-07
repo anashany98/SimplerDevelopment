@@ -21,18 +21,18 @@ export default function BrainGlossaryNewPage() {
           Glossary
         </Link>
         <span className="material-icons text-sm">chevron_right</span>
-        <span>New term</span>
+        <span>Nuevo término</span>
       </nav>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
+        eyebrow="Cerebro de empresa"
         title={
           <span className="flex items-center gap-2">
             <span className="material-icons text-primary">add</span>
-            New glossary term
+            Nuevo término del glosario
           </span>
         }
-        subtitle="Define a term once — the canonical answer surfaces wherever AI or your team needs it."
+        subtitle="Define un término una vez — la respuesta canónica aparece donde la IA o tu equipo la necesiten."
       />
 
       <div className={pCardPad}>

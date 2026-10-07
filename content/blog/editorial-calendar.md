@@ -16,7 +16,7 @@ notes: |
   social publishing channels). All URLs use example.com as placeholder.
 ---
 
-# SimplerDevelopment — Blog Editorial Calendar
+# CRM AGENTS — Blog Editorial Calendar
 
 ## Cadence Recommendation
 
@@ -44,11 +44,11 @@ agency owners + developers discovering the problem space.*
 
 | # | Working Title | Type | Target Audience | Primary Keyword | SEO Slug | Links To | Priority | Media Needs |
 |---|---|---|---|---|---|---|---|---|
-| 1 | SimplerDevelopment is open source: Apache 2.0 licensed, self-hostable, 450 MCP tools | Feature Release | Agency owners, developers | open-source agency SaaS platform | `open-source-agency-saas-platform` | `/features/ai-agent-platform` · `/docs` | P0 | Hero banner; architecture diagram (single-deployment → three audiences) |
-| 2 | Self-hosting SimplerDevelopment: Vercel, Railway Postgres, and pgvector from zero | Self-Hosting Guide | Developers, devops | self-host Next.js multi-tenant SaaS | `self-host-nextjs-saas-vercel-postgres-pgvector` | `docs/agents/ai-overview.md` · `docs/agents/architecture-for-agents.md` | P0 | Terminal screenshots: bun run db:migrate, pgvector extension enable; env-var checklist |
+| 1 | CRM AGENTS is open source: Apache 2.0 licensed, self-hostable, 450 MCP tools | Feature Release | Agency owners, developers | open-source agency SaaS platform | `open-source-agency-saas-platform` | `/features/ai-agent-platform` · `/docs` | P0 | Hero banner; architecture diagram (single-deployment → three audiences) |
+| 2 | Self-hosting CRM AGENTS: Vercel, Railway Postgres, and pgvector from zero | Self-Hosting Guide | Developers, devops | self-host Next.js multi-tenant SaaS | `self-host-nextjs-saas-vercel-postgres-pgvector` | `docs/agents/ai-overview.md` · `docs/agents/architecture-for-agents.md` | P0 | Terminal screenshots: bun run db:migrate, pgvector extension enable; env-var checklist |
 | 3 | One platform, six tool categories: why agencies consolidate CRM, CMS, email, and more | Comparison | Agency owners, operations leads | all-in-one agency software platform | `agency-saas-all-in-one-platform-crm-cms-email` | `/solutions` · `/features/crm` · `/features/websites-cms-visual-editor` | P0 | Category comparison table (no competitor names); platform overview diagram |
 | 4 | Multi-tenant SaaS architecture in Next.js: three route trees, one monorepo | Architecture Deep Dive | Developers, architects | multi-tenant SaaS architecture Next.js | `multi-tenant-saas-nextjs-app-router-architecture` | `docs/agents/architecture-for-agents.md` · `docs/agents/repository-map.md` | P0 | Route-tree diagram (admin / portal / sites); no live code screenshots needed |
-| 5 | Release notes — June 2026: MFA/TOTP shipped, 450-tool MCP surface, open-source launch | Release Notes | All — existing + prospective users | SimplerDevelopment release notes | `release-notes-june-2026` | `/features/ai-agent-platform` · `/solutions/company-brain` | P0 | None required; short changelog-style post |
+| 5 | Release notes — June 2026: MFA/TOTP shipped, 450-tool MCP surface, open-source launch | Release Notes | All — existing + prospective users | CRM AGENTS release notes | `release-notes-june-2026` | `/features/ai-agent-platform` · `/solutions/company-brain` | P0 | None required; short changelog-style post |
 
 ---
 
@@ -77,18 +77,18 @@ These posts are the highest AI-search citation opportunities (Perplexity, Claude
 
 | # | Working Title | Type | Target Audience | Primary Keyword | SEO Slug | Links To | Priority | Media Needs |
 |---|---|---|---|---|---|---|---|---|
-| 14 | Connecting Claude.ai to your SimplerDevelopment portal via MCP | MCP Tutorial | Developers, AI practitioners | connect Claude MCP server | `connect-claude-ai-mcp-simplerdevelopment-portal` | `/features/ai-agent-platform` · `docs/agents/tool-reference.md` | P0 | Screenshot: OAuth consent screen; screenshot: Claude.ai calling `whoami` tool; 5-line curl snippet |
+| 14 | Connecting Claude.ai to your CRM AGENTS portal via MCP | MCP Tutorial | Developers, AI practitioners | connect Claude MCP server | `connect-claude-ai-mcp-simplerdevelopment-portal` | `/features/ai-agent-platform` · `docs/agents/tool-reference.md` | P0 | Screenshot: OAuth consent screen; screenshot: Claude.ai calling `whoami` tool; 5-line curl snippet |
 | 15 | The 450-tool MCP surface: scope model, the approval-link pattern, and your first tool call | MCP Tutorial | Developers, AI engineers | MCP server 450 tools scope model | `mcp-server-450-tools-scope-model-approval-link-pattern` | `/features/ai-agent-platform` · `docs/agents/tool-reference.md` · `docs/agents/glossary.md` | P0 | Architecture diagram: MCP client → POST /api/mcp → tool namespaces → approval link → reviewer; curl example |
 | 16 | Building a read-only AI agent with scoped sd\_mcp\_ tokens | MCP Tutorial | Developers | scoped MCP token read-only AI agent | `mcp-read-only-ai-agent-scoped-tokens-tutorial` | `/features/ai-agent-platform` · `docs/agents/tool-reference.md` | P1 | Code snippet: token issuance + tool call with `:read` scope; screenshot: API key settings page |
 | 17 | The Company Brain MCP namespace: 156 brain\_\* tools for querying your knowledge base from an AI agent | MCP Tutorial | Developers, AI practitioners | Company Brain MCP tools brain namespace | `company-brain-mcp-156-brain-tools-guide` | `/features/company-brain` · `/features/ai-agent-platform` · `docs/agents/tool-reference.md` | P1 | Tool-family table (brain\_\* sub-namespaces); code snippet: `brain_search` call |
 | 18 | OAuth 2.1 with PKCE in a Next.js SaaS: auth-code flow, RFC 8707 audience binding, and ~50 named scopes | Engineering Article | Security engineers, developers | OAuth 2.1 PKCE Next.js SaaS implementation | `oauth-21-pkce-nextjs-saas-rfc8707-named-scopes` | `/features/ai-agent-platform` · `docs/agents/ai-overview.md` | P1 | Sequence diagram: auth-code flow with PKCE; no live screenshots required |
-| 19 | Tenant isolation by clientId: how per-tenant data scoping works in SimplerDevelopment | Architecture Deep Dive | Developers, architects | multi-tenant data isolation clientId | `multi-tenant-data-isolation-clientid-row-level-scoping` | `docs/agents/architecture-for-agents.md` · `docs/agents/glossary.md` | P1 | Schema diagram: clientId FK on representative tables; no live screenshots |
+| 19 | Tenant isolation by clientId: how per-tenant data scoping works in CRM AGENTS | Architecture Deep Dive | Developers, architects | multi-tenant data isolation clientId | `multi-tenant-data-isolation-clientid-row-level-scoping` | `docs/agents/architecture-for-agents.md` · `docs/agents/glossary.md` | P1 | Schema diagram: clientId FK on representative tables; no live screenshots |
 | 20 | The approval-link pattern: how MCP live-content writes go through human review before taking effect | Engineering Article | Developers, AI practitioners | MCP human-in-the-loop approval pattern | `mcp-approval-link-human-in-the-loop-content-review` | `/features/ai-agent-platform` · `/solutions/company-brain` | P1 | Diagram: MCP tool → approvalUrl → reviewer click → live; screenshot: portal approval queue |
 | 21 | Drizzle ORM + pgvector: storing and querying OpenAI embeddings in Postgres | Engineering Article | Developers | Drizzle ORM pgvector OpenAI embeddings Postgres | `drizzle-orm-pgvector-openai-embeddings-postgres-semantic-search` | `/features/company-brain` · `docs/agents/ai-overview.md` | P1 | Code snippet: embedding insert + cosine similarity query via Drizzle |
 | 22 | Locking the MCP tool registry: how a baseline test prevents silent tool-count drift on every push | Engineering Article | Platform engineers, developers | MCP tool registry test baseline | `mcp-tool-registry-baseline-test-prevent-drift` | `/features/ai-agent-platform` · `docs/agents/tool-reference.md` | P2 | Code snippet: baseline test assertion; CI badge / hook output |
 | 23 | Configuring pgvector on Railway, Neon, and Supabase for Company Brain semantic search | Self-Hosting Guide | Developers, devops | pgvector setup Railway Neon Supabase | `pgvector-setup-railway-neon-supabase-company-brain` | `/features/company-brain` · `docs/agents/ai-overview.md` | P1 | Terminal screenshots: `CREATE EXTENSION vector;` on each provider; env-var checklist |
 | 24 | Block JSON schema: how 47 block types share one registry and render to web and email | Architecture Deep Dive | Developers, content engineers | block JSON schema CMS registry | `block-json-schema-registry-47-block-types-universal` | `/features/websites-cms-visual-editor` · `docs/guides/BLOCK_EDITOR_GUIDE.md` | P2 | Schema excerpt snippet; diagram: block registry → site renderer + email renderer |
-| 25 | Migrating a client site to SimplerDevelopment's block-based CMS from an existing platform | Migration Guide | Agency developers, admins | migrate CMS to block-based publishing | `migrate-existing-cms-to-block-based-simplerdevelopment` | `/features/websites-cms-visual-editor` · `/solutions/websites` | P2 | Before/after: raw HTML page vs. block JSON representation; migration checklist |
+| 25 | Migrating a client site to CRM AGENTS's block-based CMS from an existing platform | Migration Guide | Agency developers, admins | migrate CMS to block-based publishing | `migrate-existing-cms-to-block-based-simplerdevelopment` | `/features/websites-cms-visual-editor` · `/solutions/websites` | P2 | Before/after: raw HTML page vs. block JSON representation; migration checklist |
 
 ---
 
@@ -114,7 +114,7 @@ of governance and white-label capabilities.*
 | # | Working Title | Type | Target Audience | Primary Keyword | SEO Slug | Links To | Priority | Media Needs |
 |---|---|---|---|---|---|---|---|---|
 | 30 | White-label portal deployment: custom domain, branding overrides, and Scale-tier setup | Enterprise Article | Agency owners, enterprise evaluators | white-label agency portal custom domain | `white-label-agency-portal-custom-domain-branding-scale-tier` | `/solutions/agency` · `/features/websites-cms-visual-editor` | P1 | Screenshots: agency branding settings, custom domain DNS verification flow |
-| 31 | TOTP/MFA on every account: how SimplerDevelopment enforces two-factor authentication | Enterprise Article | Agency admins, compliance teams | TOTP MFA two-factor authentication SaaS | `totp-mfa-two-factor-authentication-portal-security` | `docs/agents/ai-overview.md` · `/solutions/company-brain` | P1 | Screenshots: MFA enrollment flow (QR code step), TOTP login field, security settings page |
+| 31 | TOTP/MFA on every account: how CRM AGENTS enforces two-factor authentication | Enterprise Article | Agency admins, compliance teams | TOTP MFA two-factor authentication SaaS | `totp-mfa-two-factor-authentication-portal-security` | `docs/agents/ai-overview.md` · `/solutions/company-brain` | P1 | Screenshots: MFA enrollment flow (QR code step), TOTP login field, security settings page |
 
 ---
 
@@ -154,12 +154,12 @@ schedule, or publish any item in this section until the prerequisite is met.
 | Deferred type | Prerequisite | Why deferred |
 |---|---|---|
 | **Customer / client success stories** | Named, consenting customer with measurable outcome | No customers at launch. Do not invent names, agencies, or results. |
-| **Case study: "How [agency] uses SimplerDevelopment"** | Named client, real usage data, written consent | Same as above. |
+| **Case study: "How [agency] uses CRM AGENTS"** | Named client, real usage data, written consent | Same as above. |
 | **Benchmark: performance / scale numbers** | Real load-test results or production telemetry | No published benchmarks in the inventory. Do not fabricate. |
 | **Community spotlight / plugin ecosystem** | Active third-party plugin authors or a public community | Only one plugin live (Content Tools, internal). No public plugin marketplace. |
 | **Year in review / retrospective** | 12+ months of production history | Platform is launching; no historical data to cite. |
 | **Testimonials / quotes post** | Written permission from real users | None available at launch. |
-| **"Top N agencies using SimplerDevelopment" roundup** | Actual customer list with consent | Same as above. |
+| **"Top N agencies using CRM AGENTS" roundup** | Actual customer list with consent | Same as above. |
 | **ROI / cost-savings comparison post** | Real customer data or independently verifiable methodology | No metrics available. Do not fabricate a calculation. |
 
 > Note on the print designer: the fate decision (invest / defer / cut) is open per the

@@ -104,25 +104,25 @@ export function SurveyResultsBlockSettings({ block, onChange }: { block: SurveyR
 
       {/* Layout */}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Layout</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Diseño</label>
         <select value={block.layout || 'stacked'}
           onChange={(e) => onChange({ layout: e.target.value as 'stacked' | 'tabbed' })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground">
           <option value="stacked">Stacked (all questions visible)</option>
-          <option value="tabbed">Tabbed (one question at a time)</option>
+          <option value="tabbed">Por pestañas (una pregunta a la vez)</option>
         </select>
       </div>
 
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Title</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Título</label>
         <input type="text" value={block.title || ''} onChange={(e) => onChange({ title: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="Survey Results" />
       </div>
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Description</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
         <input type="text" value={block.description || ''} onChange={(e) => onChange({ description: e.target.value })}
           className="w-full text-sm rounded border border-border bg-background px-3 py-2 text-foreground" placeholder="See what our customers are saying" />
       </div>
@@ -161,9 +161,7 @@ export function SurveyResultsBlockSettings({ block, onChange }: { block: SurveyR
               type="button"
               onClick={() => onChange({ fieldIds: undefined })}
               className="text-xs text-primary hover:underline"
-            >
-              All
-            </button>
+            >Todos</button>
           </div>
           <ul className="space-y-1 rounded border border-border bg-background px-3 py-2 max-h-48 overflow-y-auto">
             {selected.fields.map((field) => {

@@ -83,7 +83,7 @@ vi.mock('drizzle-orm', () => ({
 
 const mockEnqueueJob = vi.fn().mockResolvedValue(undefined);
 
-vi.mock('@/lib/jobs', () => ({
+vi.mock('@/lib/jobs/queue', () => ({
   enqueueJob: (...args: unknown[]) => mockEnqueueJob(...args),
 }));
 
@@ -101,8 +101,6 @@ vi.mock('@/lib/audit/agent-action-log', () => ({
   logAgentAction: (...args: unknown[]) => mockLogAgentAction(...args),
   hashParams: (input: unknown) => JSON.stringify(input).slice(0, 8),
 }));
-
-vi.mock('./event-bus', () => ({ onEvent: vi.fn() }));
 
 const mockStartRun = vi.fn().mockResolvedValue({ runId: 1 });
 vi.mock('@/lib/brain/playbook-runs', () => ({

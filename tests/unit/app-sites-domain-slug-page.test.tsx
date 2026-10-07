@@ -272,7 +272,7 @@ describe('home page — no slug', () => {
   it('renders "coming soon" placeholder when no homepage exists', async () => {
     getClientHomePageMock.mockResolvedValue(null);
     const { container } = await renderPage('test.example.com');
-    expect(container.textContent).toMatch(/coming soon/i);
+    expect(container.textContent).toMatch(/disponible pronto/i);
     expect(container.textContent).toContain(SITE.name);
   });
 
@@ -309,7 +309,7 @@ describe('/blog listing', () => {
   it('shows "No posts yet." when blog has no posts', async () => {
     getClientBlogPostsMock.mockResolvedValue([]);
     const { container } = await renderPage('test.example.com', ['blog']);
-    expect(container.textContent).toMatch(/no posts yet/i);
+    expect(container.textContent).toMatch(/aún no hay publicaciones/i);
   });
 
   it('renders a list of blog posts when posts exist', async () => {
@@ -335,7 +335,7 @@ describe('/blog listing', () => {
     getClientBlogPostsMock.mockResolvedValue(posts);
     const { container } = await renderPage('test.example.com', ['blog']);
     // Should see "Next →" since 14 posts → 2 pages and we're on page 1
-    expect(container.textContent).toMatch(/next/i);
+    expect(container.textContent).toMatch(/siguiente/i);
   });
 
   it('renders the correct page of posts when page=2 is passed', async () => {
@@ -459,7 +459,7 @@ describe('generateMetadata', () => {
       params: makeParams('unknown.com'),
       searchParams: makeSearchParams(),
     });
-    expect(meta.title).toEqual({ absolute: 'Not Found' });
+    expect(meta.title).toEqual({ absolute: 'No encontrado' });
   });
 
   it('returns site-name metadata for home (no slug) when no homepage', async () => {
@@ -492,7 +492,7 @@ describe('generateMetadata', () => {
       params: makeParams('test.example.com', ['shop']),
       searchParams: makeSearchParams(),
     });
-    expect((meta.title as { absolute: string }).absolute).toMatch(/shop/i);
+    expect((meta.title as { absolute: string }).absolute).toMatch(/tienda/i);
   });
 
   it('returns shop metadata for /shop/<product> slug', async () => {
@@ -500,7 +500,7 @@ describe('generateMetadata', () => {
       params: makeParams('test.example.com', ['shop', 'widget']),
       searchParams: makeSearchParams(),
     });
-    expect((meta.title as { absolute: string }).absolute).toMatch(/shop/i);
+    expect((meta.title as { absolute: string }).absolute).toMatch(/tienda/i);
   });
 
   it('returns { title: absolute "Not Found" } when a regular page is not found', async () => {
@@ -509,7 +509,7 @@ describe('generateMetadata', () => {
       params: makeParams('test.example.com', ['about']),
       searchParams: makeSearchParams(),
     });
-    expect(meta.title).toEqual({ absolute: 'Not Found' });
+    expect(meta.title).toEqual({ absolute: 'No encontrado' });
   });
 
   it('builds metadata from a regular page including noIndex and canonicalUrl', async () => {
@@ -598,13 +598,13 @@ describe('pagination context / extra params', () => {
   it('defaults to page 1 when page param is non-numeric', async () => {
     getClientBlogPostsMock.mockResolvedValue([]);
     const { container } = await renderPage('test.example.com', ['blog'], { page: 'abc' });
-    expect(container.textContent).toMatch(/no posts yet/i);
+    expect(container.textContent).toMatch(/aún no hay publicaciones/i);
   });
 
   it('defaults to page 1 when page param is 0 or negative', async () => {
     getClientBlogPostsMock.mockResolvedValue([]);
     const { container } = await renderPage('test.example.com', ['blog'], { page: '0' });
-    expect(container.textContent).toMatch(/no posts yet/i);
+    expect(container.textContent).toMatch(/aún no hay publicaciones/i);
   });
 });
 

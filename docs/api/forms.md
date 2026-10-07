@@ -398,7 +398,7 @@ Fetch the contract for a specific signer's review.
     "currency": "USD",
     "accentColor": "#6366f1",
     "logoUrl": "https://cdn.example.com/logo.png",
-    "footerText": "Powered by SimplerDevelopment",
+    "footerText": "Powered by CRM AGENTS",
     "status": "sent",
     "companyName": "Acme Corp",
     "signer": {

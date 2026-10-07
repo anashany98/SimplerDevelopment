@@ -226,7 +226,7 @@ function SortableBlock({
               type="button"
               onClick={() => onDuplicate(block.id)}
               className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded"
-              title="Duplicate"
+              title="Duplicar"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -246,7 +246,7 @@ function SortableBlock({
               type="button"
               onClick={() => onDelete(block.id)}
               className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
-              title="Delete"
+              title="Eliminar"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1008,31 +1008,31 @@ export function EditorInner({
 // Main export with provider
 export function VisualBlockEditorEnhanced({ blocks, onChange, initialViewport, onViewportChange, brandDefaults }: VisualBlockEditorEnhancedProps) {
   const blockTypes: Array<{ type: BlockType; label: string; icon: string; category: string; description: string }> = [
-    { type: 'heading', label: 'Heading', icon: '📝', category: 'Basic', description: 'Add a title or heading' },
-    { type: 'text', label: 'Text', icon: '📄', category: 'Basic', description: 'Plain paragraph text' },
-    { type: 'button', label: 'Button', icon: '🔘', category: 'Basic', description: 'Add a call-to-action button' },
-    { type: 'quote', label: 'Quote', icon: '💬', category: 'Basic', description: 'Add a quotation' },
-    { type: 'image', label: 'Image', icon: '🖼️', category: 'Media', description: 'Insert an image' },
+    { type: 'heading', label: 'Encabezado', icon: '📝', category: 'Basic', description: 'Añade un título o encabezado' },
+    { type: 'text', label: 'Texto', icon: '📄', category: 'Basic', description: 'Plain paragraph text' },
+    { type: 'button', label: 'Botón', icon: '🔘', category: 'Basic', description: 'Añade un botón de llamada a la acción' },
+    { type: 'quote', label: 'Cita', icon: '💬', category: 'Basic', description: 'Añade una cita' },
+    { type: 'image', label: 'Imagen', icon: '🖼️', category: 'Media', description: 'Inserta una imagen' },
     { type: 'youtube', label: 'YouTube', icon: '📺', category: 'Media', description: 'Embed a YouTube video' },
-    { type: 'video', label: 'Video', icon: '🎬', category: 'Media', description: 'Embed a video file' },
+    { type: 'video', label: 'Vídeo', icon: '🎬', category: 'Media', description: 'Embed a video file' },
     { type: 'code', label: 'Code', icon: '💻', category: 'Media', description: 'Display code snippet' },
-    { type: 'spacer', label: 'Spacer', icon: '↕️', category: 'Layout', description: 'Add vertical space' },
-    { type: 'divider', label: 'Divider', icon: '➖', category: 'Layout', description: 'Add a horizontal line' },
-    { type: 'columns', label: 'Columns', icon: '📊', category: 'Layout', description: 'Display content in columns' },
+    { type: 'spacer', label: 'Espaciador', icon: '↕️', category: 'Layout', description: 'Añadir espacio vertical' },
+    { type: 'divider', label: 'Divisor', icon: '➖', category: 'Layout', description: 'Añade una línea horizontal' },
+    { type: 'columns', label: 'Columnas', icon: '📊', category: 'Layout', description: 'Display content in columns' },
     { type: 'accordion', label: 'Accordion', icon: '📑', category: 'Layout', description: 'Collapsible content sections' },
     { type: 'tabs', label: 'Tabs', icon: '🗂️', category: 'Layout', description: 'Tabbed content sections' },
-    { type: 'section', label: 'Section', icon: '📦', category: 'Layout', description: 'Container wrapper with styling' },
+    { type: 'section', label: 'Sección', icon: '📦', category: 'Layout', description: 'Container wrapper with styling' },
     { type: 'hero', label: 'Hero', icon: '🎯', category: 'Components', description: 'Hero section with CTA' },
-    { type: 'services-grid', label: 'Services', icon: '📦', category: 'Components', description: 'Grid of services' },
-    { type: 'cta', label: 'Call to Action', icon: '📢', category: 'Components', description: 'CTA section' },
+    { type: 'services-grid', label: 'Servicios', icon: '📦', category: 'Components', description: 'Grid of services' },
+    { type: 'cta', label: 'Llamada a la acción', icon: '📢', category: 'Components', description: 'CTA section' },
     { type: 'card-grid', label: 'Card Grid', icon: '🎴', category: 'Components', description: 'Grid of cards' },
-    { type: 'stats', label: 'Stats', icon: '📈', category: 'Components', description: 'Statistics display' },
+    { type: 'stats', label: 'Estadísticas', icon: '📈', category: 'Components', description: 'Statistics display' },
     { type: 'testimonial', label: 'Testimonial', icon: '⭐', category: 'Components', description: 'Customer testimonial' },
     { type: 'featured-content', label: 'Featured Content', icon: '✨', category: 'Components', description: 'Featured content with image' },
     { type: 'blog-posts', label: 'Blog Posts', icon: '📰', category: 'Components', description: 'Display blog posts' },
-    { type: 'gallery', label: 'Gallery', icon: '🖼️', category: 'Media', description: 'Image gallery with lightbox' },
-    { type: 'booking', label: 'Booking', icon: 'calendar_month', category: 'Interactive', description: 'Embed a booking page' },
-    { type: 'survey', label: 'Survey', icon: 'assignment', category: 'Interactive', description: 'Embed a survey form' },
+    { type: 'gallery', label: 'Galería', icon: '🖼️', category: 'Media', description: 'Image gallery with lightbox' },
+    { type: 'booking', label: 'Reserva', icon: 'calendar_month', category: 'Interactive', description: 'Embed a booking page' },
+    { type: 'survey', label: 'Encuesta', icon: 'assignment', category: 'Interactive', description: 'Embed a survey form' },
   ];
 
   return (

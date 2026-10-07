@@ -91,7 +91,7 @@ import PitchDecksPage from '@/app/portal/tools/pitch-decks/page';
 async function renderPage() {
   const result = render(<PitchDecksPage />);
   await waitFor(() => {
-    expect(result.container.textContent).not.toContain('Loading pitch decks...');
+    expect(result.container.textContent).not.toContain('Cargando presentaciones...');
   });
   return result;
 }
@@ -102,8 +102,8 @@ describe('PitchDecksPage', () => {
   describe('initial load', () => {
     it('renders the header title + subtitle', async () => {
       await renderPage();
-      expect(screen.getAllByText('Pitch Decks').length).toBeGreaterThan(0);
-      expect(screen.getByText('Create and send AI-powered pitch decks to clients')).toBeTruthy();
+      expect(screen.getAllByText('Presentaciones').length).toBeGreaterThan(0);
+      expect(screen.getByText('Crea y envía presentaciones impulsadas por IA a tus clientes')).toBeTruthy();
     });
 
     it('renders deck cards from the fetched list', async () => {
@@ -115,9 +115,9 @@ describe('PitchDecksPage', () => {
 
     it('renders deck cards with slide counts (plural & singular)', async () => {
       const { container } = await renderPage();
-      expect(container.textContent).toContain('3 slides');
-      expect(container.textContent).toContain('0 slides');
-      expect(container.textContent).toContain('1 slide');
+      expect(container.textContent).toContain('3 diapositivas');
+      expect(container.textContent).toContain('0 diapositivas');
+      expect(container.textContent).toContain('1 diapositiva');
     });
 
     it('renders status pills (published, draft, archived)', async () => {
@@ -135,7 +135,7 @@ describe('PitchDecksPage', () => {
 
     it('New Deck button navigates to the new-deck route', async () => {
       await renderPage();
-      const headerNewDeck = screen.getAllByText('New Deck')[0];
+      const headerNewDeck = screen.getAllByText('Nueva presentación')[0];
       fireEvent.click(headerNewDeck);
       expect(pushMock).toHaveBeenCalledWith('/portal/tools/pitch-decks/new');
     });
@@ -149,7 +149,7 @@ describe('PitchDecksPage', () => {
       });
       const result = render(<PitchDecksPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No pitch decks yet');
+        expect(result.container.textContent).toContain('Aún no hay presentaciones');
       });
     });
 
@@ -160,7 +160,7 @@ describe('PitchDecksPage', () => {
       });
       const result = render(<PitchDecksPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No pitch decks yet');
+        expect(result.container.textContent).toContain('Aún no hay presentaciones');
       });
     });
   });
@@ -175,9 +175,9 @@ describe('PitchDecksPage', () => {
       });
       const result = render(<PitchDecksPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No pitch decks yet');
+        expect(result.container.textContent).toContain('Aún no hay presentaciones');
       });
-      fireEvent.click(screen.getByText('Create Your First Deck'));
+      fireEvent.click(screen.getByText('Crea tu primera presentación'));
       expect(pushMock).toHaveBeenCalledWith('/portal/tools/pitch-decks/new');
     });
 
@@ -190,9 +190,9 @@ describe('PitchDecksPage', () => {
       });
       const result = render(<PitchDecksPage />);
       await waitFor(() => {
-        expect(result.container.textContent).toContain('No pitch decks yet');
+        expect(result.container.textContent).toContain('Aún no hay presentaciones');
       });
-      expect(result.container.querySelector('input[placeholder="Search decks by title or description..."]')).toBeNull();
+      expect(result.container.querySelector('input[placeholder="Busca presentaciones por título o descripción…"]')).toBeNull();
     });
   });
 
@@ -227,7 +227,7 @@ describe('PitchDecksPage', () => {
 
     it('searches decks by title (debounced)', async () => {
       const { container } = await renderPage();
-      const searchInput = container.querySelector('input[placeholder="Search decks by title or description..."]') as HTMLInputElement;
+      const searchInput = container.querySelector('input[placeholder="Busca presentaciones por título o descripción…"]') as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'sales' } });
       await new Promise(r => setTimeout(r, 350));
       await act(async () => { await Promise.resolve(); });
@@ -237,7 +237,7 @@ describe('PitchDecksPage', () => {
 
     it('searches decks by description', async () => {
       const { container } = await renderPage();
-      const searchInput = container.querySelector('input[placeholder="Search decks by title or description..."]') as HTMLInputElement;
+      const searchInput = container.querySelector('input[placeholder="Busca presentaciones por título o descripción…"]') as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'funnel' } });
       await new Promise(r => setTimeout(r, 350));
       await act(async () => { await Promise.resolve(); });
@@ -246,20 +246,20 @@ describe('PitchDecksPage', () => {
 
     it('shows "no decks match" state when search yields no results', async () => {
       const { container } = await renderPage();
-      const searchInput = container.querySelector('input[placeholder="Search decks by title or description..."]') as HTMLInputElement;
+      const searchInput = container.querySelector('input[placeholder="Busca presentaciones por título o descripción…"]') as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'zzz-no-match' } });
       await new Promise(r => setTimeout(r, 350));
       await act(async () => { await Promise.resolve(); });
-      expect(container.textContent).toContain('No decks match your filters');
+      expect(container.textContent).toContain('Ninguna presentación coincide con tus filtros');
     });
 
     it('Reset filters button clears search + status filter', async () => {
       const { container } = await renderPage();
-      const searchInput = container.querySelector('input[placeholder="Search decks by title or description..."]') as HTMLInputElement;
+      const searchInput = container.querySelector('input[placeholder="Busca presentaciones por título o descripción…"]') as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'zzz' } });
       await new Promise(r => setTimeout(r, 350));
       await act(async () => { await Promise.resolve(); });
-      const reset = screen.getByText('Reset filters');
+      const reset = screen.getByText('Restablecer filtros');
       fireEvent.click(reset);
       await new Promise(r => setTimeout(r, 350));
       await act(async () => { await Promise.resolve(); });
@@ -273,7 +273,7 @@ describe('PitchDecksPage', () => {
       fireEvent.click(draftPill!);
       await act(async () => { await Promise.resolve(); });
       const clear = Array.from(container.querySelectorAll('button')).find(b =>
-        b.textContent === 'clear filters');
+        b.textContent === 'limpiar filtros');
       expect(clear).toBeTruthy();
       fireEvent.click(clear!);
       expect(container.textContent).toContain('Sales Deck');
@@ -281,9 +281,9 @@ describe('PitchDecksPage', () => {
 
     it('Clear search button (x) clears the search input', async () => {
       const { container } = await renderPage();
-      const searchInput = container.querySelector('input[placeholder="Search decks by title or description..."]') as HTMLInputElement;
+      const searchInput = container.querySelector('input[placeholder="Busca presentaciones por título o descripción…"]') as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'sales' } });
-      const clearBtn = container.querySelector('button[title="Clear search"]')!;
+      const clearBtn = container.querySelector('button[title="Borrar búsqueda"]')!;
       fireEvent.click(clearBtn);
       expect(searchInput.value).toBe('');
     });
@@ -322,26 +322,26 @@ describe('PitchDecksPage', () => {
   describe('delete deck', () => {
     it('opens delete dialog when delete icon clicked', async () => {
       const { container } = await renderPage();
-      const delBtns = container.querySelectorAll('button[title="Delete deck"]');
+      const delBtns = container.querySelectorAll('button[title="Eliminar presentación"]');
       fireEvent.click(delBtns[0]);
-      expect(screen.getByText('Delete Pitch Deck')).toBeTruthy();
+      expect(screen.getByText('Eliminar presentación')).toBeTruthy();
       expect(screen.getAllByText('Sales Deck').length).toBeGreaterThan(0);
     });
 
     it('Cancel button on delete dialog closes it without deleting', async () => {
       const { container } = await renderPage();
-      const delBtns = container.querySelectorAll('button[title="Delete deck"]');
+      const delBtns = container.querySelectorAll('button[title="Eliminar presentación"]');
       fireEvent.click(delBtns[0]);
-      const cancelButtons = screen.getAllByText('Cancel');
+      const cancelButtons = screen.getAllByText('Cancelar');
       fireEvent.click(cancelButtons[cancelButtons.length - 1]);
-      expect(screen.queryByText('Delete Pitch Deck')).toBeNull();
+      expect(screen.queryByText('Eliminar presentación')).toBeNull();
     });
 
     it('Delete button removes deck from list on success', async () => {
       const { container } = await renderPage();
-      const delBtns = container.querySelectorAll('button[title="Delete deck"]');
+      const delBtns = container.querySelectorAll('button[title="Eliminar presentación"]');
       fireEvent.click(delBtns[0]);
-      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Delete');
+      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Eliminar');
       fireEvent.click(deleteBtn!);
       await waitFor(() => {
         expect(screen.queryByText('Sales Deck')).toBeNull();
@@ -356,9 +356,9 @@ describe('PitchDecksPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const delBtns = container.querySelectorAll('button[title="Delete deck"]');
+      const delBtns = container.querySelectorAll('button[title="Eliminar presentación"]');
       fireEvent.click(delBtns[0]);
-      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Delete');
+      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Eliminar');
       fireEvent.click(deleteBtn!);
       await waitFor(() => {
         expect(screen.getByText('cannot delete')).toBeTruthy();
@@ -373,12 +373,12 @@ describe('PitchDecksPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const delBtns = container.querySelectorAll('button[title="Delete deck"]');
+      const delBtns = container.querySelectorAll('button[title="Eliminar presentación"]');
       fireEvent.click(delBtns[0]);
-      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Delete');
+      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Eliminar');
       fireEvent.click(deleteBtn!);
       await waitFor(() => {
-        expect(screen.getByText('Failed to delete deck.')).toBeTruthy();
+        expect(screen.getByText('No se pudo eliminar la presentación.')).toBeTruthy();
       });
     });
 
@@ -390,18 +390,18 @@ describe('PitchDecksPage', () => {
         return defaultFetch(url, init);
       });
       const { container } = await renderPage();
-      const delBtns = container.querySelectorAll('button[title="Delete deck"]');
+      const delBtns = container.querySelectorAll('button[title="Eliminar presentación"]');
       fireEvent.click(delBtns[0]);
-      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Delete');
+      const deleteBtn = Array.from(container.querySelectorAll('button')).find(b => b.textContent === 'Eliminar');
       fireEvent.click(deleteBtn!);
       await waitFor(() => {
-        expect(screen.getByText('Failed to delete deck.')).toBeTruthy();
+        expect(screen.getByText('No se pudo eliminar la presentación.')).toBeTruthy();
       });
     });
 
     it('falls back to "this deck" if id not found in decks list', async () => {
       const { container } = await renderPage();
-      const delBtns = container.querySelectorAll('button[title="Delete deck"]');
+      const delBtns = container.querySelectorAll('button[title="Eliminar presentación"]');
       fireEvent.click(delBtns[0]);
       expect(screen.getAllByText('Sales Deck').length).toBeGreaterThan(0);
     });

@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { automationRules } from '@/lib/db/schema';
-import { getPortalClient } from '@/lib/portal-client';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { eq, and } from 'drizzle-orm';
 import { computeNextRunAt, validateSchedule } from '@/lib/automation/schedule';
@@ -10,15 +8,9 @@ import { deriveRuleScopes } from '@/lib/ai/portal-tools/derive-rule-scopes';
 
 // GET /api/portal/automations/[id] — fetch a single rule by id
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
   const authResult = await authorizePortal({ action: 'read', scope: 'automations:read' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const ruleId = parseInt(id, 10);
@@ -39,15 +31,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
 // PATCH /api/portal/automations/[id] — update a rule (toggle, edit, etc.)
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
   const authResult = await authorizePortal({ action: 'write', scope: 'automations:write' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const ruleId = parseInt(id, 10);
@@ -98,15 +84,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
 // DELETE /api/portal/automations/[id] — delete a rule
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false }, { status: 401 });
-
-  const authResult = await authorizePortal({ action: 'admin', scope: 'automations:write' });
+  const authResult = await authorizePortal({ action: 'admin', scope: 'automations:delete' });
   if (isAuthError(authResult)) return authResult.response;
-
-  const userId = parseInt(session.user.id, 10);
-  const client = await getPortalClient(userId);
-  if (!client) return NextResponse.json({ success: false }, { status: 404 });
+  const { client } = authResult;
 
   const { id } = await params;
   const ruleId = parseInt(id, 10);

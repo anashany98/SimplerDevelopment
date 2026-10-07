@@ -18,6 +18,7 @@ vi.mock('@/lib/email', () => ({
       send: (...args: unknown[]) => sendMock(...args),
     },
   },
+  getConfiguredFromEmailOr: async (fallback: string) => process.env.RESEND_FROM_EMAIL ?? fallback,
 }));
 
 // booking-emails.ts imports `db` from @/lib/db at module top (used only by
@@ -79,35 +80,35 @@ describe('sendGuestConfirmation', () => {
     expect(sendMock).toHaveBeenCalledTimes(1);
     const payload = sendMock.mock.calls[0][0];
     expect(payload.to).toBe('alice@example.test');
-    expect(payload.subject).toBe('Confirmed: Discovery Call');
-    expect(payload.from).toMatch(/^Booking Confirmation </);
+    expect(payload.subject).toBe('Confirmada: Discovery Call');
+    expect(payload.from).toMatch(/^Confirmación de reserva </);
   });
 
   it('renders the page title, duration, and a cancel link in the HTML body', () => {
     return sendGuestConfirmation(baseData()).then(() => {
       const payload = sendMock.mock.calls[0][0];
       const html = payload.html as string;
-      expect(html).toContain('Booking Confirmed');
+      expect(html).toContain('Reserva confirmada');
       expect(html).toContain('Discovery Call');
-      expect(html).toContain('30 minutes');
+      expect(html).toContain('30 minutos');
       // BASE_URL default + cancel token
       expect(html).toContain('/book/cancel?token=cancel-tok-abc');
       // The cancel-link copy
-      expect(html).toContain('Cancel or reschedule');
+      expect(html).toContain('Cancelar o reprogramar');
     });
   });
 
   it('renders the "Join Video Call" CTA when a meetingLink is provided', async () => {
     await sendGuestConfirmation(baseData());
     const payload = sendMock.mock.calls[0][0];
-    expect(payload.html).toContain('Join Video Call');
+    expect(payload.html).toContain('Unirse a la videollamada');
     expect(payload.html).toContain('https://meet.example.test/xyz');
   });
 
   it('omits the "Where" video-call section when meetingLink is null', async () => {
     await sendGuestConfirmation({ ...baseData(), meetingLink: null });
     const payload = sendMock.mock.calls[0][0];
-    expect(payload.html).not.toContain('Join Video Call');
+    expect(payload.html).not.toContain('Unirse a la videollamada');
   });
 
   it('omits the "Where" video-call section when meetingLink is undefined', async () => {
@@ -115,7 +116,7 @@ describe('sendGuestConfirmation', () => {
     delete (data as { meetingLink?: unknown }).meetingLink;
     await sendGuestConfirmation(data as ReturnType<typeof baseData>);
     const payload = sendMock.mock.calls[0][0];
-    expect(payload.html).not.toContain('Join Video Call');
+    expect(payload.html).not.toContain('Unirse a la videollamada');
   });
 
   it('attaches an .ics calendar file (base64-encoded, text/calendar)', async () => {
@@ -145,8 +146,8 @@ describe('sendGuestConfirmation', () => {
     const att = sendMock.mock.calls[0][0].attachments[0];
     const decoded = Buffer.from(att.content, 'base64').toString('utf8');
     expect(decoded).toContain('LOCATION:https://meet.example.test/xyz');
-    expect(decoded).toContain('Join: https://meet.example.test/xyz');
-    expect(decoded).toContain('Cancel/Reschedule: ');
+    expect(decoded).toContain('Únete: https://meet.example.test/xyz');
+    expect(decoded).toContain('Cancelar o reprogramar: ');
   });
 
   it('omits LOCATION from the ICS when no meetingLink is set', async () => {
@@ -155,8 +156,8 @@ describe('sendGuestConfirmation', () => {
     const decoded = Buffer.from(att.content, 'base64').toString('utf8');
     expect(decoded).not.toContain('LOCATION:');
     // Description should not include the "Join: " prefix
-    expect(decoded).not.toContain('Join: ');
-    expect(decoded).toContain('Cancel/Reschedule: ');
+    expect(decoded).not.toContain('Únete: ');
+    expect(decoded).toContain('Cancelar o reprogramar: ');
   });
 
   it('honors NEXTAUTH_URL when building the cancel link', async () => {
@@ -186,7 +187,7 @@ describe('sendGuestConfirmation', () => {
     await sendGuestConfirmation(baseData());
     const payload = sendMock.mock.calls[0][0];
     // Preview lives in a hidden div with max-height:0
-    expect(payload.html).toMatch(/max-height:0;[^>]*">Your Discovery Call appointment is confirmed/);
+    expect(payload.html).toMatch(/max-height:0;[^>]*">Tu reserva de Discovery Call está confirmada/);
   });
 });
 
@@ -200,26 +201,26 @@ describe('sendHostNotification', () => {
     expect(sendMock).toHaveBeenCalledTimes(1);
     const payload = sendMock.mock.calls[0][0];
     expect(payload.to).toBe('host@example.test');
-    expect(payload.subject).toBe('New Booking: Alice Example — Discovery Call');
-    expect(payload.from).toMatch(/^SimplerDevelopment </);
+    expect(payload.subject).toBe('Nueva reserva: Alice Example — Discovery Call');
+    expect(payload.from).toMatch(/^CRM AGENTS </);
   });
 
   it('renders the guest name, email, page title, and a portal link', async () => {
     await sendHostNotification('host@example.test', baseData());
     const html = sendMock.mock.calls[0][0].html as string;
-    expect(html).toContain('New Booking');
+    expect(html).toContain('Nueva reserva');
     expect(html).toContain('Alice Example');
     expect(html).toContain('alice@example.test');
     expect(html).toContain('Discovery Call');
     expect(html).toContain('/portal/tools/booking');
-    expect(html).toContain('View in Portal');
-    expect(html).toContain('30 minutes');
+    expect(html).toContain('Ver en el portal');
+    expect(html).toContain('30 minutos');
   });
 
   it('renders a video-call section when meetingLink is set', async () => {
     await sendHostNotification('host@example.test', baseData());
     const html = sendMock.mock.calls[0][0].html as string;
-    expect(html).toContain('Video Call');
+    expect(html).toContain('Videollamada');
     expect(html).toContain('https://meet.example.test/xyz');
   });
 
@@ -229,7 +230,7 @@ describe('sendHostNotification', () => {
       meetingLink: null,
     });
     const html = sendMock.mock.calls[0][0].html as string;
-    expect(html).not.toContain('Video Call');
+    expect(html).not.toContain('Videollamada');
   });
 
   it('attaches an .ics file with the host as a second ATTENDEE', async () => {
@@ -239,7 +240,7 @@ describe('sendHostNotification', () => {
     const att = payload.attachments[0];
     expect(att.filename).toBe('invite.ics');
     const decoded = Buffer.from(att.content, 'base64').toString('utf8');
-    expect(decoded).toContain('ATTENDEE;CN=Host;RSVP=TRUE:mailto:host@example.test');
+    expect(decoded).toContain('ATTENDEE;CN=Anfitrión;RSVP=TRUE:mailto:host@example.test');
     expect(decoded).toContain('ATTENDEE;CN=Alice Example;RSVP=TRUE:mailto:alice@example.test');
   });
 
@@ -260,7 +261,7 @@ describe('sendHostNotification', () => {
   it('sets a preview text mentioning the guest name and page title', async () => {
     await sendHostNotification('host@example.test', baseData());
     const html = sendMock.mock.calls[0][0].html as string;
-    expect(html).toMatch(/max-height:0;[^>]*">New booking: Alice Example — Discovery Call/);
+    expect(html).toMatch(/max-height:0;[^>]*">Nueva reserva: Alice Example — Discovery Call/);
   });
 });
 
@@ -281,8 +282,8 @@ describe('sendCancellationEmail', () => {
     expect(sendMock).toHaveBeenCalledTimes(1);
     const payload = sendMock.mock.calls[0][0];
     expect(payload.to).toBe('alice@example.test');
-    expect(payload.from).toMatch(/^Booking Update </);
-    expect(payload.subject).toMatch(/^Cancelled: Discovery Call — /);
+    expect(payload.from).toMatch(/^Actualización de reserva </);
+    expect(payload.subject).toMatch(/^Cancelada: Discovery Call — /);
   });
 
   it('renders the cancelled page title and a rebook URL using the slug', async () => {
@@ -295,10 +296,10 @@ describe('sendCancellationEmail', () => {
       'discovery-call',
     );
     const html = sendMock.mock.calls[0][0].html as string;
-    expect(html).toContain('Booking Cancelled');
+    expect(html).toContain('Reserva cancelada');
     expect(html).toContain('Discovery Call');
     expect(html).toContain('/book/discovery-call');
-    expect(html).toContain('Schedule again');
+    expect(html).toContain('Reservar de nuevo');
   });
 
   it('does NOT attach an .ics file (cancellation is plain HTML)', async () => {
@@ -346,11 +347,11 @@ describe('sendCancellationEmail', () => {
       'discovery-call',
     );
     const payload = sendMock.mock.calls[0][0];
-    // Subject contains the formatted start (en-US, UTC) — we just assert
+    // Subject contains the formatted start (es-ES, UTC) — we just assert
     // the year/month tokens to avoid timezone-driver flakiness.
     expect(payload.subject).toContain('2026');
-    expect(payload.subject).toContain('June');
-    expect(payload.html).toMatch(/max-height:0;[^>]*">Your Discovery Call appointment has been cancelled/);
+    expect(payload.subject).toContain('junio');
+    expect(payload.html).toMatch(/max-height:0;[^>]*">Tu cita de Discovery Call ha sido cancelada/);
   });
 
   it('handles special characters in page title without breaking', async () => {
@@ -373,12 +374,12 @@ describe('sendCancellationEmail', () => {
 // ---------------------------------------------------------------------------
 
 describe('booking email HTML wrapper', () => {
-  it('emits a full HTML document with the SimplerDevelopment footer', async () => {
+  it('emits a full HTML document with the CRM AGENTS footer', async () => {
     await sendGuestConfirmation(baseData());
     const html = sendMock.mock.calls[0][0].html as string;
     expect(html.startsWith('<!DOCTYPE html>')).toBe(true);
-    expect(html).toContain('<html lang="en">');
-    expect(html).toContain('Powered by SimplerDevelopment');
+    expect(html).toContain('<html lang="es">');
+    expect(html).toContain('Con la tecnología de CRM AGENTS');
     expect(html.trim().endsWith('</html>')).toBe(true);
   });
 

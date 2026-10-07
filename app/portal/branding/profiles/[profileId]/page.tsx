@@ -62,9 +62,9 @@ export default function BrandingProfileEditorPage() {
   if (!profile) {
     return (
       <div className="max-w-4xl mx-auto text-center py-16">
-        <p className="text-muted-foreground">Profile not found.</p>
+        <p className="text-muted-foreground">Perfil no encontrado.</p>
         <Link href="/portal/branding" className="text-primary text-sm mt-2 inline-block">
-          Back to Branding
+          Volver a Marca
         </Link>
       </div>
     );
@@ -72,11 +72,11 @@ export default function BrandingProfileEditorPage() {
 
   const tabs = [
     { id: 'logos' as const, label: 'Logos', icon: 'image' },
-    { id: 'colors' as const, label: 'Colors', icon: 'palette' },
-    { id: 'typography' as const, label: 'Typography', icon: 'text_fields' },
-    { id: 'buttons' as const, label: 'Buttons', icon: 'smart_button' },
-    { id: 'style' as const, label: 'Style', icon: 'tune' },
-    { id: 'messaging' as const, label: 'Messaging', icon: 'chat' },
+    { id: 'colors' as const, label: 'Colores', icon: 'palette' },
+    { id: 'typography' as const, label: 'Tipografía', icon: 'text_fields' },
+    { id: 'buttons' as const, label: 'Botones', icon: 'smart_button' },
+    { id: 'style' as const, label: 'Estilo', icon: 'tune' },
+    { id: 'messaging' as const, label: 'Mensajería', icon: 'chat' },
   ];
 
   return (
@@ -89,7 +89,7 @@ export default function BrandingProfileEditorPage() {
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
           >
             <span className="material-icons text-base">arrow_back</span>
-            Back to Branding
+            Volver a Marca
           </Link>
           <div className="flex items-center gap-3">
             <input
@@ -97,7 +97,7 @@ export default function BrandingProfileEditorPage() {
               value={profile.name}
               onChange={(e) => update({ name: e.target.value })}
               className="text-2xl font-bold text-foreground bg-transparent border-none outline-none focus:ring-0"
-              placeholder="Profile name"
+              placeholder="Nombre del perfil"
             />
             <label className="flex items-center gap-1.5 cursor-pointer shrink-0">
               <input
@@ -106,11 +106,11 @@ export default function BrandingProfileEditorPage() {
                 onChange={(e) => update({ isDefault: e.target.checked })}
                 className="rounded border-border"
               />
-              <span className="text-xs text-muted-foreground">Default</span>
+              <span className="text-xs text-muted-foreground">Predeterminado</span>
             </label>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
-            Set your brand identity. These styles apply as defaults across assigned sites.
+            Define la identidad de tu marca. Estos estilos se aplican como predeterminados en los sitios asignados.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -119,15 +119,15 @@ export default function BrandingProfileEditorPage() {
             className="px-4 py-2 border border-border bg-background text-foreground rounded-lg text-sm font-medium hover:bg-accent transition-colors flex items-center gap-2"
           >
             <span className="material-icons text-base">menu_book</span>
-            Brand Guide
+            Guía de marca
           </Link>
           <button
             onClick={save}
             disabled={(!dirty && !messagingDirty) || saving}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
           >
             <span className="material-icons text-base">{saving ? 'refresh' : 'save'}</span>
-            {saving ? 'Saving...' : 'Save Changes'}
+            {saving ? 'Guardando...' : 'Guardar cambios'}
           </button>
         </div>
       </div>

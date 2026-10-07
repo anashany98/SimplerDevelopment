@@ -251,7 +251,7 @@ describe('SurveyDetailPage', () => {
     it('renders a spinner while loading', () => {
       useSurveyReturnValue = makeUseSurveyValue({ loading: true, survey: null });
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('progress_activity');
+      expect(container.textContent).toContain('autorenew');
     });
 
     it('does not render tab bar while loading', () => {
@@ -265,7 +265,7 @@ describe('SurveyDetailPage', () => {
     it('renders survey-not-found message when survey is null after load', () => {
       useSurveyReturnValue = makeUseSurveyValue({ loading: false, survey: null });
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('Survey not found');
+      expect(container.textContent).toContain('Encuesta no encontrada');
     });
 
     it('renders a Back to Surveys link when survey is null', () => {
@@ -294,12 +294,12 @@ describe('SurveyDetailPage', () => {
       const tabBar = container.querySelector('.border-b');
       expect(tabBar).toBeTruthy();
       // All tabs have icons; check a representative set
-      expect(container.textContent).toContain('Overview');
-      expect(container.textContent).toContain('Edit');
-      expect(container.textContent).toContain('Responses (5)');
-      expect(container.textContent).toContain('Share & Embed');
-      expect(container.textContent).toContain('Email Follow-ups');
-      expect(container.textContent).toContain('Settings');
+      expect(container.textContent).toContain('Resumen');
+      expect(container.textContent).toContain('Editar');
+      expect(container.textContent).toContain('Respuestas (5)');
+      expect(container.textContent).toContain('Compartir e incrustar');
+      expect(container.textContent).toContain('Seguimiento por email');
+      expect(container.textContent).toContain('Ajustes');
     });
 
     it('shows response count in the Responses tab label', () => {
@@ -307,7 +307,7 @@ describe('SurveyDetailPage', () => {
         survey: { ...baseSurvey, responseCount: 42 },
       });
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('Responses (42)');
+      expect(container.textContent).toContain('Respuestas (42)');
     });
 
     it('defaults to the overview tab panel', () => {
@@ -341,9 +341,9 @@ describe('SurveyDetailPage', () => {
     });
 
     it('renders success banner when successMsg is set', () => {
-      useSurveyReturnValue = makeUseSurveyValue({ successMsg: 'Saved' });
+      useSurveyReturnValue = makeUseSurveyValue({ successMsg: 'Guardado' });
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('Saved');
+      expect(container.textContent).toContain('Guardado');
     });
 
     it('does not render success banner when successMsg is empty', () => {
@@ -362,32 +362,32 @@ describe('SurveyDetailPage', () => {
   describe('tab navigation', () => {
     it('clicking Edit tab renders EditTab panel', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Edit'));
+      fireEvent.click(screen.getByText('Editar'));
       expect(screen.getByTestId('edit-tab')).toBeTruthy();
       expect(screen.queryByTestId('overview-tab')).toBeNull();
     });
 
     it('clicking Flow tab renders FlowDiagramTab panel', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Flow'));
+      fireEvent.click(screen.getByText('Flujo'));
       expect(screen.getByTestId('flow-tab')).toBeTruthy();
     });
 
     it('clicking Recommendation tab renders SurveyRecommendationEditor', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Recommendation'));
+      fireEvent.click(screen.getByText('Recomendación'));
       expect(screen.getByTestId('recommendation-tab')).toBeTruthy();
     });
 
     it('clicking Variants tab renders VariantsPanel', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Variants'));
+      fireEvent.click(screen.getByText('Variantes'));
       expect(screen.getByTestId('variants-tab')).toBeTruthy();
     });
 
     it('clicking Responses tab renders ResponsesTab and calls refreshResponses with filters', async () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText(/Responses \(/));
+      fireEvent.click(screen.getByText(/Respuestas \(/));
       expect(screen.getByTestId('responses-tab')).toBeTruthy();
       await waitFor(() => {
         expect(refreshResponsesMock).toHaveBeenCalledWith(
@@ -398,7 +398,7 @@ describe('SurveyDetailPage', () => {
 
     it('clicking Analytics tab renders ResponseAnalytics and calls refreshResponses', async () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Analytics'));
+      fireEvent.click(screen.getByText('Analíticas'));
       expect(screen.getByTestId('analytics-tab')).toBeTruthy();
       await waitFor(() => {
         // analytics tab calls refreshResponses with no filters arg
@@ -408,7 +408,7 @@ describe('SurveyDetailPage', () => {
 
     it('clicking Share & Embed tab renders ShareTab', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Share & Embed'));
+      fireEvent.click(screen.getByText('Compartir e incrustar'));
       expect(screen.getByTestId('share-tab')).toBeTruthy();
     });
 
@@ -420,13 +420,13 @@ describe('SurveyDetailPage', () => {
 
     it('clicking Email Follow-ups tab renders EmailSequencesPanel', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Email Follow-ups'));
+      fireEvent.click(screen.getByText('Seguimiento por email'));
       expect(screen.getByTestId('email-followups-tab')).toBeTruthy();
     });
 
     it('clicking Settings tab renders SurveySettings', () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Settings'));
+      fireEvent.click(screen.getByText('Ajustes'));
       expect(screen.getByTestId('settings-tab')).toBeTruthy();
     });
 
@@ -437,7 +437,7 @@ describe('SurveyDetailPage', () => {
         b.className.includes('border-primary'),
       );
       expect(activeBtn).toBeTruthy();
-      expect(activeBtn?.textContent).toContain('Overview');
+      expect(activeBtn?.textContent).toContain('Resumen');
     });
   });
 
@@ -466,7 +466,7 @@ describe('SurveyDetailPage', () => {
       fireEvent.click(screen.getByTestId('publish-btn'));
       await act(async () => {});
       expect(setErrorMock).toHaveBeenCalledWith(
-        'Add at least one question before publishing',
+        'Añade al menos una pregunta antes de publicar',
       );
       expect(saveMock).not.toHaveBeenCalled();
     });
@@ -475,7 +475,7 @@ describe('SurveyDetailPage', () => {
   describe('handleDelete', () => {
     it('prompts for confirmation before deleting', async () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Settings'));
+      fireEvent.click(screen.getByText('Ajustes'));
       fireEvent.click(screen.getByTestId('delete-btn'));
       await act(async () => {});
       expect(window.confirm).toHaveBeenCalled();
@@ -483,7 +483,7 @@ describe('SurveyDetailPage', () => {
 
     it('calls remove() and navigates to /portal/surveys on confirm', async () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Settings'));
+      fireEvent.click(screen.getByText('Ajustes'));
       fireEvent.click(screen.getByTestId('delete-btn'));
       await waitFor(() => {
         expect(removeMock).toHaveBeenCalled();
@@ -494,7 +494,7 @@ describe('SurveyDetailPage', () => {
     it('does not call remove() or navigate when confirm is cancelled', async () => {
       vi.spyOn(window, 'confirm').mockReturnValueOnce(false);
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Settings'));
+      fireEvent.click(screen.getByText('Ajustes'));
       fireEvent.click(screen.getByTestId('delete-btn'));
       await act(async () => {});
       expect(removeMock).not.toHaveBeenCalled();
@@ -504,7 +504,7 @@ describe('SurveyDetailPage', () => {
     it('does not navigate when remove() returns success:false', async () => {
       removeMock.mockResolvedValue({ success: false, message: 'DB error' });
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Settings'));
+      fireEvent.click(screen.getByText('Ajustes'));
       fireEvent.click(screen.getByTestId('delete-btn'));
       await act(async () => {});
       expect(pushMock).not.toHaveBeenCalled();
@@ -514,7 +514,7 @@ describe('SurveyDetailPage', () => {
   describe('copyLink / copyEmbed (Share tab)', () => {
     it('calls navigator.clipboard.writeText with the survey URL on copyLink', async () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Share & Embed'));
+      fireEvent.click(screen.getByText('Compartir e incrustar'));
       fireEvent.click(screen.getByTestId('copy-link-btn'));
       await act(async () => {});
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
@@ -524,7 +524,7 @@ describe('SurveyDetailPage', () => {
 
     it('calls navigator.clipboard.writeText with an iframe embed snippet on copyEmbed', async () => {
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText('Share & Embed'));
+      fireEvent.click(screen.getByText('Compartir e incrustar'));
       fireEvent.click(screen.getByTestId('copy-embed-btn'));
       await act(async () => {});
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
@@ -541,7 +541,7 @@ describe('SurveyDetailPage', () => {
       // The share tab is only rendered when survey is loaded, so just verify
       // no crash when the page itself is null-guarded (not-found branch renders)
       const { container } = render(<SurveyDetailPage />);
-      expect(container.textContent).toContain('Survey not found');
+      expect(container.textContent).toContain('Encuesta no encontrada');
       expect(navigator.clipboard.writeText).not.toHaveBeenCalled();
     });
   });
@@ -551,7 +551,7 @@ describe('SurveyDetailPage', () => {
       searchParamsString = 'from=2025-01-01&to=2025-12-31&source=web&q=hello';
       render(<SurveyDetailPage />);
       // Visit responses tab to trigger refreshResponses with filters
-      fireEvent.click(screen.getByText(/Responses \(/));
+      fireEvent.click(screen.getByText(/Respuestas \(/));
       await waitFor(() => {
         expect(refreshResponsesMock).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -567,7 +567,7 @@ describe('SurveyDetailPage', () => {
     it('passes null for absent filter params', async () => {
       searchParamsString = '';
       render(<SurveyDetailPage />);
-      fireEvent.click(screen.getByText(/Responses \(/));
+      fireEvent.click(screen.getByText(/Respuestas \(/));
       await waitFor(() => {
         expect(refreshResponsesMock).toHaveBeenCalledWith(
           expect.objectContaining({ from: null, to: null, source: null, q: null }),

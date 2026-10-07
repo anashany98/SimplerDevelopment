@@ -10,30 +10,73 @@ import { useAgencyChrome } from './AgencyChromeProvider';
 // label — a segment dictionary + title-case fallback covers every route and
 // stays dependency-free.
 const SEGMENT_LABELS: Record<string, string> = {
-  portal: 'Home',
-  dashboard: 'Dashboard',
-  brain: 'Company Brain',
+  portal: 'Inicio',
+  dashboard: 'Panel',
+  brain: 'Cerebro de empresa',
+  tasks: 'Tareas',
+  knowledge: 'Conocimiento',
+  decisions: 'Decisiones',
+  people: 'Personas',
+  glossary: 'Glosario',
+  documents: 'Documentos',
+  playbooks: 'Playbooks',
+  initiatives: 'Iniciativas',
+  goals: 'Objetivos',
   crm: 'CRM',
-  email: 'Email',
-  publishing: 'Publishing',
-  surveys: 'Surveys',
-  websites: 'Websites',
-  tickets: 'Support',
-  inbox: 'Live Chat',
-  invoices: 'Billing',
-  services: 'Services',
-  hosting: 'Hosting',
-  agency: 'Agency',
-  settings: 'Settings',
-  'my-tasks': 'My Tasks',
-  'pitch-decks': 'Pitch Decks',
-  'org-chart': 'Org Chart',
+  email: 'Correo',
+  campaigns: 'Campañas',
+  templates: 'Plantillas',
+  lists: 'Listas',
+  segments: 'Segmentos',
+  analytics: 'Analítica',
+  publishing: 'Publicaciones',
+  surveys: 'Encuestas',
+  websites: 'Webs',
+  seo: 'SEO Intelligence',
+  tickets: 'Soporte',
+  inbox: 'Bandeja de entrada',
+  invoices: 'Facturación',
+  services: 'Servicios',
+  hosting: 'Alojamiento',
+  agency: 'Agencia',
+  settings: 'Ajustes',
+  'my-tasks': 'Mis tareas',
+  'pitch-decks': 'Pitch decks',
+  'org-chart': 'Organigrama',
   ab: 'A/B',
-  media: 'Media',
-  experiments: 'A/B Experiments',
-  branding: 'Branding',
-  tools: 'Tools',
-  projects: 'Projects',
+  media: 'Medios',
+  experiments: 'Experimentos A/B',
+  branding: 'Marca',
+  tools: 'Herramientas',
+  projects: 'Proyectos',
+  agents: 'Agentes',
+  approvals: 'Aprobaciones',
+  automations: 'Automatizaciones',
+  workflows: 'Flujos de trabajo',
+  'trigger-links': 'Enlaces de disparo',
+  'flow-runs': 'Ejecuciones',
+  notifications: 'Notificaciones',
+  standup: 'Reunión diaria',
+  snapshots: 'Instantáneas',
+  'suggested-projects': 'Proyectos sugeridos',
+  entries: 'Entradas',
+  posts: 'Publicaciones',
+  'content-types': 'Tipos de contenido',
+  taxonomy: 'Taxonomía',
+  categories: 'Categorías',
+  tags: 'Etiquetas',
+  calendar: 'Calendario',
+  code: 'Código',
+  navigation: 'Navegación',
+  'custom-domain': 'Dominio personalizado',
+  store: 'Tienda',
+  products: 'Productos',
+  orders: 'Pedidos',
+  discounts: 'Descuentos',
+  shipping: 'Envíos',
+  new: 'Nueva',
+  booking: 'Reservas',
+  bookings: 'Reservas',
 };
 
 function titleCase(seg: string): string {
@@ -44,7 +87,7 @@ function buildCrumb(pathname: string): string[] {
   const segs = pathname.split('/').filter(Boolean);
   // Drop the leading "portal"; ignore bare numeric id segments (siteId etc.).
   const rest = segs.slice(1).filter((s) => !/^\d+$/.test(s));
-  if (rest.length === 0) return ['Dashboard'];
+  if (rest.length === 0) return ['Panel'];
   // Keep it to the last two meaningful segments so the bar never wraps.
   return rest.slice(-2).map((s) => SEGMENT_LABELS[s] ?? titleCase(s));
 }
@@ -73,8 +116,8 @@ export default function PortalTopbar({ collapsed, onToggleCollapse, onOpenMobile
       <button
         onClick={onOpenMobile}
         className="lg:hidden w-8 h-8 grid place-items-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-        title="Menu"
-        aria-label="Open navigation"
+        title="Menú"
+        aria-label="Abrir navegación"
       >
         <span className="material-icons text-xl">menu</span>
       </button>
@@ -106,10 +149,10 @@ export default function PortalTopbar({ collapsed, onToggleCollapse, onOpenMobile
       <button
         onClick={() => window.dispatchEvent(new CustomEvent('portal:open-cmdk'))}
         className="ml-auto flex items-center gap-2 h-9 px-3 rounded-xl border border-border bg-[var(--portal-surface-2)] text-muted-foreground text-[13px] hover:border-[var(--portal-border-strong)] transition-colors min-w-0 sm:min-w-[240px]"
-        title="Search (⌘K)"
+        title="Buscar (⌘K)"
       >
         <span className="material-icons text-[17px]">search</span>
-        <span className="hidden sm:inline">Jump to anything…</span>
+        <span className="hidden sm:inline">Ir a cualquier sección…</span>
         <kbd className="hidden sm:inline ml-auto font-mono text-[10.5px] px-1.5 py-0.5 rounded border border-border bg-card text-muted-foreground">
           ⌘K
         </kbd>
@@ -121,8 +164,8 @@ export default function PortalTopbar({ collapsed, onToggleCollapse, onOpenMobile
           href="/portal/settings/profile"
           className="w-8 h-8 rounded-full grid place-items-center text-white text-xs font-semibold shrink-0"
           style={{ background: 'linear-gradient(135deg,#2563eb,#10b981)' }}
-          title="Account"
-          aria-label="Account"
+          title="Cuenta"
+          aria-label="Cuenta"
         >
           <span className="material-icons text-[18px]">person</span>
         </Link>

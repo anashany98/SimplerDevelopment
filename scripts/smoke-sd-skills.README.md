@@ -1,6 +1,6 @@
 # Smoke-test harness — sd-* skills
 
-A standalone Bun script that runs a SimplerDevelopment content-authoring skill
+A standalone Bun script that runs a CRM AGENTS content-authoring skill
 end-to-end against the **local** MCP, captures the output, and asserts the
 audit-pass markers we shipped in `.claude/skills/CHANGELOG.md` actually land in
 real output.
@@ -116,7 +116,7 @@ Then `bun run smoke:skills -- --skill sd-create-deck`.
   markers are written to be robust against either.
 - The MCP currently lives on the same Postgres as production (per
   `SD_SKILLS_RUNBOOK.md` §6.2). Be careful what tenant you test against —
-  default `--client-id 104` is the SD-internal SimplerDevelopment client.
+  default `--client-id 104` is the SD-internal CRM AGENTS client.
 - Each run costs API credits. Sonnet ≈ $0.05–$0.10, Opus ≈ $0.20–$0.40.
 - The `posts_create` schema validation lives server-side; if you change the
   block schema, update the hero-hygiene marker to match.

@@ -77,7 +77,7 @@ export default function SuggestedProjectRequestForm({
       if (!field.required || field.type === 'heading' || !isFieldVisible(field)) continue;
       const val = answers[field.id];
       if (val === undefined || val === '' || (Array.isArray(val) && val.length === 0)) {
-        setError(`"${field.label}" is required.`);
+        setError(`"${field.label}" es obligatorio.`);
         setLoading(false);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
@@ -106,14 +106,14 @@ export default function SuggestedProjectRequestForm({
       const data = await res.json();
       setLoading(false);
       if (!data.success) {
-        setError(data.message ?? 'Failed to submit request.');
+        setError(data.message ?? 'No se pudo enviar la solicitud.');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         router.push('/portal/suggested-projects?requested=1');
       }
     } catch {
       setLoading(false);
-      setError('Something went wrong. Please try again.');
+      setError('Algo salió mal. Inténtalo de nuevo.');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
@@ -156,7 +156,7 @@ export default function SuggestedProjectRequestForm({
         <div className="ml-9">
           {isConditionalPending(field) && (
             <p className="text-sm text-muted-foreground italic">
-              Answer the previous question to see options.
+              Responde la pregunta anterior para ver las opciones.
             </p>
           )}
           {field.type === 'text' && (
@@ -173,11 +173,11 @@ export default function SuggestedProjectRequestForm({
           )}
           {field.type === 'email' && (
             <input type="email" value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)}
-              placeholder={field.placeholder || 'you@example.com'} className={inputCls} />
+              placeholder={field.placeholder || 'tu@ejemplo.com'} className={inputCls} />
           )}
           {field.type === 'phone' && (
             <input type="tel" value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)}
-              placeholder={field.placeholder || '+1 (555) 000-0000'} className={inputCls} />
+              placeholder={field.placeholder || '+34 600 123 456'} className={inputCls} />
           )}
           {field.type === 'url' && (
             <input type="url" value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)}
@@ -189,7 +189,7 @@ export default function SuggestedProjectRequestForm({
           )}
           {field.type === 'select' && (
             <select value={(val as string) ?? ''} onChange={e => setAnswer(field.id, e.target.value)} className={inputCls}>
-              <option value="">Select an option...</option>
+              <option value="">Selecciona una opción...</option>
               {opts.filter(Boolean).map((opt, i) => (
                 <option key={i} value={opt}>{opt}</option>
               ))}
@@ -261,7 +261,7 @@ export default function SuggestedProjectRequestForm({
               <div className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors flex-shrink-0 ${val ? 'bg-primary' : 'bg-muted-foreground/30'}`}>
                 <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${val ? 'translate-x-5' : 'translate-x-0.5'}`} />
               </div>
-              <span className={`text-sm font-medium ${val ? 'text-primary' : 'text-muted-foreground'}`}>{val ? 'Yes' : 'No'}</span>
+              <span className={`text-sm font-medium ${val ? 'text-primary' : 'text-muted-foreground'}`}>{val ? 'Sí' : 'No'}</span>
             </div>
           )}
 
@@ -296,8 +296,8 @@ export default function SuggestedProjectRequestForm({
                   />
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Drag to set your budget</span>
-                  <span>Step: ${step.toLocaleString()}</span>
+                  <span>Arrastra para fijar tu presupuesto</span>
+                  <span>Incremento: ${step.toLocaleString()}</span>
                 </div>
               </div>
             );
@@ -331,7 +331,7 @@ export default function SuggestedProjectRequestForm({
         <div className="fixed top-0 inset-x-0 z-30 lg:pl-64 bg-background/95 backdrop-blur-sm border-b border-border">
           <div className="max-w-2xl mx-auto px-6 py-3">
             <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
-              <span>{answeredRequired.length} of {requiredFields.length} required fields answered</span>
+              <span>{answeredRequired.length} de {requiredFields.length} campos obligatorios respondidos</span>
               <span className={progress === 100 ? 'text-green-600 font-medium' : ''}>{progress}%</span>
             </div>
             <div className="h-1.5 bg-muted rounded-full overflow-hidden">
@@ -348,9 +348,9 @@ export default function SuggestedProjectRequestForm({
       {/* Hero header */}
       <div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-          <Link href="/portal/suggested-projects" className="hover:text-foreground transition-colors">Suggested Projects</Link>
+          <Link href="/portal/suggested-projects" className="hover:text-foreground transition-colors">Proyectos sugeridos</Link>
           <span className="material-icons text-sm">chevron_right</span>
-          <span className="text-foreground">Get Started</span>
+          <span className="text-foreground">Empezar</span>
         </div>
         <div className={`bg-gradient-to-br ${heroGradient} rounded-2xl p-6 text-white`}>
           <div className="flex items-center gap-3 mb-1">
@@ -380,17 +380,16 @@ export default function SuggestedProjectRequestForm({
             ) : (
               <div>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Tell us about your project goals and we&apos;ll schedule a free discovery call.
+                  Cuéntanos los objetivos de tu proyecto y programaremos una llamada de descubrimiento gratuita.
                 </p>
-                <label className="block text-sm font-semibold text-foreground mb-2">
-                  Message <span className="text-primary">*</span>
+                <label className="block text-sm font-semibold text-foreground mb-2">Mensaje<span className="text-primary">*</span>
                 </label>
                 <textarea
                   rows={6}
                   required
                   value={message}
                   onChange={e => setMessage(e.target.value)}
-                  placeholder="Describe your goals, timeline, and any specific requirements..."
+                  placeholder="Describe tus objetivos, tu plazo y cualquier requisito específico..."
                   className={`${inputCls} resize-y`}
                 />
               </div>
@@ -401,18 +400,16 @@ export default function SuggestedProjectRequestForm({
           <div className="border-t border-border px-6 py-4 bg-muted/30 flex items-center justify-between gap-4">
             <Link href={`/portal/suggested-projects/${projectId}`}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-              <span className="material-icons text-base">arrow_back</span>
-              Back
-            </Link>
+              <span className="material-icons text-base">arrow_back</span>Atrás</Link>
             <button
               type="submit"
               disabled={loading}
               className={`flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r ${heroGradient} text-white rounded-xl text-sm font-semibold hover:opacity-90 disabled:opacity-50 transition-opacity shadow-md`}
             >
               {loading ? (
-                <><span className="material-icons text-base animate-spin">refresh</span>Submitting...</>
+                <><span className="material-icons text-base animate-spin">refresh</span>Enviando...</>
               ) : (
-                <><span className="material-icons text-base">send</span>Submit Request</>
+                <><span className="material-icons text-base">send</span>Enviar solicitud</>
               )}
             </button>
           </div>

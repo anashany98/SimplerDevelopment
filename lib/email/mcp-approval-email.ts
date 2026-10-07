@@ -11,11 +11,10 @@ import { escapeHtml } from '@/lib/utils/html';
 import { db } from '@/lib/db';
 import { crmNotifications, users, clients } from '@/lib/db/schema';
 import { and, eq, gt, inArray, sql } from 'drizzle-orm';
-import { resend } from './index';
+import { resend, getConfiguredFromEmail, getEmailPlatformConfig } from './index';
 import { shouldDeliverNotification } from '@/lib/crm/notifications';
 
 const BASE_URL = process.env.NEXTAUTH_URL || 'https://simplerdevelopment.com';
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'portal@simplerdevelopment.com';
 const COOLDOWN_MINUTES = 10;
 const EMAILS_ENABLED = process.env.MCP_APPROVAL_EMAILS_ENABLED !== 'false';
 
@@ -43,14 +42,14 @@ function renderEmail(params: {
     <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;background:#ffffff;">
       <div style="padding:40px 32px;background:#fef3c7;border-bottom:1px solid #fcd34d;">
         <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#92400e;font-weight:600;margin-bottom:8px;">
-          Review requested
+          Revisión solicitada
         </div>
-        <h1 style="margin:0;font-size:22px;font-weight:700;color:#78350f;">MCP change awaiting approval</h1>
+        <h1 style="margin:0;font-size:22px;font-weight:700;color:#78350f;">Cambio de MCP pendiente de aprobación</h1>
         <p style="margin:8px 0 0;font-size:14px;color:#92400e;">${escapeHtml(clientName)}</p>
       </div>
       <div style="padding:32px;">
         <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 16px;">
-          An AI agent proposed a change that requires your approval before it applies:
+          Un agente de IA ha propuesto un cambio que requiere tu aprobación antes de aplicarse:
         </p>
         <div style="background:#f8fafc;border-left:3px solid #f59e0b;padding:16px 20px;border-radius:4px;margin:20px 0;">
           <div style="font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:#64748b;font-weight:600;margin-bottom:4px;">
@@ -62,19 +61,19 @@ function renderEmail(params: {
         </div>
         <div style="text-align:center;margin:32px 0;">
           <a href="${approvalUrl}" style="display:inline-block;padding:14px 32px;background:#f59e0b;color:#ffffff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:600;">
-            Review &amp; Approve
+            Revisar y aprobar
           </a>
         </div>
         <p style="font-size:13px;color:#64748b;line-height:1.5;margin:0;">
-          You'll see a field-level diff of what the agent proposed versus the current state, with Approve and Reject options.
+          Verás una comparación campo por campo de lo que propuso el agente frente al estado actual, con opciones de Aprobar y Rechazar.
         </p>
       </div>
       <div style="padding:24px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center;">
         <p style="margin:0 0 4px;font-size:12px;color:#94a3b8;">
-          You're receiving this because you're an owner or admin on this account.
+          Recibes este correo porque eres propietario o administrador de esta cuenta.
         </p>
         <p style="margin:0;font-size:12px;color:#94a3b8;">
-          Simpler Development &middot; Set <code>MCP_APPROVAL_EMAILS_ENABLED=false</code> to disable
+          CRM AGENTS &middot; Define <code>MCP_APPROVAL_EMAILS_ENABLED=false</code> para desactivarlo
         </p>
       </div>
     </div>
@@ -97,7 +96,8 @@ export interface SendApprovalEmailsParams {
 export async function sendApprovalEmails(params: SendApprovalEmailsParams): Promise<void> {
   if (!EMAILS_ENABLED) return;
   if (params.userIds.length === 0) return;
-  if (!process.env.RESEND_API_KEY) return;
+  const emailCfg = await getEmailPlatformConfig();
+  if (!emailCfg.resendApiKey && emailCfg.transport !== 'mailpit') return;
 
   try {
     const [client] = await db
@@ -105,7 +105,7 @@ export async function sendApprovalEmails(params: SendApprovalEmailsParams): Prom
       .from(clients)
       .where(eq(clients.id, params.clientId))
       .limit(1);
-    const clientName = client?.company ?? `Client #${params.clientId}`;
+    const clientName = client?.company ?? `Cliente #${params.clientId}`;
 
     const recipientUsers = await db
       .select({ id: users.id, email: users.email, name: users.name })
@@ -145,7 +145,7 @@ export async function sendApprovalEmails(params: SendApprovalEmailsParams): Prom
     const modeByUser = new Map(recipientUsers.map((u, i) => [u.id, deliveryModes[i].mode]));
 
     const approvalUrl = `${BASE_URL}/portal/approvals?id=${params.pendingId}`;
-    const subject = `[${clientName}] Review: ${params.summary.slice(0, 80)}${params.summary.length > 80 ? '…' : ''}`;
+    const subject = `[${clientName}] Revisión: ${params.summary.slice(0, 80)}${params.summary.length > 80 ? '…' : ''}`;
     const html = renderEmail({
       summary: params.summary,
       clientName,
@@ -168,8 +168,9 @@ export async function sendApprovalEmails(params: SendApprovalEmailsParams): Prom
         const recentCount = countByUser.get(u.id) ?? 0;
         if (recentCount > 1) return; // flurry cooldown; another email was sent recently
         try {
+          const fromEmail = (await getConfiguredFromEmail()) || 'portal@simplerdevelopment.com';
           await resend.emails.send({
-            from: `Simpler Development <${FROM_EMAIL}>`,
+            from: `CRM AGENTS <${fromEmail}>`,
             to: u.email,
             subject,
             html,

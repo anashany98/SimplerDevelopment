@@ -28,9 +28,9 @@ export default async function PortalAppsIndex() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <PortalPageHeader
-        eyebrow="Apps"
-        title="Apps"
-        subtitle="Installed plugins available to your account."
+        eyebrow="Aplicaciones"
+        title="Aplicaciones"
+        subtitle="Complementos instalados disponibles para tu cuenta."
       />
 
       {apps.length === 0 ? (
@@ -39,11 +39,11 @@ export default async function PortalAppsIndex() {
             extension_off
           </span>
           <h2 className="text-lg font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">
-            No apps installed
+            No hay apps instaladas
           </h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">
-            Your account does not have any plugins enabled yet. Contact your
-            account manager at Simpler Development to add one.
+            Tu cuenta todavía no tiene complementos activados. Contacta con tu
+            gestor de cuenta en CRM AGENTS para añadir uno.
           </p>
         </div>
       ) : (
@@ -66,7 +66,7 @@ export default async function PortalAppsIndex() {
                     {app.manifestStale && (
                       <span
                         className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded bg-yellow-100 text-yellow-800"
-                        title="Manifest was served from cache after a failed refresh"
+                        title="El manifiesto se sirvió desde caché tras un fallo al actualizar"
                       >
                         stale
                       </span>

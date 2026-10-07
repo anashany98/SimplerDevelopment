@@ -25,9 +25,9 @@ interface MentionableUser {
 }
 
 const STATUS_OPTIONS: { value: BrainPersonStatus; label: string }[] = [
-  { value: 'active',   label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
-  { value: 'departed', label: 'Departed' },
+  { value: 'active',   label: 'Activo' },
+  { value: 'inactive', label: 'Inactivo' },
+  { value: 'departed', label: 'Baja' },
 ];
 
 interface ProfileUrlRow {
@@ -97,12 +97,12 @@ export default function NewBrainPersonPage() {
       });
       const json = await r.json();
       if (!r.ok || !json.success) {
-        setError(json.message || 'Could not create person.');
+        setError(json.message || 'No se pudo crear la persona.');
         return;
       }
       router.push(`/portal/brain/people/${json.data.id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError(err instanceof Error ? err.message : 'Error de red');
     } finally {
       setSubmitting(false);
     }
@@ -115,18 +115,18 @@ export default function NewBrainPersonPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4"
       >
         <span className="material-icons text-sm">chevron_left</span>
-        Back to People
+        Volver a Personas
       </Link>
 
       <PortalPageHeader
-        eyebrow="Company Brain"
-        title={<><span className="material-icons text-primary">person_add</span> New person</>}
-        subtitle="Add someone to your internal team. You can attach expertise tags and org-unit memberships from the profile after creating."
+        eyebrow="Cerebro de empresa"
+        title={<><span className="material-icons text-primary">person_add</span> Nueva persona</>}
+        subtitle="Añade a alguien a tu equipo interno. Puedes adjuntar etiquetas de experiencia y pertenencias a unidades organizativas desde el perfil después de crearlo."
       />
 
       <div className="rounded-2xl border border-border bg-card p-5">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Field label="Full name" required>
+        <Field label="Nombre completo" required>
           <input
             type="text"
             value={fullName}
@@ -134,56 +134,56 @@ export default function NewBrainPersonPage() {
             required
             maxLength={200}
             className={inputCls}
-            placeholder="Jane Doe"
+            placeholder="Ana Pérez"
           />
         </Field>
 
         <div className="grid sm:grid-cols-2 gap-3">
-          <Field label="Email">
+          <Field label="Correo">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={inputCls}
-              placeholder="jane@example.com"
+              placeholder="ana@example.com"
             />
           </Field>
-          <Field label="Title">
+          <Field label="Título">
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className={inputCls}
-              placeholder="Director of Engineering"
+              placeholder="Director de Ingeniería"
             />
           </Field>
         </div>
 
-        <Field label="Linked user account" hint="Surfaces this person's open tasks on their profile.">
+        <Field label="Cuenta de usuario vinculada" hint="Muestra las tareas abiertas de esta persona en su perfil.">
           <select
             value={userId !== null ? String(userId) : ''}
             onChange={(e) => setUserId(e.target.value ? parseInt(e.target.value, 10) : null)}
             className="w-full appearance-none rounded-xl border border-border bg-card px-3.5 py-2.5 pr-10 text-sm text-foreground outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
           >
-            <option value="">— none —</option>
+            <option value="">— ninguna —</option>
             {users.map((u) => (
               <option key={u.id} value={u.id}>
-                {u.name ?? `User #${u.id}`}
+                {u.name ?? `Usuario #${u.id}`}
               </option>
             ))}
           </select>
         </Field>
 
-        <Field label="Reports to (manager)">
+        <Field label="Reporta con (gerente)">
           <PersonPicker
             value={managerId}
             onChange={setManagerId}
-            placeholder="Search for a manager…"
+            placeholder="Buscar un gerente…"
           />
         </Field>
 
         <div className="grid sm:grid-cols-2 gap-3">
-          <Field label="Start date">
+          <Field label="Fecha de inicio">
             <input
               type="date"
               value={startDate}
@@ -191,7 +191,7 @@ export default function NewBrainPersonPage() {
               className={inputCls}
             />
           </Field>
-          <Field label="End date">
+          <Field label="Fecha de fin">
             <input
               type="date"
               value={endDate}
@@ -201,7 +201,7 @@ export default function NewBrainPersonPage() {
           </Field>
         </div>
 
-        <Field label="Status">
+        <Field label="Estado">
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as BrainPersonStatus)}
@@ -213,17 +213,17 @@ export default function NewBrainPersonPage() {
           </select>
         </Field>
 
-        <Field label="Notes" hint="Private context — visible only to your team.">
+        <Field label="Notas" hint="Contexto privado — visible solo para tu equipo.">
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={4}
             className={`${inputCls} resize-y`}
-            placeholder="Background, hire details, etc."
+            placeholder="Trayectoria, detalles de contratación, etc."
           />
         </Field>
 
-        <Field label="Profile links" hint="LinkedIn, GitHub, personal site, etc.">
+        <Field label="Enlaces de perfil" hint="LinkedIn, GitHub, sitio personal, etc.">
           <div className="space-y-2">
             {profileUrls.map((row, i) => (
               <div key={i} className="flex items-center gap-2">
@@ -235,7 +235,7 @@ export default function NewBrainPersonPage() {
                     next[i] = { ...next[i], label: e.target.value };
                     setProfileUrls(next);
                   }}
-                  placeholder="Label"
+                  placeholder="Etiqueta"
                   className={`${inputCls} flex-1`}
                 />
                 <input
@@ -253,7 +253,7 @@ export default function NewBrainPersonPage() {
                   type="button"
                   onClick={() => setProfileUrls(profileUrls.filter((_, j) => j !== i))}
                   className="p-1.5 text-muted-foreground hover:text-foreground"
-                  aria-label="Remove link"
+                  aria-label="Eliminar enlace"
                 >
                   <span className="material-icons text-base">close</span>
                 </button>
@@ -265,7 +265,7 @@ export default function NewBrainPersonPage() {
               className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
             >
               <span className="material-icons text-sm">add</span>
-              Add link
+              Añadir enlace
             </button>
           </div>
         </Field>
@@ -281,9 +281,7 @@ export default function NewBrainPersonPage() {
           <Link
             href="/portal/brain/people"
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-foreground/25 hover:shadow-sm disabled:opacity-50"
-          >
-            Cancel
-          </Link>
+          >Cancelar</Link>
           <button
             type="submit"
             disabled={!canSubmit}
@@ -291,13 +289,13 @@ export default function NewBrainPersonPage() {
           >
             {submitting ? (
               <>
-                <span className="material-icons animate-spin text-base">progress_activity</span>
-                Creating…
+                <span className="material-icons animate-spin text-base">autorenew</span>
+                Creando…
               </>
             ) : (
               <>
                 <span className="material-icons text-base">check</span>
-                Create person
+                Crear persona
               </>
             )}
           </button>

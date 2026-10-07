@@ -1,4 +1,4 @@
-# Social Assets — SimplerDevelopment Launch
+# Social Assets — CRM AGENTS Launch
 
 > Maintainer drafts. Not auto-published. All facts are citable from the source documents
 > listed below. Review against live inventory before posting.

@@ -219,7 +219,7 @@ describe('BrainDocumentDetailPage — loading', () => {
     // Never resolve the fetch
     fetchMock.mockImplementation(() => new Promise(() => {}));
     const { container } = renderPage();
-    expect(container.textContent).toContain('Loading');
+    expect(container.textContent).toContain('Cargando');
   });
 });
 
@@ -235,7 +235,7 @@ describe('BrainDocumentDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load this document");
+      expect(container.textContent).toContain("No se pudo cargar este documento");
     });
   });
 
@@ -274,7 +274,7 @@ describe('BrainDocumentDetailPage — error state', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain("Couldn't load this document");
+      expect(container.textContent).toContain("No se pudo cargar este documento");
     });
   });
 
@@ -337,7 +337,7 @@ describe('BrainDocumentDetailPage — header (draft document)', () => {
     await waitFor(() => {
       const link = container.querySelector('a[href="/portal/brain/documents/42/edit"]');
       expect(link).toBeTruthy();
-      expect(link?.textContent).toContain('Edit draft');
+      expect(link?.textContent).toContain('Editar borrador');
     });
   });
 });
@@ -361,7 +361,7 @@ describe('BrainDocumentDetailPage — status-conditional buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const publishBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       );
       expect(publishBtn).toBeTruthy();
     });
@@ -383,7 +383,7 @@ describe('BrainDocumentDetailPage — status-conditional buttons', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     const publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Publish',
+      (b) => b.textContent?.trim() === 'Publicar',
     );
     expect(publishBtn).toBeUndefined();
   });
@@ -404,7 +404,7 @@ describe('BrainDocumentDetailPage — status-conditional buttons', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('archived'));
     const publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish'),
+      (b) => b.textContent?.includes('Publicar'),
     );
     expect(publishBtn).toBeUndefined();
   });
@@ -422,7 +422,7 @@ describe('BrainDocumentDetailPage — status-conditional buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Archive'),
+        (b) => b.textContent?.includes('Archivar'),
       );
       expect(archiveBtn).toBeTruthy();
     });
@@ -441,7 +441,7 @@ describe('BrainDocumentDetailPage — status-conditional buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const unarchiveBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Unarchive'),
+        (b) => b.textContent?.includes('Desarchivar'),
       );
       expect(unarchiveBtn).toBeTruthy();
     });
@@ -451,7 +451,7 @@ describe('BrainDocumentDetailPage — status-conditional buttons', () => {
     const { container } = renderPage();
     await waitFor(() => {
       const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       );
       expect(deleteBtn).toBeTruthy();
     });
@@ -507,7 +507,7 @@ describe('BrainDocumentDetailPage — owner display', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('User #99');
+      expect(container.textContent).toContain('Usuario #99');
     });
   });
 
@@ -515,7 +515,7 @@ describe('BrainDocumentDetailPage — owner display', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     // No "person" icon or owner text beyond what the chip would show
-    expect(container.textContent).not.toContain('User #');
+    expect(container.textContent).not.toContain('Usuario #');
   });
 });
 
@@ -525,7 +525,7 @@ describe('BrainDocumentDetailPage — formatDate', () => {
   it('shows dash for null publishedAt', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Published —');
+      expect(container.textContent).toContain('Publicado —');
     });
   });
 
@@ -555,7 +555,7 @@ describe('BrainDocumentDetailPage — body sections', () => {
   it('renders "No published version yet" when there is no published version', async () => {
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('No published version yet');
+      expect(container.textContent).toContain('Aún no hay una versión publicada');
     });
   });
 
@@ -594,7 +594,7 @@ describe('BrainDocumentDetailPage — body sections', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Summary');
+      expect(container.textContent).toContain('Resumen');
       expect(container.textContent).toContain('Executive summary');
     });
   });
@@ -615,7 +615,7 @@ describe('BrainDocumentDetailPage — body sections', () => {
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     // "Summary" heading should not appear (only the version-history section header)
     const summaryHeading = Array.from(container.querySelectorAll('h2')).find(
-      (h) => h.textContent?.trim() === 'Summary',
+      (h) => h.textContent?.trim() === 'Resumen',
     );
     expect(summaryHeading).toBeUndefined();
   });
@@ -634,7 +634,7 @@ describe('BrainDocumentDetailPage — body sections', () => {
     });
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Version history');
+      expect(container.textContent).toContain('Historial de versiones');
       expect(container.textContent).toContain('(2)');
     });
   });
@@ -711,7 +711,7 @@ describe('BrainDocumentDetailPage — inline version viewer', () => {
     setupWithVersions();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Current published version');
+      expect(container.textContent).toContain('Versión publicada actual');
     });
   });
 
@@ -741,7 +741,7 @@ describe('BrainDocumentDetailPage — inline version viewer', () => {
     const versionBtn = container.querySelector('[data-testid="version-history"] button') as HTMLButtonElement;
     if (versionBtn) fireEvent.click(versionBtn);
     await waitFor(() => {
-      expect(container.textContent).toContain('Loading version');
+      expect(container.textContent).toContain('Cargando versión');
     });
     resolveVersion(makeRes({ success: true, data: makeVersion({ id: 10 }) }));
   });
@@ -750,14 +750,14 @@ describe('BrainDocumentDetailPage — inline version viewer', () => {
     setupWithVersions();
     const { container } = renderPage();
     await waitFor(() => {
-      expect(container.textContent).toContain('Version history');
+      expect(container.textContent).toContain('Historial de versiones');
     });
     const versionBtn = container.querySelector('[data-testid="version-history"] button') as HTMLButtonElement;
     if (versionBtn) {
       fireEvent.click(versionBtn);
       await waitFor(() => {
         // After load, either the version body or the "Version v3" heading appears
-        expect(container.textContent).toMatch(/Older content|Version v/);
+        expect(container.textContent).toMatch(/Older content|Versión v/);
       });
     }
   });
@@ -765,12 +765,12 @@ describe('BrainDocumentDetailPage — inline version viewer', () => {
   it('shows "Back to current" button when a version is selected', async () => {
     setupWithVersions();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     const versionBtn = container.querySelector('[data-testid="version-history"] button') as HTMLButtonElement;
     if (versionBtn) {
       fireEvent.click(versionBtn);
       await waitFor(() => {
-        expect(container.textContent).toContain('Back to current');
+        expect(container.textContent).toContain('Volver a la actual');
       });
     }
   });
@@ -778,17 +778,17 @@ describe('BrainDocumentDetailPage — inline version viewer', () => {
   it('"Back to current" resets to published version heading', async () => {
     setupWithVersions();
     const { container } = renderPage();
-    await waitFor(() => expect(container.textContent).toContain('Version history'));
+    await waitFor(() => expect(container.textContent).toContain('Historial de versiones'));
     const versionBtn = container.querySelector('[data-testid="version-history"] button') as HTMLButtonElement;
     if (versionBtn) {
       fireEvent.click(versionBtn);
-      await waitFor(() => expect(container.textContent).toContain('Back to current'));
+      await waitFor(() => expect(container.textContent).toContain('Volver a la actual'));
       const backBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Back to current'),
+        (b) => b.textContent?.includes('Volver a la actual'),
       ) as HTMLButtonElement;
       fireEvent.click(backBtn);
       await waitFor(() => {
-        expect(container.textContent).toContain('Current published version');
+        expect(container.textContent).toContain('Versión publicada actual');
       });
     }
   });
@@ -820,11 +820,11 @@ describe('BrainDocumentDetailPage — handlePublish', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       )).toBe(true);
     });
     const publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish'),
+      (b) => b.textContent?.includes('Publicar'),
     ) as HTMLButtonElement;
     fireEvent.click(publishBtn);
     await waitFor(() => {
@@ -854,11 +854,11 @@ describe('BrainDocumentDetailPage — handlePublish', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Publish'),
+        (b) => b.textContent?.includes('Publicar'),
       )).toBe(true);
     });
     const publishBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Publish'),
+      (b) => b.textContent?.includes('Publicar'),
     ) as HTMLButtonElement;
     fireEvent.click(publishBtn);
     await waitFor(() => {
@@ -889,11 +889,11 @@ describe('BrainDocumentDetailPage — handleArchive', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Archive'),
+        (b) => b.textContent?.includes('Archivar'),
       )).toBe(true);
     });
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await waitFor(() => {
@@ -908,12 +908,12 @@ describe('BrainDocumentDetailPage — handleArchive', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Archive'),
+        (b) => b.textContent?.includes('Archivar'),
       )).toBe(true);
     });
     const beforeCalls = fetchMock.mock.calls.length;
     const archiveBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Archive'),
+      (b) => b.textContent?.includes('Archivar'),
     ) as HTMLButtonElement;
     fireEvent.click(archiveBtn);
     await new Promise((r) => setTimeout(r, 50));
@@ -940,11 +940,11 @@ describe('BrainDocumentDetailPage — handleUnarchive', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Unarchive'),
+        (b) => b.textContent?.includes('Desarchivar'),
       )).toBe(true);
     });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Unarchive'),
+      (b) => b.textContent?.includes('Desarchivar'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => {
@@ -971,11 +971,11 @@ describe('BrainDocumentDetailPage — handleUnarchive', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Unarchive'),
+        (b) => b.textContent?.includes('Desarchivar'),
       )).toBe(true);
     });
     const btn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Unarchive'),
+      (b) => b.textContent?.includes('Desarchivar'),
     ) as HTMLButtonElement;
     fireEvent.click(btn);
     await waitFor(() => expect(alertMock).toHaveBeenCalled());
@@ -1003,11 +1003,11 @@ describe('BrainDocumentDetailPage — handleDelete', () => {
     const { container } = renderPage();
     await waitFor(() => {
       expect(Array.from(container.querySelectorAll('button')).some(
-        (b) => b.textContent?.includes('Delete'),
+        (b) => b.textContent?.includes('Eliminar'),
       )).toBe(true);
     });
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -1022,7 +1022,7 @@ describe('BrainDocumentDetailPage — handleDelete', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await new Promise((r) => setTimeout(r, 50));
@@ -1036,7 +1036,7 @@ describe('BrainDocumentDetailPage — handleDelete', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -1054,7 +1054,7 @@ describe('BrainDocumentDetailPage — handleDelete', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => expect(alertMock).toHaveBeenCalled());
@@ -1086,7 +1086,7 @@ describe('BrainDocumentDetailPage — handleDelete', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await waitFor(() => {
@@ -1115,7 +1115,7 @@ describe('BrainDocumentDetailPage — handleDelete', () => {
     const { container } = renderPage();
     await waitFor(() => expect(container.textContent).toContain('My Test Document'));
     const deleteBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Delete'),
+      (b) => b.textContent?.includes('Eliminar'),
     ) as HTMLButtonElement;
     fireEvent.click(deleteBtn);
     await new Promise((r) => setTimeout(r, 100));

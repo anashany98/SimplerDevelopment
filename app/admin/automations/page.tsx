@@ -63,7 +63,7 @@ function statusBadge(status: string) {
 
 function formatDate(d: string | null) {
   if (!d) return '--';
-  return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+  return new Date(d).toLocaleDateString('es-ES', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
 }
 
 export default function AdminAutomationsPage() {
@@ -114,18 +114,18 @@ export default function AdminAutomationsPage() {
   }
 
   const statCards = [
-    { label: 'Total Rules', value: stats.totalRules, icon: 'rule' },
-    { label: 'Active Rules', value: stats.enabledRules, icon: 'toggle_on' },
-    { label: 'Total Executions', value: stats.totalExecutions, icon: 'play_circle' },
-    { label: 'Failed Runs', value: stats.failedCount, icon: 'error_outline' },
+    { label: 'Reglas totales', value: stats.totalRules, icon: 'rule' },
+    { label: 'Reglas activas', value: stats.enabledRules, icon: 'toggle_on' },
+    { label: 'Ejecuciones totales', value: stats.totalExecutions, icon: 'play_circle' },
+    { label: 'Ejecuciones fallidas', value: stats.failedCount, icon: 'error_outline' },
   ];
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Automations</h1>
-          <p className="text-muted-foreground mt-1">Manage automation rules and view execution logs.</p>
+          <h1 className="text-2xl font-bold text-foreground">Automatizaciones</h1>
+          <p className="text-muted-foreground mt-1">Gestiona reglas de automatización y ve registros de ejecución.</p>
         </div>
         <div className="flex items-center gap-2">
           {(['rules', 'logs'] as const).map(t => (
@@ -133,10 +133,10 @@ export default function AdminAutomationsPage() {
               key={t}
               onClick={() => setTab(t)}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                tab === t ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                tab === t ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
-              {t === 'rules' ? 'Rules' : 'Logs'}
+              {t === 'rules' ? 'Reglas' : 'Registros'}
             </button>
           ))}
         </div>
@@ -161,26 +161,26 @@ export default function AdminAutomationsPage() {
           {loading ? (
             <div className="text-center py-12 text-muted-foreground">
               <span className="material-icons animate-spin text-3xl">autorenew</span>
-              <p className="mt-2">Loading rules...</p>
+              <p className="mt-2">Cargando reglas...</p>
             </div>
           ) : rules.length === 0 ? (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <span className="material-icons text-5xl text-muted-foreground">smart_toy</span>
-              <h3 className="mt-4 font-semibold text-foreground">No automation rules</h3>
-              <p className="text-muted-foreground mt-1 text-sm">Rules will appear here once clients create automations.</p>
+              <h3 className="mt-4 font-semibold text-foreground">No hay reglas de automatización</h3>
+              <p className="text-muted-foreground mt-1 text-sm">Las reglas aparecerán aquí una vez que los clientes creen automatizaciones.</p>
             </div>
           ) : (
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Source</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Executions</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Run</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Description</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Nombre</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fuente</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Ejecuciones</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Última ejecución</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Descripción</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -202,7 +202,7 @@ export default function AdminAutomationsPage() {
                           <span className="material-icons text-sm">
                             {toggling === rule.id ? 'autorenew' : rule.enabled ? 'toggle_on' : 'toggle_off'}
                           </span>
-                          {rule.enabled ? 'Enabled' : 'Disabled'}
+                          {rule.enabled ? 'Activada' : 'Desactivada'}
                         </button>
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">{rule.executionCount}</td>
@@ -227,7 +227,7 @@ export default function AdminAutomationsPage() {
                 key={s}
                 onClick={() => setLogFilter(s)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  logFilter === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                  logFilter === s ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
                 }`}
               >
                 {s}
@@ -238,25 +238,25 @@ export default function AdminAutomationsPage() {
           {logsLoading ? (
             <div className="text-center py-12 text-muted-foreground">
               <span className="material-icons animate-spin text-3xl">autorenew</span>
-              <p className="mt-2">Loading logs...</p>
+              <p className="mt-2">Cargando registros...</p>
             </div>
           ) : logs.length === 0 ? (
             <div className="bg-card border border-border rounded-xl p-12 text-center">
               <span className="material-icons text-5xl text-muted-foreground">receipt_long</span>
-              <h3 className="mt-4 font-semibold text-foreground">No logs found</h3>
-              <p className="text-muted-foreground mt-1 text-sm">Execution logs will appear here after automations run.</p>
+              <h3 className="mt-4 font-semibold text-foreground">No se encontraron registros</h3>
+              <p className="text-muted-foreground mt-1 text-sm">Los registros de ejecución aparecerán aquí tras ejecutarse las automatizaciones.</p>
             </div>
           ) : (
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 border-b border-border">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Rule Name</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Trigger Event</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duration</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Fecha</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Nombre de la regla</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Evento desencadenante</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Duración</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Error</th>
                   </tr>
                 </thead>

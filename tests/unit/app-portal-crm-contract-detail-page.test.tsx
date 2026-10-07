@@ -159,7 +159,7 @@ describe('PortalContractDetailPage', () => {
     it('renders loading text before fetch resolves', () => {
       setFetchHandler(() => new Promise(() => {}));
       const { container } = render(<PortalContractDetailPage />);
-      expect(container.textContent).toContain('Loading contract');
+      expect(container.textContent).toContain('Cargando contrato...');
     });
 
     it('renders not-found when contract fetch returns success:false', async () => {
@@ -171,7 +171,7 @@ describe('PortalContractDetailPage', () => {
       });
       const { container } = render(<PortalContractDetailPage />);
       await waitFor(() => {
-        expect(container.textContent).toContain('Contract not found');
+        expect(container.textContent).toContain('Contrato no encontrado');
       });
     });
 
@@ -215,18 +215,18 @@ describe('PortalContractDetailPage', () => {
   describe('e-signature panel', () => {
     it('renders the E-signature section heading', async () => {
       const { container } = await renderLoaded();
-      expect(container.textContent).toContain('E-signature');
+      expect(container.textContent).toContain('Firma electrónica');
     });
 
     it('shows "Not sent" status badge for not_sent esignStatus', async () => {
       const { container } = await renderLoaded();
-      expect(container.textContent).toContain('Not sent');
+      expect(container.textContent).toContain('No enviado');
     });
 
     it('shows "Send for signature" button when status is not_sent', async () => {
       const { container } = await renderLoaded();
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       );
       expect(btn).toBeTruthy();
     });
@@ -234,7 +234,7 @@ describe('PortalContractDetailPage', () => {
     it('shows "Send for signature" button when esignStatus is declined', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'declined' });
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       );
       expect(btn).toBeTruthy();
     });
@@ -242,7 +242,7 @@ describe('PortalContractDetailPage', () => {
     it('shows "Send for signature" button when esignStatus is canceled', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'canceled' });
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       );
       expect(btn).toBeTruthy();
     });
@@ -250,7 +250,7 @@ describe('PortalContractDetailPage', () => {
     it('shows "Sign now" button when esignStatus is sent', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Sign now'),
+        (b) => b.textContent?.includes('Firmar ahora'),
       );
       expect(btn).toBeTruthy();
     });
@@ -258,7 +258,7 @@ describe('PortalContractDetailPage', () => {
     it('shows "Sign now" button when esignStatus is viewed', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'viewed' });
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Sign now'),
+        (b) => b.textContent?.includes('Firmar ahora'),
       );
       expect(btn).toBeTruthy();
     });
@@ -266,7 +266,7 @@ describe('PortalContractDetailPage', () => {
     it('shows "Cancel signature request" button when esignStatus is sent', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Cancel signature request'),
+        (b) => b.textContent?.includes('Cancelar solicitud de firma'),
       );
       expect(btn).toBeTruthy();
     });
@@ -274,7 +274,7 @@ describe('PortalContractDetailPage', () => {
     it('does not show "Send for signature" when already signed', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'signed' });
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       );
       expect(btn).toBeUndefined();
     });
@@ -287,7 +287,7 @@ describe('PortalContractDetailPage', () => {
       });
       const link = container.querySelector('a[href="https://cdn.example.test/signed.pdf"]');
       expect(link).toBeTruthy();
-      expect(link?.textContent).toContain('Download signed PDF');
+      expect(link?.textContent).toContain('Descargar PDF firmado');
     });
 
     it('does not show download link when status is signed but no audit URL', async () => {
@@ -297,7 +297,7 @@ describe('PortalContractDetailPage', () => {
         esignAuditFileUrl: null,
       });
       const link = Array.from(container.querySelectorAll('a')).find(
-        (a) => a.textContent?.includes('Download signed PDF'),
+        (a) => a.textContent?.includes('Descargar PDF firmado'),
       );
       expect(link).toBeUndefined();
     });
@@ -324,22 +324,22 @@ describe('PortalContractDetailPage', () => {
 
     it('shows "Sent — awaiting signature" badge for sent status', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
-      expect(container.textContent).toContain('Sent — awaiting signature');
+      expect(container.textContent).toContain('Enviado — esperando firma');
     });
 
     it('shows "Opened by signer" badge for viewed status', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'viewed' });
-      expect(container.textContent).toContain('Opened by signer');
+      expect(container.textContent).toContain('Abierto por el firmante');
     });
 
     it('shows "Signed" badge for signed status', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'signed' });
-      expect(container.textContent).toContain('Signed');
+      expect(container.textContent).toContain('Firmado');
     });
 
     it('shows "Declined" badge for declined status', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'declined' });
-      expect(container.textContent).toContain('Declined');
+      expect(container.textContent).toContain('Rechazado');
     });
 
     it('falls back to raw status text for unknown esignStatus', async () => {
@@ -349,7 +349,7 @@ describe('PortalContractDetailPage', () => {
 
     it('shows "Not sent" badge when esignStatus is null (defaults to not_sent)', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: null });
-      expect(container.textContent).toContain('Not sent');
+      expect(container.textContent).toContain('No enviado');
     });
   });
 
@@ -359,33 +359,33 @@ describe('PortalContractDetailPage', () => {
     it('opens the send dialog when "Send for signature" is clicked', async () => {
       const { container } = await renderLoaded();
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(btn);
-      expect(container.textContent).toContain('Send contract for signature');
+      expect(container.textContent).toContain('Enviar contrato para firma');
     });
 
     it('cancel button in dialog closes it', async () => {
       const { container } = await renderLoaded();
       const btn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(btn);
       const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Cancel',
+        (b) => b.textContent === 'Cancelar',
       )!;
       fireEvent.click(cancelBtn);
-      expect(container.textContent).not.toContain('Send contract for signature');
+      expect(container.textContent).not.toContain('Enviar contrato para firma');
     });
 
     it('Send button is disabled when name or email is empty', async () => {
       const { container } = await renderLoaded();
       const openBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(openBtn);
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Send',
+        (b) => b.textContent === 'Enviar',
       ) as HTMLButtonElement;
       expect(sendBtn?.disabled).toBe(true);
     });
@@ -393,21 +393,21 @@ describe('PortalContractDetailPage', () => {
     it('Send button enables when both name and email are filled', async () => {
       const { container } = await renderLoaded();
       const openBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(openBtn);
       const inputs = container.querySelectorAll('input');
       // Dialog inputs: signer name, signer email
       const nameInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'Jane Doe',
+        (i) => (i as HTMLInputElement).placeholder === 'María García',
       ) as HTMLInputElement;
       const emailInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'jane@example.com',
+        (i) => (i as HTMLInputElement).placeholder === 'maria@example.com',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'Bob Signer' } });
       fireEvent.change(emailInput, { target: { value: 'bob@example.test' } });
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Send',
+        (b) => b.textContent === 'Enviar',
       ) as HTMLButtonElement;
       expect(sendBtn?.disabled).toBe(false);
     });
@@ -419,20 +419,20 @@ describe('PortalContractDetailPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderLoaded();
       const openBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(openBtn);
       const inputs = container.querySelectorAll('input');
       const nameInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'Jane Doe',
+        (i) => (i as HTMLInputElement).placeholder === 'María García',
       ) as HTMLInputElement;
       const emailInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'jane@example.com',
+        (i) => (i as HTMLInputElement).placeholder === 'maria@example.com',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'Bob Signer' } });
       fireEvent.change(emailInput, { target: { value: 'bob@example.test' } });
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Send',
+        (b) => b.textContent === 'Enviar',
       )!;
       fireEvent.click(sendBtn);
       await waitFor(() => {
@@ -447,7 +447,7 @@ describe('PortalContractDetailPage', () => {
         expect(body.signerEmail).toBe('bob@example.test');
       });
       await waitFor(() => {
-        expect(container.textContent).not.toContain('Send contract for signature');
+        expect(container.textContent).not.toContain('Enviar contrato para firma');
       });
     });
 
@@ -467,20 +467,20 @@ describe('PortalContractDetailPage', () => {
         vi.fn((url: string, init?: RequestInit) => Promise.resolve(handlers[0](url, init))),
       );
       const openBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(openBtn);
       const inputs = container.querySelectorAll('input');
       const nameInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'Jane Doe',
+        (i) => (i as HTMLInputElement).placeholder === 'María García',
       ) as HTMLInputElement;
       const emailInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'jane@example.com',
+        (i) => (i as HTMLInputElement).placeholder === 'maria@example.com',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'Bob' } });
       fireEvent.change(emailInput, { target: { value: 'bob@test.com' } });
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Send',
+        (b) => b.textContent === 'Enviar',
       )!;
       fireEvent.click(sendBtn);
       await waitFor(() => {
@@ -504,24 +504,24 @@ describe('PortalContractDetailPage', () => {
         vi.fn((url: string, init?: RequestInit) => Promise.resolve(handlers[0](url, init))),
       );
       const openBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(openBtn);
       const inputs = container.querySelectorAll('input');
       const nameInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'Jane Doe',
+        (i) => (i as HTMLInputElement).placeholder === 'María García',
       ) as HTMLInputElement;
       const emailInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'jane@example.com',
+        (i) => (i as HTMLInputElement).placeholder === 'maria@example.com',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'Bob' } });
       fireEvent.change(emailInput, { target: { value: 'bob@test.com' } });
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Send',
+        (b) => b.textContent === 'Enviar',
       )!;
       fireEvent.click(sendBtn);
       await waitFor(() => {
-        expect(container.textContent).toContain('Failed to send for signature');
+        expect(container.textContent).toContain('No se pudo enviar para firma');
       });
     });
   });
@@ -532,7 +532,7 @@ describe('PortalContractDetailPage', () => {
     it('clicking "Sign now" fetches the sign URL and renders iframe', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
       const signBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Sign now'),
+        (b) => b.textContent?.includes('Firmar ahora'),
       )!;
       fireEvent.click(signBtn);
       await waitFor(() => {
@@ -551,10 +551,10 @@ describe('PortalContractDetailPage', () => {
       });
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
       const signBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Sign now'),
+        (b) => b.textContent?.includes('Firmar ahora'),
       )!;
       fireEvent.click(signBtn);
-      expect(container.textContent).toContain('Loading');
+      expect(container.textContent).toContain('Cargando');
     });
 
     it('shows error when sign-url fetch fails', async () => {
@@ -570,7 +570,7 @@ describe('PortalContractDetailPage', () => {
         vi.fn((url: string, init?: RequestInit) => Promise.resolve(handlers[0](url, init))),
       );
       const signBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Sign now'),
+        (b) => b.textContent?.includes('Firmar ahora'),
       )!;
       fireEvent.click(signBtn);
       await waitFor(() => {
@@ -581,14 +581,14 @@ describe('PortalContractDetailPage', () => {
     it('closing the sign modal hides the iframe', async () => {
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
       const signBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Sign now'),
+        (b) => b.textContent?.includes('Firmar ahora'),
       )!;
       fireEvent.click(signBtn);
       await waitFor(() => {
         expect(container.querySelector('iframe')).toBeTruthy();
       });
       // Close button is aria-label="Close"
-      const closeBtn = container.querySelector('button[aria-label="Close"]')!;
+      const closeBtn = container.querySelector('button[aria-label="Cerrar"]')!;
       fireEvent.click(closeBtn);
       await waitFor(() => {
         expect(container.querySelector('iframe')).toBeNull();
@@ -606,7 +606,7 @@ describe('PortalContractDetailPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
       const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Cancel signature request'),
+        (b) => b.textContent?.includes('Cancelar solicitud de firma'),
       )!;
       fireEvent.click(cancelBtn);
       await waitFor(() => {
@@ -627,7 +627,7 @@ describe('PortalContractDetailPage', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { container } = await renderLoaded({ ...baseContract, esignStatus: 'sent' });
       const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Cancel signature request'),
+        (b) => b.textContent?.includes('Cancelar solicitud de firma'),
       )!;
       fireEvent.click(cancelBtn);
       await flush();
@@ -656,7 +656,7 @@ describe('PortalContractDetailPage', () => {
         vi.fn((url: string, init?: RequestInit) => Promise.resolve(handlers[0](url, init))),
       );
       const cancelBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Cancel signature request'),
+        (b) => b.textContent?.includes('Cancelar solicitud de firma'),
       )!;
       fireEvent.click(cancelBtn);
       await waitFor(() => {
@@ -670,7 +670,7 @@ describe('PortalContractDetailPage', () => {
   describe('audit trail', () => {
     it('renders the "Audit trail" heading', async () => {
       const { container } = await renderLoaded();
-      expect(container.textContent).toContain('Audit trail');
+      expect(container.textContent).toContain('Rastro de auditoría');
     });
 
     it('renders events list with kind and actor email', async () => {
@@ -692,7 +692,7 @@ describe('PortalContractDetailPage', () => {
       });
       const { container } = render(<PortalContractDetailPage />);
       await waitFor(() => screen.getByText('Service Agreement'));
-      expect(container.textContent).toContain('No signing events yet.');
+      expect(container.textContent).toContain('Aún no hay eventos de firma.');
     });
 
     it('renders event with null actorEmail gracefully', async () => {
@@ -792,20 +792,20 @@ describe('PortalContractDetailPage', () => {
         vi.fn((url: string, init?: RequestInit) => Promise.resolve(handlers[0](url, init))),
       );
       const openBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Send for signature'),
+        (b) => b.textContent?.includes('Enviar para firma'),
       )!;
       fireEvent.click(openBtn);
       const inputs = container.querySelectorAll('input');
       const nameInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'Jane Doe',
+        (i) => (i as HTMLInputElement).placeholder === 'María García',
       ) as HTMLInputElement;
       const emailInput = Array.from(inputs).find(
-        (i) => (i as HTMLInputElement).placeholder === 'jane@example.com',
+        (i) => (i as HTMLInputElement).placeholder === 'maria@example.com',
       ) as HTMLInputElement;
       fireEvent.change(nameInput, { target: { value: 'X' } });
       fireEvent.change(emailInput, { target: { value: 'x@x.com' } });
       const sendBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent === 'Send',
+        (b) => b.textContent === 'Enviar',
       )!;
       fireEvent.click(sendBtn);
       await waitFor(() => {

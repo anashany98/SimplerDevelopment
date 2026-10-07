@@ -196,7 +196,7 @@ async function fetchLoopItems(
   // Pre-build a localized formatter once per fetch so we don't allocate a
   // new Intl instance per row. en-US long form (`May 19, 2026`) is the
   // shape every Cardiff card and most existing list templates expect.
-  const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const dateFmt = new Intl.DateTimeFormat('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
   const items = rows.map(r => ({
     id: r.id,
     title: r.title || '',

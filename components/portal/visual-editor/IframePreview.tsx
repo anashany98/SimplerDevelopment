@@ -98,8 +98,8 @@ export function IframePreview({
             {blocks.length === 0 && !previewMode && (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-card z-10">
                 <span className="material-icons text-4xl text-muted-foreground/40 mb-3">layers_clear</span>
-                <p className="text-sm font-medium text-muted-foreground mb-1">No blocks on this page</p>
-                <p className="text-xs text-muted-foreground/70">Add blocks from the panel on the left</p>
+                <p className="text-sm font-medium text-muted-foreground mb-1">No hay bloques en esta página</p>
+                <p className="text-xs text-muted-foreground/70">Agrega bloques desde el panel de la izquierda</p>
               </div>
             )}
             {/* Overlay to capture drag events over iframe */}
@@ -149,7 +149,7 @@ export function IframePreview({
         <button type="button" onClick={zoomReset} className="px-2 py-0.5 text-xs font-medium text-muted-foreground hover:text-foreground min-w-[3rem] text-center" title="Reset zoom">
           {zoomLevel}%
         </button>
-        <button type="button" onClick={zoomIn} className="p-1 text-muted-foreground hover:text-foreground disabled:opacity-30" disabled={zoomLevel >= 200} title="Zoom in">
+        <button type="button" onClick={zoomIn} className="p-1 text-muted-foreground hover:text-foreground disabled:opacity-30" disabled={zoomLevel >= 200} title="Acercar">
           <span className="material-icons text-sm">add</span>
         </button>
       </div>

@@ -4,15 +4,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const tabs = [
-  { href: '/portal/settings/profile', label: 'Profile', icon: 'person' },
-  { href: '/portal/settings/security', label: 'Security', icon: 'security' },
-  { href: '/portal/settings/notifications', label: 'Notifications', icon: 'notifications' },
-  { href: '/portal/settings/team', label: 'Team', icon: 'group' },
-  { href: '/portal/settings/ai', label: 'AI Assistant', icon: 'smart_toy' },
-  { href: '/portal/settings/api-keys', label: 'API Keys', icon: 'vpn_key' },
+  { href: '/portal/settings/profile', label: 'Perfil', icon: 'person' },
+  { href: '/portal/settings/security', label: 'Seguridad', icon: 'security' },
+  { href: '/portal/settings/notifications', label: 'Notificaciones', icon: 'notifications' },
+  { href: '/portal/settings/billing', label: 'Facturación', icon: 'payments' },
+  { href: '/portal/settings/team', label: 'Equipo', icon: 'group' },
+  { href: '/portal/settings/ai', label: 'Asistente de IA', icon: 'smart_toy' },
+  { href: '/portal/settings/api-keys', label: 'Claves API', icon: 'vpn_key' },
   { href: '/portal/settings/webhooks', label: 'Webhooks', icon: 'webhook' },
-  { href: '/portal/settings/integrations', label: 'Integrations', icon: 'integration_instructions' },
-  { href: '/portal/settings/support', label: 'Support', icon: 'support_agent' },
+  { href: '/portal/settings/integrations', label: 'Integraciones', icon: 'integration_instructions' },
+  { href: '/portal/settings/channels', label: 'Canales', icon: 'hub' },
+  { href: '/portal/settings/support', label: 'Soporte', icon: 'support_agent' },
 ];
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
@@ -24,8 +26,8 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
         {/* This is the page-level h1 for every /portal/settings/** route
             (bypasses <PortalPageHeader/>) — child route content must start
             its own headings at h2, not h3, or the outline skips a level. */}
-        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-        <p className="text-muted-foreground text-sm mt-1">Manage your account, team, and support.</p>
+        <h1 className="text-2xl font-bold text-foreground">Ajustes</h1>
+        <p className="text-muted-foreground text-sm mt-1">Gestiona tu cuenta, facturación, equipo y soporte.</p>
       </div>
 
       {/* Tabs */}

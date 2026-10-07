@@ -42,16 +42,16 @@ export default async function PortalCmsPage({
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Sites"
-        title="Websites"
-        subtitle="Manage pages and content for your websites."
+        eyebrow="Sitios"
+        title="Webs"
+        subtitle="Gestiona las páginas y el contenido de tus webs."
         actions={
           <Link
             href="/portal/websites/new"
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            New Website
+            Nueva web
           </Link>
         }
       />
@@ -62,8 +62,8 @@ export default async function PortalCmsPage({
         <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-2xl text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300">
           <span className="material-icons text-green-600">check_circle</span>
           <div>
-            <p className="font-medium text-sm">Website created!</p>
-            <p className="text-xs mt-0.5">Start building by creating your first page.</p>
+            <p className="font-medium text-sm">¡Web creada!</p>
+            <p className="text-xs mt-0.5">Empieza a construir creando tu primera página.</p>
           </div>
         </div>
       )}
@@ -74,30 +74,30 @@ export default async function PortalCmsPage({
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
               <span className="material-icons text-3xl text-primary">web</span>
             </div>
-            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">Set up your first website</h2>
+            <h2 className="font-display font-extrabold tracking-[-0.01em] text-foreground mb-1">Configura tu primera web</h2>
             <p className="text-sm text-muted-foreground max-w-sm mb-6">
-              Create a website and start managing your pages using the built-in block editor — no coding required.
+              Crea una web y empieza a gestionar sus páginas con el editor de bloques integrado, sin necesidad de programar.
             </p>
             <Link
               href="/portal/websites/new"
               className={pBtnPrimary}
             >
               <span className="material-icons text-base">add</span>
-              Create Website
+              Crear web
             </Link>
           </div>
 
           <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-2xl">
             <span className="material-icons text-muted-foreground">support_agent</span>
             <div className="flex-1 text-sm">
-              <p className="font-medium text-foreground">Prefer we handle the setup?</p>
-              <p className="text-muted-foreground text-xs mt-0.5">Open a ticket and our team will configure everything for you.</p>
+              <p className="font-medium text-foreground">¿Prefieres que nos ocupemos de la configuración?</p>
+              <p className="text-muted-foreground text-xs mt-0.5">Abre un ticket y nuestro equipo lo configurará todo por ti.</p>
             </div>
             <Link
               href="/portal/tickets/new"
               className="text-sm text-primary hover:underline shrink-0 flex items-center gap-1"
             >
-              Get help
+              Pedir ayuda
               <span className="material-icons text-sm">arrow_forward</span>
             </Link>
           </div>
@@ -127,11 +127,11 @@ export default async function PortalCmsPage({
                           {site.name}
                         </h2>
                         {site.subdomain ? (
-                          <p className="text-xs font-mono text-muted-foreground mt-0.5 truncate">{site.subdomain}.simplerdevelopment.com</p>
+                          <p className="text-xs font-mono text-muted-foreground mt-0.5 truncate">{site.subdomain} · CRM AGENTS</p>
                         ) : site.domain ? (
                           <p className="text-xs font-mono text-muted-foreground mt-0.5 truncate">{site.domain}</p>
                         ) : (
-                          <p className="text-xs text-muted-foreground mt-0.5">No domain yet</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">Todavía sin dominio</p>
                         )}
                       </div>
                     </div>
@@ -139,23 +139,19 @@ export default async function PortalCmsPage({
                       const ds = site.deploymentStatus;
                       if (ds === 'active') return (
                         <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                          <span className="material-icons text-xs">check_circle</span>Live
-                        </span>
+                          <span className="material-icons text-xs">check_circle</span>Activa</span>
                       );
                       if (ds === 'provisioning') return (
                         <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                          <span className="material-icons text-xs animate-spin">settings</span>Setting up
-                        </span>
+                          <span className="material-icons text-xs animate-spin">settings</span>Configurando</span>
                       );
                       if (ds === 'failed') return (
                         <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
-                          <span className="material-icons text-xs">error</span>Failed
-                        </span>
+                          <span className="material-icons text-xs">error</span>Fallida</span>
                       );
                       return (
                         <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                          <span className="material-icons text-xs">pending</span>Pending
-                        </span>
+                          <span className="material-icons text-xs">pending</span>Pendiente</span>
                       );
                     })()}
                   </div>
@@ -167,10 +163,10 @@ export default async function PortalCmsPage({
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground border-t border-border pt-3">
                     <div className="flex items-center gap-1">
                       <span className="material-icons text-sm">article</span>
-                      <span>{total} {total === 1 ? 'page' : 'pages'}</span>
+                      <span>{total} {total === 1 ? 'página' : 'páginas'}</span>
                     </div>
                     <div className="flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span>Open</span>
+                      <span>Abrir</span>
                       <span className="material-icons text-sm">arrow_forward</span>
                     </div>
                   </div>
@@ -184,21 +180,21 @@ export default async function PortalCmsPage({
               className="group border-2 border-dashed border-border rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:border-primary/40 hover:bg-primary/3 transition-all min-h-36"
             >
               <span className="material-icons text-2xl text-muted-foreground group-hover:text-primary transition-colors mb-1">add_circle_outline</span>
-              <p className="text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">Add another website</p>
+              <p className="text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">Añadir otra web</p>
             </Link>
           </div>
 
           <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-2xl">
             <span className="material-icons text-muted-foreground">support_agent</span>
             <div className="flex-1 text-sm">
-              <p className="font-medium text-foreground">Need help with your website?</p>
-              <p className="text-muted-foreground text-xs mt-0.5">Our team can assist with setup, DNS, or content.</p>
+              <p className="font-medium text-foreground">¿Necesitas ayuda con tu web?</p>
+              <p className="text-muted-foreground text-xs mt-0.5">Nuestro equipo puede ayudarte con la configuración, el DNS o el contenido.</p>
             </div>
             <Link
               href="/portal/tickets/new"
               className="text-sm text-primary hover:underline shrink-0 flex items-center gap-1"
             >
-              Open a ticket
+              Abrir un ticket
               <span className="material-icons text-sm">arrow_forward</span>
             </Link>
           </div>

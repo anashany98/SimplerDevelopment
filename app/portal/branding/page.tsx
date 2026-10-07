@@ -102,30 +102,28 @@ export default function PortalBrandingPage() {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto flex items-center justify-center py-16 text-muted-foreground">
-        <span className="material-icons animate-spin mr-2">progress_activity</span>
-        Loading...
-      </div>
+        <span className="material-icons animate-spin mr-2">autorenew</span>Cargando...</div>
     );
   }
 
   const tabs = [
-    { id: 'profiles' as const, label: 'Branding & Messaging Profiles', icon: 'palette' },
-    { id: 'assignments' as const, label: 'Website Assignments', icon: 'language' },
+    { id: 'profiles' as const, label: 'Perfiles de marca y mensajería', icon: 'palette' },
+    { id: 'assignments' as const, label: 'Asignaciones de sitios web', icon: 'language' },
   ];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Brand"
-        title="Branding & Messaging"
-        subtitle="Create and manage brand profiles with visual identity and company messaging. Assign them to websites, pitch decks, and proposals."
+        eyebrow="Marca"
+        title="Marca y mensajería"
+        subtitle="Crea y gestiona perfiles de marca con identidad visual y mensajería corporativa. Asígnalos a sitios web, presentaciones y propuestas."
         actions={
           <button
             onClick={() => setShowCreate(!showCreate)}
             className={pBtnPrimary}
           >
             <span className="material-icons text-base">add</span>
-            New Profile
+            Nuevo perfil
           </button>
         }
       />
@@ -154,12 +152,12 @@ export default function PortalBrandingPage() {
           {showCreate && (
             <div className="bg-card border border-border rounded-2xl p-4 flex items-end gap-3">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Profile Name</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre del perfil</label>
                 <input
                   type="text"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  placeholder="e.g. Main Brand, Dark Variant, Event Theme"
+                  placeholder="p. ej. Marca principal, Variante oscura, Tema de evento"
                   className={pInput}
                   onKeyDown={(e) => e.key === 'Enter' && createProfile()}
                 />
@@ -169,22 +167,20 @@ export default function PortalBrandingPage() {
                 disabled={creating || !newName.trim()}
                 className={pBtnPrimary}
               >
-                {creating ? 'Creating...' : 'Create'}
+                {creating ? 'Creando...' : 'Crear'}
               </button>
               <button
                 onClick={() => { setShowCreate(false); setNewName(''); }}
                 className={pBtnGhost}
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           )}
 
           {profiles.length === 0 ? (
             <div className="text-center py-12 bg-card border border-border rounded-2xl">
               <span className="material-icons text-4xl text-muted-foreground mb-2 block">palette</span>
-              <p className="text-muted-foreground text-sm">No brand profiles yet.</p>
-              <p className="text-muted-foreground text-xs mt-1">Create your first profile to get started.</p>
+              <p className="text-muted-foreground text-sm">Aún no hay perfiles de marca.</p>
+              <p className="text-muted-foreground text-xs mt-1">Crea tu primer perfil para empezar.</p>
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">
@@ -213,9 +209,7 @@ export default function PortalBrandingPage() {
                           )}
                         </div>
                         {profile.isDefault && (
-                          <span className="shrink-0 ml-2 px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary">
-                            Default
-                          </span>
+                          <span className="shrink-0 ml-2 px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary">Predeterminado</span>
                         )}
                       </div>
 
@@ -228,10 +222,10 @@ export default function PortalBrandingPage() {
                           </div>
                         )}
                         <div className="flex gap-1.5">
-                          <div className="w-6 h-6 rounded-full border border-border" style={{ backgroundColor: primary }} title={`Primary: ${primary}`} />
-                          <div className="w-6 h-6 rounded-full border border-border" style={{ backgroundColor: accent }} title={`Accent: ${accent}`} />
+                          <div className="w-6 h-6 rounded-full border border-border" style={{ backgroundColor: primary }} title={`Primario: ${primary}`} />
+                          <div className="w-6 h-6 rounded-full border border-border" style={{ backgroundColor: accent }} title={`Acento: ${accent}`} />
                           {profile.secondaryColor && (
-                            <div className="w-6 h-6 rounded-full border border-border" style={{ backgroundColor: profile.secondaryColor }} title={`Secondary: ${profile.secondaryColor}`} />
+                            <div className="w-6 h-6 rounded-full border border-border" style={{ backgroundColor: profile.secondaryColor }} title={`Secundario: ${profile.secondaryColor}`} />
                           )}
                         </div>
                       </div>
@@ -241,21 +235,19 @@ export default function PortalBrandingPage() {
                           href={`/portal/branding/profiles/${profile.id}`}
                           className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-accent transition-colors"
                         >
-                          <span className="material-icons text-sm">edit</span>
-                          Edit
-                        </Link>
+                          <span className="material-icons text-sm">edit</span>Editar</Link>
                         <Link
                           href={`/portal/branding/profiles/${profile.id}?tab=messaging`}
                           className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-accent transition-colors"
                         >
                           <span className="material-icons text-sm">chat</span>
-                          Messaging
+                          Mensajería
                         </Link>
                         {!profile.isDefault && (
                           <button
                             onClick={() => setDefault(profile.id)}
                             className="px-3 py-2 text-xs font-medium rounded-md border border-border text-foreground hover:bg-accent transition-colors"
-                            title="Set as default"
+                            title="Establecer como predeterminado"
                           >
                             <span className="material-icons text-sm">star_outline</span>
                           </button>
@@ -263,7 +255,7 @@ export default function PortalBrandingPage() {
                         <button
                           onClick={() => deleteProfile(profile.id)}
                           className="px-3 py-2 text-xs font-medium rounded-md border border-border text-destructive hover:bg-destructive/10 transition-colors"
-                          title="Delete"
+                          title="Eliminar"
                         >
                           <span className="material-icons text-sm">delete</span>
                         </button>
@@ -281,15 +273,15 @@ export default function PortalBrandingPage() {
       {activeTab === 'assignments' && (
         <section className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Assign a brand profile to each website. This determines the default styling for CMS blocks.
+            Asigna un perfil de marca a cada sitio web. Esto determina el estilo predeterminado de los bloques del CMS.
           </p>
           {websites.length === 0 || profiles.length === 0 ? (
             <div className="text-center py-12 bg-card border border-border rounded-2xl">
               <span className="material-icons text-4xl text-muted-foreground mb-2 block">language</span>
               <p className="text-muted-foreground text-sm">
                 {profiles.length === 0
-                  ? 'Create a brand profile first before assigning to websites.'
-                  : 'No websites found.'}
+                  ? 'Crea primero un perfil de marca antes de asignarlo a sitios web.'
+                  : 'No se encontraron sitios web.'}
               </p>
             </div>
           ) : (
@@ -305,10 +297,10 @@ export default function PortalBrandingPage() {
                     onChange={(e) => assignProfile(site.id, e.target.value ? parseInt(e.target.value) : null)}
                     className="px-3 py-1.5 text-sm rounded-md border border-border bg-background text-foreground min-w-[180px]"
                   >
-                    <option value="">No profile assigned</option>
+                    <option value="">Sin perfil asignado</option>
                     {profiles.map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.name}{p.isDefault ? ' (Default)' : ''}
+                        {p.name}{p.isDefault ? ' (Predeterminado)' : ''}
                       </option>
                     ))}
                   </select>

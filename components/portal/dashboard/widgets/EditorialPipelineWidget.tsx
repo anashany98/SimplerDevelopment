@@ -106,7 +106,7 @@ export default async function EditorialPipelineWidget({
       )}
 
       {scheduledCards.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-2 text-center">No upcoming scheduled items.</p>
+        <p className="text-sm text-muted-foreground py-2 text-center">Sin elementos programados próximos.</p>
       ) : (
         <ul className="space-y-2">
           {scheduledCards.map((card) => (

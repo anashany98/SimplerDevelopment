@@ -148,7 +148,7 @@ describe('PayInvoiceButton', () => {
 describe('CreateSnapshotButton', () => {
   it('renders the trigger with the photo_library icon and default label', () => {
     render(<CreateSnapshotButton siteId={11} />);
-    const btn = screen.getByRole('button', { name: /Create snapshot/i });
+    const btn = screen.getByRole('button', { name: /Crear instantánea/i });
     expect(btn).toBeTruthy();
     const icon = btn.querySelector('.material-icons');
     expect(icon?.textContent).toBe('photo_library');
@@ -161,10 +161,10 @@ describe('CreateSnapshotButton', () => {
 
     render(<CreateSnapshotButton siteId={22} siteName="MySite" />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
 
-    expect(promptSpy).toHaveBeenCalledWith('Snapshot name', 'MySite snapshot');
+    expect(promptSpy).toHaveBeenCalledWith('Nombre de la instantánea', 'MySite instantánea');
     expect(fetchSpy).not.toHaveBeenCalled();
     expect(routerPush).not.toHaveBeenCalled();
   });
@@ -175,7 +175,7 @@ describe('CreateSnapshotButton', () => {
 
     render(<CreateSnapshotButton siteId={101} siteName="Acme" />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
 
     expect((globalThis as any).fetch).toHaveBeenCalledWith(
@@ -201,11 +201,11 @@ describe('CreateSnapshotButton', () => {
 
     render(<CreateSnapshotButton siteId={2} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
 
     await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Export failed: boom');
+      expect(alertSpy).toHaveBeenCalledWith('Error al exportar: boom');
     });
     expect(routerPush).not.toHaveBeenCalled();
   });
@@ -214,9 +214,9 @@ describe('CreateSnapshotButton', () => {
     const promptSpy = vi.spyOn(window, 'prompt').mockReturnValue(null);
     render(<CreateSnapshotButton siteId={3} />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Create snapshot/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Crear instantánea/i }));
     });
-    expect(promptSpy).toHaveBeenCalledWith('Snapshot name', 'Site snapshot');
+    expect(promptSpy).toHaveBeenCalledWith('Nombre de la instantánea', 'Instantánea de la web');
   });
 });
 
@@ -227,8 +227,8 @@ describe('CreateSnapshotButton', () => {
 describe('EnableBrainBanner', () => {
   it('renders the call-to-action heading and an Enable button', () => {
     render(<EnableBrainBanner />);
-    expect(screen.getByText(/Turn this dashboard into a command center/i)).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Enable Company Brain/i })).toBeTruthy();
+    expect(screen.getByText(/Convierte este panel en un centro de mando/i)).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Activar Cerebro de empresa/i })).toBeTruthy();
   });
 
   it('renders a "Learn more" link to /portal/brain', () => {
@@ -241,7 +241,7 @@ describe('EnableBrainBanner', () => {
     mockFetchOnce({ success: true });
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     expect((globalThis as any).fetch).toHaveBeenCalledWith(
       '/api/portal/brain/settings',
@@ -263,7 +263,7 @@ describe('EnableBrainBanner', () => {
     });
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('No quota')).toBeTruthy();
@@ -275,7 +275,7 @@ describe('EnableBrainBanner', () => {
     (globalThis as any).fetch = vi.fn().mockRejectedValueOnce(new Error('Network down'));
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     await waitFor(() => {
       expect(screen.getByText('Network down')).toBeTruthy();
@@ -289,10 +289,10 @@ describe('EnableBrainBanner', () => {
     });
     render(<EnableBrainBanner />);
     await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /Enable Company Brain/i }));
+      fireEvent.click(screen.getByRole('button', { name: /Activar Cerebro de empresa/i }));
     });
     await waitFor(() => {
-      expect(screen.getByText(/Failed to enable Company Brain/i)).toBeTruthy();
+      expect(screen.getByText(/No se ha podido activar el Cerebro de empresa/i)).toBeTruthy();
     });
   });
 });

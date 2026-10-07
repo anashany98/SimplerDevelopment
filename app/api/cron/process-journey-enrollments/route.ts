@@ -10,7 +10,7 @@ import {
 } from '@/lib/db/schema';
 import { and, eq, lte, asc } from 'drizzle-orm';
 import { resolveResendKey } from '@/lib/email/resolve-resend';
-import { buildUnsubscribeUrl, createEmailTransport, isMailpitEmailTransport } from '@/lib/email';
+import { buildUnsubscribeUrl, createEmailTransport, isMailpitEmailTransport, getPlatformFromEmail } from '@/lib/email';
 import { isAuthorizedCron } from '@/lib/cron-auth';
 
 export const dynamic = 'force-dynamic';
@@ -277,17 +277,17 @@ async function executeEmailStep(
 
   const subject = (cfg?.subject as string | undefined) ?? `Message from ${journey?.name ?? 'us'}`;
   const htmlContent = (cfg?.htmlContent as string | undefined) ?? '<p>This is an automated email.</p>';
-  const fromName = (cfg?.fromName as string | undefined) ?? 'SimplerDevelopment';
-  const fromEmail = (cfg?.fromEmail as string | undefined) ?? (process.env.DEFAULT_FROM_EMAIL ?? 'noreply@simplerdevelopment.com');
+  const fromName = (cfg?.fromName as string | undefined) ?? 'CRM AGENTS';
+  const fromEmail = (cfg?.fromEmail as string | undefined) ?? (await getPlatformFromEmail());
 
   const unsubscribeUrl = buildUnsubscribeUrl(subscriber.unsubscribeToken);
   const html = htmlContent.replace(/\{\{UNSUBSCRIBE_URL\}\}/g, unsubscribeUrl);
 
   let resendEmailId: string | null = null;
   try {
-    const emailTransport = isMailpitEmailTransport()
-      ? createEmailTransport()
-      : createEmailTransport({ resendApiKey: (await resolveResendKey(enrollment.clientId)).key });
+    const emailTransport = (await isMailpitEmailTransport())
+      ? await createEmailTransport()
+      : await createEmailTransport({ resendApiKey: (await resolveResendKey(enrollment.clientId)).key });
     const result = await emailTransport.send({
       from: `${fromName} <${fromEmail}>`,
       to: subscriber.email,

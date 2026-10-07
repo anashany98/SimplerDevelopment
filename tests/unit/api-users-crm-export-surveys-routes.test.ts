@@ -11,7 +11,7 @@
  *
  *   3. app/api/surveys/[slug]/route.ts              (GET / POST / OPTIONS)
  *      Public survey fetch and response submit. Transaction wraps insert + count
- *      bump. Branding lookup + webhook dispatcher are fired post-write.
+ *      bump and durable webhook job enqueue happen in one transaction.
  *
  * Strategy: each describe block sets up its own db / auth mocks. The select()
  * chain is mocked with a queue-driven thenable so we can line up rows in the
@@ -126,6 +126,7 @@ const deleteCalls: DeleteCall[] = [];
 const updateCalls: UpdateCall[] = [];
 const insertCalls: InsertCall[] = [];
 let transactionThrow: Error | null = null;
+let transactionDb: Record<string, unknown> | null = null;
 
 function shiftNextSelect(): Array<Record<string, unknown>> {
   return selectQueue.shift() ?? [];
@@ -227,7 +228,8 @@ vi.mock('@/lib/db', () => {
       ...base,
       transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
         if (transactionThrow) throw transactionThrow;
-        return fn(makeDbLike());
+        transactionDb = makeDbLike();
+        return fn(transactionDb);
       },
     },
   };
@@ -287,6 +289,7 @@ beforeEach(() => {
   updateCalls.length = 0;
   insertCalls.length = 0;
   transactionThrow = null;
+  transactionDb = null;
 
   authMock.mockReset();
   getPortalClientMock.mockReset();
@@ -728,7 +731,7 @@ describe('GET /api/surveys/[slug]', () => {
     expect(res.status).toBe(404);
     expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*');
     const body = await res.json();
-    expect(body.message).toBe('Survey not found');
+    expect(body.message).toBe('Encuesta no encontrada.');
   });
 
   it('returns 403 when survey is not active', async () => {
@@ -736,7 +739,7 @@ describe('GET /api/surveys/[slug]', () => {
     const res = await GET(new Request('http://x'), makeParams({ slug: 's' }));
     expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.message).toBe('Survey is not active');
+    expect(body.message).toBe('La encuesta no está activa.');
   });
 
   it('returns 403 when survey has closed (closesAt in the past)', async () => {
@@ -746,7 +749,7 @@ describe('GET /api/surveys/[slug]', () => {
     const res = await GET(new Request('http://x'), makeParams({ slug: 's' }));
     expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.message).toBe('Survey is closed');
+    expect(body.message).toBe('La encuesta está cerrada.');
   });
 
   it('returns 403 when survey has reached max responses', async () => {
@@ -756,7 +759,7 @@ describe('GET /api/surveys/[slug]', () => {
     const res = await GET(new Request('http://x'), makeParams({ slug: 's' }));
     expect(res.status).toBe(403);
     const body = await res.json();
-    expect(body.message).toBe('Survey has reached maximum responses');
+    expect(body.message).toBe('La encuesta ha alcanzado el máximo de respuestas.');
   });
 
   it('returns 200 with branding when available', async () => {
@@ -917,7 +920,7 @@ describe('POST /api/surveys/[slug]', () => {
     const res = await POST(makeBodyReq({ formName: 'f' }), makeParams({ slug: 's' }));
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Answers are required');
+    expect(body.message).toBe('Las respuestas son obligatorias.');
   });
 
   it('returns 400 when formName is missing', async () => {
@@ -927,7 +930,7 @@ describe('POST /api/surveys/[slug]', () => {
     const res = await POST(makeBodyReq({ answers: {} }), makeParams({ slug: 's' }));
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('formName is required');
+    expect(body.message).toBe('El nombre del formulario es obligatorio.');
   });
 
   it('returns 400 when formName exceeds 100 characters', async () => {
@@ -941,7 +944,7 @@ describe('POST /api/surveys/[slug]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toContain('100 characters');
+    expect(body.message).toContain('100 caracteres');
   });
 
   it('returns 400 when requireEmail is true and email is missing', async () => {
@@ -954,7 +957,7 @@ describe('POST /api/surveys/[slug]', () => {
     );
     expect(res.status).toBe(400);
     const body = await res.json();
-    expect(body.message).toBe('Email is required');
+    expect(body.message).toBe('El correo electrónico es obligatorio.');
   });
 
   it('returns 400 when a required structured field is missing', async () => {
@@ -1062,13 +1065,17 @@ describe('POST /api/surveys/[slug]', () => {
       expect.objectContaining({ surveyId: 1, responseId: 555, formName: 'f' }),
     );
 
-    // setImmediate-fired webhook dispatch
-    await new Promise((r) => setImmediate(r));
     expect(dispatchSurveyResponseWebhooksMock).toHaveBeenCalledTimes(1);
-    expect(dispatchSurveyResponseWebhooksMock.mock.calls[0][0]).toMatchObject({
-      surveyTitle: 'My Survey',
-      surveySlug: 's',
-    });
+    expect(dispatchSurveyResponseWebhooksMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: 555,
+        surveyId: 1,
+        formName: 'f',
+        answers: { q1: 'Alice' },
+      }),
+      99,
+      transactionDb,
+    );
   });
 
   it('falls back to x-real-ip when x-forwarded-for is absent and defaults source to "link"', async () => {
@@ -1104,7 +1111,7 @@ describe('POST /api/surveys/[slug]', () => {
     expect(insertCalls[0].values).toMatchObject({ ipAddress: '9.9.9.9', source: 'link' });
   });
 
-  it('survives webhook dispatcher errors without breaking the response', async () => {
+  it('fails the response transaction when durable webhook enqueue fails', async () => {
     selectQueue.push([
       {
         id: 3,
@@ -1125,18 +1132,15 @@ describe('POST /api/surveys/[slug]', () => {
     insertReturnQueue.push([
       { id: 1, surveyId: 3, formName: 'f', answers: {}, respondentEmail: null, respondentName: null, source: 'link', sourceId: null, ipAddress: null, userAgent: null, completedAt: new Date() },
     ]);
-    const errSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
     dispatchSurveyResponseWebhooksMock.mockRejectedValueOnce(new Error('webhook boom'));
 
     const res = await POST(
       makeBodyReq({ answers: { x: 1 }, formName: 'f' }),
       makeParams({ slug: 's3' }),
     );
-    expect(res.status).toBe(201);
-    await new Promise((r) => setImmediate(r));
-    // Allow the rejection to flush
-    await new Promise((r) => setImmediate(r));
-    expect(errSpy).toHaveBeenCalled();
-    errSpy.mockRestore();
+    expect(res.status).toBe(500);
+    expect(dispatchSurveyResponseWebhooksMock).toHaveBeenCalledTimes(1);
+    expect(dispatchSurveyResponseWebhooksMock.mock.calls[0][1]).toBe(99);
+    expect(dispatchSurveyResponseWebhooksMock.mock.calls[0][2]).toBe(transactionDb);
   });
 });

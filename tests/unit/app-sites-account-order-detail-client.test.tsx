@@ -96,7 +96,7 @@ describe('OrderDetailClient', () => {
     // Never-resolving fetch keeps loading=true
     global.fetch = vi.fn().mockReturnValue(new Promise(() => {}));
     render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
-    expect(screen.getByText(/progress_activity/i) ?? document.querySelector('.animate-spin')).toBeTruthy();
+    expect(screen.getByText(/autorenew/i) ?? document.querySelector('.animate-spin')).toBeTruthy();
   });
 
   // ── Not-found state ────────────────────────────────────────────────────────
@@ -107,7 +107,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Order not found.')).toBeInTheDocument();
+      expect(screen.getByText('Pedido no encontrado.')).toBeInTheDocument();
     });
   });
 
@@ -130,8 +130,8 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Order ORD-001')).toBeInTheDocument();
-      expect(screen.getByText('processing')).toBeInTheDocument();
+      expect(screen.getByText('Pedido ORD-001')).toBeInTheDocument();
+      expect(screen.getByText('En proceso')).toBeInTheDocument();
     });
   });
 
@@ -141,8 +141,8 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('$49.99')).toBeInTheDocument(); // subtotal
-      expect(screen.getByText('$58.99')).toBeInTheDocument(); // total
+      expect(screen.getByText('49,99 €')).toBeInTheDocument(); // subtotal
+      expect(screen.getByText('58,99 €')).toBeInTheDocument(); // total
     });
   });
 
@@ -158,7 +158,7 @@ describe('OrderDetailClient', () => {
     });
     await waitFor(() => {
       expect(screen.getByText('Blue Widget')).toBeInTheDocument();
-      expect(screen.getByText('Qty: 2')).toBeInTheDocument();
+      expect(screen.getByText('Cant.: 2')).toBeInTheDocument();
     });
   });
 
@@ -171,7 +171,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('$5.00 each')).toBeInTheDocument();
+      expect(screen.getByText('5,00 € cada uno')).toBeInTheDocument();
     });
   });
 
@@ -184,7 +184,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.queryByText(/each/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/cada uno/)).not.toBeInTheDocument();
     });
   });
 
@@ -218,7 +218,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Custom: My Mug Design')).toBeInTheDocument();
+      expect(screen.getByText('Personalizado: My Mug Design')).toBeInTheDocument();
     });
   });
 
@@ -239,7 +239,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Custom: Untitled design')).toBeInTheDocument();
+      expect(screen.getByText('Personalizado: Diseño sin título')).toBeInTheDocument();
     });
   });
 
@@ -260,7 +260,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Design no longer available')).toBeInTheDocument();
+      expect(screen.getByText('Diseño ya no disponible')).toBeInTheDocument();
     });
   });
 
@@ -302,15 +302,21 @@ describe('OrderDetailClient', () => {
 
   // ── Status colour badge ────────────────────────────────────────────────────
 
-  it.each(['pending', 'processing', 'shipped', 'delivered', 'cancelled'])(
+  it.each([
+    ['pending', 'Pendiente'],
+    ['processing', 'En proceso'],
+    ['shipped', 'Enviado'],
+    ['delivered', 'Entregado'],
+    ['cancelled', 'Cancelado'],
+  ])(
     'renders status badge for "%s"',
-    async (status) => {
+    async (status, label) => {
       mockFetch(baseOrder({ status }));
       await act(async () => {
         render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
       });
       await waitFor(() => {
-        expect(screen.getByText(status)).toBeInTheDocument();
+        expect(screen.getByText(label)).toBeInTheDocument();
       });
     },
   );
@@ -323,7 +329,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Shipment')).toBeInTheDocument();
+      expect(screen.getAllByText('Envío').length).toBeGreaterThan(0);
       expect(screen.getByText('UPS')).toBeInTheDocument();
       expect(screen.getByText('1Z999AA10123456784')).toBeInTheDocument();
     });
@@ -355,7 +361,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Awaiting carrier scan')).toBeInTheDocument();
+      expect(screen.getByText('Esperando escaneo del transportista')).toBeInTheDocument();
     });
   });
 
@@ -365,7 +371,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('In transit')).toBeInTheDocument();
+      expect(screen.getByText('En tránsito')).toBeInTheDocument();
     });
   });
 
@@ -375,7 +381,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Delivered')).toBeInTheDocument();
+      expect(screen.getByText('Entregado')).toBeInTheDocument();
     });
   });
 
@@ -385,7 +391,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Out for delivery')).toBeInTheDocument();
+      expect(screen.getByText('En reparto')).toBeInTheDocument();
     });
   });
 
@@ -434,10 +440,10 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Processing')).toBeInTheDocument();
+      expect(screen.getAllByText('En proceso').length).toBeGreaterThan(0);
       expect(screen.getByText('Payment received')).toBeInTheDocument();
-      expect(screen.getByText('Shipped')).toBeInTheDocument();
-      expect(screen.getByText('Order History')).toBeInTheDocument();
+      expect(screen.getByText('Enviado')).toBeInTheDocument();
+      expect(screen.getByText('Historial del pedido')).toBeInTheDocument();
     });
   });
 
@@ -447,7 +453,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.queryByText('Order History')).not.toBeInTheDocument();
+      expect(screen.queryByText('Historial del pedido')).not.toBeInTheDocument();
     });
   });
 
@@ -477,8 +483,8 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Shipping Address')).toBeInTheDocument();
-      expect(screen.getByText('Billing Address')).toBeInTheDocument();
+      expect(screen.getByText('Dirección de envío')).toBeInTheDocument();
+      expect(screen.getByText('Dirección de facturación')).toBeInTheDocument();
       expect(screen.getByText('123 Main St')).toBeInTheDocument();
       expect(screen.getByText('456 Oak Ave')).toBeInTheDocument();
     });
@@ -511,7 +517,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.queryByText('Shipping Address')).not.toBeInTheDocument();
+      expect(screen.queryByText('Dirección de envío')).not.toBeInTheDocument();
     });
   });
 
@@ -523,7 +529,7 @@ describe('OrderDetailClient', () => {
       render(<OrderDetailClient siteId={1} domain="example.com" orderNumber="ORD-001" />);
     });
     await waitFor(() => {
-      expect(screen.getByText('Back to orders')).toBeInTheDocument();
+      expect(screen.getByText('Volver a los pedidos')).toBeInTheDocument();
     });
   });
 

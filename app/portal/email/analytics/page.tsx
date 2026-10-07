@@ -62,7 +62,7 @@ export default function EmailAnalyticsPage() {
   }
 
   if (!data) {
-    return <div className="text-center py-20 text-muted-foreground">Failed to load analytics</div>;
+    return <div className="text-center py-20 text-muted-foreground">No se pudieron cargar las analíticas</div>;
   }
 
   const { overview, subscribers, recentCampaigns } = data;
@@ -70,31 +70,31 @@ export default function EmailAnalyticsPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <PortalPageHeader
-        eyebrow="Email"
-        title="Analytics"
-        subtitle="Campaign performance and subscriber insights"
+        eyebrow="Correo"
+        title="Analíticas"
+        subtitle="Rendimiento de campañas y datos de suscriptores"
       />
 
       {/* Overview stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard icon="send" label="Emails Sent" value={overview.totalSent.toLocaleString()} />
-        <StatCard icon="mark_email_read" label="Open Rate" value={`${overview.openRate}%`} sub={`${overview.totalOpened.toLocaleString()} opened`} color="text-green-500" />
-        <StatCard icon="ads_click" label="Click Rate" value={`${overview.clickRate}%`} sub={`${overview.totalClicked.toLocaleString()} clicked`} color="text-blue-500" />
-        <StatCard icon="people" label="Subscribers" value={subscribers.active.toLocaleString()} sub={`${subscribers.total.toLocaleString()} total across ${subscribers.totalLists} lists`} color="text-purple-500" />
+        <StatCard icon="send" label="Correos enviados" value={overview.totalSent.toLocaleString()} />
+        <StatCard icon="mark_email_read" label="Tasa de apertura" value={`${overview.openRate}%`} sub={`${overview.totalOpened.toLocaleString()} abiertos`} color="text-green-500" />
+        <StatCard icon="ads_click" label="Tasa de clics" value={`${overview.clickRate}%`} sub={`${overview.totalClicked.toLocaleString()} clics`} color="text-blue-500" />
+        <StatCard icon="people" label="Suscriptores" value={subscribers.active.toLocaleString()} sub={`${subscribers.total.toLocaleString()} en total · ${subscribers.totalLists} listas`} color="text-purple-500" />
       </div>
 
       {/* Secondary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard icon="campaign" label="Campaigns Sent" value={overview.totalCampaigns} />
-        <StatCard icon="error_outline" label="Bounced" value={overview.totalBounced.toLocaleString()} color="text-red-500" />
-        <StatCard icon="unsubscribe" label="Unsubscribed" value={overview.totalUnsubscribed.toLocaleString()} color="text-amber-500" />
+        <StatCard icon="campaign" label="Campañas enviadas" value={overview.totalCampaigns} />
+        <StatCard icon="error_outline" label="Rebotados" value={overview.totalBounced.toLocaleString()} color="text-red-500" />
+        <StatCard icon="unsubscribe" label="Bajas" value={overview.totalUnsubscribed.toLocaleString()} color="text-amber-500" />
       </div>
 
       {/* List breakdown */}
       {subscribers.listBreakdown.length > 0 && (
         <div className={`${pCard} overflow-hidden`}>
           <div className="px-5 py-4 border-b border-border">
-            <h2 className="font-semibold">Subscriber Lists</h2>
+            <h2 className="font-semibold">Listas de suscriptores</h2>
           </div>
           <div className="divide-y divide-border">
             {subscribers.listBreakdown.map(list => {
@@ -121,21 +121,21 @@ export default function EmailAnalyticsPage() {
       {/* Campaign performance table */}
       <div className="bg-card border border-border rounded-xl overflow-hidden">
         <div className="px-5 py-4 border-b border-border">
-          <h2 className="font-semibold">Campaign Performance</h2>
+          <h2 className="font-semibold">Rendimiento de campañas</h2>
         </div>
         {recentCampaigns.length === 0 ? (
-          <p className="p-6 text-sm text-muted-foreground text-center">No sent campaigns yet</p>
+          <p className="p-6 text-sm text-muted-foreground text-center">Aún no hay campañas enviadas</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-left">
-                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase">Campaign</th>
-                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Sent</th>
+                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase">Campaña</th>
+                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Enviado</th>
                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Opened</th>
                   <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Clicked</th>
-                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Bounced</th>
-                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Open Rate</th>
+                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Rebotados</th>
+                  <th className="px-5 py-3 text-xs font-medium text-muted-foreground uppercase text-right">Tasa de apertura</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

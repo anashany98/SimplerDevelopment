@@ -299,7 +299,7 @@ if [[ "$LAYER" == "all" || "$LAYER" == "e2e" ]]; then
   trap 'kill -SIGTERM $SERVER_PID 2>/dev/null || true; wait $SERVER_PID 2>/dev/null || true' EXIT
 
   echo ">> waiting for health endpoint"
-  if ! bunx wait-on "$BASE_URL/api/health" -t 120000; then
+  if ! bunx wait-on http://localhost:3000/api/health -t 120000; then
     echo "server never became healthy; last 200 lines (full log: coverage/server.log):"
     tail -200 coverage/server.log
     exit 1

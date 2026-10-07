@@ -148,6 +148,7 @@ vi.mock('@/lib/email', () => ({
   resend: {
     emails: { send: resendSendMock },
   },
+  getConfiguredFromEmail: async () => process.env.RESEND_FROM_EMAIL ?? null,
 }));
 
 // Mock the components module purely to satisfy the `import type` re-export
@@ -777,13 +778,13 @@ describe('lib/automation/product-presets.ts', () => {
     expect(mod.PRODUCT_PRESET_GROUPS).toHaveLength(3);
     const [email, booking, survey] = mod.PRODUCT_PRESET_GROUPS;
     expect(email.productScope).toBe('email');
-    expect(email.label).toBe('Email Marketing');
+    expect(email.label).toBe('Email marketing');
     expect(email.presets).toBe(mod.EMAIL_AUTOMATION_PRESETS);
     expect(booking.productScope).toBe('booking');
-    expect(booking.label).toBe('Bookings');
+    expect(booking.label).toBe('Reservas');
     expect(booking.presets).toBe(mod.BOOKING_AUTOMATION_PRESETS);
     expect(survey.productScope).toBe('survey');
-    expect(survey.label).toBe('Surveys');
+    expect(survey.label).toBe('Encuestas');
     expect(survey.presets).toBe(mod.SURVEY_AUTOMATION_PRESETS);
   });
 

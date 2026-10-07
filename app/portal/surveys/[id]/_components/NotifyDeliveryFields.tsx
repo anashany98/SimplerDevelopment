@@ -30,18 +30,18 @@ export default function NotifyDeliveryFields({
   return (
     <>
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Email Digest Summary</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Resumen por correo</label>
         <select
           value={editDigest}
           onChange={(e) => setEditDigest(e.target.value)}
           className="w-full sm:w-48 px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
         >
-          <option value="off">Off</option>
-          <option value="daily">Daily digest</option>
-          <option value="weekly">Weekly digest</option>
+          <option value="off">Desactivado</option>
+          <option value="daily">Resumen diario</option>
+          <option value="weekly">Resumen semanal</option>
         </select>
         <p className="text-xs text-muted-foreground mt-1">
-          Receive a summary email with response stats and highlights
+          Recibe un correo resumen con estadísticas y destacados de las respuestas
         </p>
       </div>
 
@@ -50,10 +50,10 @@ export default function NotifyDeliveryFields({
           portal users rather than a free-text address list. Leaving every box
           unchecked keeps the previous behaviour (the account owner is notified). */}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1">Notify these people</label>
+        <label className="block text-sm font-medium text-foreground mb-1">Notificar a estas personas</label>
         {teamMembers.length === 0 ? (
           <p className="text-xs text-muted-foreground">
-            Loading team members&hellip;
+            Cargando miembros del equipo…
           </p>
         ) : (
           <div className="space-y-1.5">
@@ -82,8 +82,8 @@ export default function NotifyDeliveryFields({
           </div>
         )}
         <p className="text-xs text-muted-foreground mt-1">
-          Applies to both the immediate email and the digest. With none selected, the
-          account owner is notified.
+          Aplica tanto al correo inmediato como al resumen. Si no seleccionas ninguno,
+          se notifica al propietario de la cuenta.
         </p>
       </div>
     </>

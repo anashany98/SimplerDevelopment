@@ -144,25 +144,25 @@ beforeEach(() => {
 describe('SurveySettings — section rendering', () => {
   it('renders Appearance, Completion Screen, and Response Settings sections', () => {
     renderSettings();
-    expect(screen.getByText('Appearance')).toBeInTheDocument();
-    expect(screen.getByText('Completion Screen')).toBeInTheDocument();
-    expect(screen.getByText('Response Settings')).toBeInTheDocument();
+    expect(screen.getByText('Apariencia')).toBeInTheDocument();
+    expect(screen.getByText('Pantalla de finalización')).toBeInTheDocument();
+    expect(screen.getByText('Ajustes de respuestas')).toBeInTheDocument();
   });
 
   it('renders Save Settings and Delete Survey buttons', () => {
     renderSettings();
-    expect(screen.getByRole('button', { name: /Save Settings/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Delete Survey/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Guardar ajustes/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Eliminar encuesta/i })).toBeInTheDocument();
   });
 
   it('shows "Saving..." text when saving prop is true', () => {
     renderSettings({ saving: true });
-    expect(screen.getByText('Saving...')).toBeInTheDocument();
+    expect(screen.getByText('Guardando...')).toBeInTheDocument();
   });
 
   it('Save button is disabled when saving', () => {
     renderSettings({ saving: true });
-    const saveBtn = screen.getByRole('button', { name: /Saving.../i });
+    const saveBtn = screen.getByRole('button', { name: /Guardando.../i });
     expect(saveBtn).toBeDisabled();
   });
 });
@@ -191,14 +191,14 @@ describe('SurveySettings — branding profile', () => {
 
   it('shows "Create a branding profile" link when no profiles exist', () => {
     renderSettings({ brandingProfiles: [] });
-    expect(screen.getByRole('link', { name: /Create a branding profile/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Crear un perfil de marca/i })).toBeInTheDocument();
   });
 });
 
 describe('SurveySettings — color inputs', () => {
   it('renders color picker inputs for primary color', () => {
     renderSettings();
-    const labels = screen.getAllByText('Primary');
+    const labels = screen.getAllByText('Principal');
     expect(labels.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -247,7 +247,7 @@ describe('SurveySettings — button / layout selects', () => {
     const setEditStyling = vi.fn();
     renderSettings({ setEditStyling });
     const borderRadiusSelects = screen.getAllByRole('combobox').filter((el) => {
-      return [...el.querySelectorAll('option')].some((o) => o.textContent?.includes('Square'));
+      return [...el.querySelectorAll('option')].some((o) => o.textContent?.includes('Cuadrado'));
     });
     fireEvent.change(borderRadiusSelects[0], { target: { value: '0px' } });
     expect(setEditStyling).toHaveBeenCalled();
@@ -258,7 +258,7 @@ describe('SurveySettings — layout toggles', () => {
   it('calls setEditStyling when Hide title checkbox is toggled', () => {
     const setEditStyling = vi.fn();
     renderSettings({ setEditStyling });
-    const labels = screen.getAllByText(/Hide title on public page/i);
+    const labels = screen.getAllByText(/Ocultar título en la página pública/i);
     const label = labels[0];
     const hideTitle = label.closest('label')?.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(hideTitle);
@@ -273,7 +273,7 @@ describe('SurveySettings — layout toggles', () => {
   it('calls setEditStyling when Hide logo checkbox is toggled', () => {
     const setEditStyling = vi.fn();
     renderSettings({ setEditStyling });
-    const labels = screen.getAllByText(/Hide logo/i);
+    const labels = screen.getAllByText(/Ocultar logotipo/i);
     const label = labels[0];
     const hideLogo = label.closest('label')?.querySelector('input[type="checkbox"]') as HTMLInputElement;
     fireEvent.click(hideLogo);
@@ -314,7 +314,7 @@ describe('SurveySettings — completion screen fields', () => {
 
   it('calls setEditRedirectUrl when redirect URL changes', () => {
     const props = renderSettings();
-    const urlInput = screen.getByPlaceholderText('https://example.com/thank-you');
+    const urlInput = screen.getByPlaceholderText('https://ejemplo.com/gracias');
     fireEvent.change(urlInput, { target: { value: 'https://example.com/done' } });
     expect(props.setEditRedirectUrl).toHaveBeenCalledWith('https://example.com/done');
   });
@@ -335,35 +335,35 @@ function findCheckboxByText(text: RegExp): HTMLInputElement {
 describe('SurveySettings — response setting toggles', () => {
   it('calls setEditRequireEmail when checkbox toggled', () => {
     const props = renderSettings({ editRequireEmail: false });
-    const cb = findCheckboxByText(/Require respondent email/i);
+    const cb = findCheckboxByText(/Solicitar el correo del encuestado/i);
     fireEvent.click(cb);
     expect(props.setEditRequireEmail).toHaveBeenCalledWith(true);
   });
 
   it('calls setEditAllowMultiple when checkbox toggled off', () => {
     const props = renderSettings({ editAllowMultiple: true });
-    const cb = findCheckboxByText(/Allow multiple submissions per person/i);
+    const cb = findCheckboxByText(/Permitir varias respuestas por persona/i);
     fireEvent.click(cb);
     expect(props.setEditAllowMultiple).toHaveBeenCalledWith(false);
   });
 
   it('calls setEditNotify when checkbox toggled', () => {
     const props = renderSettings({ editNotify: false });
-    const cb = findCheckboxByText(/Email notification on new response/i);
+    const cb = findCheckboxByText(/Notificación por correo al recibir una respuesta/i);
     fireEvent.click(cb);
     expect(props.setEditNotify).toHaveBeenCalledWith(true);
   });
 
   it('calls setEditPublishResults when Publish results checkbox toggled', () => {
     const props = renderSettings({ editPublishResults: false });
-    const cb = findCheckboxByText(/Publish public results page/i);
+    const cb = findCheckboxByText(/Publicar página pública de resultados/i);
     fireEvent.click(cb);
     expect(props.setEditPublishResults).toHaveBeenCalledWith(true);
   });
 
   it('calls setEditCertificateEnabled when certificate checkbox toggled', () => {
     const props = renderSettings({ editCertificateEnabled: false });
-    const cb = findCheckboxByText(/Offer completion certificate/i);
+    const cb = findCheckboxByText(/Ofrecer certificado de finalización/i);
     fireEvent.click(cb);
     expect(props.setEditCertificateEnabled).toHaveBeenCalledWith(true);
   });
@@ -372,14 +372,14 @@ describe('SurveySettings — response setting toggles', () => {
 describe('SurveySettings — digest select', () => {
   it('renders digest select with current value', () => {
     renderSettings({ editDigest: 'daily' });
-    const digestOption = screen.getByRole('option', { name: 'Daily digest' }) as HTMLOptionElement;
+    const digestOption = screen.getByRole('option', { name: 'Resumen diario' }) as HTMLOptionElement;
     expect(digestOption.selected).toBe(true);
   });
 
   it('calls setEditDigest when digest option changes', () => {
     const props = renderSettings();
     // Digest select is identified by its unique options (Off/Daily/Weekly)
-    const offOption = screen.getByRole('option', { name: 'Off' });
+    const offOption = screen.getByRole('option', { name: 'Desactivado' });
     const digestSelect = offOption.closest('select')!;
     fireEvent.change(digestSelect, { target: { value: 'weekly' } });
     expect(props.setEditDigest).toHaveBeenCalledWith('weekly');
@@ -420,7 +420,7 @@ describe('SurveySettings — consent field', () => {
   it('calls setEditConsentField with field id when selected', () => {
     const props = renderSettings({ editFields: fieldsWithConsent });
     // The consent field select contains a "none" option and the consent field option
-    const noneOption = screen.getByRole('option', { name: /none — email presence is enough/i });
+    const noneOption = screen.getByRole('option', { name: /ninguno — basta/i });
     const consentSelect = noneOption.closest('select')!;
     fireEvent.change(consentSelect, { target: { value: 'consent-1' } });
     expect(props.setEditConsentField).toHaveBeenCalledWith('consent-1');
@@ -431,7 +431,7 @@ describe('SurveySettings — consent field', () => {
       editFields: fieldsWithConsent,
       editConsentField: 'consent-1',
     });
-    const noneOption = screen.getByRole('option', { name: /none — email presence is enough/i });
+    const noneOption = screen.getByRole('option', { name: /ninguno — basta/i });
     const consentSelect = noneOption.closest('select')!;
     fireEvent.change(consentSelect, { target: { value: '' } });
     expect(props.setEditConsentField).toHaveBeenCalledWith(null);
@@ -450,7 +450,7 @@ describe('SurveySettings — closes at / max responses', () => {
   it('calls setEditMaxResponses when max responses input changes', () => {
     const props = renderSettings();
     // Max responses uses placeholder "Unlimited"
-    const maxInput = screen.getByPlaceholderText('Unlimited');
+    const maxInput = screen.getByPlaceholderText('Ilimitado');
     fireEvent.change(maxInput, { target: { value: '100' } });
     expect(props.setEditMaxResponses).toHaveBeenCalledWith('100');
   });
@@ -459,13 +459,13 @@ describe('SurveySettings — closes at / max responses', () => {
 describe('SurveySettings — Save / Delete callbacks', () => {
   it('calls onSave when Save Settings is clicked', () => {
     const props = renderSettings();
-    fireEvent.click(screen.getByRole('button', { name: /Save Settings/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Guardar ajustes/i }));
     expect(props.onSave).toHaveBeenCalledOnce();
   });
 
   it('calls onDelete when Delete Survey is clicked', () => {
     const props = renderSettings();
-    fireEvent.click(screen.getByRole('button', { name: /Delete Survey/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Eliminar encuesta/i }));
     expect(props.onDelete).toHaveBeenCalledOnce();
   });
 });
@@ -485,12 +485,12 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
 
   it('does NOT render Auto-route section when no fields have scoring', () => {
     renderSettings({ editFields: [], editScoringConfig: null });
-    expect(screen.queryByText('Auto-route to CRM')).not.toBeInTheDocument();
+    expect(screen.queryByText('Enrutar automáticamente al CRM')).not.toBeInTheDocument();
   });
 
   it('renders Auto-route to CRM section when a scored field exists', () => {
     renderSettings({ editFields: [scoredField], editScoringConfig: null });
-    expect(screen.getByText('Auto-route to CRM')).toBeInTheDocument();
+    expect(screen.getByText('Enrutar automáticamente al CRM')).toBeInTheDocument();
   });
 
   it('fetches pipelines when scored field exists', async () => {
@@ -525,7 +525,7 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
 
   it('renders Enable auto-route checkbox', () => {
     renderSettings({ editFields: [scoredField], editScoringConfig: null });
-    expect(screen.getByRole('checkbox', { name: /Enable auto-route/i })).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: /Activar enrutamiento automático/i })).toBeInTheDocument();
   });
 
   it('calls setEditScoringConfig when Enable auto-route is toggled on', () => {
@@ -535,7 +535,7 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
       editScoringConfig: null,
       setEditScoringConfig,
     });
-    const cb = findCheckboxByText(/Enable auto-route/i);
+    const cb = findCheckboxByText(/Activar enrutamiento automático/i);
     fireEvent.click(cb);
     expect(setEditScoringConfig).toHaveBeenCalled();
     const arg = setEditScoringConfig.mock.calls[0][0] as SurveyScoringConfig;
@@ -558,13 +558,13 @@ describe('SurveySettings — SCORE-02 auto-route panel', () => {
     });
 
     // Minimum score: the only spinbutton in the auto-route panel
-    expect(screen.getByPlaceholderText('Survey lead: {surveyTitle}')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Lead de encuesta: {surveyTitle}')).toBeInTheDocument();
     // The Deal title template input uses that placeholder — check the min score spinbutton
     const spinbuttons = screen.getAllByRole('spinbutton');
     expect(spinbuttons.length).toBeGreaterThanOrEqual(1);
     // Pipeline and Stage selects: "Select a pipeline…" and "Select a stage…" options exist
-    expect(screen.getByRole('option', { name: 'Select a pipeline…' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Select a stage…' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Selecciona un pipeline…' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Selecciona una etapa…' })).toBeInTheDocument();
   });
 
   it('calls setEditScoringConfig when minimum score changes', async () => {

@@ -36,9 +36,7 @@ export function TypographyTab({ profile, update, updateTypo }: Props) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-foreground mb-1 flex items-center gap-2">
-        <span className="material-icons text-base">text_fields</span>
-        Typography
-      </h2>
+        <span className="material-icons text-base">text_fields</span>Tipografía</h2>
       <p className="text-sm text-muted-foreground mb-5">
         Set default fonts for headings and body, then fine-tune each element.
       </p>
@@ -46,7 +44,7 @@ export function TypographyTab({ profile, update, updateTypo }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
         <div>
           <label className={LABEL_CLASS}>Default Heading Font</label>
-          <p className="text-[11px] text-muted-foreground mb-2">Applied to H1-H6 unless overridden below.</p>
+          <p className="text-[11px] text-muted-foreground mb-2">Se aplica a H1-H6 salvo que se anule abajo.</p>
           <GoogleFontPicker
             value={profile.headingFont}
             onChange={(font) => update({ headingFont: font })}
@@ -54,7 +52,7 @@ export function TypographyTab({ profile, update, updateTypo }: Props) {
         </div>
         <div>
           <label className={LABEL_CLASS}>Default Body Font</label>
-          <p className="text-[11px] text-muted-foreground mb-2">Applied to paragraphs, blockquotes, captions.</p>
+          <p className="text-[11px] text-muted-foreground mb-2">Se aplica a párrafos, citas y leyendas.</p>
           <GoogleFontPicker value={profile.bodyFont} onChange={(font) => update({ bodyFont: font })} />
         </div>
       </div>
@@ -116,7 +114,7 @@ export function TypographyTab({ profile, update, updateTypo }: Props) {
                         )}
                       </div>
                       <div>
-                        <label className="block text-[11px] text-muted-foreground mb-1">Size</label>
+                        <label className="block text-[11px] text-muted-foreground mb-1">Tamaño</label>
                         <input
                           type="text"
                           value={t.size || ''}

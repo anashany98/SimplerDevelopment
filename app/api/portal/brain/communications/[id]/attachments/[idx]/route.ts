@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import { requireBrainEntitlement } from '@/lib/brain/entitlement';
 import { getMeeting } from '@/lib/brain/meetings';
+import { getEmailPlatformConfig } from '@/lib/email';
 
-const INBOUND_SECRET = process.env.INBOUND_EMAIL_SECRET || '';
 const ATTACHMENT_WORKER_URL = process.env.BRAIN_ATTACHMENT_WORKER_URL
   || 'https://sd-email-inbound.lingering-bush-dcd7.workers.dev';
 const SIGNED_URL_TTL_SECONDS = 300; // 5 min
@@ -61,12 +61,13 @@ export async function GET(
   }
 
   // R2 (MX-routed inbound email).
-  if (!INBOUND_SECRET) {
-    return NextResponse.json({ success: false, message: 'Server misconfigured: INBOUND_EMAIL_SECRET unset' }, { status: 500 });
+  const inboundSecret = (await getEmailPlatformConfig()).inboundSecret;
+  if (!inboundSecret) {
+    return NextResponse.json({ success: false, message: 'Server misconfigured: INBOUND_EMAIL_SECRET unset (Admin → Email → Ajustes)' }, { status: 500 });
   }
 
   const exp = Math.floor(Date.now() / 1000) + SIGNED_URL_TTL_SECONDS;
-  const sig = createHmac('sha256', INBOUND_SECRET).update(`${att.key}\n${exp}`).digest('hex');
+  const sig = createHmac('sha256', inboundSecret).update(`${att.key}\n${exp}`).digest('hex');
   const url = `${ATTACHMENT_WORKER_URL}/attachment?key=${encodeURIComponent(att.key)}&exp=${exp}&sig=${sig}`;
   return NextResponse.redirect(url, 302);
 }

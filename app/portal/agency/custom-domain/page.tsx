@@ -60,12 +60,12 @@ export default function CustomDomainPage() {
       if (data.success) {
         setState(data.data);
         setDomainInput('');
-        setMessage({ type: 'info', text: 'Add the TXT record below at your DNS provider, then click Verify.' });
+        setMessage({ type: 'info', text: 'Añade el registro TXT de abajo en tu proveedor de DNS y luego haz clic en Verificar.' });
       } else {
-        setMessage({ type: 'error', text: data.error || 'Could not save domain.' });
+        setMessage({ type: 'error', text: data.error || 'No se pudo guardar el dominio.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error.' });
+      setMessage({ type: 'error', text: 'Error de red.' });
     } finally {
       setSubmitting(false);
     }
@@ -79,19 +79,19 @@ export default function CustomDomainPage() {
       const data = await res.json();
       if (data.success) {
         await refresh();
-        setMessage({ type: 'success', text: 'Domain verified. White-label can now be enabled.' });
+        setMessage({ type: 'success', text: 'Dominio verificado. Ya puedes activar la marca blanca.' });
       } else {
-        setMessage({ type: 'error', text: data.error || 'Verification failed.' });
+        setMessage({ type: 'error', text: data.error || 'No se pudo verificar.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error.' });
+      setMessage({ type: 'error', text: 'Error de red.' });
     } finally {
       setVerifying(false);
     }
   }
 
   async function removeDomain() {
-    if (!confirm('Remove this custom domain? White-label will be turned off.')) return;
+    if (!confirm('¿Quitar este dominio personalizado? Se desactivará la marca blanca.')) return;
     setRemoving(true);
     setMessage(null);
     try {
@@ -99,12 +99,12 @@ export default function CustomDomainPage() {
       const data = await res.json();
       if (data.success) {
         await refresh();
-        setMessage({ type: 'success', text: 'Custom domain removed.' });
+        setMessage({ type: 'success', text: 'Dominio personalizado eliminado.' });
       } else {
-        setMessage({ type: 'error', text: data.error || 'Could not remove domain.' });
+        setMessage({ type: 'error', text: data.error || 'No se pudo quitar el dominio.' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error.' });
+      setMessage({ type: 'error', text: 'Error de red.' });
     } finally {
       setRemoving(false);
     }
@@ -122,13 +122,13 @@ export default function CustomDomainPage() {
     <div className="max-w-3xl">
       <Link href="/portal/agency" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1 mb-4">
         <span className="material-icons text-base">arrow_back</span>
-        Agency settings
+        Ajustes de agencia
       </Link>
 
       <PortalPageHeader
-        eyebrow="Agency"
-        title="Custom Portal Domain"
-        subtitle="Map your own apex or subdomain to this portal so clients see your brand instead of simplerdevelopment.com."
+        eyebrow="Agencia"
+        title="Dominio personalizado del portal"
+        subtitle="Asigna tu propio dominio raíz o subdominio a este portal para que los clientes vean tu marca en lugar de la dirección predeterminada de CRM AGENTS."
       />
 
       {message && (
@@ -159,17 +159,17 @@ export default function CustomDomainPage() {
       ) : !state.customDomain ? (
         <form onSubmit={submitDomain} className="bg-card border border-border rounded-2xl p-6 space-y-4">
           <label className="block">
-            <span className="text-sm font-medium text-foreground">Domain</span>
+            <span className="text-sm font-medium text-foreground">Dominio</span>
             <input
               type="text"
               value={domainInput}
               onChange={e => setDomainInput(e.target.value)}
-              placeholder="portal.your-agency.com"
+              placeholder="portal.tuagencia.com"
               required
               className={`mt-1 ${pInput}`}
             />
             <span className="text-xs text-muted-foreground mt-1 block">
-              We&apos;ll generate a TXT record to verify ownership before activating it.
+              Generaremos un registro TXT para verificar la propiedad antes de activarlo.
             </span>
           </label>
           <button
@@ -178,7 +178,7 @@ export default function CustomDomainPage() {
             className={pBtnPrimary}
           >
             {submitting && <span className="material-icons animate-spin text-base">refresh</span>}
-            Continue
+            Continuar
           </button>
         </form>
       ) : (
@@ -190,12 +190,12 @@ export default function CustomDomainPage() {
                 {state.verifiedAt ? (
                   <p className="text-sm text-emerald-700 dark:text-emerald-300 mt-1 flex items-center gap-1">
                     <span className="material-icons text-base">verified</span>
-                    Verified {new Date(state.verifiedAt).toLocaleString()}
+                    Verificado {new Date(state.verifiedAt).toLocaleString()}
                   </p>
                 ) : (
                   <p className="text-sm text-amber-700 dark:text-amber-400 mt-1 flex items-center gap-1">
                     <span className="material-icons text-base">schedule</span>
-                    Pending DNS verification
+                    Pendiente de verificación DNS
                   </p>
                 )}
               </div>
@@ -204,9 +204,7 @@ export default function CustomDomainPage() {
                 onClick={removeDomain}
                 disabled={removing}
                 className="text-sm text-destructive hover:underline disabled:opacity-50"
-              >
-                Remove
-              </button>
+              >Quitar</button>
             </div>
           </div>
 
@@ -214,20 +212,20 @@ export default function CustomDomainPage() {
             <div className="bg-card border border-border rounded-2xl p-6">
               <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-1">
                 <span className="material-icons text-base">dns</span>
-                Add this TXT record at your DNS provider
+                Añade este registro TXT en tu proveedor de DNS
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                Once propagated (usually under 5 minutes), click Verify below.
+                Cuando se propague (normalmente en menos de 5 minutos), haz clic en Verificar.
               </p>
 
               <div className="grid grid-cols-[80px_1fr] gap-x-4 gap-y-2 text-sm font-mono">
-                <span className="text-muted-foreground">Type</span>
+                <span className="text-muted-foreground">Tipo</span>
                 <span className="text-foreground">{state.verificationRecord.type}</span>
 
                 <span className="text-muted-foreground">Host</span>
                 <span className="text-foreground break-all">{state.verificationRecord.host}</span>
 
-                <span className="text-muted-foreground">Value</span>
+                <span className="text-muted-foreground">Valor</span>
                 <span className="text-foreground break-all flex items-start gap-2">
                   <code className="flex-1">{state.verificationRecord.value}</code>
                   <button
@@ -236,7 +234,7 @@ export default function CustomDomainPage() {
                     className="shrink-0 text-xs text-primary hover:underline inline-flex items-center gap-1"
                   >
                     <span className="material-icons text-sm">{copied ? 'check' : 'content_copy'}</span>
-                    {copied ? 'Copied' : 'Copy'}
+                    {copied ? 'Copiado' : 'Copiar'}
                   </button>
                 </span>
               </div>
@@ -248,17 +246,17 @@ export default function CustomDomainPage() {
                 className={`mt-4 ${pBtnPrimary}`}
               >
                 {verifying && <span className="material-icons animate-spin text-base">refresh</span>}
-                Verify
+                Verificar
               </button>
             </div>
           )}
 
           {state.verifiedAt && (
             <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 text-sm text-foreground">
-              Your custom domain is live. To finish white-labeling, set your agency name and logo
-              under <Link href="/portal/agency/branding" className="text-primary hover:underline">Agency
-              Branding</Link>, then flip the switch on the <Link href="/portal/agency" className="text-primary hover:underline">agency
-              settings hub</Link>.
+              Tu dominio personalizado ya está activo. Para terminar la marca blanca, define el nombre y el logo
+              de tu agencia en <Link href="/portal/agency/branding" className="text-primary hover:underline">Marca
+              de agencia</Link>, y luego activa el interruptor en el <Link href="/portal/agency" className="text-primary hover:underline">panel
+              de ajustes de agencia</Link>.
             </div>
           )}
         </div>

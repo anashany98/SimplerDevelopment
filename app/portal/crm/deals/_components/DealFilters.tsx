@@ -35,7 +35,7 @@ export default function DealFilters({
     <div className="flex items-center justify-between gap-4 flex-wrap">
       <div className="flex items-center gap-3 flex-wrap">
         <select
-          aria-label="Filter by pipeline"
+          aria-label="Filtrar por pipeline"
           value={selectedPipelineId ?? ''}
           onChange={(e) => onSelectPipeline(Number(e.target.value))}
           className="px-3 py-2 bg-background border border-border rounded-lg text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -53,7 +53,7 @@ export default function DealFilters({
               onClick={() => onChangeStatus(s.value)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 statusFilter === s.value
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-foreground text-background'
                   : 'bg-accent text-foreground hover:bg-accent/80'
               }`}
             >
@@ -69,10 +69,10 @@ export default function DealFilters({
       </div>
       <button
         onClick={onToggleForm}
-        className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
+        className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors shrink-0"
       >
         <span className="material-icons text-base">{showForm ? 'close' : 'add_circle'}</span>
-        {showForm ? 'Cancel' : 'Add Deal'}
+        {showForm ? 'Cancelar' : 'Añadir negocio'}
       </button>
     </div>
   );

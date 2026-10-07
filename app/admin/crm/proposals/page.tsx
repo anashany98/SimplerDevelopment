@@ -70,9 +70,9 @@ export default function CrmProposalsPage() {
             <Link href="/admin/crm" className="text-muted-foreground hover:text-foreground transition-colors">
               <span className="material-icons text-sm">arrow_back</span>
             </Link>
-            <h1 className="text-2xl font-bold text-foreground">CRM Proposals</h1>
+            <h1 className="text-2xl font-bold text-foreground">Propuestas del CRM</h1>
           </div>
-          <p className="text-muted-foreground mt-1">All proposals across every client account.</p>
+          <p className="text-muted-foreground mt-1">Todas las propuestas de todas las cuentas de cliente.</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {['all', 'draft', 'sent', 'viewed', 'accepted', 'declined', 'expired'].map(s => (
@@ -80,7 +80,7 @@ export default function CrmProposalsPage() {
               key={s}
               onClick={() => setFilter(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${
-                filter === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:bg-accent'
+                filter === s ? 'bg-foreground text-background' : 'border border-border text-muted-foreground hover:bg-accent'
               }`}
             >
               {s}
@@ -92,23 +92,23 @@ export default function CrmProposalsPage() {
       {/* Summary cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-sm text-muted-foreground">Total Sent</p>
+          <p className="text-sm text-muted-foreground">Total enviadas</p>
           <p className="text-xl font-bold text-foreground">{totalSent}</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
-          <p className="text-sm text-muted-foreground">Acceptance Rate</p>
+          <p className="text-sm text-muted-foreground">Tasa de aceptación</p>
           <p className="text-xl font-bold text-foreground">{acceptanceRate}%</p>
         </div>
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading proposals...</div>
+        <div className="text-center py-12 text-muted-foreground">Cargando propuestas...</div>
       ) : proposals.length === 0 ? (
         <div className="bg-card border border-border rounded-xl p-12 text-center">
           <span className="material-icons text-5xl text-muted-foreground">description</span>
-          <h3 className="mt-4 font-semibold text-foreground">No proposals found</h3>
+          <h3 className="mt-4 font-semibold text-foreground">No se encontraron propuestas</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {filter !== 'all' ? `No ${filter} proposals.` : 'No CRM proposals have been created yet.'}
+            {filter !== 'all' ? `No hay propuestas en estado ${filter}.` : 'Todavía no se ha creado ninguna propuesta del CRM.'}
           </p>
         </div>
       ) : (
@@ -117,15 +117,15 @@ export default function CrmProposalsPage() {
             <table className="w-full text-sm">
               <thead className="bg-muted/50 border-b border-border">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Title</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Contact</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Company</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Client</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Views</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Created</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Expires</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Título</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Contacto</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Empresa</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Cliente</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Importe</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Vistas</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Creado</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Caduca</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

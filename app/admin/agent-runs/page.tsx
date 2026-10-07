@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { relativeTimeEs } from '@/lib/portal-utils';
 import { TERMINAL_RUN_STATUSES, type AgentFlowRunStatus } from '@/lib/agent-flows/types';
 
 interface AdminRunRow {
@@ -39,24 +40,17 @@ interface AdminRunRow {
 type Filter = 'active' | 'all' | 'terminal';
 
 const STATUS_META: Record<AgentFlowRunStatus, { label: string; icon: string; cls: string; spin?: boolean }> = {
-  running: { label: 'Running', icon: 'progress_activity', cls: 'bg-blue-500/10 text-blue-600 dark:text-blue-400', spin: true },
-  waiting: { label: 'Waiting', icon: 'pause_circle', cls: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
-  succeeded: { label: 'Succeeded', icon: 'check_circle', cls: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
-  failed: { label: 'Failed', icon: 'error', cls: 'bg-red-500/10 text-red-600 dark:text-red-400' },
+  running: { label: 'En ejecución', icon: 'autorenew', cls: 'bg-blue-500/10 text-blue-600 dark:text-blue-400', spin: true },
+  waiting: { label: 'En espera', icon: 'pause_circle', cls: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
+  succeeded: { label: 'Exitoso', icon: 'check_circle', cls: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
+  failed: { label: 'Fallido', icon: 'error', cls: 'bg-red-500/10 text-red-600 dark:text-red-400' },
   // Not a failure: the driving Claude Code session went away. Worth its own
   // colour so a dead runner is never mistaken for a real error.
-  abandoned: { label: 'Abandoned', icon: 'link_off', cls: 'bg-muted text-muted-foreground' },
+  abandoned: { label: 'Abandonado', icon: 'link_off', cls: 'bg-muted text-muted-foreground' },
 };
 
 function relativeTime(iso: string | null): string {
-  if (!iso) return '—';
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60_000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
+  return relativeTimeEs(iso);
 }
 
 function duration(startedAt: string, finishedAt: string | null): string {
@@ -141,7 +135,7 @@ export default function AdminAgentRunsPage() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 text-sm rounded-lg border capitalize ${
-                filter === f ? 'bg-primary text-primary-foreground border-primary' : 'bg-card border-border hover:bg-accent'
+                filter === f ? 'bg-foreground text-background border-primary' : 'bg-card border-border hover:bg-accent'
               }`}
             >
               {f}
@@ -153,7 +147,7 @@ export default function AdminAgentRunsPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard label="In flight" value={String(tracked.length)} icon="bolt" />
         <StatCard label="Waiting on a human" value={String(rows.filter((r) => r.status === 'waiting').length)} icon="pause_circle" />
-        <StatCard label="Failed" value={String(failed)} icon="error" />
+        <StatCard label="Fallido" value={String(failed)} icon="error" />
         <StatCard label="Tokens" value={`${(totalTokens / 1000).toFixed(1)}k`} icon="toll" />
       </div>
 
@@ -164,9 +158,7 @@ export default function AdminAgentRunsPage() {
 
         {loading ? (
           <div className="p-8 text-center text-muted-foreground">
-            <span className="material-icons animate-spin align-middle mr-2">progress_activity</span>
-            Loading…
-          </div>
+            <span className="material-icons animate-spin align-middle mr-2">autorenew</span>Cargando…</div>
         ) : rows.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground text-sm">
             No {filter === 'all' ? '' : filter} runs. A run appears here once a Claude Code session calls

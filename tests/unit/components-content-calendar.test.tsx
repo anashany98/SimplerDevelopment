@@ -150,11 +150,11 @@ afterEach(() => {
 describe('ContentCalendar — stats bar', () => {
   it('renders four stat tiles with labels', async () => {
     await renderCalendar();
-    // Use *AllByText* — "Published" also appears as a select <option>.
+    // Use *AllByText* — "Publicado" also appears as a select <option>.
     expect(screen.getByText('Total')).toBeTruthy();
-    expect(screen.getAllByText('Published').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Scheduled').length).toBeGreaterThan(0);
-    expect(screen.getByText('Drafts')).toBeTruthy();
+    expect(screen.getAllByText('Publicadas').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Programadas').length).toBeGreaterThan(0);
+    expect(screen.getByText('Borradores')).toBeTruthy();
   });
 
   it('counts posts by status', async () => {
@@ -187,24 +187,24 @@ describe('ContentCalendar — toolbar', () => {
     // chevron_left and chevron_right material icons + a "Today" button
     expect(container.textContent).toContain('chevron_left');
     expect(container.textContent).toContain('chevron_right');
-    expect(screen.getByRole('button', { name: /today/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /hoy/i })).toBeTruthy();
   });
 
   it('renders status and type filter selects', async () => {
     await renderCalendar();
-    expect(screen.getByRole('option', { name: 'All Statuses' })).toBeTruthy();
-    expect(screen.getByRole('option', { name: 'All Types' })).toBeTruthy();
+    expect(screen.getByRole('option', { name: 'Todos los estados' })).toBeTruthy();
+    expect(screen.getByRole('option', { name: 'Todos los tipos' })).toBeTruthy();
   });
 
   it('shows the current month label by default', async () => {
     const { container } = await renderCalendar();
-    const expected = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const expected = new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
     expect(container.textContent).toContain(expected);
   });
 
   it('switches to week view when the Week button is clicked', async () => {
     await renderCalendar();
-    const weekBtn = screen.getByRole('button', { name: /^week$/i });
+    const weekBtn = screen.getByRole('button', { name: /^Semana$/i });
     fireEvent.click(weekBtn);
     // Week view should be visible — the toolbar label changes to a week-range string
     // (we don't pin the exact date, just verify the button became selected and re-rendered)
@@ -253,14 +253,14 @@ describe('ContentCalendar — navigation', () => {
     fireEvent.click(nextBtn);
     fireEvent.click(nextBtn);
 
-    fireEvent.click(screen.getByRole('button', { name: /today/i }));
-    const expected = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    fireEvent.click(screen.getByRole('button', { name: /hoy/i }));
+    const expected = new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
     await waitFor(() => expect(container.textContent).toContain(expected));
   });
 
   it('navigates by week increments when in week view', async () => {
     const { container } = await renderCalendar();
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
     const headingBefore = container.querySelector('h2')?.textContent || '';
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent === 'chevron_right',
@@ -276,7 +276,7 @@ describe('ContentCalendar — navigation', () => {
 describe('ContentCalendar — calendar grid', () => {
   it('renders the seven weekday header labels', async () => {
     await renderCalendar();
-    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((name) => {
+    ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'].forEach((name) => {
       expect(screen.getByText(name)).toBeTruthy();
     });
   });
@@ -296,7 +296,7 @@ describe('ContentCalendar — calendar grid', () => {
       makePost({ id: 5, title: 'p5' }),
     ];
     const { container } = await renderCalendar({}, posts);
-    expect(container.textContent).toContain('+2 more');
+    expect(container.textContent).toContain('+2 más');
   });
 
   it('shows the loading spinner while initial fetch is in flight', () => {
@@ -305,7 +305,7 @@ describe('ContentCalendar — calendar grid', () => {
     global.fetch = vi.fn(() => new Promise(() => {}));
     const { container } = render(<ContentCalendar basePath="/x" />);
     expect(container.querySelector('.animate-spin')).not.toBeNull();
-    expect(container.textContent).toContain('Loading calendar');
+    expect(container.textContent).toContain('Cargando calendario');
   });
 });
 
@@ -328,7 +328,7 @@ describe('ContentCalendar — fetch URL building', () => {
   it('refetches when the view changes from month to week', async () => {
     const { fetchSpy } = await renderCalendar();
     const callsBefore = fetchSpy.mock.calls.length;
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
     await waitFor(() => {
       expect(fetchSpy.mock.calls.length).toBeGreaterThan(callsBefore);
     });
@@ -369,16 +369,16 @@ describe('ContentCalendar — filtering', () => {
 describe('ContentCalendar — legend', () => {
   it('renders a legend entry for each status', async () => {
     await renderCalendar();
-    // "draft" appears as both an <option> and as the legend text; the legend text
-    // is rendered inside a span with `capitalize` class — assert by counting all spans.
-    expect(screen.getAllByText('published').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('scheduled').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('draft').length).toBeGreaterThan(0);
+    // The status labels appear as both <option>s and legend text; assert by
+    // counting all occurrences.
+    expect(screen.getAllByText('Publicado').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Programado').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Borrador').length).toBeGreaterThan(0);
   });
 
   it('shows the drag indicator hint', async () => {
     const { container } = await renderCalendar();
-    expect(container.textContent).toContain('Drag posts to reschedule');
+    expect(container.textContent).toContain('Arrastra las entradas para reprogramarlas');
   });
 });
 
@@ -391,7 +391,7 @@ describe('ContentCalendar — PostCard rendering', () => {
 
   it('renders full-mode PostCards in week view', async () => {
     await renderCalendar({}, [makePost({ title: 'Full Card Title', postType: 'blog' })]);
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
     // The week-view PostCard renders postType + status as secondary text
     await waitFor(() => {
       expect(screen.getByText(/blog/i)).toBeTruthy();
@@ -403,7 +403,7 @@ describe('ContentCalendar — PostCard rendering', () => {
       {},
       [makePost({ title: 'Weird Type', postType: 'unknown-type' })],
     );
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
     // The component should not crash and the post title should still render
     await waitFor(() => {
       expect(container.textContent).toContain('Weird Type');
@@ -414,43 +414,43 @@ describe('ContentCalendar — PostCard rendering', () => {
 describe('ContentCalendar — schedule modal', () => {
   it('opens the schedule modal when the schedule icon is clicked in week view', async () => {
     const { container } = await renderCalendar({}, [makePost({ title: 'Sched Me' })]);
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
 
-    // The schedule icon button has title="Schedule"
+    // The schedule icon button has title="Programar"
     await waitFor(() => {
-      expect(container.querySelector('button[title="Schedule"]')).not.toBeNull();
+      expect(container.querySelector('button[title="Programar"]')).not.toBeNull();
     });
-    const scheduleBtn = container.querySelector('button[title="Schedule"]') as HTMLButtonElement;
+    const scheduleBtn = container.querySelector('button[title="Programar"]') as HTMLButtonElement;
     fireEvent.click(scheduleBtn);
 
-    expect(screen.getByText('Schedule Post')).toBeTruthy();
+    expect(screen.getByText('Programar entrada')).toBeTruthy();
   });
 
   it('closes the schedule modal when the backdrop is clicked', async () => {
     const { container } = await renderCalendar({}, [makePost({ title: 'Closeme' })]);
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
     await waitFor(() => {
-      expect(container.querySelector('button[title="Schedule"]')).not.toBeNull();
+      expect(container.querySelector('button[title="Programar"]')).not.toBeNull();
     });
-    fireEvent.click(container.querySelector('button[title="Schedule"]')!);
-    expect(screen.getByText('Schedule Post')).toBeTruthy();
+    fireEvent.click(container.querySelector('button[title="Programar"]')!);
+    expect(screen.getByText('Programar entrada')).toBeTruthy();
 
     // Backdrop is the fixed inset-0 div
     const backdrop = container.querySelector('.fixed.inset-0') as HTMLElement;
     fireEvent.click(backdrop);
     await waitFor(() => {
-      expect(screen.queryByText('Schedule Post')).toBeNull();
+      expect(screen.queryByText('Programar entrada')).toBeNull();
     });
   });
 
   it('saves the schedule and refetches posts', async () => {
     const post = makePost({ title: 'Save Me', publishedAt: new Date().toISOString() });
     const { fetchSpy, container } = await renderCalendar({}, [post]);
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
     await waitFor(() => {
-      expect(container.querySelector('button[title="Schedule"]')).not.toBeNull();
+      expect(container.querySelector('button[title="Programar"]')).not.toBeNull();
     });
-    fireEvent.click(container.querySelector('button[title="Schedule"]')!);
+    fireEvent.click(container.querySelector('button[title="Programar"]')!);
 
     // Re-mock fetch to capture the PATCH + refetch
     const calls: string[] = [];
@@ -463,7 +463,7 @@ describe('ContentCalendar — schedule modal', () => {
       } as unknown as Response;
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /^save$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Guardar$/i }));
 
     await waitFor(() => {
       expect(calls.some((u) => u.includes('/api/posts/1/schedule'))).toBe(true);
@@ -475,13 +475,13 @@ describe('ContentCalendar — schedule modal', () => {
   it('shows an Unschedule button when the post already has a date', async () => {
     const post = makePost({ publishedAt: new Date().toISOString() });
     const { container } = await renderCalendar({}, [post]);
-    fireEvent.click(screen.getByRole('button', { name: /^week$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Semana$/i }));
     await waitFor(() => {
-      expect(container.querySelector('button[title="Schedule"]')).not.toBeNull();
+      expect(container.querySelector('button[title="Programar"]')).not.toBeNull();
     });
-    fireEvent.click(container.querySelector('button[title="Schedule"]')!);
+    fireEvent.click(container.querySelector('button[title="Programar"]')!);
 
-    expect(screen.getByRole('button', { name: /unschedule/i })).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Desprogramar/i })).toBeTruthy();
   });
 });
 
@@ -497,7 +497,7 @@ describe('ContentCalendar — create post modal', () => {
     expect(emptyCell).toBeTruthy();
     fireEvent.click(emptyCell);
 
-    expect(screen.getByText('Schedule New Post')).toBeTruthy();
+    expect(screen.getByText('Programar nueva entrada')).toBeTruthy();
   });
 
   it('does not open the create modal when a post card is clicked', async () => {
@@ -507,7 +507,7 @@ describe('ContentCalendar — create post modal', () => {
     expect(card).toBeTruthy();
     fireEvent.click(card);
     // Create modal should NOT appear
-    expect(screen.queryByText('Schedule New Post')).toBeNull();
+    expect(screen.queryByText('Programar nueva entrada')).toBeNull();
   });
 
   it('shows a slug preview as the title is typed', async () => {
@@ -531,7 +531,7 @@ describe('ContentCalendar — create post modal', () => {
     fireEvent.click(emptyCell);
 
     // Create button is disabled when title is empty — verify the disabled attr
-    const createBtn = screen.getByRole('button', { name: /Create & Schedule/i });
+    const createBtn = screen.getByRole('button', { name: /Crear y programar/i });
     expect(createBtn.hasAttribute('disabled')).toBe(true);
   });
 
@@ -545,10 +545,10 @@ describe('ContentCalendar — create post modal', () => {
 
     const titleInput = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Hi' } });
-    fireEvent.click(screen.getByRole('button', { name: /Create & Schedule/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Crear y programar/i }));
 
     await waitFor(() => {
-      expect(container.textContent).toContain('Website ID missing');
+      expect(container.textContent).toContain('Falta el ID del sitio web');
     });
   });
 
@@ -580,7 +580,7 @@ describe('ContentCalendar — create post modal', () => {
 
     const titleInput = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Brand New Post' } });
-    fireEvent.click(screen.getByRole('button', { name: /Create & Schedule/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Crear y programar/i }));
 
     await waitFor(() => {
       // siteId (9) takes precedence over websiteId (7)
@@ -606,7 +606,7 @@ describe('ContentCalendar — create post modal', () => {
 
     const titleInput = container.querySelector('input[type="text"]') as HTMLInputElement;
     fireEvent.change(titleInput, { target: { value: 'Dup Slug' } });
-    fireEvent.click(screen.getByRole('button', { name: /Create & Schedule/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Crear y programar/i }));
 
     await waitFor(() => {
       expect(container.textContent).toContain('slug-taken');
@@ -620,11 +620,11 @@ describe('ContentCalendar — create post modal', () => {
     ).find((c) => !c.querySelector('[data-post-card]')) as HTMLElement;
     fireEvent.click(emptyCell);
 
-    expect(screen.getByText('Schedule New Post')).toBeTruthy();
+    expect(screen.getByText('Programar nueva entrada')).toBeTruthy();
     const backdrop = container.querySelector('.fixed.inset-0') as HTMLElement;
     fireEvent.click(backdrop);
     await waitFor(() => {
-      expect(screen.queryByText('Schedule New Post')).toBeNull();
+      expect(screen.queryByText('Programar nueva entrada')).toBeNull();
     });
   });
 

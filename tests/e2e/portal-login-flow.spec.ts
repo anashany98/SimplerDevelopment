@@ -29,7 +29,7 @@ test.describe('portal login flow @critical', () => {
     // Form renders.
     await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible();
 
-    await page.getByPlaceholder('you@company.com').fill(EMAIL);
+    await page.getByPlaceholder('tu@empresa.com').fill(EMAIL);
     await page.getByPlaceholder('••••••••').fill(PASSWORD);
     await page.getByRole('button', { name: 'Sign In' }).click();
 
@@ -61,7 +61,7 @@ test.describe('portal login flow @critical', () => {
   test('invalid credentials keep the user on the login page with an error', async ({ page }) => {
     await page.goto(`${BASE_URL}/portal/login`);
 
-    await page.getByPlaceholder('you@company.com').fill(EMAIL);
+    await page.getByPlaceholder('tu@empresa.com').fill(EMAIL);
     await page.getByPlaceholder('••••••••').fill('definitely-the-wrong-password');
     await page.getByRole('button', { name: 'Sign In' }).click();
 

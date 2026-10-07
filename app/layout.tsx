@@ -7,15 +7,44 @@ import { generateOrganizationSchema } from "@/lib/utils/structured-data";
 import { headers } from "next/headers";
 import dynamic from "next/dynamic";
 
-// Code-split the app chrome (NextAuth SessionProvider + LayoutContent →
-// marketing Navigation/Footer/UserDropdown, which pull in next-auth/react and
-// a pile of icons). Statically importing them bundled all of that into the
-// client chunk loaded on EVERY page — including public client sites that never
-// render them. Dynamic (ssr:true) keeps them server-rendered where used but
-// keeps their chunk off pages (client sites) that don't render them.
+// Code-split the app chrome (NextAuth SessionProvider + LayoutContent, which
+// pull in next-auth/react and a pile of icons). Statically importing them
+// bundled all of that into the client chunk loaded on EVERY page — including
+// public client sites that never render them. Dynamic (ssr: true) keeps them
+// server-rendered where used but keeps their chunk off pages (client sites)
+// that don't render them.
 const SessionProvider = dynamic(() => import("@/components/SessionProvider"));
 const LayoutContent = dynamic(() =>
   import("@/components/LayoutContent").then((m) => m.LayoutContent),
+);
+
+// A Cloudflare Quick Tunnel has a generated hostname. Reuse the explicitly
+// configured development origins so the same tunnel receives the app chrome
+// (including SessionProvider) instead of being mistaken for a tenant site.
+// Unknown hosts remain tenant sites and keep their isolated public layout.
+const DEV_TUNNEL_APP_HOSTS = new Set(
+  (process.env.NEXT_ALLOWED_DEV_ORIGINS ?? "")
+    .split(",")
+    .map((host) => host.trim().toLowerCase())
+    .filter(Boolean),
+);
+
+// Hostnames derived from the configured app URL (NEXT_PUBLIC_APP_URL /
+// NEXT_PUBLIC_SITE_URL). Mirrors middleware.ts isAppHostname: a custom
+// deployment domain (e.g. anaxia.tech) must be treated as an app host, or the
+// root layout classifies it as a client site, skips the SessionProvider, and
+// every useSession() caller in the portal/admin chrome throws at render time.
+const CONFIGURED_APP_HOSTS = new Set(
+  [process.env.NEXT_PUBLIC_APP_URL, process.env.NEXT_PUBLIC_SITE_URL]
+    .map((url) => {
+      if (!url) return null;
+      try {
+        return new URL(url).hostname.toLowerCase();
+      } catch {
+        return null;
+      }
+    })
+    .filter((value): value is string => Boolean(value)),
 );
 
 // preload: false — these app/portal fonts were being <link rel=preload>ed on
@@ -57,9 +86,8 @@ const playfairDisplay = Playfair_Display({
 });
 
 // ─── Retro-future marketing type ────────────────────────────────────────────
-// Orbitron/Raleway (the retro-future marketing pair) now live in
-// app/(pages)/layout.tsx — see the comment there for why they cannot be
-// declared here.
+// Orbitron/Raleway (the retro-future marketing pair) lived in the deleted
+// app/(pages) route group; nothing in the app uses them anymore.
 
 export const metadata: Metadata = defaultSEO;
 
@@ -71,15 +99,26 @@ export default async function RootLayout({
   const headersList = await headers();
   const host = headersList.get("host") || "";
   // Detect client site requests — those supply their own nav/footer and skip
-  // the app marketing chrome. On a dedicated client host (e.g. a client's own domain)
+  // the app chrome. On a dedicated client host (e.g. a client's own domain)
   // the hostname check is enough. But `staging.simplerdevelopment.com` is an app
-  // host that multiplexes BOTH the marketing site (/) and client sites
+  // host that multiplexes BOTH the app (/) and client sites
   // (/sites/<domain>) on one host, so hostname alone can't tell them apart —
   // the middleware forwards `x-site-pathname` on /sites/* routes to mark them.
-  const APP_HOSTS = ["localhost", "127.0.0.1", "simplerdevelopment.com", "www.simplerdevelopment.com", "staging.simplerdevelopment.com"];
-  const hostname = host.split(":")[0];
+  const APP_HOSTS = ["localhost", "127.0.0.1", "simplerdevelopment.com", "www.simplerdevelopment.com", "staging.simplerdevelopment.com", "anaxia.tech", "www.anaxia.tech"];
+  const hostname = host.split(":")[0].toLowerCase();
   const isSitesRoute = headersList.get("x-site-pathname") !== null;
-  const isClientSite = isSitesRoute || (!APP_HOSTS.includes(hostname) && !hostname.endsWith(".railway.app"));
+  const isAppHost =
+    APP_HOSTS.includes(hostname) ||
+    CONFIGURED_APP_HOSTS.has(hostname) ||
+    hostname.endsWith(".railway.app") ||
+    // Temporary Cloudflare Quick Tunnels are app surfaces too (portal, auth).
+    // Mirrors the `.trycloudflare.com` allowance in middleware.ts isAppHostname
+    // — without it the root layout classifies the tunnel host as a client
+    // site, skips the SessionProvider, and every useSession() caller in the
+    // portal chrome (PortalSidebar, NotificationBell) throws at render time.
+    hostname.endsWith(".trycloudflare.com") ||
+    DEV_TUNNEL_APP_HOSTS.has(hostname);
+  const isClientSite = isSitesRoute || !isAppHost;
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   // Fonts declared with next/font in THIS file are attributed to the root
   // layout, which is in every route's graph — so Next emitted their
@@ -94,10 +133,10 @@ export default async function RootLayout({
   // declaring module, not from whether the class is applied. Measured after
   // deploy — still 2 preloaded woff2 (53KB) on every client-site page.
   //
-  // The fix is where a font is DECLARED. Orbitron/Raleway moved to
-  // app/(pages)/layout.tsx, which client sites never enter. Everything left
-  // here is preload:false, so it costs a client site nothing: no preload link,
-  // and no fetch, because nothing on the page matches the face.
+  // The fix is where a font is DECLARED. The marketing pair shipped in the
+  // deleted app/(pages) route group, which client sites never enter. Everything
+  // left here is preload:false, so it costs a client site nothing: no preload
+  // link, and no fetch, because nothing on the page matches the face.
   //
   // The className gate below is still worth keeping — it stops client sites
   // inheriting unused custom properties — but it is a tidiness measure, not
@@ -127,7 +166,7 @@ export default async function RootLayout({
              *  Preload the woff2 so icon glyphs paint immediately. */}
             <link
               rel="preload"
-              href="/fonts/material-icons.woff2"
+              href="/fonts/material-icons-subset.woff2"
               as="font"
               type="font/woff2"
               crossOrigin="anonymous"
@@ -182,10 +221,9 @@ gtag('config', '${gaId}');`,
         {isClientSite ? (
           // Public client sites supply their own nav/footer (app/sites/[domain]
           // layout) and have no authenticated UI, so they need neither the app
-          // marketing chrome (LayoutContent → Navigation/Footer) nor the
-          // NextAuth SessionProvider. Skipping both keeps a large amount of
-          // unused client JS off every public page. (Verified: no public-site
-          // component calls useSession.)
+          // chrome (LayoutContent) nor the NextAuth SessionProvider. Skipping
+          // both keeps a large amount of unused client JS off every public
+          // page. (Verified: no public-site component calls useSession.)
           children
         ) : (
           <SessionProvider>

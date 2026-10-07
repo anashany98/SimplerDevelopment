@@ -9,7 +9,7 @@ import { OrderSuccess } from './CheckoutSuccess';
 import { CheckoutPaymentSection } from './CheckoutPaymentSection';
 import { CheckoutOrderSummary } from './CheckoutOrderSummary';
 
-export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) {
+export function CheckoutPageClient({ siteId, domain, storeCurrency = 'EUR' }: CheckoutPageClientProps) {
   const basePath = `/sites/${domain}`;
 
   // Cart
@@ -120,12 +120,12 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
   }
 
   function validateContact(): string | null {
-    if (!form.customerName.trim()) return 'Full name is required';
-    if (!form.customerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.customerEmail)) return 'Valid email is required';
-    if (!form.line1.trim()) return 'Street address is required';
-    if (!form.city.trim()) return 'City is required';
-    if (!form.postalCode.trim()) return 'Postal code is required';
-    if (!form.country.trim()) return 'Country is required';
+    if (!form.customerName.trim()) return 'El nombre es obligatorio';
+    if (!form.customerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.customerEmail)) return 'Introduce un correo válido';
+    if (!form.line1.trim()) return 'La dirección es obligatoria';
+    if (!form.city.trim()) return 'La ciudad es obligatoria';
+    if (!form.postalCode.trim()) return 'El código postal es obligatorio';
+    if (!form.country.trim()) return 'El país es obligatorio';
     return null;
   }
 
@@ -141,7 +141,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
   async function handleShippingNext(e: React.FormEvent) {
     e.preventDefault();
     if (!shippingRateId && shippingRates.length > 0) {
-      setCheckoutError('Please select a shipping method');
+      setCheckoutError('Selecciona un método de envío');
       return;
     }
     setCheckoutError('');
@@ -186,11 +186,11 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
           setStripePromise(getStripePromise(result.publishableKey));
         }
       } else {
-        setCheckoutError(json.message || 'Could not create order. Please try again.');
+        setCheckoutError(json.message || 'No se pudo crear el pedido. Inténtalo de nuevo.');
         setStep('shipping');
       }
     } catch {
-      setCheckoutError('Network error. Please try again.');
+      setCheckoutError('Error de red. Inténtalo de nuevo.');
       setStep('shipping');
     } finally {
       setCheckoutLoading(false);
@@ -222,13 +222,13 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
     return (
       <div className="container mx-auto px-4 py-16 max-w-lg text-center">
         <span className="material-icons text-5xl text-muted-foreground/30 mb-3 block">shopping_cart</span>
-        <p className="text-muted-foreground mb-6">Your cart is empty.</p>
+        <p className="text-muted-foreground mb-6">Tu carrito está vacío.</p>
         <Link
           href={`${basePath}/`}
           className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           <span className="material-icons text-base">arrow_back</span>
-          Continue Shopping
+          Seguir comprando
         </Link>
       </div>
     );
@@ -240,13 +240,13 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
     ? (selectedRate.rateType === 'free' || (selectedRate.freeAbove != null && cartSubtotal >= selectedRate.freeAbove) ? 0 : selectedRate.price)
     : 0;
   const displayTotal = checkoutResult?.total ?? (cartSubtotal + shippingCost);
-  const displayCurrency = checkoutResult?.currency ?? 'USD';
+  const displayCurrency = checkoutResult?.currency ?? storeCurrency;
 
   return (
     <div className="container mx-auto px-4 py-10 max-w-4xl">
       <h1 className="text-2xl font-bold mb-8 flex items-center gap-2">
         <span className="material-icons">lock</span>
-        Checkout
+        Finalizar compra
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -259,7 +259,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
               <div key={s} className="flex items-center gap-2">
                 {idx > 0 && <span className="material-icons text-muted-foreground/50 text-base">chevron_right</span>}
                 <span className={`font-medium capitalize ${step === s ? 'text-primary' : step === 'payment' && s !== 'payment' ? 'text-muted-foreground line-through' : 'text-muted-foreground'}`}>
-                  {s === 'contact' ? 'Contact & Address' : s === 'shipping' ? 'Shipping' : 'Payment'}
+                  {s === 'contact' ? 'Contacto y dirección' : s === 'shipping' ? 'Envío' : 'Pago'}
                 </span>
               </div>
             ))}
@@ -271,12 +271,12 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
               <div className="border border-border rounded-xl bg-card p-5 space-y-4">
                 <h2 className="font-semibold flex items-center gap-2">
                   <span className="material-icons text-base">person</span>
-                  Contact Information
+                  Información de contacto
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="customerName">Full Name *</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="customerName">Nombre completo *</label>
                     <input
                       id="customerName"
                       type="text"
@@ -288,7 +288,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="customerEmail">Email *</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="customerEmail">Correo electrónico *</label>
                     <input
                       id="customerEmail"
                       type="email"
@@ -302,7 +302,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="customerPhone">Phone (optional)</label>
+                  <label className="block text-sm font-medium mb-1" htmlFor="customerPhone">Teléfono (opcional)</label>
                   <input
                     id="customerPhone"
                     type="tel"
@@ -317,11 +317,11 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
               <div className="border border-border rounded-xl bg-card p-5 space-y-4">
                 <h2 className="font-semibold flex items-center gap-2">
                   <span className="material-icons text-base">local_shipping</span>
-                  Shipping Address
+                  Dirección de envío
                 </h2>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="country">Country *</label>
+                  <label className="block text-sm font-medium mb-1" htmlFor="country">País *</label>
                   <select
                     id="country"
                     required
@@ -329,21 +329,21 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     onChange={e => updateForm('country', e.target.value)}
                     className="w-full px-3 py-2 border border-border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                   >
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="GB">United Kingdom</option>
+                    <option value="US">Estados Unidos</option>
+                    <option value="CA">Canadá</option>
+                    <option value="GB">Reino Unido</option>
                     <option value="AU">Australia</option>
-                    <option value="DE">Germany</option>
-                    <option value="FR">France</option>
-                    <option value="NL">Netherlands</option>
-                    <option value="JP">Japan</option>
-                    <option value="MX">Mexico</option>
-                    <option value="BR">Brazil</option>
+                    <option value="DE">Alemania</option>
+                    <option value="FR">Francia</option>
+                    <option value="NL">Países Bajos</option>
+                    <option value="JP">Japón</option>
+                    <option value="MX">México</option>
+                    <option value="BR">Brasil</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="line1">Street Address *</label>
+                  <label className="block text-sm font-medium mb-1" htmlFor="line1">Dirección *</label>
                   <input
                     id="line1"
                     type="text"
@@ -355,7 +355,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="line2">Apt, Suite, etc. (optional)</label>
+                  <label className="block text-sm font-medium mb-1" htmlFor="line2">Piso, puerta, etc. (opcional)</label>
                   <input
                     id="line2"
                     type="text"
@@ -368,7 +368,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <div className="sm:col-span-1">
-                    <label className="block text-sm font-medium mb-1" htmlFor="city">City *</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="city">Ciudad *</label>
                     <input
                       id="city"
                       type="text"
@@ -380,7 +380,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="state">State/Province</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="state">Provincia/Estado</label>
                     <input
                       id="state"
                       type="text"
@@ -391,7 +391,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1" htmlFor="postalCode">Postal Code *</label>
+                    <label className="block text-sm font-medium mb-1" htmlFor="postalCode">Código postal *</label>
                     <input
                       id="postalCode"
                       type="text"
@@ -408,12 +408,12 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
               <div className="border border-border rounded-xl bg-card p-5 space-y-3">
                 <h2 className="font-semibold flex items-center gap-2">
                   <span className="material-icons text-base">discount</span>
-                  Discount Code (optional)
+                  Código de descuento (opcional)
                 </h2>
                 <input
                   id="discountCode"
                   type="text"
-                  placeholder="Enter code"
+                  placeholder="Introduce el código"
                   value={form.discountCode}
                   onChange={e => updateForm('discountCode', e.target.value)}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
@@ -431,7 +431,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                 type="submit"
                 className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
               >
-                Continue to Shipping
+                Continuar al envío
                 <span className="material-icons text-base">chevron_right</span>
               </button>
             </form>
@@ -452,27 +452,25 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     type="button"
                     onClick={() => { setStep('contact'); setCheckoutResult(null); setStripePromise(null); }}
                     className="text-primary text-xs hover:underline flex-shrink-0"
-                  >
-                    Edit
-                  </button>
+                  >Editar</button>
                 </div>
               </div>
 
               <div className="border border-border rounded-xl bg-card p-5 space-y-3">
                 <h2 className="font-semibold flex items-center gap-2">
                   <span className="material-icons text-base">local_shipping</span>
-                  Shipping Method
+                  Método de envío
                 </h2>
 
                 {shippingLoading && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground py-2">
                     <span className="animate-spin rounded-full h-4 w-4 border-2 border-primary/30" style={{ borderTopColor: 'currentColor' }} />
-                    Calculating rates...
+                    Calculando tarifas...
                   </div>
                 )}
 
                 {!shippingLoading && shippingFetched && shippingRates.length === 0 && (
-                  <p className="text-sm text-muted-foreground py-2">No shipping rates available for this address.</p>
+                  <p className="text-sm text-muted-foreground py-2">No hay tarifas de envío disponibles para esta dirección.</p>
                 )}
 
                 {shippingRates.map(rate => {
@@ -497,14 +495,14 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                           {(rate.minDeliveryDays || rate.maxDeliveryDays) && (
                             <p className="text-xs text-muted-foreground">
                               {rate.minDeliveryDays === rate.maxDeliveryDays
-                                ? `${rate.minDeliveryDays} business days`
-                                : `${rate.minDeliveryDays}–${rate.maxDeliveryDays} business days`}
+                                ? `${rate.minDeliveryDays} días laborables`
+                                : `${rate.minDeliveryDays}–${rate.maxDeliveryDays} días laborables`}
                             </p>
                           )}
                         </div>
                       </div>
                       <span className="text-sm font-medium">
-                        {isFree ? 'Free' : formatPrice(cost)}
+                        {isFree ? 'Gratis' : formatPrice(cost)}
                       </span>
                     </label>
                   );
@@ -514,11 +512,11 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
               <div className="border border-border rounded-xl bg-card p-5 space-y-3">
                 <h2 className="font-semibold flex items-center gap-2">
                   <span className="material-icons text-base">notes</span>
-                  Order Note (optional)
+                  Nota del pedido (opcional)
                 </h2>
                 <textarea
                   rows={2}
-                  placeholder="Any special instructions..."
+                  placeholder="Instrucciones especiales..."
                   value={form.customerNote}
                   onChange={e => updateForm('customerNote', e.target.value)}
                   className="w-full px-3 py-2 border border-border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
@@ -537,7 +535,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                 disabled={shippingLoading}
                 className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                Continue to Payment
+                Continuar al pago
                 <span className="material-icons text-base">chevron_right</span>
               </button>
             </form>
@@ -555,7 +553,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     {selectedRate && (
                       <p className="text-muted-foreground">
                         {selectedRate.name} ·{' '}
-                        {shippingCost === 0 ? 'Free' : formatPrice(shippingCost)}
+                        {shippingCost === 0 ? 'Gratis' : formatPrice(shippingCost)}
                       </p>
                     )}
                   </div>
@@ -563,9 +561,7 @@ export function CheckoutPageClient({ siteId, domain }: CheckoutPageClientProps) 
                     type="button"
                     onClick={() => { setStep('shipping'); setCheckoutResult(null); setStripePromise(null); }}
                     className="text-primary text-xs hover:underline flex-shrink-0"
-                  >
-                    Edit
-                  </button>
+                  >Editar</button>
                 </div>
               </div>
 

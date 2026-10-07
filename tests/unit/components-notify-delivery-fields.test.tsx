@@ -64,7 +64,7 @@ describe('NotifyDeliveryFields @surveys', () => {
 
   it('still renders the digest cadence options', () => {
     renderFields();
-    expect(screen.getByText('Daily digest')).toBeTruthy();
-    expect(screen.getByText('Weekly digest')).toBeTruthy();
+    expect(screen.getByText('Resumen diario')).toBeTruthy();
+    expect(screen.getByText('Resumen semanal')).toBeTruthy();
   });
 });

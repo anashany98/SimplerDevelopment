@@ -63,7 +63,7 @@ export default function CategoriesPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure?')) return;
+    if (!confirm('¿Seguro?')) return;
     await fetch(`/api/categories/${id}`, { method: 'DELETE' });
     fetchCategories();
   };
@@ -72,23 +72,23 @@ export default function CategoriesPage() {
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-foreground">Categories</h1>
+          <h1 className="text-3xl font-bold text-foreground">Categorías</h1>
           <button
             onClick={() => {
               setShowForm(!showForm);
               setEditingCategory(null);
               setFormData({ name: '', slug: '', description: '' });
             }}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
           >
-            {showForm ? 'Cancel' : 'Add Category'}
+            {showForm ? 'Cancelar' : 'Añadir categoría'}
           </button>
         </div>
 
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-card border border-border shadow rounded-lg p-6 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-foreground">Name *</label>
+              <label className="block text-sm font-medium text-foreground">Nombre *</label>
               <input
                 type="text"
                 required
@@ -108,7 +108,7 @@ export default function CategoriesPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground">Description</label>
+              <label className="block text-sm font-medium text-foreground">Descripción</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -119,9 +119,9 @@ export default function CategoriesPage() {
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
+                className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-foreground/90"
               >
-                {editingCategory ? 'Update' : 'Create'} Category
+                {editingCategory ? 'Actualizar' : 'Crear'} categoría
               </button>
               <button
                 type="button"
@@ -131,9 +131,7 @@ export default function CategoriesPage() {
                   setFormData({ name: '', slug: '', description: '' });
                 }}
                 className="px-4 py-2 text-sm font-medium text-foreground bg-card border border-border rounded-md hover:bg-accent"
-              >
-                Cancel
-              </button>
+              >Cancelar</button>
             </div>
           </form>
         )}
@@ -142,18 +140,12 @@ export default function CategoriesPage() {
           <table className="min-w-full divide-y divide-border">
             <thead className="bg-muted">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Name
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Nombre</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                   Slug
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
-                  Description
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Descripción</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-card divide-y divide-border">
@@ -172,22 +164,18 @@ export default function CategoriesPage() {
                     <button
                       onClick={() => handleEdit(category)}
                       className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
-                    >
-                      Edit
-                    </button>
+                    >Editar</button>
                     <button
                       onClick={() => handleDelete(category.id)}
                       className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                    >
-                      Delete
-                    </button>
+                    >Eliminar</button>
                   </td>
                 </tr>
               ))}
               {categories.length === 0 && (
                 <tr>
                   <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground">
-                    No categories yet. Create your first category to get started!
+                    Aún no hay categorías. ¡Crea la primera para empezar!
                   </td>
                 </tr>
               )}

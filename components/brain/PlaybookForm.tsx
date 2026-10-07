@@ -106,8 +106,7 @@ export default function PlaybookForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">
-          Name <span className="text-destructive">*</span>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Nombre<span className="text-destructive">*</span>
         </label>
         <input
           type="text"
@@ -122,20 +121,20 @@ export default function PlaybookForm({
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1">Description</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1">Descripción</label>
         <textarea
           value={values.description}
           onChange={(e) => set('description', e.target.value)}
           rows={3}
           maxLength={10_000}
           className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          placeholder="What does this playbook do? When should someone start a run?"
+          placeholder="¿Qué hace este playbook? ¿Cuándo debería alguien iniciar una ejecución?"
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1">Category</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1">Categoría</label>
           <input
             type="text"
             value={values.category}
@@ -146,14 +145,14 @@ export default function PlaybookForm({
           />
         </div>
         <div>
-          <label htmlFor="playbook-owner" className="block text-xs font-medium text-muted-foreground mb-1">Owner</label>
+          <label htmlFor="playbook-owner" className="block text-xs font-medium text-muted-foreground mb-1">Propietario</label>
           <select
             id="playbook-owner"
             value={values.ownerId ?? ''}
             onChange={(e) => set('ownerId', e.target.value ? parseInt(e.target.value, 10) : null)}
             className="w-full px-3 py-2 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="">Unassigned</option>
+            <option value="">Sin asignar</option>
             {team?.map((m) => (
               <option key={m.userId} value={m.userId}>{m.name || m.email}</option>
             ))}
@@ -236,18 +235,16 @@ export default function PlaybookForm({
             onClick={onCancel}
             disabled={submitting}
             className="px-3 py-1.5 text-sm rounded-md border border-border text-foreground hover:bg-accent disabled:opacity-50"
-          >
-            Cancel
-          </button>
+          >Cancelar</button>
         )}
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
         >
           {submitting ? (
             <>
-              <span className="material-icons animate-spin text-base">progress_activity</span>
+              <span className="material-icons animate-spin text-base">autorenew</span>
               Saving…
             </>
           ) : (

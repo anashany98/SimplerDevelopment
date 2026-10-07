@@ -9,6 +9,8 @@ interface EntitlementData {
   domains: string[];
   hasBundle: boolean;
   gatingBypassed: boolean;
+  billingMode: string;
+  paymentsEnabled: boolean;
 }
 
 interface StatusStep {
@@ -48,7 +50,11 @@ export default function GetStartedChecklist() {
     ])
       .then(([billingJson, onboardingJson, statusJson]) => {
         if (billingJson.success) {
-          setEntitlements(billingJson.data?.entitlements as EntitlementData);
+          setEntitlements({
+            ...billingJson.data?.entitlements,
+            billingMode: billingJson.data?.billingMode,
+            paymentsEnabled: billingJson.data?.paymentsEnabled,
+          } as EntitlementData);
         }
         if (onboardingJson.success && onboardingJson.data?.answers?.checklistDismissedAt) {
           setDismissed(true);
@@ -83,7 +89,7 @@ export default function GetStartedChecklist() {
   }
 
   if (!entitlements) return null;
-  if (entitlements.gatingBypassed) return null;
+  if (entitlements.gatingBypassed && (entitlements.paymentsEnabled || entitlements.billingMode === 'agency')) return null;
   if (entitlements.domains.length === 0) return null;
   if (dismissed) return null;
 
@@ -104,7 +110,7 @@ export default function GetStartedChecklist() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className="material-icons text-primary text-xl">rocket_launch</span>
-          <h2 className="font-semibold text-foreground text-base">Get started</h2>
+          <h2 className="font-semibold text-foreground text-base">Primeros pasos</h2>
         </div>
         <button
           type="button"
@@ -119,7 +125,7 @@ export default function GetStartedChecklist() {
       {/* Progress bar */}
       <div className="mb-4">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
-          <span>{completedCount} of {totalActions} steps complete</span>
+          <span>{completedCount} de {totalActions} pasos completados</span>
           <span>{progressPct}%</span>
         </div>
         <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
@@ -181,9 +187,7 @@ export default function GetStartedChecklist() {
                           href={action.href}
                           className="shrink-0 text-xs text-primary hover:text-primary/80 font-medium whitespace-nowrap"
                           aria-label={`Open ${action.label}`}
-                        >
-                          Open
-                          <span className="material-icons text-sm align-middle ml-0.5">arrow_forward</span>
+                        >Abierto<span className="material-icons text-sm align-middle ml-0.5">arrow_forward</span>
                         </a>
                       )}
                     </div>

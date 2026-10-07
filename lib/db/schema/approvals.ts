@@ -76,7 +76,7 @@ export const mcpApprovalLinks = pgTable('mcp_approval_links', {
 
 // --- OAuth 2.1 for MCP (claude.ai custom connector + similar) ----------------
 // These power the OAuth flow that lets a remote MCP client (Claude.ai web) add
-// the SimplerDevelopment MCP server with one click. The portal user logs in,
+// the CRM AGENTS MCP server with one click. The portal user logs in,
 // approves scopes, and Claude exchanges the resulting code for an access token
 // stored in `oauthAccessTokens`. `lib/mcp-auth.ts` accepts both the legacy
 // `sd_mcp_…` keys (in `portalApiKeys`) and the new `sd_oauth_…` access tokens.

@@ -1,14 +1,10 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { authorizePortal, isAuthError } from '@/lib/portal-auth';
 import { WORKFLOW_TEMPLATES } from '@/lib/workflows/templates';
 
 // GET /api/portal/workflows/templates — list seed templates the user can
 // clone into a fresh draft workflow via POST /api/portal/workflows.
 export async function GET() {
-  const session = await auth();
-  if (!session?.user?.id) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-
   const authResult = await authorizePortal({ action: 'read', scope: 'automations:read' });
   if (isAuthError(authResult)) return authResult.response;
 
