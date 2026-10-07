@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+'use client';
 
 // Self-serve module pricing page — /portal/settings/billing/plans
 //
